@@ -83,7 +83,12 @@ app.controller('userSettingsModListsController', function($scope, $rootScope, $t
             modList.hidden = true;
             if ($scope.activeModList && $scope.activeModList.id == modList.id) {
                 $rootScope.activeModList = null;
+                $scope.model.activeModListId = null;
             }
+            var index = $scope.all_mod_lists.findIndex(function(item) {
+                return modList.id == item.id;
+            });
+            if (index > -1) $scope.all_mod_lists.splice(index, 1);
             $scope.$emit('successMessage', 'Mod list deleted successfully.');
         }, function(response) {
             var params = {
