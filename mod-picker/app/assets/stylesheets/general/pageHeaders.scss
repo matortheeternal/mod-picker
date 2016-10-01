@@ -46,9 +46,17 @@
       padding: 10px;
       font-size: 12px;
       font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+
+      div {
+        margin: 4px;
+      }
 
       .action-box {
         margin-right: -1px;
+        white-space: nowrap;
       }
     }
   }
