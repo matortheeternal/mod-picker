@@ -46,9 +46,6 @@ app.controller('linkGenericAccountController', function ($scope, $timeout, userS
     $scope.validateUrl = function() {
         var userUrl = $scope.bio[$scope.userUrlKey];
         var match  = userUrl.match($scope.site.userUrlFormat);
-        if (!match && $scope.site.userUrlFormat2) {
-            match = userUrl.match($scope.site.userUrlFormat2);
-        }
         $scope.urlValid = match !== null;
     };
 
