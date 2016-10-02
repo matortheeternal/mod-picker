@@ -116,10 +116,10 @@ class HelpPagesController < ApplicationController
   end
 
   private
-
     # set instance variable via /help/:id via callback to keep things DRY
     def set_help_page
-      @help_page = HelpPage.where(title: params[:id].humanize).first
+      @help_page = HelpPage.find_by(title: params[:id].humanize)
+      raise ActiveRecord::RecordNotFound if @help_page.nil?
     end
 
     def set_help_page_from_id
