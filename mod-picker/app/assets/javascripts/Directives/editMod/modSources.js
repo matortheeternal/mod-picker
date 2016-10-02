@@ -64,7 +64,11 @@ app.controller('modSourcesController', function($scope, sitesFactory, scrapeServ
                     $scope.loadGeneralStats(data, true);
                 }, function(response) {
                     delete $scope.nexus;
-                    $scope.$emit('errorMessage', response);
+                    var params = {
+                        label: "Error scraping Nexus Mods mod page.",
+                        response: response
+                    };
+                    $scope.$emit('errorMessage', params);
                 });
                 break;
             case "Lover's Lab":
@@ -76,7 +80,11 @@ app.controller('modSourcesController', function($scope, sitesFactory, scrapeServ
                     $scope.loadGeneralStats(data);
                 }, function(response) {
                     delete $scope.lab;
-                    $scope.$emit('errorMessage', response);
+                    var params = {
+                        label: "Error scraping Lover's Lab mod page.",
+                        response: response
+                    };
+                    $scope.$emit('errorMessage', params);
                 });
                 break;
             case "Steam Workshop":
@@ -88,7 +96,11 @@ app.controller('modSourcesController', function($scope, sitesFactory, scrapeServ
                     $scope.loadGeneralStats(data);
                 }, function(response) {
                     delete $scope.workshop;
-                    $scope.$emit('errorMessage', response);
+                    var params = {
+                        label: "Error scraping Steam Workshop mod page.",
+                        response: response
+                    };
+                    $scope.$emit('errorMessage', params);
                 });
                 break;
         }
