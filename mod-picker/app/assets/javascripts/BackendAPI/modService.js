@@ -50,7 +50,7 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
 
     this.retrieveModContributions = function(modId, route, options, pageInformation) {
         var action = $q.defer();
-        backend.post('/mods/' + modId + '/' + route, options).then(function (data) {
+        backend.post('/mods/' + modId + '/' + route, options).then(function(data) {
             var contributions = data[route];
             contributionService.associateHelpfulMarks(contributions, data.helpful_marks);
             contributionService.handleEditors(contributions);
@@ -89,7 +89,7 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
 
     this.retrieveModAnalysis = function(modId) {
         var output = $q.defer();
-        backend.retrieve('/mods/' + modId + '/' + 'analysis').then(function (analysis) {
+        backend.retrieve('/mods/' + modId + '/' + 'analysis').then(function(analysis) {
             // create nestedAssets tree
             analysis.nestedAssets = assetUtils.getNestedAssets(analysis.assets);
             assetUtils.sortNestedAssets(analysis.nestedAssets);

@@ -1,4 +1,4 @@
-app.directive('statExpander', function () {
+app.directive('statExpander', function() {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/showMod/statExpander.html',

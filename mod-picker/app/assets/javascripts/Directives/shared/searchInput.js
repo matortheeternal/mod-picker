@@ -1,4 +1,4 @@
-app.directive('searchInput', function () {
+app.directive('searchInput', function() {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/shared/searchInput.html',
@@ -68,7 +68,7 @@ app.controller('searchInputController', function($scope, $timeout) {
         }, 100);
     };
 
-    $scope.keyDown = function ($event) {
+    $scope.keyDown = function($event) {
         var key = $event.keyCode;
 
         // pressing enter applies dropdown selection
@@ -131,7 +131,7 @@ app.controller('searchInputController', function($scope, $timeout) {
 
                 // search for matching tags
                 $scope.searching = true;
-                $scope.searchTimer = setTimeout(function () {
+                $scope.searchTimer = setTimeout(function() {
                     $scope.search($scope.searchText);
                 }, $scope.pause);
             }

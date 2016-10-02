@@ -1,4 +1,4 @@
-app.directive('comment', function () {
+app.directive('comment', function() {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/contributions/comment.html',
@@ -14,7 +14,7 @@ app.directive('comment', function () {
     };
 });
 
-app.controller('commentController', function ($scope, $rootScope, $filter, $timeout, contributionService) {
+app.controller('commentController', function($scope, $rootScope, $filter, $timeout, contributionService) {
     // inherited variables
     $scope.currentUser = $rootScope.currentUser;
 
@@ -135,7 +135,7 @@ app.controller('commentController', function ($scope, $rootScope, $filter, $time
     };
 
     $scope.hide = function(hidden) {
-        contributionService.hide('comments', $scope.comment.id, hidden).then(function (data) {
+        contributionService.hide('comments', $scope.comment.id, hidden).then(function(data) {
             $scope.comment.hidden = hidden;
         }, function(response) {
             var approveStr = hidden ? 'hiding' : 'unhiding';

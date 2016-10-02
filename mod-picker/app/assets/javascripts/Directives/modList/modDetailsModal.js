@@ -1,4 +1,4 @@
-app.directive('modDetailsModal', function () {
+app.directive('modDetailsModal', function() {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/modList/modDetailsModal.html',
@@ -7,7 +7,7 @@ app.directive('modDetailsModal', function () {
     };
 });
 
-app.controller('modDetailsModalController', function ($scope, $rootScope, eventHandlerFactory) {
+app.controller('modDetailsModalController', function($scope, $rootScope, eventHandlerFactory) {
     // shared function setup
     eventHandlerFactory.buildModalMessageHandlers($scope);
 

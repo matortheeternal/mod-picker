@@ -1,4 +1,4 @@
-app.directive('managePluginsModal', function () {
+app.directive('managePluginsModal', function() {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/modList/managePluginsModal.html',
@@ -7,7 +7,7 @@ app.directive('managePluginsModal', function () {
     };
 });
 
-app.controller('managePluginsModalController', function ($scope) {
+app.controller('managePluginsModalController', function($scope) {
     // re-initialize plugins store active booleans to false
     $scope.plugins_store.forEach(function(plugin) {
         plugin.active = false;

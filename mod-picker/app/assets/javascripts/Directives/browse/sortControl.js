@@ -1,4 +1,4 @@
-app.directive('sortControl', function () {
+app.directive('sortControl', function() {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/browse/sortControl.html',

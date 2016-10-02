@@ -1,4 +1,4 @@
-app.directive('tableItems', function () {
+app.directive('tableItems', function() {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/modList/tableItems.html',

@@ -1,4 +1,4 @@
-app.directive('imageUpload', function () {
+app.directive('imageUpload', function() {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/shared/imageUpload.html',
@@ -15,7 +15,7 @@ app.directive('imageUpload', function () {
     }
 });
 
-app.controller('imageUploadController', function ($scope, $element, fileUtils) {
+app.controller('imageUploadController', function($scope, $element, fileUtils) {
     $scope.browseImage = function() {
         var fileInput = $element[0].children[1].children[0];
         fileInput.click();

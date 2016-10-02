@@ -1,4 +1,4 @@
-app.service('contributionService', function (backend, $q, userTitleService, pageUtils, reviewSectionService) {
+app.service('contributionService', function(backend, $q, userTitleService, pageUtils, reviewSectionService) {
     var service = this;
 
     this.retrieveContributions = function(route, options, pageInformation) {
@@ -69,7 +69,7 @@ app.service('contributionService', function (backend, $q, userTitleService, page
 
     this.retrieveCorrections = function(type, id) {
         var action = $q.defer();
-        backend.retrieve('/' + type + '/' + id + '/corrections').then(function (data) {
+        backend.retrieve('/' + type + '/' + id + '/corrections').then(function(data) {
             userTitleService.associateTitles(data.corrections);
             service.associateAgreementMarks(data.corrections, data.agreement_marks);
             action.resolve(data.corrections);
@@ -81,7 +81,7 @@ app.service('contributionService', function (backend, $q, userTitleService, page
 
     this.retrieveHistory = function(type, id) {
         var action = $q.defer();
-        backend.retrieve('/' + type + '/' + id + '/history').then(function (data) {
+        backend.retrieve('/' + type + '/' + id + '/history').then(function(data) {
             userTitleService.associateTitles(data);
             action.resolve(data);
         }, function(response) {

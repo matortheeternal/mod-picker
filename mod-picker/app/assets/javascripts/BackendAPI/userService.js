@@ -1,9 +1,9 @@
-app.service('userService', function (backend, $q, userSettingsService, userTitleService, pageUtils) {
+app.service('userService', function(backend, $q, userSettingsService, userTitleService, pageUtils) {
     var service = this;
 
     this.retrieveUsers = function(options, pageInformation) {
         var action = $q.defer();
-        backend.post('/users/index', options).then(function (data) {
+        backend.post('/users/index', options).then(function(data) {
             // associate user titles
             data.users.forEach(function(user) {
                 if (!user.title) {

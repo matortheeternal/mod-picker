@@ -6,7 +6,7 @@ app.run(function($futureState, indexFactory, filtersFactory) {
     $futureState.futureState(state);
 });
 
-app.controller('commentsIndexController', function ($scope, $rootScope, $stateParams, $state, contributionService, columnsFactory, filtersFactory, indexService, indexFactory, sortFactory) {
+app.controller('commentsIndexController', function($scope, $rootScope, $stateParams, $state, contributionService, columnsFactory, filtersFactory, indexService, indexFactory, sortFactory) {
     // get parent variables
     $scope.currentUser = $rootScope.currentUser;
     $scope.permissions = $rootScope.permissions;

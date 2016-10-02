@@ -6,7 +6,7 @@ app.service('themesService', function($rootScope) {
         $rootScope.$broadcast('themeChanged', _stylesheets[currentTheme]);
     };
 
-    this.getTheme = function () {
+    this.getTheme = function() {
         return currentTheme;
     };
 });

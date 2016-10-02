@@ -1,4 +1,4 @@
-app.directive('messages', function () {
+app.directive('messages', function() {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/shared/messages.html',
@@ -11,7 +11,7 @@ app.directive('messages', function () {
     }
 });
 
-app.controller('messagesController', function ($scope, $timeout) {
+app.controller('messagesController', function($scope, $timeout) {
     // default values
     $scope.event = $scope.event || 'message';
     $scope.errorDecay = $scope.errorDecay || 15000;

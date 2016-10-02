@@ -472,7 +472,7 @@ app.service('columnsFactory', function() {
                 data: function(item) {
                     return item.name || item.mod.name;
                 },
-                link: function (item) {
+                link: function(item) {
                     if (item.mod) {
                         return "#/mod/" + item.mod.id;
                     }
@@ -597,7 +597,7 @@ app.service('columnsFactory', function() {
                 data: function(item) {
                     return item.filename || item.plugin.filename;
                 },
-                link: function (item) {
+                link: function(item) {
                     if (item.mod && item.plugin) {
                         return "#/mod/" + item.mod.id + "/analysis?plugin=" + item.plugin.id;
                     }
@@ -612,7 +612,7 @@ app.service('columnsFactory', function() {
                 visibility: false,
                 label: "Mod",
                 data: "mod.name",
-                link: function (item) {
+                link: function(item) {
                     if (item.mod) {
                         return "#/mod/" + item.mod.id;
                     }
@@ -691,7 +691,7 @@ app.service('columnsFactory', function() {
                 label: "Name",
                 data: "name",
                 class: "primary-column",
-                link: function (item) {
+                link: function(item) {
                     return "#/mod-list/" + item.id;
                 }
             },
@@ -700,7 +700,7 @@ app.service('columnsFactory', function() {
                 visibility: false,
                 label: "Submitter",
                 data: "submitter.username",
-                link: function (item) {
+                link: function(item) {
                     return "#/user/" + item.submitter.id;
                 },
                 sortData: "users.username"
@@ -903,7 +903,7 @@ app.service('columnsFactory', function() {
                 label: "Filename",
                 data: "filename",
                 class: "primary-column",
-                link: function (item) {
+                link: function(item) {
                     return "#/mod/" + item.mod.id + "/analysis?plugin=" + item.id;
                 }
             },
@@ -912,7 +912,7 @@ app.service('columnsFactory', function() {
                 visibility: true,
                 label: "Mod",
                 data: "mod.name",
-                link: function (item) {
+                link: function(item) {
                     return "#/mod/" + item.mod.id;
                 },
                 sortData: "mods.name"

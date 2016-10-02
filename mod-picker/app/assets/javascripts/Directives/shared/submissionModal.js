@@ -1,4 +1,4 @@
-app.directive('submissionModal', function () {
+app.directive('submissionModal', function() {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/shared/submissionModal.html',

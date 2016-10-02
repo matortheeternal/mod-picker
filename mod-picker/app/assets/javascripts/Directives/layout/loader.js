@@ -1,4 +1,4 @@
-app.directive('loader', function (spinnerFactory) {
+app.directive('loader', function(spinnerFactory) {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/layout/loader.html',
@@ -17,9 +17,9 @@ app.directive('loader', function (spinnerFactory) {
     }
 });
 
-app.controller('loaderController', function ($scope) {
+app.controller('loaderController', function($scope) {
     $scope.showSpinner = false;
-    $scope.$watch('data', function (newValue) {
+    $scope.$watch('data', function(newValue) {
         $scope.showSpinner = !newValue;
     });
 });

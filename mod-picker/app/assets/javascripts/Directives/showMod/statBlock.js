@@ -1,4 +1,4 @@
-app.directive('statBlock', function () {
+app.directive('statBlock', function() {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/showMod/statBlock.html',

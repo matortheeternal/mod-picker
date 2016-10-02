@@ -1,4 +1,4 @@
-app.directive('gridItems', function () {
+app.directive('gridItems', function() {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/modList/gridItems.html',

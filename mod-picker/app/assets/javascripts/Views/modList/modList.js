@@ -1,4 +1,4 @@
-app.config(['$stateProvider', function ($stateProvider) {
+app.config(['$stateProvider', function($stateProvider) {
     $stateProvider.state('base.mod-list', {
         templateUrl: '/resources/partials/modList/modList.html',
         controller: 'modListController',

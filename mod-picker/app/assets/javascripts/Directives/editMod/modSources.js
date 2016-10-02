@@ -1,4 +1,4 @@
-app.directive('modSources', function () {
+app.directive('modSources', function() {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/editMod/modSources.html',
@@ -7,7 +7,7 @@ app.directive('modSources', function () {
     }
 });
 
-app.controller('modSourcesController', function ($scope, sitesFactory, scrapeService) {
+app.controller('modSourcesController', function($scope, sitesFactory, scrapeService) {
     $scope.addSource = function() {
         if ($scope.sources.length == $scope.sites.length)
             return;
@@ -22,10 +22,10 @@ app.controller('modSourcesController', function ($scope, sitesFactory, scrapeSer
         $scope.sources.splice(index, 1);
     };
 
-    $scope.validateSource = function (source) {
+    $scope.validateSource = function(source) {
         var site = sitesFactory.getSite(source.label);
         var sourceIndex = $scope.sources.indexOf(source);
-        var sourceUsed = $scope.sources.find(function (item, index) {
+        var sourceUsed = $scope.sources.find(function(item, index) {
             return index != sourceIndex && item.label === source.label
         });
         var match = source.url.match(site.modUrlFormat);
@@ -59,7 +59,7 @@ app.controller('modSourcesController', function ($scope, sitesFactory, scrapeSer
             case "Nexus Mods":
                 $scope.nexus = {};
                 $scope.nexus.scraping = true;
-                scrapeService.scrapeNexus(gameId, modId).then(function (data) {
+                scrapeService.scrapeNexus(gameId, modId).then(function(data) {
                     $scope.nexus = data;
                     $scope.loadGeneralStats(data, true);
                 });
@@ -67,7 +67,7 @@ app.controller('modSourcesController', function ($scope, sitesFactory, scrapeSer
             case "Lover's Lab":
                 $scope.lab = {};
                 $scope.lab.scraping = true;
-                scrapeService.scrapeLab(modId).then(function (data) {
+                scrapeService.scrapeLab(modId).then(function(data) {
                     $scope.lab = data;
                     $scope.loadGeneralStats(data);
                 });
@@ -75,7 +75,7 @@ app.controller('modSourcesController', function ($scope, sitesFactory, scrapeSer
             case "Steam Workshop":
                 $scope.workshop = {};
                 $scope.workshop.scraping = true;
-                scrapeService.scrapeWorkshop(modId).then(function (data) {
+                scrapeService.scrapeWorkshop(modId).then(function(data) {
                     $scope.workshop = data;
                     $scope.loadGeneralStats(data);
                 });

@@ -1,4 +1,4 @@
-app.directive('activityModal', function () {
+app.directive('activityModal', function() {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/modList/activityModal.html',

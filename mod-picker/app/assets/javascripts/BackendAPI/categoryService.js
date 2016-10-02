@@ -1,4 +1,4 @@
-app.service('categoryService', function ($q, backend) {
+app.service('categoryService', function($q, backend) {
     var service = this;
 
     this.retrieveCategories = function() {
@@ -9,7 +9,7 @@ app.service('categoryService', function ($q, backend) {
         var filteredCategories = categories.filter(function(category) {
             return category.parent_id == key;
         });
-        filteredCategories.sort(function (a, b) {
+        filteredCategories.sort(function(a, b) {
             return a.name.localeCompare(b.name);
         });
         return filteredCategories;

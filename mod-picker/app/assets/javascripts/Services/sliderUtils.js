@@ -1,4 +1,4 @@
-app.service('sliderUtils', function ($filter) {
+app.service('sliderUtils', function($filter) {
 
     function isPowerOfTen(val) {
         return (Math.log10(val) % 1) == 0;

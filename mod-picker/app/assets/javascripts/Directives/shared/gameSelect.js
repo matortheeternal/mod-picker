@@ -1,4 +1,4 @@
-app.directive('gameSelect', function () {
+app.directive('gameSelect', function() {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/shared/gameSelect.html',
@@ -10,7 +10,7 @@ app.directive('gameSelect', function () {
     }
 });
 
-app.controller('gameSelectController', function ($scope) {
+app.controller('gameSelectController', function($scope) {
     $scope.changeGame = function() {
         window.location = '/' + $scope.selectedGame.nexus_name;
     };

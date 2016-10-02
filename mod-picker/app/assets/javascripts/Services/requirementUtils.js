@@ -1,4 +1,4 @@
-app.service('requirementUtils', function () {
+app.service('requirementUtils', function() {
     var service = this;
     this.getRequirerList = function(requirement, startIndex, key, model) {
         return requirement[key].slice(startIndex).map(function(item) {

@@ -1,4 +1,4 @@
-app.directive('modRequirements', function () {
+app.directive('modRequirements', function() {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/editMod/modRequirements.html',
@@ -7,7 +7,7 @@ app.directive('modRequirements', function () {
     }
 });
 
-app.controller('modRequirementsController', function ($scope) {
+app.controller('modRequirementsController', function($scope) {
     $scope.addRequirement = function() {
         $scope.mod.requirements.push({});
     };

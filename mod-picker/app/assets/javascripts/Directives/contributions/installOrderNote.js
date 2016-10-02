@@ -1,4 +1,4 @@
-app.directive('installOrderNote', function () {
+app.directive('installOrderNote', function() {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/contributions/installOrderNote.html',
@@ -15,7 +15,7 @@ app.directive('installOrderNote', function () {
     };
 });
 
-app.controller('installOrderNoteController', function ($scope, $rootScope) {
+app.controller('installOrderNoteController', function($scope, $rootScope) {
     // inherited variables
     $scope.currentUser = $rootScope.currentUser;
 

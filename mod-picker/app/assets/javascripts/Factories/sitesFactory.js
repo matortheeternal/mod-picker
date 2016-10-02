@@ -3,7 +3,7 @@
 // accounts
 
 // userIndex is the regex group to capture to get the user's username/id
-app.service('sitesFactory', function () {
+app.service('sitesFactory', function() {
     this.sites = function() {
         return [
             {

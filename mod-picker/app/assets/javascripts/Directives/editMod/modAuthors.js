@@ -1,4 +1,4 @@
-app.directive('modAuthors', function () {
+app.directive('modAuthors', function() {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/editMod/modAuthors.html',

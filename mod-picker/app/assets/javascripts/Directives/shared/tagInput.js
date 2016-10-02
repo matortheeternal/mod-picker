@@ -1,4 +1,4 @@
-app.directive('tagInput', function () {
+app.directive('tagInput', function() {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/shared/tagInput.html',
@@ -75,7 +75,7 @@ app.controller('tagInputController', function($scope, $timeout, formUtils) {
         }, 100);
     };
 
-    $scope.keyDown = function ($event) {
+    $scope.keyDown = function($event) {
         var key = $event.keyCode;
         var len = $event.target.value.length;
 
@@ -129,7 +129,7 @@ app.controller('tagInputController', function($scope, $timeout, formUtils) {
         }
     };
 
-    $scope.keyUp = function ($event) {
+    $scope.keyUp = function($event) {
         var key = $event.keyCode;
         var len = $event.target.value.length;
 
@@ -154,18 +154,18 @@ app.controller('tagInputController', function($scope, $timeout, formUtils) {
 
             // search for matching tags
             $scope.searching = true;
-            $scope.searchTimer = setTimeout(function () {
+            $scope.searchTimer = setTimeout(function() {
                 $scope.searchTags($scope.tag.text);
             }, pause);
         }
     }
 });
 
-app.directive('autoSelect', function ($timeout) {
-    return function (scope, element, attrs) {
-        scope.$watch(attrs.autoSelect, function (newval) {
+app.directive('autoSelect', function($timeout) {
+    return function(scope, element, attrs) {
+        scope.$watch(attrs.autoSelect, function(newval) {
             if (newval) {
-                $timeout(function () {
+                $timeout(function() {
                     element[0].select();
                 }, 0, false);
             }

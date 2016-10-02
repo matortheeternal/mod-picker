@@ -4,7 +4,7 @@ app.config(['$stateProvider', function($stateProvider) {
         templateUrl: '/resources/partials/base/error.html',
         controller: 'errorController',
         resolve: {
-            errorObj: function () {
+            errorObj: function() {
                 return this.self.error;
             }
         }

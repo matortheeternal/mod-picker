@@ -1,4 +1,4 @@
-app.directive('contributionText', function () {
+app.directive('contributionText', function() {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/contributions/contributionText.html',

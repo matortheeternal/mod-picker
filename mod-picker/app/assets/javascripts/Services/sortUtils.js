@@ -1,4 +1,4 @@
-app.service('sortUtils', function ($q, categoryService, colorsFactory, modListService) {
+app.service('sortUtils', function($q, categoryService, colorsFactory, modListService) {
     var service = this;
     var mod_list, key, handlingPlugins, model, originalModList;
 

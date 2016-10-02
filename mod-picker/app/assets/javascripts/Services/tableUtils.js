@@ -1,4 +1,4 @@
-app.service('tableUtils', function (objectUtils) {
+app.service('tableUtils', function(objectUtils) {
     var service = this;
 
     // sanitizes a filter to be a class by removing any filter params
@@ -14,7 +14,7 @@ app.service('tableUtils', function (objectUtils) {
     // of a data item based on the data path described in the column's
     // data property.  if the data property has multiple paths it will
     // test them sequentially until it finds a non-null value.
-    this.columnValue = function (item, data) {
+    this.columnValue = function(item, data) {
         // a lot of the time the data property of the column is just
         // a string denoting the path to look at in the item to find
         // the value we want to display

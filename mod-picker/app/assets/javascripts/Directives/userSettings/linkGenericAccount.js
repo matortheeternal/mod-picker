@@ -1,4 +1,4 @@
-app.directive('linkGenericAccount', function () {
+app.directive('linkGenericAccount', function() {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/userSettings/linkGenericAccount.html',
@@ -11,7 +11,7 @@ app.directive('linkGenericAccount', function () {
     }
 });
 
-app.controller('linkGenericAccountController', function ($scope, $timeout, userSettingsService, sitesFactory, eventHandlerFactory, formUtils) {
+app.controller('linkGenericAccountController', function($scope, $timeout, userSettingsService, sitesFactory, eventHandlerFactory, formUtils) {
     // initialize variables
     $scope.showModal = false;
     $scope.userUrlKey = $scope.siteKey + '_user_url';

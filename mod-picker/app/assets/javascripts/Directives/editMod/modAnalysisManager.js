@@ -11,7 +11,7 @@ app.controller('modAnalysisManagerController', function($scope, $rootScope, plug
     // inherited variables
     $scope.currentGame = $rootScope.currentGame;
 
-    $scope.changeAnalysisFile = function (event) {
+    $scope.changeAnalysisFile = function(event) {
         var input = event.target;
         if (input.files && input.files[0]) {
             $scope.loadAnalysisFile(input.files[0]);
@@ -19,7 +19,7 @@ app.controller('modAnalysisManagerController', function($scope, $rootScope, plug
         }
     };
 
-    $scope.browseAnalysisFile = function () {
+    $scope.browseAnalysisFile = function() {
         document.getElementById('analysis-input').click();
     };
 

@@ -1,4 +1,4 @@
-app.service('objectUtils', function () {
+app.service('objectUtils', function() {
     var service = this;
 
     this.shallowCopy = function(original) {

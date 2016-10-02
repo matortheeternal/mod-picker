@@ -1,4 +1,4 @@
-app.directive('comments', function () {
+app.directive('comments', function() {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/contributions/comments.html',
@@ -13,7 +13,7 @@ app.directive('comments', function () {
     };
 });
 
-app.controller('commentsController', function ($scope, $rootScope, contributionService) {
+app.controller('commentsController', function($scope, $rootScope, contributionService) {
     // inherited variables
     $scope.currentUser = $rootScope.currentUser;
 

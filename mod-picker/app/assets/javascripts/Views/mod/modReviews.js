@@ -93,7 +93,7 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
         $scope.generateEditorText();
     };
 
-    $scope.generateEditorText = function () {
+    $scope.generateEditorText = function() {
         // reset text body
         $scope.activeReview.text_body = "";
 

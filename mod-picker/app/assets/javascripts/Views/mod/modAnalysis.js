@@ -25,7 +25,7 @@ app.controller('modAnalysisController', function($scope, $stateParams, $state, m
 
     $scope.updateCurrentPlugin = function(pluginId) {
         if ($scope.availablePlugins.length) {
-            var foundPlugin = $scope.availablePlugins.find(function (plugin) {
+            var foundPlugin = $scope.availablePlugins.find(function(plugin) {
                 return plugin.id == pluginId;
             });
             $scope.currentPlugin = foundPlugin || $scope.availablePlugins[0];

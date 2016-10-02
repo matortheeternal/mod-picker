@@ -1,4 +1,4 @@
-app.directive('pluginError', function () {
+app.directive('pluginError', function() {
     return {
         scope: {
             error: '='

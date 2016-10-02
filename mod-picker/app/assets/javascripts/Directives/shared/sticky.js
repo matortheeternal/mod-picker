@@ -1,4 +1,4 @@
-app.directive('sticky', function () {
+app.directive('sticky', function() {
     return {
         restrict: 'A',
         link: function(scope, element, attrs) {

@@ -1,4 +1,4 @@
-app.config(['$stateProvider', function ($stateProvider) {
+app.config(['$stateProvider', function($stateProvider) {
     $stateProvider.state('base.submit-mod', {
             templateUrl: '/resources/partials/mod/submitMod.html',
             controller: 'submitModController',
@@ -24,7 +24,7 @@ app.config(['$stateProvider', function ($stateProvider) {
     );
 }]);
 
-app.controller('submitModController', function ($scope, $rootScope, backend, modService, scrapeService, pluginService, categoryService, sitesFactory, eventHandlerFactory) {
+app.controller('submitModController', function($scope, $rootScope, backend, modService, scrapeService, pluginService, categoryService, sitesFactory, eventHandlerFactory) {
     // access parent variables
     $scope.currentUser = $rootScope.currentUser;
     $scope.categories = $rootScope.categories;
@@ -59,7 +59,7 @@ app.controller('submitModController', function ($scope, $rootScope, backend, mod
 
     // submission isn't allowed until the user has provided at least one valid source,
     // a mod analysis, and at least one category
-    $scope.modValid = function () {
+    $scope.modValid = function() {
         // main source validation
         var sourcesValid = true;
         $scope.sources.forEach(function(source) {
@@ -90,7 +90,7 @@ app.controller('submitModController', function ($scope, $rootScope, backend, mod
         return (sourcesValid && categoriesValid && $scope.mod.analysis)
     };
 
-    $scope.submit = function () {
+    $scope.submit = function() {
         // return if mod is invalid
         if (!$scope.modValid()) {
             return;
