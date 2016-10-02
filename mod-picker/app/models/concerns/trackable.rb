@@ -67,7 +67,7 @@ module Trackable
 
   def get_milestone(milestones, value)
     for index in 0 ... milestones.size
-      return index - 1 if value < milestones[index]
+      return index if value < milestones[index]
     end
   end
 
