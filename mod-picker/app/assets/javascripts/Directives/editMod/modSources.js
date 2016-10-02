@@ -65,7 +65,7 @@ app.controller('modSourcesController', function($scope, sitesFactory, scrapeServ
                 }, function(response) {
                     delete $scope.nexus;
                     var params = {
-                        label: "Error scraping Nexus Mods mod page.",
+                        label: "Error scraping Nexus Mods mod page",
                         response: response
                     };
                     $scope.$emit('errorMessage', params);
@@ -81,7 +81,7 @@ app.controller('modSourcesController', function($scope, sitesFactory, scrapeServ
                 }, function(response) {
                     delete $scope.lab;
                     var params = {
-                        label: "Error scraping Lover's Lab mod page.",
+                        label: "Error scraping Lover's Lab mod page",
                         response: response
                     };
                     $scope.$emit('errorMessage', params);
@@ -97,7 +97,7 @@ app.controller('modSourcesController', function($scope, sitesFactory, scrapeServ
                 }, function(response) {
                     delete $scope.workshop;
                     var params = {
-                        label: "Error scraping Steam Workshop mod page.",
+                        label: "Error scraping Steam Workshop mod page",
                         response: response
                     };
                     $scope.$emit('errorMessage', params);
