@@ -73,4 +73,16 @@ namespace :reset do
     # all done
     puts "Categories reset successfully"
   end
+
+  namespace :counters do
+    task all: :environment do
+      puts "\nResetting all counter cache columns"
+      # TODO
+    end
+
+    task stars: :environment do
+      ModStar.update_all_counters(Mod, :stars_count, :mod_id)
+      ModListStar.update_all_counters(ModList, :stars_count, :mod_list_id)
+    end
+  end
 end
