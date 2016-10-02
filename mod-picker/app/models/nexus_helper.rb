@@ -135,6 +135,10 @@ class NexusHelper
     doc = Nokogiri::HTML(response.body)
     mod_data = {}
 
+    # raise an exception if we got a 404 page
+    header_node = doc.at_css("#Header")
+    raise header_node.text if header_node.present?
+
     # scrape basic data
     mod_data[:last_scraped] = DateTime.now
     mod_data[:mod_name] = doc.at_css(".header-name").text
