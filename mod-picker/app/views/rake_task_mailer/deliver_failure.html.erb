@@ -1,0 +1,10 @@
+<h4>The following task failed to complete successfully:</h4>
+<p>
+  <%= @task_key.titleize %>
+<p/>
+<h4>The following arguments were passed to the task:</h4>
+<p>
+  <%= @args.map{ |arg| "\"#{arg}\"" }.join(", ") %>
+<p/>
+<h4>The task outputted the following results:</h4>
+<%= simple_format(@results) %>
