@@ -1,4 +1,6 @@
 class ModListStar < ActiveRecord::Base
+  include RecordEnhancements
+
   self.primary_keys = :mod_list_id, :user_id
 
   belongs_to :user, :inverse_of => 'mod_list_stars'
@@ -13,12 +15,12 @@ class ModListStar < ActiveRecord::Base
 
   private
     def increment_counters
-      self.user.update_counter(:starred_mod_lists_count, 1)
-      self.mod_list.update_counter(:stars_count, 1)
+      user.update_counter(:starred_mod_lists_count, 1)
+      mod_list.update_counter(:stars_count, 1)
     end
 
     def decrement_counters
-      self.user.update_counter(:starred_mod_lists_count, -1)
-      self.mod_list.update_counter(:stars_count, -1)
+      user.update_counter(:starred_mod_lists_count, -1)
+      mod_list.update_counter(:stars_count, -1)
     end
 end
