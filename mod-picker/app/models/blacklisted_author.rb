@@ -11,4 +11,8 @@ class BlacklistedAuthor < ActiveRecord::Base
       mod.update(hidden: true)
     end
   end
+
+  def self.exists_for(source, author)
+    BlacklistedAuthor.where(source: source, author: author).exists?
+  end
 end
