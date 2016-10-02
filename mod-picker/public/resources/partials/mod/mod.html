@@ -149,6 +149,7 @@
                         <h3 class="section-title">Tags</h3>
                         <section>
                             <tag-selector active-tags="mod.tags" new-tags="newTags" max-tags="10" show-mods-count="true" show-add="!mod.lock_tags" can-create="permissions.canCreateTags" show-remove="!mod.lock_tags && permissions.canManage" save-callback="saveTags"></tag-selector>
+                            <span class="stat-title" ng-show="(mod.lock_tags || !permissions.canCreateTags) && !mod.tags.length">There's nothing here...</span>
                         </section>
                     </div>
 
