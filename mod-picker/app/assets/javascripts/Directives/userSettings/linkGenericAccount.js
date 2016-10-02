@@ -43,8 +43,17 @@ app.controller('linkGenericAccountController', function ($scope, $timeout, userS
         $scope.showModal = visible;
     };
 
+    $scope.fixUrl = function(userUrl) {
+        var match = userUrl.match($scope.site.badUserUrlFormat);
+        if (match) {
+            var idClause = match[2].split('-')[0];
+            return $scope.site.baseUserUrlFormat + idClause;
+        }
+        return userUrl;
+    };
+
     $scope.validateUrl = function() {
-        var userUrl = $scope.bio[$scope.userUrlKey];
+        var userUrl = $scope.fixUrl($scope.bio[$scope.userUrlKey]);
         var match  = userUrl.match($scope.site.userUrlFormat);
         $scope.urlValid = match !== null;
     };
@@ -56,7 +65,7 @@ app.controller('linkGenericAccountController', function ($scope, $timeout, userS
         }
 
         // exit if the url is invalid
-        var userUrl = $scope.bio[$scope.userUrlKey];
+        var userUrl = $scope.fixUrl($scope.bio[$scope.userUrlKey]);
         var match  = userUrl.match($scope.site.userUrlFormat);
         if (!match) {
             return;

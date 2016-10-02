@@ -38,8 +38,32 @@ app.controller('contributionActionsController', function($scope, $rootScope, $ti
     };
     $scope.errors = {};
     $scope.errorEvent = $scope.eventPrefix ? $scope.eventPrefix + 'ErrorMessage' : 'errorMessage';
-    $scope.shareLink = window.location.href + '/' + $scope.target.id;
     $scope.modelObj = contributionFactory.getModel($scope.modelName);
+
+    // determine share url based on the content type
+    $scope.buildShareLink = function() {
+        var modTarget, targetTab, targetId, baseUrl = location.href.replace(location.hash, "");
+        if ($scope.modelName === "Correction") {
+            var correctableType = $scope.target.correctable_type;
+            if (correctableType === "Mod") {
+                var modId = $scope.target.correctable_id;
+                $scope.shareLink = baseUrl + '#/mod/' + modId + '/appeals';
+            } else {
+                var correctable = $scope.target.correctable;
+                var correctableModel = contributionFactory.getModel(correctableType);
+                modTarget = correctable.mod || correctable.first_mod;
+                targetTab = correctableModel.tab;
+                targetId = $scope.target.correctable_id;
+                $scope.shareLink = baseUrl + '#/mod/' + modTarget.id + '/' + targetTab + '/' + targetId + '/corrections';
+            }
+        } else {
+            modTarget = $scope.target.mod || $scope.target.first_mod;
+            targetTab = $scope.modelObj.tab;
+            targetId = $scope.target.id;
+            $scope.shareLink = baseUrl + '#/mod/' + modTarget.id + '/' + targetTab + '/' + targetId;
+        }
+    };
+    $scope.buildShareLink();
 
     // compute whether or not the target is open if it is agreeable
     if ($scope.agreeable) {

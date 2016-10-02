@@ -4,6 +4,7 @@ class ModList < ActiveRecord::Base
   # ATTRIBUTES
   enum status: [ :under_construction, :testing, :complete ]
   enum visibility: [ :visibility_private, :visibility_unlisted, :visibility_public ]
+  attr_accessor :updated_by
   self.per_page = 100
 
   # EVENT TRACKING

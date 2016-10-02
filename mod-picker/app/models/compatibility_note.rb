@@ -2,7 +2,7 @@ class CompatibilityNote < ActiveRecord::Base
   include Filterable, Sortable, RecordEnhancements, Correctable, Helpfulable, Reportable, ScopeHelpers, Trackable
 
   # ATTRIBUTES
-  enum status: [ :incompatible, :"partially incompatible", :"compatibility mod", :"compatibility option", :"make custom patch" ]
+  enum status: [ :incompatible, :partially_incompatible, :compatibility_mod, :compatibility_option, :make_custom_patch ]
   self.per_page = 25
 
   # EVENT TRACKING

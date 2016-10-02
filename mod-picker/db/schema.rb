@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160930225519) do
+ActiveRecord::Schema.define(version: 20161001200408) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -50,6 +50,14 @@ ActiveRecord::Schema.define(version: 20160930225519) do
     t.datetime "submitted",                               null: false
     t.datetime "edited"
   end
+
+  create_table "blacklisted_authors", force: :cascade do |t|
+    t.string "source", limit: 32, null: false
+    t.string "author", limit: 64, null: false
+  end
+
+  add_index "blacklisted_authors", ["author"], name: "index_blacklisted_authors_on_author", using: :btree
+  add_index "blacklisted_authors", ["source"], name: "index_blacklisted_authors_on_source", using: :btree
 
   create_table "categories", force: :cascade do |t|
     t.integer "parent_id",   limit: 4

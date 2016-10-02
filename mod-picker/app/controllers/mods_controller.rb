@@ -175,7 +175,7 @@ class ModsController < ApplicationController
     if @mod_star.nil?
       render json: {status: :ok}
     else
-      if @mod_star.delete
+      if @mod_star.destroy
         render json: {status: :ok}
       else
         render json: @mod_star.errors, status: :unprocessable_entity

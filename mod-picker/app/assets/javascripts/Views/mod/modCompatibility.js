@@ -105,7 +105,7 @@ app.controller('modCompatibilityController', function($scope, $stateParams, $sta
 
         $scope.activeCompatibilityNote.valid = $scope.activeCompatibilityNote.text_body.length > 512 &&
             ($scope.activeCompatibilityNote.mod_id !== undefined) &&
-            ($scope.activeCompatibilityNote.status === "compatibility mod") ==
+            ($scope.activeCompatibilityNote.status === "compatibility_mod") ==
             ($scope.activeCompatibilityNote.compatibility_mod !== undefined);
     };
 

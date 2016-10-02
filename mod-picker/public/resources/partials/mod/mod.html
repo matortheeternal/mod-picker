@@ -33,20 +33,22 @@
 
                 <section>
                     <div class="header-box">
+                      <div>
                         ACTIONS
-                        <div class="action-box" ng-if="permissions.canReport && !permissions.isAuthor" ng-click="toggleReportModal(true)">
-                            <i class="fa fa-flag-o" aria-hidden="true"></i> Report
-                        </div>
-                        <div class="action-box" ng-if="permissions.canManage" ng-click="editMod()">
-                            <i class="fa fa-edit" aria-hidden="true"></i> Edit
-                        </div>
-                        <div class="action-box" ng-click="starMod()">
-                            <i class="fa {{mod.star ? 'fa-star' : 'fa-star-o'}}" aria-hidden="true"></i> {{mod.star ? 'Unfavorite' : 'Favorite'}}
-                        </div>
-                        <div class="action-box" ng-if="activeModList" ng-click="toggleInModList()">
-                            <i class="fa {{ mod.in_mod_list ? 'fa-remove' : 'fa-plus' }}" aria-hidden="true"></i>
-                            {{ mod.in_mod_list ? 'Remove from' : 'Add to' }} mod list
-                        </div>
+                      </div>
+                      <div class="action-box" ng-if="permissions.canReport && !permissions.isAuthor" ng-click="toggleReportModal(true)">
+                          <i class="fa fa-flag-o" aria-hidden="true"></i> Report
+                      </div>
+                      <div class="action-box" ng-if="permissions.canManage" ng-click="editMod()">
+                          <i class="fa fa-edit" aria-hidden="true"></i> Edit
+                      </div>
+                      <div class="action-box" ng-click="starMod()">
+                          <i class="fa {{mod.star ? 'fa-star' : 'fa-star-o'}}" aria-hidden="true"></i> {{mod.star ? 'Unfavorite' : 'Favorite'}}
+                      </div>
+                      <div class="action-box" ng-if="activeModList" ng-click="toggleInModList()">
+                          <i class="fa {{ mod.in_mod_list ? 'fa-remove' : 'fa-plus' }}" aria-hidden="true"></i>
+                          {{ mod.in_mod_list ? 'Remove from' : 'Add to' }} mod list
+                      </div>
                     </div>
 
                     <div class="header-box" ng-if="mod.primary_category_id">

@@ -51,4 +51,10 @@ app.run(['$rootScope', '$state', 'smoothScroll', function($rootScope, $state, sm
             smoothScroll(document.body, {duration: 300});
         }
     });
+
+    // handle state change errors
+    $rootScope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
+        $state.get('base.error').error = error;
+        $state.go('base.error');
+    });
 }]);

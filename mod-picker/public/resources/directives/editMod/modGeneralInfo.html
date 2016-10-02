@@ -7,7 +7,9 @@
         <input type="text" class="medium-text" ng-model="mod.name">
     </label>
     <label class="subsection">
-        <span class="input-label">Aliases</span>
+        <span class="input-label">Aliases
+            <span class="help-tooltip" title="Other names the mod is known by, such as acronyms.">?</span>
+        </span>
         <input type="text" class="medium-text" ng-model="mod.aliases">
     </label>
     <label class="subsection" ng-show="!sources.length || permissions.canSetGeneralModInfo">

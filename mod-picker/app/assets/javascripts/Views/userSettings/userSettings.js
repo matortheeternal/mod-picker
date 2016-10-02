@@ -132,6 +132,9 @@ app.controller('userSettingsController', function($scope, $rootScope, $q, userOb
         userSettingsService.updateUserSettings(userDiff).then(function () {
             themesService.changeTheme($scope.settings.theme);
             $scope.$emit('successMessage', 'User settings saved successfully.')
+
+            // update `originalUser` to include successfully changed settings
+            $scope.originalUser = angular.copy($scope.user);
         }, function (response) {
             var params = {
                 label: 'Error saving user settings',

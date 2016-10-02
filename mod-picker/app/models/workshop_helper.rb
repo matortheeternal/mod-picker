@@ -168,6 +168,11 @@ class WorkshopHelper
     app_id = doc.at_css("#ig_bottom .breadcrumbs").css('a/@href')[0].text.split('/').last
     mod_data[:game_id] = game_id_from_app_id(app_id)
 
+    # raise exception if uploader is blacklisted
+    if BlacklistedAuthor.exists_for("WorkshopInfo", mod_data["uploaded_by"])
+      raise "#{mod_data['uploaded_by']} has opted out of having their mods listed on Mod Picker"
+    end
+
     # scrape dates
     # <.detailsStatsContainerRight>
     stats = doc.at_css(".detailsStatsContainerRight").css(".detailsStatRight")
