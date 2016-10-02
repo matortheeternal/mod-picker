@@ -3,6 +3,7 @@ class Mod < ActiveRecord::Base
 
   # ATTRIBUTES
   enum status: [ :good, :outdated, :unstable ]
+  attr_accessor :updated_by
   self.per_page = 100
 
   # EVENT TRACKING

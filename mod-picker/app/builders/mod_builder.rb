@@ -28,6 +28,7 @@ class ModBuilder
   end
 
   def update
+    mod.updated_by = @current_user.id
     destroy_analysis
     update!
     true
