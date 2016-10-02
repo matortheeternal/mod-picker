@@ -243,6 +243,7 @@ class ModListsController < ApplicationController
     authorize! :update, @mod_list
     authorize! :hide, @mod_list if params[:mod_list].has_key?(:hidden)
 
+    @mod_list.updated_by = current_user.id
     if @mod_list.update(mod_list_params) && @mod_list.update_lazy_counters
       render json: {status: :ok}
     else
