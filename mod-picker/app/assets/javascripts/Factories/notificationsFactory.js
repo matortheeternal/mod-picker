@@ -246,7 +246,7 @@ app.service('notificationsFactory', function() {
     };
 
     this.getMilestoneValue = function(event) {
-        var index = extractMilestoneNumber(event.event_type) - 1;
+        var index = factory.extractMilestoneNumber(event.event_type) - 1;
         if (event.content_type === "UserReputation") {
             return factory.reputationMilestones[index];
         } else {
@@ -255,7 +255,7 @@ app.service('notificationsFactory', function() {
     };
 
     this.getPermissions = function(event) {
-        var index = extractMilestoneNumber(event.event_type) - 1;
+        var index = factory.extractMilestoneNumber(event.event_type) - 1;
         return factory.permissions[index];
     };
 
