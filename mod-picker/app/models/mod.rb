@@ -418,10 +418,10 @@ class Mod < ActiveRecord::Base
 
   private
     def decrement_counters
-      self.submitter.update_counter(:submitted_mods_count, -1) if self.submitted_by.present?
+      submitter.update_counter(:submitted_mods_count, -1) if submitted_by.present?
     end
 
     def increment_counters
-      self.submitter.update_counter(:submitted_mods_count, 1) if self.submitted_by.present?
+      submitter.update_counter(:submitted_mods_count, 1) if submitted_by.present?
     end
 end
