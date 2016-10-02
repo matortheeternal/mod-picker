@@ -54,14 +54,17 @@ app.controller('modSourcesController', function($scope, sitesFactory, scrapeServ
 
         var gameId = window._current_game_id;
         var modId = match[2];
-        source.scraped = true;
         switch (source.label) {
             case "Nexus Mods":
                 $scope.nexus = {};
                 $scope.nexus.scraping = true;
                 scrapeService.scrapeNexus(gameId, modId).then(function(data) {
                     $scope.nexus = data;
+                    source.scraped = true;
                     $scope.loadGeneralStats(data, true);
+                }, function(response) {
+                    delete $scope.nexus;
+                    $scope.$emit('errorMessage', response);
                 });
                 break;
             case "Lover's Lab":
@@ -69,7 +72,11 @@ app.controller('modSourcesController', function($scope, sitesFactory, scrapeServ
                 $scope.lab.scraping = true;
                 scrapeService.scrapeLab(modId).then(function(data) {
                     $scope.lab = data;
+                    source.scraped = true;
                     $scope.loadGeneralStats(data);
+                }, function(response) {
+                    delete $scope.lab;
+                    $scope.$emit('errorMessage', response);
                 });
                 break;
             case "Steam Workshop":
@@ -77,7 +84,11 @@ app.controller('modSourcesController', function($scope, sitesFactory, scrapeServ
                 $scope.workshop.scraping = true;
                 scrapeService.scrapeWorkshop(modId).then(function(data) {
                     $scope.workshop = data;
+                    source.scraped = true;
                     $scope.loadGeneralStats(data);
+                }, function(response) {
+                    delete $scope.workshop;
+                    $scope.$emit('errorMessage', response);
                 });
                 break;
         }
