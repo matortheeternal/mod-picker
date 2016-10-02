@@ -71,6 +71,9 @@ app.controller('commentsController', function($scope, $rootScope, contributionSe
                 return parent_comment.id == comment.parent_id;
             });
             if (parent) {
+                if (!parent.children) {
+                    parent.children = [];
+                }
                 parent.children.unshift(comment);
             }
         } else {
