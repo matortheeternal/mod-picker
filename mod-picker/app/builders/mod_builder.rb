@@ -49,10 +49,12 @@ class ModBuilder
 
   def before_update
     hide_contributions
+    swap_mod_list_mods_tools_counts
   end
 
   def after_update
     update_adult
+    update_mod_list_mods
   end
 
   def save
@@ -116,6 +118,16 @@ class ModBuilder
     mod.mod_options.destroy_all if @params.has_key?(:mod_options_attributes)
   end
 
+  def update_mod_list_mods
+    if mod.previous_changes.has_key?(:is_utility)
+      mod.mod_list_mods.includes(:mod_list).each do |mod_list_mod|
+        mod_list_mod.group_id = nil
+        mod_list_mod.get_index
+        mod_list_mod.save!
+      end
+    end
+  end
+
   def update_adult
     if mod.previous_changes.has_key?(:has_adult_content)
       # prepare some helper variables
@@ -173,7 +185,7 @@ class ModBuilder
     if mod.attribute_changed?(:is_utility)
       tools_operator = mod.is_utility ? "+" : "-"
       mods_operator = mod.is_utility ? "-" : "+"
-      mod_list_ids = mod_lists.ids
+      mod_list_ids = mod.mod_lists.ids
       ModList.where(id: mod_list_ids).update_all("tools_count = tools_count #{tools_operator} 1, mods_count = mods_count #{mods_operator} 1")
     end
   end
