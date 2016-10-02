@@ -7,7 +7,7 @@ class NexusInfosController < ApplicationController
       @nexus_info.rescrape
       render :json => @nexus_info
     rescue Exception => e
-      render :json => {error: e.message}
+      render :json => {error: e.message}, status: :unprocessable_entity
     end
   end
 

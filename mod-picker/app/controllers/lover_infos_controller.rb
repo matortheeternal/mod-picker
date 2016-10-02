@@ -7,7 +7,7 @@ class LoverInfosController < ApplicationController
       @lover_info.rescrape
       render :json => @lover_info
     rescue Exception => e
-      render :json => {error: e.message}
+      render :json => {error: e.message}, status: :unprocessable_entity
     end
   end
 
