@@ -141,11 +141,11 @@ class UserReputation < ActiveRecord::Base
 
     curator_rep = 0
     user.mod_authors.each do |ma|
-      if ma.role == :author
+      if ma.role == "author"
         authors_count = ModAuthor.where(mod_id: ma.mod_id, role: 0).count
         percentage = AUTHOR_MAX - AUTHOR_OFFSET * (authors_count / AUTHOR_RANGE)
         self.author_rep += percentage * ma.mod.reputation
-      elsif ma.role == :contributor
+      elsif ma.role == "contributor"
         contributors_count = ModAuthor.where(mod_id: ma.mod_id, role: 1).count
         percentage = CONTRIBUTOR_MAX - CONTRIBUTOR_OFFSET * (contributors_count / CONTRIBUTOR_RANGE)
         self.author_rep += percentage * ma.mod.reputation
