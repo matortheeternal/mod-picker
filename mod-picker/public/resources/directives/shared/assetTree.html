@@ -15,7 +15,7 @@
             </span>
             <span>{{asset.name}}</span>
         </div>
-        <div ng-if="asset.children" ng-show="asset.expanded">
+        <div ng-if="asset.children && asset.expanded">
             <asset-tree assets="asset.children"></asset-tree>
         </div>
     </li>
