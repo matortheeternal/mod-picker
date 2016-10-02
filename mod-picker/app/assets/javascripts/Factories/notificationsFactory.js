@@ -105,6 +105,7 @@ app.service('notificationsFactory', function() {
         ModList: '<a href="#/mod-list/{{event.content_id}}">{{content.name}}</a>',
         Comment: {
             key: "commentable",
+            Article: '<a href="#/article/{{content.commentable_id}}">{{content.commentable.title}}</a>',
             User: '<a href="#/user/{{content.commentable_id}}">your profile</a>',
             Correction: {
                 key: "correctable",
