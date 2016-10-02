@@ -1,7 +1,7 @@
 <div class="contribution-container box-shadow">
     <div class="content-title">
 		<span ng-if="modId">
-            <span class="capitalize">{{note.status}}</span>
+            <span class="capitalize">{{note.status | humanize}}</span>
             {{note.compatibility_verb}}
             <span ng-if="note.first_mod.id == modId">
                 <a ng-href="#/mod/{{note.second_mod.id}}" target="_blank">{{note.second_mod.name}}</a>
@@ -12,14 +12,14 @@
         </span>
         <span ng-if="!modId">
             <span ng-if="note.compatibility_verb === 'for'">
-                <span class="capitalize">{{note.status}}</span> for
+                <span class="capitalize">{{note.status | humanize}}</span> for
                 <a ng-href="#/mod/{{note.first_mod.id}}" target="_blank">{{note.first_mod.name}}</a>
                 and
                 <a ng-href="#/mod/{{note.second_mod.id}}" target="_blank">{{note.second_mod.name}}</a>
             </span>
             <span ng-if="note.compatibility_verb === 'with'">
                 <a ng-href="#/mod/{{note.first_mod.id}}" target="_blank">{{note.first_mod.name}}</a>
-                is <span class="capitalize">{{note.status}}</span> with
+                is <span class="capitalize">{{note.status | humanize}}</span> with
                 <a ng-href="#/mod/{{note.second_mod.id}}" target="_blank">{{note.second_mod.name}}</a>
             </span>
         </span>
@@ -39,7 +39,7 @@
         <div class="resolution-options">
             <div class="action-box green-box single" ng-if="note.compatibility_mod" ng-click="resolve('add mod')" ng-class="{ 'disabled' : note.resolved || note.ignored }">Add {{note.compatibility_mod.name}}</div>
             <div class="action-box green-box single" ng-if="note.compatibility_plugin" ng-click="resolve('add plugin')" ng-class="{ 'disabled' : note.resolved || note.ignored }">Add {{note.compatibility_plugin.filename}}</div>
-            <div class="action-box green-box single" ng-if="note.status === 'make custom patch'" ng-click="resolve('add custom plugin')" ng-class="{ 'disabled' : note.resolved || note.ignored }">Add Custom Patch Plugin</div>
+            <div class="action-box green-box single" ng-if="note.status === 'make_custom_patch'" ng-click="resolve('add custom plugin')" ng-class="{ 'disabled' : note.resolved || note.ignored }">Add Custom Patch Plugin</div>
             <div class="action-box red-box" ng-click="resolve('remove', 0)" ng-class="{ 'disabled' : note.resolved || note.ignored || !modDataLoaded }" title="{{getTitle()}}">Remove {{note.first_mod.name}}</div>
             <div class="action-box red-box" ng-click="resolve('remove', 1)" ng-class="{ 'disabled' : note.resolved || note.ignored || !modDataLoaded }" title="{{getTitle()}}">Remove {{note.second_mod.name}}</div>
             <div class="action-box yellow-box single" ng-click="resolve('ignore')" ng-class="{ 'disabled' : note.resolved }">{{note.ignored ? 'Unignore' : 'Ignore'}} Issue</div>
