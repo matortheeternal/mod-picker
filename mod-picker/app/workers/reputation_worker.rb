@@ -26,6 +26,7 @@ class ReputationWorker
           user_reputation.calculate_site_rep!
           user_reputation.calculate_contribution_rep!
           user_reputation.calculate_author_rep!
+          user_reputation.calculate_overall_rep!
           user_reputation.save!
         end
       }
