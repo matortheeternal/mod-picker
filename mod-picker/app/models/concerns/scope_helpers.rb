@@ -144,17 +144,18 @@ module ScopeHelpers
     def enum_scope(*attributes, **options)
       attributes.each do |attribute|
         plural_attribute = attribute.to_s.pluralize
-        class_eval <<-buildscope
-          scope :#{attribute}, -> (values) {
+        class_eval do
+          scope attribute.to_sym, -> (values) {
+            byebug
             if values.is_a?(Hash)
               array = []
-              values.each_key{ |key| array.push(#{plural_attribute}[key]) if values[key] }
+              values.each_key{ |key| array.push(public_send(plural_attribute)[key]) if values[key] }
             else
               array = values
             end
-            where(#{attribute}: array)
+            where(attribute => array)
           }
-        buildscope
+        end
       end
     end
 
