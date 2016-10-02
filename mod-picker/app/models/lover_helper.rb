@@ -146,7 +146,7 @@ class LoverHelper
     end
 
     # raise exception if uploader is blacklisted
-    if BlacklistedAuthor.exists_for("LoverInfo", mod_data["uploaded_by"])
+    if BlacklistedAuthor.exists_for?("LoverInfo", mod_data["uploaded_by"])
       raise "#{mod_data['uploaded_by']} has opted out of having their mods listed on Mod Picker"
     end
 

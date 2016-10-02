@@ -169,7 +169,7 @@ class WorkshopHelper
     mod_data[:game_id] = game_id_from_app_id(app_id)
 
     # raise exception if uploader is blacklisted
-    if BlacklistedAuthor.exists_for("WorkshopInfo", mod_data["uploaded_by"])
+    if BlacklistedAuthor.exists_for?("WorkshopInfo", mod_data["uploaded_by"])
       raise "#{mod_data['uploaded_by']} has opted out of having their mods listed on Mod Picker"
     end
 

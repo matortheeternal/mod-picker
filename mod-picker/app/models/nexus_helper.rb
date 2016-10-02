@@ -143,7 +143,7 @@ class NexusHelper
     mod_data[:authors] = doc.at_css(".header-author strong").text
 
     # raise exception if uploader is blacklisted
-    if BlacklistedAuthor.exists_for("NexusInfo", mod_data[:uploaded_by])
+    if BlacklistedAuthor.exists_for?("NexusInfo", mod_data[:uploaded_by])
       raise "#{mod_data[:uploaded_by]} has opted out of having their mods on Mod Picker"
     end
 

@@ -12,7 +12,7 @@ class BlacklistedAuthor < ActiveRecord::Base
     end
   end
 
-  def self.exists_for(source, author)
+  def self.exists_for?(source, author)
     BlacklistedAuthor.where(source: source, author: author).exists?
   end
 end
