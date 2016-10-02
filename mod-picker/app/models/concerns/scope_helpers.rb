@@ -146,7 +146,6 @@ module ScopeHelpers
         plural_attribute = attribute.to_s.pluralize
         class_eval do
           scope attribute.to_sym, -> (values) {
-            byebug
             if values.is_a?(Hash)
               array = []
               values.each_key{ |key| array.push(public_send(plural_attribute)[key]) if values[key] }
