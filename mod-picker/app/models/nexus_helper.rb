@@ -148,7 +148,7 @@ class NexusHelper
 
     # raise exception if uploader is blacklisted
     if BlacklistedAuthor.exists_for?("NexusInfo", mod_data[:uploaded_by])
-      raise "#{mod_data[:uploaded_by]} has opted out of having their mods on Mod Picker"
+      raise "the author of this mod has opted out of having their mods on Mod Picker"
     end
 
       # scrape dates

@@ -147,7 +147,7 @@ class LoverHelper
 
     # raise exception if uploader is blacklisted
     if BlacklistedAuthor.exists_for?("LoverInfo", mod_data["uploaded_by"])
-      raise "#{mod_data['uploaded_by']} has opted out of having their mods listed on Mod Picker"
+      raise "the author of this mod has opted out of having their mods listed on Mod Picker"
     end
 
     # make a game_id field from the game field
