@@ -157,6 +157,7 @@ Rails.application.routes.draw do
     match '/help/:id/destroy', to: 'help_pages#destroy', via: [:get]
     match '/help/search', to:  'help_pages#search', via: [:get]
     resources :help_pages, path: 'help', except: [:destroy]
+    match '/help/*path', to: 'help_pages#record_not_found', via: :all
 
     # static data
     resources :categories, only: [:index]
