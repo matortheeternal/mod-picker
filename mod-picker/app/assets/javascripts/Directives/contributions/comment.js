@@ -28,7 +28,7 @@ app.controller('commentController', function($scope, $rootScope, $filter, $timeo
         name: "Comment",
         label: "Comment",
         route: "comments"
-    }
+    };
 
     $scope.target = $scope.comment;
     // initialize local variables
@@ -46,6 +46,11 @@ app.controller('commentController', function($scope, $rootScope, $filter, $timeo
     $scope.toggleReportModal = function(visible) {
         $scope.$emit('toggleModal', visible);
         $scope.showReportModal = visible;
+    };
+
+    $scope.getSubmitterAvatar = function() {
+        var submitter = $scope.comment.submitter;
+        return submitter.avatar || ('/users/' + submitter.title + '.png');
     };
 
     $scope.reply = function() {
