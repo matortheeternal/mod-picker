@@ -20,6 +20,23 @@ class UserBio < ActiveRecord::Base
     self.save
   end
 
+  def verify_account(site, user_path)
+    begin
+      case site
+        when "Nexus Mods"
+          verify_nexus_account(user_path)
+        when "Lover's Lab"
+          verify_lover_account(user_path)
+        when "Steam Workshop"
+          verify_workshop_account(user_path)
+        else
+          false
+      end
+    rescue RestClient::NotFound => e
+      raise " we couldn't find a #{site} user at that URL"
+    end
+  end
+
   def verify_nexus_account(user_path)
     # exit if we don't have a nexus_user_path
     if user_path.nil?
