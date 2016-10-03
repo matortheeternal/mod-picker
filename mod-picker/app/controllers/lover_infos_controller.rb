@@ -3,22 +3,14 @@ class LoverInfosController < ApplicationController
 
   # GET /lover_infos/1
   def show
-    begin
-      @lover_info.rescrape
-      render :json => @lover_info
-    rescue Exception => e
-      render :json => {error: e.message}, status: :unprocessable_entity
-    end
+    @lover_info.rescrape
+    render :json => @lover_info
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_lover_info
       authorize! :create, Mod
-      begin
-        @lover_info = LoverInfo.find(params[:id])
-      rescue
-        @lover_info = LoverInfo.new(id: params[:id])
-      end
+      @lover_info = LoverInfo.find_or_initialize_by(id: params[:id])
     end
 end

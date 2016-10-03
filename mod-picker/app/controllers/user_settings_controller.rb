@@ -26,14 +26,10 @@ class UserSettingsController < ApplicationController
   def link_account
     bio = @user.bio
 
-    begin
-      if bio.verify_account(params[:site], params[:user_path])
-        render json: {status: :ok, verified: true, bio: bio}
-      else
-        render json: {status: :ok, verified: false}
-      end
-    rescue Exception => e
-      render json: { error: e.message }, status: :unprocessable_entityo
+    if bio.verify_account(params[:site], params[:user_path])
+      render json: {status: :ok, verified: true, bio: bio}
+    else
+      render json: {status: :ok, verified: false}
     end
   end
 
