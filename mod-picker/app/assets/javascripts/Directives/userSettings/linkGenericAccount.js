@@ -24,7 +24,7 @@ app.controller('linkGenericAccountController', function($scope, $timeout, userSe
         var keys = ['username', 'submissions_count', 'followers_count', 'date_joined', 'posts_count', 'verification_token'];
         keys.forEach(function(dataKey) {
             var fullKey = $scope.siteKey + '_' + dataKey;
-            if ($scope.bio[fullKey]) {
+            if ($scope.bio.hasOwnProperty(fullKey)) {
                 $scope[dataKey] = $scope.bio[fullKey];
             }
         });
