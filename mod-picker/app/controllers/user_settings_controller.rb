@@ -25,21 +25,15 @@ class UserSettingsController < ApplicationController
   # GET /settings/link_account
   def link_account
     bio = @user.bio
-    case params[:site]
-      when "Nexus Mods"
-        verified = bio.verify_nexus_account(params[:user_path])
-      when "Lover's Lab"
-        verified = bio.verify_lover_account(params[:user_path])
-      when "Steam Workshop"
-        verified = bio.verify_workshop_account(params[:user_path])
-      else
-        verified = false
-    end
 
-    if verified
-      render json: {status: :ok, verified: true, bio: bio}
-    else
-      render json: {status: :ok, verified: false}
+    begin
+      if bio.verify_account(params[:site], params[:user_path])
+        render json: {status: :ok, verified: true, bio: bio}
+      else
+        render json: {status: :ok, verified: false}
+      end
+    rescue Exception => e
+      render json: { error: e.message }, status: :unprocessable_entityo
     end
   end
 
