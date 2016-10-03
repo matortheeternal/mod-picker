@@ -7,7 +7,7 @@ app.directive('submissionModal', function() {
     }
 });
 
-app.controller('submissionModalController', function($scope) {
+app.controller('submissionModalController', function($scope, errorService) {
     $scope.startSubmission = function(label) {
         $scope.submitting = true;
         $scope.submittingStatus = label;
@@ -23,7 +23,7 @@ app.controller('submissionModalController', function($scope) {
 
     $scope.submissionError = function(label, response) {
         $scope.submittingStatus = label;
-        $scope.errors = response.data;
+        $scope.errors = errorService.flattenErrors(response);
         $scope.success = false;
     };
 

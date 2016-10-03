@@ -8,9 +8,9 @@
         </div>
         <div ng-show="errors">
             <div ng-repeat="error in errors">
-                {{error.message}}
+                {{error}}
             </div>
-            <div>
+            <div class="actions">
                 <a ng-click="closeModal()">Click here</a> to return to the submission form
             </div>
         </div>
