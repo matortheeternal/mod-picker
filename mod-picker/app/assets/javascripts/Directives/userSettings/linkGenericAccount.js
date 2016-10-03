@@ -79,7 +79,7 @@ app.controller('linkGenericAccountController', function($scope, $timeout, userSe
             if (!data.verified) {
                 var params = {
                     type: 'error',
-                    message: 'Failed to verify account. You can try again in 30 seconds.'
+                    text: 'Failed to verify account. You can try again in 30 seconds.'
                 };
                 $scope.$emit('modalCustomMessage', params);
             } else {
@@ -89,10 +89,10 @@ app.controller('linkGenericAccountController', function($scope, $timeout, userSe
                 $scope.initSiteVars();
                 $scope.toggleModal();
             }
-        }, function() {
+        }, function(response) {
             $scope.bio.verifying = false;
-            var params = { type: 'error', message: 'Error verifying account.' };
-            $scope.$emit('modalCustomMessage', params);
+            var params = { label: 'Error verifying account', response: response };
+            $scope.$emit('modalErrorMessage', params);
         });
         $timeout(function() {
             $scope.bio.waiting = false;
