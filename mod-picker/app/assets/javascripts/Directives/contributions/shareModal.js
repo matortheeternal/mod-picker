@@ -1,4 +1,4 @@
-app.directive('shareModal', function () {
+app.directive('shareModal', function() {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/contributions/shareModal.html',

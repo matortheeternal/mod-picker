@@ -1,4 +1,4 @@
-app.service('spinnerFactory', function () {
+app.service('spinnerFactory', function() {
     this.getOpts = function(klass) {
         switch(klass) {
             case "small-spinner": return {

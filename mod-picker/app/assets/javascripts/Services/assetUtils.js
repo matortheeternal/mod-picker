@@ -1,4 +1,4 @@
-app.service('assetUtils', function (fileUtils) {
+app.service('assetUtils', function(fileUtils) {
     var service = this;
 
     this.getIconClass = function(ext) {

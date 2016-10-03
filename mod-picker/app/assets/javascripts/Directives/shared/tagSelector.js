@@ -1,4 +1,4 @@
-app.directive('tagSelector', function () {
+app.directive('tagSelector', function() {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/shared/tagSelector.html',
@@ -18,7 +18,7 @@ app.directive('tagSelector', function () {
     }
 });
 
-app.controller('tagSelectorController', function ($scope, tagService) {
+app.controller('tagSelectorController', function($scope, tagService) {
     $scope.rawNewTags = [];
     $scope.removedTags = [];
 
@@ -41,12 +41,12 @@ app.controller('tagSelectorController', function ($scope, tagService) {
         $scope.storeTags();
     };
 
-    $scope.removeActiveTag = function ($index) {
+    $scope.removeActiveTag = function($index) {
         var removedTag = $scope.activeTags.splice($index, 1);
         $scope.removedTags.push(removedTag[0]);
     };
 
-    $scope.resetTags = function () {
+    $scope.resetTags = function() {
         $scope.activeTags = $scope.activeTags.concat($scope.removedTags);
         $scope.rawNewTags = [];
         $scope.removedTags = [];

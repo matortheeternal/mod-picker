@@ -135,6 +135,10 @@ class NexusHelper
     doc = Nokogiri::HTML(response.body)
     mod_data = {}
 
+    # raise an exception if we got a 404 page
+    header_node = doc.at_css("#Header")
+    raise header_node.text if header_node.present?
+
     # scrape basic data
     mod_data[:last_scraped] = DateTime.now
     mod_data[:mod_name] = doc.at_css(".header-name").text
@@ -143,8 +147,8 @@ class NexusHelper
     mod_data[:authors] = doc.at_css(".header-author strong").text
 
     # raise exception if uploader is blacklisted
-    if BlacklistedAuthor.exists_for("NexusInfo", mod_data[:uploaded_by])
-      raise "#{mod_data[:uploaded_by]} has opted out of having their mods on Mod Picker"
+    if BlacklistedAuthor.exists_for?("NexusInfo", mod_data[:uploaded_by])
+      raise "the author of this mod has opted out of having their mods on Mod Picker"
     end
 
       # scrape dates

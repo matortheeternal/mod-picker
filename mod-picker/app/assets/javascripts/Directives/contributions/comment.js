@@ -1,4 +1,4 @@
-app.directive('comment', function () {
+app.directive('comment', function() {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/contributions/comment.html',
@@ -14,7 +14,7 @@ app.directive('comment', function () {
     };
 });
 
-app.controller('commentController', function ($scope, $rootScope, $filter, $timeout, contributionService) {
+app.controller('commentController', function($scope, $rootScope, $filter, $timeout, contributionService) {
     // inherited variables
     $scope.currentUser = $rootScope.currentUser;
 
@@ -28,7 +28,7 @@ app.controller('commentController', function ($scope, $rootScope, $filter, $time
         name: "Comment",
         label: "Comment",
         route: "comments"
-    }
+    };
 
     $scope.target = $scope.comment;
     // initialize local variables
@@ -46,6 +46,11 @@ app.controller('commentController', function ($scope, $rootScope, $filter, $time
     $scope.toggleReportModal = function(visible) {
         $scope.$emit('toggleModal', visible);
         $scope.showReportModal = visible;
+    };
+
+    $scope.getSubmitterAvatar = function() {
+        var submitter = $scope.comment.submitter;
+        return submitter.avatar || ('/users/' + submitter.title + '.png');
     };
 
     $scope.reply = function() {
@@ -135,7 +140,7 @@ app.controller('commentController', function ($scope, $rootScope, $filter, $time
     };
 
     $scope.hide = function(hidden) {
-        contributionService.hide('comments', $scope.comment.id, hidden).then(function (data) {
+        contributionService.hide('comments', $scope.comment.id, hidden).then(function(data) {
             $scope.comment.hidden = hidden;
         }, function(response) {
             var approveStr = hidden ? 'hiding' : 'unhiding';

@@ -1,4 +1,4 @@
-app.service('sliderFactory', function (sliderUtils) {
+app.service('sliderFactory', function(sliderUtils) {
     var factory = this;
 
     this.extendSlider = function(extend, config) {
@@ -19,14 +19,14 @@ app.service('sliderFactory', function (sliderUtils) {
         return config;
     };
 
-    this.BaseRangeSlider = function (max, extend) {
+    this.BaseRangeSlider = function(max, extend) {
         return this.BaseSlider(function(config) {
             config.max = max;
             factory.extendSlider(extend, config);
         });
     };
 
-    this.CeilSlider = function (min, max, extend) {
+    this.CeilSlider = function(min, max, extend) {
         return this.BaseRangeSlider(max, function(config) {
             config.min = min || 0;
             config.options.floor = min || 0;

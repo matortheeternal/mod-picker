@@ -1,4 +1,4 @@
-app.directive('compatibilityNote', function () {
+app.directive('compatibilityNote', function() {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/contributions/compatibilityNote.html',
@@ -16,7 +16,7 @@ app.directive('compatibilityNote', function () {
     }
 });
 
-app.controller('compatibilityNoteController', function ($scope, $rootScope) {
+app.controller('compatibilityNoteController', function($scope, $rootScope) {
     // inherited variables
     $scope.currentUser = $rootScope.currentUser;
 
@@ -24,7 +24,7 @@ app.controller('compatibilityNoteController', function ($scope, $rootScope) {
     angular.default($scope, 'showUserColumn', true);
     angular.default($scope, 'showMarks', true);
 
-    $scope.getVerb = function () {
+    $scope.getVerb = function() {
         switch ($scope.note.status) {
             case "incompatible":
                 return "with";

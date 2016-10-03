@@ -93,7 +93,7 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
         $scope.generateEditorText();
     };
 
-    $scope.generateEditorText = function () {
+    $scope.generateEditorText = function() {
         // reset text body
         $scope.activeReview.text_body = "";
 
@@ -114,7 +114,7 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
         $scope.activeReview = {
             text_body: review.text_body.slice(0),
             moderator_message: review.moderator_message && review.moderator_message.slice(0),
-            ratings: review.review_ratings.slice(0),
+            ratings: angular.copy(review.review_ratings),
             overall_rating: review.overall_rating,
             original: review,
             editing: true
@@ -278,7 +278,7 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
 
     // functions for keeping rating inputs numerical and in the range 0->100
     $scope.keyPress = function($event) {
-        var key = $event.keyCode;
+        var key = (typeof $event.which == "number") ? $event.which : $event.keyCode;
         if (!(key >= 48 && key <= 57)) {
             $event.preventDefault();
         }

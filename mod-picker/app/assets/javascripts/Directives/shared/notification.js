@@ -10,7 +10,7 @@ app.directive('notification', function() {
     }
 });
 
-app.controller('notificationController', function ($scope, $sce, $interpolate, notificationsFactory) {
+app.controller('notificationController', function($scope, $sce, $interpolate, notificationsFactory) {
     angular.inherit($scope, 'notification');
     $scope.event = $scope.notification.event;
     $scope.content = $scope.event.content;

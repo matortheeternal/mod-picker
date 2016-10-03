@@ -167,7 +167,7 @@ class ModListsController < ApplicationController
         load_order: ModListPlugin.load_order_json(load_order),
         install_order: ModListMod.install_order_json(install_order),
         plugins: Plugin.analysis_json(plugins),
-        conflicting_assets: @mod_list.conflicting_assets
+        conflicting_assets: [] #@mod_list.conflicting_assets
     }
   end
 

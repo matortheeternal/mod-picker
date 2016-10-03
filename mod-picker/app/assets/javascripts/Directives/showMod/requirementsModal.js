@@ -1,4 +1,4 @@
-app.directive('requirementsModal', function () {
+app.directive('requirementsModal', function() {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/showMod/requirementsModal.html',

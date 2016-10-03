@@ -105,6 +105,7 @@ app.service('notificationsFactory', function() {
         ModList: '<a href="#/mod-list/{{event.content_id}}">{{content.name}}</a>',
         Comment: {
             key: "commentable",
+            Article: '<a href="#/article/{{content.commentable_id}}">{{content.commentable.title}}</a>',
             User: '<a href="#/user/{{content.commentable_id}}">your profile</a>',
             Correction: {
                 key: "correctable",
@@ -246,7 +247,7 @@ app.service('notificationsFactory', function() {
     };
 
     this.getMilestoneValue = function(event) {
-        var index = extractMilestoneNumber(event.event_type) - 1;
+        var index = factory.extractMilestoneNumber(event.event_type) - 1;
         if (event.content_type === "UserReputation") {
             return factory.reputationMilestones[index];
         } else {
@@ -255,7 +256,7 @@ app.service('notificationsFactory', function() {
     };
 
     this.getPermissions = function(event) {
-        var index = extractMilestoneNumber(event.event_type) - 1;
+        var index = factory.extractMilestoneNumber(event.event_type) - 1;
         return factory.permissions[index];
     };
 

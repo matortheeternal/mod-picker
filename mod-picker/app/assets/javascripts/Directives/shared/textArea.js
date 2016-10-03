@@ -1,4 +1,4 @@
-app.directive('textArea', function ($timeout) {
+app.directive('textArea', function($timeout) {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/shared/textArea.html',

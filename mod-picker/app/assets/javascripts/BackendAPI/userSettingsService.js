@@ -1,5 +1,5 @@
-app.service('userSettingsService', function (backend, $q, objectUtils, userTitleService) {
-    this.retrieveSettings = function (userId) {
+app.service('userSettingsService', function(backend, $q, objectUtils, userTitleService) {
+    this.retrieveSettings = function(userId) {
         var action = $q.defer();
         backend.retrieve('/settings/' + userId).then(function(data) {
             var user = data.user;
@@ -16,7 +16,7 @@ app.service('userSettingsService', function (backend, $q, objectUtils, userTitle
         return action.promise;
     };
 
-    this.updateUserSettings = function (user) {
+    this.updateUserSettings = function(user) {
         var userData = {
             user: {
                 title: user.title,
@@ -43,11 +43,11 @@ app.service('userSettingsService', function (backend, $q, objectUtils, userTitle
         return backend.update('/users', userData);
     };
 
-    this.submitAvatar = function (avatar) {
+    this.submitAvatar = function(avatar) {
         return backend.postFile('/settings/avatar', 'avatar', avatar);
     };
 
-    this.verifyAccount = function (site, user_path) {
+    this.verifyAccount = function(site, user_path) {
         var params = { site: site, user_path: user_path };
         return backend.post('/settings/link_account', params);
     };

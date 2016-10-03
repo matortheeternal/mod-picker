@@ -145,6 +145,8 @@ class Comment < ActiveRecord::Base
     }
     if commentable_type == "ModList"
       options[:include][:commentable] = { :only => [:name] }
+    elsif commentable_type == "Article"
+      options[:include][:commentable] = { :only => [:title] }
     elsif commentable_type == "Correction"
       if commentable.correctable_type == "Mod"
         options[:include][:commentable] = {

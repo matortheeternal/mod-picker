@@ -1,4 +1,4 @@
-app.service('listUtils', function () {
+app.service('listUtils', function() {
     var service = this;
 
     this.getNextIndex = function(model) {

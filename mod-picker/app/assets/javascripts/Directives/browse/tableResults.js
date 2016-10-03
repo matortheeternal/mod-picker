@@ -1,4 +1,4 @@
-app.directive('tableResults', function () {
+app.directive('tableResults', function() {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/browse/tableResults.html',

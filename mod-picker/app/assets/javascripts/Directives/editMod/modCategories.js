@@ -1,4 +1,4 @@
-app.directive('modCategories', function () {
+app.directive('modCategories', function() {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/editMod/modCategories.html',
@@ -7,7 +7,7 @@ app.directive('modCategories', function () {
     }
 });
 
-app.controller('modCategoriesController', function ($scope, categoryService) {
+app.controller('modCategoriesController', function($scope, categoryService) {
     $scope.getDominantIds = function(recessiveId) {
         var dominantIds = [];
         for (var i = 0; i < $scope.categoryPriorities.length; i++) {
@@ -41,7 +41,7 @@ app.controller('modCategoriesController', function ($scope, categoryService) {
 
     $scope.getSuperCategories = function() {
         var superCategories = [];
-        $scope.mod.categories.forEach(function (id) {
+        $scope.mod.categories.forEach(function(id) {
             var superCategory = categoryService.getCategoryById($scope.categories, id).parent_id;
             if (superCategory && superCategories.indexOf(superCategory) == -1) {
                 superCategories.push(superCategory);

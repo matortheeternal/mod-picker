@@ -1,4 +1,4 @@
-app.directive('pageResults', function () {
+app.directive('pageResults', function() {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/browse/pageResults.html',

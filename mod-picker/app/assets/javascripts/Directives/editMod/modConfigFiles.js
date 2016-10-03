@@ -1,4 +1,4 @@
-app.directive('modConfigFiles', function () {
+app.directive('modConfigFiles', function() {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/editMod/modConfigFiles.html',

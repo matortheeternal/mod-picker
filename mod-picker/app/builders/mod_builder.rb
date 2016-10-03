@@ -76,6 +76,7 @@ class ModBuilder
 
   def before_save
     set_config_file_game_ids
+    validate_sources
   end
 
   def after_save
@@ -88,6 +89,21 @@ class ModBuilder
       @config_files_attributes.each do |config_file|
         config_file[:game_id] = mod.game_id
       end
+    end
+  end
+
+  def new_sources_present
+    @nexus_info_id.present? || @lover_info_id.present? || @workshop_info_id.present? || @params.has_key?(:custom_sources_attributes)
+  end
+
+  def old_sources_present
+    mod.nexus_infos.present? || mod.lover_infos.present? || mod.workshop_infos.present? || mod.custom_sources.present?
+  end
+
+  def validate_sources
+    unless new_sources_present || old_sources_present
+      errors.add(:sources, "mods must have at least one source")
+      raise ActiveRecord::RecordInvalid
     end
   end
 

@@ -1,4 +1,4 @@
-app.directive('labStats', function () {
+app.directive('labStats', function() {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/showMod/labStats.html',

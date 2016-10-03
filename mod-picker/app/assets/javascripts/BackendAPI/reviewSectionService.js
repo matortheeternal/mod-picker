@@ -1,7 +1,7 @@
-app.service('reviewSectionService', function (backend, $q) {
+app.service('reviewSectionService', function(backend, $q) {
     var service = this;
 
-    this.retrieveReviewSections = function () {
+    this.retrieveReviewSections = function() {
         return backend.retrieve('/review_sections');
     };
 

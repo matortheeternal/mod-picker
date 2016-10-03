@@ -1,4 +1,4 @@
-app.directive('fileChange', ['$parse', function () {
+app.directive('fileChange', ['$parse', function() {
     return {
         restrict: 'A',
         //TODO: I feel like this should work without a link attribute

@@ -1,4 +1,4 @@
-app.service('configFilesService', function () {
+app.service('configFilesService', function() {
     var service = this;
 
     this.addConfigFile = function(model, configFile) {

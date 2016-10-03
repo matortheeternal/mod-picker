@@ -1,4 +1,4 @@
-app.directive('workshopStats', function () {
+app.directive('workshopStats', function() {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/showMod/workshopStats.html',

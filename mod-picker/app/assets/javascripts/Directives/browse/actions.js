@@ -1,4 +1,4 @@
-app.directive('actions', function () {
+app.directive('actions', function() {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/browse/actions.html',

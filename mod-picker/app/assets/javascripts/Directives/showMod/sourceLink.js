@@ -1,4 +1,4 @@
-app.directive('sourceLink', function () {
+app.directive('sourceLink', function() {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/showMod/sourceLink.html',
@@ -11,6 +11,6 @@ app.directive('sourceLink', function () {
     }
 });
 
-app.controller('sourceLinkController', function ($scope, sitesFactory) {
+app.controller('sourceLinkController', function($scope, sitesFactory) {
     $scope.site = sitesFactory.getSite($scope.label);
 });

@@ -1,4 +1,4 @@
-app.directive('nexusStats', function () {
+app.directive('nexusStats', function() {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/showMod/nexusStats.html',

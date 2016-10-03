@@ -1,7 +1,7 @@
-app.service('userTitleService', function (backend, $q) {
+app.service('userTitleService', function(backend, $q) {
     var service = this;
 
-    this.retrieveUserTitles = function () {
+    this.retrieveUserTitles = function() {
         var userTitles = $q.defer();
 
         backend.retrieve('/user_titles').then(function(titles) {
@@ -28,7 +28,7 @@ app.service('userTitleService', function (backend, $q) {
     });
 
 
-    this.getUserTitle = function (reputation) {
+    this.getUserTitle = function(reputation) {
         var output = $q.defer();
         gameTitles.then(function(titles) {
             var prevTitle = titles[0];

@@ -1,4 +1,4 @@
-app.service('errorService', function () {
+app.service('errorService', function() {
     var service = this;
 
     this.createErrorLink = function(errors, errorResponse, id, baseId) {
@@ -48,7 +48,7 @@ app.service('errorService', function () {
         return errors;
     };
 
-    this.errorMessages = function (label, errorResponse, resourceId) {
+    this.errorMessages = function(label, errorResponse, resourceId) {
         var errors = [];
 
         // parse json errors into error messages if the response is json
@@ -74,5 +74,20 @@ app.service('errorService', function () {
             type: "error",
             text: label + ", " + errorResponse.status + ": " + errorResponse.statusText
         }]
+    };
+
+    this.flattenErrors = function(errorResponse) {
+        var errors = [];
+        var data = errorResponse.data;
+        if (typeof data === "object") {
+            for (var prop in data) {
+                if (data.hasOwnProperty(prop)) {
+                    data[prop].forEach(function(error) {
+                        errors.push(prop.capitalize() + ": " + error);
+                    });
+                }
+            }
+        }
+        return errors;
     };
 });

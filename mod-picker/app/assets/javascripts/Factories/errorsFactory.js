@@ -1,4 +1,4 @@
-app.service('errorsFactory', function () {
+app.service('errorsFactory', function() {
     this.errorTypes = function() {
         return [
             {

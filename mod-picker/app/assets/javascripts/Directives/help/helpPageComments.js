@@ -1,4 +1,4 @@
-app.directive('helpPageComments', function () {
+app.directive('helpPageComments', function() {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/help/helpPageComments.html',

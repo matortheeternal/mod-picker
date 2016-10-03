@@ -1,4 +1,4 @@
-app.directive('correctionsModal', function () {
+app.directive('correctionsModal', function() {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/contributions/correctionsModal.html',
@@ -7,7 +7,7 @@ app.directive('correctionsModal', function () {
     };
 });
 
-app.controller('correctionsModalController', function ($scope, contributionService, contributionFactory, eventHandlerFactory) {
+app.controller('correctionsModalController', function($scope, contributionService, contributionFactory, eventHandlerFactory) {
     // shared function setup
     eventHandlerFactory.buildModalMessageHandlers($scope);
 
@@ -92,7 +92,7 @@ app.controller('correctionsModalController', function ($scope, contributionServi
     };
 
     // update an correction locally
-    $scope.updateCorrection = function () {
+    $scope.updateCorrection = function() {
         var originalCorrection = $scope.activeCorrection.original;
         var updatedCorrection = $scope.activeCorrection;
         // update the values on the original correction

@@ -1,4 +1,4 @@
-app.service('pluginService', function (backend, $q, $timeout, recordGroupService, errorsFactory, objectUtils, pageUtils) {
+app.service('pluginService', function(backend, $q, $timeout, recordGroupService, errorsFactory, objectUtils, pageUtils) {
     var service = this;
 
     this.retrievePlugins = function(options, pageInformation) {
@@ -36,7 +36,7 @@ app.service('pluginService', function (backend, $q, $timeout, recordGroupService
                 search: filename
             }
         };
-        backend.post('/plugins/search', postData).then(function (data) {
+        backend.post('/plugins/search', postData).then(function(data) {
             plugins.resolve(data);
         });
         return plugins.promise;

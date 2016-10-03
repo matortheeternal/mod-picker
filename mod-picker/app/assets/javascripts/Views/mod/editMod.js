@@ -225,7 +225,7 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
             $scope.errors = response.data;
         });
         if ($scope.image.file) {
-            modService.submitImage($scope.mod.id, $scope.image.file).then(function () {
+            modService.submitImage($scope.mod.id, $scope.image.file).then(function() {
                 if (!angular.isDefined($scope.success)) {
                     $scope.success = true;
                 } else if ($scope.success) {

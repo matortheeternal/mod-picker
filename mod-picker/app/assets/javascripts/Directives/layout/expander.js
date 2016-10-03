@@ -1,4 +1,4 @@
-app.directive('expander', function () {
+app.directive('expander', function() {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/layout/expander.html',

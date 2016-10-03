@@ -1,4 +1,4 @@
-app.directive('manageConfigsModal', function () {
+app.directive('manageConfigsModal', function() {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/modList/manageConfigsModal.html',
@@ -7,7 +7,7 @@ app.directive('manageConfigsModal', function () {
     };
 });
 
-app.controller('manageConfigsModalController', function ($scope) {
+app.controller('manageConfigsModalController', function($scope) {
     // re-initialize configs store active booleans to false
     $scope.configs_store.forEach(function(config) {
         config.active = false;

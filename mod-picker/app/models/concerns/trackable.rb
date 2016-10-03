@@ -36,9 +36,9 @@ module Trackable
   def event_owner_attributes(event_type)
     config = Rails.application.config
     case event_type
-      when "added"
+      when :added
         return config.added_owner_attributes || [:added_by]
-      when "removed"
+      when :removed
         return config.removed_owner_attributes || [:removed_by]
       else
         return config.updated_owner_attributes || [:updated_by]
@@ -67,7 +67,7 @@ module Trackable
 
   def get_milestone(milestones, value)
     for index in 0 ... milestones.size
-      return index - 1 if value < milestones[index]
+      return index if value < milestones[index]
     end
   end
 

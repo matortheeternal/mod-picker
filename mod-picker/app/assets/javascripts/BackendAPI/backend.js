@@ -1,8 +1,8 @@
-app.service('backend', function ($q, $http, objectUtils) {
+app.service('backend', function($q, $http, objectUtils) {
     //Constant to be flexible in the future. Us as prefix for ALL requests
     var BASE_LOCATION = '';
 
-    this.retrieve = function (context, params) {
+    this.retrieve = function(context, params) {
         var promise = $q.defer();
         $http({
             url: BASE_LOCATION + context + '.json',
@@ -17,7 +17,7 @@ app.service('backend', function ($q, $http, objectUtils) {
         return promise.promise;
     };
 
-    this.post = function (context, data) {
+    this.post = function(context, data) {
         var promise = $q.defer();
         var reqData = objectUtils.shallowCopy(data);
         reqData.authenticity_token = window._token;
@@ -33,7 +33,7 @@ app.service('backend', function ($q, $http, objectUtils) {
         return promise.promise;
     };
 
-    this.postFile = function (context, key, file) {
+    this.postFile = function(context, key, file) {
         var promise = $q.defer();
 
         var data = new FormData();
@@ -53,7 +53,7 @@ app.service('backend', function ($q, $http, objectUtils) {
         return promise.promise;
     };
 
-    this.update = function (context, data) {
+    this.update = function(context, data) {
         var promise = $q.defer();
         var reqData = objectUtils.shallowCopy(data);
         reqData.authenticity_token = window._token;
@@ -69,7 +69,7 @@ app.service('backend', function ($q, $http, objectUtils) {
         return promise.promise;
     };
 
-    this.delete = function (context, params) {
+    this.delete = function(context, params) {
         var promise = $q.defer();
         var reqData = objectUtils.shallowCopy(params || {});
         reqData.authenticity_token = window._token;

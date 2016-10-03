@@ -1,4 +1,4 @@
-app.directive('linkGenericAccount', function () {
+app.directive('linkGenericAccount', function() {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/userSettings/linkGenericAccount.html',
@@ -11,7 +11,7 @@ app.directive('linkGenericAccount', function () {
     }
 });
 
-app.controller('linkGenericAccountController', function ($scope, $timeout, userSettingsService, sitesFactory, eventHandlerFactory, formUtils) {
+app.controller('linkGenericAccountController', function($scope, $timeout, userSettingsService, sitesFactory, eventHandlerFactory, formUtils) {
     // initialize variables
     $scope.showModal = false;
     $scope.userUrlKey = $scope.siteKey + '_user_url';
@@ -24,7 +24,7 @@ app.controller('linkGenericAccountController', function ($scope, $timeout, userS
         var keys = ['username', 'submissions_count', 'followers_count', 'date_joined', 'posts_count', 'verification_token'];
         keys.forEach(function(dataKey) {
             var fullKey = $scope.siteKey + '_' + dataKey;
-            if ($scope.bio[fullKey]) {
+            if ($scope.bio.hasOwnProperty(fullKey)) {
                 $scope[dataKey] = $scope.bio[fullKey];
             }
         });
@@ -44,6 +44,7 @@ app.controller('linkGenericAccountController', function ($scope, $timeout, userS
     };
 
     $scope.fixUrl = function(userUrl) {
+        if (!$scope.site.badUserUrlFormat) return userUrl;
         var match = userUrl.match($scope.site.badUserUrlFormat);
         if (match) {
             var idClause = match[2].split('-')[0];
@@ -79,7 +80,7 @@ app.controller('linkGenericAccountController', function ($scope, $timeout, userS
             if (!data.verified) {
                 var params = {
                     type: 'error',
-                    message: 'Failed to verify account. You can try again in 30 seconds.'
+                    text: 'Failed to verify account. You can try again in 30 seconds.'
                 };
                 $scope.$emit('modalCustomMessage', params);
             } else {
@@ -89,10 +90,10 @@ app.controller('linkGenericAccountController', function ($scope, $timeout, userS
                 $scope.initSiteVars();
                 $scope.toggleModal();
             }
-        }, function() {
+        }, function(response) {
             $scope.bio.verifying = false;
-            var params = { type: 'error', message: 'Error verifying account.' };
-            $scope.$emit('modalCustomMessage', params);
+            var params = { label: 'Error verifying account', response: response };
+            $scope.$emit('modalErrorMessage', params);
         });
         $timeout(function() {
             $scope.bio.waiting = false;

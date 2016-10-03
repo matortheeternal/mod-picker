@@ -24,9 +24,9 @@ Rails.application.routes.draw do
     match '/users/:id/rep', to: 'users#unendorse', via: [:delete]
 
     # user moderation actions
-    match 'users/:id/add_rep', to: 'users#add_rep', via: [:post]
-    match 'users/:id/subtract_rep', to: 'users#subtract_rep', via: [:post]
-    match 'users/:id/change_role', to: 'users#change_role', via: [:post]
+    match '/users/:id/add_rep', to: 'users#add_rep', via: [:post]
+    match '/users/:id/subtract_rep', to: 'users#subtract_rep', via: [:post]
+    match '/users/:id/change_role', to: 'users#change_role', via: [:post]
 
     # user settings
     match '/settings/:id', to: 'user_settings#show', via: [:get]

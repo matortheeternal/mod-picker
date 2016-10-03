@@ -1,4 +1,4 @@
-app.directive('slider', function () {
+app.directive('slider', function() {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/browse/slider.html',
@@ -10,7 +10,7 @@ app.directive('slider', function () {
     }
 });
 
-app.controller('sliderController', function ($scope, sliderFactory, $timeout) {
+app.controller('sliderController', function($scope, sliderFactory, $timeout) {
     $scope.slider = sliderFactory.buildSlider($scope.filter);
 
     $scope.loadData = function(filterData) {
@@ -58,8 +58,8 @@ app.controller('sliderController', function ($scope, sliderFactory, $timeout) {
         }
     }, true);
 
-    $scope.$parent.$on('rerenderSliders', function () {
-        $timeout(function () {
+    $scope.$parent.$on('rerenderSliders', function() {
+        $timeout(function() {
             $scope.$broadcast('rzSliderForceRender');
         });
     });

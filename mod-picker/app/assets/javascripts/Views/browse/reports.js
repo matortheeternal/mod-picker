@@ -6,7 +6,7 @@ app.run(function($futureState, indexFactory, filtersFactory) {
     $futureState.futureState(state);
 });
 
-app.controller('reportsIndexController', function ($scope, $rootScope, $stateParams, $state, reportService, columnsFactory, filtersFactory, indexService, indexFactory, sortFactory) {
+app.controller('reportsIndexController', function($scope, $rootScope, $stateParams, $state, reportService, columnsFactory, filtersFactory, indexService, indexFactory, sortFactory) {
     // get parent variables
     $scope.currentUser = $rootScope.currentUser;
     $scope.globalPermissions = angular.copy($rootScope.permissions);
