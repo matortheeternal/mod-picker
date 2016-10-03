@@ -60,7 +60,6 @@ class ModBuilder
   def save
     mod.assign_attributes(@params)
     mod.submitted_by = @current_user.id
-    validate_sources
     save!
     true
   rescue
@@ -102,7 +101,10 @@ class ModBuilder
   end
 
   def validate_sources
-    raise "mods must have at least one source" unless new_sources_present || old_sources_present
+    unless new_sources_present || old_sources_present
+      errors.add(:sources, "mods must have at least one source")
+      raise ActiveRecord::RecordInvalid
+    end
   end
 
   def hide_contributions
