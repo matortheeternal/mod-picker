@@ -44,6 +44,7 @@ app.controller('linkGenericAccountController', function($scope, $timeout, userSe
     };
 
     $scope.fixUrl = function(userUrl) {
+        if (!$scope.site.badUserUrlFormat) return userUrl;
         var match = userUrl.match($scope.site.badUserUrlFormat);
         if (match) {
             var idClause = match[2].split('-')[0];
