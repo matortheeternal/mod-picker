@@ -114,7 +114,7 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
         $scope.activeReview = {
             text_body: review.text_body.slice(0),
             moderator_message: review.moderator_message && review.moderator_message.slice(0),
-            ratings: review.review_ratings.slice(0),
+            ratings: angular.copy(review.review_ratings),
             overall_rating: review.overall_rating,
             original: review,
             editing: true
