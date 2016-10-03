@@ -19,7 +19,7 @@ class ApplicationController < ActionController::Base
   rescue_from ::StandardError, :with => :exception_render_method
 
   def exception_render_method(exception)
-    render json: { error: exception.message }, status: :unprocessable_entity
+    render json: { error: exception.message }, status: 500
   end
 
   def after_sign_in_path_for(resource)
