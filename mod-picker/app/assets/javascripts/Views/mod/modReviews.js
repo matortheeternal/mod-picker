@@ -278,7 +278,7 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
 
     // functions for keeping rating inputs numerical and in the range 0->100
     $scope.keyPress = function($event) {
-        var key = $event.keyCode;
+        var key = (typeof $event.which == "number") ? $event.which : $event.keyCode;
         if (!(key >= 48 && key <= 57)) {
             $event.preventDefault();
         }
