@@ -79,11 +79,13 @@ app.service('errorService', function() {
     this.flattenErrors = function(errorResponse) {
         var errors = [];
         var data = errorResponse.data;
-        for (var prop in data) {
-            if (data.hasOwnProperty(prop)) {
-                data[prop].forEach(function(error) {
-                    errors.push(prop + ": " + error);
-                });
+        if (typeof data === "object") {
+            for (var prop in data) {
+                if (data.hasOwnProperty(prop)) {
+                    data[prop].forEach(function(error) {
+                        errors.push(prop + ": " + error);
+                    });
+                }
             }
         }
         return errors;
