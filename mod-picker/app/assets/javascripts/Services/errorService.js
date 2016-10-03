@@ -83,7 +83,7 @@ app.service('errorService', function() {
             for (var prop in data) {
                 if (data.hasOwnProperty(prop)) {
                     data[prop].forEach(function(error) {
-                        errors.push(prop + ": " + error);
+                        errors.push(prop.capitalize() + ": " + error);
                     });
                 }
             }
