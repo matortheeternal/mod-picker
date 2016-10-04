@@ -74,8 +74,7 @@ app.controller('submitModController', function($scope, $rootScope, backend, modS
             // if we are only submitting custom soruces, we need to verify
             // we have all general info
             if (!$scope.sources.length) {
-                sourcesValid = sourcesValid && $scope.mod.name && $scope.mod.authors &&
-                    $scope.mod.released;
+                sourcesValid = sourcesValid && $scope.mod.name && $scope.mod.authors && $scope.mod.released;
             }
         }
         else {

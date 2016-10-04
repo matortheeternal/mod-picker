@@ -54,55 +54,39 @@ app.controller('modSourcesController', function($scope, sitesFactory, scrapeServ
 
         var gameId = window._current_game_id;
         var modId = match[2];
-        switch (source.label) {
-            case "Nexus Mods":
-                $scope.nexus = {};
-                $scope.nexus.scraping = true;
-                scrapeService.scrapeNexus(gameId, modId).then(function(data) {
-                    $scope.nexus = data;
-                    source.scraped = true;
-                    $scope.loadGeneralStats(data, true);
-                }, function(response) {
-                    delete $scope.nexus;
-                    var params = {
-                        label: "Error scraping Nexus Mods mod page",
-                        response: response
-                    };
-                    $scope.$emit('errorMessage', params);
+
+        var key = site.dataLabel;
+        var baseUrl = location.href.replace(location.hash, "");
+        $scope[key] = {};
+        $scope[key].scraping = true;
+
+        var successCallback = function(data) {
+            $scope[key] = data;
+            source.scraped = true;
+            $scope.loadGeneralStats(data, true);
+        };
+        var failCallback = function(response) {
+            delete $scope[key];
+            if (response.data.mod_id) {
+                $scope.$emit('customMessage', {
+                    type: 'error',
+                    text: "Error scraping "+source.label+" mod page, "+response.data.error,
+                    url: baseUrl + "#/mod/" + response.data.mod_id
                 });
-                break;
-            case "Lover's Lab":
-                $scope.lab = {};
-                $scope.lab.scraping = true;
-                scrapeService.scrapeLab(modId).then(function(data) {
-                    $scope.lab = data;
-                    source.scraped = true;
-                    $scope.loadGeneralStats(data);
-                }, function(response) {
-                    delete $scope.lab;
-                    var params = {
-                        label: "Error scraping Lover's Lab mod page",
-                        response: response
-                    };
-                    $scope.$emit('errorMessage', params);
+            } else {
+                $scope.$emit('errorMessage', {
+                    label: "Error scraping "+source.label+" mod page",
+                    response: response
                 });
-                break;
-            case "Steam Workshop":
-                $scope.workshop = {};
-                $scope.workshop.scraping = true;
-                scrapeService.scrapeWorkshop(modId).then(function(data) {
-                    $scope.workshop = data;
-                    source.scraped = true;
-                    $scope.loadGeneralStats(data);
-                }, function(response) {
-                    delete $scope.workshop;
-                    var params = {
-                        label: "Error scraping Steam Workshop mod page",
-                        response: response
-                    };
-                    $scope.$emit('errorMessage', params);
-                });
-                break;
+            }
+        };
+
+        var scrapeKey = "scrape" + key.capitalize();
+        var scrapeFunction = scrapeService[scrapeKey];
+        if (site.includeGame) {
+            scrapeFunction(gameId, modId).then(successCallback, failCallback);
+        } else {
+            scrapeFunction(modId).then(successCallback, failCallback);
         }
     };
 
