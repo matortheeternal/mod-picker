@@ -17,7 +17,7 @@ new_emails = load_emails("new.txt")
 
 # get different emails
 diff_emails = set(new_emails) - set(current_emails)
-output_str = ', \r\n'.join(diff_emails)
+output_str = ',\n'.join(diff_emails)
 
 # clear output if it exists
 output_filename = './output.txt'
@@ -31,7 +31,7 @@ output.close()
 
 # append to current
 current = open('./current.txt', 'a')
-current.write(',\r\n' + output_str)
+current.write(',\n' + output_str)
 current.close()
 
 # print to console
