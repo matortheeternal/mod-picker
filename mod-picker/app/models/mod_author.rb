@@ -16,6 +16,7 @@ class ModAuthor < ActiveRecord::Base
 
   # VALIDATIONS
   validates :mod_id, :user_id, presence: true
+  validates :user_id, uniqueness: { scope: :mod_id, :message => "Mod Author duplication is not allowed." }
 
   # CALLBACKS
   after_create :increment_counters
