@@ -10,7 +10,7 @@ class LoverInfo < ActiveRecord::Base
 
   def self.prepare_for_mod(id)
     info = LoverInfo.find_or_initialize_by(id: id)
-    raise "That mod is already present in our database! #{info.mod_id}" if info.mod_id
+    raise Exceptions::ModExistsError.new(info.mod_id) if info.mod_id
     info
   end
 
