@@ -5,13 +5,20 @@ app.directive('textArea', function($timeout) {
         scope: {
             data: '=',
             onChange: '=?',
+            spellCheck: '=?',
             field: '@',
             refresh: '=ngRefresh'
         },
         link: function(scope, element, attrs) {
+            // set defaults
+            angular.default(scope, "spellCheck", true);
+
             // get text area element and turn it into a markdown editor
             var textarea = element.children()[0];
-            var mde = new SimpleMDE({ element: textarea, spellChecker: false });
+            var mde = new SimpleMDE({
+                element: textarea,
+                spellChecker: scope.spellCheck
+            });
 
             // two-way data binding to and from mde
             scope.$watch('data', function(newVal){
