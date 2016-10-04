@@ -149,7 +149,7 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
         // build the rating object and append it to the ratings array
         var ratingObj = {
             section: section,
-            rating: 100
+            rating: null
         };
         $scope.activeReview.ratings.push(ratingObj);
     };
@@ -189,8 +189,13 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
     };
 
     $scope.validateReview = function() {
-        var sanitized_text = reviewSectionService.removePrompts($scope.activeReview.text_body);
-        $scope.activeReview.valid = sanitized_text.length > 512;
+        var review = $scope.activeReview;
+        var sanitized_text = reviewSectionService.removePrompts(review.text_body);
+        var textValid = sanitized_text.length > 512;
+        var ratingsValid = review.ratings.reduce(function(valid, section) {
+            return valid && section.rating;
+        }, true);
+        $scope.activeReview.valid = textValid && ratingsValid;
     };
 
     // discard a new review object
@@ -284,8 +289,10 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
         }
     };
     $scope.keyUp = function(review_rating) {
-        var output = parseInt(review_rating.rating) || 0;
-        review_rating.rating = output > 100 ? 100 : (output < 0 ? 0 : output);
+        if (review_rating.rating) {
+            var output = parseInt(review_rating.rating) || 0;
+            review_rating.rating = output > 100 ? 100 : (output < 0 ? 0 : output);
+        }
         $scope.updateOverallRating();
     };
 });
