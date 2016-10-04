@@ -4,7 +4,11 @@
         </loader>
         <h2>{{submittingStatus}}</h2>
         <div ng-show="success">
-            <a ng-href="{{successLink}}">Click here</a> to {{successLabel}}
+            <div ng-repeat="line in linksList">
+                <a ng-href="{{line.link}}">Click here</a> to {{line.linkLabel}}
+                <p>{{$last ? '' : 'OR'}}</p>
+            </div>
+            
         </div>
         <div ng-show="errors">
             <div ng-repeat="error in errors">

@@ -60,7 +60,7 @@ class ModsController < ApplicationController
     builder = ModBuilder.new(current_user, mod_params)
     if builder.save
       builder.mod.update_metrics
-      render json: {status: :ok}
+      render json: {status: :ok, id: builder.mod.id}
     else
       render json: builder.errors, status: :unprocessable_entity
     end

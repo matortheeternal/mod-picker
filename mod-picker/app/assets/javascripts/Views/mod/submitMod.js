@@ -103,9 +103,19 @@ app.controller('submitModController', function($scope, $rootScope, backend, modS
         };
         $scope.startSubmission("Submitting Mod...");
 
-        modService.submitMod($scope.mod, sources, $scope.customSources).then(function() {
-            $scope.submissionSuccess("Mod submitted successfully!", "#/mods", "return to the mods index.");
+        modService.submitMod($scope.mod, sources, $scope.customSources).then(function(data) {
+            $scope.submissionSuccess("Mod submitted successfully!", [
+                { 
+                    link: "#/mod/" + data.id, 
+                    linkLabel: "view the new mod."
+                },
+                {
+                    link: "#/mods", 
+                    linkLabel: "return to the mods index." 
+                }
+            ]);
         }, function(response) {
+            console.log(response);
             $scope.submissionError("There were errors submitting your mod.", response);
         });
     };
