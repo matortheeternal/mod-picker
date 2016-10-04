@@ -56,7 +56,7 @@ app.controller('createArticleController', function($scope, $rootScope, $state, $
                     },
                     {
                         link: "#/articles",
-                        linkLabel: "return to the articles index."
+                        linkLabel: "return to the articles index page."
                     }
                 ]);
             }
@@ -74,7 +74,7 @@ app.controller('createArticleController', function($scope, $rootScope, $state, $
                 },
                 {
                     link: "#/articles",
-                    linkLabel: "return to the articles index."
+                    linkLabel: "return to the articles index page."
                 }
             ]);
         }, function() {
@@ -85,7 +85,7 @@ app.controller('createArticleController', function($scope, $rootScope, $state, $
                 },
                 {
                     link: "#/articles",
-                    linkLabel: "return to the articles index."
+                    linkLabel: "return to the articles index page."
                 }
             ]);
         });

@@ -111,7 +111,7 @@ app.controller('submitModController', function($scope, $rootScope, backend, modS
                 },
                 {
                     link: "#/mods", 
-                    linkLabel: "return to the mods index." 
+                    linkLabel: "return to the mods index page." 
                 }
             ]);
         }, function(response) {
