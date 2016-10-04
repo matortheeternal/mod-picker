@@ -115,7 +115,6 @@ app.controller('submitModController', function($scope, $rootScope, backend, modS
                 }
             ]);
         }, function(response) {
-            console.log(response);
             $scope.submissionError("There were errors submitting your mod.", response);
         });
     };
