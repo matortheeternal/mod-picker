@@ -11,10 +11,6 @@ class NexusInfosController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_nexus_info
       authorize! :create, Mod
-      raise "cannot scrape Nexus Info with no game id" unless params.has_key?(:game_id)
-      @nexus_info = NexusInfo.find_or_initialize_by({
-          id: params[:id],
-          game_id: params[:game_id]
-      })
+      @nexus_info = NexusInfo.prepare_for_mod(params[:id], params[:game_id])
     end
 end

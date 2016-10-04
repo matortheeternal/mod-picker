@@ -8,6 +8,12 @@ class LoverInfo < ActiveRecord::Base
   # VALIDATIONS
   validates :game_id, :mod_name, :uploaded_by, :released, presence: true
 
+  def self.prepare_for_mod(id)
+    info = LoverInfo.find_or_initialize_by(id: id)
+    raise Exceptions::ModExistsError.new(info.mod_id) if info.mod_id
+    info
+  end
+
   def scrape
     # retrieve using the Lover Helper
     mod_data = LoverHelper.retrieve_mod(id)

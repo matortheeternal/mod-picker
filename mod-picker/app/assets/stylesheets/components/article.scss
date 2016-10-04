@@ -33,11 +33,10 @@ article {
       }
 
       a h3 {
-        color: $action_color;
         @include transition(all 0.2s ease-in-out);
 
         &:hover {
-          color: $text_color;
+          color: $action_color;
         }
       }
 
