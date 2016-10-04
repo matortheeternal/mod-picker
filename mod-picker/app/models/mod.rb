@@ -147,6 +147,7 @@ class Mod < ActiveRecord::Base
   validates :name, :aliases, length: {maximum: 128}
 
   # callbacks
+  before_save :set_dates
   after_create :increment_counters
   before_destroy :decrement_counters
 
@@ -417,6 +418,10 @@ class Mod < ActiveRecord::Base
   end
 
   private
+    def set_dates
+      self.submitted = DateTime.now if submitted.nil?
+    end
+
     def decrement_counters
       submitter.update_counter(:submitted_mods_count, -1) if submitted_by.present?
     end
