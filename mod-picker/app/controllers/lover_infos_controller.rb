@@ -11,6 +11,6 @@ class LoverInfosController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_lover_info
       authorize! :create, Mod
-      @lover_info = LoverInfo.find_or_initialize_by(id: params[:id])
+      @lover_info = LoverInfo.prepare_for_mod(params[:id])
     end
 end

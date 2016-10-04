@@ -8,6 +8,12 @@ class WorkshopInfo < ActiveRecord::Base
   # VALIDATIONS
   validates :game_id, :mod_name, :uploaded_by, :released, presence: true
 
+  def self.prepare_for_mod(id)
+    info = WorkshopInfo.find_or_initialize_by(id: id)
+    raise "That mod is already present in our database! #{info.mod_id}" if info.mod_id
+    info
+  end
+
   def scrape
     # scrape using the Workshop Helper
     mod_data = WorkshopHelper.scrape_mod(id)
