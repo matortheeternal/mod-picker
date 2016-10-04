@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161001200408) do
+ActiveRecord::Schema.define(version: 20161004065249) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -626,6 +626,7 @@ ActiveRecord::Schema.define(version: 20161001200408) do
     t.boolean  "hidden",                                default: false, null: false
     t.datetime "released",                                              null: false
     t.datetime "updated"
+    t.datetime "submitted",                                             null: false
   end
 
   add_index "mods", ["edited_by"], name: "fk_rails_9ec1af790b", using: :btree
