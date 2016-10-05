@@ -371,6 +371,9 @@ class Mod < ActiveRecord::Base
     {
         :except => [:disallow_contributors, :hidden],
         :include => {
+            :submitter => {
+                :only => [:username]
+            },
             :nexus_infos => {:except => [:mod_id]},
             :workshop_infos => {:except => [:mod_id]},
             :lover_infos => {:except => [:mod_id]},
