@@ -159,6 +159,16 @@ table.browse-table {
     }
   }
 
+  .small-cell {
+    min-width: 125px !important;
+    width: 125px !important;
+  }
+
+  .medium-cell {
+    min-width: 160px !important;
+    width: 160px !important;
+  }
+
   .text-cell {
     min-width: 125px;
     white-space: normal;
@@ -213,6 +223,12 @@ table.browse-table {
     &:nth-child(even) {
       background-color: $primary_background;
     }
+  }
+}
+
+table.reports-table {
+  th {
+    cursor: default;
   }
 }
 
