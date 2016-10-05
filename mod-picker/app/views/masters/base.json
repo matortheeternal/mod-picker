@@ -1,0 +1,11 @@
+{
+  "only": [],
+  "include": {
+    "plugin": {
+      "format": "master"
+    },
+    "master_plugin": {
+      "format": "master"
+    }
+  }
+}
