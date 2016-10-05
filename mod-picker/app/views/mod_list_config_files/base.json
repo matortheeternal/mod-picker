@@ -1,0 +1,8 @@
+{
+  "only": ["id", "text_body"],
+  "include": {
+    "config_file": {
+      "format": "mod"
+    }
+  }
+}
