@@ -1,0 +1,6 @@
+{
+  "except": ["load_order_note_id", "edited_by"],
+  "include": {
+    "editor": {}
+  }
+}
