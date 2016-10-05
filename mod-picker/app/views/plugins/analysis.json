@@ -1,0 +1,12 @@
+{
+  "only": ["id", "mod_id", "filename", "errors_count"],
+  "include": {
+    "masters": {
+      "format": "plugin"
+    },
+    "dummy_masters": {
+      "except": ["plugin_id"]
+    }
+  },
+  "methods": "formatted_overrides"
+}
