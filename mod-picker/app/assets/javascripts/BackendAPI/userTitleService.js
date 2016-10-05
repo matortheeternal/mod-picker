@@ -46,7 +46,7 @@ app.service('userTitleService', function(backend, $q) {
     };
 
     this.associateUserTitle = function(user) {
-        if (user && !user.title) {
+        if (user && !user.title && user.reputation) {
             // get their default title
             service.getUserTitle(user.reputation.overall).then(function(title) {
                 user.title = title;
