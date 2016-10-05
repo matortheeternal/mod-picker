@@ -9,7 +9,7 @@ app.directive('helpPageComments', function() {
     };
 });
 
-app.controller('helpPageCommentsController', function($scope, contributionService, userService) {
+app.controller('helpPageCommentsController', function($scope, $rootScope, contributionService, userService) {
     $scope.errors = {};
     $scope.pages = {
         comments: {}
@@ -20,6 +20,7 @@ app.controller('helpPageCommentsController', function($scope, contributionServic
 
     // retrieve current user
     userService.retrieveCurrentUser().then(function(currentUser) {
+        $rootScope.currentUser = currentUser;
         $scope.currentUser = currentUser;
         $scope.permissions = currentUser.permissions;
     }, function(response) {
