@@ -56,8 +56,18 @@ app.service('userTitleService', function(backend, $q) {
 
     this.associateTitles = function(data) {
         data.forEach(function(item) {
-            // if user is defined and they don't have a custom title
             service.associateUserTitle(item.submitter);
+        });
+    };
+
+    this.associateCommentTitles = function(comments) {
+        comments.forEach(function(comment) {
+            service.associateUserTitle(comment.submitter);
+            if (comment.children && comment.children.length) {
+                comment.children.forEach(function(child) {
+                    service.associateUserTitle(child.submitter);
+                });
+            }
         });
     };
 
