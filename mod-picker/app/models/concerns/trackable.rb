@@ -15,7 +15,11 @@ module Trackable
       raise "Subscription association for #{subscription[:users]} not found"
     end
     users = public_send(subscription[:users]) || []
-    users = [users] if !users.respond_to?(:to_a)
+    if users.respond_to?(:to_a)
+      users
+    else
+      [users]
+    end
   end
 
   def subscriber_ids_for(event)
