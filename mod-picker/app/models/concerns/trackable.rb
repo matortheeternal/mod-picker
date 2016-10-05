@@ -10,12 +10,19 @@ module Trackable
     has_many :events, :as => 'content', :dependent => :destroy
   end
 
+  def get_subscription_users(subscription)
+    unless respond_to?(subscription[:users])
+      raise "Subscription association for #{subscription[:users]} not found"
+    end
+    users = public_send(subscription[:users]) || []
+    users = [users] if !users.respond_to?(:to_a)
+  end
+
   def subscriber_ids_for(event)
     user_ids = []
     subscriptions.each do |subscription|
       next unless subscription[:actions].include?(event.event_type.to_sym)
-      users = public_send(subscription[:users]) || []
-      users = [users] if !users.respond_to?(:to_a)
+      users = get_subscription_users(subscription)
       users.each do |user|
         if user.subscribed_to?(event) && Ability.new(user).can?(:read, self)
           user_ids.push(user.id)
