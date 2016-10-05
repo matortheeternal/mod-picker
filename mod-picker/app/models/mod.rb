@@ -252,6 +252,7 @@ class Mod < ActiveRecord::Base
     include_hash[:workshop_infos] = {:except => [:mod_id]} if sources[:workshop]
 
     collection.as_json({
+        :except => [:game_id, :submitted_by, :edited_by, :disallow_contributors, :disable_reviews, :lock_tags],
         :include => include_hash
     })
   end
