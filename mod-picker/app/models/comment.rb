@@ -83,7 +83,10 @@ class Comment < ActiveRecord::Base
         :except => :submitted_by,
         :include => {
             :submitter => {
-                :only => [:id, :username, :role],
+                :only => [:id, :username, :role, :title],
+                :include => {
+                    :reputation => {:only => :overall}
+                },
                 :methods => :avatar
             }
         },
@@ -96,7 +99,10 @@ class Comment < ActiveRecord::Base
         :except => :submitted_by,
         :include => {
             :submitter => {
-                :only => [:id, :username, :role],
+                :only => [:id, :username, :role, :title],
+                :include => {
+                    :reputation => {:only => :overall}
+                },
                 :methods => :avatar
             }
         }
@@ -109,7 +115,10 @@ class Comment < ActiveRecord::Base
           :except => [:parent_id, :submitted_by],
           :include => {
               :submitter => {
-                  :only => [:id, :username, :role],
+                  :only => [:id, :username, :role, :title],
+                  :include => {
+                      :reputation => {:only => :overall}
+                  },
                   :methods => :avatar
               },
               :children => {
