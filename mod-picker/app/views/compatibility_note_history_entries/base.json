@@ -1,0 +1,6 @@
+{
+  "except": ["compatibility_note_id", "edited_by"],
+  "include": {
+    "editor": {}
+  }
+}
