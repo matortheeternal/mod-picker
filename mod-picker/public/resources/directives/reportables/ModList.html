@@ -1,0 +1,25 @@
+<div class="content-title">
+    <span class="capitalize">
+        <span ng-bind-html="reportableUrl"></span>
+    </span>
+</div>
+
+<div class="content-container">
+
+    <div class="content-block">
+        <div class="contribution-container box-shadow">
+            <div class="content-title">
+                <span>
+                    <a href="#/mod-list/{{report.reportable.id}}">{{report.reportable.name}}</a>
+                </span>
+            </div>
+            <user-column user="report.reportable.submitter" class="user-column"></user-column>
+            <div class="content-column">
+                <div class="submitted-line">Submitted {{report.reportable.submitted | date : 'longDate'}} - {{report.reportable.submitted | date : 'shortTime'}}</div>
+                <div class="text-container" ng-class="{ 'half-opacity' : target.hidden }">
+                    <read-more text="report.reportable.description" words="75"></read-more>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

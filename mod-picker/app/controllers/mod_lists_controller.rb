@@ -167,7 +167,7 @@ class ModListsController < ApplicationController
         load_order: ModListPlugin.load_order_json(load_order),
         install_order: ModListMod.install_order_json(install_order),
         plugins: Plugin.analysis_json(plugins),
-        conflicting_assets: @mod_list.conflicting_assets
+        conflicting_assets: [] #@mod_list.conflicting_assets
     }
   end
 
@@ -176,7 +176,7 @@ class ModListsController < ApplicationController
     authorize! :read, @mod_list
 
     # prepare primary data
-    comments = @mod_list.comments.accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10)
+    comments = @mod_list.comments.includes(:submitter => :reputation, :children => [:submitter => :reputation]).accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10)
     count = @mod_list.comments.accessible_by(current_ability).count
 
     # render response
@@ -243,6 +243,7 @@ class ModListsController < ApplicationController
     authorize! :update, @mod_list
     authorize! :hide, @mod_list if params[:mod_list].has_key?(:hidden)
 
+    @mod_list.updated_by = current_user.id
     if @mod_list.update(mod_list_params) && @mod_list.update_lazy_counters
       render json: {status: :ok}
     else
@@ -262,7 +263,6 @@ class ModListsController < ApplicationController
     @mod_list.mod_list_tags.each_with_index do |mod_list_tag, index|
       if params[:tags].exclude?(existing_tags_text[index])
         authorize! :destroy, mod_list_tag
-        mod_list_tag.removed_by = current_user_id
         mod_list_tag.destroy
       end
     end

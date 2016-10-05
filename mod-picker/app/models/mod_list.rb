@@ -4,6 +4,7 @@ class ModList < ActiveRecord::Base
   # ATTRIBUTES
   enum status: [ :under_construction, :testing, :complete ]
   enum visibility: [ :visibility_private, :visibility_unlisted, :visibility_public ]
+  attr_accessor :updated_by
   self.per_page = 100
 
   # EVENT TRACKING
@@ -104,7 +105,7 @@ class ModList < ActiveRecord::Base
 
   # CALLBACKS
   after_create :increment_counters
-  before_update :hide_comments
+  before_update :hide_comments, :unset_active_if_hidden
   before_save :set_dates
   before_destroy :decrement_counters, :unset_active
 
@@ -390,6 +391,20 @@ class ModList < ActiveRecord::Base
     { :only => [:name] }
   end
 
+  def reportable_json_options
+      { :only => [:name, :id, :description, :status, :submitted, :visibility],
+          :include => {
+              :submitter => {
+                  :only => [:id, :username, :role, :title],
+                  :include => {
+                      :reputation => {:only => [:overall]}
+                  },
+                  :methods => :avatar
+              }
+          }
+      }
+  end
+
   def self.sortable_columns
     {
         :except => [:game_id, :submitted_by, :description],
@@ -421,8 +436,12 @@ class ModList < ActiveRecord::Base
       submitter.update_counter(:mod_lists_count, -1)
     end
 
+    def unset_active_if_hidden
+      unset_active if attribute_changed?(:hidden) && hidden
+    end
+
     def unset_active
-      if submitter.active_mod_list_id == self.id
+      if submitter.active_mod_list_id == id
         submitter.active_mod_list_id = nil
         submitter.save
       end

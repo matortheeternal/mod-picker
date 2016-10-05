@@ -81,7 +81,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 3;
+  z-index: 200;
   background-color: $primary_background;
 
   .modal {
@@ -90,5 +90,9 @@
     padding: 40px;
     margin: 150px auto;
     text-align: center;
+
+    .submission-actions {
+      margin-top: 16px;
+    }
   }
 }

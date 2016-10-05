@@ -3,7 +3,7 @@
         <span class="note-item">
             ({{showUnresolvedPluginCompatibility ? 'Unresolved' : 'All'}})
         </span>
-        <span class="right-item action-box" ng-if="notes.unresolved_plugin_compatibility.length" ng-click="resolveAllCompatibility()">
+        <span class="right-item action-box" ng-if="notes.unresolved_plugin_compatibility.length && editing" ng-click="resolveAllCompatibility()">
             <i class="fa fa-check"></i> Resolve All
         </span>
         <span class="right-item toggle-item" ng-click="showUnresolvedPluginCompatibility = !showUnresolvedPluginCompatibility">

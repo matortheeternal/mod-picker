@@ -3,7 +3,7 @@ class ModsController < ApplicationController
 
   # POST /mods
   def index
-    @mods = Mod.includes(:author_users).accessible_by(current_ability).filter(filtering_params).sort(sorting_params).paginate(:page => params[:page])
+    @mods = Mod.includes(:author_users).references(:author_users).accessible_by(current_ability).filter(filtering_params).sort(sorting_params).paginate(:page => params[:page])
     count =  Mod.accessible_by(current_ability).filter(filtering_params).count
 
     render :json => {
@@ -113,7 +113,6 @@ class ModsController < ApplicationController
     @mod.mod_tags.each_with_index do |mod_tag, index|
       if params[:tags].exclude?(existing_tags_text[index])
         authorize! :destroy, mod_tag
-        mod_tag.removed_by = current_user_id
         mod_tag.destroy
       end
     end
@@ -176,7 +175,7 @@ class ModsController < ApplicationController
     if @mod_star.nil?
       render json: {status: :ok}
     else
-      if @mod_star.delete
+      if @mod_star.destroy
         render json: {status: :ok}
       else
         render json: @mod_star.errors, status: :unprocessable_entity
@@ -397,12 +396,15 @@ class ModsController < ApplicationController
           :custom_sources_attributes => [:id, :label, :url, :_destroy],
          :config_files_attributes => [:id, :filename, :install_path, :text_body, :_destroy],
          :tag_names => [],
-         :asset_paths => [],
-         :plugin_dumps => [:filename, :author, :description, :crc_hash, :record_count, :override_count, :file_size,
-           :master_plugins => [:filename, :crc_hash],
-           :plugin_record_groups_attributes => [:sig, :record_count, :override_count],
-           :plugin_errors_attributes => [:signature, :form_id, :group, :path, :name, :data],
-           :overrides_attributes => [:fid, :sig]])
+         :mod_options_attributes => [:name, :size, :default, :is_fomod_option,
+            :asset_paths => [],
+            :plugin_dumps => [:filename, :author, :description, :crc_hash, :record_count, :override_count, :file_size,
+                :master_plugins => [:filename, :crc_hash],
+                :plugin_record_groups_attributes => [:sig, :record_count, :override_count],
+                :plugin_errors_attributes => [:signature, :form_id, :group, :path, :name, :data],
+                :overrides_attributes => [:fid, :sig]
+            ]
+         ])
       p[:id] = params[:id]
       p
     end

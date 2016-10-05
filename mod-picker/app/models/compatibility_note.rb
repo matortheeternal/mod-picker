@@ -2,7 +2,7 @@ class CompatibilityNote < ActiveRecord::Base
   include Filterable, Sortable, RecordEnhancements, Correctable, Helpfulable, Reportable, ScopeHelpers, Trackable
 
   # ATTRIBUTES
-  enum status: [ :incompatible, :"partially incompatible", :"compatibility mod", :"compatibility option", :"make custom patch" ]
+  enum status: [ :incompatible, :partially_incompatible, :compatibility_mod, :compatibility_option, :make_custom_patch ]
   self.per_page = 25
 
   # EVENT TRACKING
@@ -135,8 +135,42 @@ class CompatibilityNote < ActiveRecord::Base
   def notification_json_options(event_type)
     {
         :only => [:submitted_by, (:moderator_message if event_type == :message)].compact,
-        :methods => :mods
+        :include => {
+            :first_mod => {
+                :only => [:id, :name]
+            },
+            :second_mod => {
+                :only => [:id, :name]
+            }
+        }
     }
+  end
+
+  def reportable_json_options
+    {
+          :except => [:submitted_by],
+          :include => {
+              :submitter => {
+                  :only => [:id, :username, :role, :title],
+                  :include => {
+                      :reputation => {:only => [:overall]}
+                  },
+                  :methods => :avatar
+              },
+              :editor => {
+                  :only => [:id, :username, :role]
+              },
+              :editors => {
+                  :only => [:id, :username, :role]
+              },
+              :first_mod => {
+                  :only => [:id, :name]
+              },
+              :second_mod => {
+                  :only => [:id, :name]
+              }
+          }
+      }
   end
 
   def self.sortable_columns
@@ -166,17 +200,18 @@ class CompatibilityNote < ActiveRecord::Base
 
     def set_adult
       self.has_adult_content = first_mod.has_adult_content || second_mod.has_adult_content
+      true
     end
 
     def increment_counters
-      self.first_mod.update_counter(:compatibility_notes_count, 1)
-      self.second_mod.update_counter(:compatibility_notes_count, 1)
-      self.submitter.update_counter(:compatibility_notes_count, 1)
+      first_mod.update_counter(:compatibility_notes_count, 1)
+      second_mod.update_counter(:compatibility_notes_count, 1)
+      submitter.update_counter(:compatibility_notes_count, 1)
     end
 
     def decrement_counters
-      self.first_mod.update_counter(:compatibility_notes_count, -1)
-      self.second_mod.update_counter(:compatibility_notes_count, -1)
-      self.submitter.update_counter(:compatibility_notes_count, -1)
+      first_mod.update_counter(:compatibility_notes_count, -1)
+      second_mod.update_counter(:compatibility_notes_count, -1)
+      submitter.update_counter(:compatibility_notes_count, -1)
     end
 end

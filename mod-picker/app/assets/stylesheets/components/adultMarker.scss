@@ -1,20 +1,9 @@
 adult-marker {
-  position: relative;
-
-  .text {
+  span {
+    font-size: 1.2em;
+    font-weight: 500;
+    text-shadow: 0 0 6px red, 0 -1px 16px $error_secondary, 0 0 24px $error_secondary;
     display: inline-block;
-    margin: 6px 12px;
-    vertical-align: top;
-    position: relative;
-    z-index: 1;
-  }
-
-  .shadow {
-    box-shadow: 0 0 6px 8px $error_secondary;
-    position: absolute;
-    left: 18px;
-    top: 4px;
-    width: 34px;
-    z-index: 0;
+    margin-left: 10px;
   }
 }

@@ -24,9 +24,9 @@ Rails.application.routes.draw do
     match '/users/:id/rep', to: 'users#unendorse', via: [:delete]
 
     # user moderation actions
-    match 'users/:id/add_rep', to: 'users#add_rep', via: [:post]
-    match 'users/:id/subtract_rep', to: 'users#subtract_rep', via: [:post]
-    match 'users/:id/change_role', to: 'users#change_role', via: [:post]
+    match '/users/:id/add_rep', to: 'users#add_rep', via: [:post]
+    match '/users/:id/subtract_rep', to: 'users#subtract_rep', via: [:post]
+    match '/users/:id/change_role', to: 'users#change_role', via: [:post]
 
     # user settings
     match '/settings/:id', to: 'user_settings#show', via: [:get]
@@ -157,7 +157,7 @@ Rails.application.routes.draw do
     match '/help/:id/destroy', to: 'help_pages#destroy', via: [:get]
     match '/help/search', to:  'help_pages#search', via: [:get]
     resources :help_pages, path: 'help', except: [:destroy]
-
+    match '/help/*path', to: 'help_pages#record_not_found', via: :all
 
     # static data
     resources :categories, only: [:index]
@@ -167,12 +167,6 @@ Rails.application.routes.draw do
     resources :record_groups, only: [:index]
     resources :review_sections, only: [:index]
     resources :user_titles, only: [:index]
-
-    # legal pages
-    match '/legal', to: 'legal_pages#index', via: [:get]
-    match '/legal/tos', to: 'legal_pages#tos', via: [:get]
-    match '/legal/privacy', to: 'legal_pages#privacy', via: [:get]
-    match '/legal/copyright', to: 'legal_pages#copyright', via: [:get]
 
     # home page
     match '/skyrim', to: 'home#skyrim', via: [:get]
@@ -184,10 +178,20 @@ Rails.application.routes.draw do
     match '/articles/:id/image', to: 'articles#image', via: [:post]
     match '/articles/index', to: 'articles#index', via: [:get, :post]
     resources :articles, only: [:show, :new, :create, :edit, :update, :destroy]
+
+    # reports
+    match '/reports/index', to: 'reports#index', via: [:get, :post]
+    match '/reports', to: 'reports#create', via: [:post]
   end
 
   # welcome page
   resources :welcome, only: [:index]
+
+  # legal pages
+  match '/legal', to: 'legal_pages#index', via: [:get]
+  match '/legal/tos', to: 'legal_pages#tos', via: [:get]
+  match '/legal/privacy', to: 'legal_pages#privacy', via: [:get]
+  match '/legal/copyright', to: 'legal_pages#copyright', via: [:get]
 
   # contact us and subscribe
   match '/contacts', to: 'contacts#new', via: [:get]

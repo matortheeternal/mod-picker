@@ -8,12 +8,13 @@ class ModOption < ActiveRecord::Base
   belongs_to :mod, :inverse_of => 'mod_options'
 
   has_many :plugins, :inverse_of => 'mod_option', :dependent => :destroy
-  has_many :mod_asset_files, :inverse_of => 'mod_option', :dependent => :destroy
+  has_many :mod_asset_files, :inverse_of => 'mod_option'
 
   has_many :mod_list_mod_options, :inverse_of => 'mod_option', :dependent => :destroy
 
   # CALLBACKS
   after_create :create_asset_files, :create_plugins, :update_counters
+  before_destroy :destroy_mod_asset_files
 
   # INSTANCE METHODS
   def create_asset_files
@@ -41,6 +42,11 @@ class ModOption < ActiveRecord::Base
         end
       end
     end
+  end
+
+  def destroy_mod_asset_files
+    query = "DELETE FROM mod_asset_files WHERE mod_option_id = #{id}"
+    ActiveRecord::Base.connection.execute(query)
   end
 
   def create_plugins

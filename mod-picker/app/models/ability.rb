@@ -40,6 +40,10 @@ class Ability
       # can delete tags
       can :destroy, ModTag
       can :destroy, ModListTag
+
+      # can read reports
+      can :read, Report
+      can :read, BaseReport
     else
       # users that are not admins or moderators
       # cannot read private mod lists unless they submitted them
@@ -64,10 +68,13 @@ class Ability
       cannot :read, InstallOrderNote, :hidden => true
       cannot :read, LoadOrderNote, :hidden => true
       cannot :read, Review, :hidden => true
-      cannot :read, ModTag, :hidden => true
-      cannot :read, ModListTag, :hidden => true
+      cannot :read, Tag, :hidden => true
       cannot :read, Mod, :hidden => true
       cannot :read, ModList, :hidden => true
+
+      # cannot read reports
+      cannot :read, Report
+      cannot :read, BaseReport
     end
 
     # signed in users who aren't restricted or banned
@@ -81,6 +88,10 @@ class Ability
       can :create, Review
       can :create, ModTag
       can :create, ModListTag
+
+      #can sumbit reports
+      can :create, Report
+      can :create, BaseReport
 
       # can submit mods
       can :create, Mod
@@ -117,7 +128,7 @@ class Ability
       can :update_options, Mod, { :disallow_contributors => false, :mod_authors => { :user_id => user.id, :role => 1 } }
 
       # abilities tied to reputation
-      if user.reputation.overall >= 20
+      if user.reputation.overall >= 5
         can :create, Tag # can create new tags
       end
       if user.reputation.overall >= 40
@@ -137,7 +148,7 @@ class Ability
       end
     end
 
-    # Users that are not restricted
+    # Users that are not banned
     if user_signed_in && !user.banned?
       # can comment on things and update their comments
       can :create, Comment

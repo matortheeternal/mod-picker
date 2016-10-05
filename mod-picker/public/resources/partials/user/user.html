@@ -14,6 +14,13 @@
                     </div>
                 </section>
 
+                <h3 class="section-title">Actions</h3>
+                <section ng-if="!isCurrentUser && permissions.canReport">
+                    <div class="action-box" ng-click="toggleReportModal(true)">
+                        <i class="fa fa-flag-o" aria-hidden="true"></i> Report
+                    </div>
+                </section>
+
                 <h3 class="section-title" ng-if="permissions.canModerate"></h3>
                 <section ng-if="permissions.canModerate">
                     <div class="action-item">
@@ -44,12 +51,6 @@
                             <i class="fa {{user.endorsed ? 'fa-heart' : 'fa-heart-o'}}" aria-hidden="true"></i>
                             {{user.endorsed ? 'Unendorse' : 'Endorse' }}
                         </div>
-
-                        <!-- TODO: Add a helpful title here saying why the current user cannot endorse this user -->
-                        <div class="action-box no-action" ng-if="!permissions.canEndorse">
-                            <!-- TODO: have this link to a page with all of the current user's endorsements -->
-                            Cannot Endorse
-                        </div>
                     </div>
                 </section>
 
@@ -71,7 +72,7 @@
                         <div class="stat-item">{{user.corrections_count | number}} Corrections</div>
                     </a>
                     <a ng-href="#/comments?scol=submitted&s={{user.username}}">
-                        <div class="stat-item">{{user.comments_count | number}} Comments</div>
+                        <div class="stat-item">{{user.submitted_comments_count | number}} Comments</div>
                     </a>
                 </section>
 
@@ -81,30 +82,38 @@
                     <div class="stat-item">Last Seen: {{user.last_sign_in_at | date}}</div>
                 </section>
 
-                <h3 class="section-title" ng-if="user['email_public?']">Contact</h3>
-                <section ng-if="user['email_public?']">
-                    <div class="stat-item">Email: <a href="mailto:{{user.email}}">{{user.email}}</a></div>
+                <h3 class="section-title" ng-if="contactInfoPresent">Contact</h3>
+                <section ng-if="contactInfoPresent">
+                    <div ng-if="user.email" class="stat-item">
+                        Email: <a href="mailto:{{user.email}}">{{user.email}}</a>
+                    </div>
                     <div ng-if="user.bio.nexus_username">
-                        <a ng-href="http://www.nexusmods.com/games/users/{{user.bio.nexus_user_id}}">
+                        <a ng-href="https://forums.nexusmods.com/index.php?/user/{{user.bio.nexus_user_path}}">
                             <div class="action-box source-box">
                                 <img src="/images/nexus_logo.png" class="source-image"/>
-                                Nexus
+                                <span class="source-label">
+                                    Nexus
+                                </span>
                             </div>
                         </a>
                     </div>
                     <div ng-if="user.bio.steam_username">
-                        <a ng-href="http://steamcommunity.com/id/{{user.bio.steam_username}}">
+                        <a ng-href="https://steamcommunity.com/id/{{user.bio.steam_username}}">
                             <div class="action-box source-box">
                                 <img src="/images/workshop_logo.png" class="source-image" />
-                                Steam
+                                <span class="source-label">
+                                    Steam
+                                </span>
                             </div>
                         </a>
                     </div>
                     <div ng-if="user.bio.lover_username">
-                        <a ng-href="http://www.loverslab.com/user/148698-milzschnitte/{{user.bio.lover_user_path}}">
+                        <a ng-href="https://www.loverslab.com/user/148698-milzschnitte/{{user.bio.lover_user_path}}">
                             <div class="action-box source-box">
                                 <img src="/images/lab_logo.png" class="source-image" />
-                                Lover's Lab
+                                <span class="source-label">
+                                    Lover's Lab
+                                </span>
                             </div>
                         </a>
                     </div>
@@ -119,3 +128,5 @@
         </div>
     </loader>
 </two-columns>
+
+<report-modal ng-if="showReportModal"></report-modal>

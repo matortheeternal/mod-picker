@@ -10,7 +10,8 @@ class ModRequirement < ActiveRecord::Base
   belongs_to :required_mod, :class_name => 'Mod', :inverse_of => 'required_by', :foreign_key => 'required_id'
 
   # VALIDATIONS
-  validates :mod_id, :required_id, presence: true
+  validates :required_id, presence: true
+  validates :required_id, uniqueness: { scope: :mod_id, :message => "Mod Requirement duplication is not allowed." }
 
   # CALLBACKS
   after_create :increment_counter_caches

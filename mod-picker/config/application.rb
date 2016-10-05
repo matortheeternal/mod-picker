@@ -33,7 +33,7 @@ module ModPicker
 
     # tracking config
     config.added_owner_attributes = [:submitted_by]
-    config.updated_owner_attributes = [:edited_by]
+    config.updated_owner_attributes = [:updated_by, :edited_by]
     config.removed_owner_attributes = [:removed_by]
 
     config.middleware.use Rack::Attack
@@ -49,6 +49,10 @@ module ModPicker
       g.fixture_replacement :factory_girl, dir: "spec/factories"
     end
 
+    # make devise response to json
+    config.to_prepare do
+      DeviseController.respond_to :html, :json
+    end
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true

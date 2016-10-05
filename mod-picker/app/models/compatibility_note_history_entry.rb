@@ -2,7 +2,7 @@ class CompatibilityNoteHistoryEntry < ActiveRecord::Base
   belongs_to :compatibility_note, :inverse_of => 'history_entries', :foreign_key => 'compatibility_note_id'
   belongs_to :editor, :class_name => 'User', :foreign_key => 'edited_by', :inverse_of => 'compatibility_note_history_entries'
 
-  enum status: [ :incompatible, :"partially incompatible", :"compatibility mod", :"compatibility option", :"make custom patch" ]
+  enum status: [ :incompatible, :partially_incompatible, :compatibility_mod, :compatibility_option, :make_custom_patch ]
 
   # VALIDATIONS
   validates :compatibility_note_id, :edited_by, :status, :text_body, :edit_summary, presence: true

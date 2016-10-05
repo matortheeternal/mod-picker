@@ -19,7 +19,7 @@ class ModBuilder
     elsif @params && @params[:id]
       @mod = Mod.find_or_initialize_by(id: @params[:id])
     else
-      @mod = Mod.new(@params)
+      @mod = Mod.new
     end
   end
 
@@ -28,6 +28,8 @@ class ModBuilder
   end
 
   def update
+    mod.updated_by = @current_user.id
+    destroy_analysis
     update!
     true
   rescue
@@ -39,7 +41,7 @@ class ModBuilder
       mod.attributes = @params
       self.before_save
       self.before_update
-      mod.update!(@params)
+      mod.save!
       self.after_update
       self.after_save
     end
@@ -47,10 +49,12 @@ class ModBuilder
 
   def before_update
     hide_contributions
+    swap_mod_list_mods_tools_counts
   end
 
   def after_update
     update_adult
+    update_mod_list_mods
   end
 
   def save
@@ -72,6 +76,7 @@ class ModBuilder
 
   def before_save
     set_config_file_game_ids
+    validate_sources
   end
 
   def after_save
@@ -84,6 +89,21 @@ class ModBuilder
       @config_files_attributes.each do |config_file|
         config_file[:game_id] = mod.game_id
       end
+    end
+  end
+
+  def new_sources_present
+    @nexus_info_id.present? || @lover_info_id.present? || @workshop_info_id.present? || @params.has_key?(:custom_sources_attributes)
+  end
+
+  def old_sources_present
+    mod.nexus_infos.present? || mod.lover_infos.present? || mod.workshop_infos.present? || mod.custom_sources.present?
+  end
+
+  def validate_sources
+    unless new_sources_present || old_sources_present
+      errors.add(:sources, "mods must have at least one source")
+      raise ActiveRecord::RecordInvalid
     end
   end
 
@@ -107,6 +127,20 @@ class ModBuilder
       Correction.correctables("LoadOrderNote", lnote_ids).update_all(:hidden => true)
     elsif mod.attribute_changed?(:disable_reviews) && mod.disable_reviews
       mod.reviews.update_all(:hidden => true)
+    end
+  end
+
+  def destroy_analysis
+    mod.mod_options.destroy_all if @params.has_key?(:mod_options_attributes)
+  end
+
+  def update_mod_list_mods
+    if mod.previous_changes.has_key?(:is_utility)
+      mod.mod_list_mods.includes(:mod_list).each do |mod_list_mod|
+        mod_list_mod.group_id = nil
+        mod_list_mod.get_index
+        mod_list_mod.save!
+      end
     end
   end
 
@@ -142,6 +176,7 @@ class ModBuilder
     if info_id
       info = NexusInfo.find(info_id)
       info.mod_id = mod.id
+      info.link_uploader
       info.save!
     end
   end
@@ -149,15 +184,15 @@ class ModBuilder
   def create_tags
     if @tag_names
       @tag_names.each do |text|
-        tag = Tag.find_by(text: text, game_id: game_id)
+        tag = Tag.find_by(text: text, game_id: mod.game_id)
 
         # create tag if we couldn't find it
         if tag.nil?
-          tag = Tag.create(text: text, game_id: game_id, submitted_by: submitted_by)
+          tag = Tag.create(text: text, game_id: mod.game_id, submitted_by: @current_user.id)
         end
 
         # associate tag with mod
-        mod.mod_tags.create(tag_id: tag.id, submitted_by: submitted_by)
+        mod.mod_tags.create(tag_id: tag.id, submitted_by: @current_user.id)
       end
     end
   end
@@ -166,7 +201,7 @@ class ModBuilder
     if mod.attribute_changed?(:is_utility)
       tools_operator = mod.is_utility ? "+" : "-"
       mods_operator = mod.is_utility ? "-" : "+"
-      mod_list_ids = mod_lists.ids
+      mod_list_ids = mod.mod_lists.ids
       ModList.where(id: mod_list_ids).update_all("tools_count = tools_count #{tools_operator} 1, mods_count = mods_count #{mods_operator} 1")
     end
   end

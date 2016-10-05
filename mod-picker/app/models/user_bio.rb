@@ -20,6 +20,23 @@ class UserBio < ActiveRecord::Base
     self.save
   end
 
+  def verify_account(site, user_path)
+    begin
+      case site
+        when "Nexus Mods"
+          verify_nexus_account(user_path)
+        when "Lover's Lab"
+          verify_lover_account(user_path)
+        when "Steam Workshop"
+          verify_workshop_account(user_path)
+        else
+          false
+      end
+    rescue RestClient::NotFound => e
+      raise " we couldn't find a #{site} user at that URL"
+    end
+  end
+
   def verify_nexus_account(user_path)
     # exit if we don't have a nexus_user_path
     if user_path.nil?
@@ -30,7 +47,7 @@ class UserBio < ActiveRecord::Base
     user_data = NexusHelper.scrape_user(user_path)
 
     # verify the token
-    if user_data[:last_status] == self.nexus_verification_token
+    if user_data[:last_status] == nexus_verification_token
       # write fields to bio
       self.nexus_user_path = user_path
       self.nexus_username = user_data[:username]
@@ -38,10 +55,10 @@ class UserBio < ActiveRecord::Base
       self.nexus_posts_count = user_data[:posts_count]
 
       # populate mod author records
-      ModAuthor.link_author(NexusInfo, self.user_id, self.nexus_username)
+      ModAuthor.link_author(NexusInfo, user_id, nexus_username)
 
       # save bio
-      self.save
+      save!
     end
   end
 
@@ -64,7 +81,7 @@ class UserBio < ActiveRecord::Base
     user_data = LoverHelper.scrape_user(user_path)
 
     # verify the token
-    if user_data[:last_status] == self.lover_verification_token
+    if user_data[:last_status] == lover_verification_token
       # write fields to bio
       self.lover_user_path = user_path
       self.lover_username = user_data[:username]
@@ -75,7 +92,7 @@ class UserBio < ActiveRecord::Base
       ModAuthor.link_author(LoverInfo, user_id, lover_username)
 
       # save bio
-      save
+      save!
     end
   end
 
@@ -98,7 +115,7 @@ class UserBio < ActiveRecord::Base
     user_data = WorkshopHelper.scrape_user(user_path)
 
     # verify the token
-    if user_data[:matched_comment] == self.workshop_verification_token
+    if user_data[:matched_comment] == workshop_verification_token
       # scrape user's workshop stats
       workshop_stats = WorkshopHelper.scrape_workshop_stats(user_path)
 
@@ -109,10 +126,10 @@ class UserBio < ActiveRecord::Base
       self.workshop_followers_count = workshop_stats[:followers_count]
 
       # populate mod author records
-      ModAuthor.link_author(WorkshopInfo, self.user_id, self.workshop_username)
+      ModAuthor.link_author(WorkshopInfo, user_id, workshop_username)
 
       # save bio
-      save
+      save!
     end
   end
 

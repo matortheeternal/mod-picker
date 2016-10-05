@@ -10,6 +10,7 @@ class Comment < ActiveRecord::Base
   # NOTIFICATION SUBSCRIPTIONS
   subscribe :commentable_user, to: [:added]
   subscribe :submitter, to: [:hidden, :unhidden]
+  subscribe :parent_submitter, to: [:added]
 
   # SCOPES
   include_scope :hidden
@@ -46,6 +47,10 @@ class Comment < ActiveRecord::Base
     parent_id.nil? || parent.parent_id.nil?
   end
 
+  def parent_submitter
+    parent_id.present? && parent.submitter
+  end
+
   def commentable_link
     if commentable_type == "Correction"
       if commentable.correctable_type == "Mod"
@@ -80,9 +85,9 @@ class Comment < ActiveRecord::Base
         :except => :submitted_by,
         :include => {
             :submitter => {
-                :only => [:id, :username, :role, :title, :joined, :last_sign_in_at, :reviews_count, :compatibility_notes_count, :install_order_notes_count, :load_order_notes_count, :corrections_count, :comments_count],
+                :only => [:id, :username, :role, :title],
                 :include => {
-                    :reputation => {:only => [:overall]}
+                    :reputation => {:only => :overall}
                 },
                 :methods => :avatar
             }
@@ -96,9 +101,9 @@ class Comment < ActiveRecord::Base
         :except => :submitted_by,
         :include => {
             :submitter => {
-                :only => [:id, :username, :role, :title, :joined, :last_sign_in_at, :reviews_count, :compatibility_notes_count, :install_order_notes_count, :load_order_notes_count, :corrections_count, :comments_count],
+                :only => [:id, :username, :role, :title],
                 :include => {
-                    :reputation => {:only => [:overall]}
+                    :reputation => {:only => :overall}
                 },
                 :methods => :avatar
             }
@@ -114,7 +119,7 @@ class Comment < ActiveRecord::Base
               :submitter => {
                   :only => [:id, :username, :role, :title],
                   :include => {
-                      :reputation => {:only => [:overall]}
+                      :reputation => {:only => :overall}
                   },
                   :methods => :avatar
               },
@@ -122,9 +127,9 @@ class Comment < ActiveRecord::Base
                   :except => :submitted_by,
                   :include => {
                       :submitter => {
-                          :only => [:id, :username, :role, :title],
+                          :only => [:id, :username, :role],
                           :include => {
-                              :reputation => {:only => [:overall]}
+                              :reputation => {:only => :overall}
                           },
                           :methods => :avatar
                       },
@@ -145,6 +150,8 @@ class Comment < ActiveRecord::Base
     }
     if commentable_type == "ModList"
       options[:include][:commentable] = { :only => [:name] }
+    elsif commentable_type == "Article"
+      options[:include][:commentable] = { :only => [:title] }
     elsif commentable_type == "Correction"
       if commentable.correctable_type == "Mod"
         options[:include][:commentable] = {
@@ -169,6 +176,21 @@ class Comment < ActiveRecord::Base
     end
 
     options
+  end
+
+  def reportable_json_options
+    options = {
+        :except => [:parent_id, :submitted_by],
+        :include => {
+            :submitter => {
+                :only => [:id, :username, :role, :title],
+                :include => {
+                    :reputation => {:only => [:overall]}
+                },
+                :methods => :avatar
+            }
+        }
+    }
   end
 
   def self.sortable_columns
@@ -201,21 +223,22 @@ class Comment < ActiveRecord::Base
       if commentable.respond_to?(:has_adult_content)
         self.has_adult_content = commentable.has_adult_content
       end
+      true
     end
 
     def increment_counter_caches
-      self.submitter.update_counter(:submitted_comments_count, 1)
-      self.commentable.update_counter(:comments_count, 1)
-      if self.parent_id.present?
-        self.parent.update_counter(:children_count, 1)
+      submitter.update_counter(:submitted_comments_count, 1)
+      commentable.update_counter(:comments_count, 1)
+      if parent_id.present?
+        parent.update_counter(:children_count, 1)
       end
     end
 
     def decrement_counter_caches
-      self.submitter.update_counter(:submitted_comments_count, -1)
-      self.commentable.update_counter(:comments_count, -1)
-      if self.parent_id.present?
-        self.parent.update_counter(:children_count, -1)
+      submitter.update_counter(:submitted_comments_count, -1)
+      commentable.update_counter(:comments_count, -1)
+      if parent_id.present?
+        parent.update_counter(:children_count, -1)
       end
     end
 

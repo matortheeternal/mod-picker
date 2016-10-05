@@ -4,7 +4,7 @@
     </div>
     <!-- TODO: replace input with button that has an inline value -->
     <div class="tab-bar-item">
-        <input class="btn" type="submit" value="Add Load Order Note" ng-click="startNewLoadOrderNote()" ng-disabled="activeLoadOrderNote"/>
+        <input class="btn" type="submit" value="Add Load Order Note" ng-click="startNewLoadOrderNote()" ng-disabled="activeLoadOrderNote || !permissions.canContribute"/>
     </div>
 </div>
 

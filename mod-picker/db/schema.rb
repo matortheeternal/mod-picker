@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160925201510) do
+ActiveRecord::Schema.define(version: 20161004065249) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -50,6 +50,14 @@ ActiveRecord::Schema.define(version: 20160925201510) do
     t.datetime "submitted",                               null: false
     t.datetime "edited"
   end
+
+  create_table "blacklisted_authors", force: :cascade do |t|
+    t.string "source", limit: 32, null: false
+    t.string "author", limit: 64, null: false
+  end
+
+  add_index "blacklisted_authors", ["author"], name: "index_blacklisted_authors_on_author", using: :btree
+  add_index "blacklisted_authors", ["source"], name: "index_blacklisted_authors_on_source", using: :btree
 
   create_table "categories", force: :cascade do |t|
     t.integer "parent_id",   limit: 4
@@ -190,8 +198,8 @@ ActiveRecord::Schema.define(version: 20160925201510) do
 
   create_table "events", force: :cascade do |t|
     t.integer  "user_id",      limit: 4
-    t.integer  "content_id",   limit: 4
-    t.string   "content_type", limit: 32
+    t.integer  "content_id",   limit: 4,  null: false
+    t.string   "content_type", limit: 32, null: false
     t.integer  "event_type",   limit: 1,  null: false
     t.datetime "created",                 null: false
   end
@@ -205,6 +213,7 @@ ActiveRecord::Schema.define(version: 20160925201510) do
     t.string  "abbr_name",                 limit: 32,              null: false
     t.string  "nexus_name",                limit: 16
     t.string  "exe_name",                  limit: 32
+    t.string  "esm_name",                  limit: 32
     t.string  "steam_app_ids",             limit: 64
     t.integer "mods_count",                limit: 4,   default: 0, null: false
     t.integer "plugins_count",             limit: 4,   default: 0, null: false
@@ -617,6 +626,7 @@ ActiveRecord::Schema.define(version: 20160925201510) do
     t.boolean  "hidden",                                default: false, null: false
     t.datetime "released",                                              null: false
     t.datetime "updated"
+    t.datetime "submitted",                                             null: false
   end
 
   add_index "mods", ["edited_by"], name: "fk_rails_9ec1af790b", using: :btree
@@ -735,7 +745,7 @@ ActiveRecord::Schema.define(version: 20160925201510) do
   create_table "reports", force: :cascade do |t|
     t.integer  "base_report_id", limit: 4,   null: false
     t.integer  "submitted_by",   limit: 4,   null: false
-    t.integer  "report_type",    limit: 1,   null: false
+    t.integer  "reason",         limit: 1,   null: false
     t.string   "note",           limit: 128
     t.datetime "submitted",                  null: false
     t.datetime "edited"
@@ -845,16 +855,16 @@ ActiveRecord::Schema.define(version: 20160925201510) do
   add_index "user_reputations", ["user_id"], name: "user_id", using: :btree
 
   create_table "user_settings", force: :cascade do |t|
-    t.integer "user_id",              limit: 4,                 null: false
+    t.integer "user_id",              limit: 4,                  null: false
     t.string  "theme",                limit: 64
-    t.boolean "allow_comments",                  default: true, null: false
-    t.boolean "show_notifications",              default: true, null: false
-    t.boolean "email_notifications",             default: true, null: false
-    t.boolean "email_public",                    default: true, null: false
-    t.boolean "allow_adult_content",             default: true, null: false
-    t.boolean "allow_nexus_mods",                default: true, null: false
-    t.boolean "allow_lovers_lab",                default: true, null: false
-    t.boolean "allow_steam_workshop",            default: true, null: false
+    t.boolean "allow_comments",                  default: true,  null: false
+    t.boolean "show_notifications",              default: true,  null: false
+    t.boolean "email_notifications",             default: false, null: false
+    t.boolean "email_public",                    default: false, null: false
+    t.boolean "allow_adult_content",             default: false, null: false
+    t.boolean "allow_nexus_mods",                default: true,  null: false
+    t.boolean "allow_lovers_lab",                default: true,  null: false
+    t.boolean "allow_steam_workshop",            default: true,  null: false
   end
 
   add_index "user_settings", ["user_id"], name: "user_id", using: :btree

@@ -110,3 +110,24 @@ header {
   margin: auto;
   padding: 100px 0;
 }
+
+ol {
+  list-style: decimal;
+  li {
+    margin: 32px 0;
+  }
+
+  ol {
+    list-style: lower-alpha;
+    li {
+      margin: 8px 0;
+    }
+
+    ol {
+      list-style: decimal;
+      li {
+        margin: 8px 0;
+      }
+    }
+  }
+}

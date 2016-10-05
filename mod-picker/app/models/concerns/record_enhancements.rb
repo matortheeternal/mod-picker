@@ -23,4 +23,10 @@ module RecordEnhancements
   def raw_update(args)
     self.class.unscoped.where(self.class.primary_key => id).update_all(args)
   end
+
+  module ClassMethods
+    def update_all_counters(model, column, foreign_key)
+      model.update_all("#{column} = (SELECT COUNT(*) from #{table_name} WHERE #{model.table_name}.id = #{table_name}.#{foreign_key})")
+    end
+  end
 end

@@ -5,77 +5,77 @@
         <h2>Edit {{mod.name}}</h2>
 
         <loader data="mod" spinner-class="big-spinner">
-            <form id="editModForm" name="editModForm" spellcheck="false">
-
-                <h3 class="section-title">Image
-                    <span class="help-tooltip" title="The image that will be shown on the mod page.">?</span>
-                </h3>
-                <section>
-                    <image-upload image="image" can-change="true" default-src="mod.image" label="mod image" image-class="mod-image" max-width="300" max-height="300"></image-upload>
-                </section>
-
-                <mod-sources></mod-sources>
-
-                <mod-general-info></mod-general-info>
-
-                <mod-authors></mod-authors>
-
-                <mod-analysis-manager></mod-analysis-manager>
-
-                <mod-requirements></mod-requirements>
-
-                <mod-config-files></mod-config-files>
-
-                <mod-categories></mod-categories>
-
-                <h3 class="section-title">Tags</h3>
-                <section>
-                    <tag-selector active-tags="mod.tags" new-tags="mod.newTags" show-mods-count="true" show-add="true" show-remove="true" max-tags="10" can-create="true"></tag-selector>
-                </section>
-
-                <h3 ng-if="permissions.canManageOptions" class="section-title">Other Options</h3>
-                <section ng-if="permissions.canManageOptions">
-                    <label class="checkbox-option">
-                        <input type="checkbox" ng-model="mod.is_utility">
-                        External Utility
-                    </label>
-                    <span class="help-tooltip" title="A mod is classified as an external utility if it installs files &#13;outside of the user's data directory.  This includes &#13;mod managers, patchers, and script extenders.">?</span><br/>
-
-                    <label class="checkbox-option">
-                        <input type="checkbox" ng-model="mod.has_adult_content">
-                        Has Adult Content
-                    </label>
-                    <span class="help-tooltip" title="In this context, adult content is classified as nudity or &#13;depictions of sexual acts.">?</span><br/>
-
-                    <label class="checkbox-option">
-                        <input type="checkbox" ng-model="mod.disallow_contributors">
-                        Don't allow contributors to edit the mod page
-                    </label>
-                    <span class="help-tooltip" title="Makes it so Mod Authors who are contributors cannot &#13;access the edit mod page.">?</span><br/>
-
-                    <label class="checkbox-option">
-                        <input type="checkbox" ng-model="mod.disable_reviews">
-                        Disable Reviews
-                    </label>
-                    <span class="help-tooltip" title="If enabled the Reviews tab for this mod will be hidden &#13;and any existing reviews on this mod will be hidden from &#13;public viewing.  NOTE: Unsetting this will not restore the hidden &#13;reviews, only a moderator or site administrator can restore them.">?</span><br/>
-
-                    <label class="checkbox-option">
-                        <input type="checkbox" ng-model="mod.lock_tags">
-                        Lock Tags
-                    </label>
-                    <span class="help-tooltip" title="If enabled only mod authors, moderators and administrators &#13;will be able to add tags to this mod.">?</span><br/>
-
-                    <label class="checkbox-option" ng-if="permissions.canModerate">
-                        <input type="checkbox" ng-model="mod.hidden">
-                        Hidden
-                    </label>
-                </section>
-
-                <div class="action-button-container">
-                    <input class="btn action-btn" type="submit" ng-disabled='submitting || !modValid()' ng-click="updateMod()" value="Save Changes"/>
-                </div>
-            </form>
         </loader>
+
+        <form id="editModForm" name="editModForm" spellcheck="false" ng-show="mod">
+            <h3 class="section-title">Image
+                <span class="help-tooltip" title="The image that will be shown on the mod page.">?</span>
+            </h3>
+            <section>
+                <image-upload image="image" can-change="true" default-src="mod.image" label="mod image" image-class="mod-image" max-width="300" max-height="300"></image-upload>
+            </section>
+
+            <mod-sources></mod-sources>
+
+            <mod-general-info></mod-general-info>
+
+            <mod-authors></mod-authors>
+
+            <mod-analysis-manager></mod-analysis-manager>
+
+            <mod-requirements></mod-requirements>
+
+            <mod-config-files></mod-config-files>
+
+            <mod-categories></mod-categories>
+
+            <h3 class="section-title">Tags</h3>
+            <section>
+                <tag-selector active-tags="mod.tags" new-tags="mod.newTags" show-mods-count="true" show-add="true" show-remove="true" max-tags="10" can-create="true"></tag-selector>
+            </section>
+
+            <h3 ng-if="permissions.canManageOptions" class="section-title">Other Options</h3>
+            <section ng-if="permissions.canManageOptions">
+                <label class="checkbox-option">
+                    <input type="checkbox" ng-model="mod.is_utility">
+                    External Utility
+                </label>
+                <span class="help-tooltip" title="A mod is classified as an external utility if it installs files &#13;outside of the user's data directory.  This includes &#13;mod managers, patchers, and script extenders.">?</span><br/>
+
+                <label class="checkbox-option">
+                    <input type="checkbox" ng-model="mod.has_adult_content">
+                    Has Adult Content
+                </label>
+                <span class="help-tooltip" title="In this context, adult content is classified as nudity or &#13;depictions of sexual acts.">?</span><br/>
+
+                <label class="checkbox-option">
+                    <input type="checkbox" ng-model="mod.disallow_contributors">
+                    Don't allow contributors to edit the mod page
+                </label>
+                <span class="help-tooltip" title="Makes it so Mod Authors who are contributors cannot &#13;access the edit mod page.">?</span><br/>
+
+                <label class="checkbox-option">
+                    <input type="checkbox" ng-model="mod.disable_reviews">
+                    Disable Reviews
+                </label>
+                <span class="help-tooltip" title="If enabled the Reviews tab for this mod will be hidden &#13;and any existing reviews on this mod will be hidden from &#13;public viewing.  NOTE: Unsetting this will not restore the hidden &#13;reviews, only a moderator or site administrator can restore them.">?</span><br/>
+
+                <label class="checkbox-option">
+                    <input type="checkbox" ng-model="mod.lock_tags">
+                    Lock Tags
+                </label>
+                <span class="help-tooltip" title="If enabled only mod authors, moderators and administrators &#13;will be able to add tags to this mod.">?</span><br/>
+
+                <label class="checkbox-option" ng-if="permissions.canModerate">
+                    <input type="checkbox" ng-model="mod.hidden">
+                    Hidden
+                </label>
+            </section>
+
+            <div class="action-button-container">
+                <input class="btn action-btn" type="submit" ng-disabled='submitting || !modValid()' ng-click="updateMod()" value="Save Changes"/>
+            </div>
+        </form>
     </div>
 </div>
 

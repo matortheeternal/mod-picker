@@ -36,7 +36,12 @@ String.prototype.underscore = function(separator) {
 };
 
 String.prototype.wordCount = function() {
-    return this.length ? this.match(/(\S+)/g).length : 0;
+    if (this.length) {
+        var match = this.match(/(\S+)/g);
+        return (match && match.length) || 0;
+    } else {
+        return 0;
+    }
 };
 
 String.prototype.surround = function(str) {
@@ -83,12 +88,12 @@ Number.prototype.parseBytes = function(bytesString) {
     }
 };
 
-// concatenates array1 with array2 and assigns the result to a1
-// does nothing if either array1 or array2 are undefined
-Array.prototype.unite = function(array1, array2) {
-    if (array1 && array2) {
-        for (var i = 0; i < array2.length; i++) {
-            array1.push(array2[i]);
+// concatenates this with array and assigns the result to this
+// does nothing if either this or array are undefined
+Array.prototype.unite = function(array) {
+    if (this && array) {
+        for (var i = 0; i < array.length; i++) {
+            this.push(array[i]);
         }
     }
 };

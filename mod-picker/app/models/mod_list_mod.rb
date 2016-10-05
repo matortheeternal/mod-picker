@@ -98,6 +98,14 @@ class ModListMod < ActiveRecord::Base
     ModRequirement.mods(mod_id).utility(false)
   end
 
+  def get_index
+    if mod.is_utility
+      self.index = mod_list.tools_count + 1
+    else
+      self.index = mod_list.mods_count + 1
+    end
+  end
+
   private
     # counter caches
     def increment_counter_caches

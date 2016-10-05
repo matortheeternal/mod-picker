@@ -80,7 +80,7 @@ class HelpPagesController < ApplicationController
   # POST/GET /help/1/comments
   def comments
     authorize! :read, @help_page
-    comments = @help_page.comments.accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10)
+    comments = @help_page.comments.includes(:submitter => :reputation, :children => [:submitter => :reputation]).accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10)
     count = @help_page.comments.accessible_by(current_ability).count
     render :json => {
         comments: comments,
@@ -110,16 +110,16 @@ class HelpPagesController < ApplicationController
     end
   end
 
-  private
-    # exception handling for record not found
-    def record_not_found(exception)
-      @error = exception.message
-      render "help_pages/404", status: 404
-    end
+  # exception handling for record not found
+  def record_not_found
+    render "help_pages/404", status: 404
+  end
 
+  private
     # set instance variable via /help/:id via callback to keep things DRY
     def set_help_page
-      @help_page = HelpPage.where(title: params[:id].humanize).first
+      @help_page = HelpPage.find_by(title: params[:id].humanize)
+      raise ActiveRecord::RecordNotFound if @help_page.nil?
     end
 
     def set_help_page_from_id

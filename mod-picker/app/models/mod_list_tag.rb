@@ -1,15 +1,11 @@
 class ModListTag < ActiveRecord::Base
   include Trackable
 
-  # ATTRIBUTES
-  attr_accessor :removed_by
-
   # EVENT TRACKING
-  track :added, :removed
+  track :added
 
   # NOTIFICATION SUBSCRIPTIONS
-  subscribe :mod_list_submitter, to: [:added, :removed]
-  subscribe :submitter, to: [:removed]
+  subscribe :mod_list_submitter, to: [:added]
 
   # ASSOCIATIONS
   belongs_to :mod_list, :inverse_of => 'mod_list_tags'

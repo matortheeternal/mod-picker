@@ -5,7 +5,7 @@ class ReputationLink < ActiveRecord::Base
   self.primary_keys = :from_rep_id, :to_rep_id
 
   # EVENT TRACKING
-  track :added, :removed
+  track :added
 
   # NOTIFICATION SUBSCRIPTIONS
   subscribe :target_user, to: [:added]

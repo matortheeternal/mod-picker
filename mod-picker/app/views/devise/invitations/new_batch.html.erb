@@ -10,9 +10,9 @@
 <% end %>
 
 <div class="box-content">
-    <%= form_for resource, :as => resource_name, :url => "/users/invitation/batch", :html => {:method => :post} do |f| %>
+    <%= form_for resource, :as => resource_name, :url => "/users/invitation/batch", :html => { :method => :post } do |f| %>
         <div class="padded-field">
-            <%= f.label "Emails", title: "Enter a comma-separated list of emails to send invitations to." %><br />
+            <%= f.label "Emails", title: "Enter a comma-separated list of emails to send invitations to." %><br/>
             <%= f.text_area :email, class: "big-text-area" %>
         </div>
 

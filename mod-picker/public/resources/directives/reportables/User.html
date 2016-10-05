@@ -1,0 +1,21 @@
+<div class="content-title">
+    <span class="capitalize">
+        <span ng-bind-html="reportableUrl"></span>
+    </span>
+</div>
+
+<div class="content-container">
+    <div class="content-block">
+        <div class="contribution-container box-shadow">
+            <div class="content-title">
+                <span>
+                    <a ng-href="#/{{report.reportable_type.underscore()}}/{{report.reportable.id}}" target="_blank">{{report.reportable.username}}</a>
+                </span>
+            </div>
+            <user-column user="report.reportable" class="user-column"></user-column>
+            <div class="content-column reportable-content-column">
+                <div class="reportable-content-block text-container" marked="report.reportable.about_me || '*No About Me*'"></div>
+            </div>
+        </div>
+    </div>
+</div>

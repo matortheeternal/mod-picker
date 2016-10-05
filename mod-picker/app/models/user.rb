@@ -157,6 +157,10 @@ class User < ActiveRecord::Base
     settings.email_public
   end
 
+  def comments_disabled?
+    !settings.allow_comments
+  end
+
   def subscribed_to?(event)
     if respond_to?(:notification_settings)
       key = "#{event.content_type.underscore}_#{event.event_type}"
@@ -234,13 +238,11 @@ class User < ActiveRecord::Base
 
   def show_json(current_user)
     # email handling
-    methods = [:avatar, :last_sign_in_at, :current_sign_in_at]
-    if self.email_public?
-      methods.push(:email)
-    end
+    methods = [:avatar, :last_sign_in_at, :current_sign_in_at, :comments_disabled?]
+    methods.push(:email) if email_public?
 
-    self.as_json({
-        :except => [:active_mod_list_id, :invitation_token, :invitation_created_at, :invitation_sent_at, :invitation_accepted_at, :invitation_limit, :invited_by_id, :invited_by_type, :invitations_count],
+    as_json({
+        :except => [:email, :active_mod_list_id, :invitation_token, :invitation_created_at, :invitation_sent_at, :invitation_accepted_at, :invitation_limit, :invited_by_id, :invited_by_type, :invitations_count],
         :include => {
             :bio => {
                 :except => [:user_id, :nexus_verification_token, :lover_verification_token, :workshop_verification_token]
@@ -271,8 +273,20 @@ class User < ActiveRecord::Base
   end
 
   def notification_json_options(event_type)
-    options = {
-        :only => [:username, (:role if event_type == :status)].compact
+    {
+        :only => [:username, :role]
+    }
+  end
+
+  def reportable_json_options
+    {
+        :only => [:id, :username, :role, :title, :about_me, :last_sign_in_at, :joined, :current_sign_in_at, :last_sign_in_at],
+        :include => {
+            :reputation => {
+                :only => [:overall, :rep_to_count]
+            }
+        },
+        :methods => [:avatar]
     }
   end
 

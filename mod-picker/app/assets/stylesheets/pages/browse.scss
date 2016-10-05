@@ -216,6 +216,22 @@ table.browse-table {
   }
 }
 
+table.reports-table {
+  th {
+    cursor: default;
+  }
+
+  .date-cell {
+    min-width: 140px !important;
+    width: 140px !important;
+  }
+
+  .submitter-cell {
+    min-width: 175px !important;
+    width: 175px !important;
+  }
+}
+
 select.stealthy.ng-pristine {
   opacity: 0.5;
   filter: alpha(opacity=50);

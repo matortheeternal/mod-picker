@@ -5,10 +5,10 @@ class ModAuthor < ActiveRecord::Base
   enum role: [:author, :contributor, :curator]
 
   # EVENT TRACKING
-  track :added, :removed
+  track :added
 
   # NOTIFICATION SUBSCRIPTIONS
-  subscribe :mod_author_users, to: [:added, :removed]
+  subscribe :mod_author_users, to: [:added]
 
   # ASSOCIATIONS
   belongs_to :mod, :inverse_of => 'mod_authors'
@@ -16,6 +16,7 @@ class ModAuthor < ActiveRecord::Base
 
   # VALIDATIONS
   validates :mod_id, :user_id, presence: true
+  validates :user_id, uniqueness: { scope: :mod_id, :message => "Mod Author duplication is not allowed." }
 
   # CALLBACKS
   after_create :increment_counters

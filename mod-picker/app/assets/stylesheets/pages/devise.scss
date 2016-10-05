@@ -75,10 +75,19 @@
     border-radius: 0;
     background-color: $action_color;
     cursor: pointer;
+
+    &:hover {
+      background-color: $bright_action_color;
+    }
+
+    &:disabled {
+      background-color: $hard_border_color;
+    }
   }
 
-  input[type=submit]:hover {
-    background-color: $bright_action_color;
+  .terms {
+    display: block;
+    margin-top: 10px;
   }
 
   .alert, .notice {

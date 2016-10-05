@@ -239,6 +239,17 @@ nav {
 .secondary-nav {
   float: right;
   height: 60px;
+
+  a.mini {
+    font-size: 12px;
+    margin: 20px 10px;
+    display: inline-block;
+    color: $bar_text_color;
+
+    &:hover {
+      color: $bright_action_color;
+    }
+  }
 }
 
 .search {

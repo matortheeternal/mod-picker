@@ -7,15 +7,26 @@ module Trackable
     self._subscriptions = []
     self._tracked_attributes = []
 
-    has_many :events, :as => 'content', :dependent => :nullify
+    has_many :events, :as => 'content', :dependent => :destroy
+  end
+
+  def get_subscription_users(subscription)
+    unless respond_to?(subscription[:users])
+      raise "Subscription association for #{subscription[:users]} not found"
+    end
+    users = public_send(subscription[:users]) || []
+    if users.respond_to?(:to_a)
+      users
+    else
+      [users]
+    end
   end
 
   def subscriber_ids_for(event)
     user_ids = []
     subscriptions.each do |subscription|
       next unless subscription[:actions].include?(event.event_type.to_sym)
-      users = public_send(subscription[:users]) || []
-      users = [users] if !users.respond_to?(:to_a)
+      users = get_subscription_users(subscription)
       users.each do |user|
         if user.subscribed_to?(event) && Ability.new(user).can?(:read, self)
           user_ids.push(user.id)
@@ -30,15 +41,15 @@ module Trackable
     notification_records = subscriber_ids_for(event).map do |user_id|
       { event_id: event.id, user_id: user_id }
     end
-    Notification.create(notification_records)
+    Notification.create(notification_records) if notification_records.any?
   end
 
   def event_owner_attributes(event_type)
     config = Rails.application.config
     case event_type
-      when "added"
+      when :added
         return config.added_owner_attributes || [:added_by]
-      when "removed"
+      when :removed
         return config.removed_owner_attributes || [:removed_by]
       else
         return config.updated_owner_attributes || [:updated_by]
@@ -67,7 +78,7 @@ module Trackable
 
   def get_milestone(milestones, value)
     for index in 0 ... milestones.size
-      return index - 1 if value < milestones[index]
+      return index if value < milestones[index]
     end
   end
 

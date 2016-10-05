@@ -19,6 +19,9 @@
         <section>
             <div class="header-box">
                 ACTIONS
+                <div class="action-box" ng-if="permissions.canReport && !permissions.isAuthor" ng-click="toggleReportModal(true)">
+                    <i class="fa fa-flag-o" aria-hidden="true"></i> Report
+                </div>
                 <div ng-if="permissions.canManage" class="action-box" ng-click="toggleEditing()">
                     <i class="fa {{editing ? 'fa-eye' : 'fa-edit' }}" aria-hidden="true"></i>
                     {{editing ? 'View' : 'Edit' }}
@@ -61,3 +64,4 @@
 </div>
 
 <activity-modal></activity-modal>
+<report-modal ng-if="showReportModal"></report-modal>

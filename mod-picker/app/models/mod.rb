@@ -1,8 +1,9 @@
 class Mod < ActiveRecord::Base
-  include Filterable, Sortable, Imageable, RecordEnhancements, SourceHelpers, ScopeHelpers, Trackable
+  include Filterable, Sortable, Reportable, Imageable, RecordEnhancements, SourceHelpers, ScopeHelpers, Trackable
 
   # ATTRIBUTES
   enum status: [ :good, :outdated, :unstable ]
+  attr_accessor :updated_by
   self.per_page = 100
 
   # EVENT TRACKING
@@ -16,7 +17,7 @@ class Mod < ActiveRecord::Base
 
   # SCOPES
   include_scope :hidden
-  include_scope :adult, :alias => 'include_adult'
+  include_scope :has_adult_content, :alias => 'include_adult'
   include_scope :is_official, :alias => 'include_official'
   include_scope :is_utility, :alias => 'include_utilities'
   value_scope :is_utility
@@ -60,7 +61,7 @@ class Mod < ActiveRecord::Base
     sources.each_key do |key|
       if sources[key]
         table = get_source_table(key)
-        query = query.preload(table).joins("LEFT OUTER JOIN #{table} ON #{table}.mod_id = mods.id")
+        query = query.includes(table).references(table)
         where_clause.push("#{table}.id IS NOT NULL")
       end
     end
@@ -116,7 +117,7 @@ class Mod < ActiveRecord::Base
   has_many :author_users, :class_name => 'User', :through => 'mod_authors', :source => 'user', :inverse_of => 'mods'
 
   # community feedback on the mod
-  has_many :corrections, :as => 'correctable'
+  has_many :corrections, :as => 'correctable', :dependent => :destroy
   has_many :reviews, :inverse_of => 'mod', :dependent => :destroy
   has_many :mod_stars, :inverse_of => 'mod', :dependent => :destroy
   has_many :user_stars, :class_name => 'User', :through => 'mod_stars', :source => 'user', :inverse_of => 'starred_mods'
@@ -146,6 +147,7 @@ class Mod < ActiveRecord::Base
   validates :name, :aliases, length: {maximum: 128}
 
   # callbacks
+  before_save :set_dates
   after_create :increment_counters
   before_destroy :decrement_counters
 
@@ -250,6 +252,7 @@ class Mod < ActiveRecord::Base
     include_hash[:workshop_infos] = {:except => [:mod_id]} if sources[:workshop]
 
     collection.as_json({
+        :except => [:game_id, :submitted_by, :edited_by, :disallow_contributors, :disable_reviews, :lock_tags],
         :include => include_hash
     })
   end
@@ -364,6 +367,37 @@ class Mod < ActiveRecord::Base
     { :only => [:name] }
   end
 
+  # TODO: trim down json for reports
+  def reportable_json_options
+    {
+        :except => [:disallow_contributors, :hidden],
+        :include => {
+            :submitter => {
+                :only => [:username]
+            },
+            :nexus_infos => {:except => [:mod_id]},
+            :workshop_infos => {:except => [:mod_id]},
+            :lover_infos => {:except => [:mod_id]},
+            :custom_sources => {:except => [:mod_id]},
+            :mod_authors => {
+                :only => [:id, :role, :user_id],
+                :include => {
+                    :user => {
+                        :only => [:username]
+                    }
+                }
+            },
+            :primary_category => {
+                :only => [:name]
+            },
+            :secondary_category => {
+                :only => [:name]
+            }
+        },
+        :methods => :image
+    }
+  end
+
   def self.sortable_columns
     {
         :except => [:game_id, :submitted_by, :primary_category_id, :secondary_category_id],
@@ -388,11 +422,15 @@ class Mod < ActiveRecord::Base
   end
 
   private
+    def set_dates
+      self.submitted = DateTime.now if submitted.nil?
+    end
+
     def decrement_counters
-      self.submitter.update_counter(:submitted_mods_count, -1) if self.submitted_by.present?
+      submitter.update_counter(:submitted_mods_count, -1) if submitted_by.present?
     end
 
     def increment_counters
-      self.submitter.update_counter(:submitted_mods_count, 1) if self.submitted_by.present?
+      submitter.update_counter(:submitted_mods_count, 1) if submitted_by.present?
     end
 end

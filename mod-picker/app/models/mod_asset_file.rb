@@ -8,7 +8,7 @@ class ModAssetFile < ActiveRecord::Base
 
   # UNIQUE SCOPES
   scope :bsa, -> { joins(:asset_file).where("asset_files.path like '%.bsa'") }
-  scope :conflicting, -> { joins("JOIN mod_asset_files mod_asset_files_right ON mod_asset_files.asset_file_id = mod_asset_files_right.asset_file_id").where("mod_asset_files.mod_option_id <> mod_asset_files_right.mod_option_id").order(:asset_file_id) }
+  scope :conflicting, -> { joins("JOIN mod_asset_files mod_asset_files_right ON mod_asset_files.asset_file_id = mod_asset_files_right.asset_file_id").where("mod_asset_files.mod_option_id <> mod_asset_files_right.mod_option_id").where("mod_asset_files.asset_file_id IS NOT NULL").order(:asset_file_id) }
 
   # ASSOCIATIONS
   belongs_to :mod_option, :inverse_of => 'mod_asset_files'
@@ -37,11 +37,10 @@ class ModAssetFile < ActiveRecord::Base
 
   private
     def increment_counters
-      self.asset_file.update_counter(:mod_asset_files_count, 1)
+      asset_file.update_counter(:mod_asset_files_count, 1) if asset_file_id
     end
 
     def decrement_counters
-      self.asset_file.update_counter(:mod_asset_files_count, -1)
+      asset_file.update_counter(:mod_asset_files_count, -1) if asset_file_id
     end
-
 end

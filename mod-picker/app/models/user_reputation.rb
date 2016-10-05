@@ -41,6 +41,7 @@ class UserReputation < ActiveRecord::Base
   LNOTE_HELPFUL_RATIO = 0.1
   OPEN_CORRECTION_REP = 1
   CLOSED_CORRECTION_REP = 3
+  SUBMITTED_MOD_REP = 1
   NEW_TAG_REP = 0.2
   MOD_TAG_REP = 0.1
   MOD_LIST_TAG_REP = 0.05
@@ -64,31 +65,31 @@ class UserReputation < ActiveRecord::Base
     self.site_rep = 0
 
     # MOD PICKER
-    mp_account_age = Date.today - self.user.joined.to_date
+    mp_account_age = Date.today - user.joined.to_date
     self.site_rep += mp_account_age * MP_ACCOUNT_AGE_RATIO
 
     # NEXUS MODS
-    if self.user.bio.nexus_user_path.present?
-      nexus_account_age = Date.today - self.user.bio.nexus_date_joined.to_date
+    if user.bio.nexus_user_path.present?
+      nexus_account_age = Date.today - user.bio.nexus_date_joined.to_date
       self.site_rep += nexus_account_age * SITE_ACCOUNT_AGE_RATIO
-      self.site_rep += self.user.bio.nexus_posts_count * SITE_POST_RATIO
+      self.site_rep += user.bio.nexus_posts_count * SITE_POST_RATIO
     end
 
     # LOVER'S LAB
-    if self.user.bio.lover_user_path.present?
-      lover_account_age = Date.today - self.user.bio.lover_date_joined.to_date
+    if user.bio.lover_user_path.present?
+      lover_account_age = Date.today - user.bio.lover_date_joined.to_date
       self.site_rep += lover_account_age * SITE_ACCOUNT_AGE_RATIO
-      self.site_rep += self.user.bio.lover_posts_count * SITE_POST_RATIO
+      self.site_rep += user.bio.lover_posts_count * SITE_POST_RATIO
     end
 
     # STEAM WORKSHOP
     if self.user.bio.workshop_user_path.present?
-      self.site_rep += self.user.bio.workshop_submissions_count * WORKSHOP_SUBMISSIONS_RATIO
-      self.site_rep += self.user.bio.workshop_followers_count * WORKSHOP_FOLLOWERS_RATIO
+      self.site_rep += user.bio.workshop_submissions_count * WORKSHOP_SUBMISSIONS_RATIO
+      self.site_rep += user.bio.workshop_followers_count * WORKSHOP_FOLLOWERS_RATIO
     end
 
     # Cap at MAX_SITE_REP
-    self.site_rep = [self.site_rep, MAX_SITE_REP].min
+    self.site_rep = [site_rep, MAX_SITE_REP].min
   end
 
   # We could compute contribution reputation on the contribution itself in callbacks
@@ -101,51 +102,54 @@ class UserReputation < ActiveRecord::Base
     end
 
     # REVIEWS
-    reviews = self.user.reviews.visible
+    reviews = user.reviews.visible
     reviews.pluck(:helpful_count, :not_helpful_count).each do |h|
       self.contribution_rep += get_contribution_rep(h, REVIEW_BASE_REP, REVIEW_HELPFUL_RATIO)
     end
 
     # COMPATIBILITY NOTES
-    compatibility_notes = self.user.compatibility_notes.visible.standing([0])
+    compatibility_notes = user.compatibility_notes.visible.standing([0])
     compatibility_notes.pluck(:helpful_count, :not_helpful_count).each do |h|
       self.contribution_rep += get_contribution_rep(h, CNOTE_BASE_REP, CNOTE_HELPFUL_RATIO)
     end
 
     # INSTALL ORDER NOTES
-    install_order_notes = self.user.install_order_notes.visible.standing([0])
+    install_order_notes = user.install_order_notes.visible.standing([0])
     install_order_notes.pluck(:helpful_count, :not_helpful_count).each do |h|
       self.contribution_rep += get_contribution_rep(h, INOTE_BASE_REP, INOTE_HELPFUL_RATIO)
     end
 
     # LOAD ORDER NOTES
-    load_order_notes = self.user.load_order_notes.visible.standing([0])
+    load_order_notes = user.load_order_notes.visible.standing([0])
     load_order_notes.pluck(:helpful_count, :not_helpful_count).each do |h|
       self.contribution_rep += get_contribution_rep(h, LNOTE_BASE_REP, LNOTE_HELPFUL_RATIO)
     end
 
     # CORRECTIONS
-    open_corrections_count = self.user.corrections.visible.status([0]).count
-    closed_corrections_count = self.user.corrections.visible.status([1, 3]).count
+    open_corrections_count = user.corrections.visible.status([0]).count
+    closed_corrections_count = user.corrections.visible.status([1, 3]).count
     self.contribution_rep += open_corrections_count * OPEN_CORRECTION_REP
     self.contribution_rep += closed_corrections_count * CLOSED_CORRECTION_REP
 
+    # MODS
+    self.contribution_rep += user.submitted_mods_count * SUBMITTED_MOD_REP
+
     # TAGS
-    self.contribution_rep += self.user.tags_count * NEW_TAG_REP
-    self.contribution_rep += self.user.mod_tags_count * MOD_TAG_REP
-    self.contribution_rep += self.user.mod_list_tags_count * MOD_LIST_TAG_REP
+    self.contribution_rep += user.tags_count * NEW_TAG_REP
+    self.contribution_rep += user.mod_tags_count * MOD_TAG_REP
+    self.contribution_rep += user.mod_list_tags_count * MOD_LIST_TAG_REP
   end
 
   def calculate_author_rep!
     self.author_rep = 0
 
     curator_rep = 0
-    self.user.mod_authors.each do |ma|
-      if ma.role == :author
+    user.mod_authors.each do |ma|
+      if ma.role == "author"
         authors_count = ModAuthor.where(mod_id: ma.mod_id, role: 0).count
         percentage = AUTHOR_MAX - AUTHOR_OFFSET * (authors_count / AUTHOR_RANGE)
         self.author_rep += percentage * ma.mod.reputation
-      elsif ma.role == :contributor
+      elsif ma.role == "contributor"
         contributors_count = ModAuthor.where(mod_id: ma.mod_id, role: 1).count
         percentage = CONTRIBUTOR_MAX - CONTRIBUTOR_OFFSET * (contributors_count / CONTRIBUTOR_RANGE)
         self.author_rep += percentage * ma.mod.reputation
@@ -166,16 +170,16 @@ class UserReputation < ActiveRecord::Base
   end
 
   def update_site_rep
-    starting_site_rep = self.site_rep
-    self.calculate_site_rep
-    site_rep_diff = starting_site_rep - self.site_rep
+    starting_site_rep = site_rep
+    calculate_site_rep
+    site_rep_diff = starting_site_rep - site_rep
     self.overall += site_rep_diff
   end
 
   def update_author_rep
-    starting_author_rep = self.author_rep
-    self.calculate_author_rep
-    author_rep_diff = starting_author_rep - self.author_rep
+    starting_author_rep = author_rep
+    calculate_author_rep
+    author_rep_diff = starting_author_rep - author_rep
     self.overall += author_rep_diff
   end
 
@@ -192,14 +196,18 @@ class UserReputation < ActiveRecord::Base
   end
 
   def get_max_links
-    if self.overall >= 640
+    if overall >= 640
       15
-    elsif self.overall >= 160
+    elsif overall >= 160
       10
-    elsif self.overall >= 40
+    elsif overall >= 40
       5
     else
       0
     end
+  end
+
+  def notification_json_options(event_type)
+    { :only => [:overall] }
   end
 end

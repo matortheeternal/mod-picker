@@ -24,7 +24,10 @@ class Correction < ActiveRecord::Base
   enum_scope :status
   enum_scope :mod_status
   polymorphic_scope :correctable
+  range_scope :agree_count, :disagree_count
+  counter_scope :comments_count
   range_scope :overall, :association => 'submitter_reputation', :table => 'user_reputations', :alias => 'reputation'
+  date_scope :submitted, :edited
 
   # ASSOCIATIONS
   belongs_to :game, :inverse_of => 'corrections'
@@ -86,6 +89,38 @@ class Correction < ActiveRecord::Base
     Comment.commentables("Correction", ids).joins("INNER JOIN corrections ON corrections.id = comments.commentable_id").update_all("comments.has_adult_content = corrections.has_adult_content")
   end
 
+  def note_includes
+    case correctable_type
+      when "InstallOrderNote"
+      when "CompatibilityNote"
+      {
+          :first_mod => {
+              :only => [:id, :username]
+          },
+          :second_mod => {
+              :only => [:id, :username]
+          }
+      }
+      when "LoadOrderNote"
+      {
+          :first_mod => {
+              :only => [:id, :name]
+          },
+          :second_mod => {
+              :only => [:id, :name]
+          },
+          :first_plugin => {
+              :only => [:id, :filename]
+          },
+          :second_plugin => {
+              :only => [:id, :filename]
+          }
+      }
+      else
+        {}
+    end
+  end
+
   def self.index_json(collection)
     collection.as_json({
         :include => {
@@ -101,9 +136,14 @@ class Correction < ActiveRecord::Base
                 :include => {
                     :submitter => {
                         :only => [:id, :username]
+                    },
+                    :first_mod => {
+                        :only => [:id, :username]
+                    },
+                    :second_mod => {
+                        :only => [:id, :username]
                     }
-                },
-                :methods => :mods
+                }
             },
         }
     })
@@ -131,11 +171,31 @@ class Correction < ActiveRecord::Base
   def notification_json_options(event_type)
     is_appeal = correctable_type == "Mod"
     {
-        :only => [:submitted_by, :correctable_type, (:status if event_type == :status), (:mod_status if is_appeal)].compact,
+        :only => [:submitted_by, :correctable_type, :status, (:mod_status if is_appeal)].compact,
         :include => {
             :correctable => {
                 :only => [:id, (:name if is_appeal)].compact,
-                :methods => [(:mods if !is_appeal), (:plugins if correctable_type == "LoadOrderNote")].compact
+                :include => note_includes
+            }
+        }
+    }
+  end
+
+  def reportable_json_options
+    is_appeal = correctable_type == "Mod"
+    {
+        :only => [:submitted_by, :correctable_type, (:mod_status if is_appeal), :text_body, :submitted].compact,
+        :include => {
+            :correctable => {
+                :only => [:id, (:name if is_appeal)].compact,
+                :include => note_includes
+            },
+            :submitter => {
+                :only => [:id, :username, :role, :title],
+                :include => {
+                    :reputation => {:only => [:overall]}
+                },
+                :methods => :avatar
             }
         }
     }
@@ -175,16 +235,17 @@ class Correction < ActiveRecord::Base
 
     def set_adult
       self.has_adult_content = correctable.has_adult_content
+      true
     end
 
     def increment_counters
-      self.correctable.update_counter(:corrections_count, 1)
-      self.submitter.update_counter(:corrections_count, 1)
+      correctable.update_counter(:corrections_count, 1)
+      submitter.update_counter(:corrections_count, 1)
     end
 
     def decrement_counters
-      self.correctable.update_counter(:corrections_count, -1)
-      self.submitter.update_counter(:corrections_count, -1)
+      correctable.update_counter(:corrections_count, -1)
+      submitter.update_counter(:corrections_count, -1)
     end
 
     def schedule_close

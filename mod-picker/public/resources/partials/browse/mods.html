@@ -97,9 +97,9 @@
                     <h3>Mod Picker Filters</h3>
                     <div ng-repeat="filter in modPickerFilters" ng-show="filter.common || expanded.modPicker">
                         <h4>{{filter.label}}
-                            <span class="filter-controls" ng-if="filter.max > 500">
+                            <!--<span class="filter-controls" ng-if="filter.max > 500">
                                 <span class="fa fa-wrench" ng-click="" title="Custom Value"></span>
-                            </span>
+                            </span>-->
                         </h4>
                         <slider filter-data="filters" filter="filter"></slider>
                     </div>
@@ -128,7 +128,7 @@
                 <h2>Mods</h2>
                 <loader data="mods" content-class="table-container" spinner-class="big-spinner" ng-if="!error">
                     <table-results label="mods" data="mods"></table-results>
-                    <page-results pages="pages" data="mods" callback="getMods"></page-results>
+                    <page-results pages="pages" data="mods" callback="getData"></page-results>
                 </loader>
 
                 <error-display content-class="content-message content-error" errors="error" label="Mods"></error-display>

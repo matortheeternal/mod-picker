@@ -4,7 +4,7 @@ class UsersController < ApplicationController
   # GET/POST /users/index
   def index
     @users = User.include_blank(false).includes(:reputation).references(:reputation).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
-    count =  User.accessible_by(current_ability).filter(filtering_params).count
+    count =  User.include_blank(false).includes(:reputation).references(:reputation).accessible_by(current_ability).filter(filtering_params).count
 
     render :json => {
         users: @users,
@@ -37,7 +37,7 @@ class UsersController < ApplicationController
   # GET /users/1/comments
   def comments
     authorize! :read, @user
-    comments = @user.profile_comments.accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10)
+    comments = @user.profile_comments.includes(:submitter => :reputation, :children => [:submitter => :reputation]).accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10)
     count = @user.profile_comments.accessible_by(current_ability).count
     render :json => {
         comments: comments,
