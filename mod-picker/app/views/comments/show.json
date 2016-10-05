@@ -1,0 +1,8 @@
+{
+  "except": "submitted_by",
+  "include": {
+    "submitter": {
+      "format": "submitter"
+    }
+  }
+}
