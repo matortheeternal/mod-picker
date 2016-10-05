@@ -1,0 +1,9 @@
+{
+  "only": ["submitted_by", "correctable_type", "mod_status", "text_body", "submitted"],
+  "include": {
+    "correctable": {},
+    "submitter": {
+      "format": "submitter"
+    }
+  }
+}
