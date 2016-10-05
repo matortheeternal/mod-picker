@@ -20,7 +20,7 @@
                     <td>{{childReport.submitted | date : 'short'}}</td>
                     <td><a ng-href="#/user/{{childReport.submitter.id}}">{{childReport.submitter.username}}</a></td>
                     <td>{{childReport.reason.capitalize() | humanize}}</td>
-                    <td>{{childReport.note}}</td>
+                    <td class="text-cell">{{childReport.note}}</td>
                 </tr>
             </tbody>
         </table>
