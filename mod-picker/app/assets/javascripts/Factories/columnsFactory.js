@@ -33,6 +33,13 @@ app.service('columnsFactory', function() {
             },
             {
                 group: "General",
+                visibility: false,
+                label: "Submitted",
+                data: "submitted",
+                filter: "date"
+            },
+            {
+                group: "General",
                 visibility: true,
                 label: "Released",
                 data: "released",
