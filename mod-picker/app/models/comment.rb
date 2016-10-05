@@ -128,6 +128,9 @@ class Comment < ActiveRecord::Base
                   :include => {
                       :submitter => {
                           :only => [:id, :username, :role],
+                          :include => {
+                              :reputation => {:only => :overall}
+                          },
                           :methods => :avatar
                       },
                   }
