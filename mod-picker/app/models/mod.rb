@@ -117,7 +117,8 @@ class Mod < ActiveRecord::Base
   has_many :author_users, :class_name => 'User', :through => 'mod_authors', :source => 'user', :inverse_of => 'mods'
 
   # community feedback on the mod
-  has_many :corrections, :as => 'correctable'
+  has_many :corrections, :as => 'correctable', :dependent => :destroy
+  has_many :base_reports, :as => 'reportable', :dependent => :destroy
   has_many :reviews, :inverse_of => 'mod', :dependent => :destroy
   has_many :mod_stars, :inverse_of => 'mod', :dependent => :destroy
   has_many :user_stars, :class_name => 'User', :through => 'mod_stars', :source => 'user', :inverse_of => 'starred_mods'

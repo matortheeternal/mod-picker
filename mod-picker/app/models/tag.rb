@@ -13,6 +13,9 @@ class Tag < ActiveRecord::Base
   has_many :mod_list_tags, :inverse_of => 'tag'
   has_many :mod_lists, :through => 'mod_list_tags', :inverse_of => 'tags'
 
+  # REPORTS
+  has_many :base_reports, :as => 'reportable', :dependent => :destroy
+
   # VALIDATIONS
   validates :game_id, :submitted_by, :text, presence: true
   validates :text, length: {in: 2..32}

@@ -28,11 +28,14 @@ class Review < ActiveRecord::Base
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'reviews'
   belongs_to :editor, :class_name => 'User', :foreign_key => 'edited_by'
   belongs_to :mod, :inverse_of => 'reviews'
+  has_many :review_ratings, :inverse_of => 'review'
 
+  # ASSOCIATIONS FOR SUBSCRIPTIONS
   has_one :submitter_reputation, :class_name => 'UserReputation', :through => 'submitter', :source => 'reputation'
   has_many :mod_author_users, :through => :mod, :source => :author_users
 
-  has_many :review_ratings, :inverse_of => 'review'
+  # REPORTS
+  has_many :base_reports, :as => 'reportable', :dependent => :destroy
 
   accepts_nested_attributes_for :review_ratings
 

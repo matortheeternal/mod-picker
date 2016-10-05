@@ -30,6 +30,9 @@ class Comment < ActiveRecord::Base
   belongs_to :parent, :class_name => 'Comment', :foreign_key => 'parent_id', :inverse_of => 'children'
   has_many :children, :class_name => 'Comment', :foreign_key => 'parent_id', :inverse_of => 'parent', :dependent => :destroy
 
+  # REPORTS
+  has_many :base_reports, :as => 'reportable', :dependent => :destroy
+
   # VALIDATIONS
   validates :submitted_by, :commentable_type, :commentable_id, :text_body, presence: true
   validates :hidden, inclusion: [true, false]
