@@ -1,5 +1,5 @@
 class Mod < ActiveRecord::Base
-  include Filterable, Sortable, Imageable, RecordEnhancements, SourceHelpers, ScopeHelpers, Trackable
+  include Filterable, Sortable, Reportable, Imageable, RecordEnhancements, SourceHelpers, ScopeHelpers, Trackable
 
   # ATTRIBUTES
   enum status: [ :good, :outdated, :unstable ]
@@ -118,7 +118,6 @@ class Mod < ActiveRecord::Base
 
   # community feedback on the mod
   has_many :corrections, :as => 'correctable', :dependent => :destroy
-  has_many :base_reports, :as => 'reportable', :dependent => :destroy
   has_many :reviews, :inverse_of => 'mod', :dependent => :destroy
   has_many :mod_stars, :inverse_of => 'mod', :dependent => :destroy
   has_many :user_stars, :class_name => 'User', :through => 'mod_stars', :source => 'user', :inverse_of => 'starred_mods'

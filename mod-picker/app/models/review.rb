@@ -34,9 +34,6 @@ class Review < ActiveRecord::Base
   has_one :submitter_reputation, :class_name => 'UserReputation', :through => 'submitter', :source => 'reputation'
   has_many :mod_author_users, :through => :mod, :source => :author_users
 
-  # REPORTS
-  has_many :base_reports, :as => 'reportable', :dependent => :destroy
-
   accepts_nested_attributes_for :review_ratings
 
   # VALIDATIONS

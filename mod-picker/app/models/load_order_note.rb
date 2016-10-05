@@ -48,9 +48,6 @@ class LoadOrderNote < ActiveRecord::Base
   has_many :history_entries, :class_name => 'LoadOrderNoteHistoryEntry', :inverse_of => 'load_order_note', :foreign_key => 'load_order_note_id'
   has_many :editors, -> { uniq }, :class_name => 'User', :through => 'history_entries'
 
-  # REPORTS
-  has_many :base_reports, :as => 'reportable', :dependent => :destroy
-
   # VALIDATIONS
   validates :game_id, :submitted_by, :first_plugin_id, :second_plugin_id, :text_body, presence: true
 

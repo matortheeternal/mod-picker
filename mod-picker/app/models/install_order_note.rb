@@ -41,9 +41,6 @@ class InstallOrderNote < ActiveRecord::Base
   has_many :history_entries, :class_name => 'InstallOrderNoteHistoryEntry', :inverse_of => 'install_order_note', :foreign_key => 'install_order_note_id'
   has_many :editors, -> { uniq }, :class_name => 'User', :through => 'history_entries'
 
-  # REPORTS
-  has_many :base_reports, :as => 'reportable', :dependent => :destroy
-
   # VALIDATIONS
   validates :game_id, :submitted_by, :first_mod_id, :second_mod_id, :text_body, presence: true
 

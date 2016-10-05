@@ -81,9 +81,6 @@ class ModList < ActiveRecord::Base
   # COMMENTS
   has_many :comments, -> { where(parent_id: nil) }, :as => 'commentable', :dependent => :destroy
 
-  # REPORTS
-  has_many :base_reports, :as => 'reportable', :dependent => :destroy
-
   # NESTED ATTRIBUTES
   accepts_nested_attributes_for :mod_list_mods, allow_destroy: true
   accepts_nested_attributes_for :custom_mods, allow_destroy: true

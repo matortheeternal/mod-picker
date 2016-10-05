@@ -72,7 +72,6 @@ class User < ActiveRecord::Base
 
   has_many :profile_comments, -> { where(parent_id: nil) }, :class_name => 'Comment', :as => 'commentable'
   has_many :reports, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
-  has_many :base_reports, :as => 'reportable', :dependent => :destroy
 
   has_many :notifications, -> { includes(:event).order("events.created DESC") }, :inverse_of => 'user'
   has_many :messages, :inverse_of => 'recipient', :foreign_key => 'sent_to'
