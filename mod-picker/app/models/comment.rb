@@ -10,6 +10,7 @@ class Comment < ActiveRecord::Base
   # NOTIFICATION SUBSCRIPTIONS
   subscribe :commentable_user, to: [:added]
   subscribe :submitter, to: [:hidden, :unhidden]
+  subscribe :parent_submitter, to: [:added]
 
   # SCOPES
   include_scope :hidden
@@ -44,6 +45,10 @@ class Comment < ActiveRecord::Base
 
   def nesting
     parent_id.nil? || parent.parent_id.nil?
+  end
+
+  def parent_submitter
+    parent_id.present? && parent.submitter
   end
 
   def commentable_link
