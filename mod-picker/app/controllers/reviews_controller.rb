@@ -12,7 +12,7 @@ class ReviewsController < ContributionsController
 
     # render response
     render :json => {
-        reviews: Review.index_json(@reviews),
+        reviews: json_format(@reviews),
         helpful_marks: helpful_marks,
         max_entries: count,
         entries_per_page: Review.per_page
