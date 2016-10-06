@@ -18,9 +18,10 @@ module BetterJson
   end
 
   def build_conditional_option(options, key)
-    conditional_key = ("conditional_" + key.to_s).to_sym
+    conditional_key = :"conditional_#{key}"
     return unless options.has_key?(conditional_key)
     options[conditional_key].each do |conditional_option|
+      conditional_option = conditional_option.symbolize_keys
       add_option(options, key, conditional_option[key]) if instance_eval(conditional_option[:if])
     end
   end
