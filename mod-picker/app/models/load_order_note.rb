@@ -61,7 +61,7 @@ class LoadOrderNote < ActiveRecord::Base
 
   def get_existing_note(plugin_ids)
     table = LoadOrderNote.arel_table
-    LoadOrderNote.plugins(plugin_ids).where(table[:hidden].eq(0).and.table[:id].not_eq(id)).first
+    LoadOrderNote.plugins(plugin_ids).where(table[:hidden].eq(0).and(table[:id].not_eq(id))).first
   end
 
   def unique_plugins

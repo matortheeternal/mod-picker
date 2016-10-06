@@ -54,7 +54,7 @@ class InstallOrderNote < ActiveRecord::Base
 
   def get_existing_note(mod_ids)
     table = InstallOrderNote.arel_table
-    InstallOrderNote.mods(mod_ids).where(table[:hidden].eq(0).and.table[:id].not_eq(id)).first
+    InstallOrderNote.mods(mod_ids).where(table[:hidden].eq(0).and(table[:id].not_eq(id))).first
   end
 
   def unique_mods
