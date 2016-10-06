@@ -52,10 +52,10 @@ class HomeController < ApplicationController
     render :json => {
         articles: articles,
         recent: {
-            mod_lists: ModList.home_json(mod_lists),
-            mods: Mod.home_json(mods),
-            reviews: Review.index_json(reviews),
-            corrections: Correction.index_json(corrections),
+            mod_lists: json_format(mod_lists, :home),
+            mods: json_format(mods, :home),
+            reviews: json_format(reviews),
+            corrections: json_format(corrections),
             compatibility_notes: compatibility_notes,
             install_order_notes: install_order_notes,
             load_order_notes: load_order_notes,
