@@ -35,6 +35,17 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def json_format(resource, format=nil)
+    format ||= caller_locations(1,1)[0].label
+    resource.as_json(format: format)
+  end
+
+  def respond_with(resource, format=nil, root=nil)
+    format ||= caller_locations(1,1)[0].label
+    resource_json = json_format(resource, format)
+    render json: root ? { root => resource_json } : resource_json
+  end
+
   protected
     def configure_permitted_parameters
       devise_parameter_sanitizer.for(:sign_up) { |u| u.permit(:invitation_token, :username, :email, :password, :password_confirmation, :remember_me) }
