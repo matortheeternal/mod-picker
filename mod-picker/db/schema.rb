@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161004065249) do
+ActiveRecord::Schema.define(version: 20161006191828) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -754,7 +754,7 @@ ActiveRecord::Schema.define(version: 20161004065249) do
   add_index "reports", ["base_report_id"], name: "fk_rails_619eb511d7", using: :btree
   add_index "reports", ["submitted_by"], name: "fk_rails_41fbf0e712", using: :btree
 
-  create_table "reputation_links", id: false, force: :cascade do |t|
+  create_table "reputation_links", force: :cascade do |t|
     t.integer "from_rep_id", limit: 4, null: false
     t.integer "to_rep_id",   limit: 4, null: false
   end
