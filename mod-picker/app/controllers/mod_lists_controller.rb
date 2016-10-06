@@ -19,7 +19,7 @@ class ModListsController < ApplicationController
     authorize! :read, @mod_list, :message => "You are not allowed to view this mod list."
     star = current_user.present? && ModListStar.exists?(:mod_list_id => @mod_list.id, :user_id => current_user.id)
     render :json => {
-        mod_list: @mod_list.show_json,
+        mod_list: json_format(@mod_list),
         star: star
     }
   end
@@ -28,7 +28,7 @@ class ModListsController < ApplicationController
   def active
     @mod_list = current_user.present? && current_user.active_mod_list
     if @mod_list
-      render :json => @mod_list.tracking_json
+      respond_with(@mod_list, :tracking)
     else
       render :json => { error: "No active mod list found." }
     end
@@ -164,9 +164,9 @@ class ModListsController < ApplicationController
 
     # render response
     render :json => {
-        load_order: ModListPlugin.load_order_json(load_order),
-        install_order: ModListMod.install_order_json(install_order),
-        plugins: Plugin.analysis_json(plugins),
+        load_order: json_format(load_order, :load_order),
+        install_order: json_format(install_order, :install_order),
+        plugins: json_format(plugins),
         conflicting_assets: @mod_list.conflicting_assets
     }
   end
@@ -197,13 +197,9 @@ class ModListsController < ApplicationController
       @mod_list.add_official_content
       if params.has_key?(:active) && params[:active]
         @mod_list.set_active
-        render json: {
-            mod_list: @mod_list.tracking_json
-        }
+        respond_with(@mod_list, :tracking, :mod_list)
       else
-        render json: {
-            mod_list: @mod_list
-        }
+        respond_with(@mod_list, :base, :mod_list)
       end
     else
       render json: @mod_list.errors, status: :unprocessable_entity
@@ -219,9 +215,8 @@ class ModListsController < ApplicationController
     end
 
     if current_user.update(active_mod_list_id: params[:id])
-      render json: {
-          mod_list: @mod_list && @mod_list.tracking_json
-      }
+      render json: { mod_list: nil } unless @mod_list.present?
+      respond_with(@mod_list, :tracking, :mod_list)
     else
       render json: current_user.errors, status: :unproccessable_entity
     end
