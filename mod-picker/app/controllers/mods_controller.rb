@@ -16,12 +16,12 @@ class ModsController < ApplicationController
   # POST /mods/search
   def search
     @mods = Mod.include_hidden(false).filter(search_params).sort({ column: "name", direction: "ASC" }).limit(10)
-    render :json => @mods
+    respond_with(@mods)
   end
 
   # GET /mods/1
   def show
-    @mod = Mod.includes(:nexus_infos, :workshop_infos, :lover_infos).find(params[:id])
+    @mod = Mod.find(params[:id])
     authorize! :read, @mod, :message => "You are not allowed to view this mod."
 
     # set up boolean variables
@@ -39,7 +39,7 @@ class ModsController < ApplicationController
 
     # render response
     render :json => {
-        mod: @mod.show_json,
+        mod: json_format(@mod),
         star: star,
         in_mod_list: in_mod_list,
         incompatible: incompatible
