@@ -9,17 +9,12 @@ class ModAssetFile < ActiveRecord::Base
   # UNIQUE SCOPES
   scope :bsa, -> { joins(:asset_file).where("asset_files.path like '%.bsa'") }
   scope :conflicting, -> (mod_option_ids) {
-    maf = arel_table
-    maf_right = arel_table.alias
-    mo = ModOption.arel_table
-    mo_right = ModOption.arel_table.alias
-
-    joins(conflicting_join_query(maf, maf_right, mo, mo_right).join_sources).
-        where(mo[:mod_id].not_eq(mo_right[:mod_id])).
-        where(maf[:asset_file_id].not_eq(nil)).
-        where(maf[:mod_option_id].in(mod_option_ids)).
-        where(maf_right[:mod_option_id].in(mod_option_ids)).
-        order(maf[:asset_file_id])
+    joins(conflicting_join_sources).
+        where(mod_options[:mod_id].not_eq(mod_options_right[:mod_id])).
+        where(mod_asset_files[:asset_file_id].not_eq(nil)).
+        where(mod_asset_files[:mod_option_id].in(mod_option_ids)).
+        where(mod_asset_files_right[:mod_option_id].in(mod_option_ids)).
+        order(mod_asset_files[:asset_file_id])
   }
 
   # ASSOCIATIONS
@@ -31,10 +26,29 @@ class ModAssetFile < ActiveRecord::Base
   after_create :increment_counters
   before_destroy :decrement_counters
 
+  def self.mod_asset_files
+    @mod_asset_files ||= arel_table
+  end
+
+  def self.mod_asset_files_right
+    @mod_asset_files_right ||= arel_table.alias
+  end
+
+  def self.mod_options
+    @mod_options ||= ModOption.arel_table
+  end
+
+  def self.mod_options_right
+    @mod_options_right ||= ModOption.arel_table.alias
+  end
+
   def self.conflicting_join_query(maf, maf_right, mo, mo_right)
-    maf.join(maf_right).on(maf[:asset_file_id].eq(maf_right[:asset_file_id])).
-        join(mo).on(mo[:id].eq(maf[:mod_option_id])).
-        join(mo_right).on(mo_right[:id].eq(maf_right[:mod_option_id]))
+    maf.join(mod_asset_files_right).on(mod_asset_files[:asset_file_id].
+        eq(mod_asset_files_right[:asset_file_id])).
+        join(mod_options).on(mod_options[:id].
+        eq(mod_asset_files[:mod_option_id])).
+        join(mod_options_right).on(mod_options_right[:id].
+        eq(mod_asset_files_right[:mod_option_id])).join_sources
   end
 
   def as_json(options={})
