@@ -7,7 +7,7 @@ class UsersController < ApplicationController
     count =  User.include_blank(false).includes(:reputation).references(:reputation).accessible_by(current_ability).filter(filtering_params).count
 
     render :json => {
-        users: @users,
+        users: json_format(@users),
         max_entries: count,
         entries_per_page: User.per_page
     }
@@ -15,13 +15,13 @@ class UsersController < ApplicationController
 
   # GET /current_user
   def current
-    render :json => current_user.current_json
+    respond_with(current_user)
   end
 
   # POST /users/search
   def search
     @users = User.filter(search_params).sort({ column: "username", direction: "ASC" }).limit(10)
-    render :json => User.search_json(@users)
+    respond_with(@users)
   end
 
   # GET /users/1
@@ -29,7 +29,7 @@ class UsersController < ApplicationController
     authorize! :read, @user
     endorsed = ReputationLink.exists?(from_rep_id: current_user.reputation.id, to_rep_id: @user.reputation.id)
     render :json => {
-        user: @user.show_json(current_user),
+        user: json_format(@user),
         endorsed: endorsed
     }
   end
@@ -39,6 +39,7 @@ class UsersController < ApplicationController
     authorize! :read, @user
     comments = @user.profile_comments.includes(:submitter => :reputation, :children => [:submitter => :reputation]).accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10)
     count = @user.profile_comments.accessible_by(current_ability).count
+
     render :json => {
         comments: comments,
         max_entries: count,
@@ -50,6 +51,7 @@ class UsersController < ApplicationController
   def endorse
     @reputation_link = ReputationLink.find_or_initialize_by(from_rep_id: current_user.reputation.id, to_rep_id: @user.reputation.id)
     authorize! :create, @reputation_link
+
     if @reputation_link.save
       render json: {status: :ok}
     else
