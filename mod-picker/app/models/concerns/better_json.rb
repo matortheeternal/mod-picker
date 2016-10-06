@@ -48,7 +48,7 @@ module BetterJson
 
   def insert_includes(result, options)
     options[:include].each do |key, value|
-      result[key] = public_send(key).as_json(value)
+      result[key] = public_send(key).as_json(value.symbolize_keys)
     end
   end
 
