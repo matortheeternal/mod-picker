@@ -63,8 +63,31 @@ module BetterJson
   end
 
   def load_json_template(template)
-    file = File.read(json_template_path(template))
-    self.class._json_template_cache[template] = JSON.parse(file).symbolize_keys
+    file_path = json_template_path(template)
+    unless File.exists?(file_path)
+      raise "JSON Template #{file_path} not found" if raise_template_exception?(template)
+      return {}
+    end
+    parse_template(template, file_path)
+  end
+
+  def parse_template(template, file_path)
+    template_hash = JSON.parse(File.read(file_path)).symbolize_keys
+    self.class._json_template_cache[template] = template_hash if cache_templates?
+    template_hash
+  end
+
+  def check_config(key)
+    config = Rails.application.config
+    config.respond_to?(key) && config.public_send(key)
+  end
+
+  def cache_templates?
+    check_config(:cache_json_templates)
+  end
+
+  def raise_template_exception?(template)
+    template != :base && check_config(:raise_template_not_found_exceptions)
   end
 
   def json_template_path(template)
