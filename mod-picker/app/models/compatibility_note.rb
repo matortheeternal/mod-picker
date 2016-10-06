@@ -68,8 +68,7 @@ class CompatibilityNote < ActiveRecord::Base
       return
     end
 
-    mod_ids = [first_mod_id, second_mod_id]
-    note = get_existing_note(mod_ids)
+    note = get_existing_note([first_mod_id, second_mod_id])
     if note.present?
       if note.approved
         errors.add(:mods, "A Compatibility Note for these mods already exists.")
