@@ -23,7 +23,7 @@ app.config(['$stateProvider', function($stateProvider) {
     });
 }]);
 
-app.controller('editModController', function($scope, $rootScope, $state, modObject, modService, userService, tagService, categoryService, sitesFactory, eventHandlerFactory, objectUtils) {
+app.controller('editModController', function($scope, $rootScope, $state, modObject, modService, modValidationService, userService, tagService, categoryService, sitesFactory, eventHandlerFactory, objectUtils) {
     // get parent variables
     $scope.currentUser = $rootScope.currentUser;
     $scope.categories = $rootScope.categories;
@@ -132,82 +132,13 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
         $scope.mod.secondary_category_id = $scope.mod.categories[1];
     }, true);
 
-    $scope.sourcesValid = function() {
-        var sourcesValid = true;
-        var oldSources = false;
-        $scope.sources.forEach(function(source) {
-            sourcesValid = sourcesValid && source.valid;
-            oldSources = oldSources || source.old;
-        });
-
-        // custom source validation
-        if ($scope.customSources.length) {
-            $scope.customSources.forEach(function(source) {
-                sourcesValid = sourcesValid && source.valid;
-            });
-            // if we are only submitting custom soruces, we need to verify
-            // we have all general info
-            if (!$scope.sources.length) {
-                sourcesValid = sourcesValid && $scope.mod.name && $scope.mod.authors &&
-                    $scope.mod.released;
-            }
-        }
-        else {
-            // if we don't have any custom sources we should verify we have
-            // the scraped data for at least one official source
-            sourcesValid = sourcesValid && ($scope.nexus || $scope.workshop || $scope.lab || oldSources);
-        }
-
-        return sourcesValid;
-    };
-
-    $scope.authorsValid = function() {
-        var authorsValid = true;
-        var authorIds = [];
-        $scope.mod.mod_authors.forEach(function(modAuthor) {
-            var userId = modAuthor.user_id;
-            authorsValid = authorsValid && userId;
-            if (!userId) return;
-            var idPresent = authorIds.indexOf(userId) > -1;
-            if (idPresent) {
-                modAuthor.error = true;
-                authorsValid = false;
-            } else {
-                modAuthor.error = false;
-                authorIds.push(userId);
-            }
-        });
-
-        return authorsValid;
-    };
-
-    $scope.requirementsValid = function() {
-        var requirementsValid = true;
-        $scope.mod.requirements.forEach(function(requirement) {
-            requirementsValid = requirementsValid && requirement.required_id;
-        });
-        return requirementsValid;
-    };
-
-    $scope.configsValid = function() {
-        var configsValid = true;
-        $scope.mod.config_files.forEach(function(configFile) {
-            configsValid = configsValid && configFile.filename.length && configFile.install_path.length && configFile.text_body.length;
-        });
-        return configsValid;
-    };
-
-    $scope.categoriesValid = function() {
-        return $scope.mod.categories.length <= 2 && $scope.mod.is_official || $scope.mod.categories.length;
-    };
-
     // validate the mod
     $scope.modValid = function() {
-        var sourcesValid = $scope.sourcesValid();
-        var authorsValid = $scope.authorsValid();
-        var requirementsValid = $scope.requirementsValid();
-        var configsValid = $scope.configsValid();
-        var categoriesValid = $scope.categoriesValid();
+        var sourcesValid = modValidationService.sourcesValid($scope);
+        var authorsValid = modValidationService.authorsValid($scope.mod.mod_authors);
+        var requirementsValid = modValidationService.requirementsValid($scope.mod.requirements);
+        var configsValid = modValidationService.configsValid($scope.mod.config_files);
+        var categoriesValid = modValidationService.categoriesValid($scope.mod);
 
         // return result of all validations
         return sourcesValid && authorsValid && requirementsValid && configsValid && categoriesValid;
