@@ -1,8 +1,5 @@
 {
   "include": {
-    "masters": {
-      "format": "plugin"
-    },
     "mod": {}
   }
 }
