@@ -42,8 +42,8 @@ class ModAssetFile < ActiveRecord::Base
     @mod_options_right ||= ModOption.arel_table.alias
   end
 
-  def self.conflicting_join_query(maf, maf_right, mo, mo_right)
-    maf.join(mod_asset_files_right).on(mod_asset_files[:asset_file_id].
+  def self.conflicting_join_sources
+    mod_asset_files.join(mod_asset_files_right).on(mod_asset_files[:asset_file_id].
         eq(mod_asset_files_right[:asset_file_id])).
         join(mod_options).on(mod_options[:id].
         eq(mod_asset_files[:mod_option_id])).
