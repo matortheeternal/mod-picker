@@ -89,38 +89,6 @@ class Correction < ActiveRecord::Base
     Comment.commentables("Correction", ids).joins("INNER JOIN corrections ON corrections.id = comments.commentable_id").update_all("comments.has_adult_content = corrections.has_adult_content")
   end
 
-  def note_includes
-    case correctable_type
-      when "InstallOrderNote"
-      when "CompatibilityNote"
-      {
-          :first_mod => {
-              :only => [:id, :username]
-          },
-          :second_mod => {
-              :only => [:id, :username]
-          }
-      }
-      when "LoadOrderNote"
-      {
-          :first_mod => {
-              :only => [:id, :name]
-          },
-          :second_mod => {
-              :only => [:id, :name]
-          },
-          :first_plugin => {
-              :only => [:id, :filename]
-          },
-          :second_plugin => {
-              :only => [:id, :filename]
-          }
-      }
-      else
-        {}
-    end
-  end
-
   def self.index_json(collection)
     collection.as_json({
         :include => {
@@ -136,14 +104,9 @@ class Correction < ActiveRecord::Base
                 :include => {
                     :submitter => {
                         :only => [:id, :username]
-                    },
-                    :first_mod => {
-                        :only => [:id, :username]
-                    },
-                    :second_mod => {
-                        :only => [:id, :username]
                     }
-                }
+                },
+                :methods => :mods
             },
         }
     })
@@ -175,7 +138,7 @@ class Correction < ActiveRecord::Base
         :include => {
             :correctable => {
                 :only => [:id, (:name if is_appeal)].compact,
-                :include => note_includes
+                :methods => [(:mods if !is_appeal), (:plugins if correctable_type == "LoadOrderNote")].compact
             }
         }
     }
@@ -188,7 +151,7 @@ class Correction < ActiveRecord::Base
         :include => {
             :correctable => {
                 :only => [:id, (:name if is_appeal)].compact,
-                :include => note_includes
+                :methods => [(:mods if !is_appeal), (:plugins if correctable_type == "LoadOrderNote")].compact
             },
             :submitter => {
                 :only => [:id, :username, :role, :title],
@@ -225,30 +188,30 @@ class Correction < ActiveRecord::Base
   end
 
   private
-    def set_dates
-      if self.submitted.nil?
-        self.submitted = DateTime.now
-      else
-        self.edited = DateTime.now
-      end
+  def set_dates
+    if self.submitted.nil?
+      self.submitted = DateTime.now
+    else
+      self.edited = DateTime.now
     end
+  end
 
-    def set_adult
-      self.has_adult_content = correctable.has_adult_content
-      true
-    end
+  def set_adult
+    self.has_adult_content = correctable.has_adult_content
+    true
+  end
 
-    def increment_counters
-      correctable.update_counter(:corrections_count, 1)
-      submitter.update_counter(:corrections_count, 1)
-    end
+  def increment_counters
+    correctable.update_counter(:corrections_count, 1)
+    submitter.update_counter(:corrections_count, 1)
+  end
 
-    def decrement_counters
-      correctable.update_counter(:corrections_count, -1)
-      submitter.update_counter(:corrections_count, -1)
-    end
+  def decrement_counters
+    correctable.update_counter(:corrections_count, -1)
+    submitter.update_counter(:corrections_count, -1)
+  end
 
-    def schedule_close
-      Correction.delay_for(1.week).close(id)
-    end
+  def schedule_close
+    Correction.delay_for(1.week).close(id)
+  end
 end
