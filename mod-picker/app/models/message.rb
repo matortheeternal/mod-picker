@@ -1,5 +1,5 @@
 class Message < ActiveRecord::Base
-  include Trackable
+  include Trackable, BetterJson
 
   # EVENT TRACKING
   track :added
@@ -18,10 +18,6 @@ class Message < ActiveRecord::Base
   # TODO: We should probably do something to make global message notification performant for when we have more than 10,000 users
   def recipient_users
     sent_to ? recipient : User.all
-  end
-
-  def notification_json_options(event_type)
-    { :only => [:text] }
   end
 
   # Private methods

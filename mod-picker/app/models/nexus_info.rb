@@ -1,5 +1,5 @@
 class NexusInfo < ActiveRecord::Base
-  include Scrapeable
+  include Scrapeable, BetterJson
 
   # ASSOCIATIONS
   belongs_to :mod
@@ -28,12 +28,18 @@ class NexusInfo < ActiveRecord::Base
     after_scrape
   end
 
+  def self.edit_json_format
+    { :only => [:id, :last_scraped] }
+  end
+
+  def self.base_json_format
+    { :except => [:mod_id] }
+  end
+
   def notification_json_options(event_type)
     {
         :only => [],
-        :include => {
-            :mod => { :only => [:id, :name] }
-        }
+        :include => { :mod => Mod.base_json_format }
     }
   end
 

@@ -1,5 +1,5 @@
 class ModAuthor < ActiveRecord::Base
-  include Trackable
+  include Trackable, BetterJson
 
   # ATTRIBUTES
   enum role: [:author, :contributor, :curator]
@@ -36,16 +36,6 @@ class ModAuthor < ActiveRecord::Base
 
   def mod_author_users
     User.joins(:mod_authors).where(:mod_authors => {role: 0, mod_id: mod_id})
-  end
-
-  def notification_json_options(event_type)
-    {
-        :only => [:role],
-        :include => {
-            :user => { :only => [:id, :username] },
-            :mod => { :only => [:id, :name] }
-        }
-    }
   end
 
   private

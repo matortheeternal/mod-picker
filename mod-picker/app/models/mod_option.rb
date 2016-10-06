@@ -1,4 +1,6 @@
 class ModOption < ActiveRecord::Base
+  include BetterJson
+
   attr_accessor :asset_paths, :plugin_dumps
 
   # SCOPES
@@ -72,16 +74,5 @@ class ModOption < ActiveRecord::Base
         plugins_count: plugins_count,
         asset_files_count: asset_files_count
     })
-  end
-
-  def as_json(options={})
-    if JsonHelpers.json_options_empty(options)
-      default_options = {
-          :only => [:id, :name, :default]
-      }
-      super(options.merge(default_options))
-    else
-      super(options)
-    end
   end
 end

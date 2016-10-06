@@ -1,5 +1,5 @@
 class Review < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, Helpfulable, Reportable, ScopeHelpers, Trackable
+  include Filterable, Sortable, RecordEnhancements, Helpfulable, Reportable, ScopeHelpers, Trackable, BetterJson
 
   # ATTRIBUTES
   self.per_page = 25
@@ -81,86 +81,6 @@ class Review < ActiveRecord::Base
     end
 
     self.overall_rating = (total.to_f / count) if count > 0
-  end
-
-  def self.index_json(collection)
-    collection.as_json({
-        :include => {
-            :review_ratings => {
-                :except => [:review_id]
-            },
-            :submitter=> {
-                :only => [:id, :username, :role, :title, :joined, :last_sign_in_at, :reviews_count, :compatibility_notes_count, :install_order_notes_count, :load_order_notes_count, :corrections_count, :comments_count],
-                :include => {
-                    :reputation => {:only => [:overall]}
-                },
-                :methods => :avatar
-            },
-            :editor => {
-                :only => [:id, :username, :role]
-            },
-            :mod => {
-                :only => [:id, :name]
-            }
-        }
-    })
-  end
-  
-  def as_json(options={})
-    if JsonHelpers.json_options_empty(options)
-      default_options = {
-          :include => {
-              :review_ratings => {
-                  :except => [:review_id]
-              },
-              :submitter => {
-                  :only => [:id, :username, :role, :title, :joined, :last_sign_in_at, :reviews_count, :compatibility_notes_count, :install_order_notes_count, :load_order_notes_count, :corrections_count, :comments_count],
-                  :include => {
-                      :reputation => {:only => [:overall]}
-                  },
-                  :methods => :avatar
-              },
-              :editor => {
-                  :only => [:id, :username, :role]
-              }
-          }
-      }
-      super(options.merge(default_options))
-    else
-      super(options)
-    end
-  end
-
-  def notification_json_options(event_type)
-    {
-        :only => [:submitted_by],
-        :include => {
-            :mod => { :only => [:id, :name] }
-        }
-    }
-  end
-
-  def reportable_json_options
-    {
-        :include => {
-            :review_ratings => {
-                :except => [:review_id]
-            },
-            :submitter => {
-                :only => [:id, :username, :role, :title],
-                :include => {
-                    :reputation => {:only => [:overall]}
-                },
-                :methods => :avatar
-            },
-            :editor => {
-                :only => [:id, :username, :role]
-            },
-            :mod => { 
-                :only => [:id, :name] 
-            }
-        }
-    }
   end
 
   def self.sortable_columns

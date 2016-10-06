@@ -1,5 +1,5 @@
 class Event < ActiveRecord::Base
-  include ScopeHelpers
+  include ScopeHelpers, BetterJson
 
   # ATTRIBUTES
   enum event_type: [:added, :updated, :removed, :hidden, :unhidden, :approved, :unapproved, :status, :action_soon, :message, :unused, :milestone1, :milestone2, :milestone3, :milestone4, :milestone5, :milestone6, :milestone7, :milestone8, :milestone9, :milestone10]
@@ -7,10 +7,10 @@ class Event < ActiveRecord::Base
 
   # SCOPES
   enum_scope :event_type
-  polymorphic_scope :content
+  polymorphic_scope :eventable
 
   # ASSOCIATIONS
-  belongs_to :content, :polymorphic => true
+  belongs_to :eventable, :polymorphic => true
   has_many :notifications, :inverse_of => 'event', :dependent => :destroy
 
   # VALIDATIONS
@@ -20,10 +20,6 @@ class Event < ActiveRecord::Base
   # CALLBACKS
   before_create :set_dates
   after_create :create_notifications
-
-  def content_json
-    content.notification_json_options(event_type)
-  end
 
   def self.milestones
     [:milestone1, :milestone2, :milestone3, :milestone4, :milestone5, :milestone6, :milestone7, :milestone8, :milestone9, :milestone10]

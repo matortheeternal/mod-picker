@@ -1,5 +1,5 @@
 class UserReputation < ActiveRecord::Base
-  include Filterable, RecordEnhancements, Trackable
+  include Filterable, RecordEnhancements, Trackable, BetterJson
 
   # EVENT TRACKING
   track_milestones :column => 'overall', :milestones => [10, 20, 40, 80, 160, 320, 640, 1280]

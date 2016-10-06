@@ -23,45 +23,6 @@ class ModListMod < ActiveRecord::Base
   after_create :increment_counter_caches, :add_default_mod_options
   before_destroy :decrement_counter_caches, :destroy_mod_list_plugins
 
-  def self.install_order_json(collection)
-    collection.as_json({
-        :only => [:mod_id, :index],
-        :include => {
-            :mod => {
-                :only => [:name]
-            },
-            :mod_list_mod_options => {
-                :only => [:mod_option_id]
-            }
-        }
-    })
-  end
-
-  def as_json(options={})
-    if JsonHelpers.json_options_empty(options)
-      default_options = {
-          :only => [:id, :group_id, :index, :active],
-          :include => {
-              :mod => {
-                  :only => [:id, :is_official, :name, :aliases, :authors, :status, :primary_category_id, :secondary_category_id, :average_rating, :reputation, :asset_files_count, :stars_count, :released, :updated],
-                  :include => {
-                      :mod_options => {
-                          :only => [:id, :name, :default]
-                      }
-                  },
-                  :methods => :image
-              },
-              :mod_list_mod_options => {
-                  :only => [:id, :mod_option_id, :enabled]
-              }
-          }
-      }
-      super(options.merge(default_options))
-    else
-      super(options)
-    end
-  end
-
   def mod_compatibility_notes
     mod_ids = mod_list.mod_list_mod_ids
     return [] if mod_ids.empty?

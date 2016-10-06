@@ -1,5 +1,5 @@
 class Mod < ActiveRecord::Base
-  include Filterable, Sortable, Reportable, Imageable, RecordEnhancements, SourceHelpers, ScopeHelpers, Trackable
+  include Filterable, Sortable, Reportable, Imageable, RecordEnhancements, SourceHelpers, ScopeHelpers, Trackable, BetterJson
 
   # ATTRIBUTES
   enum status: [ :good, :outdated, :unstable ]
@@ -246,156 +246,15 @@ class Mod < ActiveRecord::Base
 
   def self.index_json(collection, sources)
     # Includes hash for mods index query
-    include_hash = { :author_users => { :only => [:id, :username] } }
-    include_hash[:nexus_infos] = {:except => [:mod_id]} if sources[:nexus]
-    include_hash[:lover_infos] = {:except => [:mod_id]} if sources[:lab]
-    include_hash[:workshop_infos] = {:except => [:mod_id]} if sources[:workshop]
+    include_hash = {}
+    include_hash[:nexus_infos] = {} if sources[:nexus]
+    include_hash[:lover_infos] = {} if sources[:lab]
+    include_hash[:workshop_infos] = {} if sources[:workshop]
 
     collection.as_json({
         :except => [:game_id, :submitted_by, :edited_by, :disallow_contributors, :disable_reviews, :lock_tags],
         :include => include_hash
     })
-  end
-
-  def self.home_json(collection)
-    collection.as_json({
-        :only => [:id, :name, :authors, :released],
-        :include => {
-            :primary_category => {:only => [:name]}
-        },
-        :methods => [:image]
-    })
-  end
-
-  def edit_json
-    self.as_json({
-        :include => {
-            :tags => {
-                :except => [:game_id, :hidden, :mod_lists_count],
-                :include => {
-                    :submitter => {
-                        :only => [:id, :username]
-                    }
-                }
-            },
-            :nexus_infos => {:only => [:id, :last_scraped]},
-            :workshop_infos => {:only => [:id, :last_scraped]},
-            :lover_infos => {:only => [:id, :last_scraped]},
-            :custom_sources => {:except => [:mod_id]},
-            :mod_authors => {
-                :only => [:id, :role, :user_id],
-                :include => {
-                    :user => {
-                        :only => [:username]
-                    }
-                }
-            },
-            :required_mods => {
-                :only => [:id],
-                :include => {
-                    :required_mod => {
-                        :only => [:id, :name]
-                    }
-                }
-            },
-            :config_files => {
-                :except => [:game_id, :mod_id, :mod_lists_count]
-            }
-        },
-        :methods => :image
-    })
-  end
-
-  def show_json
-    self.as_json({
-        :except => [:disallow_contributors, :hidden],
-        :include => {
-            :tags => {
-                :except => [:game_id, :hidden, :mod_lists_count],
-                :include => {
-                    :submitter => {
-                        :only => [:id, :username]
-                    }
-                }
-            },
-            :nexus_infos => {:except => [:mod_id]},
-            :workshop_infos => {:except => [:mod_id]},
-            :lover_infos => {:except => [:mod_id]},
-            :plugins => {:only => [:id, :filename]},
-            :custom_sources => {:except => [:mod_id]},
-            :mod_authors => {
-                :only => [:id, :role, :user_id],
-                :include => {
-                    :user => {
-                        :only => [:username]
-                    }
-                }
-            },
-            :required_mods => {
-                :only => [],
-                :include => {
-                    :required_mod => {
-                        :only => [:id, :name]
-                    }
-                }
-            },
-            :required_by => {
-                :only => [],
-                :include => {
-                    :mod => {
-                        :only => [:id, :name]
-                    }
-                }
-            }
-        },
-        :methods => :image
-    })
-  end
-
-  def as_json(options={})
-    if JsonHelpers.json_options_empty(options)
-      default_options = {
-          :only => [:id, :name]
-      }
-      super(options.merge(default_options))
-    else
-      super(options)
-    end
-  end
-
-  def notification_json_options(event_type)
-    { :only => [:name] }
-  end
-
-  # TODO: trim down json for reports
-  def reportable_json_options
-    {
-        :except => [:disallow_contributors, :hidden],
-        :include => {
-            :submitter => {
-                :only => [:username]
-            },
-            :nexus_infos => {:except => [:mod_id]},
-            :workshop_infos => {:except => [:mod_id]},
-            :lover_infos => {:except => [:mod_id]},
-            :custom_sources => {:except => [:mod_id]},
-            :mod_authors => {
-                :only => [:id, :role, :user_id],
-                :include => {
-                    :user => {
-                        :only => [:username]
-                    }
-                }
-            },
-            :primary_category => {
-                :only => [:name]
-            },
-            :secondary_category => {
-                :only => [:name]
-            }
-        },
-        :methods => :image
-    }
   end
 
   def self.sortable_columns

@@ -1,5 +1,5 @@
 class ModList < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, Reportable, ScopeHelpers, Trackable
+  include Filterable, Sortable, RecordEnhancements, Reportable, ScopeHelpers, Trackable, BetterJson
 
   # ATTRIBUTES
   enum status: [ :under_construction, :testing, :complete ]
@@ -320,89 +320,6 @@ class ModList < ActiveRecord::Base
     a.push("\r\nMods:")
     mods.each { |mod_list_mod| a.push(mod_list_mod.mod.links_text) }
     a.join("\r\n")
-  end
-
-  def show_json
-    self.as_json({
-        :except => [:submitted_by],
-        :include => {
-            :submitter => {
-                :only => [:id, :username, :role, :title],
-                :include => {
-                    :reputation => {:only => [:overall]}
-                },
-                :methods => :avatar
-            },
-            :tags => {
-                :except => [:game_id, :hidden, :mods_count],
-                :include => {
-                    :submitter => {
-                        :only => [:id, :username]
-                    }
-                }
-            },
-            :ignored_notes => {
-                :except => [:mod_list_id]
-            }
-        }
-    })
-  end
-
-  def tracking_json
-    self.as_json({
-        :only => [:id, :name, :tools_count, :custom_tools_count, :mods_count, :custom_mods_count, :plugins_count, :custom_plugins_count],
-        :methods => :mod_list_mod_ids
-    })
-  end
-
-  def self.home_json(collection)
-    # TODO: Revise this as needed
-    collection.as_json({
-        :only => [:id, :name, :completed, :mods_count, :plugins_count],
-        :include => {
-            :submitter => {
-                :only => [:id, :username, :role, :title],
-                :include => {
-                    :reputation => {:only => [:overall]}
-                },
-                :methods => :avatar
-            }
-        }
-    })
-  end
-
-  def as_json(options={})
-    if JsonHelpers.json_options_empty(options)
-      default_options = {
-          :except => [:game_id, :submitted_by],
-          :include => {
-              :submitter => {
-                  :only => [:id, :username]
-              }
-          }
-      }
-      super(options.merge(default_options))
-    else
-      super(options)
-    end
-  end
-
-  def notification_json_options(event_type)
-    { :only => [:name] }
-  end
-
-  def reportable_json_options
-      { :only => [:name, :id, :description, :status, :submitted, :visibility],
-          :include => {
-              :submitter => {
-                  :only => [:id, :username, :role, :title],
-                  :include => {
-                      :reputation => {:only => [:overall]}
-                  },
-                  :methods => :avatar
-              }
-          }
-      }
   end
 
   def self.sortable_columns

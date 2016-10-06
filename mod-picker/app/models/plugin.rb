@@ -1,5 +1,5 @@
 class Plugin < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, ScopeHelpers
+  include Filterable, Sortable, RecordEnhancements, ScopeHelpers, BetterJson
 
   # ATTRIBUTES
   attr_writer :master_plugins
@@ -98,85 +98,6 @@ class Plugin < ActiveRecord::Base
       end
     end
     output
-  end
-
-  def self.index_json(collection)
-    collection.as_json({
-        :include => {
-            :masters => {
-                :except => [:plugin_id],
-                :include => {
-                    :master_plugin => {
-                        :only => [:id, :mod_id, :filename]
-                    }
-                }
-            },
-            :mod => {
-                :only => [:id, :name]
-            }
-        }
-    })
-  end
-
-  def self.analysis_json(collection)
-    collection.as_json({
-        :only => [:id, :mod_id, :filename, :errors_count],
-        :include => {
-            :masters => {
-                :except => [:plugin_id],
-                :include => {
-                    :master_plugin => {
-                        :only => [:mod_id, :filename]
-                    }
-                }
-            },
-            :dummy_masters => {
-                :except => [:plugin_id]
-            }
-        },
-        :methods => :formatted_overrides
-    })
-  end
-
-  def self.show_json(collection)
-    collection.as_json({
-        :include => {
-            :masters => {
-                :except => [:plugin_id],
-                :include => {
-                    :master_plugin => {
-                        :only => [:mod_id, :filename]
-                    }
-                }
-            },
-            :dummy_masters => {
-                :except => [:plugin_id]
-            },
-            :plugin_errors => {
-                :except => [:plugin_id]
-            },
-            :plugin_record_groups => {
-                :except => [:plugin_id]
-            }
-        },
-        :methods => :formatted_overrides
-    })
-  end
-
-  def as_json(options={})
-    if JsonHelpers.json_options_empty(options)
-      default_options = {
-          :only => [:id, :filename],
-          :include => {
-              :mod => {
-                  :only => [:id, :name]
-              }
-          }
-      }
-      super(options.merge(default_options))
-    else
-      super(options)
-    end
   end
 
   def self.sortable_columns

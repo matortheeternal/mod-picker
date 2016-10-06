@@ -92,57 +92,6 @@ class InstallOrderNote < ActiveRecord::Base
     InstallOrderNote.where(id: ids).joins(:first_mod, :second_mod).update_all("install_order_notes.has_adult_content = mods.has_adult_content OR second_mods_install_order_notes.has_adult_content")
   end
 
-  def self.base_json_format
-    {
-        :except => [:submitted_by],
-        :include => {
-            :submitter => User.card_json_format,
-            :editor => User.base_json_format,
-            :editors => User.base_json_format,
-            :first_mod => Mod.base_json_format,
-            :second_mod => Mod.base_json_format
-        }
-    }
-  end
-
-  def notification_json_options(event_type)
-    {
-        :only => [:submitted_by, (:moderator_message if event_type == :message)].compact,
-        :include => {
-            :first_mod => Mod.base_json_format,
-            :second_mod => Mod.base_json_format
-        }
-    }
-  end
-
-  # TODO: trim down reportable json options
-  def reportable_json_options
-    {
-          :except => [:submitted_by],
-          :include => {
-              :submitter => {
-                  :only => [:id, :username, :role, :title],
-                  :include => {
-                      :reputation => {:only => [:overall]}
-                  },
-                  :methods => :avatar
-              },
-              :editor => {
-                  :only => [:id, :username, :role]
-              },
-              :editors => {
-                  :only => [:id, :username, :role]
-              },
-              :first_mod => {
-                  :only => [:id, :name]
-              },
-              :second_mod => {
-                  :only => [:id, :name]
-              }
-          }
-      }
-  end
-
   def self.sortable_columns
     {
         :except => [:game_id, :submitted_by, :edited_by, :corrector_id, :first_mod_id, :second_mod_id, :text_body, :edit_summary, :moderator_message],

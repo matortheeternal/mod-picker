@@ -1,5 +1,5 @@
 class ReputationLink < ActiveRecord::Base
-  include Trackable
+  include Trackable, BetterJson
 
   # ATTRIBUTES
   self.primary_keys = :from_rep_id, :to_rep_id
@@ -25,16 +25,6 @@ class ReputationLink < ActiveRecord::Base
 
   def removed_by
     source_user.id
-  end
-
-  def notification_json_options(event_type)
-    {
-        :only => [],
-        :include => {
-            :target_user => { :only => [:id, :username] },
-            :source_user => { :only => [:id, :username] }
-        }
-    }
   end
 
   private
