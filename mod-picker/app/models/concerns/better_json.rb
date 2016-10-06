@@ -32,10 +32,13 @@ module BetterJson
     options
   end
 
-  def insert_templates(options)
-    if json_options_empty(options)
-      options = get_json_template(options[:format] || :base)
-    end
+  def inherit_template(options)
+    get_json_template(options[:inherit_from]).merge(options)
+  end
+
+  def build_template(options)
+    options = get_json_template(options[:format] || :base) if json_options_empty(options)
+    options = inherit_template(options) if options.has_key?(:inherit_from)
     build_conditional_options(options)
   end
 
@@ -47,7 +50,7 @@ module BetterJson
 
   # noinspection RubySuperCallWithoutSuperclassInspection
   def as_json(options={})
-    options = insert_templates(options)
+    options = build_template(options)
     result = super(options.except(:include))
     insert_includes(result, options) if options.has_key?(:include)
     result
