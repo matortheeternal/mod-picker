@@ -1,0 +1,7 @@
+{
+  "only": ["id", "is_official", "name", "aliases", "authors", "status", "primary_category_id", "secondary_category_id", "average_rating", "reputation", "asset_files_count", "stars_count", "released", "updated"],
+  "include": {
+    "mod_options": {}
+  },
+  "methods": "image"
+}
