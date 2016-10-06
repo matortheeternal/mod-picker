@@ -190,7 +190,7 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
 
     $scope.validateReview = function() {
         var review = $scope.activeReview;
-        var sanitized_text = reviewSectionService.removePrompts(review.text_body);
+        var sanitized_text = contributionService.removePrompts(review.text_body);
         var textValid = sanitized_text.length > 512;
         var ratingsValid = review.ratings.reduce(function(valid, section) {
             return valid && section.rating;
@@ -222,12 +222,10 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
     // save a review
     $scope.saveReview = function() {
         // return if the review is invalid
-        if (!$scope.activeReview.valid) {
-            return;
-        }
+        if (!$scope.activeReview.valid) return;
 
         // submit the review
-        var sanitized_text = reviewSectionService.removePrompts($scope.activeReview.text_body);
+        var sanitized_text = contributionService.removePrompts($scope.activeReview.text_body);
         var review_ratings = [];
         $scope.activeReview.ratings.forEach(function(item) {
             review_ratings.push({
