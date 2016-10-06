@@ -132,9 +132,7 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
         $scope.mod.secondary_category_id = $scope.mod.categories[1];
     }, true);
 
-    // validate the mod
-    $scope.modValid = function() {
-        // main source validation
+    $scope.sourcesValid = function() {
         var sourcesValid = true;
         var oldSources = false;
         $scope.sources.forEach(function(source) {
@@ -160,29 +158,59 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
             sourcesValid = sourcesValid && ($scope.nexus || $scope.workshop || $scope.lab || oldSources);
         }
 
-        // Validate authors
+        return sourcesValid;
+    };
+
+    $scope.authorsValid = function() {
         var authorsValid = true;
+        var authorIds = [];
         $scope.mod.mod_authors.forEach(function(modAuthor) {
-            authorsValid = authorsValid && modAuthor.user.id;
+            var userId = modAuthor.user_id;
+            authorsValid = authorsValid && userId;
+            if (!userId) return;
+            var idPresent = authorIds.indexOf(userId) > -1;
+            if (idPresent) {
+                modAuthor.error = true;
+                authorsValid = false;
+            } else {
+                modAuthor.error = false;
+                authorIds.push(userId);
+            }
         });
 
-        // Validate requirements
+        return authorsValid;
+    };
+
+    $scope.requirementsValid = function() {
         var requirementsValid = true;
         $scope.mod.requirements.forEach(function(requirement) {
             requirementsValid = requirementsValid && requirement.required_id;
         });
+        return requirementsValid;
+    };
 
-        // Validate config files
+    $scope.configsValid = function() {
         var configsValid = true;
         $scope.mod.config_files.forEach(function(configFile) {
             configsValid = configsValid && configFile.filename.length && configFile.install_path.length && configFile.text_body.length;
         });
+        return configsValid;
+    };
 
-        // validate categories
-        var categoriesValid = $scope.mod.categories.length <= 2 && $scope.mod.is_official || $scope.mod.categories.length;
+    $scope.categoriesValid = function() {
+        return $scope.mod.categories.length <= 2 && $scope.mod.is_official || $scope.mod.categories.length;
+    };
+
+    // validate the mod
+    $scope.modValid = function() {
+        var sourcesValid = $scope.sourcesValid();
+        var authorsValid = $scope.authorsValid();
+        var requirementsValid = $scope.requirementsValid();
+        var configsValid = $scope.configsValid();
+        var categoriesValid = $scope.categoriesValid();
 
         // return result of all validations
-        return (sourcesValid && categoriesValid)
+        return sourcesValid && authorsValid && requirementsValid && configsValid && categoriesValid;
     };
 
     // save changes
