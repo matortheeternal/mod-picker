@@ -14,7 +14,7 @@ app.service('modValidationService', function() {
             $scope.customSources.forEach(function(source) {
                 sourcesValid = sourcesValid && source.valid;
             });
-            // if we are only submitting custom soruces, we need to verify
+            // if we are only submitting custom sources, we need to verify
             // we have all general info
             if (!$scope.sources.length) {
                 sourcesValid = sourcesValid && $scope.mod.name && $scope.mod.authors &&
@@ -30,32 +30,32 @@ app.service('modValidationService', function() {
         return sourcesValid;
     };
 
-    this.authorsValid = function(mod_authors) {
-        var authorsValid = true;
-        var authorIds = [];
-        mod_authors.forEach(function(modAuthor) {
-            var userId = modAuthor.user_id;
-            authorsValid = authorsValid && userId;
-            if (!userId) return;
-            var idPresent = authorIds.indexOf(userId) > -1;
+    this.setValid = function(set, key) {
+        var setValid = true;
+        var setIds = [];
+        set.forEach(function(item) {
+            var itemId = item[key];
+            setValid = setValid && itemId;
+            if (!itemId) return;
+            var idPresent = setIds.indexOf(itemId) > -1;
             if (idPresent) {
-                modAuthor.error = true;
-                authorsValid = false;
+                item.error = true;
+                setValid = false;
             } else {
-                modAuthor.error = false;
-                authorIds.push(userId);
+                item.error = false;
+                setIds.push(itemId);
             }
         });
 
-        return authorsValid;
+        return setValid;
+    };
+
+    this.authorsValid = function(mod_authors) {
+        return service.setValid(mod_authors, 'user_id');
     };
 
     this.requirementsValid = function(requirements) {
-        var requirementsValid = true;
-        requirements.forEach(function(requirement) {
-            requirementsValid = requirementsValid && requirement.required_id;
-        });
-        return requirementsValid;
+        return service.setValid(requirements, 'required_id');
     };
 
     this.configsValid = function(config_files) {

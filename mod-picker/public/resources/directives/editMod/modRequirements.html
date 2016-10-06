@@ -3,7 +3,7 @@
 </h3>
 <section>
     <div class="dynamic-item" ng-repeat="requirement in mod.requirements" ng-hide="requirement._destroy">
-        <search-input search-function="searchMods" result-id="requirement.required_id" search-text="requirement.name" label="mod" key="name" class="long-input"></search-input>
+        <search-input search-function="searchMods" result-id="requirement.required_id" search-text="requirement.name"  error="requirement.error" label="mod" key="name" class="long-input"></search-input>
         <span class="remove-item" ng-click="removeRequirement(requirement)" title="Remove requirement">
             <i class="fa fa-times"></i>
         </span>
