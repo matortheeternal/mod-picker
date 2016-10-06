@@ -1,5 +1,7 @@
 {
   "include": {
-    "content": {}
+    "eventable": {
+      "format": "eventable"
+    }
   }
 }

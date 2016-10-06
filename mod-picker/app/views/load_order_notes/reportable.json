@@ -1,3 +1,3 @@
 {
-  "inherit_format": "base"
+  "inherit_from": "base"
 }
