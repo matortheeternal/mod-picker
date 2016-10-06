@@ -1,7 +1,7 @@
 {
   "include": {
-    "eventable": {
-      "format": "eventable"
+    "content": {
+      "format": "notification"
     }
   }
 }

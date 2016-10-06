@@ -7,10 +7,10 @@ class Event < ActiveRecord::Base
 
   # SCOPES
   enum_scope :event_type
-  polymorphic_scope :eventable
+  polymorphic_scope :content
 
   # ASSOCIATIONS
-  belongs_to :eventable, :polymorphic => true
+  belongs_to :content, :polymorphic => true
   has_many :notifications, :inverse_of => 'event', :dependent => :destroy
 
   # VALIDATIONS
