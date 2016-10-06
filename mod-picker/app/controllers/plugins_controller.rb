@@ -16,13 +16,13 @@ class PluginsController < ApplicationController
   # POST /plugins/search
   def search
     @plugins = Plugin.filter(search_params).sort({ column: "filename", direction: "ASC" }).limit(10)
-    respond_with(@plugins)
+    respond_with_json(@plugins)
   end
 
   # GET /plugins/1
   def show
     authorize! :read, @plugin
-    respond_with(@plugin)
+    respond_with_json(@plugin)
   end
 
   # DELETE /plugins/1

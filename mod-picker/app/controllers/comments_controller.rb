@@ -16,7 +16,7 @@ class CommentsController < ApplicationController
   # GET /comments/1
   def show
     authorize! :read, @comment
-    respond_with(@comment)
+    respond_with_json(@comment)
   end
 
   # POST /comments

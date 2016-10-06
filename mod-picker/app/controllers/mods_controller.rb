@@ -16,7 +16,7 @@ class ModsController < ApplicationController
   # POST /mods/search
   def search
     @mods = Mod.include_hidden(false).filter(search_params).sort({ column: "name", direction: "ASC" }).limit(10)
-    respond_with(@mods)
+    render json: @mods
   end
 
   # GET /mods/1

@@ -6,7 +6,7 @@ class UserSettingsController < ApplicationController
   # GET /settings/:id
   def show
     authorize! :update, @user
-    respond_with(@user, :settings, :user)
+    respond_with_json(@user, :settings, :user)
   end
 
   # PATCH/PUT /settings/:id

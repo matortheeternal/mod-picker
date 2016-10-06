@@ -28,7 +28,7 @@ class ModListsController < ApplicationController
   def active
     @mod_list = current_user.present? && current_user.active_mod_list
     if @mod_list
-      respond_with(@mod_list, :tracking)
+      respond_with_json(@mod_list, :tracking)
     else
       render :json => { error: "No active mod list found." }
     end
@@ -197,9 +197,9 @@ class ModListsController < ApplicationController
       @mod_list.add_official_content
       if params.has_key?(:active) && params[:active]
         @mod_list.set_active
-        respond_with(@mod_list, :tracking, :mod_list)
+        respond_with_json(@mod_list, :tracking, :mod_list)
       else
-        respond_with(@mod_list, :base, :mod_list)
+        respond_with_json(@mod_list, :base, :mod_list)
       end
     else
       render json: @mod_list.errors, status: :unprocessable_entity
@@ -216,7 +216,7 @@ class ModListsController < ApplicationController
 
     if current_user.update(active_mod_list_id: params[:id])
       render json: { mod_list: nil } unless @mod_list.present?
-      respond_with(@mod_list, :tracking, :mod_list)
+      respond_with_json(@mod_list, :tracking, :mod_list)
     else
       render json: current_user.errors, status: :unproccessable_entity
     end

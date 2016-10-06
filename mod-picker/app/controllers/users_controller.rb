@@ -15,13 +15,13 @@ class UsersController < ApplicationController
 
   # GET /current_user
   def current
-    respond_with(current_user)
+    respond_with_json(current_user)
   end
 
   # POST /users/search
   def search
     @users = User.filter(search_params).sort({ column: "username", direction: "ASC" }).limit(10)
-    respond_with(@users)
+    respond_with_json(@users)
   end
 
   # GET /users/1

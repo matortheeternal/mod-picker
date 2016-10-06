@@ -40,7 +40,7 @@ class ApplicationController < ActionController::Base
     resource.as_json(format: format)
   end
 
-  def respond_with(resource, format=nil, root=nil)
+  def respond_with_json(resource, format=nil, root=nil)
     format ||= caller_locations(1,1)[0].label
     resource_json = resource.as_json(format: format)
     render json: root ? { root => resource_json } : resource_json
