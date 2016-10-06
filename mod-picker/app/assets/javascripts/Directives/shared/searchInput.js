@@ -10,6 +10,7 @@ app.directive('searchInput', function() {
             onChange: '=?',
             excludedId: '=?',
             disabled: '=?',
+            error: '=?',
             pause: '=?',
             minLength: '=?',
             placeholder: '@',

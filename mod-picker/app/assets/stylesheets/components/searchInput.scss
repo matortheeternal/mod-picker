@@ -16,6 +16,10 @@ search-input {
       box-shadow: 0 0 3px 1px $success_secondary;
     }
 
+    &.error {
+      box-shadow: 0 0 3px 1px $error_secondary;
+    }
+
     &:hover {
       box-shadow: 0 0 3px 1px $action_color;
     }
