@@ -8,20 +8,13 @@ module BetterJson
   end
 
   def init_key(options, key)
-    if key == :include
-      options[key] = {}
-    else
-      options[key] = []
-    end
+    options[key] = key == :include ? {} : []
   end
 
   def add_option(options, key, new_option)
     init_key(options, key) unless options.has_key?(key)
-    if key == :include
-      options[key].merge(new_option)
-    else
-      options[key].push(new_option)
-    end
+    add_method = key == :include ? :merge : :push
+    options[key].public_send(add_method, new_option)
   end
 
   def build_conditional_option(options, key)
