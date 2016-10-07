@@ -21,7 +21,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="item in data">
+            <tr ng-repeat="item in data" ng-class="{ 'row-hidden' : item.hidden }">
                 <td ng-repeat="column in columns" ng-class="{ 'hidden': !column.visibility, 'text-cell' : !column.filter, 'main-cell' : $index == 0 }">
                     <a ng-if="column.link" ng-href="{{column.link(item)}}">
                         <img ng-if="column.image" ng-src="{{column.image(item)}}" class="{{column.imageClass}}"/>
