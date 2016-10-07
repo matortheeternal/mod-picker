@@ -74,6 +74,6 @@ app.service('modValidationService', function() {
     };
 
     this.categoriesValid = function(mod) {
-        return mod.categories.length <= 2 && mod.is_official || mod.categories.length;
+        return mod.categories && mod.categories.length <= 2 && (mod.is_official || mod.categories.length);
     };
 });
