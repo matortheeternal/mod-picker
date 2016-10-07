@@ -14,7 +14,7 @@ app.controller('modDetailsModalController', function($scope, $rootScope, eventHa
     $scope.findModOption = function(optionId) {
         var optionsArray = $scope.detailsItem.mod_list_mod_options;
         return optionsArray.find(function(option) {
-            return option.mod_option_id == optionId;
+            return !option._destroy && option.mod_option_id == optionId;
         });
     };
 
