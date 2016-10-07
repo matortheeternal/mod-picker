@@ -26,6 +26,7 @@ app.service('actionsFactory', function() {
             caption: "Add",
             title: "Add this mod to your mod list",
             hidden: function($scope, item) {
+                if (item.hidden) return true;
                 var activeModList = $scope.$parent.activeModList;
                 if (!activeModList) return true;
                 var foundMod = activeModList.mod_list_mod_ids.find(function(modId) {
@@ -41,6 +42,7 @@ app.service('actionsFactory', function() {
             title: "Remove this mod from your mod list",
             class: 'red-box',
             hidden: function($scope, item) {
+                if (item.hidden) return true;
                 var activeModList = $scope.$parent.activeModList;
                 if (!activeModList) return true;
                 var foundMod = activeModList.mod_list_mod_ids.find(function(modId) {
@@ -50,6 +52,13 @@ app.service('actionsFactory', function() {
             },
             execute: function($scope, item) {
                 $scope.$emit('removeMod', item);
+            }
+        }, {
+            caption: "Hidden",
+            title: "This mod is hidden",
+            class: 'yellow-box no-action',
+            hidden: function($scope, item) {
+                return !item.hidden;
             }
         }]
     };
