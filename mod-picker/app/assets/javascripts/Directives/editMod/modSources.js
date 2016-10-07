@@ -100,7 +100,11 @@ app.controller('modSourcesController', function($scope, sitesFactory, scrapeServ
 
     $scope.removeCustomSource = function(source) {
         var index = $scope.customSources.indexOf(source);
-        $scope.customSources.splice(index, 1);
+        if (source.id) {
+            source._destroy = true;
+        } else {
+            $scope.customSources.splice(index, 1);
+        }
     };
 
     $scope.validateCustomSource = function(source) {
