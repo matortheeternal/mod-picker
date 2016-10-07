@@ -264,7 +264,7 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
         return backend.post('/mods', modData);
     };
 
-    this.updateMod = function(mod, sources, customSources) {
+    this.getModUpdateData = function(mod, sources, customSources) {
         // prepare associations
         var mod_authors = service.prepareModAuthors(mod);
         var required_mods = service.prepareRequiredMods(mod);
@@ -302,8 +302,11 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
         };
         objectUtils.deleteEmptyProperties(modData, 1);
 
-        // submit mod
-        return backend.update('/mods/' + mod.id, modData);
+        return modData;
+    };
+
+    this.updateMod = function(modData) {
+        return backend.update('/mods/' + modData.id, modData);
     };
 
     this.submitImage = function(modId, image) {
