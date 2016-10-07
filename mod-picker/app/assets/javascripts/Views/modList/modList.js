@@ -360,7 +360,7 @@ app.controller('modListController', function($scope, $rootScope, $q, $stateParam
         if (foundIgnoredNote && ignoreDestroyed && foundIgnoredNote._destroy) {
             return;
         }
-         return foundIgnoredNote;
+        return foundIgnoredNote;
     };
 
     $scope.findConfig = function(configId, ignoreDestroyed) {
