@@ -3,7 +3,7 @@ class ModsController < ApplicationController
 
   # POST /mods
   def index
-    @mods = Mod.includes(:author_users).references(:author_users).accessible_by(current_ability).filter(filtering_params).sort(sorting_params).paginate(:page => params[:page])
+    @mods = Mod.accessible_by(current_ability).filter(filtering_params).sort(sorting_params).paginate(:page => params[:page])
     count =  Mod.accessible_by(current_ability).filter(filtering_params).count
 
     render :json => {
