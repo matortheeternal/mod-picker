@@ -2,7 +2,12 @@
 
 <div class="column-wrapper">
     <div class="single-column">
-        <h2>Submit Mod</h2>
+        <h2>Submit Mod
+            <span class="action-box right-item" ng-click="hideTooltips = !hideTooltips">
+                <i class="fa fa-eye{{ hideTooltips ? '' : '-slash'}}"></i>
+                {{ hideTooltips ? 'Show' : 'Hide'}} Help Tooltips
+            </span>
+        </h2>
 
         <form id="submitModForm" name="submitModForm" spellcheck="false">
 
@@ -16,7 +21,11 @@
 
             <mod-categories></mod-categories>
 
-            <h3 class="section-title">Tags</h3>
+            <h3 class="section-title">Tags
+                <span class="help-tooltip" ng-hide="hideTooltips" title="Keywords that describe the mod to help users find it easier.">
+                    <i class="fa fa-question-circle"></i>
+                </span>
+            </h3>
             <section>
                 <tag-selector active-tags="[]" new-tags="mod.tags" show-mods-count="true" show-add="true" max-tags="10" can-create="true"></tag-selector>
             </section>
@@ -27,7 +36,7 @@
                     <input type="checkbox" ng-model="mod.is_utility">
                     External Utility
                 </label>
-                <span class="help-tooltip small" title="A mod is classified as an external utility if it installs files &#13;outside of the user's data directory.  This includes &#13;mod managers, patchers, and script extenders.">
+                <span class="help-tooltip small" ng-hide="hideTooltips" title="A mod is classified as an external utility if it installs files &#13;outside of the user's data directory.  This includes &#13;mod managers, patchers, and script extenders.">
                     <i class="fa fa-question-circle"></i>
                 </span><br/>
 
@@ -36,7 +45,7 @@
                     Has Adult Content
                 </label>
                 <a href="/help/adult_content">
-                    <span class="help-tooltip small" title="If the mod has nudity, sexual references, or gore in excess &#13;of an unmodified game it should be marked as having adult content.">
+                    <span class="help-tooltip small" ng-hide="hideTooltips" title="If the mod has nudity, sexual references, or gore in excess &#13;of an unmodified game it should be marked as having adult content.">
                         <i class="fa fa-question-circle"></i>
                     </span>
                 </a>
