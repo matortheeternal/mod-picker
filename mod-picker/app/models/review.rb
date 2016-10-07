@@ -45,6 +45,7 @@ class Review < ActiveRecord::Base
 
   # CALLBACKS
   after_create :increment_counters
+  before_create :auto_approve
   before_save :set_adult, :set_dates
   after_save :update_mod_metrics, :update_metrics
   before_destroy :clear_ratings, :decrement_counters
@@ -190,6 +191,11 @@ class Review < ActiveRecord::Base
 
     def set_adult
       self.has_adult_content = mod.has_adult_content
+      true
+    end
+
+    def auto_approve
+      self.approved = submitter.has_auto_approval?
       true
     end
 
