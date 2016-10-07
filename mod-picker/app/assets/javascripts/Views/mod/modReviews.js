@@ -222,12 +222,13 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
     // save a review
     $scope.saveReview = function() {
         // return if the review is invalid
-        if (!$scope.activeReview.valid) return;
+        var review = $scope.activeReview;
+        if (!review.valid) return;
 
         // submit the review
-        var sanitized_text = contributionService.removePrompts($scope.activeReview.text_body);
+        var sanitized_text = contributionService.removePrompts(review.text_body);
         var review_ratings = [];
-        $scope.activeReview.ratings.forEach(function(item) {
+        review.ratings.forEach(function(item) {
             review_ratings.push({
                 review_section_id: item.section.id,
                 rating: item.rating
@@ -238,16 +239,16 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
                 game_id: $scope.mod.game_id,
                 mod_id: $scope.mod.id,
                 text_body: sanitized_text,
-                edit_summary: $scope.activeReview.edit_summary,
-                moderator_message: $scope.activeReview.moderator_message,
+                edit_summary: review.edit_summary,
+                moderator_message: review.moderator_message,
                 review_ratings_attributes: review_ratings
             }
         };
-        $scope.activeReview.submitting = true;
+        review.submitting = true;
 
         // use update or submit contribution
-        if ($scope.activeReview.editing) {
-            var reviewId = $scope.activeReview.original.id;
+        if (review.editing) {
+            var reviewId = review.original.id;
             contributionService.updateContribution("reviews", reviewId, reviewObj).then(function() {
                 $scope.$emit("successMessage", "Review updated successfully.");
                 // update original review object and discard copy
