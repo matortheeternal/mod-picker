@@ -60,9 +60,10 @@ app.controller('submitModController', function($scope, $rootScope, backend, modS
     // submission isn't allowed until the user has provided at least one valid source,
     // a mod analysis, and at least one category
     $scope.modValid = function() {
-        var sourcesValid = modValidationService.sourcesValid($scope);
-        var categoriesValid = modValidationService.categoriesValid($scope.mod);
-        return sourcesValid && categoriesValid && $scope.mod.analysis;
+        $scope.sourcesValid = modValidationService.sourcesValid($scope);
+        $scope.categoriesValid = modValidationService.categoriesValid($scope.mod);
+        $scope.analysisValid = !!$scope.mod.analysis;
+        return $scope.sourcesValid && $scope.categoriesValid && $scope.analysisValid;
     };
 
     $scope.submit = function() {

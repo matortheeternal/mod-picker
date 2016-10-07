@@ -106,6 +106,7 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
     $scope.image = {
         src: $scope.mod.image
     };
+    $scope.analysisValid = true;
 
     // shared function setup
     eventHandlerFactory.buildMessageHandlers($scope, true);
@@ -134,14 +135,14 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
 
     // validate the mod
     $scope.modValid = function() {
-        var sourcesValid = modValidationService.sourcesValid($scope);
-        var authorsValid = modValidationService.authorsValid($scope.mod.mod_authors);
-        var requirementsValid = modValidationService.requirementsValid($scope.mod.requirements);
-        var configsValid = modValidationService.configsValid($scope.mod.config_files);
-        var categoriesValid = modValidationService.categoriesValid($scope.mod);
+        $scope.sourcesValid = modValidationService.sourcesValid($scope);
+        $scope.authorsValid = modValidationService.authorsValid($scope.mod.mod_authors);
+        $scope.requirementsValid = modValidationService.requirementsValid($scope.mod.requirements);
+        $scope.configsValid = modValidationService.configsValid($scope.mod.config_files);
+        $scope.categoriesValid = modValidationService.categoriesValid($scope.mod);
 
         // return result of all validations
-        return sourcesValid && authorsValid && requirementsValid && configsValid && categoriesValid;
+        return $scope.sourcesValid && $scope.authorsValid && $scope.requirementsValid && $scope.configsValid && $scope.categoriesValid;
     };
 
     $scope.buildSources = function() {
