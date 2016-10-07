@@ -98,8 +98,10 @@ app.service('errorService', function($q) {
     };
 
     this.flattenErrors = function(errorResponse) {
-        var errors = [];
         var data = errorResponse.data;
+        if (data.error) return [data.error];
+
+        var errors = [];
         if (typeof data === "object") {
             for (var prop in data) {
                 if (data.hasOwnProperty(prop)) {
