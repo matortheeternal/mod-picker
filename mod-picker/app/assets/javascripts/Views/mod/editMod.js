@@ -193,7 +193,7 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
     $scope.submitImage = function() {
         modService.submitImage($scope.mod.id, $scope.image.file).then(function() {
             $scope.imageSuccess = true;
-            $scope.submissionSuccess();
+            $scope.displaySuccess();
         }, function(response) {
             $scope.submissionError("There were errors updating the mod image.", response);
         });
@@ -202,14 +202,14 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
     $scope.updateMod = function(modData) {
         modService.updateMod(modData).then(function() {
             $scope.modSuccess = true;
-            $scope.submissionSuccess();
+            $scope.displaySuccess();
             $scope.originalMod = angular.copy($scope.mod);
         }, function(response) {
             $scope.submissionError("There were errors updating the mod.", response);
         });
     };
 
-    $scope.submissionSuccess = function() {
+    $scope.displaySuccess = function() {
         if ($scope.imageSuccess && $scope.modSuccess) {
             $scope.submissionSuccess("Mod updated successfully!", "#/mod/"+$scope.mod.id,
                 "return to the mod page.");
