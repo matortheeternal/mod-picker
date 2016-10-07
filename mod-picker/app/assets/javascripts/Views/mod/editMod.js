@@ -144,16 +144,8 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
         return sourcesValid && authorsValid && requirementsValid && configsValid && categoriesValid;
     };
 
-    // save changes
-    $scope.updateMod = function() {
-        // return if mod is invalid
-        if (!$scope.modValid()) return;
-
-        // get changed mod fields
-        var modDiff = objectUtils.getDifferentObjectValues($scope.originalMod, $scope.mod);
-
-        // build sources object
-        var sources = {
+    $scope.buildSources = function() {
+        return {
             nexus: $scope.nexus || $scope.sources.find(function(source) {
                 return source.label === "Nexus Mods";
             }),
@@ -164,44 +156,63 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
                 return source.label === "Lover's Lab";
             })
         };
-
-        $scope.submitting = true;
-        $scope.submittingStatus = "Updating Mod...";
-        modDiff.id = $scope.mod.id;
-        modService.updateMod(modDiff, sources, $scope.customSources).then(function() {
-            if (!angular.isDefined($scope.success)) {
-                $scope.success = true;
-                if (!$scope.image.file) {
-                    $scope.submittingStatus = "Mod Updated Successfully!";
-                }
-            } else if ($scope.success) {
-                $scope.submittingStatus = "Mod Updated Successfully!";
-            }
-        }, function(response) {
-            $scope.success = false;
-            $scope.submittingStatus = "There were errors updating the mod.";
-            // TODO: Emit errors properly
-            $scope.errors = response.data;
-        });
-        if ($scope.image.file) {
-            modService.submitImage($scope.mod.id, $scope.image.file).then(function() {
-                if (!angular.isDefined($scope.success)) {
-                    $scope.success = true;
-                } else if ($scope.success) {
-                    $scope.submittingStatus = "Mod Updated Successfully!";
-                }
-            }, function(response) {
-                $scope.success = false;
-                $scope.submittingStatus = "There were errors updating the mod.";
-                // TODO: Emit errors properly
-                $scope.errors = response.data;
-            });
-        }
     };
 
-    $scope.closeModal = function() {
-        delete $scope.success;
-        delete $scope.submitting;
-        delete $scope.errors;
+    // save changes
+    $scope.saveChanges = function() {
+        // return if mod is invalid
+        if (!$scope.modValid()) return;
+
+        // get changed mod fields
+        modValidationService.sanitizeSet($scope.mod.requirements);
+        modValidationService.sanitizeSet($scope.mod.mod_authors);
+        var sources = $scope.buildSources();
+        var modDiff = objectUtils.getDifferentObjectValues($scope.originalMod, $scope.mod);
+        modDiff.id = $scope.mod.id;
+        var modData = modService.getModUpdateData(modDiff, sources, $scope.customSources);
+        var modDataUnchanged = objectUtils.keysCount(modData.mod) == 1;
+        var imageUnchanged = !$scope.image.file;
+
+        // return if there is nothing to change
+        if (modDataUnchanged && imageUnchanged) {
+            var params = { type: 'warning', text: 'No changes to save.' };
+            $scope.$emit('customMessage', params);
+            return;
+        }
+
+        // prepare for submission
+        $scope.imageSuccess = imageUnchanged;
+        $scope.modSuccess = modDataUnchanged;
+        $scope.startSubmission("Updating Mod...");
+
+        // update the mod
+        if (modData) $scope.updateMod(modData);
+        if ($scope.image.file) $scope.submitImage();
+    };
+
+    $scope.submitImage = function() {
+        modService.submitImage($scope.mod.id, $scope.image.file).then(function() {
+            $scope.imageSuccess = true;
+            $scope.submissionSuccess();
+        }, function(response) {
+            $scope.submissionError("There were errors updating the mod image.", response);
+        });
+    };
+
+    $scope.updateMod = function(modData) {
+        modService.updateMod(modData).then(function() {
+            $scope.modSuccess = true;
+            $scope.submissionSuccess();
+            $scope.originalMod = angular.copy($scope.mod);
+        }, function(response) {
+            $scope.submissionError("There were errors updating the mod.", response);
+        });
+    };
+
+    $scope.submissionSuccess = function() {
+        if ($scope.imageSuccess && $scope.modSuccess) {
+            $scope.submissionSuccess("Mod updated successfully!", "#/mod/"+$scope.mod.id,
+                "return to the mod page.");
+        }
     };
 });
