@@ -166,7 +166,7 @@ app.controller('modCompatibilityController', function($scope, $stateParams, $sta
         } else {
             contributionService.submitContribution("compatibility_notes", noteObj).then(function(note) {
                 $scope.$emit("successMessage", "Compatibility Note submitted successfully.");
-                $scope.mod.reviews.unshift(note);
+                $scope.mod.compatibility_notes.unshift(note);
                 $scope.discardCompatibilityNote();
             }, function(response) {
                 var params = { label: 'Error submitting Compatibility Note', response: response };

@@ -177,7 +177,7 @@ app.controller('modInstallOrderController', function($scope, $stateParams, $stat
         } else {
             contributionService.submitContribution("install_order_notes", noteObj).then(function(note) {
                 $scope.$emit("successMessage", "Install Order Note submitted successfully.");
-                $scope.mod.reviews.unshift(note);
+                $scope.mod.install_order_notes.unshift(note);
                 $scope.discardInstallOrderNote();
             }, function(response) {
                 var params = { label: 'Error submitting Install Order Note', response: response };
