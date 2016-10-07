@@ -1,5 +1,10 @@
 <h3 class="section-title">Sources
-    <span class="help-tooltip" title="Locations where an author has officially uploaded a Mod. &#13;You can only enter one valid location for each supported site.">?</span>
+    <span class="help-tooltip" title="Locations where an author has officially uploaded a Mod. &#13;You can only enter one valid location for each supported site.">
+        <i class="fa fa-question-circle"></i>
+    </span>
+    <span ng-hide="sourcesValid" class="error-tooltip" title="At least one valid source is required.">
+        <i class="fa fa-exclamation-circle"></i>
+    </span>
 </h3>
 <section>
     <div class="dynamic-item" ng-repeat="source in sources">

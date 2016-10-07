@@ -1,5 +1,10 @@
 <h3 class="section-title">Config Files
-    <span class="help-tooltip" title="Plaintext files that can be edited by users to customize how this mod/tool functions.">?</span>
+    <span class="help-tooltip" title="Plaintext files that can be edited by users to customize how this mod/tool functions.">
+        <i class="fa fa-question-circle"></i>
+    </span>
+    <span ng-hide="configsValid" class="error-tooltip" title="One or more config files is invalid.">
+        <i class="fa fa-exclamation-circle"></i>
+    </span>
 </h3>
 <section>
     <div class="dynamic-item dynamic-block" ng-repeat="configFile in mod.config_files" ng-hide="configFile._destroy">

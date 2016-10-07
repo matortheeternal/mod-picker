@@ -1,5 +1,7 @@
 <h3 class="section-title">General Info
-    <span class="help-tooltip" title="Information that cannot be fetched from scraping &#13;the mod pages.">?</span>
+    <span class="help-tooltip" title="Information that cannot be fetched from scraping &#13;the mod pages.">
+        <i class="fa fa-question-circle"></i>
+    </span>
 </h3>
 <section>
     <label class="subsection" ng-show="!sources.length || permissions.canSetGeneralModInfo">
@@ -8,9 +10,11 @@
     </label>
     <label class="subsection">
         <span class="input-label">Aliases
-            <span class="help-tooltip" title="Other names the mod is known by, such as acronyms.">?</span>
+            <span class="help-tooltip small" title="Other names the mod is known by, such as acronyms.">
+                <i class="fa fa-question-circle"></i>
+            </span>
         </span>
-        <input type="text" class="medium-text" ng-model="mod.aliases">
+        <input type="text" class="medium-text" ng-model="mod.aliases" maxlength="128">
     </label>
     <label class="subsection" ng-show="!sources.length || permissions.canSetGeneralModInfo">
         <span class="input-label">Authors</span>

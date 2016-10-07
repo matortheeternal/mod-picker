@@ -1,5 +1,12 @@
 <section>
-    <category-tree categories="categories" selection="mod.categories" toggle-all="false"></category-tree>
+    <category-tree categories="categories" selection="mod.categories" toggle-all="false">
+        <span class="help-tooltip" title="Select up to two categories for the mod. Hover over a category to see a &#13;description for it.  Click the check categories button to verify your &#13;category selection is valid.">
+            <i class="fa fa-question-circle"></i>
+        </span>
+        <span class="error-tooltip" ng-hide="categoriesValid" title="You must select at least one category.">
+            <i class="fa fa-exclamation-circle"></i>
+        </span>
+    </category-tree>
     <div id="category-messages">
         <div ng-repeat="message in categoryMessages" class="category-message"
              ng-class="message.klass">{{message.text}}</div>
