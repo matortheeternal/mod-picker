@@ -104,13 +104,15 @@ app.controller('modLoadOrderController', function($scope, $state, $stateParams, 
 
     $scope.validateLoadOrderNote = function() {
         // exit if we don't have a activeLoadOrderNote yet
-        if (!$scope.activeLoadOrderNote) {
-            return;
-        }
+        var loadOrderNote = $scope.activeLoadOrderNote;
+        if (!loadOrderNote) return;
 
-        $scope.activeLoadOrderNote.valid = $scope.activeLoadOrderNote.text_body.length > 256 &&
-            ($scope.activeLoadOrderNote.first_plugin_id !== undefined) &&
-            ($scope.activeLoadOrderNote.second_plugin_id !== undefined);
+        var sanitized_text = contributionService.removePrompts(loadOrderNote.text_body);
+        var textValid = sanitized_text.length > 256;
+        var pluginsValid = (loadOrderNote.first_plugin_id !== undefined) &&
+            (loadOrderNote.second_plugin_id !== undefined);
+
+        loadOrderNote.valid = textValid && pluginsValid;
     };
 
     // discard the load order note object
@@ -140,35 +142,36 @@ app.controller('modLoadOrderController', function($scope, $state, $stateParams, 
 
     // submit a load order note
     $scope.saveLoadOrderNote = function() {
-        // return if the load order note is invalid
-        if (!$scope.activeLoadOrderNote.valid) {
-            return;
+        var loadOrderNote = $scope.activeLoadOrderNote;
+        if (!loadOrderNote.valid) return;
+
+        // prepare load order note fields for submission
+        var sanitized_text = contributionService.removePrompts(loadOrderNote.text_body);
+        var first_plugin_id, second_plugin_id;
+        if (loadOrderNote.order === 'before') {
+            first_plugin_id = parseInt(loadOrderNote.first_plugin_id);
+            second_plugin_id = parseInt(loadOrderNote.second_plugin_id);
+        } else {
+            first_plugin_id = parseInt(loadOrderNote.second_plugin_id);
+            second_plugin_id = parseInt(loadOrderNote.first_plugin_id);
         }
 
-        // submit the install order note
-        var first_plugin_id, second_plugin_id;
-        if ($scope.activeLoadOrderNote.order === 'before') {
-            first_plugin_id = parseInt($scope.activeLoadOrderNote.first_plugin_id);
-            second_plugin_id = parseInt($scope.activeLoadOrderNote.second_plugin_id);
-        } else {
-            first_plugin_id = parseInt($scope.activeLoadOrderNote.second_plugin_id);
-            second_plugin_id = parseInt($scope.activeLoadOrderNote.first_plugin_id);
-        }
+        // submit the load order note
         var noteObj = {
             load_order_note: {
                 game_id: $scope.mod.game_id,
                 first_plugin_id: first_plugin_id,
                 second_plugin_id: second_plugin_id,
-                text_body: $scope.activeLoadOrderNote.text_body,
-                edit_summary: $scope.activeLoadOrderNote.edit_summary,
-                moderator_message: $scope.activeLoadOrderNote.moderator_message
+                text_body: sanitized_text,
+                edit_summary: loadOrderNote.edit_summary,
+                moderator_message: loadOrderNote.moderator_message
             }
         };
-        $scope.activeLoadOrderNote.submitting = true;
+        loadOrderNote.submitting = true;
 
         // use update or submit contribution
-        if ($scope.activeLoadOrderNote.editing) {
-            var noteId = $scope.activeLoadOrderNote.original.id;
+        if (loadOrderNote.editing) {
+            var noteId = loadOrderNote.original.id;
             contributionService.updateContribution("load_order_notes", noteId, noteObj).then(function() {
                 $scope.$emit("successMessage", "Load Order Note updated successfully.");
                 // update original load order note and discard copy
