@@ -30,6 +30,12 @@ app.service('modValidationService', function() {
         return sourcesValid;
     };
 
+    this.sanitizeSet = function(set) {
+        set.forEach(function(item) {
+            delete item.error;
+        });
+    };
+
     this.setValid = function(set, key) {
         var setValid = true;
         var setIds = [];
