@@ -19,6 +19,7 @@ app.controller('modLoadOrderController', function($scope, $state, $stateParams, 
         };
         modService.retrieveModContributions($stateParams.modId, 'load_order_notes', options, $scope.pages.load_order_notes).then(function(data) {
             $scope.mod.load_order_notes = data;
+            if ($scope.errors.load_order_notes) delete $scope.errors.load_order_notes;
 
             //seperating the loadOrderNote in the url if any
             if ($stateParams.loadOrderNoteId) {

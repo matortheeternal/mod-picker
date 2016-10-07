@@ -20,6 +20,7 @@ app.controller('modCompatibilityController', function($scope, $stateParams, $sta
         };
         modService.retrieveModContributions($stateParams.modId, 'compatibility_notes', options, $scope.pages.compatibility_notes).then(function(data) {
             $scope.mod.compatibility_notes = data;
+            if ($scope.errors.compatibility_notes) delete $scope.errors.compatibility_notes;
 
             //seperating the compatibilityNote in the url if any
             if ($stateParams.compatibilityNoteId) {

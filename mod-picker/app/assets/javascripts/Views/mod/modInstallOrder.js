@@ -19,6 +19,7 @@ app.controller('modInstallOrderController', function($scope, $stateParams, $stat
         };
         modService.retrieveModContributions($stateParams.modId, 'install_order_notes', options, $scope.pages.install_order_notes).then(function(data) {
             $scope.mod.install_order_notes = data;
+            if ($scope.errors.install_order_notes) delete $scope.errors.install_order_notes;
 
             //seperating the installOrderNote in the url if any
             if ($stateParams.installOrderNoteId) {

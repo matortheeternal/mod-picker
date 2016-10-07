@@ -17,6 +17,7 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
         };
         modService.retrieveModReviews($stateParams.modId, options, $scope.pages.reviews).then(function(data) {
             $scope.mod.reviews = data.reviews;
+            if ($scope.errors.reviews) delete $scope.errors.reviews;
             if (data.user_review && objectUtils.isEmptyObject(data.user_review)) {
                 $scope.userReviewHidden = true;
             } else {
