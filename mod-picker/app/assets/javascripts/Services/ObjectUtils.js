@@ -171,6 +171,14 @@ app.service('objectUtils', function() {
         }
     };
 
+    this.keysCount = function(obj) {
+        var count = 0;
+        for (var key in obj) {
+            if (obj.hasOwnProperty(key)) count++;
+        }
+        return count;
+    };
+
     this.getShortTypeString = function(obj) {
         switch (typeof obj) {
             case 'number':
