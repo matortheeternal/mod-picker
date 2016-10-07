@@ -306,7 +306,7 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
     };
 
     this.updateMod = function(modData) {
-        return backend.update('/mods/' + modData.id, modData);
+        return backend.update('/mods/' + modData.mod.id, modData);
     };
 
     this.submitImage = function(modId, image) {
