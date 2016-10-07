@@ -21,7 +21,7 @@ class ModsController < ApplicationController
 
   # GET /mods/1
   def show
-    @mod = Mod.includes(:nexus_infos, :workshop_infos, :lover_infos).find(params[:id])
+    @mod = Mod.includes(:custom_sources, :plugins, {:mod_authors => :user}, {:tags => :submitter}, {:required_mods => :required_mod}, {:required_by => :mod}).find(params[:id])
     authorize! :read, @mod, :message => "You are not allowed to view this mod."
 
     # set up boolean variables
