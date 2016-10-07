@@ -4,6 +4,7 @@ app.controller('modLoadOrderController', function($scope, $state, $stateParams, 
         direction: $stateParams.sdir
     };
     $scope.filters.load_order_notes = $stateParams.filter;
+    $scope.pages.load_order_notes.current = $stateParams.page || 1;
 
     // inherited functions
     $scope.searchPlugins = pluginService.searchPlugins;
@@ -14,8 +15,7 @@ app.controller('modLoadOrderController', function($scope, $state, $stateParams, 
         var options = {
             sort: $scope.sort.load_order_notes,
             filters: $scope.filters.load_order_notes,
-            //if no page is specified load the first one
-            page: page || 1
+            page: page || $scope.pages.load_order_notes.current
         };
         modService.retrieveModContributions($stateParams.modId, 'load_order_notes', options, $scope.pages.load_order_notes).then(function(data) {
             $scope.mod.load_order_notes = data;
@@ -49,10 +49,9 @@ app.controller('modLoadOrderController', function($scope, $state, $stateParams, 
         $state.go($state.current.name, params);
     };
 
-    //retrieve the notes when the state is first loaded
-    $scope.retrieveLoadOrderNotes($stateParams.page);
-
     // re-retrieve load order notes when the sort object changes
+    // this will be called once automatically when the tab loads when we
+    // build the sort object at line 2 in this controller
     $scope.$watch('sort.load_order_notes', function() {
         $scope.retrieveLoadOrderNotes();
     }, true);

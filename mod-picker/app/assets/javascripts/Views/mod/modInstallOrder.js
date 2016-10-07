@@ -4,6 +4,7 @@ app.controller('modInstallOrderController', function($scope, $stateParams, $stat
         direction: $stateParams.sdir
     };
     $scope.filters.install_order_notes = $stateParams.filter;
+    $scope.pages.install_order_notes.current = $stateParams.page || 1;
 
     // inherited functions
     $scope.searchMods = modService.searchMods;
@@ -14,8 +15,7 @@ app.controller('modInstallOrderController', function($scope, $stateParams, $stat
         var options = {
             sort: $scope.sort.install_order_notes,
             filters: $scope.filters.install_order_notes,
-            //if no page is specified load the first one
-            page: page || 1
+            page: page || $scope.pages.install_order_notes.current
         };
         modService.retrieveModContributions($stateParams.modId, 'install_order_notes', options, $scope.pages.install_order_notes).then(function(data) {
             $scope.mod.install_order_notes = data;
@@ -49,10 +49,9 @@ app.controller('modInstallOrderController', function($scope, $stateParams, $stat
         $state.go($state.current.name, params);
     };
 
-    //retrieve the notes when the state is first loaded
-    $scope.retrieveInstallOrderNotes($stateParams.page);
-
     // re-retrieve install order notes when the sort object changes
+    // this will be called once automatically when the tab loads when we
+    // build the sort object at line 2 in this controller
     $scope.$watch('sort.install_order_notes', function() {
         $scope.retrieveInstallOrderNotes();
     }, true);

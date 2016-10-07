@@ -4,6 +4,7 @@ app.controller('modCompatibilityController', function($scope, $stateParams, $sta
         direction: $stateParams.sdir
     };
     $scope.filters.compatibility_notes.modlist = $stateParams.filter;
+    $scope.pages.compatibility_notes.current = $stateParams.page || 1;
 
     // inherited functions
     $scope.searchMods = modService.searchMods;
@@ -15,8 +16,7 @@ app.controller('modCompatibilityController', function($scope, $stateParams, $sta
         var options = {
             sort: $scope.sort.compatibility_notes,
             filters: $scope.filters.compatibility_notes,
-            //if no page is specified load the first one
-            page: page || 1
+            page: page || $scope.pages.compatibility_notes.current
         };
         modService.retrieveModContributions($stateParams.modId, 'compatibility_notes', options, $scope.pages.compatibility_notes).then(function(data) {
             $scope.mod.compatibility_notes = data;
@@ -50,10 +50,9 @@ app.controller('modCompatibilityController', function($scope, $stateParams, $sta
         $state.go($state.current.name, params);
     };
 
-    //retrieve the notes when the state is first loaded
-    $scope.retrieveCompatibilityNotes($stateParams.page);
-
     // re-retrieve compatibility note when the sort object changes
+    // this will be called once automatically when the tab loads when we
+    // build the sort object at line 2 in this controller
     $scope.$watch('sort.compatibility_notes', function() {
         $scope.retrieveCompatibilityNotes();
     }, true);

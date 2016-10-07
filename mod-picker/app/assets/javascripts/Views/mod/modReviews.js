@@ -6,14 +6,14 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
 
     // inherited functions
     $scope.focusText = formUtils.focusText;
+    $scope.pages.reviews.current = $stateParams.page || 1;
 
     // BASE RETRIEVAL LOGIC
     $scope.retrieveReviews = function(page) {
         // retrieve the reviews
         var options = {
             sort: $scope.sort.reviews,
-            //if no page is specified load the first one
-            page: page || 1
+            page: page || $scope.pages.reviews.current
         };
         modService.retrieveModReviews($stateParams.modId, options, $scope.pages.reviews).then(function(data) {
             $scope.mod.reviews = data.reviews;
@@ -51,13 +51,6 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
         };
         $state.go($state.current.name, params);
     };
-    //retrieve the reviews when the state is first loaded
-    $scope.retrieveReviews($stateParams.page);
-
-    // re-retrieve reviews when the sort object changes
-    $scope.$watch('sort', function() {
-        $scope.retrieveReviews();
-    }, true);
 
     //retrieve review sections
     reviewSectionService.getSectionsForMod($scope.mod).then(function(modSections) {
@@ -67,6 +60,8 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
     });
 
     // re-retrieve reviews when the sort object changes
+    // this will be called once automatically when the tab loads when we
+    // build the sort object at line 2 in this controller
     $scope.$watch('sort.reviews', function() {
         $scope.retrieveReviews();
     }, true);
