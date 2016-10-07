@@ -205,8 +205,8 @@ class ModsController < ApplicationController
     authorize! :read, @mod
 
     # prepare reviews
-    reviews = @mod.reviews.preload(:review_ratings).includes(:submitter => :reputation).accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10).where("submitted_by != ? OR hidden = true", current_user.id)
-    count = @mod.reviews.accessible_by(current_ability).count
+    reviews = @mod.reviews.preload(:review_ratings).includes(:submitter => :reputation).references(:submitter => :reputation).accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10).where("submitted_by != ? OR hidden = true", current_user.id)
+    count = @mod.reviews.includes(:submitter => :reputation).references(:submitter => :reputation).accessible_by(current_ability).count
     review_ids = reviews.ids
 
     # prepare user review
@@ -237,8 +237,8 @@ class ModsController < ApplicationController
     authorize! :read, @mod
 
     # prepare compatibility notes
-    compatibility_notes = @mod.compatibility_notes.accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10)
-    count =  @mod.compatibility_notes.accessible_by(current_ability).count
+    compatibility_notes = @mod.compatibility_notes.includes(:submitter => :reputation).references(:submitter => :reputation).accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10)
+    count =  @mod.compatibility_notes.includes(:submitter => :reputation).references(:submitter => :reputation).accessible_by(current_ability).count
 
     # prepare helpful marks
     helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("CompatibilityNote", compatibility_notes.ids)
@@ -257,8 +257,8 @@ class ModsController < ApplicationController
     authorize! :read, @mod
 
     # prepare install order notes
-    install_order_notes = @mod.install_order_notes.accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10)
-    count =  @mod.install_order_notes.accessible_by(current_ability).count
+    install_order_notes = @mod.install_order_notes.includes(:submitter => :reputation).references(:submitter => :reputation).accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10)
+    count =  @mod.install_order_notes.includes(:submitter => :reputation).references(:submitter => :reputation).accessible_by(current_ability).count
 
     # prepare helpful marks
     helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("InstallOrderNote", install_order_notes.ids)
@@ -283,8 +283,8 @@ class ModsController < ApplicationController
     end
 
     # prepare load order notes
-    load_order_notes = @mod.load_order_notes.accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10)
-    count =  @mod.load_order_notes.accessible_by(current_ability).count
+    load_order_notes = @mod.load_order_notes.includes(:submitter => :reputation).references(:submitter => :reputation).accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10)
+    count =  @mod.load_order_notes.includes(:submitter => :reputation).references(:submitter => :reputation).accessible_by(current_ability).count
 
     # prepare helpful marks
     helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("LoadOrderNote", load_order_notes.ids)
