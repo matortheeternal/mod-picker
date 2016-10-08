@@ -42,7 +42,7 @@ app.controller('modDetailsModalController', function($scope, $rootScope, eventHa
     };
 
     $scope.toggleOption = function(option) {
-        $rootScope.$broadcast(option.active ? 'modOptionAdded' : 'modOptionRemoved', option.id);
+        $rootScope.$broadcast(option.active ? 'modOptionAdded' : 'modOptionRemoved', option);
         if (option.active) {
             $scope.addModOption(option.id);
         } else {

@@ -323,7 +323,8 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, catego
             }
         });
     });
-    $scope.$on('modOptionAdded', function(event, modOptionId) {
+    $scope.$on('modOptionAdded', function(event, modOption) {
+        var modOptionId = modOption.id;
         var recoverIfModMatches = function(item) {
             if (item.mod_option_id && item.mod_option_id == modOptionId) {
                 $scope.recoverPlugin(item);
@@ -339,6 +340,14 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, catego
         $scope.plugins_store.forEach(function(plugin) {
             if (plugin.mod_option_id == modOptionId && plugin._destroy) {
                 delete plugin._destroy;
+            }
+        });
+        modOption && modOption.plugins.forEach(function(plugin) {
+            var pluginExists = $scope.plugins_store.find(function(storedPlugin) {
+                return storedPlugin.id == plugin.id;
+            });
+            if (!pluginExists) {
+                $scope.plugins_store.push(plugin);
             }
         });
     });
