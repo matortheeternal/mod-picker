@@ -122,11 +122,20 @@ module ScopeHelpers
       end
     end
 
+    def build_search(attribute, search)
+      search_terms = search.split
+      search_terms.map{ |term|
+        arel_table[attribute.to_sym].matches("%#{term}%")
+      }.inject(:and)
+    end
+
     def search_scope(*attributes, **options)
       if options[:combine]
         class_eval do
             scope :search, -> (search) {
-              where(attributes.map{|attribute| arel_table[attribute.to_sym].matches("%#{search}%") }.inject(:or))
+              where(attributes.map{ |attribute|
+                build_search(attribute, search)
+              }.inject(:or))
             }
         end
       else
@@ -134,7 +143,8 @@ module ScopeHelpers
           scope_name = options[:alias] || attribute
           class_eval do
             scope scope_name.to_sym, -> (search) {
-              where(arel_table[attribute.to_sym].matches("%#{search}%"))
+              where(build_search(attribute, search))
+              #where(arel_table[attribute.to_sym].matches("%#{search}%"))
             }
           end
         end

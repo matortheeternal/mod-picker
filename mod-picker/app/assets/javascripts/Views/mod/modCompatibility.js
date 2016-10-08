@@ -4,6 +4,7 @@ app.controller('modCompatibilityController', function($scope, $stateParams, $sta
         direction: $stateParams.sdir
     };
     $scope.filters.compatibility_notes.modlist = $stateParams.filter;
+    $scope.pages.compatibility_notes.current = $stateParams.page || 1;
 
     // inherited functions
     $scope.searchMods = modService.searchMods;
@@ -15,11 +16,11 @@ app.controller('modCompatibilityController', function($scope, $stateParams, $sta
         var options = {
             sort: $scope.sort.compatibility_notes,
             filters: $scope.filters.compatibility_notes,
-            //if no page is specified load the first one
-            page: page || 1
+            page: page || $scope.pages.compatibility_notes.current
         };
         modService.retrieveModContributions($stateParams.modId, 'compatibility_notes', options, $scope.pages.compatibility_notes).then(function(data) {
             $scope.mod.compatibility_notes = data;
+            if ($scope.errors.compatibility_notes) delete $scope.errors.compatibility_notes;
 
             //seperating the compatibilityNote in the url if any
             if ($stateParams.compatibilityNoteId) {
@@ -50,10 +51,9 @@ app.controller('modCompatibilityController', function($scope, $stateParams, $sta
         $state.go($state.current.name, params);
     };
 
-    //retrieve the notes when the state is first loaded
-    $scope.retrieveCompatibilityNotes($stateParams.page);
-
     // re-retrieve compatibility note when the sort object changes
+    // this will be called once automatically when the tab loads when we
+    // build the sort object at line 2 in this controller
     $scope.$watch('sort.compatibility_notes', function() {
         $scope.retrieveCompatibilityNotes();
     }, true);
@@ -98,15 +98,16 @@ app.controller('modCompatibilityController', function($scope, $stateParams, $sta
     };
 
     $scope.validateCompatibilityNote = function() {
-        // exit if we don't have a activeCompatibilityNote yet
-        if (!$scope.activeCompatibilityNote) {
-            return;
-        }
+        var compatibilityNote = $scope.activeCompatibilityNote;
+        if (!compatibilityNote) return;
 
-        $scope.activeCompatibilityNote.valid = $scope.activeCompatibilityNote.text_body.length > 512 &&
-            ($scope.activeCompatibilityNote.mod_id !== undefined) &&
-            ($scope.activeCompatibilityNote.status === "compatibility_mod") ==
-            ($scope.activeCompatibilityNote.compatibility_mod !== undefined);
+        var sanitized_text = contributionService.removePrompts(compatibilityNote.text_body);
+        var textValid = sanitized_text.length > 512;
+        var modsValid = compatibilityNote.mod_id !== undefined;
+        var statusValid = (compatibilityNote.status === "compatibility_mod") ==
+            (compatibilityNote.compatibility_mod !== undefined);
+
+        compatibilityNote.valid = textValid && modsValid && statusValid;
     };
 
     // discard the compatibility note object
@@ -130,30 +131,29 @@ app.controller('modCompatibilityController', function($scope, $stateParams, $sta
 
     // save a compatibility note
     $scope.saveCompatibilityNote = function() {
-        // return if the compatibility note is invalid
-        if (!$scope.activeCompatibilityNote.valid) {
-            return;
-        }
+        var compatibilityNote = $scope.activeCompatibilityNote;
+        if (!compatibilityNote.valid) return;
 
         // submit the compatibility note
+        var sanitized_text = contributionService.removePrompts(compatibilityNote.text_body);
         var noteObj = {
             compatibility_note: {
                 game_id: $scope.mod.game_id,
-                status: $scope.activeCompatibilityNote.status,
+                status: compatibilityNote.status,
                 first_mod_id: $scope.mod.id,
-                second_mod_id: $scope.activeCompatibilityNote.mod_id,
-                text_body: $scope.activeCompatibilityNote.text_body,
-                edit_summary: $scope.activeCompatibilityNote.edit_summary,
-                moderator_message: $scope.activeCompatibilityNote.moderator_message,
-                compatibility_plugin_id: $scope.activeCompatibilityNote.compatibility_plugin_id,
-                compatibility_mod_id: $scope.activeCompatibilityNote.compatibility_mod_id
+                second_mod_id: compatibilityNote.mod_id,
+                text_body: sanitized_text,
+                edit_summary: compatibilityNote.edit_summary,
+                moderator_message: compatibilityNote.moderator_message,
+                compatibility_plugin_id: compatibilityNote.compatibility_plugin_id,
+                compatibility_mod_id: compatibilityNote.compatibility_mod_id
             }
         };
-        $scope.activeCompatibilityNote.submitting = true;
+        compatibilityNote.submitting = true;
 
         // use update or submit contribution
-        if ($scope.activeCompatibilityNote.editing) {
-            var noteId = $scope.activeCompatibilityNote.original.id;
+        if (compatibilityNote.editing) {
+            var noteId = compatibilityNote.original.id;
             contributionService.updateContribution("compatibility_notes", noteId, noteObj).then(function() {
                 $scope.$emit("successMessage", "Compatibility Note updated successfully.");
                 // update original compatibility note and discard copy
@@ -166,7 +166,7 @@ app.controller('modCompatibilityController', function($scope, $stateParams, $sta
         } else {
             contributionService.submitContribution("compatibility_notes", noteObj).then(function(note) {
                 $scope.$emit("successMessage", "Compatibility Note submitted successfully.");
-                $scope.mod.reviews.unshift(note);
+                $scope.mod.compatibility_notes.unshift(note);
                 $scope.discardCompatibilityNote();
             }, function(response) {
                 var params = { label: 'Error submitting Compatibility Note', response: response };

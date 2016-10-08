@@ -54,7 +54,7 @@ app.service('notificationsFactory', function() {
         return "A moderator left a message on your "+label+" for ((contentLink))";
     };
     this.message = {
-        Message: "((message))",
+        Message: "((messageText))",
         Review: contributionMessageTemplate("review"),
         CompatibilityNote: contributionMessageTemplate("compatibility note"),
         InstallOrderNote: contributionMessageTemplate("install order note"),
@@ -236,7 +236,7 @@ app.service('notificationsFactory', function() {
         return factory.getTemplateObject(factory.statusChanges, event.content, event.content_type, "");
     };
 
-    this.message = function(event) {
+    this.messageText = function(event) {
         if (!event.content.sent_to) {
             return event.content.text;
         } else {

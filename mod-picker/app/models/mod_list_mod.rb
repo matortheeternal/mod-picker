@@ -46,7 +46,12 @@ class ModListMod < ActiveRecord::Base
                   :only => [:id, :is_official, :name, :aliases, :authors, :status, :primary_category_id, :secondary_category_id, :average_rating, :reputation, :asset_files_count, :stars_count, :released, :updated],
                   :include => {
                       :mod_options => {
-                          :only => [:id, :name, :default]
+                          :only => [:id, :name, :default],
+                          :include => {
+                              :plugins => {
+                                :only => [:id, :filename]
+                              }
+                          }
                       }
                   },
                   :methods => :image

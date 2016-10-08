@@ -24,7 +24,7 @@ app.config(['$stateProvider', function($stateProvider) {
     );
 }]);
 
-app.controller('submitModController', function($scope, $rootScope, backend, modService, scrapeService, pluginService, categoryService, sitesFactory, eventHandlerFactory) {
+app.controller('submitModController', function($scope, $rootScope, backend, modService, modValidationService, scrapeService, pluginService, categoryService, sitesFactory, eventHandlerFactory) {
     // access parent variables
     $scope.currentUser = $rootScope.currentUser;
     $scope.categories = $rootScope.categories;
@@ -60,33 +60,10 @@ app.controller('submitModController', function($scope, $rootScope, backend, modS
     // submission isn't allowed until the user has provided at least one valid source,
     // a mod analysis, and at least one category
     $scope.modValid = function() {
-        // main source validation
-        var sourcesValid = true;
-        $scope.sources.forEach(function(source) {
-            sourcesValid = sourcesValid && source.valid;
-        });
-
-        // custom source validation
-        if ($scope.customSources.length) {
-            $scope.customSources.forEach(function(source) {
-                sourcesValid = sourcesValid && source.valid;
-            });
-            // if we are only submitting custom soruces, we need to verify
-            // we have all general info
-            if (!$scope.sources.length) {
-                sourcesValid = sourcesValid && $scope.mod.name && $scope.mod.authors && $scope.mod.released;
-            }
-        }
-        else {
-            // if we don't have any custom sources we should verify we have
-            // the scraped data for at least one official source
-            sourcesValid = sourcesValid && ($scope.nexus || $scope.workshop || $scope.lab);
-        }
-
-        // categories are valid if there are 1-2 categories selected
-        var categoriesValid = $scope.mod.categories && $scope.mod.categories.length &&
-            $scope.mod.categories.length <= 2;
-        return (sourcesValid && categoriesValid && $scope.mod.analysis)
+        $scope.sourcesValid = modValidationService.sourcesValid($scope);
+        $scope.categoriesValid = modValidationService.categoriesValid($scope.mod);
+        $scope.analysisValid = !!$scope.mod.analysis;
+        return $scope.sourcesValid && $scope.categoriesValid && $scope.analysisValid;
     };
 
     $scope.submit = function() {

@@ -11,11 +11,15 @@ app.controller('modDetailsModalController', function($scope, $rootScope, eventHa
     // shared function setup
     eventHandlerFactory.buildModalMessageHandlers($scope);
 
-    $scope.addModOption = function(optionId) {
+    $scope.findModOption = function(optionId) {
         var optionsArray = $scope.detailsItem.mod_list_mod_options;
-        var existingModOption = optionsArray.find(function(option) {
-            return option.mod_option_id = optionId;
+        return optionsArray.find(function(option) {
+            return !option._destroy && option.mod_option_id == optionId;
         });
+    };
+
+    $scope.addModOption = function(optionId) {
+        var existingModOption = $scope.findModOption(optionId);
         if (existingModOption) {
             if (existingModOption._destroy) {
                 delete existingModOption._destroy;
@@ -38,11 +42,18 @@ app.controller('modDetailsModalController', function($scope, $rootScope, eventHa
     };
 
     $scope.toggleOption = function(option) {
-        $rootScope.$broadcast(option.active ? 'modOptionAdded' : 'modOptionRemoved', option.id);
+        $rootScope.$broadcast(option.active ? 'modOptionAdded' : 'modOptionRemoved', option);
         if (option.active) {
             $scope.addModOption(option.id);
         } else {
             $scope.removeModOption(option.id);
         }
     };
+
+    // load option active states
+    var modOptions = $scope.detailsItem.mod.mod_options;
+    modOptions.forEach(function(option) {
+        var existingModOption = $scope.findModOption(option.id);
+        option.active = !!existingModOption;
+    });
 });

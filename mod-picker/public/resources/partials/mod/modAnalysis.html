@@ -7,7 +7,7 @@
         </label>
     </div>
 
-    <div class="tab-bar-items" ng-if="availablePlugins.length > 0">
+    <div class="tab-bar-items" ng-show="availablePlugins.length > 0">
         <div class="tab-bar-item primary-item">
             <strong>Select Plugin:</strong>
             <select ng-options="plugin.filename for plugin in availablePlugins" ng-model="currentPlugin" ng-change="updateParams()"></select>
@@ -60,7 +60,7 @@
                     {{errorType.name}} ({{errorType.acronym}}s)
                     <!-- TODO: Link to the correct help article here -->
                     <a ng-href="/help/Plugin_Errors#{{errorType.acronym}}">
-                        <span class="help-tooltip" title="{{errorType.caption}}">?</span>
+                        <span class="text-tooltip" title="{{errorType.caption}}">?</span>
                     </a>
                 </h3>
                 <ul class="errors-list">

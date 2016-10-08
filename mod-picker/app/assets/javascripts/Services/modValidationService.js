@@ -30,6 +30,12 @@ app.service('modValidationService', function() {
         return sourcesValid;
     };
 
+    this.sanitizeSet = function(set) {
+        set.forEach(function(item) {
+            delete item.error;
+        });
+    };
+
     this.setValid = function(set, key) {
         var setValid = true;
         var setIds = [];
@@ -68,6 +74,6 @@ app.service('modValidationService', function() {
     };
 
     this.categoriesValid = function(mod) {
-        return mod.categories.length <= 2 && mod.is_official || mod.categories.length;
+        return mod.categories && mod.categories.length <= 2 && (mod.is_official || mod.categories.length);
     };
 });

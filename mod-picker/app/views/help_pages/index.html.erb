@@ -14,7 +14,7 @@
             <li class="page">
                 <div class="page-content">
                     <%= link_to "/help/category/#{category}" do %>
-                        <%= image_tag("#{category}.png") %>
+                        <%= image_tag(category_image_path(category)) %>
                     <% end %>
                     <h3 class="capitalize">
                         <%= link_to "#{category.humanize}", "/help/category/#{category}" %>

@@ -43,4 +43,12 @@ module ApplicationHelper
   def active_url(url)
     current_page?(url) ? "active" : ""
   end
+
+  def category_image_path(category)
+    jpg_path = Rails.root.join('public', 'images', category + '.jpg')
+    png_path = Rails.root.join('public', 'images', category + '.png')
+    return category + '.jpg' if File.exist?(jpg_path)
+    return category + '.png' if File.exist?(png_path)
+    'category.png'
+  end
 end
