@@ -3,7 +3,7 @@
         <span class="note-item">
             ({{showMissingMods ? 'Missing' : 'All'}})
         </span>
-        <span class="right-item action-box" ng-if="required.missing_mods.length" ng-click="resolveAllRequirements()">
+        <span class="right-item action-box" ng-if="required.missing_mods.length && editing" ng-click="resolveAllRequirements()">
             <i class="fa fa-check"></i> Resolve All
         </span>
         <span class="right-item toggle-item" ng-click="showMissingMods = !showMissingMods">
