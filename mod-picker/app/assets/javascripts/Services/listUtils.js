@@ -63,6 +63,17 @@ app.service('listUtils', function() {
         });
     };
 
+    this.genericFind = function(model, findFunction, itemId, ignoreDestroyed) {
+        if (!model) {
+            return true;
+        }
+        var foundItem = findFunction(model, itemId);
+        if (foundItem && ignoreDestroyed && foundItem._destroy) {
+            return;
+        }
+        return foundItem;
+    };
+
     this.removeGroup = function(model, group, index) {
         // handle the group children
         group.children.forEach(function(child) {
