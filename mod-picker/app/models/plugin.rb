@@ -60,7 +60,7 @@ class Plugin < ActiveRecord::Base
   before_destroy :delete_associations
 
   def update_lazy_counters
-    self.errors_count = self.plugin_errors.count
+    self.errors_count = plugin_errors.count
   end
 
   def create_associations
@@ -77,15 +77,27 @@ class Plugin < ActiveRecord::Base
     end
   end
 
+  def convert_to_dummy_masters
+    Master.where(master_plugin_id: id).each do |master|
+      DummyMaster.create!({
+          plugin_id: master.plugin_id,
+          filename: filename,
+          index: master.index
+      })
+    end
+  end
+
   def delete_associations
-    OverrideRecord.where(plugin_id: self.id).delete_all
-    PluginError.where(plugin_id: self.id).delete_all
-    PluginRecordGroup.where(plugin_id: self.id).delete_all
-    DummyMaster.where(plugin_id: self.id).delete_all
-    Master.where(plugin_id: self.id).delete_all
-    LoadOrderNote.where("first_plugin_id = ? OR second_plugin_id = ?", self.id, self.id).delete_all
-    CompatibilityNote.where(compatibility_plugin_id: self.id).delete_all
-    ModListPlugin.where(plugin_id: self.id).delete_all
+    OverrideRecord.where(plugin_id: id).delete_all
+    PluginError.where(plugin_id: id).delete_all
+    PluginRecordGroup.where(plugin_id: id).delete_all
+    DummyMaster.where(plugin_id: id).delete_all
+    convert_to_dummy_masters
+    Master.where(plugin_id: id).delete_all
+    Master.where(master_plugin_id: id).delete_all
+    LoadOrderNote.where("first_plugin_id = ? OR second_plugin_id = ?", id, id).delete_all
+    CompatibilityNote.where(compatibility_plugin_id: id).delete_all
+    ModListPlugin.where(plugin_id: id).delete_all
   end
 
   def formatted_overrides
