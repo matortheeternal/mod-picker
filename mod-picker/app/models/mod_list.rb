@@ -243,21 +243,21 @@ class ModList < ActiveRecord::Base
     mod_ids = mod_list_mod_ids
     return ModRequirement.none if mod_ids.empty?
 
-    ModRequirement.mods(mod_ids).includes(:required_mod, :mod).utility(true)
+    ModRequirement.mods(mod_ids).visible.utility(true)
   end
 
   def required_mods
     mod_ids = mod_list_mod_ids
     return ModRequirement.none if mod_ids.empty?
 
-    ModRequirement.mods(mod_ids).utility(false).includes(:required_mod, :mod).order(:required_id)
+    ModRequirement.mods(mod_ids).utility(false).visible.order(:required_id)
   end
 
   def required_plugins
     plugin_ids = mod_list_plugin_ids
     return Master.none if plugin_ids.empty?
 
-    Master.plugins(plugin_ids).includes(:plugin, :master_plugin).order(:master_plugin_id)
+    Master.plugins(plugin_ids).visible.order(:master_plugin_id)
   end
 
   def incompatible_mod_ids
