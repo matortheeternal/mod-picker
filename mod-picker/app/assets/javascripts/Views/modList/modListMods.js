@@ -42,9 +42,23 @@ app.controller('modListModsController', function($scope, $rootScope, $timeout, $
         });
     };
 
+    $scope.associateModOptionPluginMods = function(modListMods) {
+        modListMods.forEach(function(modListMod) {
+            modListMod.mod.mod_options.forEach(function(modOption) {
+                modOption.plugins.forEach(function(plugin) {
+                    plugin.mod = {
+                        id: modListMod.mod.id,
+                        name: modListMod.mod.name
+                    }
+                });
+            });
+        });
+    };
+
     $scope.retrieveMods = function() {
         modListService.retrieveModListMods($scope.mod_list.id).then(function(data) {
             categoryService.associateCategories(categories, data.mods);
+            $scope.associateModOptionPluginMods(data.mods);
             $scope.required.mods = data.required_mods;
             $scope.notes.compatibility = data.compatibility_notes;
             $scope.notes.install_order = data.install_order_notes;
