@@ -55,24 +55,32 @@
                 <label class="checkbox-option">
                     <input type="checkbox" ng-model="mod_list.is_collection"> Collection
                 </label>
-                <span class="help-tooltip" title="Collections are a special type of Mod List which can be added to &#13;other mod lists.">?</span><br/>
+                <span class="help-tooltip small" title="Collections are a special type of Mod List which can be added to &#13;other mod lists.">
+                    <i class="fa fa-question-circle"></i>
+                </span><br/>
 
                 <label class="checkbox-option">
                     <input type="checkbox" ng-model="mod_list.disable_comments"> Disable Comments
                 </label>
-                <span class="help-tooltip" title="If enabled the Comments tab for this mod list will be hidden and &#13;any existing comments on this mod list will be hidden from public&#13;viewing.  NOTE: Unsetting this will not restore the hidden comments, &#13;only a moderator or site administrator can restore them.">?</span><br/>
+                <span class="help-tooltip small" title="If enabled the Comments tab for this mod list will be hidden and &#13;any existing comments on this mod list will be hidden from public&#13;viewing.  NOTE: Unsetting this will not restore the hidden comments, &#13;only a moderator or site administrator can restore them.">
+                    <i class="fa fa-question-circle"></i>
+                </span><br/>
 
                 <label class="checkbox-option">
                     <input type="checkbox" ng-model="mod_list.lock_tags"> Lock Tags
                 </label>
-                <span class="help-tooltip" title="If enabled only the mod list author, moderators and administrators &#13;will be able to add tags to this mod list.">?</span><br/>
+                <span class="help-tooltip small" title="If enabled only the mod list author, moderators and administrators &#13;will be able to add tags to this mod list.">
+                    <i class="fa fa-question-circle"></i>
+                </span><br/>
 
                 <label class="checkbox-option">
                     <input type="checkbox" ng-model="mod_list.hidden">
                     Delete
                 </label>
                 <a href="/help/data_policies">
-                    <span class="help-tooltip" title="Checking this box will delete this mod list.  Click for more information &#13;on our data deletion and recovery policies.">?</span>
+                    <span class="help-tooltip small" title="Checking this box will delete this mod list.  Click for more information &#13;on our data deletion and recovery policies.">
+                        <i class="fa fa-question-circle"></i>
+                    </span>
                 </a><br/>
             </section>
         </form>
