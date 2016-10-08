@@ -37,7 +37,7 @@ class UsersController < ApplicationController
   # GET /users/1/comments
   def comments
     authorize! :read, @user
-    comments = @user.profile_comments.accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10)
+    comments = @user.profile_comments.includes(:submitter => :reputation, :children => [:submitter => :reputation]).accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10)
     count = @user.profile_comments.accessible_by(current_ability).count
     render :json => {
         comments: comments,

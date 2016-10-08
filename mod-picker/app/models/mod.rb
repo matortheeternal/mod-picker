@@ -1,5 +1,5 @@
 class Mod < ActiveRecord::Base
-  include Filterable, Sortable, Imageable, RecordEnhancements, SourceHelpers, ScopeHelpers, Trackable
+  include Filterable, Sortable, Reportable, Imageable, RecordEnhancements, SourceHelpers, ScopeHelpers, Trackable
 
   # ATTRIBUTES
   enum status: [ :good, :outdated, :unstable ]
@@ -117,7 +117,7 @@ class Mod < ActiveRecord::Base
   has_many :author_users, :class_name => 'User', :through => 'mod_authors', :source => 'user', :inverse_of => 'mods'
 
   # community feedback on the mod
-  has_many :corrections, :as => 'correctable'
+  has_many :corrections, :as => 'correctable', :dependent => :destroy
   has_many :reviews, :inverse_of => 'mod', :dependent => :destroy
   has_many :mod_stars, :inverse_of => 'mod', :dependent => :destroy
   has_many :user_stars, :class_name => 'User', :through => 'mod_stars', :source => 'user', :inverse_of => 'starred_mods'
@@ -147,6 +147,7 @@ class Mod < ActiveRecord::Base
   validates :name, :aliases, length: {maximum: 128}
 
   # callbacks
+  before_save :set_dates
   after_create :increment_counters
   before_destroy :decrement_counters
 
@@ -251,6 +252,7 @@ class Mod < ActiveRecord::Base
     include_hash[:workshop_infos] = {:except => [:mod_id]} if sources[:workshop]
 
     collection.as_json({
+        :except => [:game_id, :submitted_by, :edited_by, :disallow_contributors, :disable_reviews, :lock_tags],
         :include => include_hash
     })
   end
@@ -370,6 +372,9 @@ class Mod < ActiveRecord::Base
     {
         :except => [:disallow_contributors, :hidden],
         :include => {
+            :submitter => {
+                :only => [:username]
+            },
             :nexus_infos => {:except => [:mod_id]},
             :workshop_infos => {:except => [:mod_id]},
             :lover_infos => {:except => [:mod_id]},
@@ -417,6 +422,10 @@ class Mod < ActiveRecord::Base
   end
 
   private
+    def set_dates
+      self.submitted = DateTime.now if submitted.nil?
+    end
+
     def decrement_counters
       submitter.update_counter(:submitted_mods_count, -1) if submitted_by.present?
     end

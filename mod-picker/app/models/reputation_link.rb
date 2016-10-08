@@ -1,9 +1,6 @@
 class ReputationLink < ActiveRecord::Base
   include Trackable
 
-  # ATTRIBUTES
-  self.primary_keys = :from_rep_id, :to_rep_id
-
   # EVENT TRACKING
   track :added
 
@@ -23,10 +20,6 @@ class ReputationLink < ActiveRecord::Base
   after_create :increment_counters
   before_destroy :decrement_counters
 
-  def removed_by
-    source_user.id
-  end
-
   def notification_json_options(event_type)
     {
         :only => [],
@@ -39,12 +32,12 @@ class ReputationLink < ActiveRecord::Base
 
   private
     def decrement_counters
-      self.source_reputation.update_counter(:rep_to_count, -1)
-      self.target_reputation.update_counter(:rep_from_count, -1)
+      source_reputation.update_counter(:rep_to_count, -1)
+      target_reputation.update_counter(:rep_from_count, -1)
     end
 
     def increment_counters
-      self.source_reputation.update_counter(:rep_to_count, 1)
-      self.target_reputation.update_counter(:rep_from_count, 1)
+      source_reputation.update_counter(:rep_to_count, 1)
+      target_reputation.update_counter(:rep_from_count, 1)
     end
 end

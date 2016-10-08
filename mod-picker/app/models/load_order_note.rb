@@ -56,8 +56,14 @@ class LoadOrderNote < ActiveRecord::Base
 
   # CALLBACKS
   after_create :increment_counters
+  before_create :auto_approve
   before_save :set_adult, :set_dates
   before_destroy :decrement_counters
+
+  def get_existing_note(plugin_ids)
+    table = LoadOrderNote.arel_table
+    LoadOrderNote.plugins(plugin_ids).where(table[:hidden].eq(0).and(table[:id].not_eq(id))).first
+  end
 
   def unique_plugins
     if first_plugin_id == second_plugin_id
@@ -65,8 +71,7 @@ class LoadOrderNote < ActiveRecord::Base
       return
     end
 
-    plugin_ids = [first_plugin_id, second_plugin_id]
-    note = LoadOrderNote.plugins(plugin_ids).where("hidden = 0 and id != ?", self.id).first
+    note = get_existing_note([first_plugin_id, second_plugin_id])
     if note.present?
       if note.approved
         errors.add(:plugins, "A Load Order Note for these plugins already exists.")
@@ -221,6 +226,11 @@ class LoadOrderNote < ActiveRecord::Base
 
     def set_adult
       self.has_adult_content = first_mod.has_adult_content || second_mod.has_adult_content
+      true
+    end
+
+    def auto_approve
+      self.approved = submitter.has_auto_approval?
       true
     end
 

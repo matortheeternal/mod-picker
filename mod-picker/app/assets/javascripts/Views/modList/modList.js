@@ -310,47 +310,23 @@ app.controller('modListController', function($scope, $rootScope, $q, $stateParam
     };
 
     $scope.findTool = function(toolId, ignoreDestroyed) {
-        if (!$scope.model.tools) {
-            return true;
-        }
-        var foundTool = listUtils.findMod($scope.model.tools, toolId);
-        if (foundTool && ignoreDestroyed && foundTool._destroy) {
-            return;
-        }
-        return foundTool;
+        return listUtils.genericFind($scope.model.tools, listUtils.findMod, toolId, ignoreDestroyed);
     };
 
     $scope.findMod = function(modId, ignoreDestroyed) {
-        if (!$scope.model.mods) {
-            return true;
-        }
-        var foundMod = listUtils.findMod($scope.model.mods, modId);
-        if (foundMod && ignoreDestroyed && foundMod._destroy) {
-            return;
-        }
-        return foundMod;
+        return listUtils.genericFind($scope.model.mods, listUtils.findMod, modId, ignoreDestroyed);
     };
 
     $scope.findPlugin = function(pluginId, ignoreDestroyed) {
-        if (!$scope.model.plugins) {
-            return true;
-        }
-        var foundPlugin = listUtils.findPlugin($scope.model.plugins, pluginId);
-        if (foundPlugin && ignoreDestroyed && foundPlugin._destroy) {
-            return;
-        }
-        return foundPlugin;
+        return listUtils.genericFind($scope.model.plugins, listUtils.findPlugin, pluginId, ignoreDestroyed);
     };
 
     $scope.findCustomPlugin = function(noteId, ignoreDestroyed) {
-        if (!$scope.model.plugins) {
-            return false;
-        }
-        var foundPlugin = listUtils.findCustomPlugin($scope.model.plugins, noteId);
-        if (foundPlugin && ignoreDestroyed && foundPlugin._destroy) {
-            return;
-        }
-        return foundPlugin;
+        return listUtils.genericFind($scope.model.plugins, listUtils.findCustomPlugin, noteId, ignoreDestroyed);
+    };
+
+    $scope.findConfig = function(configId, ignoreDestroyed) {
+        return listUtils.genericFind($scope.model.configs, listUtils.findConfig, configId, ignoreDestroyed);
     };
 
     $scope.findIgnoredNote = function(note_type, note_id, ignoreDestroyed) {
@@ -360,18 +336,7 @@ app.controller('modListController', function($scope, $rootScope, $q, $stateParam
         if (foundIgnoredNote && ignoreDestroyed && foundIgnoredNote._destroy) {
             return;
         }
-         return foundIgnoredNote;
-    };
-
-    $scope.findConfig = function(configId, ignoreDestroyed) {
-        if (!$scope.model.configs) {
-            return true;
-        }
-        var foundConfig = listUtils.findConfig($scope.model.configs, configId);
-        if (foundConfig && ignoreDestroyed && foundConfig._destroy) {
-            return;
-        }
-        return foundConfig;
+        return foundIgnoredNote;
     };
 
     $scope.associateIgnore = function(notes, note_type) {

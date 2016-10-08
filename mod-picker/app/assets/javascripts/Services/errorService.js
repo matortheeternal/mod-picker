@@ -1,5 +1,26 @@
-app.service('errorService', function() {
+app.service('errorService', function($q) {
     var service = this;
+
+    this.criticalError = function(response) {
+        switch(response.status) {
+            case 404:
+            case 422:
+                window.location.href = '/' + response.status;
+                break;
+            default:
+                window.location.href = '/500';
+        }
+    };
+
+    this.criticalRequest = function(requestFunction, arg) {
+        var request = $q.defer();
+        requestFunction(arg).then(function(data) {
+            request.resolve(data);
+        }, function(response) {
+            service.criticalError(response);
+        });
+        return request.promise;
+    };
 
     this.createErrorLink = function(errors, errorResponse, id, baseId) {
         var url, label;
@@ -77,8 +98,10 @@ app.service('errorService', function() {
     };
 
     this.flattenErrors = function(errorResponse) {
-        var errors = [];
         var data = errorResponse.data;
+        if (data.error) return [data.error];
+
+        var errors = [];
         if (typeof data === "object") {
             for (var prop in data) {
                 if (data.hasOwnProperty(prop)) {

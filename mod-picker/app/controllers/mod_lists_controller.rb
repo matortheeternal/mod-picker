@@ -57,7 +57,7 @@ class ModListsController < ApplicationController
     authorize! :read, @mod_list
 
     # prepare primary data
-    mods = @mod_list.mod_list_mods.utility(false).includes(:mod_list_mod_options, :mod => :mod_options).order(:index)
+    mods = @mod_list.mod_list_mods.utility(false).includes(:mod_list_mod_options, :mod => { :mod_options => :plugins}).order(:index)
     custom_mods = @mod_list.custom_mods.utility(false)
     groups = @mod_list.mod_list_groups.where(tab: 1).order(:index)
 
@@ -167,7 +167,7 @@ class ModListsController < ApplicationController
         load_order: ModListPlugin.load_order_json(load_order),
         install_order: ModListMod.install_order_json(install_order),
         plugins: Plugin.analysis_json(plugins),
-        conflicting_assets: [] #@mod_list.conflicting_assets
+        conflicting_assets: @mod_list.conflicting_assets
     }
   end
 
@@ -176,7 +176,7 @@ class ModListsController < ApplicationController
     authorize! :read, @mod_list
 
     # prepare primary data
-    comments = @mod_list.comments.accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10)
+    comments = @mod_list.comments.includes(:submitter => :reputation, :children => [:submitter => :reputation]).accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10)
     count = @mod_list.comments.accessible_by(current_ability).count
 
     # render response

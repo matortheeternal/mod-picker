@@ -70,7 +70,7 @@ app.service('userService', function(backend, $q, userSettingsService, userTitleS
         permissions.canContribute = !permissions.isRestricted;
         permissions.canUseCustomSources = permissions.canModerate;
         permissions.canSetGeneralModInfo = permissions.canModerate;
-        permissions.canChangeAvatar = (rep >= 10) || permissions.canModerate;
+        permissions.canChangeAvatar = (rep >= 20) || permissions.canModerate;
         permissions.canChangeTitle = (rep >= 1280) || permissions.canModerate;
 
         // permissions block for actions users who are NOT restricted can do

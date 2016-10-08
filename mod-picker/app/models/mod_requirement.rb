@@ -11,6 +11,7 @@ class ModRequirement < ActiveRecord::Base
 
   # VALIDATIONS
   validates :required_id, presence: true
+  validates :required_id, uniqueness: { scope: :mod_id, :message => "Mod Requirement duplication is not allowed." }
 
   # CALLBACKS
   after_create :increment_counter_caches

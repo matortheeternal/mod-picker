@@ -42,9 +42,23 @@ app.controller('modListModsController', function($scope, $rootScope, $timeout, $
         });
     };
 
+    $scope.associateModOptionPluginMods = function(modListMods) {
+        modListMods.forEach(function(modListMod) {
+            modListMod.mod.mod_options.forEach(function(modOption) {
+                modOption.plugins.forEach(function(plugin) {
+                    plugin.mod = {
+                        id: modListMod.mod.id,
+                        name: modListMod.mod.name
+                    }
+                });
+            });
+        });
+    };
+
     $scope.retrieveMods = function() {
         modListService.retrieveModListMods($scope.mod_list.id).then(function(data) {
             categoryService.associateCategories(categories, data.mods);
+            $scope.associateModOptionPluginMods(data.mods);
             $scope.required.mods = data.required_mods;
             $scope.notes.compatibility = data.compatibility_notes;
             $scope.notes.install_order = data.install_order_notes;
@@ -79,8 +93,11 @@ app.controller('modListModsController', function($scope, $rootScope, $timeout, $
 
             // update modules
             $rootScope.$broadcast('modRecovered', !!modListMod.mod && modListMod.mod.id);
-            modListMod.mod && modListMod.mod_list_mod_options.forEach(function(option) {
-                $rootScope.$broadcast('modOptionAdded', option.mod_option_id);
+            modListMod.mod && modListMod.mod.mod_options.forEach(function(option) {
+                var foundModOption = modListMod.mod_list_mod_options.find(function(ml_option) {
+                    return option.id == ml_option.id;
+                });
+                if (foundModOption) $rootScope.$broadcast('modOptionAdded', option);
             });
             $scope.$broadcast('updateItems');
 
@@ -120,7 +137,7 @@ app.controller('modListModsController', function($scope, $rootScope, $timeout, $
                     modListMod.mod_list_mod_options.push({
                         mod_option_id: option.id
                     });
-                    $rootScope.$broadcast('modOptionAdded', option.id);
+                    $rootScope.$broadcast('modOptionAdded', option);
                 }
             });
 

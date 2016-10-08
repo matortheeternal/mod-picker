@@ -188,30 +188,30 @@ class Correction < ActiveRecord::Base
   end
 
   private
-    def set_dates
-      if self.submitted.nil?
-        self.submitted = DateTime.now
-      else
-        self.edited = DateTime.now
-      end
+  def set_dates
+    if self.submitted.nil?
+      self.submitted = DateTime.now
+    else
+      self.edited = DateTime.now
     end
+  end
 
-    def set_adult
-      self.has_adult_content = correctable.has_adult_content
-      true
-    end
+  def set_adult
+    self.has_adult_content = correctable.has_adult_content
+    true
+  end
 
-    def increment_counters
-      correctable.update_counter(:corrections_count, 1)
-      submitter.update_counter(:corrections_count, 1)
-    end
+  def increment_counters
+    correctable.update_counter(:corrections_count, 1)
+    submitter.update_counter(:corrections_count, 1)
+  end
 
-    def decrement_counters
-      correctable.update_counter(:corrections_count, -1)
-      submitter.update_counter(:corrections_count, -1)
-    end
+  def decrement_counters
+    correctable.update_counter(:corrections_count, -1)
+    submitter.update_counter(:corrections_count, -1)
+  end
 
-    def schedule_close
-      Correction.delay_for(1.week).close(id)
-    end
+  def schedule_close
+    Correction.delay_for(1.week).close(id)
+  end
 end

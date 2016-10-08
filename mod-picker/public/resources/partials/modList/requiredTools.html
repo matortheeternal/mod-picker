@@ -3,7 +3,7 @@
         <span class="note-item">
             ({{showMissingTools ? 'Missing' : 'All'}})
         </span>
-        <span class="right-item action-box" ng-if="required.missing_tools.length" ng-click="resolveAllRequirements()">
+        <span class="right-item action-box" ng-if="required.missing_tools.length && editing" ng-click="resolveAllRequirements()">
             <i class="fa fa-check"></i> Resolve All
         </span>
         <span class="right-item toggle-item" ng-click="showMissingTools = !showMissingTools">
@@ -22,7 +22,7 @@
                 </span>
                 <span ng-if="requirement.mods.length > 2">
                     and
-                    <span class="help-tooltip" title="{{getRequirerList(requirement, 2)}}">{{requirement.mods.length - 2}} more</span>
+                    <span class="text-tooltip" title="{{getRequirerList(requirement, 2)}}">{{requirement.mods.length - 2}} more</span>
                 </span>
                 <!-- resolution options -->
                 <span ng-if="editing">
@@ -45,7 +45,7 @@
                 </span>
                 <span ng-if="requirement.mods.length > 2">
                     and
-                    <span class="help-tooltip" title="{{getRequirerList(requirement, 2)}}">{{requirement.mods.length - 2}} more</span>
+                    <span class="text-tooltip" title="{{getRequirerList(requirement, 2)}}">{{requirement.mods.length - 2}} more</span>
                 </span>
             </li>
         </ul>

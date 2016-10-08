@@ -77,14 +77,11 @@ app.controller('tableResultsController', function($scope, $rootScope, tableUtils
     // this function will toggle sorting for an input column between
     // up, down, and no sorting
     $scope.toggleSort = function(column) {
-        if (column.down) {
-            column.up = true;
-            column.down = false;
-        } else if (column.up) {
-            column.up = false;
-        } else {
-            column.down = true;
-        }
+        var firstKey = column.invertSort ? "up" : "down";
+        var secondKey = column.invertSort ? "down" : "up";
+        var b1 = column[firstKey], b2 = column[secondKey];
+        column[secondKey] = b1;
+        column[firstKey] = !b1 && !b2;
     };
 
     // sorts by a column

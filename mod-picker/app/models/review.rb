@@ -28,11 +28,11 @@ class Review < ActiveRecord::Base
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'reviews'
   belongs_to :editor, :class_name => 'User', :foreign_key => 'edited_by'
   belongs_to :mod, :inverse_of => 'reviews'
+  has_many :review_ratings, :inverse_of => 'review'
 
+  # ASSOCIATIONS FOR SUBSCRIPTIONS
   has_one :submitter_reputation, :class_name => 'UserReputation', :through => 'submitter', :source => 'reputation'
   has_many :mod_author_users, :through => :mod, :source => :author_users
-
-  has_many :review_ratings, :inverse_of => 'review'
 
   accepts_nested_attributes_for :review_ratings
 
@@ -45,6 +45,7 @@ class Review < ActiveRecord::Base
 
   # CALLBACKS
   after_create :increment_counters
+  before_create :auto_approve
   before_save :set_adult, :set_dates
   after_save :update_mod_metrics, :update_metrics
   before_destroy :clear_ratings, :decrement_counters
@@ -190,6 +191,11 @@ class Review < ActiveRecord::Base
 
     def set_adult
       self.has_adult_content = mod.has_adult_content
+      true
+    end
+
+    def auto_approve
+      self.approved = submitter.has_auto_approval?
       true
     end
 

@@ -100,6 +100,10 @@ table.browse-table {
   font-size: 12px;
   border: 1px solid $border_color;
 
+  .row-hidden {
+    opacity: 0.6;
+  }
+
   th {
     margin: 0;
     padding: 5px 10px;
@@ -213,6 +217,22 @@ table.browse-table {
     &:nth-child(even) {
       background-color: $primary_background;
     }
+  }
+}
+
+table.reports-table {
+  th {
+    cursor: default;
+  }
+
+  .date-cell {
+    min-width: 140px !important;
+    width: 140px !important;
+  }
+
+  .submitter-cell {
+    min-width: 175px !important;
+    width: 175px !important;
   }
 }
 

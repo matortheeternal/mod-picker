@@ -38,7 +38,7 @@ class CorrectionsController < ApplicationController
   # POST/GET /corrections/1/comments
   def comments
     authorize! :read, @correction
-    comments = @correction.comments.accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10)
+    comments = @correction.comments.includes(:submitter => :reputation, :children => [:submitter => :reputation]).accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10)
     count = @correction.comments.accessible_by(current_ability).count
     render :json => {
         comments: comments,

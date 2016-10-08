@@ -3,7 +3,7 @@
         <span class="note-item">
             ({{showUnresolvedInstallOrder ? 'Unresolved' : 'All'}})
         </span>
-        <span class="right-item action-box" ng-if="notes.unresolved_install_order.length" ng-click="resolveAllInstallOrder()">
+        <span class="right-item action-box" ng-if="notes.unresolved_install_order.length && editing" ng-click="resolveAllInstallOrder()">
             <i class="fa fa-check"></i> Resolve All
         </span>
         <span class="right-item toggle-item" ng-click="showUnresolvedInstallOrder = !showUnresolvedInstallOrder">

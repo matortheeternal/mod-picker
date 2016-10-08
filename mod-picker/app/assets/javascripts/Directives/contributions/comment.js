@@ -17,6 +17,7 @@ app.directive('comment', function() {
 app.controller('commentController', function($scope, $rootScope, $filter, $timeout, contributionService) {
     // inherited variables
     $scope.currentUser = $rootScope.currentUser;
+    $scope.currentGame = $rootScope.currentGame;
 
     // this is the report object
     $scope.report = {
