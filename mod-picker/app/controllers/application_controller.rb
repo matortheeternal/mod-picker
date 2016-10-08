@@ -36,12 +36,12 @@ class ApplicationController < ActionController::Base
   end
 
   def json_format(resource, format=nil)
-    format ||= caller_locations(1,1)[0].label
+    format ||= action_name.to_sym
     resource.as_json(format: format)
   end
 
   def respond_with_json(resource, format=nil, root=nil)
-    format ||= caller_locations(1,1)[0].label
+    format ||= action_name.to_sym
     resource_json = resource.as_json(format: format)
     render json: root ? { root => resource_json } : resource_json
   end

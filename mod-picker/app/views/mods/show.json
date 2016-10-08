@@ -1,4 +1,3 @@
-
 {
   "except": ["disallow_contributors", "hidden"],
   "include": {
