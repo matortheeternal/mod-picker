@@ -220,4 +220,27 @@ app.service('actionsFactory', function() {
             }]
         }];
     };
+
+    this.modListPluginModalActions = function() {
+        return [{
+            caption: "Add",
+            title: "Add this plugin to your mod list",
+            hidden: function($scope, item) {
+                return !!item.active;
+            },
+            execute: function($scope, item) {
+                $scope.$emit('togglePlugin', item);
+            }
+        }, {
+            caption: "Remove",
+            title: "Remove this plugin from your mod list",
+            class: 'red-box',
+            hidden: function($scope, item) {
+                return !item.active;
+            },
+            execute: function($scope, item) {
+                $scope.$emit('togglePlugin', item);
+            }
+        }];
+    };
 });

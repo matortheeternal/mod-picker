@@ -112,9 +112,12 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, catego
             $scope.mod_list.plugins_count += 1;
             $scope.updateTabs();
 
-            // upudate modules
+            // update modules
             $scope.$broadcast('pluginRecovered', !!modListPlugin.plugin && modListPlugin.plugin.id);
             $scope.$broadcast('updateItems');
+
+            // update plugin store for mod list plugin modal
+            $scope.setPluginStoreActive(modListPlugin, true);
 
             // success message
             $scope.$emit('successMessage', 'Added plugin ' + modListPlugin.plugin.filename+ ' successfully.');
@@ -141,6 +144,9 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, catego
             $scope.originalModList.plugins.push(angular.copy(modListPlugin));
             $scope.mod_list.plugins_count += 1;
             $scope.updateTabs();
+
+            // update plugin store state
+            $scope.setPluginStoreActive(modListPlugin, true);
 
             // update modules
             $scope.$broadcast('pluginAdded', data);
@@ -221,6 +227,9 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, catego
         $scope.mod_list.plugins_count -= 1;
         $scope.updateTabs();
 
+        // update plugin_store active state
+        $scope.setPluginStoreActive(modListPlugin, false);
+
         // update modules
         $scope.$broadcast('pluginRemoved', !!modListPlugin.plugin && modListPlugin.plugin.id);
         $scope.$broadcast('updateItems');
@@ -233,9 +242,10 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, catego
     };
 
     $scope.togglePlugin = function(pluginItem) {
-        if (pluginItem.active) {
+        if (!pluginItem.active) {
             $scope.addPlugin(pluginItem.id);
         } else {
+            
             var foundPlugin = $scope.findPlugin(pluginItem.id, true);
             if (foundPlugin) $scope.removePlugin(foundPlugin);
         }
@@ -300,6 +310,17 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, catego
         });
     };
 
+    // set plugin store active state for a single plugin
+    $scope.setPluginStoreActive = function(modListPlugin, activeState) {
+        var foundPlugin = $scope.plugins_store.find(function(plugin) {
+            return plugin.id == modListPlugin.plugin.id;
+        });
+
+        if(foundPlugin) { 
+            foundPlugin.active = activeState;
+        };
+    }
+
     // event triggers
     $scope.$on('removeItem', function(event, modListPlugin) {
         $scope.removePlugin(modListPlugin);
@@ -356,4 +377,7 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, catego
     $scope.$on('toggleDetailsModal', function(event, options) {
         $scope.toggleDetailsModal(options.visible, options.item);
     });
+    $scope.$on('togglePlugin', function(event, modListPlugin) {
+        $scope.togglePlugin(modListPlugin);
+    })
 });

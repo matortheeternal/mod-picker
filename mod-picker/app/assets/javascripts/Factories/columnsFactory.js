@@ -1002,4 +1002,118 @@ app.service('columnsFactory', function() {
     this.pluginColumnGroups = function() {
         return ["General"];
     };
+
+    // mod list plugins modal columns/groups
+    this.modListPluginModalColumns = function() {
+        return [
+            {
+                group: "General",
+                visibility: false,
+                required: false,
+                label: "Index",
+                data: function(item) {
+                    if (!item.merged) return item.index;
+                },
+                note: function($scope, item) {
+                    if (item.merged) return 'merged';
+                },
+                filter: "number",
+                class: "index-column"
+            },
+            {
+                group: "General",
+                visibility: false,
+                required: false,
+                label: "Load Order",
+                data: function(item) {
+                    if (!item.merged) return item.index;
+                },
+                note: function($scope, item) {
+                    if (item.merged) return 'merged';
+                },
+                filter: "hex",
+                class: "load-order-column"
+            },
+            {
+                group: "General",
+                visibility: true,
+                required: true,
+                label: "Filename",
+                data: function(item) {
+                    return item.filename || item.plugin.filename;
+                },
+                link: function(item) {
+                    if (item.mod && item.plugin) {
+                        return "#/mod/" + item.mod.id + "/analysis?plugin=" + item.plugin.id;
+                    }
+                },
+                note: function($scope, item) {
+                    return item.cleaned ? '(cleaned)' : '';
+                },
+                class: "primary-column",
+                invertSort: true
+            },
+            {
+                group: "General",
+                visibility: true,
+                label: "Mod",
+                data: "mod.name",
+                link: function(item) {
+                    if (item.mod) {
+                        return "#/mod/" + item.mod.id;
+                    }
+                },
+                sortData: "mods.name",
+                invertSort: true
+            },
+            {
+                group: "General",
+                visibility: false,
+                label: "CRC",
+                data: "plugin.crc_hash",
+                class: "crc-column",
+                invertSort: true
+            },
+            {
+                group: "General",
+                visibility: false,
+                label: "File Size",
+                data: "plugin.file_size",
+                filter: "bytes"
+            },
+            {
+                group: "General",
+                visibility: false,
+                label: "Author",
+                data: "plugin.author",
+                class: "author-column",
+                invertSort: true
+            },
+            {
+                group: "General",
+                visibility: false,
+                label: "Records",
+                data: "plugin.record_count",
+                filter: "number"
+            },
+            {
+                group: "General",
+                visibility: false,
+                label: "Overrides",
+                data: "plugin.override_count",
+                filter: "number"
+            },
+            {
+                group: "General",
+                visibility: false,
+                label: "Errors",
+                data: "plugin.errors_count",
+                filter: "number"
+            }
+        ];
+    };
+
+    this.modListPluginModalColumnGroups = function() {
+        return ["General"];
+    };
 });
