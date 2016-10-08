@@ -56,7 +56,7 @@ class Plugin < ActiveRecord::Base
   validates_associated :plugin_record_groups, :plugin_errors, :overrides
 
   # callbacks
-  after_create :create_associations, :update_lazy_counters
+  after_create :create_associations, :update_lazy_counters, :convert_dummy_masters
   before_destroy :delete_associations
 
   def update_lazy_counters
@@ -77,7 +77,18 @@ class Plugin < ActiveRecord::Base
     end
   end
 
-  def convert_to_dummy_masters
+  def convert_dummy_masters
+    DummyMaster.where(filename: filename).each do |dummy|
+      Master.create!({
+          master_plugin_id: id,
+          plugin_id: dummy.plugin_id,
+          index: dummy.index
+      })
+      dummy.delete
+    end
+  end
+
+  def create_to_dummy_masters
     Master.where(master_plugin_id: id).each do |master|
       DummyMaster.create!({
           plugin_id: master.plugin_id,
@@ -92,7 +103,7 @@ class Plugin < ActiveRecord::Base
     PluginError.where(plugin_id: id).delete_all
     PluginRecordGroup.where(plugin_id: id).delete_all
     DummyMaster.where(plugin_id: id).delete_all
-    convert_to_dummy_masters
+    create_to_dummy_masters
     Master.where(plugin_id: id).delete_all
     Master.where(master_plugin_id: id).delete_all
     LoadOrderNote.where("first_plugin_id = ? OR second_plugin_id = ?", id, id).delete_all
