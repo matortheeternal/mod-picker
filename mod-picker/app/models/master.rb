@@ -19,10 +19,10 @@ class Master < ActiveRecord::Base
           :only => [],
           :include => {
               :plugin => {
-                  :only => [:id, :mod_id, :filename]
+                  :only => [:id, :mod_option_id, :filename]
               },
               :master_plugin => {
-                  :only => [:id, :mod_id, :filename]
+                  :only => [:id, :mod_option_id, :filename]
               }
           }
       }
