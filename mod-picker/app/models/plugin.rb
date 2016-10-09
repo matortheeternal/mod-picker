@@ -64,18 +64,28 @@ class Plugin < ActiveRecord::Base
     self.errors_count = plugin_errors.count
   end
 
+  def update_counters
+    self.mod_lists_count = mod_list_plugins.count
+    self.load_order_notes_count = load_order_notes.count
+    update_lazy_counters
+  end
+
   def create_associations
     if @master_plugins
       @master_plugins.each_with_index do |master, index|
         master_plugin = Plugin.find_by(filename: master[:filename], crc_hash: master[:crc_hash])
         master_plugin = Plugin.find_by(filename: master[:filename]) if master_plugin.nil?
         if master_plugin.nil?
-          self.dummy_masters.create(filename: master[:filename], index: index)
+          dummy_masters.create(filename: master[:filename], index: index)
         else
-          self.masters.create(master_plugin_id: master_plugin.id, index: index)
+          masters.create(master_plugin_id: master_plugin.id, index: index)
         end
       end
     end
+  end
+
+  def load_order_notes
+    LoadOrderNote.where("first_plugin_id = :id OR second_plugin_id = :id", id: id)
   end
 
   def convert_dummy_masters
@@ -89,7 +99,7 @@ class Plugin < ActiveRecord::Base
     end
   end
 
-  def create_to_dummy_masters
+  def create_dummy_masters
     Master.where(master_plugin_id: id).each do |master|
       DummyMaster.create!({
           plugin_id: master.plugin_id,
@@ -99,17 +109,29 @@ class Plugin < ActiveRecord::Base
     end
   end
 
+  def switch_associations(new_plugin_id)
+    load_order_notes.destroy_all
+    CompatibilityNote.where(compatibility_plugin_id: id).destroy_all
+    ModListPlugin.where(plugin_id: id).destroy_all
+  end
+
   def delete_associations
     OverrideRecord.where(plugin_id: id).delete_all
     PluginError.where(plugin_id: id).delete_all
     PluginRecordGroup.where(plugin_id: id).delete_all
     DummyMaster.where(plugin_id: id).delete_all
-    create_to_dummy_masters
+    create_dummy_masters
     Master.where(plugin_id: id).delete_all
     Master.where(master_plugin_id: id).delete_all
-    LoadOrderNote.where("first_plugin_id = ? OR second_plugin_id = ?", id, id).delete_all
-    CompatibilityNote.where(compatibility_plugin_id: id).delete_all
-    ModListPlugin.where(plugin_id: id).delete_all
+  end
+
+  def map_associations(plugin_id)
+    OverrideRecord.where(plugin_id: id).update_all(plugin_id: plugin_id)
+    PluginError.where(plugin_id: id).update_all(plugin_id: plugin_id)
+    PluginRecordGroup.where(plugin_id: id).update_all(plugin_id: plugin_id)
+    DummyMaster.where(plugin_id: id).update_all(plugin_id: plugin_id)
+    Master.where(plugin_id: id).update_all(plugin_id: plugin_id)
+    Master.where(master_plugin_id: id).update_all(master_plugin_id: plugin_id)
   end
 
   def formatted_overrides

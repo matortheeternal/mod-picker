@@ -1,5 +1,5 @@
 class ModBuilder
-  attr_accessor :mod, :current_user, :params, :tag_names, :nexus_info_id, :lover_info_id, :workshop_info_id
+  attr_accessor :mod, :current_user, :params, :tag_names, :nexus_info_id, :lover_info_id, :workshop_info_id, :plugin_ids
 
   def builder_attributes
     [:tag_names, :nexus_info_id, :lover_info_id, :workshop_info_id]
@@ -29,7 +29,6 @@ class ModBuilder
 
   def update
     mod.updated_by = @current_user.id
-    destroy_analysis
     update!
     true
   rescue
@@ -38,12 +37,17 @@ class ModBuilder
 
   def update!
     ActiveRecord::Base.transaction do
+      # this must be done before we assign mod attributes
+      # else it will clear the new analysis from the attributes,
+      # and the new analysis thus won't be created
+      destroy_analysis if analysis_updated?
       mod.attributes = @params
       self.before_save
       self.before_update
       mod.save!
       self.after_update
       self.after_save
+      repair_plugins if analysis_updated?
     end
   end
 
@@ -82,6 +86,10 @@ class ModBuilder
   def after_save
     link_sources
     create_tags
+  end
+
+  def analysis_updated?
+    @params.has_key?(:mod_options_attributes)
   end
 
   def set_config_file_game_ids
@@ -131,7 +139,33 @@ class ModBuilder
   end
 
   def destroy_analysis
-    mod.mod_options.destroy_all if @params.has_key?(:mod_options_attributes)
+    @plugin_ids = mod.plugins.ids
+    mod.mod_options.destroy_all
+  end
+
+  def find_new_plugin(new_plugin_records, old_plugin)
+    new_plugin_records.detect{|new_plugin|
+      new_plugin.filename == old_plugin.filename
+    }
+  end
+
+  def repair_plugins
+    old_plugin_records = Plugin.where(id: @plugin_ids)
+    new_plugin_records = mod.plugins
+    old_plugin_records.each{|old_plugin|
+      new_plugin = find_new_plugin(new_plugin_records, old_plugin)
+      if new_plugin.present?
+        new_plugin_records -= new_plugin
+        old_plugin.delete_associations
+        old_plugin.update(new_plugin.attributes.except("id"))
+        new_plugin.map_associations(old_plugin.id)
+        old_plugin.convert_dummy_masters
+        old_plugin.update_counters
+        new_plugin.destroy
+      else
+        old_plugin.destroy
+      end
+    }
   end
 
   def update_mod_list_mods
