@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161008060514) do
+ActiveRecord::Schema.define(version: 20161009184403) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -188,7 +188,7 @@ ActiveRecord::Schema.define(version: 20161008060514) do
 
   add_index "custom_sources", ["mod_id"], name: "fk_rails_4da082b3d0", using: :btree
 
-  create_table "dummy_masters", id: false, force: :cascade do |t|
+  create_table "dummy_masters", force: :cascade do |t|
     t.integer "plugin_id", limit: 4,   null: false
     t.integer "index",     limit: 1,   null: false
     t.string  "filename",  limit: 128, null: false
@@ -709,7 +709,7 @@ ActiveRecord::Schema.define(version: 20161008060514) do
 
   create_table "plugins", force: :cascade do |t|
     t.integer "game_id",                limit: 4,               null: false
-    t.integer "mod_option_id",          limit: 4,               null: false
+    t.integer "mod_option_id",          limit: 4
     t.string  "filename",               limit: 64,              null: false
     t.string  "crc_hash",               limit: 8,               null: false
     t.integer "file_size",              limit: 4,               null: false
@@ -865,6 +865,7 @@ ActiveRecord::Schema.define(version: 20161008060514) do
     t.boolean "allow_nexus_mods",                default: true,  null: false
     t.boolean "allow_lovers_lab",                default: true,  null: false
     t.boolean "allow_steam_workshop",            default: true,  null: false
+    t.boolean "enable_spellcheck",               default: true,  null: false
   end
 
   add_index "user_settings", ["user_id"], name: "user_id", using: :btree

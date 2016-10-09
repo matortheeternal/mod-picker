@@ -127,7 +127,7 @@ class Comment < ActiveRecord::Base
                   :except => :submitted_by,
                   :include => {
                       :submitter => {
-                          :only => [:id, :username, :role],
+                          :only => [:id, :username, :role, :title],
                           :include => {
                               :reputation => {:only => :overall}
                           },

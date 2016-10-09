@@ -215,7 +215,7 @@ class User < ActiveRecord::Base
                 :only => [:overall, :rep_to_count]
             },
             :settings => {
-                :only => [:theme, :show_notifications, :allow_adult_content]
+                :only => [:theme, :enable_spellcheck, :show_notifications, :allow_adult_content]
             }
         },
         :methods => [:avatar, :recent_notifications]
