@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161008060514) do
+ActiveRecord::Schema.define(version: 20161009042651) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -188,7 +188,7 @@ ActiveRecord::Schema.define(version: 20161008060514) do
 
   add_index "custom_sources", ["mod_id"], name: "fk_rails_4da082b3d0", using: :btree
 
-  create_table "dummy_masters", id: false, force: :cascade do |t|
+  create_table "dummy_masters", force: :cascade do |t|
     t.integer "plugin_id", limit: 4,   null: false
     t.integer "index",     limit: 1,   null: false
     t.string  "filename",  limit: 128, null: false
