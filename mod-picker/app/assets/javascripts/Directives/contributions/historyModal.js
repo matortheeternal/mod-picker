@@ -8,8 +8,6 @@ app.directive('historyModal', function() {
 });
 
 app.controller('historyModalController', function($scope, contributionFactory) {
-    $scope.model = contributionFactory.getModel($scope.modelName);
-
     $scope.showHistory = function(entry) {
         $scope.activeHistoryEntry = angular.copy($scope.target);
         if (entry) {
