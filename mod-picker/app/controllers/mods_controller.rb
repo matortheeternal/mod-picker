@@ -3,7 +3,7 @@ class ModsController < ApplicationController
 
   # POST /mods
   def index
-    @mods = Mod.accessible_by(current_ability).filter(filtering_params).sort(sorting_params).paginate(:page => params[:page])
+    @mods = Mod.accessible_by(current_ability).filter(filtering_params).sort(sorting_params).paginate(page: params[:page])
     count =  Mod.accessible_by(current_ability).filter(filtering_params).count
 
     render json: {
@@ -21,15 +21,15 @@ class ModsController < ApplicationController
 
   # GET /mods/1
   def show
-    @mod = Mod.includes(:custom_sources, :plugins, {:mod_authors => :user}, {:tags => :submitter}, {:required_mods => :required_mod}, {:required_by => :mod}).find(params[:id])
-    authorize! :read, @mod, :message => "You are not allowed to view this mod."
+    @mod = Mod.includes(:custom_sources, :plugins, {mod_authors: :user}, {tags: :submitter}, {required_mods: :required_mod}, {required_by: :mod}).find(params[:id])
+    authorize! :read, @mod, message: "You are not allowed to view this mod."
 
     # set up boolean variables
     star = false
     in_mod_list = false
     incompatible = false
     if current_user.present?
-      star = ModStar.exists?(:mod_id => @mod.id, :user_id => current_user.id)
+      star = ModStar.exists?(mod_id: @mod.id, user_id: current_user.id)
       if current_user.active_mod_list_id.present?
         mod_list = current_user.active_mod_list
         in_mod_list = mod_list.mod_list_mod_ids.include?(@mod.id)
@@ -68,7 +68,7 @@ class ModsController < ApplicationController
 
   # GET /mods/1/edit
   def edit
-    authorize! :update, @mod, :message => "You are not allowed to edit this mod."
+    authorize! :update, @mod, message: "You are not allowed to edit this mod."
     render json: @mod.edit_json
   end
 
@@ -205,8 +205,8 @@ class ModsController < ApplicationController
     authorize! :read, @mod
 
     # prepare reviews
-    reviews = @mod.reviews.preload(:review_ratings).includes(:submitter => :reputation).references(:submitter => :reputation).accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10).where("submitted_by != ? OR hidden = true", current_user.id)
-    count = @mod.reviews.includes(:submitter => :reputation).references(:submitter => :reputation).accessible_by(current_ability).count
+    reviews = @mod.reviews.preload(:review_ratings).includes(submitter: :reputation).references(submitter: :reputation).accessible_by(current_ability).sort(params[:sort]).paginate(page: params[:page], per_page: 10).where("submitted_by != ? OR hidden = true", current_user.id)
+    count = @mod.reviews.includes(submitter: :reputation).references(submitter: :reputation).accessible_by(current_ability).count
     review_ids = reviews.ids
 
     # prepare user review
@@ -237,8 +237,8 @@ class ModsController < ApplicationController
     authorize! :read, @mod
 
     # prepare compatibility notes
-    compatibility_notes = @mod.compatibility_notes.includes(:submitter => :reputation).references(:submitter => :reputation).accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10)
-    count =  @mod.compatibility_notes.includes(:submitter => :reputation).references(:submitter => :reputation).accessible_by(current_ability).count
+    compatibility_notes = @mod.compatibility_notes.includes(submitter: :reputation).references(submitter: :reputation).accessible_by(current_ability).sort(params[:sort]).paginate(page: params[:page], per_page: 10)
+    count =  @mod.compatibility_notes.includes(submitter: :reputation).references(submitter: :reputation).accessible_by(current_ability).count
 
     # prepare helpful marks
     helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("CompatibilityNote", compatibility_notes.ids)
@@ -257,8 +257,8 @@ class ModsController < ApplicationController
     authorize! :read, @mod
 
     # prepare install order notes
-    install_order_notes = @mod.install_order_notes.includes(:submitter => :reputation).references(:submitter => :reputation).accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10)
-    count =  @mod.install_order_notes.includes(:submitter => :reputation).references(:submitter => :reputation).accessible_by(current_ability).count
+    install_order_notes = @mod.install_order_notes.includes(submitter: :reputation).references(submitter: :reputation).accessible_by(current_ability).sort(params[:sort]).paginate(page: params[:page], per_page: 10)
+    count =  @mod.install_order_notes.includes(submitter: :reputation).references(submitter: :reputation).accessible_by(current_ability).count
 
     # prepare helpful marks
     helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("InstallOrderNote", install_order_notes.ids)
@@ -283,8 +283,8 @@ class ModsController < ApplicationController
     end
 
     # prepare load order notes
-    load_order_notes = @mod.load_order_notes.includes(:submitter => :reputation).references(:submitter => :reputation).accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10)
-    count =  @mod.load_order_notes.includes(:submitter => :reputation).references(:submitter => :reputation).accessible_by(current_ability).count
+    load_order_notes = @mod.load_order_notes.includes(submitter: :reputation).references(submitter: :reputation).accessible_by(current_ability).sort(params[:sort]).paginate(page: params[:page], per_page: 10)
+    count =  @mod.load_order_notes.includes(submitter: :reputation).references(submitter: :reputation).accessible_by(current_ability).count
 
     # prepare helpful marks
     helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("LoadOrderNote", load_order_notes.ids)
@@ -363,7 +363,7 @@ class ModsController < ApplicationController
       permitted_filters.each do |key, value|
         if source_filters.include?(key.to_sym)
           unless permitted_filters[key].is_a?(Hash)
-            permitted_filters[key] = { :value => permitted_filters[key] }
+            permitted_filters[key] = { value: permitted_filters[key] }
           end
           permitted_filters[key][:sources] = sources
         end
@@ -375,34 +375,34 @@ class ModsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def mod_params
       params.require(:mod).permit(:game_id, :name, :authors, :aliases, :is_utility, :has_adult_content, :primary_category_id, :secondary_category_id, :released, :updated, :nexus_info_id, :lovers_info_id, :workshop_info_id,
-         :custom_sources_attributes => [:label, :url],
-         :required_mods_attributes => [:required_id],
-         :tag_names => [],
-         :mod_options_attributes => [:name, :size, :default, :is_fomod_option,
-            :asset_paths => [],
-            :plugin_dumps => [:filename, :author, :description, :crc_hash, :record_count, :override_count, :file_size,
-               :master_plugins => [:filename, :crc_hash],
-               :plugin_record_groups_attributes => [:sig, :record_count, :override_count],
-               :plugin_errors_attributes => [:signature, :form_id, :group, :path, :name, :data],
-               :overrides_attributes => [:fid, :sig]
+         custom_sources_attributes: [:label, :url],
+         required_mods_attributes: [:required_id],
+         tag_names: [],
+         mod_options_attributes: [:name, :size, :default, :is_fomod_option,
+            asset_paths: [],
+            plugin_dumps: [:filename, :author, :description, :crc_hash, :record_count, :override_count, :file_size,
+               master_plugins: [:filename, :crc_hash],
+               plugin_record_groups_attributes: [:sig, :record_count, :override_count],
+               plugin_errors_attributes: [:signature, :form_id, :group, :path, :name, :data],
+               overrides_attributes: [:fid, :sig]
              ]
          ])
     end
 
     def mod_update_params
       p = params.require(:mod).permit(:name, :authors, :aliases, :is_utility, :has_adult_content, :primary_category_id, :secondary_category_id, :released, :updated, :nexus_info_id, :lovers_info_id, :workshop_info_id, :disallow_contributors, :disable_reviews, :lock_tags, :hidden,
-         :required_mods_attributes => [:id, :required_id, :_destroy],
-         :mod_authors_attributes => [:id, :role, :user_id, :_destroy],
-          :custom_sources_attributes => [:id, :label, :url, :_destroy],
-         :config_files_attributes => [:id, :filename, :install_path, :text_body, :_destroy],
-         :tag_names => [],
-         :mod_options_attributes => [:name, :size, :default, :is_fomod_option,
-            :asset_paths => [],
-            :plugin_dumps => [:filename, :author, :description, :crc_hash, :record_count, :override_count, :file_size,
-                :master_plugins => [:filename, :crc_hash],
-                :plugin_record_groups_attributes => [:sig, :record_count, :override_count],
-                :plugin_errors_attributes => [:signature, :form_id, :group, :path, :name, :data],
-                :overrides_attributes => [:fid, :sig]
+         required_mods_attributes: [:id, :required_id, :_destroy],
+         mod_authors_attributes: [:id, :role, :user_id, :_destroy],
+          custom_sources_attributes: [:id, :label, :url, :_destroy],
+         config_files_attributes: [:id, :filename, :install_path, :text_body, :_destroy],
+         tag_names: [],
+         mod_options_attributes: [:name, :size, :default, :is_fomod_option,
+            asset_paths: [],
+            plugin_dumps: [:filename, :author, :description, :crc_hash, :record_count, :override_count, :file_size,
+                master_plugins: [:filename, :crc_hash],
+                plugin_record_groups_attributes: [:sig, :record_count, :override_count],
+                plugin_errors_attributes: [:signature, :form_id, :group, :path, :name, :data],
+                overrides_attributes: [:fid, :sig]
             ]
          ])
       p[:id] = params[:id]
@@ -414,6 +414,6 @@ class ModsController < ApplicationController
     end
 
     def image_params
-      {:image_file => params[:image]}
+      {image_file: params[:image]}
     end
 end

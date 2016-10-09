@@ -1,8 +1,8 @@
 class ReportsController < ApplicationController
   # POST /reports/index
   def index
-    @reports = BaseReport.includes(:reports => :submitter).references(:reports => :submitter).preload(:reportable).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
-    count =  BaseReport.includes(:reports => :submitter).references(:reports => :submitter).accessible_by(current_ability).filter(filtering_params).count
+    @reports = BaseReport.includes(reports: :submitter).references(reports: :submitter).preload(:reportable).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(page: params[:page])
+    count =  BaseReport.includes(reports: :submitter).references(reports: :submitter).accessible_by(current_ability).filter(filtering_params).count
 
     render json: {
         reports: @reports,

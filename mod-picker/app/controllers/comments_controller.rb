@@ -3,7 +3,7 @@ class CommentsController < ApplicationController
 
   # GET /comments
   def index
-    @comments = Comment.includes(:commentable, :submitter => :reputation).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
+    @comments = Comment.includes(:commentable, submitter: :reputation).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(page: params[:page])
     count = Comment.accessible_by(current_ability).filter(filtering_params).count
 
     render json: {

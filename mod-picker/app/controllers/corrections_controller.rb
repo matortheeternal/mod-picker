@@ -3,7 +3,7 @@ class CorrectionsController < ApplicationController
 
   # GET /corrections
   def index
-    @corrections = Correction.preload(:editor).includes(:submitter => :reputation).references(:submitter => :reputation).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
+    @corrections = Correction.preload(:editor).includes(submitter: :reputation).references(submitter: :reputation).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(page: params[:page])
     count = Correction.accessible_by(current_ability).filter(filtering_params).count
 
     # get helpful marks
@@ -38,7 +38,7 @@ class CorrectionsController < ApplicationController
   # POST/GET /corrections/1/comments
   def comments
     authorize! :read, @correction
-    comments = @correction.comments.includes(:submitter => :reputation, :children => [:submitter => :reputation]).accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10)
+    comments = @correction.comments.includes(submitter: :reputation, children: [submitter: :reputation]).accessible_by(current_ability).sort(params[:sort]).paginate(page: params[:page], per_page: 10)
     count = @correction.comments.accessible_by(current_ability).count
 
     render json: {

@@ -1,7 +1,7 @@
 class NotificationsController < ApplicationController
   # GET /notifications/:page
   def index
-    @notifications = current_user.notifications.paginate(:page => params[:page])
+    @notifications = current_user.notifications.paginate(page: params[:page])
     count = current_user.notifications.count
 
     render json: {

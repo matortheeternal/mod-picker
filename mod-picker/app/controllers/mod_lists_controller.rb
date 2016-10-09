@@ -4,7 +4,7 @@ class ModListsController < ApplicationController
 
   # GET /mod_lists
   def index
-    @mod_lists = ModList.includes(:submitter).references(:submitter).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
+    @mod_lists = ModList.includes(:submitter).references(:submitter).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(page: params[:page])
     count =  ModList.accessible_by(current_ability).filter(filtering_params).count
 
     render json: {
@@ -16,8 +16,8 @@ class ModListsController < ApplicationController
 
   # GET /mod_lists/1
   def show
-    authorize! :read, @mod_list, :message => "You are not allowed to view this mod list."
-    star = current_user.present? && ModListStar.exists?(:mod_list_id => @mod_list.id, :user_id => current_user.id)
+    authorize! :read, @mod_list, message: "You are not allowed to view this mod list."
+    star = current_user.present? && ModListStar.exists?(mod_list_id: @mod_list.id, user_id: current_user.id)
     render json: {
         mod_list: json_format(@mod_list),
         star: star
@@ -39,7 +39,7 @@ class ModListsController < ApplicationController
     authorize! :read, @mod_list
 
     # prepare primary data
-    tools = @mod_list.mod_list_mods.utility(true).includes(:mod_list_mod_options, :mod => :mod_options).order(:index)
+    tools = @mod_list.mod_list_mods.utility(true).includes(:mod_list_mod_options, mod: :mod_options).order(:index)
     custom_tools = @mod_list.custom_mods.utility(true)
     groups = @mod_list.mod_list_groups.where(tab: 0).order(:index)
 
@@ -57,7 +57,7 @@ class ModListsController < ApplicationController
     authorize! :read, @mod_list
 
     # prepare primary data
-    mods = @mod_list.mod_list_mods.utility(false).includes(:mod_list_mod_options, :mod => { :mod_options => :plugins}).order(:index)
+    mods = @mod_list.mod_list_mods.utility(false).includes(:mod_list_mod_options, mod: { mod_options: :plugins}).order(:index)
     custom_mods = @mod_list.custom_mods.utility(false)
     groups = @mod_list.mod_list_groups.where(tab: 1).order(:index)
 
@@ -118,21 +118,21 @@ class ModListsController < ApplicationController
   def export_modlist
     authorize! :read, @mod_list
     force_download("modlist.txt")
-    render :text => @mod_list.modlist_text
+    render text: @mod_list.modlist_text
   end
 
   # GET /mod_lists/:id/export_plugins
   def export_plugins
     authorize! :read, @mod_list
     force_download("plugins.txt")
-    render :text => @mod_list.plugins_text
+    render text: @mod_list.plugins_text
   end
 
   # GET /mod_lists/:id/export_links
   def export_links
     authorize! :read, @mod_list
     force_download("links.txt")
-    render :text => @mod_list.links_text
+    render text: @mod_list.links_text
   end
 
   # GET /mod_lists/:id/config
@@ -141,7 +141,7 @@ class ModListsController < ApplicationController
 
     # prepare primary data
     config_files_store = @mod_list.config_files.order(:mod_id)
-    config_files = @mod_list.mod_list_config_files.includes(:config_file => :mod)
+    config_files = @mod_list.mod_list_config_files.includes(config_file: :mod)
     custom_config_files = @mod_list.custom_config_files
 
     # render response
@@ -160,7 +160,7 @@ class ModListsController < ApplicationController
     plugin_ids = @mod_list.mod_list_plugins.official(false).pluck(:plugin_id)
     install_order = @mod_list.mod_list_mods.utility(false).includes(:mod)
     load_order = @mod_list.mod_list_plugins.includes(:plugin)
-    plugins = Plugin.where(id: plugin_ids).includes(:dummy_masters, :overrides, :masters => :master_plugin)
+    plugins = Plugin.where(id: plugin_ids).includes(:dummy_masters, :overrides, masters: :master_plugin)
 
     # render response
     render json: {
@@ -176,7 +176,7 @@ class ModListsController < ApplicationController
     authorize! :read, @mod_list
 
     # prepare primary data
-    comments = @mod_list.comments.includes(:submitter => :reputation, :children => [:submitter => :reputation]).accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10)
+    comments = @mod_list.comments.includes(submitter: :reputation, children: [submitter: :reputation]).accessible_by(current_ability).sort(params[:sort]).paginate(page: params[:page], per_page: 10)
     count = @mod_list.comments.accessible_by(current_ability).count
 
     # render response
@@ -334,16 +334,16 @@ class ModListsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def mod_list_params
       params.require(:mod_list).permit(:game_id, :name, :description, :status, :visibility, :is_collection, :disable_comments, :lock_tags, :hidden,
-          :mod_list_mods_attributes => [:id, :group_id, :mod_id, :index, :_destroy, :mod_list_mod_options_attributes => [:id, :mod_option_id, :_destroy]],
-          :custom_mods_attributes => [:id, :group_id, :is_utility, :index, :name, :description, :_destroy],
-          :mod_list_plugins_attributes => [:id, :group_id, :plugin_id, :index, :cleaned, :merged, :_destroy],
-          :custom_plugins_attributes => [:id, :group_id, :index, :cleaned, :merged, :compatibility_note_id, :filename, :description, :_destroy],
-          :mod_list_groups_attributes => [:id, :index, :tab, :color, :name, :description, :_destroy,
-              :children => [:id]
+          mod_list_mods_attributes: [:id, :group_id, :mod_id, :index, :_destroy, mod_list_mod_options_attributes: [:id, :mod_option_id, :_destroy]],
+          custom_mods_attributes: [:id, :group_id, :is_utility, :index, :name, :description, :_destroy],
+          mod_list_plugins_attributes: [:id, :group_id, :plugin_id, :index, :cleaned, :merged, :_destroy],
+          custom_plugins_attributes: [:id, :group_id, :index, :cleaned, :merged, :compatibility_note_id, :filename, :description, :_destroy],
+          mod_list_groups_attributes: [:id, :index, :tab, :color, :name, :description, :_destroy,
+              children: [:id]
           ],
-          :mod_list_config_files_attributes => [:id, :config_file_id, :text_body, :_destroy],
-          :custom_config_files_attributes => [:id, :filename, :install_path, :text_body, :_destroy],
-          :ignored_notes_attributes => [:id, :note_id, :note_type, :_destroy]
+          mod_list_config_files_attributes: [:id, :config_file_id, :text_body, :_destroy],
+          custom_config_files_attributes: [:id, :filename, :install_path, :text_body, :_destroy],
+          ignored_notes_attributes: [:id, :note_id, :note_type, :_destroy]
       )
     end
 end
