@@ -387,6 +387,7 @@ ActiveRecord::Schema.define(version: 20161008060514) do
   end
 
   add_index "mod_asset_files", ["asset_file_id"], name: "maf_id", using: :btree
+  add_index "mod_asset_files", ["mod_option_id", "asset_file_id"], name: "mod_id", unique: true, using: :btree
   add_index "mod_asset_files", ["mod_option_id"], name: "mv_id", using: :btree
 
   create_table "mod_authors", force: :cascade do |t|

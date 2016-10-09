@@ -7,11 +7,17 @@ app.directive('managePluginsModal', function() {
     };
 });
 
-app.controller('managePluginsModalController', function($scope) {
+app.controller('managePluginsModalController', function($scope, columnsFactory, actionsFactory) {
     // re-initialize plugins store active booleans to false
     $scope.plugins_store.forEach(function(plugin) {
         plugin.active = false;
     });
+
+    // initialize variables for table-results
+    $scope.columns = columnsFactory.modListPluginColumns();
+    $scope.columnGroups = columnsFactory.modListPluginColumnGroups();
+    // $scope.actions = actionsFactory.modListPluginActions();
+    $scope.actions = actionsFactory.modListPluginModalActions();
 
     // update plugins store active booleans based on plugins that are in the mod list
     $scope.mod_list.plugins.forEach(function(modListPlugin) {

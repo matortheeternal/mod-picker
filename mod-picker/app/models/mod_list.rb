@@ -207,7 +207,7 @@ class ModList < ActiveRecord::Base
   def plugins_store
     mod_option_ids = mod_list_mod_option_ids
     return Plugin.none if mod_option_ids.empty?
-
+    
     Plugin.mod_options(mod_option_ids).includes(:mod)
   end
 

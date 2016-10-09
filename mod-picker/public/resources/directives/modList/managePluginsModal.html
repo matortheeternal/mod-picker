@@ -5,10 +5,7 @@
         </div>
 
         <h2>Manage Plugins</h2>
-
-        <label class="manage-item" ng-repeat="plugin in plugins_store" ng-hide="plugin._destroy">
-            <input type="checkbox" ng-click="togglePlugin(plugin)" ng-model="plugin.active"/> {{plugin.filename}}
-        </label>
+        <table-results data="plugins_store" message="No plugins found."></table-results>
 
         <div class="content-message" ng-if="!plugins_store.length">
             No available plugins to manage.  Try adding some mods to your mod list.
