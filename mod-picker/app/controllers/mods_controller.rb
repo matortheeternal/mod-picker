@@ -303,7 +303,7 @@ class ModsController < ApplicationController
     authorize! :read, @mod
     render json: {
         mod_options: @mod.mod_options,
-        plugins: Plugin.show_json(@mod.plugins),
+        plugins: json_format(@mod.plugins, :show),
         assets: @mod.asset_file_paths
     }
   end
