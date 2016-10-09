@@ -1,4 +1,4 @@
-app.controller('modReviewsController', function($scope, $stateParams, $state, modService, reviewSectionService, contributionService, sortFactory, formUtils, objectUtils) {
+app.controller('modReviewsController', function($scope, $stateParams, $state, modService, reviewSectionService, contributionService, contributionFactory, sortFactory, formUtils, objectUtils) {
     $scope.sort.reviews = {
         column: $stateParams.scol,
         direction: $stateParams.sdir
@@ -97,7 +97,7 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
         $scope.activeReview.ratings.forEach(function(rating) {
             var section = rating.section;
             $scope.activeReview.text_body += "## " + section.name + "\n";
-            $scope.activeReview.text_body += reviewSectionService.preparePrompt(section);
+            $scope.activeReview.text_body += contributionFactory.preparePrompt(section.prompt);
         });
 
         // update the markdown editor
