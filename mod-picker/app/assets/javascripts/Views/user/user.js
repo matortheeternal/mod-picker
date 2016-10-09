@@ -101,9 +101,12 @@ app.controller('userController', function($scope, $rootScope, $stateParams, user
     $scope.endorse = function() {
         userService.endorse($scope.user.id, $scope.user.endorsed).then(function() {
             $scope.user.endorsed = !$scope.user.endorsed;
+            var msg = ($scope.user.endorsed ? 'E' : 'Une') + 'ndorsed ' + $scope.user.username + ' successfully.';
+            $scope.$emit('successMessage', msg);
             $scope.$emit('updateRepPermissions', $scope.user.endorsed);
         }, function(response) {
-            var params = {label: 'Error giving reputation', response: response};
+            var label = 'Error ' + ($scope.user.endorsed ? 'un' : '') + 'endorsing user';
+            var params = {label: label, response: response};
             $scope.$emit('errorMessage', params);
         });
     };

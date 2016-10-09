@@ -1,8 +1,13 @@
 <h3 class="section-title">
     Mod Analysis
     <a href="/help/mod_analyzer">
-        <span class="help-tooltip" title="Submitting a mod requires uploading an analysis file which &#13;includes an asset file tree and one or more plugin dumps. &#13;You can generate a mod analysis file using Mod Analyzer.  &#13;Click here for more information and download links.">?</span>
+        <span class="help-tooltip" ng-hide="hideTooltips" title="A mod analysis file includes an asset file tree and one or more plugin &#13;dumps. You can generate a mod analysis file using Mod Analyzer. &#13;Click here for more information and download links.">
+            <i class="fa fa-question-circle"></i>
+        </span>
     </a>
+    <span ng-hide="analysisValid" class="error-tooltip" title="A mod analysis is required.">
+        <i class="fa fa-exclamation-circle"></i>
+    </span>
 </h3>
 <section>
     <div class="analysis-results" ng-repeat="option in mod.analysis.mod_options">

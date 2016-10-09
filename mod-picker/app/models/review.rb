@@ -1,5 +1,5 @@
 class Review < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, Helpfulable, Reportable, ScopeHelpers, Trackable, BetterJson
+  include Filterable, Sortable, RecordEnhancements, Helpfulable, Reportable, Approveable, ScopeHelpers, Trackable, BetterJson
 
   # ATTRIBUTES
   self.per_page = 25

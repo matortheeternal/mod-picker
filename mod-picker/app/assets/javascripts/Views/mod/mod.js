@@ -165,7 +165,7 @@ app.controller('modController', function($scope, $rootScope, $q, $stateParams, $
         name: "Mod",
         label: "Mod",
         route: "mods"
-    }
+    };
     $scope.target = $scope.mod;
     $scope.retrieving = {};
     $scope.errors = {};

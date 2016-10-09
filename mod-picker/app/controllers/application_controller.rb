@@ -22,7 +22,7 @@ class ApplicationController < ActionController::Base
   end
 
   rescue_from Exceptions::ModExistsError do |exception|
-    render json: { error: exception.message, mod_id: exception.mod_id }, status: 500
+    render json: exception.response_object, status: 500
   end
 
   def after_sign_in_path_for(resource)

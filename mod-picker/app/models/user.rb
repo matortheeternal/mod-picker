@@ -161,6 +161,10 @@ class User < ActiveRecord::Base
     !settings.allow_comments
   end
 
+  def has_auto_approval?
+    reputation.overall > 20
+  end
+
   def subscribed_to?(event)
     if respond_to?(:notification_settings)
       key = "#{event.content_type.underscore}_#{event.event_type}"

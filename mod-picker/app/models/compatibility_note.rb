@@ -1,5 +1,5 @@
 class CompatibilityNote < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, Correctable, Helpfulable, Reportable, ScopeHelpers, Trackable, BetterJson
+  include Filterable, Sortable, RecordEnhancements, Correctable, Helpfulable, Reportable, Approveable, ScopeHelpers, Trackable, BetterJson
 
   # ATTRIBUTES
   enum status: [ :incompatible, :partially_incompatible, :compatibility_mod, :compatibility_option, :make_custom_patch ]
@@ -57,14 +57,18 @@ class CompatibilityNote < ActiveRecord::Base
   before_save :set_adult, :set_dates
   before_destroy :decrement_counters
 
+  def get_existing_note(mod_ids)
+    table = CompatibilityNote.arel_table
+    CompatibilityNote.mods(mod_ids).where(table[:hidden].eq(0).and(table[:id].not_eq(id))).first
+  end
+
   def unique_mods
     if first_mod_id == second_mod_id
       errors.add(:mods, "You cannot create a Compatibility Note between a mod and itself.")
       return
     end
 
-    mod_ids = [first_mod_id, second_mod_id]
-    note = CompatibilityNote.mods(mod_ids).where("hidden = 0 and id != ?", self.id).first
+    note = get_existing_note([first_mod_id, second_mod_id])
     if note.present?
       if note.approved
         errors.add(:mods, "A Compatibility Note for these mods already exists.")

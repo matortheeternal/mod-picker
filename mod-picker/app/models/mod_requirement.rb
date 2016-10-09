@@ -5,6 +5,9 @@ class ModRequirement < ActiveRecord::Base
   ids_scope :mod_id
   value_scope :is_utility, :association => 'required_mod', :table => 'mods'
 
+  # UNIQUE SCOPES
+  scope :visible, -> { eager_load(:mod, :required_mod).where(:mods => {:hidden => false}).where(:required_mods_mod_requirements => {:hidden => false}) }
+
   # ASSOCIATIONS
   belongs_to :mod, :inverse_of => 'required_mods'
   belongs_to :required_mod, :class_name => 'Mod', :inverse_of => 'required_by', :foreign_key => 'required_id'

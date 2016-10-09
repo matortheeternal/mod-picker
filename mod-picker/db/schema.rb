@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161004065249) do
+ActiveRecord::Schema.define(version: 20161009042651) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -188,7 +188,7 @@ ActiveRecord::Schema.define(version: 20161004065249) do
 
   add_index "custom_sources", ["mod_id"], name: "fk_rails_4da082b3d0", using: :btree
 
-  create_table "dummy_masters", id: false, force: :cascade do |t|
+  create_table "dummy_masters", force: :cascade do |t|
     t.integer "plugin_id", limit: 4,   null: false
     t.integer "index",     limit: 1,   null: false
     t.string  "filename",  limit: 128, null: false
@@ -366,6 +366,7 @@ ActiveRecord::Schema.define(version: 20161004065249) do
     t.integer "index",            limit: 1, null: false
   end
 
+  add_index "masters", ["master_plugin_id"], name: "fk_rails_00e5251b7c", using: :btree
   add_index "masters", ["plugin_id"], name: "pl_id", using: :btree
 
   create_table "messages", force: :cascade do |t|
@@ -386,8 +387,7 @@ ActiveRecord::Schema.define(version: 20161004065249) do
   end
 
   add_index "mod_asset_files", ["asset_file_id"], name: "maf_id", using: :btree
-  add_index "mod_asset_files", ["mod_option_id", "asset_file_id"], name: "mod_id", unique: true, using: :btree
-  add_index "mod_asset_files", ["mod_option_id"], name: "mv_id", using: :btree # TODO: DROP THIS
+  add_index "mod_asset_files", ["mod_option_id"], name: "mv_id", using: :btree
 
   create_table "mod_authors", force: :cascade do |t|
     t.integer "mod_id",  limit: 4,             null: false
@@ -754,7 +754,7 @@ ActiveRecord::Schema.define(version: 20161004065249) do
   add_index "reports", ["base_report_id"], name: "fk_rails_619eb511d7", using: :btree
   add_index "reports", ["submitted_by"], name: "fk_rails_41fbf0e712", using: :btree
 
-  create_table "reputation_links", id: false, force: :cascade do |t|
+  create_table "reputation_links", force: :cascade do |t|
     t.integer "from_rep_id", limit: 4, null: false
     t.integer "to_rep_id",   limit: 4, null: false
   end
@@ -1005,6 +1005,7 @@ ActiveRecord::Schema.define(version: 20161004065249) do
   add_foreign_key "load_order_notes", "users", column: "submitted_by"
   add_foreign_key "lover_infos", "games"
   add_foreign_key "lover_infos", "mods"
+  add_foreign_key "masters", "plugins", column: "master_plugin_id"
   add_foreign_key "masters", "plugins", name: "masters_ibfk_1"
   add_foreign_key "messages", "users", column: "sent_to"
   add_foreign_key "messages", "users", column: "submitted_by"

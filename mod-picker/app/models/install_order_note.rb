@@ -1,5 +1,5 @@
 class InstallOrderNote < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, Correctable, Helpfulable, Reportable, ScopeHelpers, Trackable, BetterJson
+  include Filterable, Sortable, RecordEnhancements, Correctable, Helpfulable, Reportable, Approveable, ScopeHelpers, Trackable, BetterJson
 
   # ATTRIBUTES
   self.per_page = 25
@@ -52,14 +52,18 @@ class InstallOrderNote < ActiveRecord::Base
   before_save :set_adult, :set_dates
   before_destroy :decrement_counters
 
+  def get_existing_note(mod_ids)
+    table = InstallOrderNote.arel_table
+    InstallOrderNote.mods(mod_ids).where(table[:hidden].eq(0).and(table[:id].not_eq(id))).first
+  end
+
   def unique_mods
     if first_mod_id == second_mod_id
       errors.add(:mods, "You cannot create a Install Order Note between a mod and itself.")
       return
     end
 
-    mod_ids = [first_mod_id, second_mod_id]
-    note = InstallOrderNote.mods(mod_ids).where("hidden = 0 and id != ?", self.id).first
+    note = get_existing_note([first_mod_id, second_mod_id])
     if note.present?
       if note.approved
         errors.add(:mods, "An Install Order Note for these mods already exists.")

@@ -1,0 +1,8 @@
+{
+  "only": ["id", "name", "default"],
+  "include": {
+    "plugins": {
+      "only": ["id", "filename"]
+    }
+  }
+}

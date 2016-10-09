@@ -1,5 +1,5 @@
 class LoadOrderNote < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, Correctable, Helpfulable, Reportable, ScopeHelpers, Trackable, BetterJson
+  include Filterable, Sortable, RecordEnhancements, Correctable, Helpfulable, Reportable, Approveable, ScopeHelpers, Trackable, BetterJson
 
   # ATTRIBUTES
   self.per_page = 25
@@ -59,14 +59,18 @@ class LoadOrderNote < ActiveRecord::Base
   before_save :set_adult, :set_dates
   before_destroy :decrement_counters
 
+  def get_existing_note(plugin_ids)
+    table = LoadOrderNote.arel_table
+    LoadOrderNote.plugins(plugin_ids).where(table[:hidden].eq(0).and(table[:id].not_eq(id))).first
+  end
+
   def unique_plugins
     if first_plugin_id == second_plugin_id
       errors.add(:plugins, "You cannot create a Load Order Note between a plugin and itself.")
       return
     end
 
-    plugin_ids = [first_plugin_id, second_plugin_id]
-    note = LoadOrderNote.plugins(plugin_ids).where("hidden = 0 and id != ?", self.id).first
+    note = get_existing_note([first_plugin_id, second_plugin_id])
     if note.present?
       if note.approved
         errors.add(:plugins, "A Load Order Note for these plugins already exists.")

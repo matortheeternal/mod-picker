@@ -16,7 +16,6 @@ class Mod < ActiveRecord::Base
   subscribe :user_stars, to: [:updated]
 
   # SCOPES
-  include_scope :hidden
   include_scope :has_adult_content, :alias => 'include_adult'
   include_scope :is_official, :alias => 'include_official'
   include_scope :is_utility, :alias => 'include_utilities'
@@ -49,6 +48,7 @@ class Mod < ActiveRecord::Base
   ]
 
   # UNIQUE SCOPES
+  scope :visible, -> { where(hidden: false) }
   scope :include_games, -> (bool) { where.not(primary_category_id: nil) if !bool }
   scope :compatibility, -> (mod_list_id) {
     mod_list = ModList.find(mod_list_id)

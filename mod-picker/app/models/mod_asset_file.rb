@@ -10,7 +10,7 @@ class ModAssetFile < ActiveRecord::Base
   scope :bsa, -> { joins(:asset_file).where("asset_files.path like '%.bsa'") }
   scope :conflicting, -> (mod_option_ids) {
     joins(conflicting_join_sources).
-        where(mod_options[:mod_id].not_eq(mod_options_right[:mod_id])).
+        where(mod_options_table[:mod_id].not_eq(mod_options_right[:mod_id])).
         where(mod_asset_files[:asset_file_id].not_eq(nil)).
         where(mod_asset_files[:mod_option_id].in(mod_option_ids)).
         where(mod_asset_files_right[:mod_option_id].in(mod_option_ids)).
@@ -34,7 +34,7 @@ class ModAssetFile < ActiveRecord::Base
     @mod_asset_files_right ||= arel_table.alias
   end
 
-  def self.mod_options
+  def self.mod_options_table
     @mod_options ||= ModOption.arel_table
   end
 
@@ -45,7 +45,7 @@ class ModAssetFile < ActiveRecord::Base
   def self.conflicting_join_sources
     mod_asset_files.join(mod_asset_files_right).on(mod_asset_files[:asset_file_id].
         eq(mod_asset_files_right[:asset_file_id])).
-        join(mod_options).on(mod_options[:id].
+        join(mod_options_table).on(mod_options_table[:id].
         eq(mod_asset_files[:mod_option_id])).
         join(mod_options_right).on(mod_options_right[:id].
         eq(mod_asset_files_right[:mod_option_id])).join_sources

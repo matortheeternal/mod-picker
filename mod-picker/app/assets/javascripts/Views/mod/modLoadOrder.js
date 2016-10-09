@@ -4,6 +4,7 @@ app.controller('modLoadOrderController', function($scope, $state, $stateParams, 
         direction: $stateParams.sdir
     };
     $scope.filters.load_order_notes = $stateParams.filter;
+    $scope.pages.load_order_notes.current = $stateParams.page || 1;
 
     // inherited functions
     $scope.searchPlugins = pluginService.searchPlugins;
@@ -14,11 +15,11 @@ app.controller('modLoadOrderController', function($scope, $state, $stateParams, 
         var options = {
             sort: $scope.sort.load_order_notes,
             filters: $scope.filters.load_order_notes,
-            //if no page is specified load the first one
-            page: page || 1
+            page: page || $scope.pages.load_order_notes.current
         };
         modService.retrieveModContributions($stateParams.modId, 'load_order_notes', options, $scope.pages.load_order_notes).then(function(data) {
             $scope.mod.load_order_notes = data;
+            if ($scope.errors.load_order_notes) delete $scope.errors.load_order_notes;
 
             //seperating the loadOrderNote in the url if any
             if ($stateParams.loadOrderNoteId) {
@@ -49,10 +50,9 @@ app.controller('modLoadOrderController', function($scope, $state, $stateParams, 
         $state.go($state.current.name, params);
     };
 
-    //retrieve the notes when the state is first loaded
-    $scope.retrieveLoadOrderNotes($stateParams.page);
-
     // re-retrieve load order notes when the sort object changes
+    // this will be called once automatically when the tab loads when we
+    // build the sort object at line 2 in this controller
     $scope.$watch('sort.load_order_notes', function() {
         $scope.retrieveLoadOrderNotes();
     }, true);
@@ -104,13 +104,15 @@ app.controller('modLoadOrderController', function($scope, $state, $stateParams, 
 
     $scope.validateLoadOrderNote = function() {
         // exit if we don't have a activeLoadOrderNote yet
-        if (!$scope.activeLoadOrderNote) {
-            return;
-        }
+        var loadOrderNote = $scope.activeLoadOrderNote;
+        if (!loadOrderNote) return;
 
-        $scope.activeLoadOrderNote.valid = $scope.activeLoadOrderNote.text_body.length > 256 &&
-            ($scope.activeLoadOrderNote.first_plugin_id !== undefined) &&
-            ($scope.activeLoadOrderNote.second_plugin_id !== undefined);
+        var sanitized_text = contributionService.removePrompts(loadOrderNote.text_body);
+        var textValid = sanitized_text.length > 256;
+        var pluginsValid = (loadOrderNote.first_plugin_id !== undefined) &&
+            (loadOrderNote.second_plugin_id !== undefined);
+
+        loadOrderNote.valid = textValid && pluginsValid;
     };
 
     // discard the load order note object
@@ -140,35 +142,36 @@ app.controller('modLoadOrderController', function($scope, $state, $stateParams, 
 
     // submit a load order note
     $scope.saveLoadOrderNote = function() {
-        // return if the load order note is invalid
-        if (!$scope.activeLoadOrderNote.valid) {
-            return;
+        var loadOrderNote = $scope.activeLoadOrderNote;
+        if (!loadOrderNote.valid) return;
+
+        // prepare load order note fields for submission
+        var sanitized_text = contributionService.removePrompts(loadOrderNote.text_body);
+        var first_plugin_id, second_plugin_id;
+        if (loadOrderNote.order === 'before') {
+            first_plugin_id = parseInt(loadOrderNote.first_plugin_id);
+            second_plugin_id = parseInt(loadOrderNote.second_plugin_id);
+        } else {
+            first_plugin_id = parseInt(loadOrderNote.second_plugin_id);
+            second_plugin_id = parseInt(loadOrderNote.first_plugin_id);
         }
 
-        // submit the install order note
-        var first_plugin_id, second_plugin_id;
-        if ($scope.activeLoadOrderNote.order === 'before') {
-            first_plugin_id = parseInt($scope.activeLoadOrderNote.first_plugin_id);
-            second_plugin_id = parseInt($scope.activeLoadOrderNote.second_plugin_id);
-        } else {
-            first_plugin_id = parseInt($scope.activeLoadOrderNote.second_plugin_id);
-            second_plugin_id = parseInt($scope.activeLoadOrderNote.first_plugin_id);
-        }
+        // submit the load order note
         var noteObj = {
             load_order_note: {
                 game_id: $scope.mod.game_id,
                 first_plugin_id: first_plugin_id,
                 second_plugin_id: second_plugin_id,
-                text_body: $scope.activeLoadOrderNote.text_body,
-                edit_summary: $scope.activeLoadOrderNote.edit_summary,
-                moderator_message: $scope.activeLoadOrderNote.moderator_message
+                text_body: sanitized_text,
+                edit_summary: loadOrderNote.edit_summary,
+                moderator_message: loadOrderNote.moderator_message
             }
         };
-        $scope.activeLoadOrderNote.submitting = true;
+        loadOrderNote.submitting = true;
 
         // use update or submit contribution
-        if ($scope.activeLoadOrderNote.editing) {
-            var noteId = $scope.activeLoadOrderNote.original.id;
+        if (loadOrderNote.editing) {
+            var noteId = loadOrderNote.original.id;
             contributionService.updateContribution("load_order_notes", noteId, noteObj).then(function() {
                 $scope.$emit("successMessage", "Load Order Note updated successfully.");
                 // update original load order note and discard copy
@@ -181,7 +184,7 @@ app.controller('modLoadOrderController', function($scope, $state, $stateParams, 
         } else {
             contributionService.submitContribution("load_order_notes", noteObj).then(function(note) {
                 $scope.$emit("successMessage", "Load Order Note submitted successfully.");
-                $scope.mod.reviews.unshift(note);
+                $scope.mod.load_order_notes.unshift(note);
                 $scope.discardLoadOrderNote();
             }, function(response) {
                 var params = { label: 'Error submitting Load Order Note', response: response };
