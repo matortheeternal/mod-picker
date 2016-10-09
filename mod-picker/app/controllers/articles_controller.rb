@@ -5,7 +5,7 @@ class ArticlesController < ApplicationController
   def show
     @article = Article.find(params[:id])
     authorize! :read, @article, :message => "You are not allowed to view this article."
-    render :json => @article.as_json
+    render json: @article
   end
 
   # GET /articles/index
@@ -13,7 +13,7 @@ class ArticlesController < ApplicationController
     @articles= Article.accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
     count =  Article.accessible_by(current_ability).filter(filtering_params).count
 
-    render :json => {
+    render json: {
         articles: @articles,
         max_entries: count,
         entries_per_page: Article.per_page
@@ -42,7 +42,7 @@ class ArticlesController < ApplicationController
   # GET /articles/1/edit
   def edit
     authorize! :update, @article, :message => "You are not allowed to edit this article."
-    render :json => @article
+    render json: @article
   end
 
   # PATCH/PUT /articles/1
@@ -70,7 +70,7 @@ class ArticlesController < ApplicationController
     authorize! :read, @article
     comments = @article.comments.includes(:submitter => :reputation, :children => [:submitter => :reputation]).accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10)
     count = @article.comments.accessible_by(current_ability).count
-    render :json => {
+    render json: {
         comments: comments,
         max_entries: count,
         entries_per_page: 10

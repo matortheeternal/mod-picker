@@ -11,7 +11,7 @@ class CompatibilityNotesController < ContributionsController
     helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("CompatibilityNote", @compatibility_notes.ids)
 
     # render response
-    render :json => {
+    render json: {
         compatibility_notes: @compatibility_notes,
         helpful_marks: helpful_marks,
         max_entries: count,

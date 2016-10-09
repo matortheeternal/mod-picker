@@ -11,7 +11,7 @@ class LoadOrderNotesController < ContributionsController
     helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("LoadOrderNote", @load_order_notes.ids)
 
     # render response
-    render :json => {
+    render json: {
         load_order_notes: @load_order_notes,
         helpful_marks: helpful_marks,
         max_entries: count,

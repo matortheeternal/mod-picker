@@ -6,7 +6,7 @@ class ModsController < ApplicationController
     @mods = Mod.accessible_by(current_ability).filter(filtering_params).sort(sorting_params).paginate(:page => params[:page])
     count =  Mod.accessible_by(current_ability).filter(filtering_params).count
 
-    render :json => {
+    render json: {
       mods: Mod.index_json(@mods, params[:filters][:sources]),
       max_entries: count,
       entries_per_page: Mod.per_page
@@ -38,7 +38,7 @@ class ModsController < ApplicationController
     end
 
     # render response
-    render :json => {
+    render json: {
         mod: json_format(@mod),
         star: star,
         in_mod_list: in_mod_list,
@@ -69,7 +69,7 @@ class ModsController < ApplicationController
   # GET /mods/1/edit
   def edit
     authorize! :update, @mod, :message => "You are not allowed to edit this mod."
-    render :json => @mod.edit_json
+    render json: @mod.edit_json
   end
 
   # PATCH/PUT /mods/1
@@ -194,7 +194,7 @@ class ModsController < ApplicationController
     agreement_marks = AgreementMark.submitter(current_user.id).corrections(corrections.ids)
 
     # render response
-    render :json => {
+    render json: {
         corrections: corrections,
         agreement_marks: agreement_marks
     }
@@ -223,7 +223,7 @@ class ModsController < ApplicationController
     helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("Review", review_ids)
 
     # render response
-    render :json => {
+    render json: {
         reviews: reviews,
         helpful_marks: helpful_marks,
         user_review: user_review,
@@ -244,7 +244,7 @@ class ModsController < ApplicationController
     helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("CompatibilityNote", compatibility_notes.ids)
 
     # render response
-    render :json => {
+    render json: {
         compatibility_notes: compatibility_notes,
         helpful_marks: helpful_marks,
         max_entries: count,
@@ -264,7 +264,7 @@ class ModsController < ApplicationController
     helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("InstallOrderNote", install_order_notes.ids)
 
     # render response
-    render :json => {
+    render json: {
         install_order_notes: install_order_notes,
         helpful_marks: helpful_marks,
         max_entries: count,
@@ -290,7 +290,7 @@ class ModsController < ApplicationController
     helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("LoadOrderNote", load_order_notes.ids)
 
     # render response
-    render :json => {
+    render json: {
         load_order_notes: load_order_notes,
         helpful_marks: helpful_marks,
         max_entries: count,

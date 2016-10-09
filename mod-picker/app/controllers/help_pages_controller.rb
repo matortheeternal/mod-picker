@@ -82,7 +82,7 @@ class HelpPagesController < ApplicationController
     authorize! :read, @help_page
     comments = @help_page.comments.includes(:submitter => :reputation, :children => [:submitter => :reputation]).accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10)
     count = @help_page.comments.accessible_by(current_ability).count
-    render :json => {
+    render json: {
         comments: comments,
         max_entries: count,
         entries_per_page: 10

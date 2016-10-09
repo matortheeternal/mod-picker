@@ -4,7 +4,7 @@ class LoverInfosController < ApplicationController
   # GET /lover_infos/1
   def show
     @lover_info.rescrape
-    render :json => @lover_info
+    render json: @lover_info
   end
 
   private

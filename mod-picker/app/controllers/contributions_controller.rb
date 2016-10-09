@@ -2,7 +2,7 @@ class ContributionsController < ApplicationController
   # GET /contribution/1
   def show
     authorize! :read, @contribution
-    render :json => @contribution
+    render json: @contribution
   end
 
   # PATCH/PUT /contribution/1
@@ -51,7 +51,7 @@ class ContributionsController < ApplicationController
     agreement_marks = AgreementMark.submitter(current_user.id).corrections(corrections.ids)
 
     # render response
-    render :json => {
+    render json: {
         corrections: corrections,
         agreement_marks: agreement_marks
     }
@@ -61,7 +61,7 @@ class ContributionsController < ApplicationController
   def history
     authorize! :read, @contribution
     history_entries = @contribution.history_entries.accessible_by(current_ability)
-    render :json => history_entries
+    render json: history_entries
   end
 
   # POST /contribution/1/helpful

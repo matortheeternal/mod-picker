@@ -11,7 +11,7 @@ class InstallOrderNotesController < ContributionsController
     helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("InstallOrderNote", @install_order_notes.ids)
 
     # render response
-    render :json => {
+    render json: {
         install_order_notes: @install_order_notes,
         helpful_marks: helpful_marks,
         max_entries: count,

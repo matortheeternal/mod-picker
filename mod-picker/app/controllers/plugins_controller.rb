@@ -6,7 +6,7 @@ class PluginsController < ApplicationController
     @plugins = Plugin.includes(:mod).references(:mod).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
     count =  Plugin.accessible_by(current_ability).filter(filtering_params).count
 
-    render :json => {
+    render json: {
         plugins: json_format(@plugins),
         max_entries: count,
         entries_per_page: Plugin.per_page

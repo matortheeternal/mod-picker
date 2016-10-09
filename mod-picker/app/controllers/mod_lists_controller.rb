@@ -7,7 +7,7 @@ class ModListsController < ApplicationController
     @mod_lists = ModList.includes(:submitter).references(:submitter).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
     count =  ModList.accessible_by(current_ability).filter(filtering_params).count
 
-    render :json => {
+    render json: {
         mod_lists: @mod_lists,
         max_entries: count,
         entries_per_page: ModList.per_page
@@ -18,7 +18,7 @@ class ModListsController < ApplicationController
   def show
     authorize! :read, @mod_list, :message => "You are not allowed to view this mod list."
     star = current_user.present? && ModListStar.exists?(:mod_list_id => @mod_list.id, :user_id => current_user.id)
-    render :json => {
+    render json: {
         mod_list: json_format(@mod_list),
         star: star
     }
@@ -30,7 +30,7 @@ class ModListsController < ApplicationController
     if @mod_list
       respond_with_json(@mod_list, :tracking)
     else
-      render :json => { error: "No active mod list found." }
+      render json: { error: "No active mod list found." }
     end
   end
 
@@ -44,7 +44,7 @@ class ModListsController < ApplicationController
     groups = @mod_list.mod_list_groups.where(tab: 0).order(:index)
 
     # render response
-    render :json => {
+    render json: {
         tools: tools,
         custom_tools: custom_tools,
         required_tools: @mod_list.required_tools,
@@ -70,7 +70,7 @@ class ModListsController < ApplicationController
     i_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("InstallOrderNote", install_order_notes.ids)
 
     # render response
-    render :json => {
+    render json: {
         mods: mods,
         custom_mods: custom_mods,
         groups: groups,
@@ -101,7 +101,7 @@ class ModListsController < ApplicationController
     l_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("LoadOrderNote", load_order_notes.ids)
 
     # render response
-    render :json => {
+    render json: {
         plugins: plugins,
         plugins_store: plugins_store,
         custom_plugins: custom_plugins,
@@ -145,7 +145,7 @@ class ModListsController < ApplicationController
     custom_config_files = @mod_list.custom_config_files
 
     # render response
-    render :json => {
+    render json: {
         config_files_store: config_files_store,
         config_files: config_files,
         custom_config_files: custom_config_files
@@ -163,7 +163,7 @@ class ModListsController < ApplicationController
     plugins = Plugin.where(id: plugin_ids).includes(:dummy_masters, :overrides, :masters => :master_plugin)
 
     # render response
-    render :json => {
+    render json: {
         load_order: json_format(load_order, :load_order),
         install_order: json_format(install_order, :install_order),
         plugins: json_format(plugins),
@@ -180,7 +180,7 @@ class ModListsController < ApplicationController
     count = @mod_list.comments.accessible_by(current_ability).count
 
     # render response
-    render :json => {
+    render json: {
         comments: comments,
         max_entries: count,
         entries_per_page: 10

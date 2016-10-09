@@ -6,7 +6,7 @@ class CommentsController < ApplicationController
     @comments = Comment.includes(:commentable, :submitter => :reputation).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
     count = Comment.accessible_by(current_ability).filter(filtering_params).count
 
-    render :json => {
+    render json: {
         comments: json_format(@comments),
         max_entries: count,
         entries_per_page: Comment.per_page

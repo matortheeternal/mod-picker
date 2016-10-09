@@ -11,7 +11,7 @@ class ReviewsController < ContributionsController
     helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("Review", @reviews.ids)
 
     # render response
-    render :json => {
+    render json: {
         reviews: json_format(@reviews),
         helpful_marks: helpful_marks,
         max_entries: count,

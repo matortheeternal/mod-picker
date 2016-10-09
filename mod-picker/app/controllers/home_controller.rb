@@ -49,7 +49,7 @@ class HomeController < ApplicationController
     l_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("LoadOrderNote", load_order_notes.ids)
     agreement_marks = AgreementMark.submitter(current_user.id).corrections(corrections.ids)
 
-    render :json => {
+    render json: {
         articles: articles,
         recent: {
             mod_lists: json_format(mod_lists, :home),

@@ -8,7 +8,7 @@ class CorrectionsController < ApplicationController
 
     # get helpful marks
     agreement_marks = AgreementMark.where(submitted_by: current_user.id, correction_id: @corrections.ids)
-    render :json => {
+    render json: {
         corrections: json_format(@corrections),
         agreement_marks: agreement_marks,
         max_entries: count,
@@ -19,7 +19,7 @@ class CorrectionsController < ApplicationController
   # GET /corrections/1
   def show
     authorize! :read, @correction
-    render :json => @correction
+    render json: @correction
   end
 
   # POST /corrections
@@ -41,7 +41,7 @@ class CorrectionsController < ApplicationController
     comments = @correction.comments.includes(:submitter => :reputation, :children => [:submitter => :reputation]).accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10)
     count = @correction.comments.accessible_by(current_ability).count
 
-    render :json => {
+    render json: {
         comments: comments,
         max_entries: count,
         entries_per_page: 10

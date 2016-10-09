@@ -6,7 +6,7 @@ class UsersController < ApplicationController
     @users = User.include_blank(false).includes(:reputation).references(:reputation).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
     count =  User.include_blank(false).includes(:reputation).references(:reputation).accessible_by(current_ability).filter(filtering_params).count
 
-    render :json => {
+    render json: {
         users: json_format(@users),
         max_entries: count,
         entries_per_page: User.per_page
@@ -28,7 +28,7 @@ class UsersController < ApplicationController
   def show
     authorize! :read, @user
     endorsed = ReputationLink.exists?(from_rep_id: current_user.reputation.id, to_rep_id: @user.reputation.id)
-    render :json => {
+    render json: {
         user: json_format(@user),
         endorsed: endorsed
     }
@@ -40,7 +40,7 @@ class UsersController < ApplicationController
     comments = @user.profile_comments.includes(:submitter => :reputation, :children => [:submitter => :reputation]).accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10)
     count = @user.profile_comments.accessible_by(current_ability).count
 
-    render :json => {
+    render json: {
         comments: comments,
         max_entries: count,
         entries_per_page: 10
@@ -118,7 +118,7 @@ class UsersController < ApplicationController
     favorite_mod_lists = @user.starred_mod_lists.accessible_by(current_ability)
     authored_mod_lists = @user.mod_lists.accessible_by(current_ability)
 
-    render :json => {
+    render json: {
       favorites: favorite_mod_lists,
       authored: authored_mod_lists
     }
@@ -132,7 +132,7 @@ class UsersController < ApplicationController
     authored_mods = @user.mods.includes(:author_users).accessible_by(current_ability)
     sources = { :nexus => true, :lab => true, :workshop => true }
 
-    render :json => {
+    render json: {
         favorites: Mod.index_json(favorite_mods, sources),
         authored: Mod.index_json(authored_mods, sources)
     }
