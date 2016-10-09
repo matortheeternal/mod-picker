@@ -6,9 +6,9 @@
     <span class="actions-dropdown-container">
         <div class="dropdown" ng-show="showDropdown">
             <div class="dropdown-item" ng-if="hasHistory" ng-click="toggleHistoryModal(true)">View History</div>
-            <div class="dropdown-item" ng-click="toggleShareModal(true)">Get Link</div>
-            <div class="dropdown-item" ng-if="canReport && !isSubmitter" ng-click="toggleReportModal(true)">Report</div>
-            <div class="dropdown-separator" ng-if="canEdit || canApprove || canHide"></div>
+            <div class="dropdown-item" ng-click="toggleShareModal(true)" ng-if="!agreeable">Get Link</div>
+            <div class="dropdown-item" ng-if="canReport" ng-click="toggleReportModal(true)">Report</div>
+            <div class="dropdown-separator" ng-if="(hasHistory || !agreeable || canReport) && (canEdit || canApprove || canHide)"></div>
             <div class="dropdown-item" ng-if="canEdit" ng-click="edit(target)">Edit</div>
             <div class="dropdown-item" ng-if="canApprove && !target.approved" ng-click="approve(true)">Approve</div>
             <div class="dropdown-item" ng-if="canApprove && target.approved" ng-click="approve(false)">Unapprove</div>
