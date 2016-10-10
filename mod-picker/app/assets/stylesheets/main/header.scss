@@ -124,6 +124,7 @@ nav {
       float: left;
       position: relative;
       z-index: 100;
+      @include transition(background-color 0.2s ease-in-out);
 
       &:hover, &:focus {
         outline: none;
