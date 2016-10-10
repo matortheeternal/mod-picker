@@ -61,7 +61,7 @@
     </div>
 
     <!-- the rest of the notes -->
-    <div ng-repeat="note in mod.load_order_notes" class="content-block" ng-if="!note.editing">
+    <div ng-repeat="note in mod.load_order_notes" class="content-block" ng-hide="note.editing">
         <load-order-note note="note" index="100 + $index" edit="editLoadOrderNote"></load-order-note>
     </div>
 
