@@ -10,11 +10,14 @@ app.directive('loadOrderNote', function() {
             showMarks: '=?',
             showUserColumn: '=?',
             showResolutionOptions: '=?'
+        },
+        link: function(scope, element) {
+            scope.element = element;
         }
     };
 });
 
-app.controller('loadOrderNoteController', function($scope, $rootScope) {
+app.controller('loadOrderNoteController', function($scope, $rootScope, $timeout, viewUtils) {
     // inherited variables
     $scope.currentUser = $rootScope.currentUser;
 
@@ -33,4 +36,10 @@ app.controller('loadOrderNoteController', function($scope, $rootScope) {
         };
         $scope.$emit('resolveLoadOrderNote', options);
     };
+
+    $scope.$watch('note', function() {
+        $timeout(function() {
+            viewUtils.fitContributionTitle($scope.element);
+        });
+    }, true);
 });

@@ -11,11 +11,14 @@ app.directive('installOrderNote', function() {
             showUserColumn: '=?',
             showResolutionOptions: '=?',
             modId: '=?'
+        },
+        link: function(scope, element) {
+            scope.element = element;
         }
     };
 });
 
-app.controller('installOrderNoteController', function($scope, $rootScope) {
+app.controller('installOrderNoteController', function($scope, $rootScope, $timeout, viewUtils) {
     // inherited variables
     $scope.currentUser = $rootScope.currentUser;
 
@@ -34,4 +37,10 @@ app.controller('installOrderNoteController', function($scope, $rootScope) {
         };
         $scope.$emit('resolveInstallOrderNote', options);
     };
+
+    $scope.$watch('note', function() {
+        $timeout(function() {
+            viewUtils.fitContributionTitle($scope.element);
+        });
+    }, true);
 });

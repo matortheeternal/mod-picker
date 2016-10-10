@@ -4,20 +4,20 @@ app.service('viewUtils', function() {
 
     this.fitContributionTitle = function(element) {
         var contentTitle = element[0].getElementsByClassName("content-title")[0];
-        var linkRoot = contentTitle.getElementsByClassName("link-elements")[0];
-        var linkElements = linkRoot.getElementsByTagName("a");
-        var targetWidth = contentTitle.offsetWidth - 155;
-        if (linkRoot.offsetWidth > targetWidth) {
-            service.reduceFontSize(linkRoot, targetWidth, linkElements, 0);
+        var root = contentTitle.getElementsByClassName("root")[0];
+        var sizableElements = root.getElementsByTagName("a");
+        var targetWidth = contentTitle.offsetWidth - 175;
+        if (root.offsetWidth > targetWidth) {
+            service.reduceFontSize(root, targetWidth, sizableElements, 0);
         }
     };
 
-    this.reduceFontSize = function(linkRoot, targetWidth, linkElements, i) {
-        service.setElementFontSizes(linkElements, fontSizes[i]);
+    this.reduceFontSize = function(root, targetWidth, elements, i) {
+        service.setElementFontSizes(elements, fontSizes[i]);
         setTimeout(function() {
             i++;
-            if (linkRoot.offsetWidth > targetWidth && i < fontSizes.length) {
-                service.reduceFontSize(linkRoot, targetWidth, linkElements, i);
+            if (root.offsetWidth > targetWidth && i < fontSizes.length) {
+                service.reduceFontSize(root, targetWidth, elements, i);
             }
         }, 10);
     };
