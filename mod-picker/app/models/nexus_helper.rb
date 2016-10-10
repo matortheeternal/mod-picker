@@ -139,24 +139,28 @@ class NexusHelper
     header_node = doc.at_css("#Header")
     raise header_node.text if header_node.present?
 
-    # scrape basic data
+    # scrape uploaded by
     mod_data[:last_scraped] = DateTime.now
-    mod_data[:mod_name] = doc.at_css(".header-name").text
-    mod_data[:current_version] = doc.at_css(".file-version strong").text
     mod_data[:uploaded_by] = doc.at_css(".uploader a").text
-    mod_data[:authors] = doc.at_css(".header-author strong").text
 
     # raise exception if uploader is blacklisted
     if BlacklistedAuthor.exists_for?("NexusInfo", mod_data[:uploaded_by])
       raise "the author of this mod has opted out of having their mods on Mod Picker"
     end
 
+    # scrape general info
+    if Rails.application.config.scrape_nexus_general_info
+      mod_data[:mod_name] = doc.at_css(".header-name").text
+      mod_data[:current_version] = doc.at_css(".file-version strong").text
+      mod_data[:authors] = doc.at_css(".header-author strong").text
+
       # scrape dates
-    dates = doc.at_css(".header-dates").css('div')
-    date_added_str = dates[0].children[1].text.strip
-    mod_data[:released] = DateTime.parse(date_added_str, date_format)
-    date_updated_str = dates[1].children[1].text.strip
-    mod_data[:updated] = DateTime.parse(date_updated_str, date_format)
+      dates = doc.at_css(".header-dates").css('div')
+      date_added_str = dates[0].children[1].text.strip
+      mod_data[:released] = DateTime.parse(date_added_str, date_format)
+      date_updated_str = dates[1].children[1].text.strip
+      mod_data[:updated] = DateTime.parse(date_updated_str, date_format)
+    end
 
     # scrape statistics
     mod_data[:has_stats] = Rails.application.config.scrape_nexus_statistics
