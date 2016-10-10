@@ -14,6 +14,12 @@ app.service('modValidationService', function() {
             $scope.customSources.forEach(function(source) {
                 sourcesValid = sourcesValid && source.valid;
             });
+            // if we are only submitting custom sources, we need to verify
+            // we have all general info
+            if (!$scope.sources.length) {
+                sourcesValid = sourcesValid && $scope.mod.name && $scope.mod.authors &&
+                    $scope.mod.released;
+            }
         }
         else {
             // if we don't have any custom sources we should verify we have
@@ -48,10 +54,6 @@ app.service('modValidationService', function() {
         });
 
         return setValid;
-    };
-
-    this.generalInfoValid = function(mod) {
-        return mod.name && mod.authors && mod.released;
     };
 
     this.authorsValid = function(mod_authors) {

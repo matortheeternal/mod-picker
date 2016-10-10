@@ -4,12 +4,8 @@
     </span>
 </h3>
 <section>
-    <label class="subsection">
-        <span class="input-label">Mod Name
-            <span class="error-tooltip small" ng-hide="mod.name" title="The mod name is required.">
-                <i class="fa fa-exclamation-circle"></i>
-            </span>
-        </span>
+    <label class="subsection" ng-show="!sources.length || permissions.canSetGeneralModInfo">
+        <span class="input-label">Mod Name</span>
         <input type="text" class="medium-text" ng-model="mod.name">
     </label>
     <label class="subsection">
@@ -20,23 +16,15 @@
         </span>
         <input type="text" class="medium-text" ng-model="mod.aliases" maxlength="128">
     </label>
-    <label class="subsection">
-        <span class="input-label">Authors
-            <span class="error-tooltip small" ng-hide="mod.authors" title="The mod authors are required.">
-                <i class="fa fa-exclamation-circle"></i>
-            </span>
-        </span>
+    <label class="subsection" ng-show="!sources.length || permissions.canSetGeneralModInfo">
+        <span class="input-label">Authors</span>
         <input type="text" class="medium-text" ng-model="mod.authors">
     </label>
-    <label class="subsection">
-        <span class="input-label">Date Released
-            <span class="error-tooltip small" ng-hide="mod.released" title="The mod release date is required.">
-                <i class="fa fa-exclamation-circle"></i>
-            </span>
-        </span>
+    <label class="subsection" ng-show="!sources.length || permissions.canSetGeneralModInfo">
+        <span class="input-label">Date Released</span>
         <input type="date" ng-model="mod.released">
     </label>
-    <label class="subsection">
+    <label class="subsection" ng-show="!sources.length || permissions.canSetGeneralModInfo">
         <span class="input-label">Date Updated</span>
         <input type="date" ng-model="mod.updated">
     </label>

@@ -40,12 +40,8 @@ app.controller('modSourcesController', function($scope, sitesFactory, scrapeServ
         // load the stats
         $scope.mod.name = stats.mod_name;
         $scope.mod.authors = stats.authors || stats.uploaded_by;
-        if (stats.released) {
-            $scope.mod.released = new Date(Date.parse(stats.released));
-        }
-        if (stats.updated) {
-            $scope.mod.updated = new Date(Date.parse(stats.updated));
-        }
+        $scope.mod.released = new Date(Date.parse(stats.released));
+        $scope.mod.updated = new Date(Date.parse(stats.updated));
     };
 
     $scope.scrapeSource = function(source) {
