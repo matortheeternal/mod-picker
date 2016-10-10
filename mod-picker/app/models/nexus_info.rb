@@ -6,7 +6,7 @@ class NexusInfo < ActiveRecord::Base
   belongs_to :game, :inverse_of => 'nexus_infos'
 
   # VALIDATIONS
-  validates :game_id, :uploaded_by, presence: true
+  validates :game_id, :mod_name, :uploaded_by, :authors, :released, presence: true
 
   def self.prepare_for_mod(id, game_id)
     raise "cannot scrape Nexus Info with no game id" unless game_id
