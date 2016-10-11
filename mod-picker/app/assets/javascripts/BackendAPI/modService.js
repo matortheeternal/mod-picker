@@ -34,10 +34,10 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
         return backend.post('/mods/search', postData);
     };
 
-    this.searchModListTools = function() {
+    this.searchModListTools = function(str) {
         var postData =  {
             filters: {
-                search: name,
+                search: str,
                 utility: true
             }
         };
