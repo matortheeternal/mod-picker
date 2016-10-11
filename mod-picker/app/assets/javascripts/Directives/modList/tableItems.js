@@ -98,13 +98,13 @@ app.controller('tableItemsController', function($scope, $timeout, colorsFactory,
         // build group attributes
         $scope.model.forEach(function(item) {
             if (item.children) {
-                item.dragType = '\'group\'';
+                item.dragType = 'group';
                 item.hasChildren = true;
                 item.class = 'group bg-'+item.color;
                 item.childrenEmpty = $scope.isEmpty(item.children);
                 item.templateUrl = $scope.groupTemplateUrl;
             } else {
-                item.dragType = '\'item\'';
+                item.dragType = 'item';
                 item.templateUrl = $scope.itemTemplateUrl;
             }
         });
