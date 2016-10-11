@@ -14,14 +14,15 @@ app.controller('managePluginsModalController', function($scope, columnsFactory, 
     });
 
     // initialize variables for table-results
-    $scope.columns = columnsFactory.modListPluginColumns();
-    $scope.columnGroups = columnsFactory.modListPluginColumnGroups();
+    $scope.columns = columnsFactory.modListPluginStoreColumns();
+    $scope.columnGroups = columnsFactory.modListPluginStoreColumnGroups();
     // $scope.actions = actionsFactory.modListPluginActions();
-    $scope.actions = actionsFactory.modListPluginModalActions();
+    $scope.actions = actionsFactory.modListPluginStoreActions();
 
     // update plugins store active booleans based on plugins that are in the mod list
     $scope.mod_list.plugins.forEach(function(modListPlugin) {
         if (modListPlugin._destroy) return;
+
         var foundPlugin = $scope.plugins_store.find(function(plugin) {
             return plugin.id == modListPlugin.plugin.id;
         });

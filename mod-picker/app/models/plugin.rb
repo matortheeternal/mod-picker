@@ -187,6 +187,20 @@ class Plugin < ActiveRecord::Base
     })
   end
 
+  def self.show_plugins_store_json(collection)
+    collection.as_json({
+        :only => [:id, :filename],
+        :include => {
+            :mod => {
+                :only => [:id, :name]
+            },
+            :mod_option => {
+                :only => [:name]
+            }
+        }
+    })
+  end
+
   def as_json(options={})
     if JsonHelpers.json_options_empty(options)
       default_options = {

@@ -230,7 +230,7 @@ app.service('actionsFactory', function() {
         }];
     };
 
-    this.modListPluginModalActions = function() {
+    this.modListPluginStoreActions = function() {
         return [{
             caption: "Add",
             title: "Add this plugin to your mod list",

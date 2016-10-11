@@ -1002,4 +1002,53 @@ app.service('columnsFactory', function() {
     this.pluginColumnGroups = function() {
         return ["General"];
     };
+    
+    this.modListPluginStoreColumns = function() {
+        return [
+            {
+                group: "General",
+                visibility: true,
+                required: true,
+                label: "Filename",
+                data: function(item) {
+                    return item.filename || item.plugin.filename;
+                },
+                link: function(item) {
+                    if (item.mod && item.plugin) {
+                        return "#/mod/" + item.mod.id + "/analysis?plugin=" + item.plugin.id;
+                    }
+                },
+                note: function($scope, item) {
+                    return item.cleaned ? '(cleaned)' : '';
+                },
+                class: "primary-column",
+                invertSort: true
+            },
+            {
+                group: "General",
+                visibility: true,
+                label: "Mod",
+                data: "mod.name",
+                link: function(item) {
+                    if (item.mod) {
+                        return "#/mod/" + item.mod.id;
+                    }
+                },
+                sortData: "mods.name",
+                invertSort: true
+            },
+            {
+                group: "General",
+                visibility: true,
+                label: "Mod Option Name",
+                data: "mod_option.name"
+            }
+
+        ];
+    };
+
+    this.modListPluginStoreColumnGroups = function() {
+        return ["General"];
+    };
+
 });

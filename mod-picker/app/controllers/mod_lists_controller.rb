@@ -88,7 +88,7 @@ class ModListsController < ApplicationController
 
     # prepare primary data
     plugins = @mod_list.mod_list_plugins.includes(:plugin, :mod)
-    plugins_store = @mod_list.plugins_store.order(:mod_option_id)
+    plugins_store = Plugin.show_plugins_store_json(@mod_list.plugins_store.order(:mod_option_id))
     custom_plugins = @mod_list.custom_plugins
     groups = @mod_list.mod_list_groups.where(tab: 2).order(:index)
 
@@ -99,7 +99,7 @@ class ModListsController < ApplicationController
     # prepare helpful marks
     c_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("CompatibilityNote", compatibility_notes.ids)
     l_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("LoadOrderNote", load_order_notes.ids)
-
+    
     # render response
     render :json => {
         plugins: plugins,
