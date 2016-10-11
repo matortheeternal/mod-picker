@@ -1,4 +1,6 @@
 app.service('columnsFactory', function() {
+    var factory = this;
+
     this.modColumns = function() {
         return [
             {
@@ -1001,5 +1003,24 @@ app.service('columnsFactory', function() {
 
     this.pluginColumnGroups = function() {
         return ["General"];
+    };
+
+    // sanitizes a filter to be a class by removing any filter params
+    this.filterClass = function(filter) {
+        if (filter) {
+            if (filter.indexOf(':') > -1) {
+                return filter.split(':')[0];
+            } else {
+                return filter;
+            }
+        } else {
+            return 'text';
+        }
+    };
+
+    this.buildColumnClasses = function(columns) {
+        columns.forEach(function(column) {
+            column.fullClass = column.class + ' ' + factory.filterClass(column.filter) + '-cell';
+        });
     };
 });
