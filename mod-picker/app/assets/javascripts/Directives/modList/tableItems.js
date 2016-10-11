@@ -22,6 +22,7 @@ app.controller('tableItemsController', function($scope, $timeout, colorsFactory,
     $scope.draggingGroup = false;
     $scope.itemTemplateUrl = '/resources/directives/modList/tableItem.html';
     $scope.groupTemplateUrl = '/resources/directives/modList/tableGroup.html';
+    tableUtils.buildColumnClasses($scope.columns);
 
     // inherited functions
     $scope.isEmpty = objectUtils.isEmptyArray;

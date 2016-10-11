@@ -1,7 +1,6 @@
 app.controller('modListPluginsController', function($scope, $q, $timeout, categoryService, modListService, pluginService, columnsFactory, actionsFactory, colorsFactory, listMetaFactory, listUtils) {
     // INITIALIZE VARIABLES
     $scope.columns = columnsFactory.modListPluginColumns();
-    columnsFactory.buildColumnClasses($scope.columns);
     $scope.columnGroups = columnsFactory.modListPluginColumnGroups();
     $scope.actions = actionsFactory.modListPluginActions();
 
