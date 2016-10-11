@@ -9,7 +9,7 @@
 //= stub_tree Directives/help
 
 var app = angular.module('modPicker', [
-    'ui.router', 'rzModule', 'ngAnimate', 'puElasticInput', 'hc.marked', 'smoothScroll', 'relativeDate', 'ct.ui.router.extras', 'dndLists', 'once'
+    'ui.router', 'rzModule', 'ngAnimate', 'puElasticInput', 'hc.marked', 'smoothScroll', 'relativeDate', 'ct.ui.router.extras', 'dndLists', 'pasvaz.bindonce'
 ]);
 
 app.config(['$httpProvider', '$compileProvider', function($httpProvider, $compileProvider) {

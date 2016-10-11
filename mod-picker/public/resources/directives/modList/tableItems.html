@@ -1,7 +1,7 @@
 <table class="browse-table" ng-hide="modelEmpty">
     <thead>
         <tr>
-            <th ng-repeat="column in columns" ng-show="column.visibility" class="no-action" once-class="column.fullClass" once-text="column.label"></th>
+            <th bindonce ng-repeat="column in columns" ng-show="column.visibility" class="no-action" bo-class="column.fullClass" bo-text="column.label"></th>
             <th class="actions-header">
                 <a ng-click="toggleModal(true)">
                     <i class="fa fa-columns" title="Edit Columns"></i>

@@ -2,10 +2,10 @@
     <table ng-show="data.length" class="browse-table">
         <thead>
         <tr>
-            <th ng-repeat="column in columns" ng-show="column.visibility"
-                once-class="{ 'no-action' : !sort || column.unsortable }" ng-click="sortColumn(column)">
+            <th ng-repeat="column in columns" bindonce ng-show="column.visibility"
+                bo-class="{ 'no-action' : !sort || column.unsortable }" ng-click="sortColumn(column)">
                 {{column.label}}
-                <div class="sorting-options" once-if="sort && !column.unsortable">
+                <div bindonce class="sorting-options" bo-if="sort && !column.unsortable">
                     <div class="sort-up" ng-class="{ 'active' : column.up }">
                         <i class="fa fa-caret-up"></i>
                     </div>
@@ -23,13 +23,13 @@
         </thead>
         <tbody>
         <tr ng-repeat="item in data" ng-class="{ 'row-hidden' : item.hidden }">
-            <td ng-repeat="column in columns" ng-show="column.visibility" once-class="column.fullClass">
-                <a once-if="!!column.link" once-href="item.columnData[$index].link">
-                    <img once-if="!!column.image" once-src="item.columnData[$index].image"
-                         once-class="column.imageClass"/>
-                    <span once-text="item.columnData[$index].data"></span>
+            <td ng-repeat="column in columns" bindonce ng-show="column.visibility" bo-class="column.fullClass">
+                <a bindonce bo-if="!!column.link" bo-href="item.columnData[$index].link">
+                    <img bindonce bo-if="!!column.image" bo-src="item.columnData[$index].image"
+                         bo-class="column.imageClass"/>
+                    <span bindonce bo-text="item.columnData[$index].data"></span>
                 </a>
-                <span once-if="!column.link && column.data" once-text="item.columnData[$index].data"></span>
+                <span bindonce bo-if="!column.link && column.data" bo-text="item.columnData[$index].data"></span>
             </td>
             <td class="actions-cell">
                 <actions></actions>

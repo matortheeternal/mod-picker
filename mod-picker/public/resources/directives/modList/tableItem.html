@@ -1,13 +1,13 @@
-<td ng-repeat="column in columns" ng-if="column.visibility" once-class="column.fullClass">
-    <span once-if="!!column.dynamic">
-        <a once-if="!!column.link" class="strong" once-href="item.columnData[$index].link" ng-bind="item.columnData[$index].data"></a>
-        <span once-if="!column.link" ng-bind="item.columnData[$index].data"></span>
-        <span once-if="!!column.note" class="note" ng-bind="item.columnData[$index].note"></span>
+<td ng-repeat="column in columns" ng-if="column.visibility" bindonce bo-class="column.fullClass">
+    <span bindonce bo-if="!!column.dynamic">
+        <a bindonce bo-if="!!column.link" class="strong" bo-href="item.columnData[$index].link" ng-bind="item.columnData[$index].data"></a>
+        <span bindonce bo-if="!column.link" ng-bind="item.columnData[$index].data"></span>
+        <span bindonce bo-if="!!column.note" class="note" ng-bind="item.columnData[$index].note"></span>
     </span>
-    <span once-if="!column.dynamic">
-        <a once-if="!!column.link" class="strong" once-href="item.columnData[$index].link" once-text="item.columnData[$index].data"></a>
-        <span once-if="!column.link" once-text="item.columnData[$index].data"></span>
-        <span once-if="!!column.note" class="note" once-text="item.columnData[$index].note"></span>
+    <span bindonce bo-if="!column.dynamic">
+        <a bindonce bo-if="!!column.link" class="strong" bo-href="item.columnData[$index].link" bo-text="item.columnData[$index].data"></a>
+        <span bindonce bo-if="!column.link" bo-text="item.columnData[$index].data"></span>
+        <span bindonce bo-if="!!column.note" class="note" bo-text="item.columnData[$index].note"></span>
     </span>
 </td>
 <td class="actions-cell">
