@@ -10,8 +10,7 @@
         </tr>
     </thead>
     <tbody dnd-list="model" ng-class="{ 'dragging-group' : draggingGroup }">
-        <tr ng-repeat="item in model" class="{{item.class}}" ng-hide="item._destroy" dnd-draggable="item" dnd-moved="itemMoved(model, $index)" dnd-effect-allowed="move" dnd-disable-if="!editing" dnd-type="item.dragType" dnd-dragstart="dragStart(item)" dnd-dragend="dragEnd()" ng-class="{ 'merged' : item.merged }" ng-include="item.templateUrl">
-        </tr>
+        <tr ng-repeat="item in model" class="{{item.class}}" ng-hide="item._destroy" dnd-draggable="item" dnd-moved="itemMoved(model, $index)" dnd-effect-allowed="move" dnd-disable-if="!editing" dnd-type="item.dragType" dnd-dragstart="dragStart(item)" dnd-dragend="dragEnd()" ng-class="{ 'merged' : item.merged }" ng-include="item.templateUrl"></tr>
         <!-- drag and drop placeholder -->
         <tr class="dndPlaceholder">
             <td colspan="{{activeColumnsCount}}"></td>

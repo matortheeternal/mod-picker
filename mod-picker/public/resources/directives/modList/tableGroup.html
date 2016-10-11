@@ -17,7 +17,7 @@
     <table class="browse-table" ng-class="{ 'no-border' : item.childrenEmpty }">
         <tbody dnd-list="item.children" dnd-allowed-types="['item']">
             <tr ng-repeat="item in item.children as children" ng-hide="item._destroy" dnd-draggable="item" dnd-moved="itemMoved(children, $index)" dnd-effect-allowed="move" dnd-disable-if="!editing" dnd-type="'item'" ng-class="{ 'merged' : item.merged }">
-                <td ng-repeat="column in columns" ng-show="column.visibility" once-class="column.fullClass">
+                <td ng-repeat="column in columns" ng-if="column.visibility" once-class="column.fullClass">
                     <span once-if="!!column.dynamic">
                         <a once-if="!!column.link" class="strong" once-href="item.columnData[$index].link" ng-bind="item.columnData[$index].data"></a>
                         <span once-if="!column.link" ng-bind="item.columnData[$index].data"></span>
