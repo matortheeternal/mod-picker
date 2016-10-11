@@ -14,6 +14,7 @@
 //= link rzslider.min.css
 //= link simplemde.min.css
 //= link angular.min.1.5.1.js
+//= link once.js
 //= link marked.min.js
 //= link angular-marked.min.js
 //= link angular-drag-and-drop-lists.min.js
