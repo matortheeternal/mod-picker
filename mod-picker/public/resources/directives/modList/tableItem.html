@@ -1,7 +1,7 @@
 <td ng-repeat="column in columns" ng-show="column.visibility" once-class="column.fullClass">
-    <a once-if="!!column.link" class="strong" once-href="item.columnData[$index].link" once-text="item.columnData[$index].data"></a>
-    <span once-if="!column.link" once-text="item.columnData[$index].data"></span>
-    <span once-if="!!column.note" class="note" once-text="item.columnData[$index].note"></span>
+    <a once-if="!!column.link" class="strong" once-href="item.columnData[$index].link" ng-bind="item.columnData[$index].data"></a>
+    <span once-if="!column.link" ng-bind="item.columnData[$index].data"></span>
+    <span once-if="!!column.note" class="note" ng-bind="item.columnData[$index].note"> </span>
 </td>
 <td class="actions-cell">
     <actions></actions>
