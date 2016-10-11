@@ -82,4 +82,8 @@ app.controller('tableItemsController', function($scope, $timeout, colorsFactory,
     $scope.$on('updateItems', function() {
         listUtils.updateItems($scope.model, $scope.startingIndex);
     });
+
+    $scope.$watch('columns', function() {
+        $scope.activeColumnsCount = $scope.getNumCols($scope.columns);
+    }, true);
 });
