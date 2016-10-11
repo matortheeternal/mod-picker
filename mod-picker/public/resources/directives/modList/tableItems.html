@@ -1,7 +1,7 @@
 <table class="browse-table" ng-hide="isEmpty(model)">
     <thead>
         <tr>
-            <th ng-repeat="column in columns" class="no-action" ng-class="{ 'hidden' : !column.visibility, '{{filterClass(column.filter)}}-cell' : !!column.filter, '{{column.class}}' : !!column.class }">
+            <th ng-repeat="column in columns" ng-show="column.visibility" class="no-action {{column.fullClass}}">
                 {{column.label}}
             </th>
             <th class="actions-header">
@@ -12,11 +12,11 @@
         </tr>
     </thead>
     <tbody dnd-list="model" ng-class="{ 'dragging-group' : draggingGroup }">
-        <tr ng-repeat="item in model" class="{{item.children ? 'group bg-'+item.color : ''}}" ng-if="!item._destroy" dnd-draggable="item" dnd-moved="itemMoved(model, $index)" dnd-effect-allowed="move" dnd-disable-if="!editing" dnd-type="{{item.children ? '\'group\'' : '\'item\''}}" dnd-dragstart="dragStart(item)" dnd-dragend="dragEnd()" ng-class="{ 'merged' : item.merged }" table-item>
+        <tr ng-repeat="item in model" class="{{item.class}}" ng-hide="item._destroy" dnd-draggable="item" dnd-moved="itemMoved(model, $index)" dnd-effect-allowed="move" dnd-disable-if="!editing" dnd-type="{{item.dragType}}" dnd-dragstart="dragStart(item)" dnd-dragend="dragEnd()" ng-class="{ 'merged' : item.merged }" table-item>
         </tr>
         <!-- drag and drop placeholder -->
         <tr class="dndPlaceholder">
-            <td colspan="{{getNumCols(columns)}}"></td>
+            <td colspan="{{activeColumnsCount}}"></td>
         </tr>
     </tbody>
 </table>
