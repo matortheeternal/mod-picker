@@ -5,9 +5,9 @@ search-input {
     max-width: 450px;
     min-width: 140px;
     padding: 8px;
+    margin-top: 8px;
     height: 30px;
     border: 0;
-    margin-left: 20px;
     font-size: 16px;
     box-shadow: 0 0 3px 1px $border_color;
     @include transition(box-shadow 0.2s ease-in-out);

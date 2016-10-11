@@ -74,7 +74,7 @@ app.controller('commentsController', function($scope, $rootScope, contributionSe
                 if (!parent.children) {
                     parent.children = [];
                 }
-                parent.children.unshift(comment);
+                parent.children.push(comment);
             }
         } else {
             $scope.comments.unshift(comment);

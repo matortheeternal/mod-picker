@@ -1,5 +1,5 @@
 class InstallOrderNote < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, Correctable, Helpfulable, Reportable, ScopeHelpers, Trackable
+  include Filterable, Sortable, RecordEnhancements, Correctable, Helpfulable, Reportable, Approveable, ScopeHelpers, Trackable
 
   # ATTRIBUTES
   self.per_page = 25
@@ -49,7 +49,6 @@ class InstallOrderNote < ActiveRecord::Base
 
   # CALLBACKS
   after_create :increment_counters
-  before_create :auto_approve
   before_save :set_adult, :set_dates
   before_destroy :decrement_counters
 
@@ -100,7 +99,6 @@ class InstallOrderNote < ActiveRecord::Base
   def as_json(options={})
     if JsonHelpers.json_options_empty(options)
       default_options = {
-          :except => [:submitted_by],
           :include => {
               :submitter => {
                   :only => [:id, :username, :role, :title, :joined, :last_sign_in_at, :reviews_count, :compatibility_notes_count, :install_order_notes_count, :load_order_notes_count, :corrections_count, :comments_count],
@@ -198,11 +196,6 @@ class InstallOrderNote < ActiveRecord::Base
 
     def set_adult
       self.has_adult_content = first_mod.has_adult_content || second_mod.has_adult_content
-      true
-    end
-
-    def auto_approve
-      self.approved = submitter.has_auto_approval?
       true
     end
 

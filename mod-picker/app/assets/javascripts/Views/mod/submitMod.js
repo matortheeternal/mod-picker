@@ -62,6 +62,7 @@ app.controller('submitModController', function($scope, $rootScope, backend, modS
     $scope.modValid = function() {
         $scope.sourcesValid = modValidationService.sourcesValid($scope);
         $scope.categoriesValid = modValidationService.categoriesValid($scope.mod);
+        $scope.requirementsValid = modValidationService.requirementsValid($scope.mod.requirements);
         $scope.analysisValid = !!$scope.mod.analysis;
         return $scope.sourcesValid && $scope.categoriesValid && $scope.analysisValid;
     };

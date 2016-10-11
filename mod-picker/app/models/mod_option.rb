@@ -7,7 +7,7 @@ class ModOption < ActiveRecord::Base
   # ASSOCIATIONS
   belongs_to :mod, :inverse_of => 'mod_options'
 
-  has_many :plugins, :inverse_of => 'mod_option', :dependent => :destroy
+  has_many :plugins, :inverse_of => 'mod_option', :dependent => :nullify
   has_many :mod_asset_files, :inverse_of => 'mod_option'
 
   has_many :mod_list_mod_options, :inverse_of => 'mod_option', :dependent => :destroy

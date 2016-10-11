@@ -42,6 +42,17 @@ app.service('pluginService', function(backend, $q, $timeout, recordGroupService,
         return plugins.promise;
     };
 
+    this.searchModListPluginStore = function($scope) {
+        return function(str) {
+            var action = $q.defer();
+            var matchingPlugins = $scope.plugins_store.filter(function(plugin) {
+                return plugin.filename.toLowerCase().includes(str);
+            });
+            action.resolve(matchingPlugins);
+            return action.promise;
+        };
+    };
+
     //combine dummy_masters array with masters array and sorts the masters array
     this.combineAndSortMasters = function(plugins) {
         // loop through plugins

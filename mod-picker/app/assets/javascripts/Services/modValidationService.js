@@ -42,7 +42,7 @@ app.service('modValidationService', function() {
         set.forEach(function(item) {
             var itemId = item[key];
             setValid = setValid && itemId;
-            if (!itemId) return;
+            if (!itemId || item._destroy) return;
             var idPresent = setIds.indexOf(itemId) > -1;
             if (idPresent) {
                 item.error = true;

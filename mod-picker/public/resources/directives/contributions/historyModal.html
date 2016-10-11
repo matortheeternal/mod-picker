@@ -1,20 +1,20 @@
 <div class="modal-container">
-    <div class="modal huge-modal">
+    <div class="modal huge-modal wide-modal">
         <div class="close-modal">
             <span class="fa fa-times" ng-click="toggleHistoryModal(false)"></span>
         </div>
 
         <h2>
-            {{target.submitter.username}}'s {{model.label}} - History
+            {{target.submitter.username}}'s {{modelObj.label}} - History
         </h2>
 
-        <div class="content-block" ng-if="model.name === 'CompatibilityNote'">
+        <div class="content-block" ng-if="modelObj.name === 'CompatibilityNote'">
             <compatibility-note note="activeHistoryEntry" index="index" show-actions="false"></compatibility-note>
         </div>
-        <div class="content-block" ng-if="model.name === 'InstallOrderNote'">
+        <div class="content-block" ng-if="modelObj.name === 'InstallOrderNote'">
             <install-order-note note="activeHistoryEntry" index="index" show-actions="false"></install-order-note>
         </div>
-        <div class="content-block" ng-if="model.name === 'LoadOrderNote'">
+        <div class="content-block" ng-if="modelObj.name === 'LoadOrderNote'">
             <load-order-note note="activeHistoryEntry" index="index" show-actions="false"></load-order-note>
         </div>
 
@@ -54,7 +54,7 @@
                             {{target.submitter.username}}
                         </a>
                     </td>
-                    <td>{{model.label}} Created</td>
+                    <td>{{modelObj.label}} Created</td>
                 </tr>
                 </tbody>
             </table>

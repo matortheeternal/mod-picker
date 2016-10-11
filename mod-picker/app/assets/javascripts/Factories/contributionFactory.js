@@ -1,4 +1,6 @@
 app.service('contributionFactory', function() {
+    var factory = this;
+
     var models = [{
         name: "Appeal",
         label: "Appeals",
@@ -35,9 +37,17 @@ app.service('contributionFactory', function() {
     }];
 
     this.getDefaultTextBody = function(name) {
-        return models.find(function(model) {
+        var text_body = models.find(function(model) {
             return model.name === name;
         }).template;
+        return text_body.replace(/\*([^\*]+)\*/g, function(prompt) {
+            return factory.preparePrompt(prompt, true);
+        });
+    };
+
+    this.preparePrompt = function(prompt, skipStars) {
+        var s = skipStars ? '' : '*';
+        return s + prompt.replace(/\ /g, '\uFEFF ') + s + '\n\n';
     };
 
     this.getModel = function(name) {

@@ -53,7 +53,7 @@
     </div>
 
     <!-- the rest of the notes -->
-    <div ng-repeat="note in mod.install_order_notes" class="content-block" ng-if="!note.editing">
+    <div ng-repeat="note in mod.install_order_notes" class="content-block" ng-hide="note.editing">
         <install-order-note note="note" mod-id="mod.id" index="100 + $index" edit="editInstallOrderNote"></install-order-note>
     </div>
 
