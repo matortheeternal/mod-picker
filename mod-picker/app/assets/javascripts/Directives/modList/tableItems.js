@@ -86,4 +86,25 @@ app.controller('tableItemsController', function($scope, $timeout, colorsFactory,
     $scope.$watch('columns', function() {
         $scope.activeColumnsCount = $scope.getNumCols($scope.columns);
     }, true);
+
+    $scope.$watch('model', function() {
+        if (!$scope.model) return;
+
+        // build group attributes
+        $scope.model.forEach(function(item) {
+            if (item.children) {
+                item.dragType = 'group';
+                item.hasChildren = true;
+                item.class = 'group bg-'+item.color;
+                item.childrenEmpty = false; //$scope.isEmpty(item.childen)
+            } else {
+                item.dragType = 'item';
+            }
+        });
+
+        // rebuild column data
+        listUtils.forEachItem($scope.model, function(item) {
+            tableUtils.buildItemData(item, $scope.columns, $scope.resolve);
+        });
+    }, true);
 });
