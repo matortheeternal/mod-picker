@@ -3,11 +3,28 @@ app.service('tableUtils', function($filter, objectUtils) {
 
     // sanitizes a filter to be a class by removing any filter params
     this.filterClass = function(filter) {
-        if (filter && filter.indexOf(':') > -1) {
-            return filter.split(':')[0];
+        if (filter) {
+            if (filter.indexOf(':') > -1) {
+                return filter.split(':')[0] + '-cell';
+            } else {
+                return filter + '-cell';
+            }
         } else {
-            return filter;
+            return 'text-cell';
         }
+    };
+
+    this.buildColumnClasses = function(columns, firstColumnClass) {
+        columns.forEach(function(column, index) {
+            column.fullClass = '';
+            if (column.class) {
+                column.fullClass += column.class;
+            }
+            column.fullClass += ' ' + service.filterClass(column.filter);
+            if (index == 0 && firstColumnClass) {
+                column.fullClass += ' ' + firstColumnClass;
+            }
+        });
     };
 
     // this function uses objectUtils.deepValue to retrieve the value
@@ -55,6 +72,7 @@ app.service('tableUtils', function($filter, objectUtils) {
             var columnData = { data: columnValue };
             if (column.note) columnData.note = resolve(column.note, item);
             if (column.link) columnData.link = column.link(item);
+            if (column.image) columnData.image = column.image(item);
             item.columnData.push(columnData);
         });
     };
