@@ -1,4 +1,4 @@
-<table class="browse-table" ng-hide="isEmpty(model)">
+<table class="browse-table" ng-hide="modelEmpty">
     <thead>
         <tr>
             <th ng-repeat="column in columns" ng-show="column.visibility" class="no-action {{column.fullClass}}">
@@ -21,7 +21,7 @@
     </tbody>
 </table>
 
-<div class="content-message" ng-show="isEmpty(model)">
+<div class="content-message" ng-show="modelEmpty">
     There are no {{type}} in this list.
 </div>
 

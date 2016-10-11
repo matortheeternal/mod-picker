@@ -14,18 +14,18 @@
     </div>
 
     <!-- display children of groups -->
-    <table class="browse-table" ng-class="{ 'no-border' : isEmpty(item.children) }">
+    <table class="browse-table" ng-class="{ 'no-border' : item.childrenEmpty }">
         <tbody dnd-list="item.children" dnd-allowed-types="['item']">
-        <tr ng-repeat="item in item.children as children" ng-hide="item._destroy" dnd-draggable="item" dnd-moved="itemMoved(children, $index)" dnd-effect-allowed="move" dnd-disable-if="!editing" dnd-type="'item'" ng-class="{ 'merged' : item.merged }" table-item>
-        </tr>
-        <!-- display message if there are no children -->
-        <tr class="content-message" ng-show="isEmpty(item.children)">
-            <td>There are no {{label}} in this group.</td>
-        </tr>
-        <!-- drag and drop placeholder -->
-        <tr class="dndPlaceholder">
-            <td colspan="{{activeColumnsCount}}"></td>
-        </tr>
+            <tr ng-repeat="item in item.children as children" ng-hide="item._destroy" dnd-draggable="item" dnd-moved="itemMoved(children, $index)" dnd-effect-allowed="move" dnd-disable-if="!editing" dnd-type="'item'" ng-class="{ 'merged' : item.merged }" table-item>
+            </tr>
+            <!-- display message if there are no children -->
+            <tr class="content-message" ng-show="item.childrenEmpty">
+                <td>There are no {{label}} in this group.</td>
+            </tr>
+            <!-- drag and drop placeholder -->
+            <tr class="dndPlaceholder">
+                <td colspan="{{activeColumnsCount}}"></td>
+            </tr>
         </tbody>
     </table>
 </td>
