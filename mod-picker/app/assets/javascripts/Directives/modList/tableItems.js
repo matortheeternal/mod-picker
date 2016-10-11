@@ -70,6 +70,28 @@ app.controller('tableItemsController', function($scope, $timeout, colorsFactory,
         $scope.draggingGroup = false;
     };
 
+    $scope.buildItemData = function() {
+        $scope.builtItemData = true;
+        listUtils.forEachItem($scope.model, function(item) {
+            tableUtils.buildItemData(item, $scope.columns, $scope.resolve);
+        });
+    };
+
+    $scope.buildAttributes = function() {
+        $scope.model.forEach(function(item) {
+            if (item.children) {
+                item.dragType = 'group';
+                item.hasChildren = true;
+                item.class = 'group bg-'+item.color;
+                item.childrenEmpty = $scope.isEmpty(item.children);
+                item.templateUrl = $scope.groupTemplateUrl;
+            } else {
+                item.dragType = 'item';
+                item.templateUrl = $scope.itemTemplateUrl;
+            }
+        });
+    };
+
     $scope.$on('moveItem', function(event, options) {
         var errorMessage = listUtils.moveItem($scope.model, $scope.type, options);
         if (errorMessage) {
@@ -91,27 +113,7 @@ app.controller('tableItemsController', function($scope, $timeout, colorsFactory,
 
     $scope.$watch('model', function() {
         if (!$scope.model) return;
-
-        // helper values
         $scope.modelEmpty = $scope.isEmpty($scope.model);
-
-        // build group attributes
-        $scope.model.forEach(function(item) {
-            if (item.children) {
-                item.dragType = 'group';
-                item.hasChildren = true;
-                item.class = 'group bg-'+item.color;
-                item.childrenEmpty = $scope.isEmpty(item.children);
-                item.templateUrl = $scope.groupTemplateUrl;
-            } else {
-                item.dragType = 'item';
-                item.templateUrl = $scope.itemTemplateUrl;
-            }
-        });
-
-        // rebuild column data
-        listUtils.forEachItem($scope.model, function(item) {
-            tableUtils.buildItemData(item, $scope.columns, $scope.resolve);
-        });
+        $scope.buildAttributes();
     }, true);
 });
