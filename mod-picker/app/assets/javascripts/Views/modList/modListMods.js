@@ -8,6 +8,7 @@ app.controller('modListModsController', function($scope, $rootScope, $timeout, $
     // SHARED FUNCTIONS
     $scope.searchMods = modService.searchModListMods;
     listMetaFactory.buildModelFunctions($scope, 'mod', 'mod', 'name', 'Custom Mod');
+    listMetaFactory.buildSortFunctions($scope, 'install', 'mod', 'asset_files_count');
 
     // MODAL HANDLING
     $scope.showDetailsModal = false;
