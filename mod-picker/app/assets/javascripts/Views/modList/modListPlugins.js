@@ -116,9 +116,6 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, catego
             $scope.$broadcast('pluginRecovered', !!modListPlugin.plugin && modListPlugin.plugin.id);
             $scope.$broadcast('updateItems');
 
-            // update plugin store plugin.active state
-            $scope.setPluginStoreActive(modListPlugin, true);
-
             // success message
             $scope.$emit('successMessage', 'Added plugin ' + modListPlugin.plugin.filename+ ' successfully.');
         }
@@ -144,9 +141,6 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, catego
             $scope.originalModList.plugins.push(angular.copy(modListPlugin));
             $scope.mod_list.plugins_count += 1;
             $scope.updateTabs();
-
-            // update plugins_store plugin.active state
-            $scope.setPluginStoreActive(modListPlugin, true);
 
             // update modules
             $scope.$broadcast('pluginAdded', data);
@@ -228,7 +222,6 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, catego
         $scope.updateTabs();
 
         // update plugin store plugin.active state
-        $scope.setPluginStoreActive(modListPlugin, false);
 
         // update modules
         $scope.$broadcast('pluginRemoved', !!modListPlugin.plugin && modListPlugin.plugin.id);
@@ -242,7 +235,12 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, catego
     };
 
     $scope.togglePlugin = function(pluginItem) {
-        if (!pluginItem.active) {
+        /* 
+        * adds plugin on TRUE because togglePlugin is called on a checkbox input that changes the plugin's
+        * active state BEFORE calling this function. i.e if active ==true then user just toggled
+        * from false -> true and wants the plugin added and vice versa
+        */
+        if (pluginItem.active) {
             $scope.addPlugin(pluginItem.id);
         } else {
             var foundPlugin = $scope.findPlugin(pluginItem.id, true);
@@ -309,18 +307,6 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, catego
         });
     };
 
-    // update plugins_store active state manually when adding/removing plugins
-    $scope.setPluginStoreActive = function(modListPlugin, activeState) {
-        var foundPlugin = $scope.plugins_store.find(function(plugin) {
-            return plugin.id == modListPlugin.plugin.id;
-        });
-
-        if(foundPlugin) { 
-            foundPlugin.active = activeState;
-        };
-    }
-
-
     // event triggers
     $scope.$on('removeItem', function(event, modListPlugin) {
         $scope.removePlugin(modListPlugin);
@@ -385,8 +371,5 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, catego
     });
     $scope.$on('toggleDetailsModal', function(event, options) {
         $scope.toggleDetailsModal(options.visible, options.item);
-    });
-    $scope.$on('togglePlugin', function(event, plugin) {
-        $scope.togglePlugin(plugin);
     });
 });

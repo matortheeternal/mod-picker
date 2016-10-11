@@ -13,11 +13,30 @@ app.controller('managePluginsModalController', function($scope, columnsFactory, 
         plugin.active = false;
     });
 
-    // initialize variables for table-results
-    $scope.columns = columnsFactory.modListPluginStoreColumns();
-    $scope.columnGroups = columnsFactory.modListPluginStoreColumnGroups();
-    // $scope.actions = actionsFactory.modListPluginActions();
-    $scope.actions = actionsFactory.modListPluginStoreActions();
+    // labels for modal table
+    $scope.columnLabels = [
+        {
+            label: 'Filename'
+        },
+        {
+            label: 'Mod'
+        },
+        {
+            label: 'Mod Option Name'
+        }
+    ];
+
+    $scope.getPluginLink = function(item) {
+        if (item.mod && item.id) {
+            return "#/mod/" + item.mod.id + "/analysis?plugin=" + item.id;
+        }
+    };
+
+    $scope.getModLink = function(item) {
+        if (item.mod) {
+            return "#/mod/" + item.mod.id;
+        }
+    }
 
     // update plugins store active booleans based on plugins that are in the mod list
     $scope.mod_list.plugins.forEach(function(modListPlugin) {
