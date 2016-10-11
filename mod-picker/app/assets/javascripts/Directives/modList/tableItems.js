@@ -115,5 +115,6 @@ app.controller('tableItemsController', function($scope, $timeout, colorsFactory,
         if (!$scope.model) return;
         $scope.modelEmpty = $scope.isEmpty($scope.model);
         $scope.buildAttributes();
+        $scope.buildItemData();
     }, true);
 });
