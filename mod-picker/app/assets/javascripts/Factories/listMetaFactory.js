@@ -75,6 +75,7 @@ app.service('listMetaFactory', function($q, $timeout, modListService, listUtils,
         $scope[addNewLabel] = function(itemId) {
             var mod_list_item = {};
             mod_list_item.mod_list_id = $scope.mod_list.id;
+            mod_list_item.index = listUtils.getNextIndex($scope.model[pluralLabel]);
             mod_list_item[idKey] = itemId;
 
             modListService[newModListItemKey](mod_list_item).then(function(data) {
