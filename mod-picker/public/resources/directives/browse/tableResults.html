@@ -1,42 +1,40 @@
 <div class="box-shadow">
     <table ng-show="data.length" class="browse-table">
         <thead>
-            <tr>
-                <th ng-repeat="column in columns" ng-class="{ 'hidden': !column.visibility, 'no-action' : !sort || column.unsortable }" ng-click="sortColumn(column)">
-                    {{column.label}}
-                    <div class="sorting-options" ng-if="sort && !column.unsortable">
-                        <div class="sort-up" ng-class="{ 'active' : column.up }">
-                            <i class="fa fa-caret-up"></i>
-                        </div>
-                        <div class="sort-down" ng-class="{ 'active' : column.down }">
-                            <i class="fa fa-caret-down"></i>
-                        </div>
+        <tr>
+            <th ng-repeat="column in columns" ng-show="column.visibility"
+                once-class="{ 'no-action' : !sort || column.unsortable }" ng-click="sortColumn(column)">
+                {{column.label}}
+                <div class="sorting-options" once-if="sort && !column.unsortable">
+                    <div class="sort-up" ng-class="{ 'active' : column.up }">
+                        <i class="fa fa-caret-up"></i>
                     </div>
-                </th>
-                <th class="actions-header">
-                    <a ng-click="toggleModal(true)">
-                        <i class="fa fa-columns" title="Edit Columns"></i>
-                    </a>
-                </th>
-            </tr>
+                    <div class="sort-down" ng-class="{ 'active' : column.down }">
+                        <i class="fa fa-caret-down"></i>
+                    </div>
+                </div>
+            </th>
+            <th class="actions-header">
+                <a ng-click="toggleModal(true)">
+                    <i class="fa fa-columns" title="Edit Columns"></i>
+                </a>
+            </th>
+        </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="item in data" ng-class="{ 'row-hidden' : item.hidden }">
-                <td ng-repeat="column in columns" ng-class="{ 'hidden': !column.visibility, 'text-cell' : !column.filter, 'main-cell' : $index == 0 }">
-                    <a ng-if="column.link" ng-href="{{column.link(item)}}">
-                        <img ng-if="column.image" ng-src="{{column.image(item)}}" class="{{column.imageClass}}"/>
-                        <span>
-                            {{ columnValue(item, column.data) | picker:column.filter }}
-                        </span>
-                    </a>
-                    <span ng-hide="column.link || !column.data">
-                        {{ columnValue(item, column.data) | picker:column.filter }}
-                    </span>
-                </td>
-                <td class="actions-cell">
-                    <actions></actions>
-                </td>
-            </tr>
+        <tr ng-repeat="item in data" ng-class="{ 'row-hidden' : item.hidden }">
+            <td ng-repeat="column in columns" ng-show="column.visibility" once-class="column.fullClass">
+                <a once-if="!!column.link" once-href="item.columnData[$index].link">
+                    <img once-if="!!column.image" once-src="item.columnData[$index].image"
+                         once-class="column.imageClass"/>
+                    <span once-text="item.columnData[$index].data"></span>
+                </a>
+                <span once-if="!column.link && column.data" once-text="item.columnData[$index].data"></span>
+            </td>
+            <td class="actions-cell">
+                <actions></actions>
+            </td>
+        </tr>
         </tbody>
     </table>
 
