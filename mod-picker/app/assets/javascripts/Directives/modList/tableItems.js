@@ -20,6 +20,8 @@ app.controller('tableItemsController', function($scope, $timeout, colorsFactory,
     // initialize variables
     $scope.colorOptions = colorsFactory.getColors();
     $scope.draggingGroup = false;
+    $scope.itemTemplateUrl = '/resources/directives/modList/tableItem.html';
+    $scope.groupTemplateUrl = '/resources/directives/modList/tableGroup.html';
 
     // inherited functions
     $scope.isEmpty = objectUtils.isEmptyArray;
@@ -96,9 +98,11 @@ app.controller('tableItemsController', function($scope, $timeout, colorsFactory,
                 item.dragType = 'group';
                 item.hasChildren = true;
                 item.class = 'group bg-'+item.color;
-                item.childrenEmpty = false; //$scope.isEmpty(item.childen)
+                item.childrenEmpty = false;
+                item.templateUrl = $scope.groupTemplateUrl;
             } else {
                 item.dragType = 'item';
+                item.templateUrl = $scope.itemTemplateUrl;
             }
         });
 
