@@ -57,7 +57,7 @@ class ModListsController < ApplicationController
     authorize! :read, @mod_list
 
     # prepare primary data
-    mods = @mod_list.mod_list_mods.utility(false).includes(:mod_list_mod_options, :mod => { :mod_options => :plugins}).order(:index)
+    mods = @mod_list.mod_list_mods.utility(false).includes(:mod_list_mod_options, :mod => { :mod_options => { :plugins => :mod }}).order(:index)
     custom_mods = @mod_list.custom_mods.utility(false)
     groups = @mod_list.mod_list_groups.where(tab: 1).order(:index)
 

@@ -49,7 +49,12 @@ class ModListMod < ActiveRecord::Base
                           :only => [:id, :name, :default],
                           :include => {
                               :plugins => {
-                                :only => [:id, :filename]
+                                :only => [:id, :filename],
+                                :include => {
+                                    :mod => {
+                                        :only => [:id, :name]
+                                    }
+                                }
                               }
                           }
                       }
