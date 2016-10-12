@@ -12,7 +12,7 @@
     </div>
 
     <div class="content-container">
-        <ul ng-if="showMissingTools">
+        <ul ng-if="showMissingTools" class="required-list">
             <li ng-repeat="requirement in required.missing_tools">
                 <a bindonce bo-href="'#/mod/' + requirement.required_mod.id" bo-text="requirement.required_mod.name"></a>
                 <span ng-repeat="mod in requirement.mods | limitTo: 2">
@@ -33,7 +33,7 @@
             No missing requirements to display.
         </div>
 
-        <ul ng-if="!showMissingTools">
+        <ul ng-if="!showMissingTools" class="required-list">
             <li ng-repeat="requirement in required.tools" ng-hide="requirement._destroy">
                 <a bindonce bo-href="'#/mod/' + requirement.required_mod.id" bo-text="requirement.required_mod.name"></a>
                 is required by
