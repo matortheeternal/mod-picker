@@ -9,19 +9,20 @@ class ContributionsController < ApplicationController
   def update
     authorize! :update, @contribution
     update_params = contribution_update_params
+    just_moderator_message_added = (update_params.keys - [:moderator_message]).any?
 
     # create a history entry if the contribution has a create_history_entry method,
     # our update_params is not just a moderator messages,
     # and the user editing the contribution is not the last person to edit it
     if @contribution.respond_to?(:create_history_entry)
       last_edited_by = @contribution.edited_by
-      if (update_params.keys - [:moderator_message]).any? && current_user.id != last_edited_by
+      if just_moderator_message_added && current_user.id != last_edited_by
         history_entry = @contribution.create_history_entry
       end
     end
 
     # update the base contribution
-    update_params[:edited_by] = current_user.id
+    update_params[:edited_by] = current_user.id unless just_moderator_message_added
     if @contribution.update(update_params)
       render json: {status: :ok}
     else
