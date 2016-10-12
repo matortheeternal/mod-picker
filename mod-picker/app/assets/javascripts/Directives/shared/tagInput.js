@@ -28,20 +28,34 @@ app.controller('tagInputController', function($scope, $timeout, formUtils) {
         $scope.currentIndex = index;
     };
 
+    $scope.getTagMatches = function(str) {
+        var matches = [];
+        for (var i = 0; i < $scope.tags.length; i++) {
+            var tag = $scope.tags[i];
+            var match = tag.text.toLowerCase().includes(str);
+
+            if (match) {
+                matches[matches.length] = tag;
+                if (matches.length == 10) break;
+            }
+        }
+        return matches;
+    };
+
+    $scope.sortTagMatches = function(str, matches) {
+        matches.sort(function(a, b) {
+            var ax = a.text.toLowerCase().indexOf(str);
+            var bx = b.text.toLowerCase().indexOf(str);
+            return ax - bx;
+        });
+    };
+
     $scope.searchTags = function(str) {
         // Begin the search
         str = str.toLowerCase();
         if (str.length > 0) {
-            var matches = [];
-
-            for (var i = 0; i < $scope.tags.length; i++) {
-                var tag = $scope.tags[i];
-                var match = tag.text.toLowerCase().startsWith(str);
-
-                if (match) {
-                    matches[matches.length] = tag;
-                }
-            }
+            var matches = $scope.getTagMatches(str);
+            $scope.sortTagMatches(str, matches);
 
             $scope.searching = false;
             $scope.results = matches;
