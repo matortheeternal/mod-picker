@@ -130,7 +130,7 @@
 
     <div class="content-block">
         <div class="content-title">
-            Conflicting Assets
+            Conflicting Assets ({{analysis.conflicting_assets.length}})
         </div>
         <div class="content-container analysis-container">
             <table class="analysis-table big-analysis-table" ng-if="analysis.conflicting_assets.length">
@@ -162,7 +162,7 @@
 
     <div class="content-block">
         <div class="content-title">
-            Conflicting Overrides
+            Conflicting Overrides ({{analysis.conflicting_overrides.length}})
         </div>
         <div class="content-container analysis-container">
             <table class="analysis-table big-analysis-table" ng-if="analysis.conflicting_overrides.length">
@@ -194,7 +194,7 @@
 
     <div class="content-block">
         <div class="content-title">
-            Plugin Errors
+            Plugin Errors ({{analysis.totalPluginErrors}})
         </div>
         <div class="content-container analysis-container">
             <ul>
@@ -204,7 +204,7 @@
                     <span bindonce bo-text="'(' + plugin.errors_count + ' Errors)'"></span>
                 </li>
             </ul>
-            <div class="content-message" ng-if="noPluginErrors()">
+            <div class="content-message" ng-if="!analysis.totalPluginErrors">
                 No plugin errors found.
             </div>
         </div>
