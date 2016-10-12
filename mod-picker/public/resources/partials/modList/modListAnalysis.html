@@ -201,7 +201,7 @@
                 <li bindonce ng-repeat="plugin in analysis.plugins" ng-if="plugin.errors_count > 0">
                     <a bindonce bo-href="'#/mod/' + plugin.mod.id + '/analysis?plugin='
                      + plugin.id" bo-text="plugin.filename"></a>
-                    <span bindonce bo-text="'(' + plugin.errors_count + ' Errors)'"></span>
+                    <span bindonce bo-text="'(' + plugin.errors_count + ' errors)'"></span>
                 </li>
             </ul>
             <div class="content-message" ng-if="!analysis.totalPluginErrors">
