@@ -252,7 +252,7 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
                 nexus_info_id: sources.nexus && sources.nexus.id,
                 workshop_info_id: sources.workshop && sources.workshop.id,
                 lover_info_id: sources.lab && sources.lab.id,
-                tag_names: mod.newTags,
+                tag_names: mod.tags,
                 mod_options_attributes: mod_options,
                 custom_sources_attributes: custom_sources,
                 required_mods_attributes: required_mods

@@ -222,11 +222,19 @@ class ModBuilder
 
         # create tag if we couldn't find it
         if tag.nil?
-          tag = Tag.create(text: text, game_id: mod.game_id, submitted_by: @current_user.id)
+          tag = Tag.create!({
+              text: text,
+              game_id: mod.game_id,
+              submitted_by: @current_user.id
+          })
         end
 
         # associate tag with mod
-        mod.mod_tags.create(tag_id: tag.id, submitted_by: @current_user.id)
+        ModTag.create!({
+            mod_id: mod.id,
+            tag_id: tag.id,
+            submitted_by: @current_user.id
+        })
       end
     end
   end
