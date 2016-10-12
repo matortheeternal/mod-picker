@@ -160,7 +160,7 @@ class ModListsController < ApplicationController
     plugin_ids = @mod_list.mod_list_plugins.official(false).pluck(:plugin_id)
     install_order = @mod_list.mod_list_mods.utility(false).includes(:mod, :mod_list_mod_options)
     load_order = @mod_list.mod_list_plugins.includes(:plugin)
-    plugins = Plugin.where(id: plugin_ids).includes(:dummy_masters, :overrides, :masters => :master_plugin)
+    plugins = Plugin.where(id: plugin_ids).includes(:mod, :dummy_masters, :overrides, :masters => :master_plugin)
 
     # render response
     render :json => {
