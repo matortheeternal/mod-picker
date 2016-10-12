@@ -25,7 +25,7 @@ app.controller('modListToolsController', function($scope, $rootScope, $state, $s
 
     $scope.loadToolData = function(data) {
         categoryService.associateCategories($scope.categories, data.tools);
-        $scope.required.mods = data.required_tools;
+        $scope.required.tools = data.required_tools;
         $scope.loadAndTrack(data, 'tools');
         $scope.loadAndTrack(data, 'custom_tools');
         $scope.loadGroups(data.groups);
