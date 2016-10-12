@@ -1,4 +1,4 @@
-app.service('listMetaFactory', function($q, $timeout, modListService, listUtils, sortUtils) {
+app.service('listMetaFactory', function($q, $timeout, modListService, categoryService, listUtils, sortUtils) {
     this.buildModelFunctions = function ($scope, label, dataKey, nameKey, customName) {
         var capLabel = label.capitalize();
         var pluralLabel = label + 's';
@@ -47,6 +47,12 @@ app.service('listMetaFactory', function($q, $timeout, modListService, listUtils,
             }
         };
 
+        var associateCategories = function(modListItem) {
+            if (label === 'plugin') {
+                categoryService.associateCategories($scope.categories, [modListItem]);
+            }
+        };
+
         $scope[recoverLabel] = function(modListItem) {
             if (!modListItem._destroy) {
                 recoverFailed(modListItem);
@@ -80,6 +86,7 @@ app.service('listMetaFactory', function($q, $timeout, modListService, listUtils,
 
             modListService[newModListItemKey](mod_list_item).then(function(data) {
                 var modListItem = data[mod_list_item_key];
+                associateCategories(modListItem);
                 $scope.mod_list[pluralLabel].push(modListItem);
                 $scope.model[pluralLabel].push(modListItem);
                 $scope.originalModList[pluralLabel].push(angular.copy(modListItem));
