@@ -72,7 +72,7 @@ app.controller('tagInputController', function($scope, $timeout, formUtils) {
                 }
                 $scope.showDropdown = false;
             }
-        }, 100);
+        }, 250);
     };
 
     $scope.keyDown = function($event) {
