@@ -1,5 +1,6 @@
 app.controller('modListAnalysisController', function($scope, modListService, pluginService) {
     $scope.buildConflictingOverrides = function() {
+        $scope.analysis.maxOverrides = 1000;
         $scope.analysis.conflicting_overrides = [];
         $scope.analysis.load_order_overrides.forEach(function(override) {
             if (override.plugin_ids.length > 1) {
@@ -34,6 +35,16 @@ app.controller('modListAnalysisController', function($scope, modListService, plu
 
     // retrieve analysis when the state is first loaded
     $scope.retrieveAnalysis();
+
+    $scope.showMoreOverrides = function() {
+        $scope.analysis.maxOverrides += 1000;
+    };
+
+    $scope.showLessOverrides = function() {
+        if ($scope.analysis.maxOverrides > 1000) {
+            $scope.analysis.maxOverrides -= 1000;
+        }
+    };
 
     // returns true if there are no errors to display
     $scope.noPluginErrors = function() {

@@ -174,7 +174,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr bindonce ng-repeat="override in analysis.conflicting_overrides">
+                <tr bindonce ng-repeat="override in analysis.conflicting_overrides  | limitTo: analysis.maxOverrides">
                     <td bindonce bo-text="override.master_plugin.plugin.filename"></td>
                     <td bindonce bo-text="'[' + override.sig + ':' + (override.fid | hex:8) + ']'"></td>
                     <td>
@@ -184,6 +184,8 @@
                 </tr>
                 </tbody>
             </table>
+            <span class="show-more" ng-if="analysis.maxOverrides < analysis.conflicting_overrides.length" ng-click="showMoreOverrides()">Show More</span>
+            <span class="show-less" ng-if="analysis.maxOverrides > 1000" ng-click="showLessOverrides()">Show Less</span>
             <div class="content-message" ng-if="!analysis.conflicting_overrides.length">
                 No conflicting overrides found.
             </div>

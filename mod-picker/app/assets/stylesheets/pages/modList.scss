@@ -74,6 +74,20 @@
   }
 }
 
+.analysis-container {
+  .show-more, .show-less {
+    font-size: 16px;
+    margin: 4px;
+    cursor: pointer;
+    color: $link_hover_color_primary;
+    @include transition(color 0.2s ease);
+
+    &:hover {
+      color: $text_color;
+    }
+  }
+}
+
 .modal {
   .manage-item {
     padding-left: 20px;
