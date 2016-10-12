@@ -41,6 +41,10 @@ app.controller('modAnalysisController', function($scope, $stateParams, $state, m
         $scope.updateParams();
     };
 
+    $scope.toggleShowBenignErrors = function() {
+        $scope.showBenignErrors = !$scope.showBenignErrors;
+    };
+
     $scope.setCurrentSelection = function() {
         // set active options
         var optionIds = $stateParams.options ? $stateParams.options.split(',') : [];

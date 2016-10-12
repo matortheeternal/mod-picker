@@ -13,6 +13,7 @@ app.service('errorsFactory', function() {
                 name: "Identical to Master Records",
                 acronym: "ITM",
                 caption: "ITMs are dirty edits where a record has been overridden in a plugin file, \r\nbut hasn't been changed.  Click for more information.",
+                benign: true,
                 errors: []
             },
             {
@@ -20,6 +21,7 @@ app.service('errorsFactory', function() {
                 name: "Identical to Previous Override Records",
                 acronym: "ITPO",
                 caption: "ITPOs are dirty edits where a record has been overridden in a plugin file, \r\nbut hasn't been changed relative to the previous override.  Click for \r\nmore information.",
+                benign: true,
                 errors: []
             },
             {
@@ -48,6 +50,7 @@ app.service('errorsFactory', function() {
                 name: "Unexpected References",
                 acronym: "UER",
                 caption: "UERs are errors where a record references a record in an abnormal fashion. \r\n  Click for more information.",
+                benign: true,
                 errors: []
             }
         ];
