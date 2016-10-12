@@ -62,6 +62,7 @@ class Plugin < ActiveRecord::Base
 
   def update_lazy_counters
     self.errors_count = plugin_errors.count
+    save!
   end
 
   def update_counters
