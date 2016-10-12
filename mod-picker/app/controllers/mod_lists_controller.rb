@@ -39,15 +39,16 @@ class ModListsController < ApplicationController
     authorize! :read, @mod_list
 
     # prepare primary data
-    tools = @mod_list.mod_list_mods.utility(true).includes(:mod_list_mod_options, :mod => :mod_options).order(:index)
+    tools = @mod_list.mod_list_mods.utility(true).preload(:mod_list_mod_options, :mod => { :mod_options => { :plugins => :mod }}).order(:index)
     custom_tools = @mod_list.custom_mods.utility(true)
     groups = @mod_list.mod_list_groups.where(tab: 0).order(:index)
+    required_tools = @mod_list.required_tools
 
     # render response
     render :json => {
         tools: tools,
         custom_tools: custom_tools,
-        required_tools: @mod_list.required_tools,
+        required_tools: required_tools,
         groups: groups
     }
   end
@@ -57,9 +58,10 @@ class ModListsController < ApplicationController
     authorize! :read, @mod_list
 
     # prepare primary data
-    mods = @mod_list.mod_list_mods.utility(false).includes(:mod_list_mod_options, :mod => { :mod_options => { :plugins => :mod }}).order(:index)
+    mods = @mod_list.mod_list_mods.utility(false).preload(:mod_list_mod_options, :mod => { :mod_options => { :plugins => :mod }}).order(:index)
     custom_mods = @mod_list.custom_mods.utility(false)
     groups = @mod_list.mod_list_groups.where(tab: 1).order(:index)
+    required_mods = @mod_list.required_mods
 
     # prepare notes
     compatibility_notes = @mod_list.mod_compatibility_notes
@@ -74,7 +76,7 @@ class ModListsController < ApplicationController
         mods: mods,
         custom_mods: custom_mods,
         groups: groups,
-        required_mods: @mod_list.required_mods,
+        required_mods: required_mods,
         compatibility_notes: compatibility_notes,
         install_order_notes: install_order_notes,
         c_helpful_marks: c_helpful_marks,

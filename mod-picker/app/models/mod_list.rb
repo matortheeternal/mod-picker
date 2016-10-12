@@ -243,14 +243,14 @@ class ModList < ActiveRecord::Base
     mod_ids = mod_list_mod_ids
     return ModRequirement.none if mod_ids.empty?
 
-    ModRequirement.mods(mod_ids).utility(true).visible.order(:required_id)
+    ModRequirement.utility(true).mods(mod_ids).visible.order(:required_id)
   end
 
   def required_mods
     mod_ids = mod_list_mod_ids
     return ModRequirement.none if mod_ids.empty?
 
-    ModRequirement.mods(mod_ids).utility(false).visible.order(:required_id)
+    ModRequirement.utility(false).mods(mod_ids).visible.order(:required_id)
   end
 
   def required_plugins
