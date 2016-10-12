@@ -5,59 +5,49 @@
         </div>
 
         <h2>Manage Plugins</h2>
-        <!--<table-results data="plugins_store" message="No plugins found."></table-results>-->
         <div class="box-shadow">
-    <table ng-show="plugins_store.length" class="browse-table">
-        <thead>
-            <tr>
-                <th ng-repeat="column in columnLabels">
-                    {{column.label}}
-                </th>
-                <th class="actions-header">
-                    Active
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr ng-repeat="item in plugins_store">
-                <td class="primary-column">
-                    <a ng-href="{{getPluginLink(item)}}">
-                        {{item.filename || item.plugin.filename}}
-                    </a>
-                </td>
-                <td>
-                    <a ng-href="{{getModLink(item)}}">
-                        {{item.mod.name}}
-                    </a>
-                </td>
-                <td>
-                    {{item.mod_option ? item.mod_option.name : ""}}
-                </td>
-                <td>
-                    <label class="manage-item">
-                        <input type="checkbox" ng-click="togglePlugin(item)" ng-model="item.active" ng-hide="item._destroy"/>
-                    </label>
-                </td>
-                <!--<td ng-repeat="column in columns" ng-class="{ 'hidden': !column.visibility, 'text-cell' : !column.filter, 'main-cell' : $index == 0 }">
-                    <a ng-if="column.link" ng-href="{{column.link(item)}}">
-                        <img ng-if="column.image" ng-src="{{column.image(item)}}" class="{{column.imageClass}}"/>
-                        <span>
-                            {{ columnValue(item, column.data) | picker:column.filter }}
-                        </span>
-                    </a>
-                    <span ng-hide="column.link || !column.data">
-                        {{ columnValue(item, column.data) | picker:column.filter }}
-                    </span>
-                </td>
-                <td class="actions-cell">
-                    <actions></actions>
-                </td>-->
-            </tr>
-        </tbody>
-    </table>
+            <table ng-show="plugins_store.length" class="browse-table">
+                <thead>
+                    <tr>
+                        <th ng-repeat="column in columnLabels" ng-click="sortBy(column.dataLabel)">
+                            {{column.label}}
+                            <div class="sorting-options">
+                                <div class="sort-up" ng-class="{ 'active' : sortType == column.dataLabel && !sortReverse }">
+                                    <i class="fa fa-caret-up"></i>
+                                </div>
+                                <div class="sort-down" ng-class="{ 'active' : sortType == column.dataLabel && sortReverse }">
+                                    <i class="fa fa-caret-down"></i>
+                                </div>
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in plugins_store | orderBy:sortType:sortReverse">
+                        <td>
+                            <label class="manage-item">
+                                <input type="checkbox" ng-click="togglePlugin(item)" ng-model="item.active" ng-hide="item._destroy"/>
+                            </label>
+                        </td>
+                        <td class="primary-column">
+                            <a ng-href="{{getPluginLink(item)}}" target="_blank">
+                                {{item.filename || item.plugin.filename}}
+                            </a>
+                        </td>
+                        <td>
+                            <a ng-href="{{getModLink(item)}}" target="_blank">
+                                {{item.mod ? item.mod.name: ""}}
+                            </a>
+                        </td>
+                        <td>
+                            {{item.mod_option ? item.mod_option.name : ""}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
 
-        <div class="content-message" ng-if="!plugins_store.length">
-            No available plugins to manage.  Try adding some mods to your mod list.
+            <div class="content-message" ng-if="!plugins_store.length">
+                No available plugins to manage. Try adding some mods to your mod list.
+            </div>
         </div>
     </div>
-</div>

@@ -13,18 +13,38 @@ app.controller('managePluginsModalController', function($scope, columnsFactory, 
         plugin.active = false;
     });
 
-    // labels for modal table
-    $scope.columnLabels = [
-        {
-            label: 'Filename'
-        },
-        {
-            label: 'Mod'
-        },
-        {
-            label: 'Mod Option Name'
+    // update plugins store active booleans based on plugins that are in the mod list
+    $scope.mod_list.plugins.forEach(function(modListPlugin) {
+        if (modListPlugin._destroy) return;
+
+        var foundPlugin = $scope.plugins_store.find(function(plugin) {
+            return plugin.id == modListPlugin.plugin.id;
+        });
+        if (foundPlugin) {
+            foundPlugin.active = true;
         }
-    ];
+    });
+
+    // Column Labels + Table sorting logic
+    // TODO: Maybe refactor so column data fields are in the controller as well?
+
+    // default table sorting options
+    $scope.sortType = 'active';
+    $scope.sortReverse = false;
+
+    $scope.columnLabels = [{
+        label: 'Active',
+        dataLabel: 'active'
+    }, {
+        label: 'Filename',
+        dataLabel: 'filename'
+    }, {
+        label: 'Mod',
+        dataLabel: 'mod.name'
+    }, {
+        label: 'Mod Option Name',
+        dataLabel: 'mod_option.name'
+    }];
 
     $scope.getPluginLink = function(item) {
         if (item.mod && item.id) {
@@ -38,15 +58,10 @@ app.controller('managePluginsModalController', function($scope, columnsFactory, 
         }
     }
 
-    // update plugins store active booleans based on plugins that are in the mod list
-    $scope.mod_list.plugins.forEach(function(modListPlugin) {
-        if (modListPlugin._destroy) return;
-
-        var foundPlugin = $scope.plugins_store.find(function(plugin) {
-            return plugin.id == modListPlugin.plugin.id;
-        });
-        if (foundPlugin) {
-            foundPlugin.active = true;
-        }
-    });
+    // sort function
+    $scope.sortBy = function(sortType) {
+        $scope.sortReverse = (sortType !== null && $scope.sortType === sortType) ?
+            !$scope.sortReverse : false;
+        $scope.sortType = sortType;
+    };
 });
