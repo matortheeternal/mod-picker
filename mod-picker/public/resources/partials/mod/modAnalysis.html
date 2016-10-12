@@ -62,7 +62,9 @@
                 <h3 class="section-title">
                     {{errorType.name}} ({{errorType.acronym}}s)
                     <a ng-href="/help/plugin_errors#{{errorType.acronym}}s">
-                        <span class="text-tooltip" title="{{errorType.caption}}">?</span>
+                        <span class="help-tooltip" title="{{errorType.caption}}">
+                            <i class="fa fa-question-circle"></i>
+                        </span>
                     </a>
                 </h3>
                 <ul class="errors-list">
