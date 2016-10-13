@@ -60,8 +60,19 @@ app.controller('managePluginsModalController', function($scope, columnsFactory, 
 
     // sort function
     $scope.sortBy = function(sortType) {
-        $scope.sortReverse = (sortType !== null && $scope.sortType === sortType) ?
-            !$scope.sortReverse : false;
-        $scope.sortType = sortType;
+        if($scope.sortType !== null && $scope.sortType == sortType) {
+
+            // handle normal sort, reverse, sort, and neutral no sort if already reversed and same sort type
+            switch($scope.sortReverse) {
+                case true:
+                    $scope.sortType = '';
+                    $scope.sortReverse = false;
+                case false:
+                    $scope.sortReverse = true;
+            }
+        } else {
+            $scope.sortType = sortType;
+            $scope.sortReverse = false;
+        }
     };
 });
