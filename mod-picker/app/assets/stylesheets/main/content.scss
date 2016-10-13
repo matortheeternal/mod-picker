@@ -52,11 +52,19 @@ body {
       font-size: 12px;
     }
 
-    .standing {
-      font-size: 14px;
-      font-weight: 100;
-      font-style: italic;
-      vertical-align: top;
+    .standing-item {
+      font-size: 18px;
+      margin-top: 0;
+
+      .fa-check-circle {
+        color: $success_secondary;
+      }
+      .fa-question-circle {
+        color: $warning_secondary;
+      }
+      .fa-exclamation-circle {
+        color: $error_secondary;
+      }
     }
 
     .action-box {
