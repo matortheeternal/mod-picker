@@ -116,9 +116,7 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
         return author.user_id == $scope.currentUser.id;
     });
     var isAuthor = author && author.role == 'author';
-    var isContributor = author && author.role == 'contributor';
-    $scope.permissions.canManageOptions = $scope.permissions.canModerate || isAuthor ||
-        !$scope.mod.disallow_contributors && isContributor;
+    $scope.permissions.canManageOptions = $scope.permissions.canModerate || isAuthor;
 
     $scope.$watch('mod.categories', function() {
         // clear messages when user changes the category
