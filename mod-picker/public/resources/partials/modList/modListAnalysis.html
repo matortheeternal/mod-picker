@@ -11,10 +11,10 @@
                 </div>
                 <div class="right-column">
                     <div class="stat-column count-column">
-                        <span class="number">{{mod_list.tools_count}}</span>
-                        <span class="number">{{mod_list.mods_count}}</span>
-                        <span class="number">{{mod_list.custom_tools_count}}</span>
-                        <span class="number">{{mod_list.custom_mods_count}}</span>
+                        <span class="number" bindonce bo-text="mod_list.tools_count"></span>
+                        <span class="number" bindonce bo-text="mod_list.mods_count"></span>
+                        <span class="number" bindonce bo-text="mod_list.custom_tools_count"></span>
+                        <span class="number" bindonce bo-text="mod_list.custom_mods_count"></span>
                     </div>
                     <div class="stat-column label-column">
                         <span class="label">Tools</span>
@@ -32,10 +32,10 @@
                 </div>
                 <div class="right-column">
                     <div class="stat-column count-column">
-                        <span class="number">{{mod_list.plugins_count}}</span>
-                        <span class="number">{{mod_list.master_plugins_count}}</span>
-                        <span class="number">{{mod_list.available_plugins_count}}</span>
-                        <span class="number">{{mod_list.custom_plugins_count}}</span>
+                        <span class="number" bindonce bo-text="mod_list.plugins_count"></span>
+                        <span class="number" bindonce bo-text="mod_list.master_plugins_count"></span>
+                        <span class="number" bindonce bo-text="mod_list.available_plugins_count"></span>
+                        <span class="number" bindonce bo-text="mod_list.custom_plugins_count"></span>
                     </div>
                     <div class="stat-column label-column">
                         <span class="label">Plugins</span>
@@ -53,8 +53,8 @@
                 </div>
                 <div class="right-column">
                     <div class="stat-column count-column">
-                        <span class="number">{{mod_list.config_files_count}}</span>
-                        <span class="number">{{mod_list.custom_config_files_count}}</span>
+                        <span class="number" bindonce bo-text="mod_list.config_files_count"></span>
+                        <span class="number" bindonce bo-text="mod_list.custom_config_files_count"></span>
                     </div>
                     <div class="stat-column label-column">
                         <span class="label">Config Files</span>
@@ -70,9 +70,9 @@
                 </div>
                 <div class="right-column">
                     <div class="stat-column count-column">
-                        <span class="number">{{mod_list.tags_count}}</span>
-                        <span class="number">{{mod_list.comments_count}}</span>
-                        <span class="number">{{mod_list.stars_count}}</span>
+                        <span class="number" bindonce bo-text="mod_list.tags_count"></span>
+                        <span class="number" bindonce bo-text="mod_list.comments_count"></span>
+                        <span class="number" bindonce bo-text="mod_list.stars_count"></span>
                     </div>
                     <div class="stat-column label-column">
                         <span class="label">Tags</span>
@@ -89,10 +89,10 @@
                 </div>
                 <div class="right-column">
                     <div class="stat-column count-column">
-                        <span class="number">{{mod_list.compatibility_notes_count}}</span>
-                        <span class="number">{{mod_list.install_order_notes_count}}</span>
-                        <span class="number">{{mod_list.load_order_notes_count}}</span>
-                        <span class="number">{{mod_list.ignored_notes_count}}</span>
+                        <span class="number" bindonce bo-text="mod_list.compatibility_notes_count"></span>
+                        <span class="number" bindonce bo-text="mod_list.install_order_notes_count"></span>
+                        <span class="number" bindonce bo-text="mod_list.load_order_notes_count"></span>
+                        <span class="number" bindonce bo-text="mod_list.ignored_notes_count"></span>
                     </div>
                     <div class="stat-column label-column">
                         <span class="label">Compatibility Notes</span>
@@ -110,11 +110,11 @@
                 </div>
                 <div class="right-column">
                     <div class="stat-column count-column">
-                        <div class="number">{{mod_list.bsa_files_count}}</div>
-                        <div class="number">{{mod_list.asset_files_count}}</div>
-                        <div class="number">{{mod_list.records_count}}</div>
-                        <div class="number">{{mod_list.override_records_count}}</div>
-                        <div class="number">{{mod_list.plugin_errors_count}}</div>
+                        <div class="number" bindonce bo-text="mod_list.bsa_files_count"></div>
+                        <div class="number" bindonce bo-text="mod_list.asset_files_count"></div>
+                        <div class="number" bindonce bo-text="mod_list.records_count"></div>
+                        <div class="number" bindonce bo-text="mod_list.override_records_count"></div>
+                        <div class="number" bindonce bo-text="mod_list.plugin_errors_count"></div>
                     </div>
                     <div class="stat-column label-column">
                         <div class="label">BSA Files</div>
@@ -130,7 +130,7 @@
 
     <div class="content-block">
         <div class="content-title">
-            Conflicting Assets
+            Conflicting Assets ({{analysis.conflicting_assets.length}})
         </div>
         <div class="content-container analysis-container">
             <table class="analysis-table big-analysis-table" ng-if="analysis.conflicting_assets.length">
@@ -141,12 +141,12 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="asset in analysis.conflicting_assets">
-                    <td>{{asset.asset_file.path}}</td>
+                <tr bindonce ng-repeat="asset in analysis.conflicting_assets">
+                    <td bindonce bo-text="asset.asset_file.path"></td>
                     <td>
-                        <div ng-repeat="mod in asset.mods" title="{{mod.subpath}}{{asset.asset_file.path}}" ng-class="{ 'winning-asset' : mod.wins }">
-                            [{{mod.index}}] {{mod.mod.name}}
-                            <span ng-show="mod.subpath && mod.subpath.endsWith('.bsa\\')">
+                        <div bindonce ng-repeat="mod in asset.mods" bo-title="mod.subpath + asset.asset_file.path" bo-class="{ 'winning-asset' : mod.wins }">
+                            <span bindonce bo-text="'[' + mod.index + '] ' + mod.mod.name"></span>
+                            <span bindonce bo-show="mod.subpath && mod.subpath.endsWith('.bsa\\')">
                                 (BSA)
                             </span>
                         </div>
@@ -162,7 +162,7 @@
 
     <div class="content-block">
         <div class="content-title">
-            Conflicting Overrides
+            Conflicting Overrides ({{analysis.conflicting_overrides.length}})
         </div>
         <div class="content-container analysis-container">
             <table class="analysis-table big-analysis-table" ng-if="analysis.conflicting_overrides.length">
@@ -174,17 +174,18 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="override in analysis.conflicting_overrides">
-                    <td>{{override.master_plugin.plugin.filename}}</td>
-                    <td>[{{override.sig}}:{{override.fid | hex:8}}]</td>
+                <tr bindonce ng-repeat="override in analysis.conflicting_overrides  | limitTo: analysis.maxOverrides">
+                    <td bindonce bo-text="override.master_plugin.plugin.filename"></td>
+                    <td bindonce bo-text="'[' + override.sig + ':' + (override.fid | hex:8) + ']'"></td>
                     <td>
-                        <span ng-repeat="plugin in override.plugins track by $index">
-                            {{plugin.plugin.filename}}{{!$last ? ',' : ''}}
+                        <span bindonce ng-repeat="plugin in override.plugins track by $index" bo-text="plugin.plugin.filename + ($last ? '' : ', ')">
                         </span>
                     </td>
                 </tr>
                 </tbody>
             </table>
+            <span class="show-more" ng-if="analysis.maxOverrides < analysis.conflicting_overrides.length" ng-click="showMoreOverrides()">Show More</span>
+            <span class="show-less" ng-if="analysis.maxOverrides > 1000" ng-click="showLessOverrides()">Show Less</span>
             <div class="content-message" ng-if="!analysis.conflicting_overrides.length">
                 No conflicting overrides found.
             </div>
@@ -193,15 +194,17 @@
 
     <div class="content-block">
         <div class="content-title">
-            Plugin Errors
+            Plugin Errors ({{analysis.totalPluginErrors}})
         </div>
         <div class="content-container analysis-container">
             <ul>
-                <li ng-repeat="plugin in analysis.plugins" ng-show="plugin.errors_count > 0">
-                    <a ng-href="#/mod/{{plugin.mod_id}}/analysis?plugin={{plugin.id}}">{{plugin.filename}}</a> ({{plugin.errors_count}} Errors)
+                <li bindonce ng-repeat="plugin in analysis.plugins" ng-if="plugin.errors_count > 0">
+                    <a bindonce bo-href="'#/mod/' + plugin.mod.id + '/analysis?plugin='
+                     + plugin.id" bo-text="plugin.filename"></a>
+                    <span bindonce bo-text="'(' + plugin.errors_count + ' errors)'"></span>
                 </li>
             </ul>
-            <div class="content-message" ng-if="noPluginErrors()">
+            <div class="content-message" ng-if="!analysis.totalPluginErrors">
                 No plugin errors found.
             </div>
         </div>

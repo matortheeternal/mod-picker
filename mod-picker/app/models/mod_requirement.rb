@@ -6,7 +6,7 @@ class ModRequirement < ActiveRecord::Base
   value_scope :is_utility, :association => 'required_mod', :table => 'mods'
 
   # UNIQUE SCOPES
-  scope :visible, -> { eager_load(:mod, :required_mod).where(:mods => {:hidden => false}).where(:required_mods_mod_requirements => {:hidden => false}) }
+  scope :visible, -> { eager_load(:required_mod, :mod).where(:mods => {:hidden => false}).where(:mods_mod_requirements => {:hidden => false}) }
 
   # ASSOCIATIONS
   belongs_to :mod, :inverse_of => 'required_mods'

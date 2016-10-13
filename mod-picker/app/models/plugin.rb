@@ -62,6 +62,7 @@ class Plugin < ActiveRecord::Base
 
   def update_lazy_counters
     self.errors_count = plugin_errors.count
+    save!
   end
 
   def update_counters
@@ -166,8 +167,11 @@ class Plugin < ActiveRecord::Base
 
   def self.analysis_json(collection)
     collection.as_json({
-        :only => [:id, :mod_id, :filename, :errors_count],
+        :only => [:id, :filename, :errors_count],
         :include => {
+            :mod => {
+                :only => [:id, :name]
+            },
             :masters => {
                 :except => [:plugin_id],
                 :include => {

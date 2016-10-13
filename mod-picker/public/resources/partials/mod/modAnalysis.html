@@ -52,20 +52,24 @@
     <div class="content-block" ng-if="currentPlugin && currentPlugin.plugin_errors.length > 0">
         <div class="content-title">
             Plugin Errors
+            <span class="action-box right-item" ng-click="toggleShowBenignErrors()">
+                {{showBenignErrors ? 'Hide' : 'Show'}} Benign Errors
+            </span>
         </div>
 
         <div class="content-container analysis-container">
-            <div ng-repeat="errorType in currentPlugin.plugin_errors" ng-if="errorType.errors.length > 0">
+            <div ng-repeat="errorType in currentPlugin.plugin_errors" ng-if="errorType.errors.length && (!errorType.benign || showBenignErrors)">
                 <h3 class="section-title">
-                    {{errorType.name}} ({{errorType.acronym}}s)
-                    <!-- TODO: Link to the correct help article here -->
-                    <a ng-href="/help/Plugin_Errors#{{errorType.acronym}}">
-                        <span class="text-tooltip" title="{{errorType.caption}}">?</span>
+                    {{errorType.errors.length}} {{errorType.name}} ({{errorType.acronym}}s)
+                    <a ng-href="/help/plugin_errors#{{errorType.acronym}}s">
+                        <span class="help-tooltip" title="{{errorType.caption}}">
+                            <i class="fa fa-question-circle"></i>
+                        </span>
                     </a>
                 </h3>
                 <ul class="errors-list">
                     <li ng-repeat="error in errorType.errors">
-                        <plugin-error error="error" group="{{error.group}}"></plugin-error>
+                        <plugin-error error="error"></plugin-error>
                     </li>
                 </ul>
             </div>
@@ -81,9 +85,7 @@
             <div ng-repeat="master in currentPlugin.masters" ng-if="master.overrides.length > 0">
                 <h3 class="section-title">{{master.master_plugin.filename}}</h3>
                 <ul class="overrides-list">
-                    <li ng-repeat="override in master.overrides | limitTo: master.max_overrides">
-                        [{{override.sig}}:{{override.fid | hex:8}}]
-                    </li>
+                    <li ng-repeat="override in master.overrides | limitTo: master.max_overrides" bindonce bo-text="'[' + override.sig + ':'  + (override.fid | hex:8) + ']'"></li>
                     <li class="show-more" ng-if="master.max_overrides < master.overrides.length" ng-click="showMore(master)">Show More</li>
                     <li class="show-less" ng-if="master.max_overrides > 1000" ng-click="showLess(master)">Show Less</li>
                 </ul>

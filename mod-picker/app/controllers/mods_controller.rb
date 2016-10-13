@@ -75,10 +75,10 @@ class ModsController < ApplicationController
   # PATCH/PUT /mods/1
   def update
     authorize! :update, @mod
-    authorize! :hide, @mod if params[:mod].has_key?(:hidden)
-    authorize! :update_authors, @mod if params[:mod].has_key?(:mod_authors_attributes)
-    authorize! :update_options, @mod if options_params.any?
-    authorize! :assign_custom_sources, @mod if params[:mod].has_key?(:custom_sources_attributes)
+    authorize! :hide, @mod, :message => "You are not allowed to hide/unhide this mod." if params[:mod].has_key?(:hidden)
+    authorize! :update_authors, @mod, :message => "You are not allowed to update this mod's authors." if params[:mod].has_key?(:mod_authors_attributes)
+    authorize! :update_options, @mod, :message => "You are not allowed to update this mod's advanced options." if options_params.any?
+    authorize! :assign_custom_sources, @mod, :message => "You are not allowed to assign custom sources." if params[:mod].has_key?(:custom_sources_attributes)
 
     builder = ModBuilder.new(current_user, mod_update_params)
     if builder.update

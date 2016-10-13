@@ -66,7 +66,7 @@ app.controller('searchInputController', function($scope, $timeout) {
         // went through
         $timeout(function() {
             $scope.showDropdown = false;
-        }, 100);
+        }, 250);
     };
 
     $scope.keyDown = function($event) {

@@ -47,16 +47,31 @@ body {
     font-weight: 500;
     color: $bar_text_color;
 
+    .root {
+      margin-right: 40px;
+      display: inline-block;
+    }
+
     .right-item {
       margin-top: 3px;
       font-size: 12px;
     }
 
-    .standing {
-      font-size: 14px;
-      font-weight: 100;
-      font-style: italic;
-      vertical-align: top;
+    .standing-item {
+      font-size: 18px;
+      position: absolute;
+      top: 10px;
+      right: 10px;
+
+      .fa-check-circle {
+        color: $success_secondary;
+      }
+      .fa-question-circle {
+        color: $warning_secondary;
+      }
+      .fa-exclamation-circle {
+        color: $error_secondary;
+      }
     }
 
     .action-box {

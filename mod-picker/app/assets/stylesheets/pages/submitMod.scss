@@ -94,9 +94,15 @@ form {
   }
 
   .dynamic-item {
-    margin-bottom: 6px;
+    margin-bottom: 8px;
     display: block;
     line-height: 32px;
+
+    search-input {
+      input {
+        margin-top: 0;
+      }
+    }
 
     .source-label {
       font-size: 13px;

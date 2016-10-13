@@ -58,7 +58,7 @@ app.controller('baseController', function($scope, $rootScope, $state, $window, $
         var showKey = 'show' + key + 'Dropdown';
         $timeout(function() {
             $scope[showKey] = false;
-        }, 200);
+        }, 250);
     };
 
     // user selected to start a new mod list
