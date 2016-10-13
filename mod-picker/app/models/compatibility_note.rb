@@ -38,7 +38,7 @@ class CompatibilityNote < ActiveRecord::Base
 
   # associated compatibility plugin/compatibilty mod for automatic resolution purposes
   belongs_to :compatibility_plugin, :class_name => 'Plugin', :foreign_key => 'compatibility_plugin_id', :inverse_of => 'compatibility_notes'
-  belongs_to :compatibility_mod, :class_name => 'Mod', :foreign_key => 'compatibility_mod_id', :inverse_of => 'compatibility_note_mods'
+  belongs_to :compatibility_mod, :class_name => 'Mod', :foreign_key => 'compatibility_mod_id'
 
   # mod lists this compatibility note is ignored on
   has_many :mod_list_ignored_notes, :as => 'note'
@@ -102,6 +102,38 @@ class CompatibilityNote < ActiveRecord::Base
 
   def self.update_adult(ids)
     CompatibilityNote.where(id: ids).joins(:first_mod, :second_mod).update_all("compatibility_notes.has_adult_content = mods.has_adult_content OR second_mods_compatibility_notes.has_adult_content")
+  end
+
+  def self.mod_list_json(collection)
+    collection.as_json({
+        :include => {
+            :submitter => {
+                :only => [:id, :username, :role, :title, :joined, :last_sign_in_at, :reviews_count, :compatibility_notes_count, :install_order_notes_count, :load_order_notes_count, :corrections_count, :comments_count],
+                :include => {
+                    :reputation => {:only => [:overall]}
+                },
+                :methods => :avatar
+            },
+            :compatibility_mod => {
+                :only => [:id, :name]
+            },
+            :compatibility_plugin => {
+                :only => [:id, :filename]
+            },
+            :editor => {
+                :only => [:id, :username, :role]
+            },
+            :editors => {
+                :only => [:id, :username, :role]
+            },
+            :first_mod => {
+                :only => [:id, :name]
+            },
+            :second_mod => {
+                :only => [:id, :name]
+            }
+        }
+    })
   end
 
   def as_json(options={})
