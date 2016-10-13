@@ -75,6 +75,16 @@ namespace :reset do
     puts "Categories reset successfully"
   end
 
+  task roles: :environment do
+    puts "\nResetting user roles"
+    User.where(role: ["user", "mod_author"]).find_each do |u|
+      u.update_mod_author_role
+    end
+
+    num_mod_authors = User.where(role: 'mod_author').count
+    puts "#{num_mod_authors} users with the mod author role"
+  end
+
   namespace :counters do
     task all: :environment do
       puts "\nResetting all counter cache columns"
