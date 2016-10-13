@@ -18,7 +18,7 @@ app.directive('installOrderNote', function() {
     };
 });
 
-app.controller('installOrderNoteController', function($scope, $rootScope, $timeout, viewUtils) {
+app.controller('installOrderNoteController', function($scope, $rootScope) {
     // inherited variables
     $scope.currentUser = $rootScope.currentUser;
 
@@ -45,10 +45,4 @@ app.controller('installOrderNoteController', function($scope, $rootScope, $timeo
         };
         $scope.$emit('resolveInstallOrderNote', options);
     };
-
-    $scope.$watch('note', function() {
-        $timeout(function() {
-            viewUtils.fitContributionTitle($scope.element);
-        });
-    }, true);
 });

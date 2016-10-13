@@ -17,7 +17,7 @@ app.directive('loadOrderNote', function() {
     };
 });
 
-app.controller('loadOrderNoteController', function($scope, $rootScope, $timeout, viewUtils) {
+app.controller('loadOrderNoteController', function($scope, $rootScope) {
     // inherited variables
     $scope.currentUser = $rootScope.currentUser;
 
@@ -44,10 +44,4 @@ app.controller('loadOrderNoteController', function($scope, $rootScope, $timeout,
         };
         $scope.$emit('resolveLoadOrderNote', options);
     };
-
-    $scope.$watch('note', function() {
-        $timeout(function() {
-            viewUtils.fitContributionTitle($scope.element);
-        });
-    }, true);
 });

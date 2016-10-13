@@ -19,7 +19,7 @@ app.directive('compatibilityNote', function() {
     }
 });
 
-app.controller('compatibilityNoteController', function($scope, $rootScope, $timeout, viewUtils) {
+app.controller('compatibilityNoteController', function($scope, $rootScope) {
     // inherited variables
     $scope.currentUser = $rootScope.currentUser;
 
@@ -64,12 +64,6 @@ app.controller('compatibilityNoteController', function($scope, $rootScope, $time
             return 'You must visit the mods tab before you can use this action.'
         }
     };
-
-    $scope.$watch('note', function() {
-        $timeout(function() {
-            viewUtils.fitContributionTitle($scope.element);
-        });
-    }, true);
 
     // set compatibility_verb
     $scope.note.compatibility_verb = $scope.getVerb();

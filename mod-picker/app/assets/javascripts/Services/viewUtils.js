@@ -6,7 +6,7 @@ app.service('viewUtils', function() {
         var contentTitle = element[0].getElementsByClassName("content-title")[0];
         var root = contentTitle.getElementsByClassName("root")[0];
         var sizableElements = root.getElementsByTagName("a");
-        var targetWidth = contentTitle.offsetWidth - 175;
+        var targetWidth = contentTitle.offsetWidth - 60;
         if (root.offsetWidth > targetWidth) {
             service.reduceFontSize(root, targetWidth, sizableElements, 0);
         }
