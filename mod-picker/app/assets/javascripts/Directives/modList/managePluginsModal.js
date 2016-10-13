@@ -29,7 +29,7 @@ app.controller('managePluginsModalController', function($scope, columnsFactory, 
     // TODO: Maybe refactor so column data fields are in the controller as well?
 
     // default table sorting options
-    $scope.sortType = 'active';
+    $scope.sortType = '';
     $scope.sortReverse = false;
 
     $scope.columnLabels = [{
