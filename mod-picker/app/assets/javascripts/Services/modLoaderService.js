@@ -1,15 +1,17 @@
-app.service('modLoaderService', function() {
+app.service('modLoaderService', function(sitesFactory) {
     var service = this;
     
     this.loadSource = function(mod, infoLabel, sourceLabel) {
         infoLabel = infoLabel + '_infos';
-        mod.sources.push({
-            label: sourceLabel,
-            url: sitesFactory.getModUrl("Nexus Mods", mod[infoLabel].id),
-            valid: true,
-            old: true,
-            scraped: true
-        });
+        if (mod[infoLabel]) {
+            mod.sources.push({
+                label: sourceLabel,
+                url: sitesFactory.getModUrl("Nexus Mods", mod[infoLabel].id),
+                valid: true,
+                old: true,
+                scraped: true
+            });
+        }
     };
 
     this.loadSources = function(mod) {
