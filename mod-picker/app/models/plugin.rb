@@ -124,6 +124,7 @@ class Plugin < ActiveRecord::Base
     create_dummy_masters
     Master.where(plugin_id: id).delete_all
     Master.where(master_plugin_id: id).delete_all
+    ModListPlugin.where(plugin_id: id).destroy_all
   end
 
   def map_associations(plugin_id)
