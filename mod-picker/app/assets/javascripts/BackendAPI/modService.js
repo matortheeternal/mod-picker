@@ -208,32 +208,33 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
         return mod_options;
     };
     
-    this.getDate = function(mod, sources, dateKey, dateTest) {
+    this.getDate = function(mod, dateKey, dateTest) {
         var date = mod[dateKey];
-        for (var property in sources) {
-            if (sources.hasOwnProperty(property) && sources[property]) {
-                var source = sources[property];
+        var sourceKeys = ["nexus", "lab", "workshop"];
+        sourceKeys.forEach(function(sourceKey) {
+            if (mod.hasOwnProperty(sourceKey) && mod[sourceKey]) {
+                var source = mod[sourceKey];
                 if (!date || dateTest(source[dateKey], date)) {
                     date = source[dateKey];
                 }
             }
-        }
+        });
 
         return date;
     };
 
-    this.submitMod = function(mod, sources, customSources) {
+    this.submitMod = function(mod) {
         // load earliest date released and latest date updated from sources
-        var released = service.getDate(mod, sources, 'released', function(newDate, oldDate) {
+        var released = service.getDate(mod, 'released', function(newDate, oldDate) {
             return newDate < oldDate;
         });
-        var updated = service.getDate(mod, sources, 'updated', function(newDate, oldDate) {
+        var updated = service.getDate(mod, 'updated', function(newDate, oldDate) {
             return newDate > oldDate;
         });
 
         // prepare associations
         var required_mods = service.prepareRequiredMods(mod);
-        var custom_sources = service.prepareCustomSources(customSources);
+        var custom_sources = service.prepareCustomSources(mod.custom_sources);
         var mod_options = service.prepareModOptions(mod);
 
         // prepare mod record
@@ -249,9 +250,9 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
                 updated: updated,
                 primary_category_id: mod.categories[0],
                 secondary_category_id: mod.categories[1],
-                nexus_info_id: sources.nexus && sources.nexus.id,
-                workshop_info_id: sources.workshop && sources.workshop.id,
-                lover_info_id: sources.lab && sources.lab.id,
+                nexus_info_id: mod.nexus && mod.nexus.id,
+                workshop_info_id: mod.workshop && mod.workshop.id,
+                lover_info_id: mod.lab && mod.lab.id,
                 tag_names: mod.tags,
                 mod_options_attributes: mod_options,
                 custom_sources_attributes: custom_sources,
@@ -264,17 +265,17 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
         return backend.post('/mods', modData);
     };
 
-    this.getModUpdateData = function(mod, sources, customSources) {
+    this.getModUpdateData = function(modId, mod) {
         // prepare associations
         var mod_authors = service.prepareModAuthors(mod);
         var required_mods = service.prepareRequiredMods(mod);
-        var custom_sources = service.prepareCustomSources(customSources);
+        var custom_sources = service.prepareCustomSources(mod.custom_sources);
         var mod_options = service.prepareModOptions(mod);
 
         // prepare mod record
         var modData = {
             mod: {
-                id: mod.id,
+                id: modId,
                 name: mod.name,
                 aliases: mod.aliases,
                 authors: mod.authors,
@@ -284,9 +285,9 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
                 updated: mod.updated,
                 primary_category_id: mod.primary_category_id,
                 secondary_category_id: mod.secondary_category_id,
-                nexus_info_id: sources.nexus && sources.nexus.id,
-                workshop_info_id: sources.workshop && sources.workshop.id,
-                lover_info_id: sources.lab && sources.lab.id,
+                nexus_info_id: mod.nexus_info_id,
+                workshop_info_id: mod.workshop_info_id,
+                lover_info_id: mod.lover_info_id,
                 tag_names: mod.newTags,
                 mod_options_attributes: mod_options,
                 mod_authors_attributes: mod_authors,

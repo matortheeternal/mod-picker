@@ -35,13 +35,13 @@ app.controller('submitModController', function($scope, $rootScope, backend, modS
     $scope.sites = sitesFactory.sites();
     $scope.mod = {
         game_id: window._current_game_id,
+        sources: [{
+            label: "Nexus Mods",
+            url: ""
+        }],
+        custom_sources: [],
         requirements: []
     };
-    $scope.sources = [{
-        label: "Nexus Mods",
-        url: ""
-    }];
-    $scope.customSources = [];
 
     // shared function setup
     eventHandlerFactory.buildMessageHandlers($scope, true);
@@ -60,7 +60,7 @@ app.controller('submitModController', function($scope, $rootScope, backend, modS
     // submission isn't allowed until the user has provided at least one valid source,
     // a mod analysis, and at least one category
     $scope.modValid = function() {
-        $scope.sourcesValid = modValidationService.sourcesValid($scope);
+        $scope.sourcesValid = modValidationService.sourcesValid($scope.mod);
         $scope.categoriesValid = modValidationService.categoriesValid($scope.mod);
         $scope.requirementsValid = modValidationService.requirementsValid($scope.mod.requirements);
         $scope.analysisValid = !!$scope.mod.analysis;
@@ -73,14 +73,8 @@ app.controller('submitModController', function($scope, $rootScope, backend, modS
             return;
         }
 
-        var sources = {
-            nexus: $scope.nexus,
-            workshop: $scope.workshop,
-            lab: $scope.lab
-        };
         $scope.startSubmission("Submitting Mod...");
-
-        modService.submitMod($scope.mod, sources, $scope.customSources).then(function() {
+        modService.submitMod($scope.mod).then(function() {
             $scope.submissionSuccess("Mod submitted successfully!", "#/mods", "return to the mods index.");
         }, function(response) {
             $scope.submissionError("There were errors submitting your mod.", response);
