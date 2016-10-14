@@ -244,19 +244,6 @@ class Mod < ActiveRecord::Base
     a.join("\r\n") + "\r\n"
   end
 
-  def self.index_json(collection, sources)
-    # Includes hash for mods index query
-    include_hash = {}
-    include_hash[:nexus_infos] = {} if sources[:nexus]
-    include_hash[:lover_infos] = {} if sources[:lab]
-    include_hash[:workshop_infos] = {} if sources[:workshop]
-
-    collection.as_json({
-        :except => [:game_id, :submitted_by, :edited_by, :disallow_contributors, :disable_reviews, :lock_tags],
-        :include => include_hash
-    })
-  end
-
   def self.sortable_columns
     {
         :except => [:game_id, :submitted_by, :primary_category_id, :secondary_category_id],
