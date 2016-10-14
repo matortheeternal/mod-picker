@@ -64,8 +64,8 @@ class ModListsController < ApplicationController
     required_mods = @mod_list.required_mods
 
     # prepare notes
-    compatibility_notes = @mod_list.mod_compatibility_notes.includes(:history_entries)
-    install_order_notes = @mod_list.install_order_notes.includes(:history_entries)
+    compatibility_notes = @mod_list.mod_compatibility_notes.preload(:submitter, :compatibility_mod, :compatibility_plugin, :editor, :editors, :first_mod, :second_mod)
+    install_order_notes = @mod_list.install_order_notes.preload(:submitter, :editor, :editors, :first_mod, :second_mod)
 
     # prepare helpful marks
     c_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("CompatibilityNote", compatibility_notes.ids)
@@ -95,8 +95,8 @@ class ModListsController < ApplicationController
     groups = @mod_list.mod_list_groups.where(tab: 2).order(:index)
 
     # prepare notes
-    compatibility_notes = @mod_list.plugin_compatibility_notes.includes(:history_entries)
-    load_order_notes = @mod_list.load_order_notes.includes(:history_entries)
+    compatibility_notes = @mod_list.plugin_compatibility_notes.preload(:submitter, :compatibility_mod, :compatibility_plugin, :editor, :editors, :first_mod, :second_mod)
+    load_order_notes = @mod_list.load_order_notes.preload(:submitter, :editor, :editors, :first_mod, :second_mod, :first_plugin, :second_plugin)
 
     # prepare helpful marks
     c_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("CompatibilityNote", compatibility_notes.ids)
