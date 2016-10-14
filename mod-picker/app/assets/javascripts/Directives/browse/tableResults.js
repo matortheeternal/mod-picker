@@ -34,6 +34,7 @@ app.controller('tableResultsController', function($scope, $rootScope, tableUtils
     angular.default($scope, 'message', defaultMessage);
 
     // initialize variables
+    tableUtils.buildColumnClasses($scope.columns, 'main-cell');
     $scope.showModal = false;
     var sortedColumn;
 
@@ -110,4 +111,16 @@ app.controller('tableResultsController', function($scope, $rootScope, tableUtils
     if ($scope.columns && $scope.sort && $scope.sort.column) {
         $scope.loadSort();
     }
+
+    $scope.buildItemData = function() {
+        $scope.builtItemData = true;
+        $scope.data.forEach(function(item) {
+            tableUtils.buildItemData(item, $scope.columns, $scope.resolve);
+        });
+    };
+
+    $scope.$watch('data', function() {
+        if (!$scope.data) return;
+        $scope.buildItemData();
+    }, true);
 });

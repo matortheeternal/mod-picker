@@ -38,7 +38,7 @@ class CompatibilityNote < ActiveRecord::Base
 
   # associated compatibility plugin/compatibilty mod for automatic resolution purposes
   belongs_to :compatibility_plugin, :class_name => 'Plugin', :foreign_key => 'compatibility_plugin_id', :inverse_of => 'compatibility_notes'
-  belongs_to :compatibility_mod, :class_name => 'Mod', :foreign_key => 'compatibility_mod_id', :inverse_of => 'compatibility_note_mods'
+  belongs_to :compatibility_mod, :class_name => 'Mod', :foreign_key => 'compatibility_mod_id'
 
   # mod lists this compatibility note is ignored on
   has_many :mod_list_ignored_notes, :as => 'note'

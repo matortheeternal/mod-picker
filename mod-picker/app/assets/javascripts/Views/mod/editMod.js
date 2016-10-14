@@ -23,7 +23,7 @@ app.config(['$stateProvider', function($stateProvider) {
     });
 }]);
 
-app.controller('editModController', function($scope, $rootScope, $state, modObject, modService, modValidationService, userService, tagService, categoryService, sitesFactory, eventHandlerFactory, objectUtils) {
+app.controller('editModController', function($scope, $rootScope, $state, modObject, modService, modLoaderService, modValidationService, userService, tagService, categoryService, sitesFactory, eventHandlerFactory, objectUtils) {
     // get parent variables
     $scope.currentUser = $rootScope.currentUser;
     $scope.categories = $rootScope.categories;
@@ -34,74 +34,10 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
     $scope.searchMods = modService.searchMods;
     $scope.searchUsers = userService.searchUsers;
 
-    // loads the mod object onto the view
-    $scope.loadModObject = function() {
-        // load sources into scope
-        $scope.sources = [];
-        if (modObject.nexus_infos) {
-            $scope.sources.push({
-                label: "Nexus Mods",
-                url: sitesFactory.getModUrl("Nexus Mods", modObject.nexus_infos.id),
-                valid: true,
-                old: true,
-                scraped: true
-            });
-        }
-        if (modObject.lover_infos) {
-            $scope.sources.push({
-                label: "Lover's Lab",
-                url: sitesFactory.getModUrl("Lover's Lab", modObject.lover_infos.id),
-                valid: true,
-                old: true,
-                scraped: true
-            });
-        }
-        if (modObject.workshop_infos) {
-            $scope.sources.push({
-                label: "Steam Workshop",
-                url: sitesFactory.getModUrl("Steam Workshop", modObject.workshop_infos.id),
-                valid: true,
-                old: true,
-                scraped: true
-            });
-        }
-        // load custom sources into scope
-        $scope.customSources = [];
-        modObject.custom_sources.forEach(function(source) {
-            source.valid = true;
-            $scope.customSources.push(source);
-        });
-        // parse dates to date objects
-        modObject.released = new Date(Date.parse(modObject.released));
-        if (modObject.updated) {
-            modObject.updated = new Date(Date.parse(modObject.updated));
-        }
-        // convert required mods into correct format
-        modObject.requirements = [];
-        modObject.required_mods.forEach(function(requirement) {
-            modObject.requirements.push({
-                id: requirement.id,
-                required_id: requirement.required_mod.id,
-                name: requirement.required_mod.name
-            })
-        });
-        // convert categories into correct format
-        modObject.categories = [];
-        if (modObject.primary_category_id) {
-            modObject.categories.push(modObject.primary_category_id);
-        }
-        if (modObject.secondary_category_id) {
-            modObject.categories.push(modObject.secondary_category_id);
-        }
-        // prepare newTags array
-        modObject.newTags = [];
-        // put mod on scope
-        $scope.originalMod = modObject;
-        $scope.mod = angular.copy(modObject);
-    };
-
     // initialize local variables
-    $scope.loadModObject();
+    $scope.mod = angular.copy(modObject);
+    modLoaderService.loadMod($scope.mod);
+    $scope.originalMod = angular.copy($scope.mod);
     $scope.sites = sitesFactory.sites();
     $scope.image = {
         src: $scope.mod.image
@@ -116,9 +52,7 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
         return author.user_id == $scope.currentUser.id;
     });
     var isAuthor = author && author.role == 'author';
-    var isContributor = author && author.role == 'contributor';
-    $scope.permissions.canManageOptions = $scope.permissions.canModerate || isAuthor ||
-        !$scope.mod.disallow_contributors && isContributor;
+    $scope.permissions.canManageOptions = $scope.permissions.canModerate || isAuthor;
 
     $scope.$watch('mod.categories', function() {
         // clear messages when user changes the category
@@ -135,7 +69,7 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
 
     // validate the mod
     $scope.modValid = function() {
-        $scope.sourcesValid = modValidationService.sourcesValid($scope);
+        $scope.sourcesValid = modValidationService.sourcesValid($scope.mod);
         $scope.authorsValid = modValidationService.authorsValid($scope.mod.mod_authors);
         $scope.requirementsValid = modValidationService.requirementsValid($scope.mod.requirements);
         $scope.configsValid = modValidationService.configsValid($scope.mod.config_files);
@@ -145,18 +79,17 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
         return $scope.sourcesValid && $scope.authorsValid && $scope.requirementsValid && $scope.configsValid && $scope.categoriesValid;
     };
 
+    $scope.buildSource = function(scrapeLabel, infoLabel) {
+        if (!infoLabel) infoLabel = scrapeLabel;
+        if ($scope[scrapeLabel]) {
+            $scope.mod[infoLabel + '_info_id'] = $scope[scrapeLabel].id;
+        }
+    };
+
     $scope.buildSources = function() {
-        return {
-            nexus: $scope.nexus || $scope.sources.find(function(source) {
-                return source.label === "Nexus Mods";
-            }),
-            workshop: $scope.workshop || $scope.sources.find(function(source) {
-                return source.label === "Steam Workshop";
-            }),
-            lab: $scope.lab || $scope.sources.find(function(source) {
-                return source.label === "Lover's Lab";
-            })
-        };
+        $scope.buildSource('nexus');
+        $scope.buildSource('workshop');
+        $scope.buildSource('lab', 'lover');
     };
 
     // save changes
@@ -167,15 +100,13 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
         // get changed mod fields
         modValidationService.sanitizeSet($scope.mod.requirements);
         modValidationService.sanitizeSet($scope.mod.mod_authors);
-        var sources = $scope.buildSources();
+        $scope.buildSources();
         var modDiff = objectUtils.getDifferentObjectValues($scope.originalMod, $scope.mod);
-        modDiff.id = $scope.mod.id;
-        var modData = modService.getModUpdateData(modDiff, sources, $scope.customSources);
-        var modDataUnchanged = objectUtils.keysCount(modData.mod) == 1;
+        var modUnchanged = objectUtils.isEmptyObject(modDiff);
         var imageUnchanged = !$scope.image.file;
 
         // return if there is nothing to change
-        if (modDataUnchanged && imageUnchanged) {
+        if (modUnchanged && imageUnchanged) {
             var params = { type: 'warning', text: 'No changes to save.' };
             $scope.$emit('customMessage', params);
             return;
@@ -183,12 +114,17 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
 
         // prepare for submission
         $scope.imageSuccess = imageUnchanged;
-        $scope.modSuccess = modDataUnchanged;
+        $scope.modSuccess = modUnchanged;
         $scope.startSubmission("Updating Mod...");
 
         // update the mod
-        if (modData) $scope.updateMod(modData);
-        if ($scope.image.file) $scope.submitImage();
+        if (!modUnchanged) {
+            var modData = modService.getModUpdateData($scope.mod.id, modDiff);
+            $scope.updateMod(modData);
+        }
+        if (!imageUnchanged) {
+            $scope.submitImage();
+        }
     };
 
     $scope.submitImage = function() {

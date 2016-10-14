@@ -345,6 +345,21 @@ app.controller('modListController', function($scope, $rootScope, $q, $stateParam
         });
     };
 
+    $scope.loadGroups = function(groups) {
+        $scope.mod_list.groups = Array.prototype.concat($scope.mod_list.groups || [], groups);
+        $scope.originalModList.groups = angular.copy($scope.mod_list.groups);
+    };
+
+    $scope.loadAndTrack = function(data, key) {
+        $scope.mod_list[key] = data[key];
+        $scope.originalModList[key] = angular.copy($scope.mod_list[key]);
+    };
+
+    $scope.loadNotes = function(data, key, modelKey, modelName) {
+        $scope.notes[modelKey] = data[key];
+        $scope.associateIgnore($scope.notes[modelKey], modelName);
+    };
+
     $scope.addGroup = function(tab) {
         var model = $scope.model[tab];
         var newGroup = {

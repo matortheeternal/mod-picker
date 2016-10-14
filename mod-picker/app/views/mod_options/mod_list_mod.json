@@ -2,7 +2,10 @@
   "only": ["id", "name", "default"],
   "include": {
     "plugins": {
-      "only": ["id", "filename"]
+      "only": ["id", "filename"],
+      "include": {
+        "mod": {}
+      }
     }
   }
 }

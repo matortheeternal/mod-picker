@@ -1,8 +1,6 @@
 {
-  "only": ["mod_id", "id", "filename"],
+  "only": ["id", "filename"],
   "include": {
-    "mod": {
-      "only": ["name"]
-    }
+    "mod": {}
   }
 }

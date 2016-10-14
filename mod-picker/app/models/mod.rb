@@ -106,8 +106,8 @@ class Mod < ActiveRecord::Base
   has_many :asset_files, :through => :mod_asset_files, :inverse_of => 'mods'
 
   # requirements associated with the mod
-  has_many :required_mods, :class_name => 'ModRequirement', :inverse_of => 'mod', :dependent => :destroy
-  has_many :required_by, :class_name => 'ModRequirement', :inverse_of => 'required_mod', :foreign_key => 'required_id', :dependent => :destroy
+  has_many :required_mods, -> { order(:required_id) }, :class_name => 'ModRequirement', :inverse_of => 'mod', :dependent => :destroy
+  has_many :required_by, -> { order(:mod_id) }, :class_name => 'ModRequirement', :inverse_of => 'required_mod', :foreign_key => 'required_id', :dependent => :destroy
 
   # config files associated with the mod
   has_many :config_files, :inverse_of => 'mod', :dependent => :destroy

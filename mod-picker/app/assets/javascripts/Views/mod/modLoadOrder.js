@@ -74,21 +74,25 @@ app.controller('modLoadOrderController', function($scope, $state, $stateParams, 
     // edit an existing load order note
     $scope.editLoadOrderNote = function(load_order_note) {
         load_order_note.editing = true;
-        $scope.activeLoadOrderNote = load_order_note;
 
         // update the markdown editor
         $scope.updateEditor();
         load_order_note.editing = true;
-        var order, searchText;
-        for (var i = 0; i < 2; i++) {
-            if (load_order_note.mods[i].id != $scope.mod.id) {
-                order = i == 0 ? 'after' : 'before';
-                searchText = load_order_note.plugins[i].filename;
-            }
+        var order, searchText, firstPluginId, secondPluginId;
+        if (load_order_note.first_mod.id != $scope.mod.id) {
+            searchText = load_order_note.first_plugin.filename;
+            order = 'after';
+            firstPluginId = load_order_note.second_plugin_id.toString();
+            secondPluginId = load_order_note.first_plugin_id.toString();
+        } else {
+            searchText = load_order_note.second_plugin.filename;
+            order = 'before';
+            firstPluginId = load_order_note.first_plugin_id.toString();
+            secondPluginId = load_order_note.second_plugin_id.toString();
         }
         $scope.activeLoadOrderNote = {
-            first_plugin_id: load_order_note.first_plugin_id.toString(),
-            second_plugin_id: load_order_note.second_plugin_id.toString(),
+            first_plugin_id: firstPluginId,
+            second_plugin_id: secondPluginId,
             order: order,
             searchText: searchText,
             text_body: load_order_note.text_body.slice(0),

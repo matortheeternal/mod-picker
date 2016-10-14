@@ -1,7 +1,7 @@
 app.run(function($futureState, indexFactory, filtersFactory) {
     // dynamically construct and apply state
     var filterPrototypes = filtersFactory.compatibilityNoteFilters();
-    var state = indexFactory.buildState('reputation', 'DESC', 'compatibilityNotes', filterPrototypes);
+    var state = indexFactory.buildState('submitted', 'DESC', 'compatibilityNotes', filterPrototypes);
     $futureState.futureState(state);
 });
 

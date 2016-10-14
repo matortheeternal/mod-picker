@@ -39,15 +39,16 @@ class ModListsController < ApplicationController
     authorize! :read, @mod_list
 
     # prepare primary data
-    tools = @mod_list.mod_list_mods.utility(true).includes(:mod_list_mod_options, mod: :mod_options).order(:index)
+    tools = @mod_list.mod_list_mods.utility(true).preload(:mod_list_mod_options, :mod => { :mod_options => { :plugins => :mod }}).order(:index)
     custom_tools = @mod_list.custom_mods.utility(true)
     groups = @mod_list.mod_list_groups.where(tab: 0).order(:index)
+    required_tools = @mod_list.required_tools
 
     # render response
     render json: {
         tools: tools,
         custom_tools: custom_tools,
-        required_tools: @mod_list.required_tools,
+        required_tools: required_tools,
         groups: groups
     }
   end
@@ -57,13 +58,14 @@ class ModListsController < ApplicationController
     authorize! :read, @mod_list
 
     # prepare primary data
-    mods = @mod_list.mod_list_mods.utility(false).includes(:mod_list_mod_options, mod: { mod_options: :plugins}).order(:index)
+    mods = @mod_list.mod_list_mods.utility(false).preload(:mod_list_mod_options, :mod => { :mod_options => { :plugins => :mod }}).order(:index)
     custom_mods = @mod_list.custom_mods.utility(false)
     groups = @mod_list.mod_list_groups.where(tab: 1).order(:index)
+    required_mods = @mod_list.required_mods
 
     # prepare notes
-    compatibility_notes = @mod_list.mod_compatibility_notes
-    install_order_notes = @mod_list.install_order_notes
+    compatibility_notes = @mod_list.mod_compatibility_notes.preload(:submitter, :compatibility_mod, :compatibility_plugin, :editor, :editors, :first_mod, :second_mod)
+    install_order_notes = @mod_list.install_order_notes.preload(:submitter, :editor, :editors, :first_mod, :second_mod)
 
     # prepare helpful marks
     c_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("CompatibilityNote", compatibility_notes.ids)
@@ -74,8 +76,8 @@ class ModListsController < ApplicationController
         mods: mods,
         custom_mods: custom_mods,
         groups: groups,
-        required_mods: @mod_list.required_mods,
-        compatibility_notes: compatibility_notes,
+        required_mods: required_mods,
+        compatibility_notes: CompatibilityNote.mod_list_json(compatibility_notes),
         install_order_notes: install_order_notes,
         c_helpful_marks: c_helpful_marks,
         i_helpful_marks: i_helpful_marks
@@ -93,8 +95,8 @@ class ModListsController < ApplicationController
     groups = @mod_list.mod_list_groups.where(tab: 2).order(:index)
 
     # prepare notes
-    compatibility_notes = @mod_list.plugin_compatibility_notes
-    load_order_notes = @mod_list.load_order_notes
+    compatibility_notes = @mod_list.plugin_compatibility_notes.preload(:submitter, :compatibility_mod, :compatibility_plugin, :editor, :editors, :first_mod, :second_mod)
+    load_order_notes = @mod_list.load_order_notes.preload(:submitter, :editor, :editors, :first_mod, :second_mod, :first_plugin, :second_plugin)
 
     # prepare helpful marks
     c_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("CompatibilityNote", compatibility_notes.ids)
@@ -107,7 +109,7 @@ class ModListsController < ApplicationController
         custom_plugins: custom_plugins,
         groups: groups,
         required_plugins: @mod_list.required_plugins,
-        compatibility_notes: compatibility_notes,
+        compatibility_notes: CompatibilityNote.mod_list_json(compatibility_notes),
         load_order_notes: load_order_notes,
         c_helpful_marks: c_helpful_marks,
         l_helpful_marks: l_helpful_marks
@@ -158,9 +160,9 @@ class ModListsController < ApplicationController
 
     # prepare primary data
     plugin_ids = @mod_list.mod_list_plugins.official(false).pluck(:plugin_id)
-    install_order = @mod_list.mod_list_mods.utility(false).includes(:mod)
+    install_order = @mod_list.mod_list_mods.utility(false).includes(:mod, :mod_list_mod_options)
     load_order = @mod_list.mod_list_plugins.includes(:plugin)
-    plugins = Plugin.where(id: plugin_ids).includes(:dummy_masters, :overrides, masters: :master_plugin)
+    plugins = Plugin.where(id: plugin_ids).includes(:mod, :dummy_masters, :overrides, :masters => :master_plugin)
 
     # render response
     render json: {

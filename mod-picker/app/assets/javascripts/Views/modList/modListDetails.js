@@ -9,7 +9,7 @@ app.controller('modListDetailsController', function($scope, $q, $timeout, tagSer
     $scope.blurExportDropdown = function() {
         $timeout(function() {
             $scope.showExportDropdown = false;
-        }, 100);
+        }, 250);
     };
 
     $scope.saveTags = function(updatedTags) {

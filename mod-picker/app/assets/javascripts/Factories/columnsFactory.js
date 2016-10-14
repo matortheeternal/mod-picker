@@ -1,4 +1,6 @@
 app.service('columnsFactory', function() {
+    var factory = this;
+
     this.modColumns = function() {
         return [
             {
@@ -472,7 +474,8 @@ app.service('columnsFactory', function() {
                 label: "Index",
                 data: "index",
                 filter: "number",
-                class: "index-column"
+                class: "index-column",
+                dynamic: true
             },
             {
                 group: "General",
@@ -489,7 +492,8 @@ app.service('columnsFactory', function() {
                 },
                 class: "primary-column",
                 sortData: "mods.name",
-                invertSort: true
+                invertSort: true,
+                dynamic: true
             },
             {
                 group: "General",
@@ -586,7 +590,8 @@ app.service('columnsFactory', function() {
                     if (item.merged) return 'merged';
                 },
                 filter: "number",
-                class: "index-column"
+                class: "index-column",
+                dynamic: true
             },
             {
                 group: "General",
@@ -600,7 +605,8 @@ app.service('columnsFactory', function() {
                     if (item.merged) return 'merged';
                 },
                 filter: "hex",
-                class: "load-order-column"
+                class: "load-order-column",
+                dynamic: true
             },
             {
                 group: "General",
@@ -619,7 +625,8 @@ app.service('columnsFactory', function() {
                     return item.cleaned ? '(cleaned)' : '';
                 },
                 class: "primary-column",
-                invertSort: true
+                invertSort: true,
+                dynamic: true
             },
             {
                 group: "General",

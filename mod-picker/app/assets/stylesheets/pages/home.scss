@@ -29,12 +29,16 @@
     img {
       width: 100px;
       height: 100px;
+      min-width: 100px;
+      min-height: 100px;
       margin-right: 10px;
     }
 
     img.smaller-image {
       width: 64px;
       height: 64px;
+      min-width: 64px;
+      min-height: 64px;
     }
 
     .recent-title {
@@ -71,6 +75,7 @@
 
 .recent-notes-tabs {
   margin: 10px;
+  width: 840px;
 
   .section-title {
     font-size: 26px;

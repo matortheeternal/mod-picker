@@ -174,6 +174,14 @@ class User < ActiveRecord::Base
     end
   end
 
+  def update_mod_author_role
+    if ["user", "mod_author"].include?(role)
+      is_author = mod_authors.where("role != 2").exists?
+      new_role = is_author ? "mod_author" : "user"
+      update_column(:role, new_role) if role != new_role
+    end
+  end
+
   def init
     self.joined ||= DateTime.current
     self.role   ||= :user

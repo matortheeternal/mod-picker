@@ -14,20 +14,10 @@ app.directive('userColumn', function() {
 app.controller('userColumnController', function($scope, $rootScope, $timeout) {
     // inherited variables
     $scope.currentUser = $rootScope.currentUser;
-
     $scope.permissions = angular.copy($rootScope.permissions);
 
     // initialize local variables
     $scope.errors = {};
-    $scope.report = {
-        reportable_id: $scope.user.id,
-        reportable_type: 'User'
-    };
-    $scope.modelObj = {
-        name: "User",
-        label: "User",
-        route: "users"
-    }
 
     $scope.target = $scope.user;
 
@@ -47,11 +37,5 @@ app.controller('userColumnController', function($scope, $rootScope, $timeout) {
             $scope.avatarHover = false;
             $timeout($scope.toggleUserCard, 500);
         }
-    };
-
-    // report modal state
-    $scope.toggleReportModal = function(visible) {
-        $scope.$emit('toggleModal', visible);
-        $scope.showReportModal = visible;
     };
 });

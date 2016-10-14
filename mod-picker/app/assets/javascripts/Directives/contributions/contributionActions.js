@@ -64,11 +64,12 @@ app.controller('contributionActionsController', function($scope, $rootScope, $ti
             $scope.shareLink = baseUrl + '#/mod/' + modId + '/' + targetTab + '/' + targetId;
         }
     };
-    $scope.buildShareLink();
 
     // compute whether or not the target is open if it is agreeable
     if ($scope.agreeable) {
         $scope.isOpen = $scope.target.status === 'open';
+    } else {
+        $scope.buildShareLink();
     }
 
     // compute agree percentage helper
@@ -238,7 +239,7 @@ app.controller('contributionActionsController', function($scope, $rootScope, $ti
         // went through
         $timeout(function() {
             $scope.showDropdown = false;
-        }, 100);
+        }, 250);
     };
 
     $scope.setPermissions = function() {
@@ -251,7 +252,7 @@ app.controller('contributionActionsController', function($scope, $rootScope, $ti
         var isLocked = $scope.target.corrector_id;
         // set up permissions
         $scope.isSubmitter = isSubmitter;
-        $scope.canReport = $scope.permissions.canReport;
+        $scope.canReport = $scope.permissions.canReport && !isSubmitter;
         $scope.canAgree = $scope.agreeable && $scope.isOpen && $scope.permissions.canAgree;
         $scope.canCorrect = $scope.permissions.canCorrect;
         $scope.canEdit = $scope.edit && (canModerate || isCorrector || isSubmitter && !isLocked);

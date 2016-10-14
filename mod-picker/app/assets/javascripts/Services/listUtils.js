@@ -74,6 +74,71 @@ app.service('listUtils', function() {
         return foundItem;
     };
 
+    this.buildGroups = function(model, groups, tab, items) {
+        groups.forEach(function(group) {
+            if (group.tab !== tab) return;
+            var modelGroup = angular.copy(group);
+            modelGroup.dragType = 'group';
+            modelGroup.hasChildren = true;
+            modelGroup.class = 'group bg-' + modelGroup.color;
+            model.push(modelGroup);
+            modelGroup.children = items.filter(function(item) {
+                return item.group_id == modelGroup.id;
+            });
+        });
+    };
+
+    this.buildOrphans = function(model, items) {
+        items.forEach(function(item) {
+            if (item.group_id) return;
+            var insertIndex = model.findIndex(function(searchItem) {
+                return searchItem.index > item.index;
+            });
+            if (insertIndex == -1) {
+                insertIndex = model.length;
+            } else if (item.merged) {
+                insertIndex--;
+            }
+            model.splice(insertIndex, 0, item);
+        });
+    };
+
+    this.buildModel = function(models, modList, label) {
+        models[label] = [];
+        var model = models[label];
+        var groups = modList.groups;
+        var customLabel = 'custom_' + label;
+        var items = modList[label].concat(modList[customLabel]);
+        service.buildGroups(model, groups, label, items);
+        service.buildOrphans(model, items);
+    };
+
+    this.forEachItem = function(model, callback) {
+        model.forEach(function(item) {
+            item.children ? item.children.forEach(callback) : callback(item);
+        });
+    };
+
+    this.forMatchingItems = function(model, key, value, callback) {
+        service.forEachItem(model, function(item) {
+            if (item[key] && item[key] == value) callback(item);
+        });
+    };
+
+    this.forMatching = function(items, key, value, callback) {
+        items.forEach(function(item) {
+            if (item[key] == value) callback(item);
+        });
+    };
+
+    this.destroyItem = function(item) {
+        item._destroy = true;
+    };
+
+    this.recoverItem = function(item) {
+        if (item._destroy) delete item._destroy;
+    };
+
     this.removeGroup = function(model, group, index) {
         // handle the group children
         group.children.forEach(function(child) {
@@ -140,7 +205,7 @@ app.service('listUtils', function() {
     this.recoverDestroyed = function(model) {
         model.forEach(function(item) {
             if (item._destroy) {
-                 delete item._destroy;
+                delete item._destroy;
             }
         });
     };

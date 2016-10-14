@@ -41,6 +41,7 @@ class Review < ActiveRecord::Base
   validates :text_body, length: {in: 512..32768}
   # only one review per mod per user
   validates :mod_id, uniqueness: { scope: :submitted_by, :message => "You've already submitted a review for this mod." }
+  validate :not_mod_author
   validates_associated :review_ratings
 
   # CALLBACKS
@@ -48,6 +49,13 @@ class Review < ActiveRecord::Base
   before_save :set_adult, :set_dates
   after_save :update_mod_metrics, :update_metrics
   before_destroy :clear_ratings, :decrement_counters
+
+  def not_mod_author
+    is_author = ModAuthor.where(mod_id: mod_id, role: [0, 1]).exists?
+    if is_author
+      errors.add(:mod, "You cannot submit reviews for mods you an author or contributor for.")
+    end
+  end
 
   def clear_ratings
     ReviewRating.where(review_id: id).delete_all

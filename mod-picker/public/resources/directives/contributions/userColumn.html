@@ -18,9 +18,4 @@
             <a href="#/profile/{{editor.id}}">{{editor.username}}</a><span ng-if="!$last">, </span>
         </span>
     </li>
-    <div class="action-box" ng-if="permissions.canReport" ng-click="toggleReportModal(true)">
-        <i class="fa fa-flag-o" aria-hidden="true"></i> Report
-    </div>
 </ul>
-
-<report-modal ng-if="showReportModal"></report-modal>

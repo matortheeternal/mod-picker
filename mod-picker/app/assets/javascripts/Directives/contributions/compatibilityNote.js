@@ -12,6 +12,9 @@ app.directive('compatibilityNote', function() {
             showResolutionOptions: '=?',
             modDataLoaded: '=?',
             modId: '=?'
+        },
+        link: function(scope, element) {
+            scope.element = element;
         }
     }
 });
@@ -24,6 +27,14 @@ app.controller('compatibilityNoteController', function($scope, $rootScope) {
     angular.default($scope, 'showUserColumn', true);
     angular.default($scope, 'showMarks', true);
 
+    // initialize variables
+    $scope.standingClasses = {
+        good: 'fa-check-circle',
+        unknown: 'fa-question-circle',
+        bad: 'fa-exclamation-circle'
+    };
+
+    // helper functions
     $scope.getVerb = function() {
         switch ($scope.note.status) {
             case "incompatible":

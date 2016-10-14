@@ -17,7 +17,7 @@ class Plugin < ActiveRecord::Base
 
 
   # UNIQUE SCOPES
-  scope :visible, -> { preload(:mod).where(:mods => {hidden: false}) }
+  scope :visible, -> { eager_load(:mod).where(:mods => {hidden: false}) }
   scope :mods, -> (mod_ids) { includes(:mod_option).references(:mod_option).where(:mod_options => { :mod_id => mod_ids }) }
   scope :esm, -> { where("filename like '%.esm'") }
   scope :categories, -> (categories) { joins(:mod).where("mods.primary_category_id IN (:ids) OR mods.secondary_category_id IN (:ids)", ids: categories) }
@@ -41,8 +41,10 @@ class Plugin < ActiveRecord::Base
   has_many :mod_list_plugins, :inverse_of => 'plugin'
   has_many :mod_lists, :through => 'mod_list_plugins'
 
-  # is a compatibility plugin for
-  has_many :compatibility_notes, :foreign_key => 'compatibility_plugin_id', :inverse_of => 'compatibility_plugin'
+  # notes
+  has_many :compatibility_notes, :foreign_key => 'compatibility_plugin_id', :inverse_of => 'compatibility_plugin', :dependent => :destroy
+  has_many :first_load_order_notes, :foreign_key => 'first_plugin_id', :inverse_of => 'first_plugin', :dependent => :destroy
+  has_many :second_load_order_notes, :foreign_key => 'second_plugin_id', :inverse_of => 'second_plugin', :dependent => :destroy
 
   accepts_nested_attributes_for :plugin_record_groups, :overrides, :plugin_errors
 
@@ -62,6 +64,13 @@ class Plugin < ActiveRecord::Base
 
   def update_lazy_counters
     self.errors_count = plugin_errors.count
+    save!
+  end
+
+  def update_counters
+    self.mod_lists_count = mod_list_plugins.count
+    self.load_order_notes_count = load_order_notes.count
+    update_lazy_counters
   end
 
   def create_associations
@@ -70,12 +79,16 @@ class Plugin < ActiveRecord::Base
         master_plugin = Plugin.find_by(filename: master[:filename], crc_hash: master[:crc_hash])
         master_plugin = Plugin.find_by(filename: master[:filename]) if master_plugin.nil?
         if master_plugin.nil?
-          self.dummy_masters.create(filename: master[:filename], index: index)
+          dummy_masters.create(filename: master[:filename], index: index)
         else
-          self.masters.create(master_plugin_id: master_plugin.id, index: index)
+          masters.create(master_plugin_id: master_plugin.id, index: index)
         end
       end
     end
+  end
+
+  def load_order_notes
+    LoadOrderNote.where("first_plugin_id = :id OR second_plugin_id = :id", id: id)
   end
 
   def convert_dummy_masters
@@ -89,7 +102,7 @@ class Plugin < ActiveRecord::Base
     end
   end
 
-  def create_to_dummy_masters
+  def create_dummy_masters
     Master.where(master_plugin_id: id).each do |master|
       DummyMaster.create!({
           plugin_id: master.plugin_id,
@@ -104,12 +117,19 @@ class Plugin < ActiveRecord::Base
     PluginError.where(plugin_id: id).delete_all
     PluginRecordGroup.where(plugin_id: id).delete_all
     DummyMaster.where(plugin_id: id).delete_all
-    create_to_dummy_masters
+    create_dummy_masters
     Master.where(plugin_id: id).delete_all
     Master.where(master_plugin_id: id).delete_all
-    LoadOrderNote.where("first_plugin_id = ? OR second_plugin_id = ?", id, id).delete_all
-    CompatibilityNote.where(compatibility_plugin_id: id).delete_all
-    ModListPlugin.where(plugin_id: id).delete_all
+    ModListPlugin.where(plugin_id: id).destroy_all
+  end
+
+  def map_associations(plugin_id)
+    OverrideRecord.where(plugin_id: id).update_all(plugin_id: plugin_id)
+    PluginError.where(plugin_id: id).update_all(plugin_id: plugin_id)
+    PluginRecordGroup.where(plugin_id: id).update_all(plugin_id: plugin_id)
+    DummyMaster.where(plugin_id: id).update_all(plugin_id: plugin_id)
+    Master.where(plugin_id: id).update_all(plugin_id: plugin_id)
+    Master.where(master_plugin_id: id).update_all(master_plugin_id: plugin_id)
   end
 
   def formatted_overrides

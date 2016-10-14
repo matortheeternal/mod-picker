@@ -1,6 +1,7 @@
 {
   "only": ["id", "mod_id", "filename", "errors_count"],
   "include": {
+    "mod": {},
     "masters": {
       "format": "plugin"
     },

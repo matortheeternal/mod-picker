@@ -1,8 +1,12 @@
 class BlacklistedAuthor < ActiveRecord::Base
-  after_create :hide_matching_mods
+  after_create :hide_matching_mods, :destroy_unassociated_sources
 
   def source_model
     source.safe_constantize
+  end
+
+  def destroy_unassociated_sources
+    source_model.where("mod_id IS NULL").where(uploaded_by: author).destroy_all
   end
 
   def hide_matching_mods
