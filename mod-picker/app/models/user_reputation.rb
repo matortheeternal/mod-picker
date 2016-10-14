@@ -166,6 +166,7 @@ class UserReputation < ActiveRecord::Base
   end
 
   def calculate_overall_rep!
+    self.last_computed = DateTime.now
     self.overall = offset + site_rep + contribution_rep + author_rep + given_rep
   end
 
