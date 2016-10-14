@@ -41,8 +41,10 @@ class Plugin < ActiveRecord::Base
   has_many :mod_list_plugins, :inverse_of => 'plugin'
   has_many :mod_lists, :through => 'mod_list_plugins'
 
-  # is a compatibility plugin for
-  has_many :compatibility_notes, :foreign_key => 'compatibility_plugin_id', :inverse_of => 'compatibility_plugin'
+  # notes
+  has_many :compatibility_notes, :foreign_key => 'compatibility_plugin_id', :inverse_of => 'compatibility_plugin', :dependent => :destroy
+  has_many :first_load_order_notes, :foreign_key => 'first_plugin_id', :inverse_of => 'first_plugin', :dependent => :destroy
+  has_many :second_load_order_notes, :foreign_key => 'second_plugin_id', :inverse_of => 'second_plugin', :dependent => :destroy
 
   accepts_nested_attributes_for :plugin_record_groups, :overrides, :plugin_errors
 
@@ -108,12 +110,6 @@ class Plugin < ActiveRecord::Base
           index: master.index
       })
     end
-  end
-
-  def switch_associations(new_plugin_id)
-    load_order_notes.destroy_all
-    CompatibilityNote.where(compatibility_plugin_id: id).destroy_all
-    ModListPlugin.where(plugin_id: id).destroy_all
   end
 
   def delete_associations
