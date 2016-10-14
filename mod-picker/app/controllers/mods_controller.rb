@@ -374,7 +374,7 @@ class ModsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def mod_params
-      params.require(:mod).permit(:game_id, :name, :authors, :aliases, :is_utility, :has_adult_content, :primary_category_id, :secondary_category_id, :released, :updated, :nexus_info_id, :lovers_info_id, :workshop_info_id,
+      params.require(:mod).permit(:game_id, :name, :authors, :aliases, :is_utility, :has_adult_content, :primary_category_id, :secondary_category_id, :released, :updated, :nexus_info_id, :lover_info_id, :workshop_info_id,
          :custom_sources_attributes => [:label, :url],
          :required_mods_attributes => [:required_id],
          :tag_names => [],
@@ -390,7 +390,7 @@ class ModsController < ApplicationController
     end
 
     def mod_update_params
-      p = params.require(:mod).permit(:name, :authors, :aliases, :is_utility, :has_adult_content, :primary_category_id, :secondary_category_id, :released, :updated, :nexus_info_id, :lovers_info_id, :workshop_info_id, :disallow_contributors, :disable_reviews, :lock_tags, :hidden,
+      p = params.require(:mod).permit(:name, :authors, :aliases, :is_utility, :has_adult_content, :primary_category_id, :secondary_category_id, :released, :updated, :nexus_info_id, :lover_info_id, :workshop_info_id, :disallow_contributors, :disable_reviews, :lock_tags, :hidden,
          :required_mods_attributes => [:id, :required_id, :_destroy],
          :mod_authors_attributes => [:id, :role, :user_id, :_destroy],
           :custom_sources_attributes => [:id, :label, :url, :_destroy],
