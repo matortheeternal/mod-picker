@@ -208,7 +208,7 @@ class ModBuilder
 
   def link_source(info_id, model)
     if info_id
-      info = NexusInfo.find(info_id)
+      info = model.find(info_id)
       info.mod_id = mod.id
       info.link_uploader
       info.save!
