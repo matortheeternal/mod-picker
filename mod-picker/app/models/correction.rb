@@ -162,7 +162,7 @@ class Correction < ActiveRecord::Base
       include_hash[:second_plugin] = [:id, :filename]
     end
     {
-        :only => [:submitted_by, :correctable_type, :mod_status, :text_body, :submitted],
+        :only => [:title, :submitted_by, :correctable_type, :mod_status, :text_body, :submitted],
         :include => {
             :correctable => {
                 :only => [:id, :name],
