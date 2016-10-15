@@ -33,7 +33,7 @@ module ModPicker
 
     # tracking config
     config.added_owner_attributes = [:submitted_by]
-    config.changed_owner_attributes = [:updated_by, :edited_by]
+    config.updated_owner_attributes = [:updated_by, :edited_by]
     config.removed_owner_attributes = [:removed_by]
 
     config.middleware.use Rack::Attack

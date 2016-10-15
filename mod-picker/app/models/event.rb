@@ -2,7 +2,7 @@ class Event < ActiveRecord::Base
   include ScopeHelpers, BetterJson
 
   # ATTRIBUTES
-  enum event_type: [:added, :changed, :removed, :hidden, :unhidden, :approved, :unapproved, :status, :action_soon, :message, :unused, :milestone1, :milestone2, :milestone3, :milestone4, :milestone5, :milestone6, :milestone7, :milestone8, :milestone9, :milestone10]
+  enum event_type: [:added, :updated, :removed, :hidden, :unhidden, :approved, :unapproved, :status, :action_soon, :message, :unused, :milestone1, :milestone2, :milestone3, :milestone4, :milestone5, :milestone6, :milestone7, :milestone8, :milestone9, :milestone10]
   self.per_page = 50
 
   # SCOPES

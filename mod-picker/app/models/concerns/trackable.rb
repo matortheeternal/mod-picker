@@ -52,7 +52,7 @@ module Trackable
       when :removed
         return config.removed_owner_attributes || [:removed_by]
       else
-        return config.changed_owner_attributes || [:changed_by]
+        return config.updated_owner_attributes || [:updated_by]
     end
   end
 
@@ -113,9 +113,9 @@ module Trackable
 
     def track_updated(options={})
       class_eval do
-        after_update :changed_event
-        def changed_event
-          create_event(:changed)
+        after_update :updated_event
+        def updated_event
+          create_event(:updated)
         end
       end
     end
@@ -166,8 +166,8 @@ module Trackable
         case event
           when :added
             track_added(options)
-          when :changed
-            track_changed(options)
+          when :updated
+            track_updated(options)
           when :removed
             track_removed(options)
           else
