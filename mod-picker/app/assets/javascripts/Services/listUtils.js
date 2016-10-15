@@ -174,34 +174,44 @@ app.service('listUtils', function() {
         });
     };
 
-    this.moveItem = function(model, key, options) {
-        var destItem = service.findItem(model, key, 'id', options.destId);
+    // if both items are in the same group, move within the group
+    // or if options.insert is true and the destination item is in
+    // a group, move the item somewhere inside of the destItem group
+    this.getMoveModel = function(model, destItem, moveItem, allowInsert) {
+        if (!!moveItem.group_id && moveItem.group_id == destItem.group_id) {
+            return service.findGroup(model, moveItem.group_id).children;
+        } else if (allowInsert && !!destItem.group_id) {
+            return service.findGroup(model, destItem.group_id).children;
+        }
+        return model;
+    };
 
-        // check if the destination item is on the view model
+    // send a cursor down the model until the index of the item we're
+    // on exceeds the destItem's index
+    // then reinserts the item before or after the found item
+    this.insertItem = function(model, destItem, moveItem, after) {
+        var newIndex = model.findIndex(function(item) {
+            return item.index >= destItem.index;
+        });
+        model.splice(after ? newIndex : newIndex - 1, 0, moveItem);
+    };
+
+    this.moveItem = function(model, key, options) {
+        // get the destination item
+        var destItem = service.findItem(model, key, 'id', options.destId);
         if (!destItem) {
             return 'Failed to move '+key+', could not find destination '+key+'.';
         }
 
-        // this splices the item if found
+        // get the item to move and splice it out of the model if found
         var moveItem = service.findItem(model, key, 'id', options.moveId, true);
-
-        // check if the item be moved is on the view model
         if (!moveItem) {
             return 'Failed to move '+key+', could not find '+key+' to move.';
         }
 
-        var moveModel = model;
-        // if both items are in the same group, move within the group
-        if (!!moveItem.group_id && moveItem.group_id == destItem.group_id) {
-            moveModel = service.findGroup(model, moveItem.group_id).children;
-        }
-        // send a cursor down the model until the index of the item we're on exceeds the destItem's index
-        var newIndex = moveModel.findIndex(function(item) {
-            return item.index >= destItem.index;
-        });
-
-        // reinsert the mod at the new index
-        moveModel.splice(options.after ? newIndex : newIndex, 0, moveItem);
+        // insert the item to move after/before the destination item
+        var moveModel = service.getMoveModel(model, destItem, moveItem, options.insert);
+        service.insertItem(moveModel, destItem, moveItem, options.after);
     };
 
     this.recoverDestroyed = function(model) {
