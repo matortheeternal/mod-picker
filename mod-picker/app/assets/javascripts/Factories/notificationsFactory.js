@@ -11,7 +11,7 @@ app.service('notificationsFactory', function() {
         InstallOrderNote: contributionAddedTemplate("install order note"),
         LoadOrderNote: contributionAddedTemplate("load order note"),
         Correction: "A new ((correctionType)) has been posted on ((contentLink))",
-        Comment: "A new comment has been posted on ((contentLink))",
+        Comment: "A ((commentContext)) comment has been posted on ((contentLink))",
         ModTag: contributionAddedTemplate("tag"),
         ModListTag: contributionAddedTemplate("tag"),
         ModAuthor: "((authorUserClause)) been added as ((authorRole)) for ((contentLink))",
@@ -106,7 +106,7 @@ app.service('notificationsFactory', function() {
         Comment: {
             key: "commentable",
             Article: '<a href="#/article/{{content.commentable_id}}">{{content.commentable.title}}</a>',
-            User: '<a href="#/user/{{content.commentable_id}}">your profile</a>',
+            User: '<a href="#/user/{{content.commentable_id}}">{{content.commentable_id == currentUser.id ? \"your\" : content.commentable.username + \"\'s\" }} profile</a>',
             Correction: {
                 key: "correctable",
                 Mod: '<a href="#/mod/{{content.commentable.correctable_id}}">your appeal</a>',
@@ -217,6 +217,15 @@ app.service('notificationsFactory', function() {
             return "an " + event.content.role;
         } else {
             return "a " + event.content.role;
+        }
+    };
+
+    this.commentContext = function(event) {
+        var ownerId = event.content.commentable.submitted_by || event.content.commentable_id;
+        if (ownerId != factory.currentUserID) {
+            return "reply to your";
+        } else {
+            return "new";
         }
     };
 
