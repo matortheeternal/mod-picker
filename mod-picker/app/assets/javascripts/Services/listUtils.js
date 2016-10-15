@@ -201,7 +201,7 @@ app.service('listUtils', function() {
         });
 
         // reinsert the mod at the new index
-        moveModel.splice(options.after ? newIndex + 1 : newIndex, 0, moveItem);
+        moveModel.splice(options.after ? newIndex : newIndex, 0, moveItem);
     };
 
     this.recoverDestroyed = function(model) {
