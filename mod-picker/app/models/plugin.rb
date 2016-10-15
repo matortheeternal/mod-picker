@@ -15,7 +15,6 @@ class Plugin < ActiveRecord::Base
   counter_scope :errors_count, :mod_lists_count, :load_order_notes_count
   bytes_scope :file_size
 
-
   # UNIQUE SCOPES
   scope :visible, -> { eager_load(:mod).where(:mods => {hidden: false}) }
   scope :mods, -> (mod_ids) { includes(:mod_option).references(:mod_option).where(:mod_options => { :mod_id => mod_ids }) }
