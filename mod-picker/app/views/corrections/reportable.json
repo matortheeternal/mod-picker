@@ -1,5 +1,5 @@
 {
-  "only": ["submitted_by", "correctable_type", "mod_status", "text_body", "submitted"],
+  "only": ["submitted_by", "title", "correctable_type", "mod_status", "text_body", "submitted"],
   "include": {
     "correctable": {
       "format": "correctable"
