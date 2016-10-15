@@ -245,6 +245,7 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
                 authors: mod.authors,
                 is_utility: mod.is_utility,
                 has_adult_content: mod.has_adult_content,
+                curate: mod.curate,
                 game_id: mod.game_id,
                 released: released || DateTime.now(),
                 updated: updated,
