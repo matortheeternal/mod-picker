@@ -77,7 +77,7 @@ class ModListsController < ApplicationController
         custom_mods: custom_mods,
         groups: groups,
         required_mods: required_mods,
-        compatibility_notes: CompatibilityNote.mod_list_json(compatibility_notes),
+        compatibility_notes: json_format(compatibility_notes, :mod_list),
         install_order_notes: install_order_notes,
         c_helpful_marks: c_helpful_marks,
         i_helpful_marks: i_helpful_marks
@@ -109,7 +109,7 @@ class ModListsController < ApplicationController
         custom_plugins: custom_plugins,
         groups: groups,
         required_plugins: @mod_list.required_plugins,
-        compatibility_notes: CompatibilityNote.mod_list_json(compatibility_notes),
+        compatibility_notes: json_format(compatibility_notes, :mod_list),
         load_order_notes: load_order_notes,
         c_helpful_marks: c_helpful_marks,
         l_helpful_marks: l_helpful_marks
