@@ -100,6 +100,11 @@ ul.required-list {
     padding-left: 20px;
     display: block;
   }
+
+  .short-column {
+    min-width: 70px;
+    width: 70px;
+  }
 }
 
 .config-block {

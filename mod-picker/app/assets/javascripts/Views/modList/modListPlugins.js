@@ -100,6 +100,11 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, catego
 
     // PLUGINS STORE HELPER FUNCTIONS
     $scope.togglePlugin = function(pluginItem) {
+        /* 
+        * adds plugin on TRUE because togglePlugin is called on a checkbox input that changes the plugin's
+        * active state BEFORE calling this function. i.e if active ==true then user just toggled
+        * from false -> true and wants the plugin added and vice versa
+        */
         if (pluginItem.active) {
             $scope.addPlugin(pluginItem.id);
         } else {

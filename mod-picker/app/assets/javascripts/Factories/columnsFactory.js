@@ -1023,4 +1023,37 @@ app.service('columnsFactory', function() {
     this.pluginColumnGroups = function() {
         return ["General"];
     };
+    
+    this.modListPluginStoreColumns = function() {
+        return [
+            {
+                label: "Active",
+                data: "active",
+                class: "short-column"
+            },
+            {
+                label: "Filename",
+                data: "filename",
+                invertSort: true
+            },
+            {
+                label: "Mod Index",
+                data: "mod_index",
+                class: "short-column",
+                invertSort: true
+            },
+            {
+                label: "Mod",
+                data: "mod.name",
+                invertSort: true
+            },
+            {
+                label: "Mod Option",
+                data: "mod_option.name",
+                invertSort: true
+            }
+
+        ];
+    };
+
 });

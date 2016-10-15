@@ -143,6 +143,21 @@ class Plugin < ActiveRecord::Base
     output
   end
 
+
+# def self.show_plugins_store_json(collection)
+#     collection.as_json({
+#         :only => [:id, :filename],
+#         :include => {
+#             :mod => {
+#                 :only => [:id, :name]
+#             },
+#             :mod_option => {
+#                 :only => [:name]
+#             }
+#         }
+#     })
+# end
+
   def self.sortable_columns
     {
         :except => [:game_id, :mod_option_id, :description],

@@ -102,11 +102,11 @@ class ModListsController < ApplicationController
     # prepare helpful marks
     c_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("CompatibilityNote", compatibility_notes.ids)
     l_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("LoadOrderNote", load_order_notes.ids)
-
+    
     # render response
     render json: {
         plugins: plugins,
-        plugins_store: plugins_store,
+        plugins_store: json_format(plugins_store, :store),
         install_order: json_format(install_order, :simple),
         custom_plugins: custom_plugins,
         groups: groups,
