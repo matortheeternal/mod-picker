@@ -1033,15 +1033,15 @@ app.service('columnsFactory', function() {
                 class: "active-column"
             },
             {
-                label: "Mod Index",
-                data: "mod_index",
-            },
-            {
                 label: "Filename",
                 data: function(item) {
                     return item.filename || item.plugin.filename;
                 },
                 invertSort: true
+            },
+            {
+                label: "Mod Index",
+                data: "mod_index",
             },
             {
                 label: "Mod",

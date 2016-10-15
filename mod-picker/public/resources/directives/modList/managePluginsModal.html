@@ -29,13 +29,13 @@
                                 <input type="checkbox" ng-click="togglePlugin(item)" ng-model="item.active" ng-hide="item._destroy"/>
                             </label>
                         </td>
-                        <td>
-                            {{item.mod_index}}
-                        </td>
                         <td class="primary-column">
                             <a ng-href="{{getPluginLink(item)}}" target="_blank">
                                 {{item.filename || item.plugin.filename}}
                             </a>
+                        </td>
+                        <td class="center">
+                            {{item.mod_index}}
                         </td>
                         <td>
                             <a ng-href="{{getModLink(item)}}" target="_blank">
