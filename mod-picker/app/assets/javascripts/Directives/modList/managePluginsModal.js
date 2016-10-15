@@ -42,9 +42,6 @@ app.controller('managePluginsModalController', function($scope, columnsFactory, 
         });
     };
 
-    console.log($scope.plugins_store);
-
-
     // initialize variables
 
     $scope.columns = columnsFactory.modListPluginStoreColumns();
