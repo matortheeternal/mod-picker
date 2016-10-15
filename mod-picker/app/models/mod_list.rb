@@ -8,12 +8,12 @@ class ModList < ActiveRecord::Base
   self.per_page = 100
 
   # EVENT TRACKING
-  track :added, :updated, :hidden
+  track :added, :updated, :hidden, :status
   track_milestones :column => 'stars_count', :milestones => [10, 50, 100, 500, 1000, 5000, 10000, 50000, 100000, 500000]
 
   # NOTIFICATION SUBSCRIPTIONS
-  subscribe :submitter, to: [:hidden, :unhidden, *Event.milestones]
-  subscribe :user_stars, to: [:updated]
+  subscribe :submitter, to: [:updated, :hidden, :unhidden, *Event.milestones]
+  subscribe :user_stars, to: [:status]
 
   # SCOPES
   include_scope :has_adult_content, :alias => 'include_adult'
