@@ -1027,9 +1027,16 @@ app.service('columnsFactory', function() {
     this.modListPluginStoreColumns = function() {
         return [
             {
-                group: "General",
-                visibility: true,
-                required: true,
+                label: "Active",
+                data: "active",
+                invertSort: true,
+                columnClass: "active-column"
+            },
+            {
+                label: "Mod Index",
+                data: "mod_index",
+            },
+            {
                 label: "Filename",
                 data: function(item) {
                     return item.filename || item.plugin.filename;
@@ -1046,8 +1053,6 @@ app.service('columnsFactory', function() {
                 invertSort: true
             },
             {
-                group: "General",
-                visibility: true,
                 label: "Mod",
                 data: "mod.name",
                 link: function(item) {
@@ -1059,17 +1064,11 @@ app.service('columnsFactory', function() {
                 invertSort: true
             },
             {
-                group: "General",
-                visibility: true,
-                label: "Mod Option Name",
+                label: "Mod Option",
                 data: "mod_option.name"
             }
 
         ];
-    };
-
-    this.modListPluginStoreColumnGroups = function() {
-        return ["General"];
     };
 
 });

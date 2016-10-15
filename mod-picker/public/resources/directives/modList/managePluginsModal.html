@@ -9,13 +9,13 @@
             <table ng-show="plugins_store.length" class="browse-table">
                 <thead>
                     <tr>
-                        <th ng-repeat="column in columnLabels" ng-click="sortBy(column.dataLabel)">
+                        <th ng-repeat="column in columns" ng-click="sortColumn(column)" ng-class="column.columnClass">
                             {{column.label}}
-                            <div class="sorting-options">
-                                <div class="sort-up" ng-class="{ 'active' : sortType == column.dataLabel && !sortReverse }">
+                            <div class="sorting-options" ng-if="sort && !column.unsortable">
+                                <div class="sort-up" ng-class="{ 'active' : column.up }">
                                     <i class="fa fa-caret-up"></i>
                                 </div>
-                                <div class="sort-down" ng-class="{ 'active' : sortType == column.dataLabel && sortReverse }">
+                                <div class="sort-down" ng-class="{ 'active' : column.down }">
                                     <i class="fa fa-caret-down"></i>
                                 </div>
                             </div>
@@ -23,11 +23,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="item in plugins_store | orderBy:sortType:sortReverse">
+                    <tr ng-repeat="item in plugins_store | orderBy:sort.column:(sort.direction === 'DESC')">
                         <td>
                             <label class="manage-item">
                                 <input type="checkbox" ng-click="togglePlugin(item)" ng-model="item.active" ng-hide="item._destroy"/>
                             </label>
+                        </td>
+                        <td>
+                            {{item.mod_index}}
                         </td>
                         <td class="primary-column">
                             <a ng-href="{{getPluginLink(item)}}" target="_blank">

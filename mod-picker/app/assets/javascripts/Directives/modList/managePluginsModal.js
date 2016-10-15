@@ -7,7 +7,7 @@ app.directive('managePluginsModal', function() {
     };
 });
 
-app.controller('managePluginsModalController', function($scope, columnsFactory, actionsFactory) {
+app.controller('managePluginsModalController', function($scope, columnsFactory, actionsFactory, tableUtils, objectUtils) {
     // re-initialize plugins store active booleans to false
     $scope.plugins_store.forEach(function(plugin) {
         plugin.active = false;
@@ -25,27 +25,20 @@ app.controller('managePluginsModalController', function($scope, columnsFactory, 
         }
     });
 
-    // Column Labels + Table sorting logic
-    // TODO: Maybe refactor so column data fields are in the controller as well?
 
-    // default table sorting options
-    $scope.sortType = '';
-    $scope.sortReverse = false;
+    // initialize variables
 
-    $scope.columnLabels = [{
-        label: 'Active',
-        dataLabel: 'active'
-    }, {
-        label: 'Filename',
-        dataLabel: 'filename'
-    }, {
-        label: 'Mod',
-        dataLabel: 'mod.name'
-    }, {
-        label: 'Mod Option Name',
-        dataLabel: 'mod_option.name'
-    }];
+    $scope.columns = columnsFactory.modListPluginStoreColumns();
+    var sortedColumn;
 
+    $scope.sort = {
+        column: '',
+        direction: 'ASC'
+    }
+
+    tableUtils.buildColumnClasses($scope.columns, 'main-cell');
+
+    // helper functions to get links to plugin/mods
     $scope.getPluginLink = function(item) {
         if (item.mod && item.id) {
             return "#/mod/" + item.mod.id + "/analysis?plugin=" + item.id;
@@ -58,21 +51,56 @@ app.controller('managePluginsModalController', function($scope, columnsFactory, 
         }
     }
 
-    // sort function
-    $scope.sortBy = function(sortType) {
-        if($scope.sortType !== null && $scope.sortType == sortType) {
-
-            // handle normal sort, reverse, sort, and neutral no sort if already reversed and same sort type
-            switch($scope.sortReverse) {
-                case true:
-                    $scope.sortType = '';
-                    $scope.sortReverse = false;
-                case false:
-                    $scope.sortReverse = true;
+    // load sort into view
+    $scope.loadSort = function() {
+        $scope.columns.forEach(function(column) {
+            if ($scope.getSortData(column) === $scope.sort.column) {
+                var sortKey = $scope.sort.direction === "ASC" ? "up" : "down";
+                column[sortKey] = true;
+                sortedColumn = column;
             }
+        });
+    };
+
+    // get the sort data key for a column
+    $scope.getSortData = function(column) {
+        return column.sortData || (typeof column.data === "string" ? column.data : objectUtils.csv(column.data));
+    };
+
+    // sorts by column
+    $scope.sortColumn = function(column) {
+        // return if we don't have a sort object or the column isn't sortable
+        if (!$scope.sort || column.unsortable) return;
+
+        if (sortedColumn && sortedColumn !== column) {
+            sortedColumn.up = false;
+            sortedColumn.down = false;
+        }
+        sortedColumn = column;
+        $scope.toggleSort(column);
+
+        // send data to backend
+        if (column.up || column.down) {
+            $scope.sort.column = $scope.getSortData(column);
+            $scope.sort.direction = column.up ? "ASC" : "DESC";
         } else {
-            $scope.sortType = sortType;
-            $scope.sortReverse = false;
+            delete $scope.sort.column;
+            delete $scope.sort.direction;
         }
     };
+
+    // this function will toggle sorting for an input column between
+    // up, down, and no sorting
+    $scope.toggleSort = function(column) {
+        var firstKey = column.invertSort ? "up" : "down";
+        var secondKey = column.invertSort ? "down" : "up";
+        var b1 = column[firstKey], b2 = column[secondKey];
+        column[secondKey] = b1;
+        column[firstKey] = !b1 && !b2;
+    };
+
+    // load sort into view
+    if ($scope.columns && $scope.sort && $scope.sort.column) {
+        $scope.loadSort();
+    }
 });

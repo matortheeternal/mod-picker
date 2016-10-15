@@ -106,7 +106,7 @@ class ModListsController < ApplicationController
     # render response
     render json: {
         plugins: plugins,
-        plugins_store: plugins_store,
+        plugins_store: json_format(plugins_store, :store),
         install_order: json_format(install_order, :simple),
         custom_plugins: custom_plugins,
         groups: groups,
