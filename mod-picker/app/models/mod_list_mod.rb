@@ -1,5 +1,5 @@
 class ModListMod < ActiveRecord::Base
-  include RecordEnhancements, ScopeHelpers
+  include RecordEnhancements, ScopeHelpers, BetterJson
 
   # SCOPES
   value_scope :is_utility, :is_official, :association => 'mod'
