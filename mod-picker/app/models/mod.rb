@@ -12,8 +12,8 @@ class Mod < ActiveRecord::Base
   track_milestones :column => 'stars_count', :milestones => [10, 50, 100, 500, 1000, 5000, 10000, 50000, 100000, 500000]
 
   # NOTIFICATION SUBSCRIPTIONS
-  subscribe :author_users, to: [:hidden, :unhidden, *Event.milestones]
-  subscribe :contribution_authors, to: [:analysis_updated, :updated]
+  subscribe :author_users, to: [:updated, :hidden, :unhidden, *Event.milestones]
+  subscribe :contribution_authors, to: [:analysis_updated]
   subscribe :user_stars, to: [:analysis_updated]
 
   # SCOPES
