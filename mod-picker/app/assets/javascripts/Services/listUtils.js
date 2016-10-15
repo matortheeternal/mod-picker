@@ -193,7 +193,11 @@ app.service('listUtils', function() {
         var newIndex = model.findIndex(function(item) {
             return item.index >= destItem.index;
         });
-        model.splice(after ? newIndex : newIndex - 1, 0, moveItem);
+        model.splice(after ? newIndex + 1 : newIndex, 0, moveItem);
+    };
+
+    this.getCanInsert = function(key, moveItem) {
+        return key === "plugin" && moveItem.mod.primary_category.name === "Fixes - Patches";
     };
 
     this.moveItem = function(model, key, options) {
@@ -210,7 +214,8 @@ app.service('listUtils', function() {
         }
 
         // insert the item to move after/before the destination item
-        var moveModel = service.getMoveModel(model, destItem, moveItem, options.insert);
+        var canInsert = service.getCanInsert(key, moveItem);
+        var moveModel = service.getMoveModel(model, destItem, moveItem, canInsert);
         service.insertItem(moveModel, destItem, moveItem, options.after);
     };
 
