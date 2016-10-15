@@ -1030,7 +1030,7 @@ app.service('columnsFactory', function() {
                 label: "Active",
                 data: "active",
                 invertSort: true,
-                columnClass: "active-column"
+                class: "active-column"
             },
             {
                 label: "Mod Index",
@@ -1041,25 +1041,11 @@ app.service('columnsFactory', function() {
                 data: function(item) {
                     return item.filename || item.plugin.filename;
                 },
-                link: function(item) {
-                    if (item.mod && item.plugin) {
-                        return "#/mod/" + item.mod.id + "/analysis?plugin=" + item.plugin.id;
-                    }
-                },
-                note: function($scope, item) {
-                    return item.cleaned ? '(cleaned)' : '';
-                },
-                class: "primary-column",
                 invertSort: true
             },
             {
                 label: "Mod",
                 data: "mod.name",
-                link: function(item) {
-                    if (item.mod) {
-                        return "#/mod/" + item.mod.id;
-                    }
-                },
                 sortData: "mods.name",
                 invertSort: true
             },

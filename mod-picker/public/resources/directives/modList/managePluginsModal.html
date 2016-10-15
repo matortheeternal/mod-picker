@@ -9,7 +9,7 @@
             <table ng-show="plugins_store.length" class="browse-table">
                 <thead>
                     <tr>
-                        <th ng-repeat="column in columns" ng-click="sortColumn(column)" ng-class="column.columnClass">
+                        <th ng-repeat="column in columns" ng-click="sortColumn(column)" class="{{column.class}}">
                             {{column.label}}
                             <div class="sorting-options" ng-if="sort && !column.unsortable">
                                 <div class="sort-up" ng-class="{ 'active' : column.up }">

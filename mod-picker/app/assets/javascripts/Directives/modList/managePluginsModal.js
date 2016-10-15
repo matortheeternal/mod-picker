@@ -7,7 +7,7 @@ app.directive('managePluginsModal', function() {
     };
 });
 
-app.controller('managePluginsModalController', function($scope, columnsFactory, actionsFactory, tableUtils, objectUtils) {
+app.controller('managePluginsModalController', function($scope, columnsFactory, objectUtils) {
     // re-initialize plugins store active booleans to false
     $scope.plugins_store.forEach(function(plugin) {
         plugin.active = false;
@@ -25,6 +25,8 @@ app.controller('managePluginsModalController', function($scope, columnsFactory, 
         }
     });
 
+    console.log($scope.plugins_store);
+
 
     // initialize variables
 
@@ -35,8 +37,6 @@ app.controller('managePluginsModalController', function($scope, columnsFactory, 
         column: '',
         direction: 'ASC'
     }
-
-    tableUtils.buildColumnClasses($scope.columns, 'main-cell');
 
     // helper functions to get links to plugin/mods
     $scope.getPluginLink = function(item) {
