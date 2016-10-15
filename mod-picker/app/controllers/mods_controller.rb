@@ -3,11 +3,11 @@ class ModsController < ApplicationController
 
   # POST /mods
   def index
-    @mods = Mod.accessible_by(current_ability).filter(filtering_params).sort(sorting_params).paginate(:page => params[:page])
-    count =  Mod.accessible_by(current_ability).filter(filtering_params).count
+    @mods = Mod.eager_load(:author_users, :nexus_infos, :lover_infos, :workshop_infos).accessible_by(current_ability).filter(filtering_params).sort(sorting_params).paginate(page: params[:page])
+    count =  Mod.eager_load(:author_users, :nexus_infos, :lover_infos, :workshop_infos).accessible_by(current_ability).filter(filtering_params).count
 
-    render :json => {
-      mods: Mod.index_json(@mods, params[:filters][:sources]),
+    render json: {
+      mods: json_format(@mods),
       max_entries: count,
       entries_per_page: Mod.per_page
     }
@@ -16,20 +16,20 @@ class ModsController < ApplicationController
   # POST /mods/search
   def search
     @mods = Mod.visible.filter(search_params).sort({ column: "name", direction: "ASC" }).limit(10)
-    render :json => @mods
+    render json: @mods
   end
 
   # GET /mods/1
   def show
-    @mod = Mod.includes(:custom_sources, :plugins, {:mod_authors => :user}, {:tags => :submitter}, {:required_mods => :required_mod}, {:required_by => :mod}).find(params[:id])
-    authorize! :read, @mod, :message => "You are not allowed to view this mod."
+    @mod = Mod.includes(:custom_sources, :plugins, {mod_authors: :user}, {tags: :submitter}, {required_mods: :required_mod}, {required_by: :mod}).find(params[:id])
+    authorize! :read, @mod, message: "You are not allowed to view this mod."
 
     # set up boolean variables
     star = false
     in_mod_list = false
     incompatible = false
     if current_user.present?
-      star = ModStar.exists?(:mod_id => @mod.id, :user_id => current_user.id)
+      star = ModStar.exists?(mod_id: @mod.id, user_id: current_user.id)
       if current_user.active_mod_list_id.present?
         mod_list = current_user.active_mod_list
         in_mod_list = mod_list.mod_list_mod_ids.include?(@mod.id)
@@ -38,8 +38,8 @@ class ModsController < ApplicationController
     end
 
     # render response
-    render :json => {
-        mod: @mod.show_json,
+    render json: {
+        mod: json_format(@mod),
         star: star,
         in_mod_list: in_mod_list,
         incompatible: incompatible
@@ -68,17 +68,17 @@ class ModsController < ApplicationController
 
   # GET /mods/1/edit
   def edit
-    authorize! :update, @mod, :message => "You are not allowed to edit this mod."
-    render :json => @mod.edit_json
+    authorize! :update, @mod, message: "You are not allowed to edit this mod."
+    respond_with_json(@mod)
   end
 
   # PATCH/PUT /mods/1
   def update
     authorize! :update, @mod
-    authorize! :hide, @mod if params[:mod].has_key?(:hidden)
-    authorize! :update_authors, @mod if params[:mod].has_key?(:mod_authors_attributes)
-    authorize! :update_options, @mod if options_params.any?
-    authorize! :assign_custom_sources, @mod if params[:mod].has_key?(:custom_sources_attributes)
+    authorize! :hide, @mod, :message => "You are not allowed to hide/unhide this mod." if params[:mod].has_key?(:hidden)
+    authorize! :update_authors, @mod, :message => "You are not allowed to update this mod's authors." if params[:mod].has_key?(:mod_authors_attributes)
+    authorize! :update_options, @mod, :message => "You are not allowed to update this mod's advanced options." if options_params.any?
+    authorize! :assign_custom_sources, @mod, :message => "You are not allowed to assign custom sources." if params[:mod].has_key?(:custom_sources_attributes)
 
     builder = ModBuilder.new(current_user, mod_update_params)
     if builder.update
@@ -194,7 +194,7 @@ class ModsController < ApplicationController
     agreement_marks = AgreementMark.submitter(current_user.id).corrections(corrections.ids)
 
     # render response
-    render :json => {
+    render json: {
         corrections: corrections,
         agreement_marks: agreement_marks
     }
@@ -205,8 +205,8 @@ class ModsController < ApplicationController
     authorize! :read, @mod
 
     # prepare reviews
-    reviews = @mod.reviews.preload(:review_ratings).includes(:submitter => :reputation).references(:submitter => :reputation).accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10).where("submitted_by != ? OR hidden = true", current_user.id)
-    count = @mod.reviews.includes(:submitter => :reputation).references(:submitter => :reputation).accessible_by(current_ability).count
+    reviews = @mod.reviews.preload(:review_ratings).includes(submitter: :reputation).references(submitter: :reputation).accessible_by(current_ability).sort(params[:sort]).paginate(page: params[:page], per_page: 10).where("submitted_by != ? OR hidden = true", current_user.id)
+    count = @mod.reviews.includes(submitter: :reputation).references(submitter: :reputation).accessible_by(current_ability).count
     review_ids = reviews.ids
 
     # prepare user review
@@ -223,7 +223,7 @@ class ModsController < ApplicationController
     helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("Review", review_ids)
 
     # render response
-    render :json => {
+    render json: {
         reviews: reviews,
         helpful_marks: helpful_marks,
         user_review: user_review,
@@ -237,14 +237,14 @@ class ModsController < ApplicationController
     authorize! :read, @mod
 
     # prepare compatibility notes
-    compatibility_notes = @mod.compatibility_notes.includes(:submitter => :reputation).references(:submitter => :reputation).accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10)
-    count =  @mod.compatibility_notes.includes(:submitter => :reputation).references(:submitter => :reputation).accessible_by(current_ability).count
+    compatibility_notes = @mod.compatibility_notes.includes(submitter: :reputation).references(submitter: :reputation).accessible_by(current_ability).sort(params[:sort]).paginate(page: params[:page], per_page: 10)
+    count =  @mod.compatibility_notes.includes(submitter: :reputation).references(submitter: :reputation).accessible_by(current_ability).count
 
     # prepare helpful marks
     helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("CompatibilityNote", compatibility_notes.ids)
 
     # render response
-    render :json => {
+    render json: {
         compatibility_notes: compatibility_notes,
         helpful_marks: helpful_marks,
         max_entries: count,
@@ -257,14 +257,14 @@ class ModsController < ApplicationController
     authorize! :read, @mod
 
     # prepare install order notes
-    install_order_notes = @mod.install_order_notes.includes(:submitter => :reputation).references(:submitter => :reputation).accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10)
-    count =  @mod.install_order_notes.includes(:submitter => :reputation).references(:submitter => :reputation).accessible_by(current_ability).count
+    install_order_notes = @mod.install_order_notes.includes(submitter: :reputation).references(submitter: :reputation).accessible_by(current_ability).sort(params[:sort]).paginate(page: params[:page], per_page: 10)
+    count =  @mod.install_order_notes.includes(submitter: :reputation).references(submitter: :reputation).accessible_by(current_ability).count
 
     # prepare helpful marks
     helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("InstallOrderNote", install_order_notes.ids)
 
     # render response
-    render :json => {
+    render json: {
         install_order_notes: install_order_notes,
         helpful_marks: helpful_marks,
         max_entries: count,
@@ -283,14 +283,14 @@ class ModsController < ApplicationController
     end
 
     # prepare load order notes
-    load_order_notes = @mod.load_order_notes.includes(:submitter => :reputation).references(:submitter => :reputation).accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10)
-    count =  @mod.load_order_notes.includes(:submitter => :reputation).references(:submitter => :reputation).accessible_by(current_ability).count
+    load_order_notes = @mod.load_order_notes.includes(submitter: :reputation).references(submitter: :reputation).accessible_by(current_ability).sort(params[:sort]).paginate(page: params[:page], per_page: 10)
+    count =  @mod.load_order_notes.includes(submitter: :reputation).references(submitter: :reputation).accessible_by(current_ability).count
 
     # prepare helpful marks
     helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("LoadOrderNote", load_order_notes.ids)
 
     # render response
-    render :json => {
+    render json: {
         load_order_notes: load_order_notes,
         helpful_marks: helpful_marks,
         max_entries: count,
@@ -303,7 +303,7 @@ class ModsController < ApplicationController
     authorize! :read, @mod
     render json: {
         mod_options: @mod.mod_options,
-        plugins: Plugin.show_json(@mod.plugins),
+        plugins: json_format(@mod.plugins, :show),
         assets: @mod.asset_file_paths
     }
   end
@@ -363,7 +363,7 @@ class ModsController < ApplicationController
       permitted_filters.each do |key, value|
         if source_filters.include?(key.to_sym)
           unless permitted_filters[key].is_a?(Hash)
-            permitted_filters[key] = { :value => permitted_filters[key] }
+            permitted_filters[key] = { value: permitted_filters[key] }
           end
           permitted_filters[key][:sources] = sources
         end
@@ -374,35 +374,35 @@ class ModsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def mod_params
-      params.require(:mod).permit(:game_id, :name, :authors, :aliases, :is_utility, :has_adult_content, :primary_category_id, :secondary_category_id, :released, :updated, :nexus_info_id, :lovers_info_id, :workshop_info_id,
-         :custom_sources_attributes => [:label, :url],
-         :required_mods_attributes => [:required_id],
-         :tag_names => [],
-         :mod_options_attributes => [:name, :size, :default, :is_fomod_option,
-            :asset_paths => [],
-            :plugin_dumps => [:filename, :author, :description, :crc_hash, :record_count, :override_count, :file_size,
-               :master_plugins => [:filename, :crc_hash],
-               :plugin_record_groups_attributes => [:sig, :record_count, :override_count],
-               :plugin_errors_attributes => [:signature, :form_id, :group, :path, :name, :data],
-               :overrides_attributes => [:fid, :sig]
+      params.require(:mod).permit(:game_id, :name, :authors, :aliases, :is_utility, :has_adult_content, :primary_category_id, :secondary_category_id, :released, :updated, :nexus_info_id, :lover_info_id, :workshop_info_id, :curate,
+         custom_sources_attributes: [:label, :url],
+         required_mods_attributes: [:required_id],
+         tag_names: [],
+         mod_options_attributes: [:name, :size, :default, :is_fomod_option,
+            asset_paths: [],
+            plugin_dumps: [:filename, :author, :description, :crc_hash, :record_count, :override_count, :file_size,
+               master_plugins: [:filename, :crc_hash],
+               plugin_record_groups_attributes: [:sig, :record_count, :override_count],
+               plugin_errors_attributes: [:signature, :form_id, :group, :path, :name, :data],
+               overrides_attributes: [:fid, :sig]
              ]
          ])
     end
 
     def mod_update_params
-      p = params.require(:mod).permit(:name, :authors, :aliases, :is_utility, :has_adult_content, :primary_category_id, :secondary_category_id, :released, :updated, :nexus_info_id, :lovers_info_id, :workshop_info_id, :disallow_contributors, :disable_reviews, :lock_tags, :hidden,
-         :required_mods_attributes => [:id, :required_id, :_destroy],
-         :mod_authors_attributes => [:id, :role, :user_id, :_destroy],
-          :custom_sources_attributes => [:id, :label, :url, :_destroy],
-         :config_files_attributes => [:id, :filename, :install_path, :text_body, :_destroy],
-         :tag_names => [],
-         :mod_options_attributes => [:name, :size, :default, :is_fomod_option,
-            :asset_paths => [],
-            :plugin_dumps => [:filename, :author, :description, :crc_hash, :record_count, :override_count, :file_size,
-                :master_plugins => [:filename, :crc_hash],
-                :plugin_record_groups_attributes => [:sig, :record_count, :override_count],
-                :plugin_errors_attributes => [:signature, :form_id, :group, :path, :name, :data],
-                :overrides_attributes => [:fid, :sig]
+      p = params.require(:mod).permit(:name, :authors, :aliases, :is_utility, :has_adult_content, :primary_category_id, :secondary_category_id, :released, :updated, :mark_updated, :nexus_info_id, :lover_info_id, :workshop_info_id, :disallow_contributors, :disable_reviews, :lock_tags, :hidden,
+         required_mods_attributes: [:id, :required_id, :_destroy],
+         mod_authors_attributes: [:id, :role, :user_id, :_destroy],
+          custom_sources_attributes: [:id, :label, :url, :_destroy],
+         config_files_attributes: [:id, :filename, :install_path, :text_body, :_destroy],
+         tag_names: [],
+         mod_options_attributes: [:name, :size, :default, :is_fomod_option,
+            asset_paths: [],
+            plugin_dumps: [:filename, :author, :description, :crc_hash, :record_count, :override_count, :file_size,
+                master_plugins: [:filename, :crc_hash],
+                plugin_record_groups_attributes: [:sig, :record_count, :override_count],
+                plugin_errors_attributes: [:signature, :form_id, :group, :path, :name, :data],
+                overrides_attributes: [:fid, :sig]
             ]
          ])
       p[:id] = params[:id]
@@ -414,6 +414,6 @@ class ModsController < ApplicationController
     end
 
     def image_params
-      {:image_file => params[:image]}
+      {image_file: params[:image]}
     end
 end

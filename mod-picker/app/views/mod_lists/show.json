@@ -1,0 +1,12 @@
+{
+  "except": ["submitted_by"],
+  "include": {
+    "submitter": {
+      "format": "submitter"
+    },
+    "tags": {
+      "format": "mod_list_tags"
+    },
+    "ignored_notes": {}
+  }
+}

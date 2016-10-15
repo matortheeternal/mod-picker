@@ -9,23 +9,22 @@ app.directive('modSources', function() {
 
 app.controller('modSourcesController', function($scope, sitesFactory, scrapeService) {
     $scope.addSource = function() {
-        if ($scope.sources.length == $scope.sites.length)
-            return;
-        $scope.sources.push({
+        if ($scope.mod.sources.length == $scope.sites.length) return;
+        $scope.mod.sources.push({
             label: "Nexus Mods",
             url: ""
         });
     };
 
     $scope.removeSource = function(source) {
-        var index = $scope.sources.indexOf(source);
-        $scope.sources.splice(index, 1);
+        var index = $scope.mod.sources.indexOf(source);
+        $scope.mod.sources.splice(index, 1);
     };
 
     $scope.validateSource = function(source) {
         var site = sitesFactory.getSite(source.label);
-        var sourceIndex = $scope.sources.indexOf(source);
-        var sourceUsed = $scope.sources.find(function(item, index) {
+        var sourceIndex = $scope.mod.sources.indexOf(source);
+        var sourceUsed = $scope.mod.sources.find(function(item, index) {
             return index != sourceIndex && item.label === source.label
         });
         var match = source.url.match(site.modUrlFormat);
@@ -57,11 +56,11 @@ app.controller('modSourcesController', function($scope, sitesFactory, scrapeServ
 
         var key = site.dataLabel;
         var baseUrl = location.href.replace(location.hash, "");
-        $scope[key] = {};
-        $scope[key].scraping = true;
+        $scope.mod[key] = {};
+        $scope.mod[key].scraping = true;
 
         var successCallback = function(data) {
-            $scope[key] = data;
+            $scope.mod[key] = data;
             source.scraped = true;
             $scope.loadGeneralStats(data, true);
         };
@@ -92,18 +91,18 @@ app.controller('modSourcesController', function($scope, sitesFactory, scrapeServ
 
     /* custom sources */
     $scope.addCustomSource = function() {
-        $scope.customSources.push({
+        $scope.mod.custom_sources.push({
             label: "Custom",
             url: ""
         });
     };
 
     $scope.removeCustomSource = function(source) {
-        var index = $scope.customSources.indexOf(source);
+        var index = $scope.mod.custom_sources.indexOf(source);
         if (source.id) {
             source._destroy = true;
         } else {
-            $scope.customSources.splice(index, 1);
+            $scope.mod.custom_sources.splice(index, 1);
         }
     };
 

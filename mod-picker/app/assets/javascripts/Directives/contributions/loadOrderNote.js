@@ -17,7 +17,7 @@ app.directive('loadOrderNote', function() {
     };
 });
 
-app.controller('loadOrderNoteController', function($scope, $rootScope, $timeout, viewUtils) {
+app.controller('loadOrderNoteController', function($scope, $rootScope) {
     // inherited variables
     $scope.currentUser = $rootScope.currentUser;
 
@@ -25,6 +25,14 @@ app.controller('loadOrderNoteController', function($scope, $rootScope, $timeout,
     angular.default($scope, 'showUserColumn', true);
     angular.default($scope, 'showMarks', true);
 
+    // initialize variables
+    $scope.standingClasses = {
+        good: 'fa-check-circle',
+        unknown: 'fa-question-circle',
+        bad: 'fa-exclamation-circle'
+    };
+
+    // helper functions
     $scope.resolve = function(action, index) {
         if ($scope.note.resolved) {
             return;
@@ -36,10 +44,4 @@ app.controller('loadOrderNoteController', function($scope, $rootScope, $timeout,
         };
         $scope.$emit('resolveLoadOrderNote', options);
     };
-
-    $scope.$watch('note', function() {
-        $timeout(function() {
-            viewUtils.fitContributionTitle($scope.element);
-        });
-    }, true);
 });

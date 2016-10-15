@@ -1,5 +1,5 @@
 class ModAssetFile < ActiveRecord::Base
-  include ScopeHelpers
+  include ScopeHelpers, BetterJson
 
   self.primary_keys = :mod_option_id, :asset_file_id
 
@@ -49,22 +49,6 @@ class ModAssetFile < ActiveRecord::Base
         eq(mod_asset_files[:mod_option_id])).
         join(mod_options_right).on(mod_options_right[:id].
         eq(mod_asset_files_right[:mod_option_id])).join_sources
-  end
-
-  def as_json(options={})
-    if JsonHelpers.json_options_empty(options)
-      default_options = {
-          :except => [],
-          :include => {
-              :asset_file => {
-                  :only => [:path]
-              }
-          }
-      }
-      super(options.merge(default_options))
-    else
-      super(options)
-    end
   end
 
   private

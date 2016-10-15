@@ -14,7 +14,7 @@
                     </div>
                 </section>
 
-                <h3 class="section-title">Actions</h3>
+                <h3 ng-if="!isCurrentUser && permissions.canReport" class="section-title">Actions</h3>
                 <section ng-if="!isCurrentUser && permissions.canReport">
                     <div class="action-box" ng-click="toggleReportModal(true)">
                         <i class="fa fa-flag-o" aria-hidden="true"></i> Report
@@ -97,8 +97,8 @@
                             </div>
                         </a>
                     </div>
-                    <div ng-if="user.bio.steam_username">
-                        <a ng-href="https://steamcommunity.com/id/{{user.bio.steam_username}}">
+                    <div ng-if="user.bio.workshop_username">
+                        <a ng-href="https://steamcommunity.com/id/{{user.bio.workshop_username}}">
                             <div class="action-box source-box">
                                 <img src="/images/workshop_logo.png" class="source-image" />
                                 <span class="source-label">
@@ -108,7 +108,7 @@
                         </a>
                     </div>
                     <div ng-if="user.bio.lover_username">
-                        <a ng-href="https://www.loverslab.com/user/148698-milzschnitte/{{user.bio.lover_user_path}}">
+                        <a ng-href="https://www.loverslab.com/user/{{user.bio.lover_user_path}}">
                             <div class="action-box source-box">
                                 <img src="/images/lab_logo.png" class="source-image" />
                                 <span class="source-label">

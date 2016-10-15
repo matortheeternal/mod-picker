@@ -67,7 +67,7 @@ module Trackable
     events.create(user_id: get_owner_id(event_type), event_type: event_type)
   end
 
-  def track_column_change(event, column)
+  def track_attribute_change(event, column)
     return unless attribute_changed?(column)
     if self.class.columns_hash[column.to_s].type == :boolean
       create_event(self.public_send(column) ? event : :"un#{event}")
@@ -138,7 +138,7 @@ module Trackable
             if tracking.has_key?(:milestones)
               track_milestone_change(tracking[:column], tracking[:milestones])
             else
-              track_column_change(tracking[:event], tracking[:column])
+              track_attribute_change(tracking[:event], tracking[:column])
             end
           end
         end

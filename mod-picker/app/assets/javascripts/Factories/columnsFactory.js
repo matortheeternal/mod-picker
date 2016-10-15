@@ -1,4 +1,6 @@
 app.service('columnsFactory', function() {
+    var factory = this;
+
     this.modColumns = function() {
         return [
             {
@@ -472,7 +474,8 @@ app.service('columnsFactory', function() {
                 label: "Index",
                 data: "index",
                 filter: "number",
-                class: "index-column"
+                class: "index-column",
+                dynamic: true
             },
             {
                 group: "General",
@@ -489,7 +492,8 @@ app.service('columnsFactory', function() {
                 },
                 class: "primary-column",
                 sortData: "mods.name",
-                invertSort: true
+                invertSort: true,
+                dynamic: true
             },
             {
                 group: "General",
@@ -553,6 +557,20 @@ app.service('columnsFactory', function() {
             },
             {
                 group: "General",
+                visibility: false,
+                label: "Asset Files",
+                data: "mod.asset_files_count",
+                filter: "number"
+            },
+            {
+                group: "General",
+                visibility: false,
+                label: "Plugins",
+                data: "mod.plugins_count",
+                filter: "number"
+            },
+            {
+                group: "General",
                 visibility: true,
                 label: "Released",
                 data: "mod.released",
@@ -586,7 +604,8 @@ app.service('columnsFactory', function() {
                     if (item.merged) return 'merged';
                 },
                 filter: "number",
-                class: "index-column"
+                class: "index-column",
+                dynamic: true
             },
             {
                 group: "General",
@@ -600,7 +619,8 @@ app.service('columnsFactory', function() {
                     if (item.merged) return 'merged';
                 },
                 filter: "hex",
-                class: "load-order-column"
+                class: "load-order-column",
+                dynamic: true
             },
             {
                 group: "General",
@@ -619,7 +639,8 @@ app.service('columnsFactory', function() {
                     return item.cleaned ? '(cleaned)' : '';
                 },
                 class: "primary-column",
-                invertSort: true
+                invertSort: true,
+                dynamic: true
             },
             {
                 group: "General",
@@ -1002,4 +1023,37 @@ app.service('columnsFactory', function() {
     this.pluginColumnGroups = function() {
         return ["General"];
     };
+    
+    this.modListPluginStoreColumns = function() {
+        return [
+            {
+                label: "Active",
+                data: "active",
+                class: "short-column"
+            },
+            {
+                label: "Filename",
+                data: "filename",
+                invertSort: true
+            },
+            {
+                label: "Mod Index",
+                data: "mod_index",
+                class: "short-column",
+                invertSort: true
+            },
+            {
+                label: "Mod",
+                data: "mod.name",
+                invertSort: true
+            },
+            {
+                label: "Mod Option",
+                data: "mod_option.name",
+                invertSort: true
+            }
+
+        ];
+    };
+
 });

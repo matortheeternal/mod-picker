@@ -52,6 +52,7 @@ namespace :reset do
     Mod.update_all(primary_category_id: nil, secondary_category_id: nil)
     connection.execute("SET FOREIGN_KEY_CHECKS=0;")
     connection.execute("TRUNCATE TABLE categories;")
+    connection.execute("TRUNCATE TABLE category_priorities;")
     connection.execute("TRUNCATE TABLE review_sections;")
     connection.execute("SET FOREIGN_KEY_CHECKS=1;")
     seed_categories
@@ -72,6 +73,16 @@ namespace :reset do
 
     # all done
     puts "Categories reset successfully"
+  end
+
+  task roles: :environment do
+    puts "\nResetting user roles"
+    User.where(role: ["user", "mod_author"]).find_each do |u|
+      u.update_mod_author_role
+    end
+
+    num_mod_authors = User.where(role: 'mod_author').count
+    puts "#{num_mod_authors} users with the mod author role"
   end
 
   namespace :counters do

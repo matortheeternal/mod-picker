@@ -7,7 +7,7 @@
     </span>
 </h3>
 <section>
-    <div class="dynamic-item" ng-repeat="source in sources">
+    <div class="dynamic-item" ng-repeat="source in mod.sources">
         <select ng-model="source.label" ng-change="validateSource(source)" ng-disabled="source.scraped">
             <option ng-repeat="site in sites" ng-if="!site.hidden">{{site.label}}</option>
         </select>
@@ -17,7 +17,7 @@
             <i class="fa fa-times"></i>
         </span>
     </div>
-    <div class="dynamic-item" ng-repeat="source in customSources" ng-hide="source._destroy">
+    <div class="dynamic-item" ng-repeat="source in mod.custom_sources" ng-hide="source._destroy">
         <input type="text" class="source-label" ng-model="source.label" ng-change="validateCustomSource(source)">
         <input type="text" class="long-input" ng-model="source.url" placeholder="Enter Source URL here" ng-change="validateCustomSource(source)">
         <span class="remove-item" ng-click="removeCustomSource(source)" title="Remove custom source">
@@ -25,13 +25,13 @@
         </span>
     </div>
     <!-- TODO: Fix this not hiding immediately -->
-    <input type="button" class="btn" value="Add Source" ng-click="addSource()" ng-show="sources.length < sites.length">
+    <input type="button" class="btn" value="Add Source" ng-click="addSource()" ng-show="mod.sources.length < sites.length">
     <input type="button" class="btn" value="Add Custom Source" ng-click="addCustomSource()" ng-show="permissions.canUseCustomSources">
 
-    <div class="scraped-data-container" ng-if="nexus || lab || workshop">
-        <div class="scraped-data" ng-if="nexus">
+    <div class="scraped-data-container" ng-if="mod.nexus || mod.lab || mod.workshop">
+        <div class="scraped-data" ng-if="mod.nexus">
             <h4>Nexus Mods Data</h4>
-            <loader data="nexus.id" spinner-class="medium-spinner">
+            <loader data="mod.nexus.id" spinner-class="medium-spinner">
                 <table class="infotable">
                     <colgroup>
                         <col span="1" style="width: 160px;">
@@ -40,40 +40,40 @@
                     <tbody>
                     <tr>
                         <td>Mod ID</td>
-                        <td>{{nexus.id}}</td>
+                        <td>{{mod.nexus.id}}</td>
                     </tr>
                     <tr>
                         <td>Mod Name</td>
-                        <td>{{nexus.mod_name}}</td>
+                        <td>{{mod.nexus.mod_name}}</td>
                     </tr>
                     <tr>
                         <td>Uploaded By</td>
-                        <td>{{nexus.uploaded_by}}</td>
+                        <td>{{mod.nexus.uploaded_by}}</td>
                     </tr>
                     <tr>
                         <td>Authors</td>
-                        <td>{{nexus.authors}}</td>
+                        <td>{{mod.nexus.authors}}</td>
                     </tr>
                     <tr>
                         <td>Latest Version</td>
-                        <td>{{nexus.current_version}}</td>
+                        <td>{{mod.nexus.current_version}}</td>
                     </tr>
                     <tr>
                         <td>Date Released</td>
-                        <td>{{nexus.released | date }}</td>
+                        <td>{{mod.nexus.released | date }}</td>
                     </tr>
                     <tr>
                         <td>Date Updated</td>
-                        <td>{{nexus.updated | date }}</td>
+                        <td>{{mod.nexus.updated | date }}</td>
                     </tr>
                     </tbody>
                 </table>
             </loader>
         </div>
 
-        <div class="scraped-data" ng-if="workshop">
+        <div class="scraped-data" ng-if="mod.workshop">
             <h4>Steam Workshop Data</h4>
-            <loader data="workshop.id" spinner-class="medium-spinner">
+            <loader data="mod.workshop.id" spinner-class="medium-spinner">
                 <table class="infotable">
                     <colgroup>
                         <col span="1" style="width: 160px;">
@@ -82,32 +82,32 @@
                     <tbody>
                     <tr>
                         <td>Mod ID</td>
-                        <td>{{workshop.id}}</td>
+                        <td>{{mod.workshop.id}}</td>
                     </tr>
                     <tr>
                         <td>Mod Name</td>
-                        <td>{{workshop.mod_name}}</td>
+                        <td>{{mod.workshop.mod_name}}</td>
                     </tr>
                     <tr>
                         <td>Uploaded By</td>
-                        <td>{{workshop.uploaded_by}}</td>
+                        <td>{{mod.workshop.uploaded_by}}</td>
                     </tr>
                     <tr>
                         <td>Date Released</td>
-                        <td>{{workshop.released | date }}</td>
+                        <td>{{mod.workshop.released | date }}</td>
                     </tr>
                     <tr>
                         <td>Date Updated</td>
-                        <td>{{workshop.updated | date }}</td>
+                        <td>{{mod.workshop.updated | date }}</td>
                     </tr>
                     </tbody>
                 </table>
             </loader>
         </div>
 
-        <div class="scraped-data" ng-if="lab">
+        <div class="scraped-data" ng-if="mod.lab">
             <h4>Lover's Lab Data</h4>
-            <loader data="lab.id" spinner-class="medium-spinner">
+            <loader data="mod.lab.id" spinner-class="medium-spinner">
                 <table class="infotable">
                     <colgroup>
                         <col span="1" style="width: 160px;">
@@ -116,23 +116,23 @@
                     <tbody>
                     <tr>
                         <td>Mod ID</td>
-                        <td>{{lab.id}}</td>
+                        <td>{{mod.lab.id}}</td>
                     </tr>
                     <tr>
                         <td>Mod Name</td>
-                        <td>{{lab.mod_name}}</td>
+                        <td>{{mod.lab.mod_name}}</td>
                     </tr>
                     <tr>
                         <td>Uploaded By</td>
-                        <td>{{lab.uploaded_by}}</td>
+                        <td>{{mod.lab.uploaded_by}}</td>
                     </tr>
                     <tr>
                         <td>Date Released</td>
-                        <td>{{lab.released | date }}</td>
+                        <td>{{mod.lab.released | date }}</td>
                     </tr>
                     <tr>
                         <td>Date Updated</td>
-                        <td>{{lab.updated | date }}</td>
+                        <td>{{mod.lab.updated | date }}</td>
                     </tr>
                     </tbody>
                 </table>

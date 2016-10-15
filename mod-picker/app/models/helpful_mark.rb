@@ -1,5 +1,5 @@
 class HelpfulMark < ActiveRecord::Base
-  include Filterable, ScopeHelpers
+  include Filterable, ScopeHelpers, BetterJson
   
   self.primary_keys = :submitted_by, :helpfulable_id, :helpfulable_type
 
@@ -30,17 +30,6 @@ class HelpfulMark < ActiveRecord::Base
   before_save :set_dates
   after_create :increment_counters
   before_destroy :decrement_counters
-
-  def as_json(options={})
-    if JsonHelpers.json_options_empty(options)
-      default_options = {
-          :only => [:helpfulable_id, :helpful]
-      }
-      super(options.merge(default_options))
-    else
-      super(options)
-    end
-  end
 
   private
     def set_dates

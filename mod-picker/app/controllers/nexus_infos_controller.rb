@@ -1,10 +1,10 @@
 class NexusInfosController < ApplicationController
-  before_action :set_nexus_info, only: [:show, :destroy]
+  before_action :set_nexus_info, only: [:show]
 
   # GET /nexus_infos/1
   def show
     @nexus_info.rescrape
-    render :json => @nexus_info
+    render json: @nexus_info
   end
 
   private

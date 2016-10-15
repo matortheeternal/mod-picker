@@ -13,6 +13,7 @@ app.service('errorsFactory', function() {
                 name: "Identical to Master Records",
                 acronym: "ITM",
                 caption: "ITMs are dirty edits where a record has been overridden in a plugin file, \r\nbut hasn't been changed.  Click for more information.",
+                benign: true,
                 errors: []
             },
             {
@@ -20,13 +21,14 @@ app.service('errorsFactory', function() {
                 name: "Identical to Previous Override Records",
                 acronym: "ITPO",
                 caption: "ITPOs are dirty edits where a record has been overridden in a plugin file, \r\nbut hasn't been changed relative to the previous override.  Click for \r\nmore information.",
+                benign: true,
                 errors: []
             },
             {
                 group: 3,
                 name: "Deleted References",
                 acronym: "UDR",
-                caption: "UDRs are dirty edits where a record has been overridden in a plugin file, \r\nbut hasn't been changed.  Click for more information.",
+                caption: "UDRs are dirty edits where an object reference has been deleted instead \r\nof being disabled.  Click for more information.",
                 errors: []
             },
             {
@@ -40,14 +42,15 @@ app.service('errorsFactory', function() {
                 group: 5,
                 name: "Unresolved References",
                 acronym: "URR",
-                caption: "URRs are errors where a record references a record that doesn't exist.  \r\nClick for more information.",
+                caption: "URRs are errors where a record references another record that doesn't exist.  \r\nClick for more information.",
                 errors: []
             },
             {
                 group: 6,
                 name: "Unexpected References",
                 acronym: "UER",
-                caption: "UERs are errors where a record references a record in an abnormal fashion. \r\n  Click for more information.",
+                caption: "UERs are errors where a record references another record in an abnormal \r\nfashion. Click for more information.",
+                benign: true,
                 errors: []
             }
         ];

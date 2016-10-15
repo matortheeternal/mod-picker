@@ -18,7 +18,7 @@ app.directive('installOrderNote', function() {
     };
 });
 
-app.controller('installOrderNoteController', function($scope, $rootScope, $timeout, viewUtils) {
+app.controller('installOrderNoteController', function($scope, $rootScope) {
     // inherited variables
     $scope.currentUser = $rootScope.currentUser;
 
@@ -26,6 +26,14 @@ app.controller('installOrderNoteController', function($scope, $rootScope, $timeo
     angular.default($scope, 'showUserColumn', true);
     angular.default($scope, 'showMarks', true);
 
+    // initialize variables
+    $scope.standingClasses = {
+        good: 'fa-check-circle',
+        unknown: 'fa-question-circle',
+        bad: 'fa-exclamation-circle'
+    };
+
+    // helper functions
     $scope.resolve = function(action, index) {
         if ($scope.note.resolved) {
             return;
@@ -37,10 +45,4 @@ app.controller('installOrderNoteController', function($scope, $rootScope, $timeo
         };
         $scope.$emit('resolveInstallOrderNote', options);
     };
-
-    $scope.$watch('note', function() {
-        $timeout(function() {
-            viewUtils.fitContributionTitle($scope.element);
-        });
-    }, true);
 });

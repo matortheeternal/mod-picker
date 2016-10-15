@@ -1,5 +1,5 @@
 class ReputationLink < ActiveRecord::Base
-  include Trackable
+  include Trackable, BetterJson
 
   # EVENT TRACKING
   track :added
@@ -19,16 +19,6 @@ class ReputationLink < ActiveRecord::Base
   # CALLBACKS
   after_create :increment_counters
   before_destroy :decrement_counters
-
-  def notification_json_options(event_type)
-    {
-        :only => [],
-        :include => {
-            :target_user => { :only => [:id, :username] },
-            :source_user => { :only => [:id, :username] }
-        }
-    }
-  end
 
   private
     def decrement_counters

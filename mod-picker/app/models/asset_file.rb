@@ -1,5 +1,5 @@
 class AssetFile < ActiveRecord::Base
-  include RecordEnhancements
+  include RecordEnhancements, BetterJson
 
   belongs_to :game, :inverse_of => 'asset_files'
 
@@ -8,15 +8,4 @@ class AssetFile < ActiveRecord::Base
 
   # VALIDATIONS
   validates :game_id, :path, presence: true
-
-  def as_json(options={})
-    if JsonHelpers.json_options_empty(options)
-      default_options = {
-          :only => [:path]
-      }
-      super(options.merge(default_options))
-    else
-      super(options)
-    end
-  end
 end

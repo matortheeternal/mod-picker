@@ -19,7 +19,7 @@ app.directive('compatibilityNote', function() {
     }
 });
 
-app.controller('compatibilityNoteController', function($scope, $rootScope, $timeout, viewUtils) {
+app.controller('compatibilityNoteController', function($scope, $rootScope) {
     // inherited variables
     $scope.currentUser = $rootScope.currentUser;
 
@@ -27,6 +27,14 @@ app.controller('compatibilityNoteController', function($scope, $rootScope, $time
     angular.default($scope, 'showUserColumn', true);
     angular.default($scope, 'showMarks', true);
 
+    // initialize variables
+    $scope.standingClasses = {
+        good: 'fa-check-circle',
+        unknown: 'fa-question-circle',
+        bad: 'fa-exclamation-circle'
+    };
+
+    // helper functions
     $scope.getVerb = function() {
         switch ($scope.note.status) {
             case "incompatible":
@@ -56,12 +64,6 @@ app.controller('compatibilityNoteController', function($scope, $rootScope, $time
             return 'You must visit the mods tab before you can use this action.'
         }
     };
-
-    $scope.$watch('note', function() {
-        $timeout(function() {
-            viewUtils.fitContributionTitle($scope.element);
-        });
-    }, true);
 
     // set compatibility_verb
     $scope.note.compatibility_verb = $scope.getVerb();

@@ -1,4 +1,6 @@
 class Notification < ActiveRecord::Base
+  include BetterJson
+
   # ATTRIBUTES
   self.primary_keys = :event_id, :user_id
   self.per_page = 50
@@ -15,22 +17,4 @@ class Notification < ActiveRecord::Base
 
   # VALIDATIONS
   validates :event_id, :user_id, presence: true
-
-  def as_json(options={})
-    if JsonHelpers.json_options_empty(options)
-      default_options = {
-          :only => [],
-          :include => {
-              :event => {
-                  :include => {
-                      :content => event.content_json
-                  }
-              }
-          }
-      }
-      super(options.merge(default_options))
-    else
-      super(options)
-    end
-  end
 end

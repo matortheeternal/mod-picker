@@ -1,10 +1,10 @@
 class WorkshopInfosController < ApplicationController
-  before_action :set_workshop_info, only: [:show, :destroy]
+  before_action :set_workshop_info, only: [:show]
 
   # GET /workshop_infos/1
   def show
     @workshop_info.rescrape
-    render :json => @workshop_info
+    render json: @workshop_info
   end
 
   private

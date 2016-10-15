@@ -1,5 +1,5 @@
 class Article < ActiveRecord::Base
-  include Filterable, Sortable, Imageable, RecordEnhancements, ScopeHelpers
+  include Filterable, Sortable, Imageable, RecordEnhancements, ScopeHelpers, BetterJson
 
   # ATTRIBUTES
   self.per_page = 15
@@ -30,27 +30,6 @@ class Article < ActiveRecord::Base
 
   # CALLBACKS
   before_save :set_dates
-
-  def as_json(options={})
-    if JsonHelpers.json_options_empty(options)
-      default_options = {
-          :include => {
-              :submitter => {
-                  :only => [:id, :username, :role, :title],
-                  :methods => :avatar
-              }
-          },
-          :methods => :image
-      }
-      super(options.merge(default_options))
-    else
-      super(options)
-    end
-  end
-
-  def notification_json_options(event_type)
-    { :only => [:title] }
-  end
 
   def self.sortable_columns
     {

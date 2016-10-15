@@ -1,0 +1,8 @@
+{
+  "only": ["name", "submitted_by"],
+  "include": {
+    "submitter": {
+      "only": ["username"]
+    }
+  }
+}

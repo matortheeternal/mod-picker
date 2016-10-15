@@ -1,5 +1,5 @@
 class UserSetting < ActiveRecord::Base
-  include Filterable
+  include Filterable, BetterJson
 
   belongs_to :user
 

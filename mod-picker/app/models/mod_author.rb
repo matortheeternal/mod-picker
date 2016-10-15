@@ -1,5 +1,5 @@
 class ModAuthor < ActiveRecord::Base
-  include Trackable
+  include Trackable, BetterJson
 
   # ATTRIBUTES
   enum role: [:author, :contributor, :curator]
@@ -8,6 +8,7 @@ class ModAuthor < ActiveRecord::Base
   track :added
 
   # NOTIFICATION SUBSCRIPTIONS
+  subscribe :user, to: [:added]
   subscribe :mod_author_users, to: [:added]
 
   # ASSOCIATIONS
@@ -20,7 +21,8 @@ class ModAuthor < ActiveRecord::Base
 
   # CALLBACKS
   after_create :increment_counters
-  before_destroy :decrement_counters
+  after_save :update_user_role, :hide_reviews
+  before_destroy :decrement_counters, :update_user_role, :unhide_reviews
 
   def self.link_author(model, user_id, username)
     infos = model.where(uploaded_by: username)
@@ -38,22 +40,25 @@ class ModAuthor < ActiveRecord::Base
     User.joins(:mod_authors).where(:mod_authors => {role: 0, mod_id: mod_id})
   end
 
-  def notification_json_options(event_type)
-    {
-        :only => [:role],
-        :include => {
-            :user => { :only => [:id, :username] },
-            :mod => { :only => [:id, :name] }
-        }
-    }
-  end
-
   private
     def decrement_counters
-      self.user.update_counter(:authored_mods_count, -1)
+      user.update_counter(:authored_mods_count, -1)
+    end
+
+    def update_user_role
+      user.update_mod_author_role
+    end
+
+    def hide_reviews
+      hide = role.to_sym == :curator
+      user.reviews.where(mod_id: mod_id).update_all(hidden: hide)
+    end
+
+    def unhide_reviews
+      user.reviews.where(mod_id: mod_id).update_all(hidden: false)
     end
 
     def increment_counters
-      self.user.update_counter(:authored_mods_count, 1)
+      user.update_counter(:authored_mods_count, 1)
     end
 end

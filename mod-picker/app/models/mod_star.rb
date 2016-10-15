@@ -1,5 +1,5 @@
 class ModStar < ActiveRecord::Base
-  include RecordEnhancements
+  include RecordEnhancements, BetterJson
 
   self.primary_keys = :mod_id, :user_id
 

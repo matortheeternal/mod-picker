@@ -1,0 +1,6 @@
+{
+  "except": ["game_id", "hidden", "mods_count"],
+  "include": {
+    "submitter": {}
+  }
+}

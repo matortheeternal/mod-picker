@@ -239,7 +239,7 @@ app.controller('contributionActionsController', function($scope, $rootScope, $ti
         // went through
         $timeout(function() {
             $scope.showDropdown = false;
-        }, 100);
+        }, 250);
     };
 
     $scope.setPermissions = function() {

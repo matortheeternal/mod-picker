@@ -51,9 +51,11 @@ app.controller('modDetailsModalController', function($scope, $rootScope, eventHa
     };
 
     // load option active states
-    var modOptions = $scope.detailsItem.mod.mod_options;
-    modOptions.forEach(function(option) {
-        var existingModOption = $scope.findModOption(option.id);
-        option.active = !!existingModOption;
-    });
+    if ($scope.detailsItem.mod) {
+        var modOptions = $scope.detailsItem.mod.mod_options;
+        modOptions.forEach(function(option) {
+            var existingModOption = $scope.findModOption(option.id);
+            option.active = !!existingModOption;
+        });
+    }
 });
