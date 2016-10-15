@@ -8,6 +8,7 @@ class ModAuthor < ActiveRecord::Base
   track :added
 
   # NOTIFICATION SUBSCRIPTIONS
+  subscribe :user, to: [:added]
   subscribe :mod_author_users, to: [:added]
 
   # ASSOCIATIONS
