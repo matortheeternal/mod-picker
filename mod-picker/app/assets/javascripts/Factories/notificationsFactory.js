@@ -87,7 +87,7 @@ app.service('notificationsFactory', function() {
         '<a href="#/mod-list/{{content.mod_list.id}}">{{content.mod_list.name}}</a>';
     var noteCorrectionCommentLink = function(noteType) {
         var noteTypeDashed = noteType.replace(' ', '-');
-        return '<a href="#/mod/{{content.commentable.correctable.first_mod.id}}/' + noteTypeDashed + '/{{content.commentable.correctable_id}}">your ' + noteType + ' note correction</a>';
+        return '<a href="#/mod/{{content.commentable.correctable.first_mod.id}}/' + noteTypeDashed + '/{{content.commentable.correctable_id}}">((commentableOwnerClause)) ' + noteType + ' note correction</a>';
     };
     var noteCorrectionLink = function(noteType) {
         var noteTypeDashed = noteType.replace(' ', '-');
@@ -106,15 +106,16 @@ app.service('notificationsFactory', function() {
         Comment: {
             key: "commentable",
             Article: '<a href="#/article/{{content.commentable_id}}">{{content.commentable.title}}</a>',
-            User: '<a href="#/user/{{content.commentable_id}}">{{content.commentable_id == currentUser.id ? \"your\" : content.commentable.username + \"\'s\" }} profile</a>',
+            User: '<a href="#/user/{{content.commentable_id}}">((commentableOwnerClause)) profile</a>',
             Correction: {
                 key: "correctable",
-                Mod: '<a href="#/mod/{{content.commentable.correctable_id}}">your appeal</a>',
+                Mod: '<a href="#/mod/{{content.commentable.correctable_id}}">((commentableOwnerClause)) appeal</a>',
                 CompatibilityNote: noteCorrectionCommentLink("compatibility"),
                 InstallOrderNote: noteCorrectionCommentLink("install order"),
                 LoadOrderNote: noteCorrectionCommentLink("load order")
             },
-            ModList: '<a href="#/mod-list/{{content.commentable_id}}/comments">your mod list</a>'
+            ModList: '<a href="#/mod-list/{{content.commentable_id}}/comments">((commentableOwnerClause)) mod list</a>',
+            HelpPage: '<a href="/help/{{content.commentable.title}}">{{content.commentable.title}}</a>'
         },
         Correction: {
             key: "correctable",
@@ -170,11 +171,17 @@ app.service('notificationsFactory', function() {
         }
     };
 
-    this.getNotification = function(event) {
-        var template = factory.getNotificationTemplate(event);
-        return template.replace(/\(\(([\w]+)\)\)/g, function(match) {
+    this.compile = function(template, event, depth) {
+        var result = template.replace(/\(\(([\w]+)\)\)/g, function(match) {
             return factory[match.slice(2, -2)](event);
         });
+        if (depth > 1) return factory.compile(result, event, depth - 1);
+        return result;
+    };
+
+    this.getNotification = function(event) {
+        var template = factory.getNotificationTemplate(event);
+        return factory.compile(template, event, 2);
     };
 
     this.setCurrentUserID = function(currentUserID) {
@@ -212,6 +219,24 @@ app.service('notificationsFactory', function() {
         }
     };
 
+    this.getCommentableOwnerId = function(event) {
+        return event.content.commentable.submitted_by || event.content.commentable_id;
+    };
+
+    this.getCommentableOwnerUsername = function(event) {
+        var commentable = event.content.commentable;
+        return commentable.username || commentable.submitter && commentable.submitter.username;
+    };
+
+    this.commentableOwnerClause = function(event) {
+        var ownerId = factory.getCommentableOwnerId(event);
+        if (ownerId != factory.currentUserID) {
+            return factory.getCommentableOwnerUsername(event) + "'s";
+        } else {
+            return "your";
+        }
+    };
+
     this.authorRole = function(event) {
         if (event.content.role === "author") {
             return "an " + event.content.role;
@@ -221,7 +246,7 @@ app.service('notificationsFactory', function() {
     };
 
     this.commentContext = function(event) {
-        var ownerId = event.content.commentable.submitted_by || event.content.commentable_id;
+        var ownerId = factory.getCommentableOwnerId(event);
         if (ownerId != factory.currentUserID) {
             return "reply to your";
         } else {

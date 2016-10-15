@@ -3,7 +3,6 @@
   "include": {
     "submitter": {
       "format": "submitter"
-    },
-    "commentable": {}
+    }
   }
 }
