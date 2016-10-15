@@ -8,12 +8,13 @@ class Mod < ActiveRecord::Base
 
   # EVENT TRACKING
   track :added, :hidden, :updated
+  track_change :analysis_updated, :column => 'updated'
   track_milestones :column => 'stars_count', :milestones => [10, 50, 100, 500, 1000, 5000, 10000, 50000, 100000, 500000]
 
   # NOTIFICATION SUBSCRIPTIONS
   subscribe :author_users, to: [:hidden, :unhidden, *Event.milestones]
-  subscribe :contribution_authors, to: [:updated]
-  subscribe :user_stars, to: [:updated]
+  subscribe :contribution_authors, to: [:analysis_updated, :updated]
+  subscribe :user_stars, to: [:analysis_updated]
 
   # SCOPES
   include_scope :has_adult_content, :alias => 'include_adult'
