@@ -85,19 +85,15 @@ app.controller('tableResultsController', function($scope, $rootScope, tableUtils
         column[firstKey] = !b1 && !b2;
     };
 
-    // sorts by a column
-    $scope.sortColumn = function(column) {
-        // return if we don't have a sort object or the column isn't sortable
-        if (!$scope.sort || column.unsortable) return;
-
+    $scope.setSortColumn = function(column) {
         if (sortedColumn && sortedColumn !== column) {
             sortedColumn.up = false;
             sortedColumn.down = false;
         }
         sortedColumn = column;
-        $scope.toggleSort(column);
+    };
 
-        // send data to backend
+    $scope.updateSortObject = function(column) {
         if (column.up || column.down) {
             $scope.sort.column = $scope.getSortData(column);
             $scope.sort.direction = column.up ? "ASC" : "DESC";
@@ -105,6 +101,15 @@ app.controller('tableResultsController', function($scope, $rootScope, tableUtils
             delete $scope.sort.column;
             delete $scope.sort.direction;
         }
+    };
+
+    // sorts by a column
+    $scope.sortColumn = function(column) {
+        // return if we don't have a sort object or the column isn't sortable
+        if (!$scope.sort || column.unsortable) return;
+        $scope.setSortColumn(column);
+        $scope.toggleSort(column);
+        $scope.updateSortObject(column);
     };
 
     // load sort into view
