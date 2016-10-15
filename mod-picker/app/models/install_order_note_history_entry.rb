@@ -3,7 +3,7 @@ class InstallOrderNoteHistoryEntry < ActiveRecord::Base
   belongs_to :editor, :class_name => 'User', :foreign_key => 'edited_by', :inverse_of => 'install_order_note_history_entries'
 
   # VALIDATIONS
-  validates :edited_by, :text_body, :edit_summary, presence: true
+  validates :install_order_note_id, :edited_by, :text_body, presence: true
 
   # CALLBACKS
   after_create :increment_counters

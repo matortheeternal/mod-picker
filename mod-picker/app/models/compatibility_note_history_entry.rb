@@ -5,7 +5,7 @@ class CompatibilityNoteHistoryEntry < ActiveRecord::Base
   enum status: [ :incompatible, :partially_incompatible, :compatibility_mod, :compatibility_option, :make_custom_patch ]
 
   # VALIDATIONS
-  validates :edited_by, :status, :text_body, :edit_summary, presence: true
+  validates :compatibility_note_id, :edited_by, :status, :text_body, presence: true
 
   # CALLBACKS
   after_create :increment_counters
