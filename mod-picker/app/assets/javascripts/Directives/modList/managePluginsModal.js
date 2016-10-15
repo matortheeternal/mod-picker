@@ -25,6 +25,23 @@ app.controller('managePluginsModalController', function($scope, columnsFactory, 
         }
     });
 
+    $scope.findInstallOrderMod = function(modId) {
+        if (!$scope.model.mods) {
+            return $scope.install_order.find(function(item) {
+                return item.mod_id == modId;
+            });
+        } else {
+            return $scope.findMod(modId, true);
+        }
+    };
+
+    $scope.buildPluginsStore = function() {
+        $scope.plugins_store.forEach(function(plugin) {
+            var mod = $scope.findInstallOrderMod(plugin.mod.id);
+            plugin.mod_index = (mod && mod.index) || -1;
+        });
+    };
+
     console.log($scope.plugins_store);
 
 
@@ -103,4 +120,7 @@ app.controller('managePluginsModalController', function($scope, columnsFactory, 
     if ($scope.columns && $scope.sort && $scope.sort.column) {
         $scope.loadSort();
     }
+
+    // add mod indices to plugins_store
+    $scope.buildPluginsStore();
 });
