@@ -133,8 +133,8 @@ class UsersController < ApplicationController
     sources = { nexus: true, lab: true, workshop: true }
 
     render json: {
-        favorites: Mod.index_json(favorite_mods, sources),
-        authored: Mod.index_json(authored_mods, sources)
+        favorites: json_format(favorite_mods, :index),
+        authored: json_format(authored_mods, :index)
     }
   end
 
