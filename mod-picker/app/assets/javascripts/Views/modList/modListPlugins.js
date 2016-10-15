@@ -7,7 +7,7 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, catego
     // SHARED FUNCTIONS
     $scope.searchPluginStore = pluginService.searchModListPluginStore($scope);
     listMetaFactory.buildModelFunctions($scope, 'plugin', 'plugin', 'filename', 'CustomPlugin.esp');
-    listMetaFactory.buildSortFunctions($scope, 'load', 'plugin', 'overrides_count');
+    listMetaFactory.buildSortFunctions($scope, 'load', 'plugin', 'override_count');
 
     // MODAL HANDLING
     $scope.showDetailsModal = false;
