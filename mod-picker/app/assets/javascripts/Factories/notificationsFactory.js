@@ -18,7 +18,7 @@ app.service('notificationsFactory', function() {
         ReputationLink: "((endorser)) has endorsed you"
     };
 
-    this.updated = {
+    this.changed = {
         Mod: "((contentLink)) has been updated",
         ModList: "((contentLink)) has been updated"
     };
@@ -34,7 +34,7 @@ app.service('notificationsFactory', function() {
     var contributionChangedTemplate = function(label) {
         return "((ownershipClause)) "+label+" for ((contentLink)) has been ((changeVerb))";
     };
-    this.changed = {
+    this.attributeChanged = {
         Review: contributionChangedTemplate("review"),
         CompatibilityNote: contributionChangedTemplate("compatibility note"),
         InstallOrderNote: contributionChangedTemplate("install order note"),
@@ -159,13 +159,13 @@ app.service('notificationsFactory', function() {
     this.reputationMilestones = [10, 20, 40, 80, 160, 320, 640, 1280];
 
     this.getNotificationTemplate = function(event) {
-        var storedEvents = ["added", "removed", "updated", "status", "message"];
+        var storedEvents = ["added", "removed", "changed", "status", "message"];
         var changeEvents = ["hidden", "unhidden", "approved", "unapproved"];
         var eventType = event.event_type, contentType = event.content_type;
         if (storedEvents.contains(eventType)) {
             return factory[eventType][contentType];
         } else if (changeEvents.contains(eventType)) {
-            return factory.changed[contentType];
+            return factory.attributeChanged[contentType];
         } else if (eventType.startsWith("milestone")) {
             return factory.milestones[contentType];
         }
