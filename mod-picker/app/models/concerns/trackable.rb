@@ -111,7 +111,7 @@ module Trackable
       end
     end
 
-    def track_changed(options={})
+    def track_updated(options={})
       class_eval do
         after_update :changed_event
         def changed_event
