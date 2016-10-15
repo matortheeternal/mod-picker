@@ -1030,7 +1030,7 @@ app.service('columnsFactory', function() {
                 label: "Active",
                 data: "active",
                 invertSort: true,
-                class: "active-column"
+                class: "short-column"
             },
             {
                 label: "Filename",
@@ -1042,6 +1042,7 @@ app.service('columnsFactory', function() {
             {
                 label: "Mod Index",
                 data: "mod_index",
+                class: "short-column"
             },
             {
                 label: "Mod",
