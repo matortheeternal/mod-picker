@@ -20,30 +20,6 @@ class ModRequirement < ActiveRecord::Base
   after_create :increment_counter_caches
   before_destroy :decrement_counter_caches
 
-  def self.required_mods_json_format
-    {
-        :only => [:id],
-        :include => { :required_mod => Mod.base_json_format }
-    }
-  end
-
-  def self.required_by_json_format
-    {
-        :only => [],
-        :include => { :mod => Mod.base_json_format }
-    }
-  end
-
-  def self.base_json_format
-    {
-        :only => [],
-        :include => {
-            :mod => Mod.base_json_format,
-            :required_mod => Mod.base_json_format
-        }
-    }
-  end
-
   # Private methods
   private
     def increment_counter_caches

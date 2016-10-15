@@ -14,7 +14,9 @@
     },
     "custom_sources": {},
     "mod_authors": {},
-    "required_mods": {},
+    "required_mods": {
+      "format": "edit"
+    },
     "config_files": {
       "format": "edit"
     }
