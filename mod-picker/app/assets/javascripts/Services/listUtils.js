@@ -81,10 +81,12 @@ app.service('listUtils', function() {
             modelGroup.dragType = 'group';
             modelGroup.hasChildren = true;
             modelGroup.class = 'group bg-' + modelGroup.color;
-            model.push(modelGroup);
             modelGroup.children = items.filter(function(item) {
                 return item.group_id == modelGroup.id;
+            }).sort(function(a, b) {
+                return a.index - b.index;
             });
+            model.push(modelGroup);
         });
     };
 
