@@ -1,5 +1,5 @@
 {
-  "only": ["id", "is_official", "name", "aliases", "authors", "status", "primary_category_id", "secondary_category_id", "average_rating", "reputation", "asset_files_count", "stars_count", "released", "updated"],
+  "only": ["id", "is_official", "name", "aliases", "authors", "status", "primary_category_id", "secondary_category_id", "average_rating", "reputation", "stars_count", "asset_files_count", "plugins_count", "released", "updated"],
   "include": {
     "mod_options": {
       "format": "mod_list_mod"
