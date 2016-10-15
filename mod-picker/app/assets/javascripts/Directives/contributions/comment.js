@@ -19,21 +19,24 @@ app.controller('commentController', function($scope, $rootScope, $filter, $timeo
     $scope.currentUser = $rootScope.currentUser;
     $scope.currentGame = $rootScope.currentGame;
 
-    // this is the report object
+    // initialize local variables
     $scope.report = {
         reportable_id: $scope.comment.id,
         reportable_type: 'Comment'
     };
-
     $scope.modelObj = {
         name: "Comment",
         label: "Comment",
         route: "comments"
     };
-
     $scope.target = $scope.comment;
-    // initialize local variables
     $scope.errorEvent = $scope.eventPrefix ? $scope.eventPrefix + 'ErrorMessage' : 'errorMessage';
+
+    $scope.getContextLink = function() {
+        var comment = $scope.comment;
+        var subpath = comment.commentable_type === "User" ? "social" : "comments";
+        return comment.commentable_link + '/' + subpath;
+    };
 
     $scope.getDateString = function() {
         var comment = $scope.comment;

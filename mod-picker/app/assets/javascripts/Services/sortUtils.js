@@ -193,7 +193,7 @@ app.service('sortUtils', function($q, categoryService, colorsFactory, modListSer
         // we slice the last off because we don't want to sort custom content
         groups.slice(1, groups.length - 1).forEach(function(group) {
             group.children.sort(function(a, b) {
-                return a[key][innerKey] - b[key][innerKey];
+                return b[key][innerKey] - a[key][innerKey];
             });
         });
     };

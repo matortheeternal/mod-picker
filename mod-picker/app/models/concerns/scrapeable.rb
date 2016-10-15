@@ -4,7 +4,7 @@ module Scrapeable
   included do
     # Scopes
     scope :can_recrape, -> {
-      table = self.arel_table
+      table = arel_table
       joins(:mod).where(:mods => {hidden: false}).
         where(table[:last_scraped].lt(7.days.ago).
               or(table[:released].gt(7.days.ago)))
@@ -15,18 +15,18 @@ module Scrapeable
   end
 
   def update_mod_dates
-    return if self.mod_id.blank?
+    return if mod_id.blank?
 
     hash = Hash.new
-    hash[:updated] = self.updated if self.mod.updated.nil? || self.mod.updated < self.updated
-    hash[:released] = self.released if self.mod.released.nil? || self.mod.released > self.released
+    hash[:updated] = updated if mod.updated.nil? || mod.updated < updated
+    hash[:released] = released if mod.released.nil? || mod.released > released
 
-    self.mod.update_columns(hash) if hash.any?
+    mod.update_columns(hash) if hash.any?
   end
 
   def rescrape
-    if self.last_scraped.nil? || self.last_scraped < 1.week.ago
-      self.scrape
+    if last_scraped.nil? || last_scraped < 1.week.ago
+      scrape
     end
   end
 end

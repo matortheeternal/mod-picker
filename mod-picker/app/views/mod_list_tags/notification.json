@@ -1,0 +1,11 @@
+{
+  "only": [],
+  "include": {
+    "tag": {
+      "only": ["text"]
+    },
+    "mod_list": {
+      "only": ["id", "name"]
+    }
+  }
+}

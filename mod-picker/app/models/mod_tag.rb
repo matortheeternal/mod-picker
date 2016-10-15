@@ -1,5 +1,5 @@
 class ModTag < ActiveRecord::Base
-  include Trackable
+  include Trackable, BetterJson
 
   # EVENT TRACKING
   track :added

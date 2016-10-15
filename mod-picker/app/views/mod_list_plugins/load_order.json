@@ -1,0 +1,8 @@
+{
+  "only": ["plugin_id", "index", "merged"],
+  "include": {
+    "plugin": {
+      "only": ["mod_id", "filename"]
+    }
+  }
+}

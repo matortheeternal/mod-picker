@@ -1,30 +1,31 @@
 app.service('modValidationService', function() {
     var service = this;
 
-    this.sourcesValid = function($scope) {
+    this.sourcesValid = function(mod) {
         var sourcesValid = true;
         var oldSources = false;
-        $scope.sources.forEach(function(source) {
+        mod.sources.forEach(function(source) {
             sourcesValid = sourcesValid && source.valid;
             oldSources = oldSources || source.old;
         });
 
         // custom source validation
-        if ($scope.customSources.length) {
-            $scope.customSources.forEach(function(source) {
+        var customSources = mod.custom_sources;
+        if (customSources.length) {
+            customSources.forEach(function(source) {
                 sourcesValid = sourcesValid && source.valid;
             });
             // if we are only submitting custom sources, we need to verify
             // we have all general info
-            if (!$scope.sources.length) {
-                sourcesValid = sourcesValid && $scope.mod.name && $scope.mod.authors &&
-                    $scope.mod.released;
+            if (!mod.sources.length) {
+                sourcesValid = sourcesValid && mod.name && mod.authors &&
+                    mod.released;
             }
         }
         else {
             // if we don't have any custom sources we should verify we have
             // the scraped data for at least one official source
-            sourcesValid = sourcesValid && ($scope.nexus || $scope.workshop || $scope.lab || oldSources);
+            sourcesValid = sourcesValid && (mod.nexus || mod.workshop || mod.lab || oldSources);
         }
 
         return sourcesValid;

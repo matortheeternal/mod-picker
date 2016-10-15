@@ -1,0 +1,8 @@
+{
+  "except": ["plugin_id"],
+  "include": {
+    "master_plugin": {
+      "only": ["id", "mod_id", "filename"]
+    }
+  }
+}

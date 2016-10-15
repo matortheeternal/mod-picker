@@ -1,5 +1,5 @@
 class BaseReport < ActiveRecord::Base
-  include RecordEnhancements, Filterable, Sortable, ScopeHelpers
+  include RecordEnhancements, Filterable, Sortable, ScopeHelpers, BetterJson
 
   # SCOPES
   polymorphic_scope :reportable
@@ -29,28 +29,6 @@ class BaseReport < ActiveRecord::Base
 
   # CALLBACKS
   before_save :set_dates
-
-  def as_json(options={})
-    if JsonHelpers.json_options_empty(options)
-      # include works off of model associations names
-      default_options = {
-        :include => {
-              :reports => {
-                  :except => [:base_report_id, :submitted_by],
-                  :include => {
-                      :submitter => {
-                          :only => [:id, :username]
-                      }
-                  }
-              },
-              :reportable => reportable.reportable_json_options
-          }
-      }
-      super(options.merge(default_options))
-    else
-      super(options)
-    end
-  end
 
   def self.sortable_columns
     {

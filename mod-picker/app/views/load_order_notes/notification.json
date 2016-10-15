@@ -1,0 +1,9 @@
+{
+  "only": ["submitted_by", "moderator_message"],
+  "include": {
+    "first_mod": {},
+    "second_mod": {},
+    "first_plugin": {},
+    "second_plugin": {}
+  }
+}

@@ -1,5 +1,5 @@
 class LoverInfo < ActiveRecord::Base
-  include Scrapeable
+  include Scrapeable, BetterJson
 
   # ASSOCIATIONS
   belongs_to :mod
@@ -27,15 +27,6 @@ class LoverInfo < ActiveRecord::Base
 
   def url
     LoverHelper.mod_url(id)
-  end
-
-  def notification_json_options(event_type)
-    {
-        :only => [],
-        :include => {
-            :mod => { :only => [:id, :name] }
-        }
-    }
   end
 
   def link_uploader

@@ -1,4 +1,6 @@
 class ModListConfigFile < ActiveRecord::Base
+  include BetterJson
+
   belongs_to :mod_list, :inverse_of => 'mod_list_config_files'
   belongs_to :config_file, :inverse_of => 'mod_list_config_files'
 
@@ -12,27 +14,6 @@ class ModListConfigFile < ActiveRecord::Base
   before_create :set_default_text_body
   after_create :increment_counters
   before_destroy :decrement_counters
-
-  def as_json(options={})
-    if JsonHelpers.json_options_empty(options)
-      default_options =   {
-          :only => [:id, :text_body],
-          :include => {
-              :config_file => {
-                  :only => [:id, :filename, :install_path],
-                  :include => {
-                      :mod => {
-                          :only => [:id, :name]
-                      }
-                  }
-              }
-          }
-      }
-      super(options.merge(default_options))
-    else
-      super(options)
-    end
-  end
 
   private
     def set_default_text_body

@@ -1,0 +1,3 @@
+{
+  "only": ["id", "name", "is_official", "primary_category_id", "secondary_category_id"]
+}

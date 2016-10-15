@@ -1,0 +1,9 @@
+{
+  "only": ["id", "group_id", "index", "active"],
+  "include": {
+    "mod": {
+      "format": "mod_list_mod"
+    },
+    "mod_list_mod_options": {}
+  }
+}

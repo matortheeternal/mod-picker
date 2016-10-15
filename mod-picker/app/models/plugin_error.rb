@@ -1,5 +1,5 @@
 class PluginError < ActiveRecord::Base
-  include ScopeHelpers
+  include ScopeHelpers, BetterJson
 
   # Scopes
   ids_scope :plugin_id

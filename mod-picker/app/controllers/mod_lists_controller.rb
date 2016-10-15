@@ -4,10 +4,10 @@ class ModListsController < ApplicationController
 
   # GET /mod_lists
   def index
-    @mod_lists = ModList.includes(:submitter).references(:submitter).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
+    @mod_lists = ModList.includes(:submitter).references(:submitter).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(page: params[:page])
     count =  ModList.accessible_by(current_ability).filter(filtering_params).count
 
-    render :json => {
+    render json: {
         mod_lists: @mod_lists,
         max_entries: count,
         entries_per_page: ModList.per_page
@@ -16,10 +16,10 @@ class ModListsController < ApplicationController
 
   # GET /mod_lists/1
   def show
-    authorize! :read, @mod_list, :message => "You are not allowed to view this mod list."
-    star = current_user.present? && ModListStar.exists?(:mod_list_id => @mod_list.id, :user_id => current_user.id)
-    render :json => {
-        mod_list: @mod_list.show_json,
+    authorize! :read, @mod_list, message: "You are not allowed to view this mod list."
+    star = current_user.present? && ModListStar.exists?(mod_list_id: @mod_list.id, user_id: current_user.id)
+    render json: {
+        mod_list: json_format(@mod_list),
         star: star
     }
   end
@@ -28,9 +28,9 @@ class ModListsController < ApplicationController
   def active
     @mod_list = current_user.present? && current_user.active_mod_list
     if @mod_list
-      render :json => @mod_list.tracking_json
+      respond_with_json(@mod_list, :tracking)
     else
-      render :json => { error: "No active mod list found." }
+      render json: { error: "No active mod list found." }
     end
   end
 
@@ -45,7 +45,7 @@ class ModListsController < ApplicationController
     required_tools = @mod_list.required_tools
 
     # render response
-    render :json => {
+    render json: {
         tools: tools,
         custom_tools: custom_tools,
         required_tools: required_tools,
@@ -64,20 +64,20 @@ class ModListsController < ApplicationController
     required_mods = @mod_list.required_mods
 
     # prepare notes
-    compatibility_notes = @mod_list.mod_compatibility_notes
-    install_order_notes = @mod_list.install_order_notes
+    compatibility_notes = @mod_list.mod_compatibility_notes.preload(:submitter, :compatibility_mod, :compatibility_plugin, :editor, :editors, :first_mod, :second_mod)
+    install_order_notes = @mod_list.install_order_notes.preload(:submitter, :editor, :editors, :first_mod, :second_mod)
 
     # prepare helpful marks
     c_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("CompatibilityNote", compatibility_notes.ids)
     i_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("InstallOrderNote", install_order_notes.ids)
 
     # render response
-    render :json => {
+    render json: {
         mods: mods,
         custom_mods: custom_mods,
         groups: groups,
         required_mods: required_mods,
-        compatibility_notes: CompatibilityNote.mod_list_json(compatibility_notes),
+        compatibility_notes: json_format(compatibility_notes, :mod_list),
         install_order_notes: install_order_notes,
         c_helpful_marks: c_helpful_marks,
         i_helpful_marks: i_helpful_marks
@@ -90,26 +90,28 @@ class ModListsController < ApplicationController
 
     # prepare primary data
     plugins = @mod_list.mod_list_plugins.includes(:plugin, :mod)
-    plugins_store = Plugin.show_plugins_store_json(@mod_list.plugins_store.order(:mod_option_id))
+    plugins_store = @mod_list.plugins_store.order(:mod_option_id)
+    install_order = @mod_list.mod_list_mods.utility(false)
     custom_plugins = @mod_list.custom_plugins
     groups = @mod_list.mod_list_groups.where(tab: 2).order(:index)
 
     # prepare notes
-    compatibility_notes = @mod_list.plugin_compatibility_notes
-    load_order_notes = @mod_list.load_order_notes
+    compatibility_notes = @mod_list.plugin_compatibility_notes.preload(:submitter, :compatibility_mod, :compatibility_plugin, :editor, :editors, :first_mod, :second_mod)
+    load_order_notes = @mod_list.load_order_notes.preload(:submitter, :editor, :editors, :first_mod, :second_mod, :first_plugin, :second_plugin)
 
     # prepare helpful marks
     c_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("CompatibilityNote", compatibility_notes.ids)
     l_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("LoadOrderNote", load_order_notes.ids)
     
     # render response
-    render :json => {
+    render json: {
         plugins: plugins,
         plugins_store: plugins_store,
+        install_order: json_format(install_order, :simple),
         custom_plugins: custom_plugins,
         groups: groups,
         required_plugins: @mod_list.required_plugins,
-        compatibility_notes: CompatibilityNote.mod_list_json(compatibility_notes),
+        compatibility_notes: json_format(compatibility_notes, :mod_list),
         load_order_notes: load_order_notes,
         c_helpful_marks: c_helpful_marks,
         l_helpful_marks: l_helpful_marks
@@ -120,21 +122,21 @@ class ModListsController < ApplicationController
   def export_modlist
     authorize! :read, @mod_list
     force_download("modlist.txt")
-    render :text => @mod_list.modlist_text
+    render text: @mod_list.modlist_text
   end
 
   # GET /mod_lists/:id/export_plugins
   def export_plugins
     authorize! :read, @mod_list
     force_download("plugins.txt")
-    render :text => @mod_list.plugins_text
+    render text: @mod_list.plugins_text
   end
 
   # GET /mod_lists/:id/export_links
   def export_links
     authorize! :read, @mod_list
     force_download("links.txt")
-    render :text => @mod_list.links_text
+    render text: @mod_list.links_text
   end
 
   # GET /mod_lists/:id/config
@@ -143,11 +145,11 @@ class ModListsController < ApplicationController
 
     # prepare primary data
     config_files_store = @mod_list.config_files.order(:mod_id)
-    config_files = @mod_list.mod_list_config_files.includes(:config_file => :mod)
+    config_files = @mod_list.mod_list_config_files.includes(config_file: :mod)
     custom_config_files = @mod_list.custom_config_files
 
     # render response
-    render :json => {
+    render json: {
         config_files_store: config_files_store,
         config_files: config_files,
         custom_config_files: custom_config_files
@@ -165,10 +167,10 @@ class ModListsController < ApplicationController
     plugins = Plugin.where(id: plugin_ids).includes(:mod, :dummy_masters, :overrides, :masters => :master_plugin)
 
     # render response
-    render :json => {
-        load_order: ModListPlugin.load_order_json(load_order),
-        install_order: ModListMod.install_order_json(install_order),
-        plugins: Plugin.analysis_json(plugins),
+    render json: {
+        load_order: json_format(load_order, :load_order),
+        install_order: json_format(install_order, :install_order),
+        plugins: json_format(plugins),
         conflicting_assets: @mod_list.conflicting_assets
     }
   end
@@ -178,11 +180,11 @@ class ModListsController < ApplicationController
     authorize! :read, @mod_list
 
     # prepare primary data
-    comments = @mod_list.comments.includes(:submitter => :reputation, :children => [:submitter => :reputation]).accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10)
+    comments = @mod_list.comments.includes(submitter: :reputation, children: [submitter: :reputation]).accessible_by(current_ability).sort(params[:sort]).paginate(page: params[:page], per_page: 10)
     count = @mod_list.comments.accessible_by(current_ability).count
 
     # render response
-    render :json => {
+    render json: {
         comments: comments,
         max_entries: count,
         entries_per_page: 10
@@ -199,13 +201,9 @@ class ModListsController < ApplicationController
       @mod_list.add_official_content
       if params.has_key?(:active) && params[:active]
         @mod_list.set_active
-        render json: {
-            mod_list: @mod_list.tracking_json
-        }
+        respond_with_json(@mod_list, :tracking, :mod_list)
       else
-        render json: {
-            mod_list: @mod_list
-        }
+        respond_with_json(@mod_list, :base, :mod_list)
       end
     else
       render json: @mod_list.errors, status: :unprocessable_entity
@@ -221,9 +219,8 @@ class ModListsController < ApplicationController
     end
 
     if current_user.update(active_mod_list_id: params[:id])
-      render json: {
-          mod_list: @mod_list && @mod_list.tracking_json
-      }
+      render json: { mod_list: nil } unless @mod_list.present?
+      respond_with_json(@mod_list, :tracking, :mod_list)
     else
       render json: current_user.errors, status: :unproccessable_entity
     end
@@ -341,16 +338,16 @@ class ModListsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def mod_list_params
       params.require(:mod_list).permit(:game_id, :name, :description, :status, :visibility, :is_collection, :disable_comments, :lock_tags, :hidden,
-          :mod_list_mods_attributes => [:id, :group_id, :mod_id, :index, :_destroy, :mod_list_mod_options_attributes => [:id, :mod_option_id, :_destroy]],
-          :custom_mods_attributes => [:id, :group_id, :is_utility, :index, :name, :description, :_destroy],
-          :mod_list_plugins_attributes => [:id, :group_id, :plugin_id, :index, :cleaned, :merged, :_destroy],
-          :custom_plugins_attributes => [:id, :group_id, :index, :cleaned, :merged, :compatibility_note_id, :filename, :description, :_destroy],
-          :mod_list_groups_attributes => [:id, :index, :tab, :color, :name, :description, :_destroy,
-              :children => [:id]
+          mod_list_mods_attributes: [:id, :group_id, :mod_id, :index, :_destroy, mod_list_mod_options_attributes: [:id, :mod_option_id, :_destroy]],
+          custom_mods_attributes: [:id, :group_id, :is_utility, :index, :name, :description, :_destroy],
+          mod_list_plugins_attributes: [:id, :group_id, :plugin_id, :index, :cleaned, :merged, :_destroy],
+          custom_plugins_attributes: [:id, :group_id, :index, :cleaned, :merged, :compatibility_note_id, :filename, :description, :_destroy],
+          mod_list_groups_attributes: [:id, :index, :tab, :color, :name, :description, :_destroy,
+              children: [:id]
           ],
-          :mod_list_config_files_attributes => [:id, :config_file_id, :text_body, :_destroy],
-          :custom_config_files_attributes => [:id, :filename, :install_path, :text_body, :_destroy],
-          :ignored_notes_attributes => [:id, :note_id, :note_type, :_destroy]
+          mod_list_config_files_attributes: [:id, :config_file_id, :text_body, :_destroy],
+          custom_config_files_attributes: [:id, :filename, :install_path, :text_body, :_destroy],
+          ignored_notes_attributes: [:id, :note_id, :note_type, :_destroy]
       )
     end
 end

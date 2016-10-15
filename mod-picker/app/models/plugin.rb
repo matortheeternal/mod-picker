@@ -1,5 +1,5 @@
 class Plugin < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, ScopeHelpers
+  include Filterable, Sortable, RecordEnhancements, ScopeHelpers, BetterJson
 
   # ATTRIBUTES
   attr_writer :master_plugins
@@ -14,7 +14,6 @@ class Plugin < ActiveRecord::Base
   range_scope :override_count, :alias => 'overrides'
   counter_scope :errors_count, :mod_lists_count, :load_order_notes_count
   bytes_scope :file_size
-
 
   # UNIQUE SCOPES
   scope :visible, -> { eager_load(:mod).where(:mods => {hidden: false}) }
@@ -41,8 +40,10 @@ class Plugin < ActiveRecord::Base
   has_many :mod_list_plugins, :inverse_of => 'plugin'
   has_many :mod_lists, :through => 'mod_list_plugins'
 
-  # is a compatibility plugin for
-  has_many :compatibility_notes, :foreign_key => 'compatibility_plugin_id', :inverse_of => 'compatibility_plugin'
+  # notes
+  has_many :compatibility_notes, :foreign_key => 'compatibility_plugin_id', :inverse_of => 'compatibility_plugin', :dependent => :destroy
+  has_many :first_load_order_notes, :foreign_key => 'first_plugin_id', :inverse_of => 'first_plugin', :dependent => :destroy
+  has_many :second_load_order_notes, :foreign_key => 'second_plugin_id', :inverse_of => 'second_plugin', :dependent => :destroy
 
   accepts_nested_attributes_for :plugin_record_groups, :overrides, :plugin_errors
 
@@ -110,12 +111,6 @@ class Plugin < ActiveRecord::Base
     end
   end
 
-  def switch_associations(new_plugin_id)
-    load_order_notes.destroy_all
-    CompatibilityNote.where(compatibility_plugin_id: id).destroy_all
-    ModListPlugin.where(plugin_id: id).destroy_all
-  end
-
   def delete_associations
     OverrideRecord.where(plugin_id: id).delete_all
     PluginError.where(plugin_id: id).delete_all
@@ -124,6 +119,7 @@ class Plugin < ActiveRecord::Base
     create_dummy_masters
     Master.where(plugin_id: id).delete_all
     Master.where(master_plugin_id: id).delete_all
+    ModListPlugin.where(plugin_id: id).destroy_all
   end
 
   def map_associations(plugin_id)
@@ -147,101 +143,20 @@ class Plugin < ActiveRecord::Base
     output
   end
 
-  def self.index_json(collection)
-    collection.as_json({
-        :include => {
-            :masters => {
-                :except => [:plugin_id],
-                :include => {
-                    :master_plugin => {
-                        :only => [:id, :mod_id, :filename]
-                    }
-                }
-            },
-            :mod => {
-                :only => [:id, :name]
-            }
-        }
-    })
-  end
 
-  def self.analysis_json(collection)
-    collection.as_json({
-        :only => [:id, :filename, :errors_count],
-        :include => {
-            :mod => {
-                :only => [:id, :name]
-            },
-            :masters => {
-                :except => [:plugin_id],
-                :include => {
-                    :master_plugin => {
-                        :only => [:mod_id, :filename]
-                    }
-                }
-            },
-            :dummy_masters => {
-                :except => [:plugin_id]
-            }
-        },
-        :methods => :formatted_overrides
-    })
-  end
-
-  def self.show_json(collection)
-    collection.as_json({
-        :include => {
-            :masters => {
-                :except => [:plugin_id],
-                :include => {
-                    :master_plugin => {
-                        :only => [:mod_id, :filename]
-                    }
-                }
-            },
-            :dummy_masters => {
-                :except => [:plugin_id]
-            },
-            :plugin_errors => {
-                :except => [:plugin_id]
-            },
-            :plugin_record_groups => {
-                :except => [:plugin_id]
-            }
-        },
-        :methods => :formatted_overrides
-    })
-  end
-
-  def self.show_plugins_store_json(collection)
-    collection.as_json({
-        :only => [:id, :filename],
-        :include => {
-            :mod => {
-                :only => [:id, :name]
-            },
-            :mod_option => {
-                :only => [:name]
-            }
-        }
-    })
-  end
-
-  def as_json(options={})
-    if JsonHelpers.json_options_empty(options)
-      default_options = {
-          :only => [:id, :filename],
-          :include => {
-              :mod => {
-                  :only => [:id, :name]
-              }
-          }
-      }
-      super(options.merge(default_options))
-    else
-      super(options)
-    end
-  end
+# def self.show_plugins_store_json(collection)
+#     collection.as_json({
+#         :only => [:id, :filename],
+#         :include => {
+#             :mod => {
+#                 :only => [:id, :name]
+#             },
+#             :mod_option => {
+#                 :only => [:name]
+#             }
+#         }
+#     })
+# end
 
   def self.sortable_columns
     {

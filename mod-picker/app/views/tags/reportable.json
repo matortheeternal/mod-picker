@@ -1,0 +1,8 @@
+{
+  "only": ["game_id", "text", "hidden", "mods_count", "mod_lists_count"],
+  "include": {
+    "submitter": {
+      "format": "submitter"
+    }
+  }
+}

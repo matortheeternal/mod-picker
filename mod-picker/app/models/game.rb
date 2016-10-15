@@ -1,5 +1,5 @@
 class Game < ActiveRecord::Base
-  include RecordEnhancements
+  include RecordEnhancements, BetterJson
   
   # parent/child games
   belongs_to :parent_game, :class_name => 'Game', :foreign_key => 'parent_game_id', :inverse_of => 'children_games'

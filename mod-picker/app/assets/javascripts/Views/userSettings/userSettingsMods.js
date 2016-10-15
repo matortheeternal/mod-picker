@@ -9,7 +9,6 @@ app.controller('userSettingsModsController', function($scope, columnsFactory, ac
         var options = {
             filters: {
                 mp_author: $scope.user.username,
-                include_adult: true,
                 sources: {
                     nexus: true,
                     lab: true,

@@ -178,10 +178,16 @@ class Ability
     end
 
     # Adult content filtering
-    if user.settings.present? && !user.settings.allow_adult_content
+    settings = user.settings
+    unless settings.present? && settings.allow_adult_content
       cannot :read, Mod, { has_adult_content: true }
       cannot :read, ModList, { has_adult_content: true }
-      # TODO: filtering of contributions on mods with adult content
+      cannot :read, Review, { has_adult_content: true }
+      cannot :read, CompatibilityNote, { has_adult_content: true }
+      cannot :read, InstallOrderNote, { has_adult_content: true }
+      cannot :read, LoadOrderNote, { has_adult_content: true }
+      cannot :read, Comment, { has_adult_content: true }
+      cannot :read, Correction, { has_adult_content: true }
     end
   end
 end

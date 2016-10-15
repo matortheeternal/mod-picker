@@ -1,8 +1,8 @@
 class ModBuilder
-  attr_accessor :mod, :current_user, :params, :tag_names, :nexus_info_id, :lover_info_id, :workshop_info_id, :plugin_ids
+  attr_accessor :mod, :current_user, :params, :tag_names, :nexus_info_id, :lover_info_id, :workshop_info_id, :plugin_ids, :curate
 
   def builder_attributes
-    [:tag_names, :nexus_info_id, :lover_info_id, :workshop_info_id]
+    [:tag_names, :nexus_info_id, :lover_info_id, :workshop_info_id, :curate]
   end
 
   def initialize(current_user, params={})
@@ -86,6 +86,7 @@ class ModBuilder
   def after_save
     link_sources
     create_tags
+    create_curator
   end
 
   def analysis_updated?
@@ -155,7 +156,7 @@ class ModBuilder
     old_plugin_records.each{|old_plugin|
       new_plugin = find_new_plugin(new_plugin_records, old_plugin)
       if new_plugin.present?
-        new_plugin_records -= new_plugin
+        new_plugin_records -= [new_plugin]
         old_plugin.delete_associations
         old_plugin.update(new_plugin.attributes.except("id"))
         new_plugin.map_associations(old_plugin.id)
@@ -208,7 +209,7 @@ class ModBuilder
 
   def link_source(info_id, model)
     if info_id
-      info = NexusInfo.find(info_id)
+      info = model.find(info_id)
       info.mod_id = mod.id
       info.link_uploader
       info.save!
@@ -236,6 +237,16 @@ class ModBuilder
             submitted_by: @current_user.id
         })
       end
+    end
+  end
+
+  def create_curator
+    if @curate
+      ModAuthor.create!({
+          mod_id: mod.id,
+          user_id: @current_user.id,
+          role: 2
+      })
     end
   end
 

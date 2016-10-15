@@ -1,4 +1,6 @@
 class UserBio < ActiveRecord::Base
+  include BetterJson
+
   belongs_to :user
 
   # VALIDATIONS

@@ -1,0 +1,8 @@
+{
+  "include": {
+    "reports": {},
+    "reportable": {
+      "format": "reportable"
+    }
+  }
+}
