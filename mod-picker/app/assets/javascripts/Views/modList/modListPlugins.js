@@ -29,6 +29,19 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, catego
         listUtils.buildModel($scope.model, $scope.mod_list, 'plugins');
     };
 
+    $scope.buildPluginStore = function(data) {
+        $scope.plugins_store = data.plugins_store;
+        var findInstallOrderMod = function(mod_id) {
+            return data.install_order.find(function(mod) {
+                return mod.id == mod_id;
+            });
+        };
+        $scope.plugins_store.forEach(function(plugin) {
+            var mod = findInstallOrderMod(plugin.mod.id);
+            plugin.mod_index = (mod && mod.index) || -1;
+        });
+    };
+
     $scope.destroyModRemovedPlugins = function() {
         if (!$scope.removedModIds.length) return;
         listUtils.forEachItem($scope.model.plugins, function(item) {
@@ -46,12 +59,12 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, catego
     $scope.loadPluginData = function(data) {
         categoryService.associateCategories($scope.categories, data.plugins);
         $scope.required.plugins = data.required_plugins;
-        $scope.plugins_store = data.plugins_store;
         $scope.loadNotes(data, 'compatibility_notes', 'plugin_compatibility', 'CompatibilityNote');
         $scope.loadNotes(data, 'load_order_notes', 'load_order', 'LoadOrderNote');
         $scope.loadAndTrack(data, 'plugins');
         $scope.loadAndTrack(data, 'custom_plugins');
         $scope.loadGroups(data.groups);
+        $scope.buildPluginStore(data);
         $scope.buildPluginsModel();
         $timeout(function() {
             $scope.$broadcast('initializeModules');
