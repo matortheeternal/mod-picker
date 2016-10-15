@@ -69,7 +69,7 @@ class ModsController < ApplicationController
   # GET /mods/1/edit
   def edit
     authorize! :update, @mod, message: "You are not allowed to edit this mod."
-    render json: @mod.edit_json
+    respond_with_json(@mod)
   end
 
   # PATCH/PUT /mods/1
