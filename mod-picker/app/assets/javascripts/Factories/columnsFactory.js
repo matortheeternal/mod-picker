@@ -1029,30 +1029,28 @@ app.service('columnsFactory', function() {
             {
                 label: "Active",
                 data: "active",
-                invertSort: true,
                 class: "short-column"
             },
             {
                 label: "Filename",
-                data: function(item) {
-                    return item.filename || item.plugin.filename;
-                },
+                data: "filename",
                 invertSort: true
             },
             {
                 label: "Mod Index",
                 data: "mod_index",
-                class: "short-column"
+                class: "short-column",
+                invertSort: true
             },
             {
                 label: "Mod",
                 data: "mod.name",
-                sortData: "mods.name",
                 invertSort: true
             },
             {
                 label: "Mod Option",
-                data: "mod_option.name"
+                data: "mod_option.name",
+                invertSort: true
             }
 
         ];
