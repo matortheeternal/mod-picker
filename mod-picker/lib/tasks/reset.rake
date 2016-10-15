@@ -77,11 +77,11 @@ namespace :reset do
 
   task roles: :environment do
     puts "\nResetting user roles"
-    User.where(role: ["user", "mod_author"]).find_each do |u|
+    User.where(role: ["user", "author"]).find_each do |u|
       u.update_mod_author_role
     end
 
-    num_mod_authors = User.where(role: 'mod_author').count
+    num_mod_authors = User.where(role: 'author').count
     puts "#{num_mod_authors} users with the mod author role"
   end
 
