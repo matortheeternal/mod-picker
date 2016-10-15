@@ -283,6 +283,7 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
                 game_id: mod.game_id,
                 released: mod.released,
                 updated: mod.updated,
+                mark_updated: !!mod_options,
                 primary_category_id: mod.primary_category_id,
                 secondary_category_id: mod.secondary_category_id,
                 nexus_info_id: mod.nexus_info_id,

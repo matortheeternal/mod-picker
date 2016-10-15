@@ -3,7 +3,7 @@ class Mod < ActiveRecord::Base
 
   # ATTRIBUTES
   enum status: [ :good, :outdated, :unstable ]
-  attr_accessor :updated_by
+  attr_accessor :updated_by, :mark_updated
   self.per_page = 100
 
   # EVENT TRACKING
@@ -148,7 +148,7 @@ class Mod < ActiveRecord::Base
   validates :name, :aliases, length: {maximum: 128}
 
   # callbacks
-  before_save :set_dates
+  before_save :set_dates, :touch_updated
   after_create :increment_counters
   before_destroy :decrement_counters
 
@@ -271,6 +271,13 @@ class Mod < ActiveRecord::Base
   private
     def set_dates
       self.submitted = DateTime.now if submitted.nil?
+    end
+
+    def touch_updated
+      if mark_updated
+        self.updated ||= DateTime.now
+        self.updated += 1.second
+      end
     end
 
     def decrement_counters
