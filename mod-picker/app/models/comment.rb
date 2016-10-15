@@ -124,7 +124,7 @@ class Comment < ActiveRecord::Base
     def decrement_counter_caches
       submitter.update_counter(:submitted_comments_count, -1)
       commentable.update_counter(:comments_count, -1)
-      if parent_id.present?
+      if parent_id.present? && parent.exists?
         parent.update_counter(:children_count, -1)
       end
     end
