@@ -91,6 +91,7 @@ class ModListsController < ApplicationController
     # prepare primary data
     plugins = @mod_list.mod_list_plugins.includes(:plugin, :mod)
     plugins_store = @mod_list.plugins_store.order(:mod_option_id)
+    install_order = @mod_list.mod_list_mods.utility(false)
     custom_plugins = @mod_list.custom_plugins
     groups = @mod_list.mod_list_groups.where(tab: 2).order(:index)
 
@@ -106,6 +107,7 @@ class ModListsController < ApplicationController
     render json: {
         plugins: plugins,
         plugins_store: plugins_store,
+        install_order: json_format(install_order, :simple),
         custom_plugins: custom_plugins,
         groups: groups,
         required_plugins: @mod_list.required_plugins,
