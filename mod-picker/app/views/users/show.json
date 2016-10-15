@@ -1,0 +1,14 @@
+{
+  "except": ["email", "active_mod_list_id", "invitation_token", "invitation_created_at", "invitation_sent_at", "invitation_accepted_at", "invitation_limit", "invited_by_id", "invited_by_type", "invitations_count"],
+  "include": {
+    "bio": {
+      "except": ["user_id", "nexus_verification_token", "lover_verification_token", "workshop_verification_token"]
+    },
+    "reputation": {}
+  },
+  "methods": ["avatar", "last_sign_in_at", "current_sign_in_at", "comments_disabled?"],
+  "conditional_methods": [{
+    "methods": "email",
+    "if": "email_public?"
+  }]
+}

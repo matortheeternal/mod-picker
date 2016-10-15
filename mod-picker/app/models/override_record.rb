@@ -1,5 +1,5 @@
 class OverrideRecord < ActiveRecord::Base
-  include ScopeHelpers
+  include ScopeHelpers, BetterJson
 
   self.primary_keys = :plugin_id, :fid
 

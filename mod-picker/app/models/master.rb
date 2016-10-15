@@ -1,5 +1,5 @@
 class Master < ActiveRecord::Base
-  include ScopeHelpers
+  include ScopeHelpers, BetterJson
 
   self.primary_keys = :plugin_id, :master_plugin_id
 
@@ -17,23 +17,4 @@ class Master < ActiveRecord::Base
 
   # VALIDATIONS
   validates :plugin_id, :master_plugin_id, :index, presence: true
-
-  def as_json(options={})
-    if JsonHelpers.json_options_empty(options)
-      default_options = {
-          :only => [],
-          :include => {
-              :plugin => {
-                  :only => [:id, :mod_option_id, :filename]
-              },
-              :master_plugin => {
-                  :only => [:id, :mod_option_id, :filename]
-              }
-          }
-      }
-      super(options.merge(default_options))
-    else
-      super(options)
-    end
-  end
 end

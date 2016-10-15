@@ -3,11 +3,11 @@ class PluginsController < ApplicationController
 
   # GET /plugins
   def index
-    @plugins = Plugin.includes(:mod).references(:mod).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
+    @plugins = Plugin.includes(:mod).references(:mod).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(page: params[:page])
     count =  Plugin.accessible_by(current_ability).filter(filtering_params).count
 
-    render :json => {
-        plugins: Plugin.index_json(@plugins),
+    render json: {
+        plugins: json_format(@plugins),
         max_entries: count,
         entries_per_page: Plugin.per_page
     }
@@ -16,13 +16,13 @@ class PluginsController < ApplicationController
   # POST /plugins/search
   def search
     @plugins = Plugin.visible.filter(search_params).sort({ column: "filename", direction: "ASC" }).limit(10)
-    render :json => @plugins
+    respond_with_json(@plugins)
   end
 
   # GET /plugins/1
   def show
     authorize! :read, @plugin
-    render :json => Plugin.show_json(@plugin)
+    respond_with_json(@plugin)
   end
 
   # DELETE /plugins/1

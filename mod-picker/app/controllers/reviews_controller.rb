@@ -4,15 +4,15 @@ class ReviewsController < ContributionsController
   # GET /reviews
   def index
     # prepare reviews
-    @reviews = Review.preload(:review_ratings).includes(:mod, {:submitter => :reputation}, :editor).references({:submitter => :reputation}, :editor).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
+    @reviews = Review.preload(:review_ratings).includes(:mod, {submitter: :reputation}, :editor).references({submitter: :reputation}, :editor).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(page: params[:page])
     count = Review.accessible_by(current_ability).filter(filtering_params).count
 
     # prepare helpful marks
     helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("Review", @reviews.ids)
 
     # render response
-    render :json => {
-        reviews: Review.index_json(@reviews),
+    render json: {
+        reviews: json_format(@reviews),
         helpful_marks: helpful_marks,
         max_entries: count,
         entries_per_page: Review.per_page

@@ -7,6 +7,6 @@ class RecordGroupsController < ApplicationController
       @record_groups = RecordGroup.all
     end
 
-    render :json => @record_groups
+    render json: @record_groups
   end
 end

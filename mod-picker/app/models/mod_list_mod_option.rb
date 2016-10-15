@@ -1,5 +1,5 @@
 class ModListModOption < ActiveRecord::Base
-  include ScopeHelpers
+  include ScopeHelpers, BetterJson
 
   # SCOPES
   scope :utility, -> (bool) { joins(:mod).where(:mods => {:is_utility => bool})}

@@ -1,5 +1,5 @@
 class AgreementMark < ActiveRecord::Base
-  include ScopeHelpers
+  include ScopeHelpers, BetterJson
 
   self.primary_keys = :correction_id, :submitted_by
 
@@ -18,17 +18,6 @@ class AgreementMark < ActiveRecord::Base
   # CALLBACKS
   after_create :increment_counters
   before_destroy :decrement_counters
-
-  def as_json(options={})
-    if JsonHelpers.json_options_empty(options)
-      default_options = {
-          :only => [:correction_id, :agree]
-      }
-      super(options.merge(default_options))
-    else
-      super(options)
-    end
-  end
 
   private
     def decrement_counters

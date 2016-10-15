@@ -1,5 +1,5 @@
 class Comment < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, Reportable, ScopeHelpers, Trackable
+  include Filterable, Sortable, RecordEnhancements, Reportable, ScopeHelpers, Trackable, BetterJson
 
   # ATTRIBUTES
   self.per_page = 50
@@ -78,119 +78,6 @@ class Comment < ActiveRecord::Base
       else
         nil
     end
-  end
-
-  def self.index_json(collection)
-    collection.as_json({
-        :except => :submitted_by,
-        :include => {
-            :submitter => {
-                :only => [:id, :username, :role, :title],
-                :include => {
-                    :reputation => {:only => :overall}
-                },
-                :methods => :avatar
-            }
-        },
-        :methods => :commentable_link
-    })
-  end
-
-  def show_json
-    as_json({
-        :except => :submitted_by,
-        :include => {
-            :submitter => {
-                :only => [:id, :username, :role, :title],
-                :include => {
-                    :reputation => {:only => :overall}
-                },
-                :methods => :avatar
-            }
-        }
-    })
-  end
-
-  def as_json(options={})
-    if JsonHelpers.json_options_empty(options)
-      default_options = {
-          :except => [:parent_id, :submitted_by],
-          :include => {
-              :submitter => {
-                  :only => [:id, :username, :role, :title],
-                  :include => {
-                      :reputation => {:only => :overall}
-                  },
-                  :methods => :avatar
-              },
-              :children => {
-                  :except => :submitted_by,
-                  :include => {
-                      :submitter => {
-                          :only => [:id, :username, :role, :title],
-                          :include => {
-                              :reputation => {:only => :overall}
-                          },
-                          :methods => :avatar
-                      },
-                  }
-              }
-          }
-      }
-      super(options.merge(default_options))
-    else
-      super(options)
-    end
-  end
-
-  def notification_json_options(event_type)
-    options = {
-        :only => [:submitted_by, :commentable_type, :commentable_id],
-        :include => {}
-    }
-    if commentable_type == "ModList"
-      options[:include][:commentable] = { :only => [:name] }
-    elsif commentable_type == "Article"
-      options[:include][:commentable] = { :only => [:title] }
-    elsif commentable_type == "Correction"
-      if commentable.correctable_type == "Mod"
-        options[:include][:commentable] = {
-            :only => [:mod_status],
-            :include => {
-                :correctable => { :only => [:id, :name] }
-            }
-        }
-      else
-        options[:include][:commentable] = {
-            :only => [:correctable_id, :correctable_type, :title],
-            :include => {
-                :correctable => {
-                    :only => [],
-                    :include => {
-                        :first_mod => { :only => [:id, :name] }
-                    }
-                }
-            }
-        }
-      end
-    end
-
-    options
-  end
-
-  def reportable_json_options
-    options = {
-        :except => [:parent_id, :submitted_by],
-        :include => {
-            :submitter => {
-                :only => [:id, :username, :role, :title],
-                :include => {
-                    :reputation => {:only => [:overall]}
-                },
-                :methods => :avatar
-            }
-        }
-    }
   end
 
   def self.sortable_columns

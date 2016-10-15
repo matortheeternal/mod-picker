@@ -1,0 +1,12 @@
+{
+  "include": {
+    "review_ratings": {
+      "except": ["review_id"]
+    },
+    "submitter": {
+      "format": "card"
+    },
+    "editor": {},
+    "mod": {}
+  }
+}

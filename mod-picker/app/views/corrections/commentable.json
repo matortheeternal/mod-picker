@@ -1,0 +1,8 @@
+{
+  "only": ["mod_status", "correctable_id", "correctable_type", "title"],
+  "include": {
+    "correctable": {
+      "format": "correctable"
+    }
+  }
+}

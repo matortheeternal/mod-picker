@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, Imageable, Reportable, ScopeHelpers, Trackable
+  include Filterable, Sortable, RecordEnhancements, Imageable, Reportable, ScopeHelpers, Trackable, BetterJson
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -207,99 +207,6 @@ class User < ActiveRecord::Base
     create_reputation({ user_id: id })
     create_settings({ user_id: id })
     create_bio({ user_id: id })
-  end
-
-  def self.search_json(collection)
-    collection.as_json({
-        :only => [:id, :username]
-    })
-  end
-
-  def current_json
-    self.as_json({
-        :only => [:id, :username, :role, :title],
-        :include => {
-            :reputation => {
-                :only => [:overall, :rep_to_count]
-            },
-            :settings => {
-                :only => [:theme, :enable_spellcheck, :show_notifications, :allow_adult_content]
-            }
-        },
-        :methods => [:avatar, :recent_notifications]
-    })
-  end
-
-  def settings_json
-    self.as_json({
-        :except => [:active_mod_list_id, :invitation_token, :invitation_created_at, :invitation_sent_at, :invitation_accepted_at, :invitation_limit, :invited_by_id, :invited_by_type, :invitations_count],
-        :include => {
-            :bio => {
-                :except => [:user_id]
-            },
-            :reputation => {
-                :except => [:user_id, :dont_compute]
-            },
-            :settings => {
-                :except => [:user_id]
-            }
-        },
-        :methods => :avatar
-    })
-  end
-
-  def show_json(current_user)
-    # email handling
-    methods = [:avatar, :last_sign_in_at, :current_sign_in_at, :comments_disabled?]
-    methods.push(:email) if email_public?
-
-    as_json({
-        :except => [:email, :active_mod_list_id, :invitation_token, :invitation_created_at, :invitation_sent_at, :invitation_accepted_at, :invitation_limit, :invited_by_id, :invited_by_type, :invitations_count],
-        :include => {
-            :bio => {
-                :except => [:user_id, :nexus_verification_token, :lover_verification_token, :workshop_verification_token]
-            },
-            :reputation => {
-                :only => [:overall]
-            }
-        },
-        :methods => methods
-    })
-  end
-
-  def as_json(options={})
-    if JsonHelpers.json_options_empty(options)
-      default_options = {
-          :except => [:active_mod_list_id, :invitation_token, :invitation_created_at, :invitation_sent_at, :invitation_accepted_at, :invitation_limit, :invited_by_id, :invited_by_type, :invitations_count],
-          :methods => [:avatar, :last_sign_in_at, :current_sign_in_at],
-          :include => {
-              :reputation => {
-                  :only => [:overall]
-              }
-          }
-      }
-      super(options.merge(default_options))
-    else
-      super(options)
-    end
-  end
-
-  def notification_json_options(event_type)
-    {
-        :only => [:username, :role]
-    }
-  end
-
-  def reportable_json_options
-    {
-        :only => [:id, :username, :role, :title, :about_me, :last_sign_in_at, :joined, :current_sign_in_at, :last_sign_in_at],
-        :include => {
-            :reputation => {
-                :only => [:overall, :rep_to_count]
-            }
-        },
-        :methods => [:avatar]
-    }
   end
 
   def self.sortable_columns

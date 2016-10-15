@@ -6,7 +6,7 @@ class UserSettingsController < ApplicationController
   # GET /settings/:id
   def show
     authorize! :update, @user
-    render :json => { user: @user.settings_json }
+    respond_with_json(@user, :settings, :user)
   end
 
   # PATCH/PUT /settings/:id
@@ -60,6 +60,6 @@ class UserSettingsController < ApplicationController
     end
 
     def avatar_params
-      {:image_file => params[:avatar]}
+      {image_file: params[:avatar]}
     end
 end

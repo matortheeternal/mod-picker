@@ -3,11 +3,11 @@ class UsersController < ApplicationController
 
   # GET/POST /users/index
   def index
-    @users = User.include_blank(false).includes(:reputation).references(:reputation).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
+    @users = User.include_blank(false).includes(:reputation).references(:reputation).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(page: params[:page])
     count =  User.include_blank(false).includes(:reputation).references(:reputation).accessible_by(current_ability).filter(filtering_params).count
 
-    render :json => {
-        users: @users,
+    render json: {
+        users: json_format(@users),
         max_entries: count,
         entries_per_page: User.per_page
     }
@@ -15,21 +15,21 @@ class UsersController < ApplicationController
 
   # GET /current_user
   def current
-    render :json => current_user.current_json
+    respond_with_json(current_user)
   end
 
   # POST /users/search
   def search
     @users = User.filter(search_params).sort({ column: "username", direction: "ASC" }).limit(10)
-    render :json => User.search_json(@users)
+    respond_with_json(@users)
   end
 
   # GET /users/1
   def show
     authorize! :read, @user
     endorsed = ReputationLink.exists?(from_rep_id: current_user.reputation.id, to_rep_id: @user.reputation.id)
-    render :json => {
-        user: @user.show_json(current_user),
+    render json: {
+        user: json_format(@user),
         endorsed: endorsed
     }
   end
@@ -37,9 +37,10 @@ class UsersController < ApplicationController
   # GET /users/1/comments
   def comments
     authorize! :read, @user
-    comments = @user.profile_comments.includes(:submitter => :reputation, :children => [:submitter => :reputation]).accessible_by(current_ability).sort(params[:sort]).paginate(:page => params[:page], :per_page => 10)
+    comments = @user.profile_comments.includes(submitter: :reputation, children: [submitter: :reputation]).accessible_by(current_ability).sort(params[:sort]).paginate(page: params[:page], per_page: 10)
     count = @user.profile_comments.accessible_by(current_ability).count
-    render :json => {
+
+    render json: {
         comments: comments,
         max_entries: count,
         entries_per_page: 10
@@ -50,6 +51,7 @@ class UsersController < ApplicationController
   def endorse
     @reputation_link = ReputationLink.find_or_initialize_by(from_rep_id: current_user.reputation.id, to_rep_id: @user.reputation.id)
     authorize! :create, @reputation_link
+
     if @reputation_link.save
       render json: {status: :ok}
     else
@@ -116,7 +118,7 @@ class UsersController < ApplicationController
     favorite_mod_lists = @user.starred_mod_lists.accessible_by(current_ability)
     authored_mod_lists = @user.mod_lists.accessible_by(current_ability)
 
-    render :json => {
+    render json: {
       favorites: favorite_mod_lists,
       authored: authored_mod_lists
     }
@@ -128,9 +130,9 @@ class UsersController < ApplicationController
 
     favorite_mods = @user.starred_mods.includes(:author_users).accessible_by(current_ability)
     authored_mods = @user.mods.includes(:author_users).accessible_by(current_ability)
-    sources = { :nexus => true, :lab => true, :workshop => true }
+    sources = { nexus: true, lab: true, workshop: true }
 
-    render :json => {
+    render json: {
         favorites: Mod.index_json(favorite_mods, sources),
         authored: Mod.index_json(authored_mods, sources)
     }

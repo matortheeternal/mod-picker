@@ -1,5 +1,5 @@
 class Correction < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, Reportable, ScopeHelpers, Trackable
+  include Filterable, Sortable, RecordEnhancements, Reportable, ScopeHelpers, Trackable, BetterJson
 
   # ATTRIBUTES
   enum status: [:open, :passed, :failed, :closed]
@@ -87,96 +87,6 @@ class Correction < ActiveRecord::Base
   def self.update_adult(model, ids)
     Correction.where(correctable_type: model.model_name.to_s, id: ids).joins("INNER JOIN #{model.table_name} ON #{model.table_name}.id = corrections.correctable_id").update_all("corrections.has_adult_content = #{model.table_name}.has_adult_content")
     Comment.commentables("Correction", ids).joins("INNER JOIN corrections ON corrections.id = comments.commentable_id").update_all("comments.has_adult_content = corrections.has_adult_content")
-  end
-
-  def self.index_json(collection)
-    collection.as_json({
-        :include => {
-            :submitter => {
-                :only => [:id, :username, :role, :title, :joined, :last_sign_in_at, :reviews_count, :compatibility_notes_count, :install_order_notes_count, :load_order_notes_count, :corrections_count, :comments_count],
-                :include => {
-                    :reputation => {:only => [:overall]}
-                },
-                :methods => :avatar
-            },
-            :correctable => {
-                :only => [:id, :name],
-                :include => {
-                    :submitter => {
-                        :only => [:id, :username]
-                    }
-                },
-                :methods => :mods
-            },
-        }
-    })
-  end
-
-  def as_json(options={})
-    if JsonHelpers.json_options_empty(options)
-      default_options = {
-          :include => {
-              :submitter => {
-                  :only => [:id, :username, :role, :title, :joined, :last_sign_in_at, :reviews_count, :compatibility_notes_count, :install_order_notes_count, :load_order_notes_count, :corrections_count, :comments_count],
-                  :include => {
-                      :reputation => {:only => [:overall]}
-                  },
-                  :methods => :avatar
-              }
-          }
-      }
-      super(options.merge(default_options))
-    else
-      super(options)
-    end
-  end
-
-  def notification_json_options(event_type)
-    is_appeal = correctable_type == "Mod"
-    {
-        :only => [:submitted_by, :correctable_type, :status, (:mod_status if is_appeal)].compact,
-        :include => {
-            :correctable => {
-                :only => [:id, (:name if is_appeal)].compact,
-                :methods => [(:mods if !is_appeal), (:plugins if correctable_type == "LoadOrderNote")].compact
-            }
-        }
-    }
-  end
-
-  def reportable_json_options
-    is_appeal = correctable_type == "Mod"
-    include_hash = {}
-    unless is_appeal
-      include_hash = {
-          :first_mod => {
-              :only => [:id, :name]
-          },
-          :second_mod => {
-              :only => [:id, :name]
-          }
-      }
-    end
-    if correctable_type == "LoadOrderNote"
-      include_hash[:first_plugin] = [:id, :filename]
-      include_hash[:second_plugin] = [:id, :filename]
-    end
-    {
-        :only => [:title, :submitted_by, :correctable_type, :mod_status, :text_body, :submitted],
-        :include => {
-            :correctable => {
-                :only => [:id, :name],
-                :include => include_hash
-            },
-            :submitter => {
-                :only => [:id, :username, :role, :title],
-                :include => {
-                    :reputation => {:only => [:overall]}
-                },
-                :methods => :avatar
-            }
-        }
-    }
   end
 
   def self.sortable_columns
