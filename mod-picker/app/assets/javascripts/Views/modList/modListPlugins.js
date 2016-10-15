@@ -114,7 +114,12 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, catego
                 return storedPlugin.id == plugin.id;
             });
             if (!pluginExists) {
-                $scope.plugins_store.push(plugin);
+                var pluginItem = angular.copy(plugin);
+                pluginItem.mod_option = {
+                    id: modOption.id,
+                    name: modOption.name
+                };
+                $scope.plugins_store.push(pluginItem);
             }
         });
     };
