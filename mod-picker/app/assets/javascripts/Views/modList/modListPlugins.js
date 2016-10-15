@@ -32,8 +32,8 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, catego
     $scope.buildPluginStore = function(data) {
         $scope.plugins_store = data.plugins_store;
         var findInstallOrderMod = function(mod_id) {
-            return data.install_order.find(function(mod) {
-                return mod.id == mod_id;
+            return data.install_order.find(function(item) {
+                return item.mod_id == mod_id;
             });
         };
         $scope.plugins_store.forEach(function(plugin) {
