@@ -221,7 +221,7 @@ app.service('notificationsFactory', function() {
     };
 
     this.endorser = function(event) {
-        return '<a href="#/user/{{content.source_user.id}}">{{content.source_user.name}}</a>';
+        return '<a href="#/user/{{content.source_user.id}}">{{content.source_user.username}}</a>';
     };
 
     this.changeVerb = function(event) {
