@@ -5,5 +5,5 @@
       "format": "submitter"
     }
   },
-  "methods": "commentable_link"
+  "methods": "context_link"
 }
