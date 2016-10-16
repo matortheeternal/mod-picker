@@ -318,9 +318,9 @@ def seed_categories
       priority: 115
   )
   Category.create(
-      name: "Gameplay - Combat",
+      name: "Gameplay - AI & Combat",
       parent_id: catGameplay.id,
-      description: "Mods which alter combat, or enemy strength in general.",
+      description: "Mods which alter character behavior, combat mechanics, or enemy strength in general.",
       priority: 114
   )
   Category.create(
@@ -330,7 +330,7 @@ def seed_categories
       priority: 116
   )
   Category.create(
-      name: "Gameplay - Economy & Balance",
+      name: "Gameplay - Economy & Item Balance",
       parent_id: catGameplay.id,
       description: "Mods which alter the economy of the game - viz., the acquisition of items and currency.  E.g. modifications to merchants or leveled loot.  Also includes mods which rebalance items, e.g. their weight, gold value, and armor rating/damage.",
       priority: 120
