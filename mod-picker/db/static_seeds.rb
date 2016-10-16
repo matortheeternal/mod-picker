@@ -223,7 +223,7 @@ def seed_categories
   )
   catNewChars = Category.create(
       name: "New Characters",
-      description: "Mods that add new non-playable characters to the game.",
+      description: "Mods that add new non-playable characters to the game.  This includes animals and creatures, such as dragons, skeletons, bears and fish.",
       priority: 130
   )
   catResources = Category.create(
