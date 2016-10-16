@@ -137,10 +137,10 @@
                         <!--Categories-->
                         <h3 class="section-title">Categories</h3>
                         <section>
-                            <a ng-href="#/mods?c={{mod.primary_category_id}}">
+                            <a ng-href="#/mods?c={{mod.primary_category_id}}" title="{{mod.primary_category.description.wordwrap()}}">
                                 <div class="action-box">{{mod.primary_category.name}}</div>
                             </a>
-                            <a ng-href="#/mods?c={{mod.secondary_category_id}}" ng-show="mod.secondary_category_id">
+                            <a ng-href="#/mods?c={{mod.secondary_category_id}}" ng-show="mod.secondary_category_id" title="{{mod.secondary_category.description.wordwrap()}}">
                                 <div class="action-box">{{mod.secondary_category.name}}</div>
                             </a>
                         </section>
