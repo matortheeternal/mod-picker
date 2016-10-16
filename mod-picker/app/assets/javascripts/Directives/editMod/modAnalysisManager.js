@@ -23,6 +23,15 @@ app.controller('modAnalysisManagerController', function($scope, $rootScope, plug
         document.getElementById('analysis-input').click();
     };
 
+    $scope.removeOption = function(option) {
+        var modOptions = $scope.mod.analysis.mod_options;
+        var index = modOptions.indexOf(option);
+        modOptions.splice(index, 1);
+        if (modOptions.length == 0) {
+            delete $scope.mod.analysis;
+        }
+    };
+
     $scope.addRequirementFromPlugin = function(filename) {
         pluginService.searchPlugins(filename).then(function(plugins) {
             var plugin = plugins.find(function(plugin) {

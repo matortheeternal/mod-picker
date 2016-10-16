@@ -59,11 +59,17 @@ form {
     .subtitle {
       margin-bottom: 15px;
 
-      .default-option {
-        margin-left: 10px;
-        text-transform: none;
-        font-weight: normal;
+      .remove-item {
+        color: $text_color;
+        margin-left: 16px;
+        cursor: pointer;
       }
+    }
+
+    .default-option {
+      margin-left: 10px;
+      text-transform: none;
+      margin-bottom: 10px;
     }
 
     strong {
