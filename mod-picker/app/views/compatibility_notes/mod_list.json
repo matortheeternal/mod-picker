@@ -6,7 +6,7 @@
     },
     "compatibility_mod": {},
     "compatibility_plugin": {
-      "format": "search"
+      "format": "simple"
     },
     "editor": {},
     "editors": {},
