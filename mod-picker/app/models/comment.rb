@@ -64,6 +64,10 @@ class Comment < ActiveRecord::Base
       end
     elsif commentable_type == "ModList"
       "#/mod-list/" + commentable_id.to_s
+    elsif commentable_type == "Article"
+      "#/article/" + commentable_id.to_s
+    elsif commentable_type == "HelpPage"
+      "/help/" + commentable.url
     elsif commentable_type == "User"
       "#/user/" + commentable_id.to_s
     end
