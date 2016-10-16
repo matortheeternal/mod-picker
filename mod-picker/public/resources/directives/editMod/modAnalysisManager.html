@@ -11,7 +11,9 @@
 </h3>
 <section>
     <div class="analysis-results" ng-repeat="option in mod.analysis.mod_options">
-        <h4 class="subtitle">{{option.name}} ({{option.size | bytes}})
+        <h4 class="subtitle">
+            <input class="fuzzy-input" type="text" ng-model="option.name" ng-click="focusText($event)" pu-elastic-input/>
+            ({{option.size | bytes}})
             <span class="default-option">
                 <input type="checkbox" ng-model="option.default"> Default
             </span>

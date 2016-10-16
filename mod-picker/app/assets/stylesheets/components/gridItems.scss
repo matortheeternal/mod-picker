@@ -46,30 +46,6 @@ table-items, grid-items {
         z-index: 2;
         font-weight: 500;
         font-size: 16px;
-
-        input {
-          background: none;
-          border: none;
-          font: inherit;
-          margin-top: -2px;
-          padding: 0 4px;
-          max-width: 850px;
-          @include transition(box-shadow 0.2s ease-in-out);
-
-          &:hover {
-            box-shadow: 0 0 3px 1px $action_color;
-          }
-
-          &:focus {
-            background-color: $input_background;
-            box-shadow: 0 0 3px 1px $action_color;
-            outline: none;
-          }
-
-          &:disabled {
-            box-shadow: none !important;
-          }
-        }
       }
 
       .group-color {
