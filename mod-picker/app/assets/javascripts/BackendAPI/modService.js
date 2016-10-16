@@ -286,7 +286,7 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
                 updated: mod.updated,
                 mark_updated: mod_options.length > 0,
                 primary_category_id: mod.primary_category_id,
-                secondary_category_id: mod.secondary_category_id,
+                secondary_category_id: mod.secondary_category_id || null,
                 nexus_info_id: mod.nexus && mod.nexus.id,
                 workshop_info_id: mod.workshop && mod.workshop.id,
                 lover_info_id: mod.lab && mod.lab.id,

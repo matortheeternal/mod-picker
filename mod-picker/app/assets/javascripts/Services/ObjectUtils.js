@@ -162,7 +162,8 @@ app.service('objectUtils', function() {
             if (obj.hasOwnProperty(property)) {
                 var v = obj[property];
                 var vt = typeof v;
-                if (vt === 'undefined' || v === null || (v.constructor === Array && !v.length) || (deleteEmptyStrings && v === "")) {
+                if (v === null) continue;
+                if (vt === 'undefined' || (v.constructor === Array && !v.length) || (deleteEmptyStrings && v === "")) {
                     delete obj[property];
                 } else if (recurse && vt === 'object') {
                     service.deleteEmptyProperties(v, recurse - 1, deleteEmptyStrings);
