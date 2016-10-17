@@ -153,7 +153,7 @@ class Mod < ActiveRecord::Base
   before_destroy :decrement_counters
 
   def asset_file_paths
-    self.mod_asset_files.joins(:asset_file).pluck(:subpath, :path).map { |item| item.join('') }
+    mod_asset_files.eager_load(:asset_file).pluck(:subpath, :path).map { |item| item.join('') }
   end
 
   def update_lazy_counters
