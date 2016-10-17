@@ -31,7 +31,8 @@ class ModBuilder
     mod.updated_by = @current_user.id
     update!
     true
-  rescue
+  rescue Exception => x
+    mod.errors.add(:error, x.message)
     false
   end
 
