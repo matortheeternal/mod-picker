@@ -157,6 +157,7 @@ class ModBuilder
       new_plugin = find_new_plugin(new_plugin_records, old_plugin)
       if new_plugin.present?
         new_plugin_records -= [new_plugin]
+        next if new_plugin.id == old_plugin.id
         old_plugin.delete_associations
         old_plugin.update(new_plugin.attributes.except("id"))
         new_plugin.map_associations(old_plugin.id)
