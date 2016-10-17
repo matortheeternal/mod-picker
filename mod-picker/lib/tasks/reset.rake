@@ -99,6 +99,19 @@ namespace :reset do
     end
   end
 
+  task mod_metrics: :environment do
+    puts "\nResetting mod metrics"
+    Mod.all.find_each do |mod|
+      mod.compute_average_rating
+      mod.compute_reputation
+      mod.update_columns({
+          :reviews_count => mod.reviews_count,
+          :reputation => mod.reputation,
+          :average_rating => mod.average_rating
+      })
+    end
+  end
+
   namespace :counters do
     task all: :environment do
       puts "\nResetting all counter cache columns"
