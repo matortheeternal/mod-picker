@@ -25,14 +25,7 @@ class ModOption < ActiveRecord::Base
   def create_asset_files
     if @asset_paths
       if !is_fomod_option
-        basepaths = []
-        @asset_paths.each do |path|
-          # prioritize files over data folder matching
-          split_paths = path.split(/(?<=\.bsa\\|\.esp|\.esm|Data\\)/)
-          basepaths |= [split_paths[0]] if split_paths.length > 1
-        end
-        # sort by longest path first so nested paths are prioritized
-        basepaths.sort { |a,b| b.length - a.length }
+        basepaths = DataPathUtils.get_base_paths(@asset_paths)
       else
         basepaths = [""]
       end
