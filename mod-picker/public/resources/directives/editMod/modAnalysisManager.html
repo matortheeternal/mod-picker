@@ -12,7 +12,7 @@
 <section>
     <div class="analysis-results" ng-repeat="option in mod.analysis.mod_options">
         <h4 class="subtitle">
-            <input class="fuzzy-input" type="text" ng-model="option.name" ng-click="focusText($event)" pu-elastic-input/>
+            <input class="fuzzy-input" type="text" ng-model="option.display_name" ng-click="focusText($event)" pu-elastic-input/>
             ({{option.size | bytes}})
             <span class="remove-item" ng-click="removeOption(option)" title="Remove mod option">
                 <i class="fa fa-times"></i>
