@@ -358,7 +358,7 @@ app.service("filtersFactory", function() {
                 common: false,
                 data: "tags_count",
                 type: "Range",
-                max: 1000,
+                max: 10,
                 param: "tc"
             }
         ];
