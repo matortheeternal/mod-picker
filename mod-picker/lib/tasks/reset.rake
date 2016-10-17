@@ -85,6 +85,20 @@ namespace :reset do
     puts "#{num_mod_authors} users with the mod author role"
   end
 
+  task asset_paths: :environment do
+    puts "\nResetting mod asset file paths"
+    ModOption.find_each do |mo|
+      mod_asset_files = mo.mod_asset_files.where(asset_file_id: nil)
+      asset_paths = mod_asset_files.map { |maf| maf.subpath }
+      basepaths = DataPathUtils.get_base_paths(asset_paths)
+      unless basepaths.empty?
+        puts "Fixed mod asset files for #{mo.mod.name} :: #{mo.name}"
+        puts "  New base paths: #{basepaths.to_s}"
+        ModAssetFile.apply_base_paths(mo.mod.game_id, mod_asset_files, basepaths)
+      end
+    end
+  end
+
   namespace :counters do
     task all: :environment do
       puts "\nResetting all counter cache columns"
