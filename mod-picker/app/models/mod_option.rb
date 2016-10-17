@@ -14,6 +14,9 @@ class ModOption < ActiveRecord::Base
 
   has_many :mod_list_mod_options, :inverse_of => 'mod_option', :dependent => :destroy
 
+  # VALIDATIONS
+  validates :mod_id, :name, :display_name, presence: true
+
   # CALLBACKS
   after_create :create_asset_files, :create_plugins, :update_counters
   before_destroy :destroy_mod_asset_files
