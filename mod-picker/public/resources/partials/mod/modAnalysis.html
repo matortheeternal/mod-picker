@@ -2,8 +2,8 @@
     <div class="mod-options-selection">
         <strong>Mod Options</strong>
 
-        <label ng-repeat="option in mod.options">
-            <input type="checkbox" ng-model="option.active" ng-disabled="option.default" ng-change="toggleOption(option)" /> {{option.name}}
+        <label ng-repeat="option in mod.options" title="{{option.name}}">
+            <input type="checkbox" ng-model="option.active" ng-disabled="option.default" ng-change="toggleOption(option)" /> {{option.display_name}}
         </label>
     </div>
 
