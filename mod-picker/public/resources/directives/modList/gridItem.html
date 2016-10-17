@@ -13,7 +13,7 @@
     <li class="mod-name">
         <a ng-show="item.mod" href="#/mod/{{item.mod.id}}">{{item.mod.name}}</a>
         <span ng-show="!item.mod">{{item.name}}</span>
-        <span ng-if="item.mod.aliases">({{item.mod.aliases.split(",")[0]}})</span>
+        <span ng-if="item.mod.aliases">({{item.mod.aliases.split(/,|;/)[0]}})</span>
     </li>
     <li ng-show="item.mod">by {{item.mod.authors}}</li>
     <li ng-show="item.mod">Released {{item.mod.released | date}}</li>
