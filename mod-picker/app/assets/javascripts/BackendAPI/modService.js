@@ -196,6 +196,7 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
             objectUtils.deleteEmptyProperties(sanitizedPlugins, 1);
             mod_options.push({
                 name: option.name,
+                display_name: option.display_name,
                 size: option.size,
                 default: option.default,
                 is_fomod_option: option.is_fomod_option,

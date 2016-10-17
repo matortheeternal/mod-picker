@@ -92,6 +92,7 @@ app.controller('modAnalysisManagerController', function($scope, $rootScope, plug
                 var analysis = JSON.parse(fixedJson);
                 analysis.mod_options.forEach(function(option) {
                     option.nestedAssets = assetUtils.getNestedAssets(option.assets);
+                    option.display_name = angular.copy(option.name);
                 });
                 $scope.mod.analysis = analysis;
                 $scope.getRequirementsFromAnalysis();
