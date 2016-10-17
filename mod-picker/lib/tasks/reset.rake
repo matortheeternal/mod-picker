@@ -102,10 +102,11 @@ namespace :reset do
   task mod_metrics: :environment do
     puts "\nResetting mod metrics"
     Mod.all.find_each do |mod|
+      next unless mod.reviews_count > 0
+      puts "  Updating metrics for #{mod.name}"
       mod.compute_average_rating
       mod.compute_reputation
       mod.update_columns({
-          :reviews_count => mod.reviews_count,
           :reputation => mod.reputation,
           :average_rating => mod.average_rating
       })
