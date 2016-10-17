@@ -92,7 +92,7 @@ namespace :reset do
       asset_paths = mod_asset_files.map { |maf| maf.subpath }
       basepaths = DataPathUtils.get_base_paths(asset_paths)
       unless basepaths.empty?
-        puts "Fixed mod asset files for #{mo.mod.name} :: #{mo.name}"
+        puts "Fixing mod asset files for #{mo.mod.name} :: #{mo.name}"
         puts "  New base paths: #{basepaths.to_s}"
         ModAssetFile.apply_base_paths(mo.mod.game_id, mod_asset_files, basepaths)
       end
