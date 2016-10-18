@@ -396,7 +396,7 @@ class ModsController < ApplicationController
           custom_sources_attributes: [:id, :label, :url, :_destroy],
          config_files_attributes: [:id, :filename, :install_path, :text_body, :_destroy],
          tag_names: [],
-         mod_options_attributes: [:id, :name, :display_name, :size, :default, :is_fomod_option,
+         mod_options_attributes: [:id, :name, :display_name, :size, :default, :is_fomod_option, :_destroy,
             asset_paths: [],
             plugin_dumps: [:id, :filename, :author, :description, :crc_hash, :record_count, :override_count, :file_size,
                 master_plugins: [:filename, :crc_hash],
