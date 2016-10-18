@@ -398,7 +398,7 @@ class ModsController < ApplicationController
          tag_names: [],
          mod_options_attributes: [:id, :name, :display_name, :size, :default, :is_fomod_option,
             asset_paths: [],
-            plugin_dumps: [:filename, :author, :description, :crc_hash, :record_count, :override_count, :file_size,
+            plugin_dumps: [:id, :filename, :author, :description, :crc_hash, :record_count, :override_count, :file_size,
                 master_plugins: [:filename, :crc_hash],
                 plugin_record_groups_attributes: [:sig, :record_count, :override_count],
                 plugin_errors_attributes: [:signature, :form_id, :group, :path, :name, :data],
