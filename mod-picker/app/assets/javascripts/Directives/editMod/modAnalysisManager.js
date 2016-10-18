@@ -24,15 +24,11 @@ app.controller('modAnalysisManagerController', function($scope, $rootScope, plug
     };
 
     $scope.removeOption = function(option) {
-        if (option.id) {
-            option._destroy = true;
-        } else {
-            var modOptions = $scope.mod.analysis.mod_options;
-            var index = modOptions.indexOf(option);
-            modOptions.splice(index, 1);
-            if (modOptions.length == 0) {
-                delete $scope.mod.analysis;
-            }
+        var modOptions = $scope.mod.analysis.mod_options;
+        var index = modOptions.indexOf(option);
+        modOptions.splice(index, 1);
+        if (modOptions.length == 0) {
+            delete $scope.mod.analysis;
         }
     };
 
@@ -172,4 +168,6 @@ app.controller('modAnalysisManagerController', function($scope, $rootScope, plug
     $scope.$on('destroyUnusedOldOptions', function() {
         $scope.destroyUnusedOldOptions();
     });
+
+    $scope.$on('removeModOption', $scope.removeOption);
 });

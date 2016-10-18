@@ -13,6 +13,14 @@ app.directive('modOption', function() {
 app.controller('modOptionController', function($scope, formUtils, assetUtils) {
     $scope.focusText = formUtils.focusText;
 
+    $scope.removeModOption = function() {
+        if ($scope.option.id) {
+            $scope.option._destroy = true;
+        } else {
+            $scope.$emit('removeModOption', $scope.option);
+        }
+    };
+
     $scope.findOldOption = function(optionId) {
         return $scope.oldOptions.find(function(oldOption) {
             return oldOption.id == optionId;

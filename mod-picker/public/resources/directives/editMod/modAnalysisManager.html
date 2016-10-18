@@ -11,11 +11,11 @@
 </h3>
 <section>
     <div class="analysis-container" ng-if="mod.mod_options && !mod.analysis">
-        <mod-option ng-repeat="option in mod.mod_options" option="option"></mod-option>
+        <mod-option ng-repeat="option in mod.mod_options" option="option" ng-hide="option._destroy"></mod-option>
     </div>
 
     <div class="analysis-container" ng-if="mod.analysis">
-        <mod-option ng-repeat="option in mod.analysis.mod_options" option="option" old-options="mod.mod_options"></mod-option>
+        <mod-option ng-repeat="option in mod.analysis.mod_options" option="option" old-options="mod.mod_options" ng-hide="option._destroy"></mod-option>
     </div>
 
     <label>
