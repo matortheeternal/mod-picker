@@ -189,27 +189,36 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
         return custom_sources;
     };
 
+    this.sanitizeModOption = function(option, excludePlugins) {
+        var sanitizedPlugins = angular.copy(option.plugins);
+        objectUtils.deleteEmptyProperties(sanitizedPlugins, 1);
+        return {
+            id: option.id,
+            _destroy: option._destroy,
+            name: option.name,
+            display_name: option.display_name,
+            size: option.size,
+            default: option.default,
+            is_fomod_option: option.is_fomod_option,
+            plugin_dumps: excludePlugins ? undefined : sanitizedPlugins,
+            asset_paths: option.assets
+        };
+    };
+
     this.buildNewModOptions = function(options, mod) {
         mod.analysis.mod_options.forEach(function(option) {
-            var sanitizedPlugins = angular.copy(option.plugins);
-            objectUtils.deleteEmptyProperties(sanitizedPlugins, 1);
-            options.push({
-                id: option.id,
-                _destroy: option._destroy,
-                name: option.name,
-                display_name: option.display_name,
-                size: option.size,
-                default: option.default,
-                is_fomod_option: option.is_fomod_option,
-                plugin_dumps: sanitizedPlugins,
-                asset_paths: option.assets
-            });
+            options.push(service.sanitizeModOption(option));
         });
     };
 
     this.prepareModOptions = function(mod) {
-        var options = angular.copy(mod.mod_options || []);
-        if (mod.analysis) service.buildNewModOptions(options, mod);
+        var options = [];
+        mod.mod_options && mod.mod_options.forEach(function(option) {
+            options.push(service.sanitizeModOption(option, true));
+        });
+        if (mod.analysis) {
+            service.buildNewModOptions(options, mod);
+        }
         objectUtils.deleteEmptyProperties(options, 1);
         return options;
     };
@@ -272,7 +281,7 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
         return backend.post('/mods', modData);
     };
 
-    this.getModUpdateData = function(modId, mod) {
+    this.getModData = function(mod) {
         // prepare associations
         var mod_authors = service.prepareModAuthors(mod);
         var required_mods = service.prepareRequiredMods(mod);
@@ -282,7 +291,6 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
         // prepare mod record
         var modData = {
             mod: {
-                id: modId,
                 name: mod.name,
                 aliases: mod.aliases,
                 authors: mod.authors,
@@ -314,8 +322,14 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
         return modData;
     };
 
-    this.updateMod = function(modData) {
-        return backend.update('/mods/' + modData.mod.id, modData);
+    this.getDifferentModValues = function(originalMod, mod) {
+        var originalModData = service.getModData(originalMod);
+        var modData = service.getModData(mod);
+        return objectUtils.getDifferentObjectValues(originalModData, modData);
+    };
+
+    this.updateMod = function(modId, modData) {
+        return backend.update('/mods/' + modId, modData);
     };
 
     this.submitImage = function(modId, image) {
