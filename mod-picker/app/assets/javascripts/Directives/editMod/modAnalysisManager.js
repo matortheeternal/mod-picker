@@ -24,11 +24,15 @@ app.controller('modAnalysisManagerController', function($scope, $rootScope, plug
     };
 
     $scope.removeOption = function(option) {
-        var modOptions = $scope.mod.analysis.mod_options;
-        var index = modOptions.indexOf(option);
-        modOptions.splice(index, 1);
-        if (modOptions.length == 0) {
-            delete $scope.mod.analysis;
+        if (option.id) {
+            option._destroy = true;
+        } else {
+            var modOptions = $scope.mod.analysis.mod_options;
+            var index = modOptions.indexOf(option);
+            modOptions.splice(index, 1);
+            if (modOptions.length == 0) {
+                delete $scope.mod.analysis;
+            }
         }
     };
 
