@@ -42,6 +42,10 @@ class ModOption < ActiveRecord::Base
     end
   end
 
+  def asset_file_paths
+    mod_asset_files.eager_load(:asset_file).pluck(:subpath, :path).map { |item| item.join('') }
+  end
+
   def destroy_mod_asset_files
     query = "DELETE FROM mod_asset_files WHERE mod_option_id = #{id}"
     ActiveRecord::Base.connection.execute(query)
