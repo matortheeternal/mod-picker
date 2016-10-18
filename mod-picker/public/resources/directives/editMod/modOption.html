@@ -1,0 +1,30 @@
+<h4 class="subtitle">
+    <input class="fuzzy-input" type="text" ng-model="option.display_name" ng-click="focusText($event)" pu-elastic-input/>
+    ({{option.size | bytes}})
+    <span class="remove-item" ng-click="removeOption(option)" title="Remove mod option">
+        <i class="fa fa-times"></i>
+    </span>
+</h4>
+
+<label class="default-option">
+    <input type="checkbox" ng-model="option.default"> Default
+</label>
+
+<label class="old-option" ng-if="oldOptions">
+    <span>Old Option:</span>
+    <select ng-options="opt.id as opt.display_name for opt in oldOptions" ng-model="option.id" ng-change="oldOptionChanged(option)">
+        <option value="">None</option>
+    </select>
+</label>
+
+<strong ng-if="option.nestedAssets">Asset File Tree</strong>
+<div class="subsection analysis-container" ng-if="option.nestedAssets">
+    <asset-tree assets="option.nestedAssets"></asset-tree>
+</div>
+
+<strong ng-if="option.plugins.length">Plugins</strong>
+<div class="subsection analysis-container" ng-if="option.plugins.length">
+    <div class="plugin-analysis-item" ng-repeat="plugin in option.plugins">
+        <plugin-metadata plugin="plugin" show-record-groups="true"></plugin-metadata>
+    </div>
+</div>
