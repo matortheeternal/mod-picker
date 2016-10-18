@@ -51,18 +51,26 @@ class ModOption < ActiveRecord::Base
     mod_asset_files.eager_load(:asset_file).pluck(:subpath, :path).map { |item| item.join('') }
   end
 
+  def update_existing_plugin(dump)
+    plugin = Plugin.find(dump[:id])
+    plugin.update(dump)
+  end
+
+  def create_new_plugin(dump)
+    dump[:game_id] = mod.game_id
+    plugin = Plugin.find_by(filename: dump[:filename], crc_hash: dump[:crc_hash])
+    if plugin.nil?
+      plugin = plugins.create(dump)
+    else
+      plugin.mod_option_id = id
+      plugin.save!
+    end
+  end
+
   def create_plugins
     if @plugin_dumps
       @plugin_dumps.each do |dump|
-        # create plugin from dump
-        dump[:game_id] = mod.game_id
-        plugin = Plugin.find_by(filename: dump[:filename], crc_hash: dump[:crc_hash])
-        if plugin.nil?
-          plugin = plugins.create(dump)
-        else
-          plugin.mod_option_id = id
-          plugin.save!
-        end
+        dump.has_key?(:id) ? update_existing_plugin(dump): create_new_plugin(dump)
       end
     end
   end
