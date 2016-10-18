@@ -59,7 +59,8 @@ class Plugin < ActiveRecord::Base
 
   # callbacks
   after_create :create_associations, :update_lazy_counters, :convert_dummy_masters
-  before_destroy :delete_associations
+  before_update :clear_associations
+  before_destroy :prepare_to_destroy
 
   def update_lazy_counters
     self.errors_count = plugin_errors.count
@@ -111,24 +112,19 @@ class Plugin < ActiveRecord::Base
     end
   end
 
-  def delete_associations
+  def clear_associations
     OverrideRecord.where(plugin_id: id).delete_all
     PluginError.where(plugin_id: id).delete_all
     PluginRecordGroup.where(plugin_id: id).delete_all
     DummyMaster.where(plugin_id: id).delete_all
-    create_dummy_masters
     Master.where(plugin_id: id).delete_all
-    Master.where(master_plugin_id: id).delete_all
-    ModListPlugin.where(plugin_id: id).destroy_all
   end
 
-  def map_associations(plugin_id)
-    OverrideRecord.where(plugin_id: id).update_all(plugin_id: plugin_id)
-    PluginError.where(plugin_id: id).update_all(plugin_id: plugin_id)
-    PluginRecordGroup.where(plugin_id: id).update_all(plugin_id: plugin_id)
-    DummyMaster.where(plugin_id: id).update_all(plugin_id: plugin_id)
-    Master.where(plugin_id: id).update_all(plugin_id: plugin_id)
-    Master.where(master_plugin_id: id).update_all(master_plugin_id: plugin_id)
+  def prepare_to_destroy
+    clear_associations
+    create_dummy_masters
+    Master.where(master_plugin_id: id).delete_all
+    ModListPlugin.where(plugin_id: id).delete_all
   end
 
   def formatted_overrides
@@ -142,21 +138,6 @@ class Plugin < ActiveRecord::Base
     end
     output
   end
-
-
-# def self.show_plugins_store_json(collection)
-#     collection.as_json({
-#         :only => [:id, :filename],
-#         :include => {
-#             :mod => {
-#                 :only => [:id, :name]
-#             },
-#             :mod_option => {
-#                 :only => [:name]
-#             }
-#         }
-#     })
-# end
 
   def self.sortable_columns
     {
