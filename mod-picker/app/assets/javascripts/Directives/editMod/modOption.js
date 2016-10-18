@@ -19,11 +19,14 @@ app.controller('modOptionController', function($scope, formUtils, assetUtils) {
         });
     };
 
-    $scope.oldOptionChanged = function(option) {
+    $scope.oldOptionChanged = function() {
+        var option = $scope.option;
         if (option.hasOwnProperty('id') && option.id !== null) {
-            var oldOption = $scope.findOldOption(option.id);
-            option.display_name = angular.copy(oldOption.display_name);
+            $scope.oldOption = $scope.findOldOption(option.id);
+            option.display_name = angular.copy($scope.oldOption.display_name);
+            $scope.loadExistingPlugins();
         } else {
+            delete $scope.oldOption;
             option.id = undefined;
             option.display_name = angular.copy(option.name);
         }
