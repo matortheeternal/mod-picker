@@ -189,12 +189,13 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
         return custom_sources;
     };
 
-    this.prepareModOptions = function(mod) {
-        var mod_options = [];
-        mod.analysis && mod.analysis.mod_options.forEach(function(option) {
+    this.buildNewModOptions = function(options, mod) {
+        mod.analysis.mod_options.forEach(function(option) {
             var sanitizedPlugins = angular.copy(option.plugins);
             objectUtils.deleteEmptyProperties(sanitizedPlugins, 1);
-            mod_options.push({
+            options.push({
+                id: option.id,
+                _destroy: option._destroy,
                 name: option.name,
                 display_name: option.display_name,
                 size: option.size,
@@ -202,11 +203,15 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
                 is_fomod_option: option.is_fomod_option,
                 plugin_dumps: sanitizedPlugins,
                 asset_paths: option.assets
-            })
+            });
         });
-        objectUtils.deleteEmptyProperties(mod_options, 1);
+    };
 
-        return mod_options;
+    this.prepareModOptions = function(mod) {
+        var options = angular.copy(mod.mod_options || []);
+        if (mod.analysis) service.buildNewModOptions(options, mod);
+        objectUtils.deleteEmptyProperties(options, 1);
+        return options;
     };
     
     this.getDate = function(mod, dateKey, dateTest) {
