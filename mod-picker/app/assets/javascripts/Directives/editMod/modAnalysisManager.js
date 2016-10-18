@@ -79,6 +79,21 @@ app.controller('modAnalysisManagerController', function($scope, $rootScope, plug
         });
     };
 
+    $scope.destroyUnusedOldOptions = function() {
+        if (!$scope.mod.analysis || !$scope.mod.mod_options) return;
+        var newOptions = $scope.mod.analysis.mod_options;
+        var newOptionIds = newOptions.map(function(option) {
+            return option.id;
+        });
+        $scope.mod.mod_options.forEach(function(oldOption) {
+            if (newOptionIds.indexOf(oldOption.id) == -1) {
+                oldOption._destroy = true;
+            } else if (oldOption.hasOwnProperty('_destroy')) {
+                delete oldOption._destroy;
+            }
+        });
+    };
+
     $scope.getBaseName = function(option) {
         var regex = new RegExp('(v?[0-9\.\_]+)?(\-[0-9]([0-9a-z\-]+))?\.(7z|rar|zip)', 'i');
         option.base_name = option.name.replace(regex, '');
@@ -139,6 +154,7 @@ app.controller('modAnalysisManagerController', function($scope, $rootScope, plug
                 var json = event.target.result;
                 var fixedJson = objectUtils.remapProperties(json, jsonMap);
                 $scope.parseAnalysis(fixedJson);
+                $scope.destroyUnusedOldOptions();
             } catch (e) {
                 $scope.parseError(e);
             }
@@ -148,5 +164,9 @@ app.controller('modAnalysisManagerController', function($scope, $rootScope, plug
 
     $scope.$watch('mod.mod_options', function() {
         $scope.mod.mod_options.forEach($scope.getBaseName);
+    });
+
+    $scope.$on('destroyUnusedOldOptions', function() {
+        $scope.destroyUnusedOldOptions();
     });
 });
