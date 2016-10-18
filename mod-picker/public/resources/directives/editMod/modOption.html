@@ -10,6 +10,10 @@
     <input type="checkbox" ng-model="option.default"> Default
 </label>
 
+<label>
+    <span>Raw Name:</span> {{option.name}}
+</label>
+
 <label class="old-option" ng-if="oldOptions">
     <span>Old Option:</span>
     <select ng-options="opt.id as opt.display_name for opt in oldOptions" ng-model="option.id" ng-change="oldOptionChanged(option)">
