@@ -55,7 +55,7 @@ form {
     display: none;
   }
 
-  .analysis-results {
+  mod-option {
     .subtitle {
       margin-bottom: 15px;
 
@@ -66,11 +66,17 @@ form {
       }
     }
 
-    .default-option {
+    label {
       display: block;
       margin-left: 10px;
       text-transform: none;
       margin-bottom: 10px;
+
+      span {
+        color: $text_color;
+        font-weight: bold;
+        margin-right: 16px;
+      }
     }
 
     strong {
@@ -92,7 +98,6 @@ form {
         }
       }
     }
-
   }
 
   .subsection {

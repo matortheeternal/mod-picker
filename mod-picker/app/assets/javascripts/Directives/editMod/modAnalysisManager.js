@@ -79,6 +79,54 @@ app.controller('modAnalysisManagerController', function($scope, $rootScope, plug
         });
     };
 
+    $scope.getBaseName = function(option) {
+        var regex = new RegExp('(v?[0-9\.\_]+)?(\-[0-9]([0-9a-z\-]+))?\.(7z|rar|zip)', '');
+        option.base_name = option.name.replace(regex, '');
+    };
+
+    $scope.optionMatches = function(option, oldOption) {
+        var namesMatch = option.base_name === oldOption.base_name;
+        var fileSizesMatch = option.size == oldOption.size;
+        return namesMatch || fileSizesMatch;
+    };
+
+    $scope.loadExistingOption = function(option) {
+        var oldOptions = $scope.mod.mod_options;
+        if (!oldOptions) return;
+        var oldOption = oldOptions.find(function(oldOption) {
+            return $scope.optionMatches(option, oldOption);
+        });
+        if (oldOption) {
+            option.id = oldOption.id;
+            option.display_name = angular.copy(oldOption.display_name);
+        }
+    };
+
+    $scope.prepareModOption = function(option) {
+        option.nestedAssets = assetUtils.getNestedAssets(option.assets);
+        $scope.getBaseName(option);
+        option.display_name = angular.copy(option.base_name);
+        $scope.loadExistingOption(option);
+    };
+
+    $scope.parseError = function(e) {
+        console.log("Error parsing mod analysis: " + e);
+        var params = {
+            type: "error",
+            text: "There was an error parsing the mod analysis.  Make sure the analysis was produced with the latest version of Mod Analyzer."
+        };
+        $scope.$emit('customMessage', params);
+    };
+
+    $scope.parseAnalysis = function(fixedJson) {
+        var analysis = JSON.parse(fixedJson);
+        analysis.mod_options.forEach($scope.prepareModOption);
+        $scope.$applyAsync(function() {
+            $scope.mod.analysis = analysis;
+            $scope.getRequirementsFromAnalysis();
+        });
+    };
+
     $scope.loadAnalysisFile = function(file) {
         var fileReader = new FileReader();
         var jsonMap = {
@@ -88,23 +136,17 @@ app.controller('modAnalysisManagerController', function($scope, $rootScope, plug
         };
         fileReader.onload = function(event) {
             try {
-                var fixedJson = objectUtils.remapProperties(event.target.result, jsonMap);
-                var analysis = JSON.parse(fixedJson);
-                analysis.mod_options.forEach(function(option) {
-                    option.nestedAssets = assetUtils.getNestedAssets(option.assets);
-                    option.display_name = angular.copy(option.name);
-                });
-                $scope.mod.analysis = analysis;
-                $scope.getRequirementsFromAnalysis();
+                var json = event.target.result;
+                var fixedJson = objectUtils.remapProperties(json, jsonMap);
+                $scope.parseAnalysis(fixedJson);
             } catch (e) {
-                console.log("Error parsing mod analysis: " + e);
-                var params = {
-                    type: "error",
-                    text: "There was an error parsing the mod analysis.  Make sure the analysis was produced with the latest version of Mod Analyzer."
-                };
-                $scope.$emit('customMessage', params)
+                $scope.parseError(e);
             }
         };
         fileReader.readAsText(file);
     };
+
+    $scope.$watch('mod.mod_options', function() {
+        $scope.mod.mod_options.forEach($scope.getBaseName);
+    });
 });
