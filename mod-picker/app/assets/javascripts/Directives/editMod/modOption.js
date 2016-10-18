@@ -33,7 +33,9 @@ app.controller('modOptionController', function($scope, formUtils, assetUtils) {
         $scope.$emit('destroyUnusedOldOptions');
     };
 
-    if ($scope.option.asset_file_paths && !$scope.option.nestedAssets) {
-        $scope.option.nestedAssets = assetUtils.getNestedAssets($scope.option.asset_file_paths);
+    // prepare nested assets
+    if (!$scope.option.nestedAssets) {
+        var assets = $scope.option.asset_file_paths || $scope.option.assets;
+        $scope.option.nestedAssets = assetUtils.getNestedAssets(assets);
     }
 });
