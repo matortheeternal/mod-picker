@@ -80,7 +80,7 @@ app.controller('modAnalysisManagerController', function($scope, $rootScope, plug
     };
 
     $scope.getBaseName = function(option) {
-        var regex = new RegExp('(v?[0-9\.\_]+)?(\-[0-9]([0-9a-z\-]+))?\.(7z|rar|zip)', '');
+        var regex = new RegExp('(v?[0-9\.\_]+)?(\-[0-9]([0-9a-z\-]+))?\.(7z|rar|zip)', 'i');
         option.base_name = option.name.replace(regex, '');
     };
 
