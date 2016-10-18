@@ -18,12 +18,13 @@ class ModOption < ActiveRecord::Base
   validates :name, :display_name, presence: true
 
   # CALLBACKS
-  after_create :create_asset_files, :create_plugins, :update_counters
-  before_destroy :destroy_mod_asset_files
+  after_save :create_asset_files, :create_plugins, :update_counters
+  before_destroy :clear_assets
 
   # INSTANCE METHODS
   def create_asset_files
     if @asset_paths
+      clear_assets
       if !is_fomod_option
         basepaths = DataPathUtils.get_base_paths(@asset_paths)
       else
@@ -42,13 +43,12 @@ class ModOption < ActiveRecord::Base
     end
   end
 
-  def asset_file_paths
-    mod_asset_files.eager_load(:asset_file).pluck(:subpath, :path).map { |item| item.join('') }
+  def clear_assets
+    mod_asset_files.destroy_all
   end
 
-  def destroy_mod_asset_files
-    query = "DELETE FROM mod_asset_files WHERE mod_option_id = #{id}"
-    ActiveRecord::Base.connection.execute(query)
+  def asset_file_paths
+    mod_asset_files.eager_load(:asset_file).pluck(:subpath, :path).map { |item| item.join('') }
   end
 
   def create_plugins
