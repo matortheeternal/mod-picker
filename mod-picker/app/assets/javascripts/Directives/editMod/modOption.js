@@ -14,12 +14,13 @@ app.controller('modOptionController', function($scope, formUtils) {
     $scope.focusText = formUtils.focusText;
 
     $scope.oldOptionChanged = function(option) {
-        if (option.id) {
+        if (option.hasOwnProperty('id') && option.id !== null) {
             var oldOption = $scope.oldOptions.find(function(oldOption) {
                 return oldOption.id == option.id;
             });
             option.display_name = angular.copy(oldOption.display_name);
         } else {
+            option.id = undefined;
             option.display_name = angular.copy(option.name);
         }
     }
