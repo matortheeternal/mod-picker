@@ -22,24 +22,29 @@ class ModOption < ActiveRecord::Base
   before_destroy :clear_assets
 
   # INSTANCE METHODS
+  def get_base_paths
+    if !is_fomod_option
+      basepaths = DataPathUtils.get_base_paths(@asset_paths)
+    else
+      basepaths = [""]
+    end
+  end
+
+  def create_asset_file(basepaths, path)
+    basepath = basepaths.find { |basepath| path.start_with?(basepath) }
+    if basepath.nil?
+      mod_asset_files.create(subpath: path)
+    else
+      asset_file = AssetFile.find_or_create_by(game_id: mod.game_id, path: path.sub(basepath, ''))
+      mod_asset_files.create(asset_file_id: asset_file.id, subpath: basepath)
+    end
+  end
+
   def create_asset_files
     if @asset_paths
       clear_assets
-      if !is_fomod_option
-        basepaths = DataPathUtils.get_base_paths(@asset_paths)
-      else
-        basepaths = [""]
-      end
-
-      @asset_paths.each do |path|
-        basepath = basepaths.find { |basepath| path.start_with?(basepath) }
-        if basepath.nil?
-          mod_asset_files.create(subpath: path)
-        else
-          asset_file = AssetFile.find_or_create_by(game_id: mod.game_id, path: path.sub(basepath, ''))
-          mod_asset_files.create(asset_file_id: asset_file.id, subpath: basepath)
-        end
-      end
+      basepaths = get_base_paths
+      @asset_paths.each { |path| create_asset_file(basepaths, path) }
     end
   end
 
