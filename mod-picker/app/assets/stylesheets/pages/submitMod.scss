@@ -91,6 +91,19 @@ form {
       .plugin-analysis-item {
         margin-bottom: 8px;
 
+        label {
+          margin-left: 30px;
+          font-size: 14px;
+
+          span {
+            display: inline-block;
+            width: 120px;
+            margin-right: 40px;
+            color: $h4_color;
+            font-weight: 500;
+          }
+        }
+
         .stat-item {
           padding-left: 30px;
           margin-bottom: 4px;
