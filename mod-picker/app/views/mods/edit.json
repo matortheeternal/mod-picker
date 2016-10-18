@@ -19,6 +19,9 @@
     },
     "config_files": {
       "format": "edit"
+    },
+    "mod_options": {
+      "format": "edit"
     }
   },
   "methods": "image"
