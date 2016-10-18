@@ -1,4 +1,4 @@
-app.service('modLoaderService', function(sitesFactory) {
+app.service('modLoaderService', function(sitesFactory, assetUtils) {
     var service = this;
     
     this.loadSource = function(mod, infoLabel, sourceLabel) {
@@ -55,12 +55,20 @@ app.service('modLoaderService', function(sitesFactory) {
         }
     };
 
+    this.loadAssets = function(mod) {
+        mod.mod_options.forEach(function(option) {
+            if (!option.asset_file_paths) return;
+            option.nestedAssets = assetUtils.getNestedAssets(option.asset_file_paths);
+        });
+    };
+
     this.loadMod = function(mod) {
         service.loadSources(mod);
         service.loadCustomSources(mod);
         service.loadDates(mod);
         service.loadRequirements(mod);
         service.loadCategories(mod);
+        service.loadAssets(mod);
         mod.newTags = [];
     }
 });

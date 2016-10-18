@@ -120,6 +120,7 @@ app.controller('modAnalysisManagerController', function($scope, $rootScope, plug
     $scope.prepareModOption = function(option) {
         $scope.getBaseName(option);
         option.display_name = angular.copy(option.base_name);
+        option.nestedAssets = assetUtils.getNestedAssets(option.assets);
         $scope.loadExistingOption(option);
     };
 
@@ -160,10 +161,6 @@ app.controller('modAnalysisManagerController', function($scope, $rootScope, plug
         };
         fileReader.readAsText(file);
     };
-
-    $scope.$watch('mod.mod_options', function() {
-        $scope.mod.mod_options.forEach($scope.getBaseName);
-    });
 
     $scope.$on('destroyUnusedOldOptions', function() {
         $scope.destroyUnusedOldOptions();

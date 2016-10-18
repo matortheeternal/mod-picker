@@ -84,12 +84,6 @@ app.controller('modOptionController', function($scope, formUtils, assetUtils) {
         $scope.option.plugins.forEach($scope.loadExistingPlugin);
     };
 
-    // prepare nested assets
-    if (!$scope.option.nestedAssets) {
-        var assets = $scope.option.asset_file_paths || $scope.option.assets;
-        $scope.option.nestedAssets = assetUtils.getNestedAssets(assets);
-    }
-
     // load old option into scope
     if ($scope.option.id && $scope.oldOptions) {
         $scope.oldOption = $scope.findOldOption($scope.option.id);
