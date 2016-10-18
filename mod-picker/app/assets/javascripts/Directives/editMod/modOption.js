@@ -10,7 +10,7 @@ app.directive('modOption', function() {
     }
 });
 
-app.controller('modOptionController', function($scope, formUtils) {
+app.controller('modOptionController', function($scope, formUtils, assetUtils) {
     $scope.focusText = formUtils.focusText;
 
     $scope.findOldOption = function(optionId) {
@@ -28,5 +28,9 @@ app.controller('modOptionController', function($scope, formUtils) {
             option.display_name = angular.copy(option.name);
         }
         $scope.$emit('destroyUnusedOldOptions');
+    };
+
+    if ($scope.option.asset_file_paths && !$scope.option.nestedAssets) {
+        $scope.option.nestedAssets = assetUtils.getNestedAssets($scope.option.asset_file_paths);
     }
 });
