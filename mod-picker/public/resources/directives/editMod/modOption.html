@@ -31,7 +31,7 @@
     <div class="plugin-analysis-item" ng-repeat="plugin in option.plugins">
         <label class="old-plugin" ng-if="oldOption">
             <span>Old Plugin:</span>
-            <select ng-options="op.id as op.filename for op in oldOption.plugins" ng-model="plugin.id" ng-change="oldPluginChanged()">
+            <select ng-options="op.id as op.filename for op in oldOption.plugins" ng-model="plugin.id" ng-change="oldPluginChanged(plugin)">
                 <option value="">None</option>
             </select>
         </label>

@@ -69,7 +69,7 @@ class ModOption < ActiveRecord::Base
 
   def update_existing_plugin(dump)
     plugin = Plugin.find(dump[:id])
-    plugin.update(dump)
+    dump[:_destroy] ? plugin.destroy : plugin.update(dump)
   end
 
   def create_new_plugin(dump)
@@ -86,7 +86,7 @@ class ModOption < ActiveRecord::Base
   def create_plugins
     if @plugin_dumps
       @plugin_dumps.each do |dump|
-        dump.has_key?(:id) ? update_existing_plugin(dump): create_new_plugin(dump)
+        dump.has_key?(:id) ? update_existing_plugin(dump) : create_new_plugin(dump)
       end
     end
   end

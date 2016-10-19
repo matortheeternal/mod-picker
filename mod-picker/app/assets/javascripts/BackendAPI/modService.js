@@ -192,6 +192,7 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
     this.sanitizePlugin = function(plugin) {
         return {
             id: plugin.id,
+            _destroy: plugin._destroy,
             author: plugin.author,
             filename: plugin.filename,
             crc_hash: plugin.crc_hash,
@@ -231,9 +232,25 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
         };
     };
 
+    this.buildDestroyedOldPlugins = function(newOption, mod) {
+        if (newOption._destroy) return;
+        var oldOption = mod.mod_options.find(function(oldOption) {
+            return newOption.id == oldOption.id;
+        });
+        oldOption.plugins.forEach(function(plugin) {
+            if (!plugin._destroy) return;
+            newOption.plugin_dumps.push({
+                id: plugin.id,
+                _destroy: true
+            });
+        });
+    };
+
     this.buildNewModOptions = function(options, mod) {
         mod.analysis.mod_options.forEach(function(option) {
-            options.push(service.sanitizeModOption(option));
+            var newOption = service.sanitizeModOption(option);
+            service.buildDestroyedOldPlugins(newOption, mod);
+            options.push(newOption);
         });
     };
 
@@ -243,9 +260,26 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
         });
     };
 
+    this.buildDestroyedOldModOptions = function(options, mod) {
+        if (!mod.mod_options) return;
+        mod.mod_options.forEach(function(option) {
+            if (!option._destroy) return;
+            var newOption = options.find(function(newOption) {
+                return option.id == newOption.id;
+            });
+            if (!newOption) {
+                options.push({
+                    id: option.id,
+                    _destroy: true
+                });
+            }
+        });
+    };
+
     this.prepareModOptions = function(mod) {
         var options = [];
         if (mod.analysis) {
+            service.buildDestroyedOldModOptions(options, mod);
             service.buildNewModOptions(options, mod);
         } else if (mod.mod_options) {
             service.buildOldModOptions(options, mod);

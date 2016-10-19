@@ -37,17 +37,21 @@ app.controller('modOptionController', function($scope, formUtils, assetUtils) {
             delete $scope.oldOption;
             option.id = undefined;
             option.display_name = angular.copy(option.name);
+            option.plugins && option.plugins.forEach(function(plugin) {
+                if (plugin.hasOwnProperty('id')) delete plugin.id;
+            });
         }
         $scope.$emit('destroyUnusedOldOptions');
-        $scope.destroyUnusedOldPlugins();
     };
 
-    $scope.oldPluginChanged = function() {
+    $scope.oldPluginChanged = function(plugin) {
+        delete plugin.id;
         $scope.destroyUnusedOldPlugins();
     };
 
     $scope.destroyUnusedOldPlugins = function() {
-        var oldPlugins = $scope.oldOption ? $scope.oldOption.plugins : [];
+        if (!$scope.oldOption) return;
+        var oldPlugins = $scope.oldOption.plugins;
         oldPlugins.forEach(function(oldPlugin) {
             var plugin = $scope.option.plugins.find(function(plugin) {
                 return plugin.id == oldPlugin.id;
