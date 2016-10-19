@@ -39,6 +39,7 @@ app.controller('modOptionController', function($scope, formUtils, assetUtils) {
             option.display_name = angular.copy(option.name);
         }
         $scope.$emit('destroyUnusedOldOptions');
+        $scope.destroyUnusedOldPlugins();
     };
 
     $scope.oldPluginChanged = function() {
