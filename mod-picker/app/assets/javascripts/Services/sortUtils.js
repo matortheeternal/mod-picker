@@ -59,7 +59,9 @@ app.service('sortUtils', function($q, categoryService, colorsFactory, modListSer
             color: colorsFactory.randomColor(),
             name: 'Custom '+key.capitalize(),
             priority: 255,
-            children: mod_list[customKey]
+            children: mod_list[customKey].filter(function(customItem) {
+                return !customItem.group_id;
+            })
         }
     };
 
@@ -70,12 +72,21 @@ app.service('sortUtils', function($q, categoryService, colorsFactory, modListSer
     };
 
     this.prepareItem = function(item) {
-        item.group_id = null;
-        if (item.merged) item.merged = false;
+        if (item.group_id) {
+            var group = mod_list.groups.find(function(group) {
+                return group.id == item.group_id;
+            });
+            if (!group.keep_when_sorting) {
+                item.group_id = null;
+                if (item.merged) item.merged = false;
+            }
+        } else if (item.merged) {
+            item.merged = false;
+        }
     };
 
     this.prepareGroup = function(group) {
-        if (group.tab === key) {
+        if (group.tab === key && !group.keep_when_sorting) {
             group._destroy = true;
         }
     };
@@ -99,6 +110,15 @@ app.service('sortUtils', function($q, categoryService, colorsFactory, modListSer
             var group = service.getCategoryGroup(groups, primaryCategory);
             group.children.push(item);
         }
+    };
+
+    this.sortGroup = function(group, groups) {
+        group.index = 9998;
+        group.priority = 254;
+        group.children = mod_list[key].filter(function(item) {
+            return item.group_id == group.id;
+        });
+        groups.push(group);
     };
 
 
@@ -174,7 +194,13 @@ app.service('sortUtils', function($q, categoryService, colorsFactory, modListSer
 
         // sort items into groups
         mod_list[key].forEach(function(item) {
+            if (item.group_id) return;
             service.sortItem(item, groups);
+        });
+
+        // push preserved groups onto groups
+        mod_list.groups.forEach(function(group) {
+            service.sortGroup(group, groups);
         });
 
         // put custom items in a group at the end
@@ -192,7 +218,8 @@ app.service('sortUtils', function($q, categoryService, colorsFactory, modListSer
         // we slice the first off because we don't want to sort official content
         // we slice the last off because we don't want to sort custom content
         groups.slice(1, groups.length - 1).forEach(function(group) {
-            group.children.sort(function(a, b) {
+            if (group.keep_when_sorting) return;
+            group.children && group.children.sort(function(a, b) {
                 return b[key][innerKey] - a[key][innerKey];
             });
         });
@@ -226,6 +253,10 @@ app.service('sortUtils', function($q, categoryService, colorsFactory, modListSer
         model[key] = [];
         var groupPromises = [];
         groups.forEach(function(group) {
+            if (group.keep_when_sorting) {
+                model[key].push(group);
+                return;
+            }
             if (!group.children.length) return; // skip empty groups
             var action = service.saveGroup(group);
             groupPromises.push(action.promise);
