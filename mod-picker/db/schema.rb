@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161016055843) do
+ActiveRecord::Schema.define(version: 20161019150658) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -443,12 +443,13 @@ ActiveRecord::Schema.define(version: 20161016055843) do
   add_index "mod_list_custom_plugins", ["mod_list_id"], name: "ml_id", using: :btree
 
   create_table "mod_list_groups", force: :cascade do |t|
-    t.integer "mod_list_id", limit: 4,                 null: false
-    t.integer "index",       limit: 2,                 null: false
-    t.integer "tab",         limit: 1,     default: 0, null: false
-    t.integer "color",       limit: 1,     default: 0, null: false
-    t.string  "name",        limit: 128,               null: false
-    t.text    "description", limit: 65535
+    t.integer "mod_list_id",       limit: 4,                     null: false
+    t.integer "index",             limit: 2,                     null: false
+    t.integer "tab",               limit: 1,     default: 0,     null: false
+    t.integer "color",             limit: 1,     default: 0,     null: false
+    t.boolean "keep_when_sorting",               default: false, null: false
+    t.string  "name",              limit: 128,                   null: false
+    t.text    "description",       limit: 65535
   end
 
   add_index "mod_list_groups", ["mod_list_id"], name: "fk_rails_0abd07c656", using: :btree
