@@ -21,6 +21,17 @@ class ModOption < ActiveRecord::Base
   after_save :create_asset_files, :create_plugins, :update_counters
   before_destroy :clear_assets
 
+  # FIX ATTR ACCESSORS DIRTY DETECTION
+  def asset_paths=(value)
+    attribute_will_change!("asset_paths") if @asset_paths != value
+    @asset_paths = value
+  end
+
+  def plugin_dumps=(value)
+    attribute_will_change!("plugin_dumps") if @plugin_dumps != value
+    @plugin_dumps = value
+  end
+
   # INSTANCE METHODS
   def get_base_paths
     if !is_fomod_option
