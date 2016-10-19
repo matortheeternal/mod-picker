@@ -14,6 +14,6 @@ class ModListGroupsController < ApplicationController
 
   private
     def mod_list_group_params
-      params.require(:mod_list_group).permit(:mod_list_id, :index, :tab, :color, :name, :description)
+      params.require(:mod_list_group).permit(:mod_list_id, :index, :tab, :color, :keep_when_sorting, :name, :description)
     end
 end
