@@ -47,8 +47,7 @@ app.controller('modOptionController', function($scope, formUtils, assetUtils) {
     };
 
     $scope.destroyUnusedOldPlugins = function() {
-        if (!$scope.oldOption) return;
-        var oldPlugins = $scope.oldOption.plugins;
+        var oldPlugins = $scope.oldOption ? $scope.oldOption.plugins : [];
         oldPlugins.forEach(function(oldPlugin) {
             var plugin = $scope.option.plugins.find(function(plugin) {
                 return plugin.id == oldPlugin.id;
