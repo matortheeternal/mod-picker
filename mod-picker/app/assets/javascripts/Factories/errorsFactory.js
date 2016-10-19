@@ -6,6 +6,7 @@ app.service('errorsFactory', function() {
                 name: "Other Errors",
                 acronym: "OE",
                 caption: "Other errors that don't fall into the other groups are placed in this group.  \r\nClick for more information.",
+                benign: true,
                 errors: []
             },
             {
@@ -43,6 +44,7 @@ app.service('errorsFactory', function() {
                 name: "Unresolved References",
                 acronym: "URR",
                 caption: "URRs are errors where a record references another record that doesn't exist.  \r\nClick for more information.",
+                benign: true,
                 errors: []
             },
             {
