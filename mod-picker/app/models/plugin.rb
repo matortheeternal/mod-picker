@@ -2,7 +2,7 @@ class Plugin < ActiveRecord::Base
   include Filterable, Sortable, RecordEnhancements, ScopeHelpers, BetterJson
 
   # ATTRIBUTES
-  attr_writer :master_plugins
+  attr_accessor :master_plugins
   self.per_page = 100
 
   # SCOPES
@@ -58,13 +58,14 @@ class Plugin < ActiveRecord::Base
   validates_associated :plugin_record_groups, :plugin_errors, :overrides
 
   # callbacks
-  after_create :create_associations, :update_lazy_counters, :convert_dummy_masters
+  after_create :convert_dummy_masters
+  after_save :create_associations, :update_lazy_counters
   before_update :clear_associations
   before_destroy :prepare_to_destroy
 
   def update_lazy_counters
     self.errors_count = plugin_errors.count
-    save!
+    update_column(:errors_count, errors_count)
   end
 
   def update_counters
