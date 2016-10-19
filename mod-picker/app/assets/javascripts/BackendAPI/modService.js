@@ -189,9 +189,35 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
         return custom_sources;
     };
 
-    this.sanitizeModOption = function(option, excludePlugins) {
-        var sanitizedPlugins = angular.copy(option.plugins);
+    this.sanitizePlugin = function(plugin) {
+        return {
+            id: plugin.id,
+            author: plugin.author,
+            filename: plugin.filename,
+            crc_hash: plugin.crc_hash,
+            description: plugin.description,
+            file_size: plugin.file_size,
+            record_count: plugin.record_count,
+            override_count: plugin.override_count,
+            master_plugins: plugin.master_plugins,
+            dummy_masters: plugin.dummy_masters,
+            overrides_attributes: plugin.overrides_attributes,
+            plugin_errors_attributes: plugin.plugin_errors_attributes,
+            plugin_record_groups_attributes: plugin.plugin_record_groups_attributes
+        };
+    };
+
+    this.sanitizePlugins = function(plugins) {
+        var sanitizedPlugins = [];
+        plugins.forEach(function(plugin) {
+            sanitizedPlugins.push(service.sanitizePlugin(plugin));
+        });
         objectUtils.deleteEmptyProperties(sanitizedPlugins, 1);
+        return sanitizedPlugins;
+    };
+
+    this.sanitizeModOption = function(option) {
+        var sanitizedPlugins = service.sanitizePlugins(option.plugins);
         return {
             id: option.id,
             _destroy: option._destroy,
@@ -200,7 +226,7 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
             size: option.size,
             default: option.default,
             is_fomod_option: option.is_fomod_option,
-            plugin_dumps: excludePlugins ? undefined : sanitizedPlugins,
+            plugin_dumps: sanitizedPlugins,
             asset_paths: option.assets
         };
     };
@@ -211,13 +237,18 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
         });
     };
 
+    this.buildOldModOptions = function(options, mod) {
+        mod.mod_options.forEach(function(option) {
+            options.push(service.sanitizeModOption(option));
+        });
+    };
+
     this.prepareModOptions = function(mod) {
         var options = [];
-        mod.mod_options && mod.mod_options.forEach(function(option) {
-            options.push(service.sanitizeModOption(option, true));
-        });
         if (mod.analysis) {
             service.buildNewModOptions(options, mod);
+        } else if (mod.mod_options) {
+            service.buildOldModOptions(options, mod);
         }
         objectUtils.deleteEmptyProperties(options, 1);
         return options;
