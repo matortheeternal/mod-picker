@@ -835,6 +835,12 @@ app.service("filtersFactory", function() {
     this.correctionModStatusFilters = function() {
         return [
             {
+                data: "mod_status.nil",
+                param: "msn",
+                type: "Boolean",
+                default: true
+            },
+            {
                 data: "mod_status.good",
                 param: "msg",
                 type: "Boolean",
