@@ -233,7 +233,7 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
     };
 
     this.buildDestroyedOldPlugins = function(newOption, mod) {
-        if (newOption._destroy) return;
+        if (newOption._destroy || !mod.mod_options) return;
         var oldOption = mod.mod_options.find(function(oldOption) {
             return newOption.id == oldOption.id;
         });
