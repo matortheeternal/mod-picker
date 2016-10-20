@@ -4,8 +4,8 @@ app.controller('modAnalysisController', function($scope, $stateParams, $state, m
         if ($scope.optionIds) {
             newState.options = $scope.optionIds.join(',')
         }
-        if ($scope.currentPlugin) {
-            newState.plugin = $scope.currentPlugin.id;
+        if ($scope.mod.currentPlugin) {
+            newState.plugin = $scope.mod.currentPlugin.id;
         }
         $state.go($state.current.name, newState);
     };
@@ -25,7 +25,7 @@ app.controller('modAnalysisController', function($scope, $stateParams, $state, m
 
     $scope.getCriticalErrors = function() {
         $scope.noCriticalErrors = true;
-        var errorTypes = $scope.currentPlugin.plugin_errors;
+        var errorTypes = $scope.mod.currentPlugin.plugin_errors;
         errorTypes.forEach(function(errorType) {
             if (errorType.benign) return;
             $scope.noCriticalErrors = $scope.noCriticalErrors && !errorType.length;
@@ -37,10 +37,10 @@ app.controller('modAnalysisController', function($scope, $stateParams, $state, m
             var foundPlugin = $scope.availablePlugins.find(function(plugin) {
                 return plugin.id == pluginId;
             });
-            $scope.currentPlugin = foundPlugin || $scope.availablePlugins[0];
+            $scope.mod.currentPlugin = foundPlugin || $scope.availablePlugins[0];
             $scope.getCriticalErrors();
         } else {
-            $scope.currentPlugin = null;
+            $scope.mod.currentPlugin = null;
         }
     };
 

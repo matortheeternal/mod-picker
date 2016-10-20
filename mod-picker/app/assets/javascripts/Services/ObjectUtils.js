@@ -20,7 +20,7 @@ app.service('objectUtils', function() {
 
     this.deepValue = function(obj, path){
         for (var i = 0, path = path.split('.'), len = path.length; i < len; i++) {
-            if (path[i] in obj) {
+            if (obj && (path[i] in obj)) {
                 obj = obj[path[i]];
             } else {
                 return null;
