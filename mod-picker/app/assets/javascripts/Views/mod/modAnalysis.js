@@ -23,12 +23,22 @@ app.controller('modAnalysisController', function($scope, $stateParams, $state, m
         });
     };
 
+    $scope.getCriticalErrors = function() {
+        $scope.noCriticalErrors = true;
+        var errorTypes = $scope.currentPlugin.plugin_errors;
+        errorTypes.forEach(function(errorType) {
+            if (errorType.benign) return;
+            $scope.noCriticalErrors = $scope.noCriticalErrors && !errorType.length;
+        });
+    };
+
     $scope.updateCurrentPlugin = function(pluginId) {
         if ($scope.availablePlugins.length) {
             var foundPlugin = $scope.availablePlugins.find(function(plugin) {
                 return plugin.id == pluginId;
             });
             $scope.currentPlugin = foundPlugin || $scope.availablePlugins[0];
+            $scope.getCriticalErrors();
         } else {
             $scope.currentPlugin = null;
         }
