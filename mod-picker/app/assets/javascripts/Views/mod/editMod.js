@@ -101,8 +101,8 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
         modValidationService.sanitizeSet($scope.mod.requirements);
         modValidationService.sanitizeSet($scope.mod.mod_authors);
         $scope.buildSources();
-        var modDiff = objectUtils.getDifferentObjectValues($scope.originalMod, $scope.mod);
-        var modUnchanged = objectUtils.isEmptyObject(modDiff);
+        var modDiff = modService.getDifferentModValues($scope.originalMod, $scope.mod);
+        var modUnchanged = objectUtils.isEmptyObject(modDiff.mod);
         var imageUnchanged = !$scope.image.file;
 
         // return if there is nothing to change
@@ -119,8 +119,7 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
 
         // update the mod
         if (!modUnchanged) {
-            var modData = modService.getModUpdateData($scope.mod.id, modDiff);
-            $scope.updateMod(modData);
+            $scope.updateMod(modDiff);
         }
         if (!imageUnchanged) {
             $scope.submitImage();
@@ -137,7 +136,7 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
     };
 
     $scope.updateMod = function(modData) {
-        modService.updateMod(modData).then(function() {
+        modService.updateMod($scope.mod.id, modData).then(function() {
             $scope.modSuccess = true;
             $scope.displaySuccess();
             $scope.originalMod = angular.copy($scope.mod);

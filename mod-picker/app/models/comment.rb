@@ -51,7 +51,7 @@ class Comment < ActiveRecord::Base
     parent_id.present? && parent.submitter
   end
 
-  def commentable_link
+  def context_link
     if commentable_type == "Correction"
       if commentable.correctable_type == "Mod"
         "#/mods/" + commentable.correctable_id.to_s + "/appeals/" + commentable_id.to_s
@@ -63,9 +63,13 @@ class Comment < ActiveRecord::Base
         "#/mods/load-order/" + commentable.correctable_id.to_s + "/corrections/" + commentable_id.to_s
       end
     elsif commentable_type == "ModList"
-      "#/mod-list/" + commentable_id.to_s
+      "#/mod-list/" + commentable_id.to_s + "/comments"
+    elsif commentable_type == "Article"
+      "#/article/" + commentable_id.to_s
+    elsif commentable_type == "HelpPage"
+      "/help/" + commentable.url
     elsif commentable_type == "User"
-      "#/user/" + commentable_id.to_s
+      "#/user/" + commentable_id.to_s + "/social"
     end
   end
 
@@ -116,7 +120,7 @@ class Comment < ActiveRecord::Base
     def increment_counter_caches
       submitter.update_counter(:submitted_comments_count, 1)
       commentable.update_counter(:comments_count, 1)
-      if parent_id.present?
+      if parent_id.present? && parent.present?
         parent.update_counter(:children_count, 1)
       end
     end
@@ -124,7 +128,7 @@ class Comment < ActiveRecord::Base
     def decrement_counter_caches
       submitter.update_counter(:submitted_comments_count, -1)
       commentable.update_counter(:comments_count, -1)
-      if parent_id.present?
+      if parent_id.present? && parent.present?
         parent.update_counter(:children_count, -1)
       end
     end

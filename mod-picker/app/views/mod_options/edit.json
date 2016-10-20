@@ -1,0 +1,8 @@
+{
+  "include": {
+    "plugins": {
+      "format": "show"
+    }
+  },
+  "methods": ["asset_file_paths"]
+}

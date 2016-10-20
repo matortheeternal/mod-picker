@@ -23,6 +23,15 @@ app.controller('modAnalysisManagerController', function($scope, $rootScope, plug
         document.getElementById('analysis-input').click();
     };
 
+    $scope.removeOption = function(option) {
+        var modOptions = $scope.mod.analysis.mod_options;
+        var index = modOptions.indexOf(option);
+        modOptions.splice(index, 1);
+        if (modOptions.length == 0) {
+            delete $scope.mod.analysis;
+        }
+    };
+
     $scope.addRequirementFromPlugin = function(filename) {
         pluginService.searchPlugins(filename).then(function(plugins) {
             var plugin = plugins.find(function(plugin) {
@@ -70,6 +79,69 @@ app.controller('modAnalysisManagerController', function($scope, $rootScope, plug
         });
     };
 
+    $scope.destroyUnusedOldOptions = function() {
+        if (!$scope.mod.analysis || !$scope.mod.mod_options) return;
+        var newOptions = $scope.mod.analysis.mod_options;
+        var newOptionIds = newOptions.map(function(option) {
+            return option.id;
+        });
+        $scope.mod.mod_options.forEach(function(oldOption) {
+            if (newOptionIds.indexOf(oldOption.id) == -1) {
+                oldOption._destroy = true;
+            } else if (oldOption.hasOwnProperty('_destroy')) {
+                delete oldOption._destroy;
+            }
+        });
+    };
+
+    $scope.getBaseName = function(option) {
+        var regex = new RegExp('(v?[0-9\.\_]+)?(\-[0-9]([0-9a-z\-]+))?\.(7z|rar|zip)', 'i');
+        option.base_name = option.name.replace(regex, '');
+    };
+
+    $scope.optionMatches = function(option, oldOption) {
+        var namesMatch = option.base_name === oldOption.base_name;
+        var fileSizesMatch = option.size == oldOption.size;
+        return namesMatch || fileSizesMatch;
+    };
+
+    $scope.loadExistingOption = function(option) {
+        var oldOptions = $scope.mod.mod_options;
+        if (!oldOptions) return;
+        var oldOption = oldOptions.find(function(oldOption) {
+            return $scope.optionMatches(option, oldOption);
+        });
+        if (oldOption) {
+            option.id = oldOption.id;
+            option.display_name = angular.copy(oldOption.display_name);
+        }
+    };
+
+    $scope.prepareModOption = function(option) {
+        $scope.getBaseName(option);
+        option.display_name = angular.copy(option.base_name);
+        option.nestedAssets = assetUtils.getNestedAssets(option.assets);
+        $scope.loadExistingOption(option);
+    };
+
+    $scope.parseError = function(e) {
+        console.log("Error parsing mod analysis: " + e);
+        var params = {
+            type: "error",
+            text: "There was an error parsing the mod analysis.  Make sure the analysis was produced with the latest version of Mod Analyzer."
+        };
+        $scope.$emit('customMessage', params);
+    };
+
+    $scope.parseAnalysis = function(fixedJson) {
+        var analysis = JSON.parse(fixedJson);
+        analysis.mod_options.forEach($scope.prepareModOption);
+        $scope.$applyAsync(function() {
+            $scope.mod.analysis = analysis;
+            $scope.getRequirementsFromAnalysis();
+        });
+    };
+
     $scope.loadAnalysisFile = function(file) {
         var fileReader = new FileReader();
         var jsonMap = {
@@ -79,22 +151,20 @@ app.controller('modAnalysisManagerController', function($scope, $rootScope, plug
         };
         fileReader.onload = function(event) {
             try {
-                var fixedJson = objectUtils.remapProperties(event.target.result, jsonMap);
-                var analysis = JSON.parse(fixedJson);
-                analysis.mod_options.forEach(function(option) {
-                    option.nestedAssets = assetUtils.getNestedAssets(option.assets);
-                });
-                $scope.mod.analysis = analysis;
-                $scope.getRequirementsFromAnalysis();
+                var json = event.target.result;
+                var fixedJson = objectUtils.remapProperties(json, jsonMap);
+                $scope.parseAnalysis(fixedJson);
+                $scope.destroyUnusedOldOptions();
             } catch (e) {
-                console.log("Error parsing mod analysis: " + e);
-                var params = {
-                    type: "error",
-                    text: "There was an error parsing the mod analysis.  Make sure the analysis was produced with the latest version of Mod Analyzer."
-                };
-                $scope.$emit('customMessage', params)
+                $scope.parseError(e);
             }
         };
         fileReader.readAsText(file);
     };
+
+    $scope.$on('destroyUnusedOldOptions', function() {
+        $scope.destroyUnusedOldOptions();
+    });
+
+    $scope.$on('removeModOption', $scope.removeOption);
 });

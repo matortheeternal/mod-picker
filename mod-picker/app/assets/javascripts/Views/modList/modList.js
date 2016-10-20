@@ -367,7 +367,8 @@ app.controller('modListController', function($scope, $rootScope, $q, $stateParam
             index: listUtils.getNextIndex(model) - 1,
             tab: tab,
             color: 'red',
-            name: 'New Group'
+            name: 'New Group',
+            keep_when_sorting: true
         };
         modListService.newModListGroup(newGroup).then(function(data) {
             var group = data;

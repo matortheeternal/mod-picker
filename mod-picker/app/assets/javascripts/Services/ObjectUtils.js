@@ -89,24 +89,35 @@ app.service('objectUtils', function() {
         }
     };
 
+    this.getDifferentArrayObjectValues = function(newItem, oldArray, result) {
+        // new items that have an id should exist in the oldArray
+        // find and compare them against their corresponding item in oldArray
+        if (newItem.hasOwnProperty('id')) {
+            var oldItem = oldArray.find(function(item) {
+                return item.id == newItem.id;
+            });
+            var diff = oldItem && service.getDifferentValues(oldItem, newItem);
+            if (!diff || service.isEmptyObject(diff)) return;
+            result.push(diff);
+        } else {
+            result.push(newItem);
+        }
+    };
+
     this.getDifferentArrayValues = function(oldArray, newArray) {
         var result = [];
-        var i, oldItem, newItem, diff;
+        var i, newItem;
         for (i = 0; i < newArray.length; i++) {
             newItem = newArray[i];
-            // new items that have an id should exist in the oldArray
-            // find and compare them against their corresponding item in oldArray
-            if (newItem.hasOwnProperty('id')) {
-                oldItem = oldArray.find(function(item) {
-                    return item.id == newItem.id;
-                });
-                diff = oldItem && service.getDifferentValues(oldItem, newItem);
-                if (!diff || service.isEmptyObject(diff)) {
-                    continue;
-                }
-                result.push(diff);
+            if (typeof newItem === 'object') {
+                service.getDifferentArrayObjectValues(newItem, oldArray, result);
             } else {
-                result.push(newItem);
+                var oldItem = oldArray.find(function(item) {
+                    return item === newItem;
+                });
+                if (!oldItem) {
+                    result.push(newItem);
+                }
             }
         }
         // return the result array
@@ -162,7 +173,8 @@ app.service('objectUtils', function() {
             if (obj.hasOwnProperty(property)) {
                 var v = obj[property];
                 var vt = typeof v;
-                if (vt === 'undefined' || v === null || (v.constructor === Array && !v.length) || (deleteEmptyStrings && v === "")) {
+                if (v === null) continue;
+                if (vt === 'undefined' || (v.constructor === Array && !v.length) || (deleteEmptyStrings && v === "")) {
                     delete obj[property];
                 } else if (recurse && vt === 'object') {
                     service.deleteEmptyProperties(v, recurse - 1, deleteEmptyStrings);

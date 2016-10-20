@@ -28,8 +28,7 @@ module ModPicker
 
     # DO NOT SCRAPE NEXUS STATISTICS UNLESS ROBIN CHANGES HIS MIND
     config.scrape_nexus_statistics = false
-    # DO NOT SCRAPE WORKSHOP STATISTICS UNTIL WE HAVE PERMISSION
-    config.scrape_workshop_statistics = false
+    config.scrape_workshop_statistics = true
 
     # tracking config
     config.added_owner_attributes = [:submitted_by]

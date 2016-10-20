@@ -47,8 +47,9 @@ class Review < ActiveRecord::Base
   # CALLBACKS
   after_create :increment_counters
   before_save :set_adult, :set_dates
-  after_save :update_mod_metrics, :update_metrics
+  after_save :update_metrics
   before_destroy :clear_ratings, :decrement_counters
+  after_destroy :update_mod_metrics
 
   def not_mod_author
     is_author = ModAuthor.where(mod_id: mod_id, role: [0, 1]).exists?
@@ -67,6 +68,7 @@ class Review < ActiveRecord::Base
       ratings_count: review_ratings.count,
       overall_rating: overall_rating
     })
+    update_mod_metrics
   end
 
   def update_mod_metrics

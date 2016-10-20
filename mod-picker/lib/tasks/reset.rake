@@ -77,12 +77,40 @@ namespace :reset do
 
   task roles: :environment do
     puts "\nResetting user roles"
-    User.where(role: ["user", "mod_author"]).find_each do |u|
+    User.where(role: ["user", "author"]).find_each do |u|
       u.update_mod_author_role
     end
 
-    num_mod_authors = User.where(role: 'mod_author').count
+    num_mod_authors = User.where(role: 'author').count
     puts "#{num_mod_authors} users with the mod author role"
+  end
+
+  task asset_paths: :environment do
+    puts "\nResetting mod asset file paths"
+    ModOption.find_each do |mo|
+      mod_asset_files = mo.mod_asset_files.where(asset_file_id: nil)
+      asset_paths = mod_asset_files.map { |maf| maf.subpath }
+      basepaths = DataPathUtils.get_base_paths(asset_paths)
+      unless basepaths.empty?
+        puts "Fixing mod asset files for #{mo.mod.name} :: #{mo.name}"
+        puts "  New base paths: #{basepaths.to_s}"
+        ModAssetFile.apply_base_paths(mo.mod.game_id, mod_asset_files, basepaths)
+      end
+    end
+  end
+
+  task mod_metrics: :environment do
+    puts "\nResetting mod metrics"
+    Mod.all.find_each do |mod|
+      next unless mod.reviews_count > 0
+      puts "  Updating metrics for #{mod.name}"
+      mod.compute_average_rating
+      mod.compute_reputation
+      mod.update_columns({
+          :reputation => mod.reputation,
+          :average_rating => mod.average_rating
+      })
+    end
   end
 
   namespace :counters do

@@ -14,14 +14,13 @@
                     </div>
                 </section>
 
-                <h3 ng-if="!isCurrentUser && permissions.canReport" class="section-title">Actions</h3>
+                <h3 ng-if="!isCurrentUser && permissions.canReport || permissions.canModerate" class="section-title">Actions</h3>
                 <section ng-if="!isCurrentUser && permissions.canReport">
                     <div class="action-box" ng-click="toggleReportModal(true)">
                         <i class="fa fa-flag-o" aria-hidden="true"></i> Report
                     </div>
                 </section>
 
-                <h3 class="section-title" ng-if="permissions.canModerate"></h3>
                 <section ng-if="permissions.canModerate">
                     <div class="action-item">
                         <span ng-click="addRep()">
@@ -88,7 +87,7 @@
                         Email: <a href="mailto:{{user.email}}">{{user.email}}</a>
                     </div>
                     <div ng-if="user.bio.nexus_username">
-                        <a ng-href="https://forums.nexusmods.com/index.php?/user/{{user.bio.nexus_user_path}}">
+                        <a ng-href="https://forums.nexusmods.com/index.php?showuser={{user.bio.nexus_user_path}}">
                             <div class="action-box source-box">
                                 <img src="/images/nexus_logo.png" class="source-image"/>
                                 <span class="source-label">

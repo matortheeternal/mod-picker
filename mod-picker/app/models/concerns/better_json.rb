@@ -13,8 +13,11 @@ module BetterJson
 
   def add_option(options, key, new_option)
     init_key(options, key) unless options.has_key?(key)
-    add_method = key == :include ? :merge : :push
-    options[key].public_send(add_method, new_option)
+    if key == :include
+      options[key] = options[key].merge(new_option)
+    else
+      options[key].push(new_option)
+    end
   end
 
   def build_conditional_option(options, key)
