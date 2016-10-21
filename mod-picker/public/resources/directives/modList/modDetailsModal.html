@@ -28,8 +28,7 @@
     </div>
 
     <!-- Mod Options -->
-    <div class="modal huge-modal" ng-if="detailsItem.mod">
-        <form>
+    <div class="modal extra-wide-modal" ng-if="detailsItem.mod">
             <div class="close-modal">
                 <span class="fa fa-times" ng-click="toggleDetailsModal()"></span>
             </div>
@@ -37,19 +36,12 @@
             <h2 ng-show="editing">{{ detailsItem.is_utility ? 'Edit Tool Options' : 'Edit Mod Options' }}</h2>
             <h2 ng-hide="editing">{{ detailsItem.is_utility ? 'View Tool Options' : 'View Mod Options' }}</h2>
 
-            <label class="manage-item" ng-repeat="option in detailsItem.mod.mod_options">
-                <input type="checkbox" ng-click="toggleOption(option)" ng-model="option.active" ng-disabled="!editing"/> {{option.name}}
-            </label>
-        </form>
 
-        <!--active, name, default, file size, plugins count, asset files count-->
-
-       
         <div class="box-shadow">
             <table ng-show="detailsItem.mod.mod_options.length" class="browse-table">
                 <thead>
                     <tr>
-                        <th ng-repeat="column in columns" class="{{column.class}}" title="{{column.title}}">
+                        <th ng-repeat="column in columns" ng-click="sortColumn(column)" class="{{column.class}}" title="{{column.title}}">
                             {{column.label}}
                             <div class="sorting-options" ng-if="sort && !column.unsortable">
                                 <div class="sort-up" ng-class="{ 'active' : column.up }">
@@ -85,6 +77,11 @@
                         </td>
                         <td>
                             {{item.asset_files_count}}
+                        </td>
+                        <td>
+                            <span ng-repeat="plugin in item.plugins">
+                                {{plugin.filename}}{{$last ? '' : ', '}}
+                            </span>
                         </td>
                     </tr>
                 </tbody>

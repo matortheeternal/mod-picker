@@ -1060,7 +1060,8 @@ app.service('columnsFactory', function() {
         return [
             {
                 label: "Active",
-                data: "active"
+                data: "active",
+                class: "short-column"
             },
             {
                 label: "Name",
@@ -1069,20 +1070,27 @@ app.service('columnsFactory', function() {
             },
             {
                 label: "Default",
-                data: "default"
+                data: "default",
+                class: "short-column"
             },
             {
                 label: "File Size",
-                data: "size",
+                data: "size"
             },
             {
                 label: "Plugins",
-                data: "plugins_count"
+                data: "plugins_count",
+                class: "short-column"
             },
             {
                 label: "Asset Files",
-                data: "asset_files_count"
+                data: "asset_files_count",
+                class: "short-column"
             },
+            {
+                label: "Plugin(s)",
+                data: "plugins"
+            }
             
         ];
     };

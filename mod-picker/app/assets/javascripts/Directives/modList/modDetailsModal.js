@@ -15,7 +15,65 @@ app.controller('modDetailsModalController', function($scope, $rootScope, eventHa
     // initialize variables
     $scope.columns = columnsFactory.modListModDetailsColumns();
 
-    console.log($scope.detailsItem.mod.mod_options);
+    var sortedColumn;
+
+    $scope.sort = {
+        column: '',
+        direction: 'ASC'
+    }
+
+    // load sort into view
+    $scope.loadSort = function() {
+        $scope.columns.forEach(function(column) {
+            if ($scope.getSortData(column) === $scope.sort.column) {
+                var sortKey = $scope.sort.direction === "ASC" ? "up" : "down";
+                column[sortKey] = true;
+                sortedColumn = column;
+            }
+        });
+    };
+
+    // get the sort data key for a column
+    $scope.getSortData = function(column) {
+        return column.sortData || (typeof column.data === "string" ? column.data : objectUtils.csv(column.data));
+    };
+
+    // sorts by column
+    $scope.sortColumn = function(column) {
+        // return if we don't have a sort object or the column isn't sortable
+        if (!$scope.sort || column.unsortable) return;
+
+        if (sortedColumn && sortedColumn !== column) {
+            sortedColumn.up = false;
+            sortedColumn.down = false;
+        }
+        sortedColumn = column;
+        $scope.toggleSort(column);
+
+        // send data to backend
+        if (column.up || column.down) {
+            $scope.sort.column = $scope.getSortData(column);
+            $scope.sort.direction = column.up ? "ASC" : "DESC";
+        } else {
+            delete $scope.sort.column;
+            delete $scope.sort.direction;
+        }
+    };
+
+    // this function will toggle sorting for an input column between
+    // up, down, and no sorting
+    $scope.toggleSort = function(column) {
+        var firstKey = column.invertSort ? "up" : "down";
+        var secondKey = column.invertSort ? "down" : "up";
+        var b1 = column[firstKey], b2 = column[secondKey];
+        column[secondKey] = b1;
+        column[firstKey] = !b1 && !b2;
+    };
+
+    // load sort into view
+    if ($scope.columns && $scope.sort && $scope.sort.column) {
+        $scope.loadSort();
+    }
 
     $scope.findModOption = function(optionId) {
         var optionsArray = $scope.detailsItem.mod_list_mod_options;
