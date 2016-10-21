@@ -8,6 +8,9 @@
     <span ng-show="target.edit_summary">{{target.edit_summary}}</span>
 </div>
 <div class="moderator-message" ng-if="target.moderator_message">
-    <div class="message-title">Moderator Message</div>
+    <div class="message-title">
+        Moderator Message
+        <i class="fa fa-times remove-icon" ng-show="permissions.canModerate" aria-hidden="true" ng-click="removeModeratorMessage()"></i>
+    </div>
     <div class="text-container" marked="target.moderator_message"></div>
 </div>
