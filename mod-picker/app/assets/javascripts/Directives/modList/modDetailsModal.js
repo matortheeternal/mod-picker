@@ -7,9 +7,15 @@ app.directive('modDetailsModal', function() {
     };
 });
 
-app.controller('modDetailsModalController', function($scope, $rootScope, eventHandlerFactory) {
+app.controller('modDetailsModalController', function($scope, $rootScope, eventHandlerFactory, columnsFactory) {
     // shared function setup
     eventHandlerFactory.buildModalMessageHandlers($scope);
+
+
+    // initialize variables
+    $scope.columns = columnsFactory.modListModDetailsColumns();
+
+    console.log($scope.detailsItem.mod.mod_options);
 
     $scope.findModOption = function(optionId) {
         var optionsArray = $scope.detailsItem.mod_list_mod_options;

@@ -1056,4 +1056,35 @@ app.service('columnsFactory', function() {
         ];
     };
 
+    this.modListModDetailsColumns = function() {
+        return [
+            {
+                label: "Active",
+                data: "active"
+            },
+            {
+                label: "Name",
+                data: "display_name",
+                title: "name"
+            },
+            {
+                label: "Default",
+                data: "default"
+            },
+            {
+                label: "File Size",
+                data: "size",
+            },
+            {
+                label: "Plugins",
+                data: "plugins_count"
+            },
+            {
+                label: "Asset Files",
+                data: "asset_files_count"
+            },
+            
+        ];
+    };
+
 });
