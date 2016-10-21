@@ -45,7 +45,7 @@ app.controller('modOptionController', function($scope, formUtils, assetUtils) {
     };
 
     $scope.oldPluginChanged = function(plugin) {
-        delete plugin.id;
+        if (plugin.id == null) delete plugin.id;
         $scope.destroyUnusedOldPlugins();
     };
 
