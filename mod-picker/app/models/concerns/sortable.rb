@@ -65,23 +65,23 @@ module Sortable
       column.split('.').map{|column| connection.quote_column_name(column) }.join('.')
     end
 
+    def sanitize_columns(columns)
+      columns.split(',').map{ |column| sanitize_column(column) }.join(',')
+    end
+
+    def apply_sort_options(options)
+      if options[:column].include?(",")
+        order("GREATEST(#{sanitize_columns(options[:column])}) #{options[:direction]}")
+      else
+        order("#{sanitize_column(options[:column])} #{options[:direction]}")
+      end
+    end
+
     def sort(options)
       results = self.where(nil)
-
       if options.present? && options.has_key?(:column) && options.has_key?(:direction)
         check_options(options)
-
-        # NOTE: This is safe against SQL injection because we are strong-arming
-        # the allowing options in check_options
-        if options[:column].include?(",")
-          columns = options[:column].split(',').map{|column| sanitize_column(column)}
-          results = results.
-              order("GREATEST(#{columns.join(',')}) #{options[:direction]}")
-        elsif options[:column].include?(".")
-          results = results.order("#{sanitize_column(options[:column])} #{options[:direction]}")
-        else
-          results = results.order(options[:column] => options[:direction])
-        end
+        results = apply_sort_options(options)
       end
       results
     end
