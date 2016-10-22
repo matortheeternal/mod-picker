@@ -18,8 +18,10 @@ module CounterCache
 
   included do
     attr_accessor :_previous_conditionals
-    class_attribute :_counter_caches
-    self._counter_caches = {}
+    class_attribute :_counter_cache
+    class_attribute :_counter_cache_on
+    self._counter_cache = {}
+    self._counter_cache_on = {}
   end
 
   def update_counter(column, offset)
@@ -30,18 +32,20 @@ module CounterCache
     update_column("#{column} = #{column} #{operator} #{offset.abs}")
   end
 
-  def reset_counter(name, column)
+  def reset_counter(name, column=nil)
+    column ||= self.class._counter_cache[name.to_sym][:column]
     self[column] = public_send(name).count
   end
 
-  def reset_counter!(name, column)
+  def reset_counter!(name, column=nil)
+    column ||= self.class._counter_cache[name.to_sym][:column]
     self[column] = public_send(name).count
-    update_column(column: self[column])
+    update_column(column => self[column])
   end
 
-  def reset_counters(*names)
+  def reset_counters!(*names)
     column_values = {}
-    _counter_caches.each do |name, options|
+    _counter_cache.each do |name, options|
       next unless names.include?(name)
       reset_counter(name, options[:column])
       column_values[options[:column]] = self[options[:column]]
@@ -49,10 +53,13 @@ module CounterCache
     update_columns(column_values)
   end
 
-  def reset_all_counters
-    _counter_caches.each do |name, |
-
+  def reset_all_counters!
+    column_values = {}
+    _counter_cache.each do |name, options|
+      reset_counter(name, options[:column])
+      column_values[options[:column]] = self[options[:column]]
     end
+    update_columns(column_values)
   end
 
   def get_counter_change(name, options)
@@ -64,7 +71,9 @@ module CounterCache
 
   def eval_counter_condition(options)
     return true unless options.has_key?(:conditional)
-    instance_eval(options[:conditional])
+    options[:conditional].reduce(true) do |result, (k, v)|
+      result = result && public_send(k) == v
+    end
   end
 
   def update_association_counter(name, column, change)
@@ -73,16 +82,34 @@ module CounterCache
   end
 
   module ClassMethods
-    def reset_counter(association_name)
-
+    def count_subquery(name)
+      # TODO: Support conditional here
+      reflection = self.class.reflections[name.to_s]
+      subquery_table = reflection.klass.arel_table
+      subquery_table.where(arel_table[:id].
+          eq(subquery_table[reflection.foreign_key.to_sym])).
+          project(Arel.sql('*').count)
     end
 
-    def reset_counters(*association_names)
-
+    def reset_counter_query(name, column=nil)
+      column ||= self.class._counter_cache[name.to_sym][:column]
+      arel_table[column].eq(count_subquery(name)).to_sql
     end
 
-    def reset_all_counters
+    def reset_counter!(name, column=nil)
+      update_all(reset_counter_query(name, column))
+    end
 
+    def reset_counters!(*names)
+      query = names.map { |name| reset_counter_query(name).to_sql }
+      update_all(query.join(', '))
+    end
+
+    def reset_all_counters!
+      query = _counter_cache.map do |name, options|
+        reset_counter_query(name, options[:column]).to_sql
+      end
+      update_all(query.join(', '))
     end
 
     def create_track_counter_conditionals_callback
@@ -90,10 +117,10 @@ module CounterCache
       class_eval do
         before_update :track_counter_conditionals
         def track_counter_conditionals
-          _previous_conditionals = {}
-          _counter_caches.each do |name, options|
+          self.class._previous_conditionals = {}
+          self.class._counter_cache_on.each do |name, options|
             next unless options.has_key?(:conditional)
-            _previous_conditionals[name] = eval_counter_condition(options)
+            self.class._previous_conditionals[name] = eval_counter_condition(options)
           end
         end
       end
@@ -104,7 +131,7 @@ module CounterCache
       class_eval do
         after_update :update_counters
         def update_counters
-          _counter_caches.each do |name, options|
+          self.class._counter_cache_on.each do |name, options|
             change = get_counter_change(name, options)
             next unless change != 0
             update_association_counter(name, options[:column], change)
@@ -118,7 +145,7 @@ module CounterCache
       class_eval do
         after_create :increment_counters
         def increment_counters
-          _counter_caches.each do |name, options|
+          self.class._counter_cache_on.each do |name, options|
             next unless eval_counter_condition(options)
             update_association_counter(name, options[:column], 1)
           end
@@ -131,7 +158,7 @@ module CounterCache
       class_eval do
         before_destroy :decrement_counters
         def decrement_counters
-          _counter_caches.each do |name, options|
+          self.class._counter_cache_on.each do |name, options|
             next unless eval_counter_condition(options)
             update_association_counter(name, options[:column], -1)
           end
@@ -140,14 +167,22 @@ module CounterCache
     end
 
     def create_counter_callbacks_if_missing
-      create_increment_counter_callback
-      create_decrement_counter_callback
+      create_increment_counters_callback
+      create_decrement_counters_callback
       create_update_counters_callback
     end
 
-    def counter_cache(name, options={})
-      options[:column] = (name + '_count').to_sym unless options.has_key?(:column)
-      _counter_caches[name] = options
+    def get_column_options(name, options)
+      options[:column] = (name.to_s + '_count').to_sym unless options.has_key?(:column)
+      options
+    end
+
+    def counter_cache(*names, **options)
+      names.each { |name| _counter_cache[name] = get_column_options(name, options.dup) }
+    end
+
+    def counter_cache_on(*names, **options)
+      names.each { |name| _counter_cache_on[name] = get_column_options(name, options.dup) }
       create_counter_callbacks_if_missing
     end
   end
