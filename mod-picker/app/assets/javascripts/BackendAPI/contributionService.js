@@ -149,11 +149,6 @@ app.service('contributionService', function(backend, $q, userTitleService, pageU
         });
     };
 
-    this.removeModeratorMessage = function(route, id, contribution) {
-        contribution.moderator_message = null;
-        return this.updateContribution(route, id, contribution);
-    };
-
     this.removePrompts = function(text_body) {
         return text_body.replace(/([^\n]+)\uFEFF([^\n]+)([\n]+)/g, '');
     };
