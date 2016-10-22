@@ -37,7 +37,7 @@ module Sortable
       return columns unless options.has_key?(:include)
       options[:include].each do |key, value|
         reflection = model.reflections[key.to_s]
-        columns.push(*included_columns(reflection, value))
+        columns.push(*included_columns(reflection.klass, value))
       end
       columns
     end
@@ -70,10 +70,13 @@ module Sortable
     end
 
     def apply_sort_options(options)
-      if options[:column].include?(",")
+      if options[:column].include?(',')
         order("GREATEST(#{sanitize_columns(options[:column])}) #{options[:direction]}")
-      else
+      elsif options[:column].include?('.')
         order("#{sanitize_column(options[:column])} #{options[:direction]}")
+      else
+        # this is necessary so the column we're sorting on won't be ambiguous
+        order(options[:column] => options[:direction])
       end
     end
 
