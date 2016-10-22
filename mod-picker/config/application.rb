@@ -32,7 +32,7 @@ module ModPicker
 
     # date config
     config.submitted_columns = [:submitted, :created]
-    config.edited_columns = [:edited]
+    config.edited_columns = [:edited, :updated]
 
     # tracking config
     config.added_owner_attributes = [:submitted_by]
