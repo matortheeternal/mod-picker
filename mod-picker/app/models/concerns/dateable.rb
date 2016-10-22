@@ -17,11 +17,11 @@ module Dateable
     attribute_was(submitted_column[0]).present?
   end
 
-  def set_submitted_date_column(column)
+  def set_submitted_date_column(column, options)
     update_date_column(column) if public_send(column).nil?
   end
 
-  def set_edited_date_column(column)
+  def set_edited_date_column(column, options)
     update_date_column(column) if submitted_column_was_not_nil?
   end
 
@@ -41,48 +41,51 @@ module Dateable
     public_send("set_#{options[:type]}_date_column", column, options)
   end
 
-  def create_set_dates_callback_if_missing
-    return if respond_to?(:set_dates)
-    class_eval do
-      before_save :set_dates
-      def set_dates
-        self.class._date_columns.each do |column, options|
-          set_date_column(column, options)
+  module ClassMethods
+    def date_column(*columns, **options)
+      columns.each { |column|
+        _date_columns[column] = build_date_options(column, options.dup) }
+      create_set_dates_callback_if_missing
+    end
+
+    private
+    def create_set_dates_callback_if_missing
+      return if respond_to?(:set_dates)
+      class_eval do
+        before_save :set_dates
+        def set_dates
+          self.class._date_columns.each do |column, options|
+            set_date_column(column, options)
+          end
         end
       end
     end
-  end
 
-  def dateable_columns(date_type)
-    config = Rails.application.config
-    case date_type
-      when :submitted
-        return config.submitted_columns || [:submitted]
-      when :edited
-        return config.edited_columns || [:edited]
+    def dateable_columns(date_type)
+      config = Rails.application.config
+      case date_type
+        when :submitted
+          return config.submitted_columns
+        when :edited
+          return config.edited_columns
+        else
+          return []
+      end
+    end
+
+    def get_date_type(column)
+      if dateable_columns(:submitted).include?(column)
+        :submitted
+      elsif dateable_columns(:edited).include?(column)
+        :edited
       else
-        return []
+        :custom
+      end
     end
-  end
 
-  def get_date_type(column)
-    if dateable_columns(:submitted).include?(column)
-      :submitted
-    elsif dateable_columns(:edited).include?(column)
-      :edited
-    else
-      :custom
+    def build_date_options(column, options={})
+      options[:type] = get_date_type(column) unless options.has_key?(:type)
+      options
     end
-  end
-
-  def build_date_options(column, options)
-    options[:type] = get_date_type(column) unless options.has_key?(:type)
-    options
-  end
-
-  def date_column(*columns, **options)
-    columns.each { |column|
-      _date_columns[column] = build_date_options(column, options) }
-    create_set_dates_callback_if_missing
   end
 end
