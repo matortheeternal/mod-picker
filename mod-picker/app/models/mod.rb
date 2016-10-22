@@ -218,6 +218,15 @@ class Mod < ActiveRecord::Base
     save!
   end
 
+  def update_review_metrics
+    compute_average_rating
+    compute_reputation
+    update_columns({
+        :reputation => reputation,
+        :average_rating => average_rating
+    })
+  end
+
   # note associations
   def compatibility_notes
     CompatibilityNote.where('first_mod_id = :mod_id OR second_mod_id = :mod_id', mod_id: id)
