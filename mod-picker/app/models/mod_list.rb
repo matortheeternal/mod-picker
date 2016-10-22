@@ -1,11 +1,15 @@
 class ModList < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, Reportable, ScopeHelpers, Trackable, BetterJson
+  include Filterable, Sortable, RecordEnhancements, Reportable, ScopeHelpers, Trackable, BetterJson, Dateable
 
   # ATTRIBUTES
   enum status: [ :under_construction, :testing, :complete ]
   enum visibility: [ :visibility_private, :visibility_unlisted, :visibility_public ]
   attr_accessor :updated_by
   self.per_page = 100
+
+  # DATE COLUMNS
+  date_column :submitted, :updated
+  date_column :completed, conditional: "set_completed?"
 
   # EVENT TRACKING
   track :added, :updated, :hidden, :status
@@ -106,7 +110,6 @@ class ModList < ActiveRecord::Base
   # CALLBACKS
   after_create :increment_counters
   before_update :hide_comments, :unset_active_if_hidden
-  before_save :set_dates
   before_destroy :decrement_counters, :unset_active
 
   def update_all_counters
@@ -322,18 +325,11 @@ class ModList < ActiveRecord::Base
     a.join("\r\n")
   end
 
-  private
-    def set_dates
-      if submitted.nil?
-        self.submitted = DateTime.now
-      else
-        self.updated = DateTime.now
-      end
-      if status == "complete" && completed.nil?
-        self.completed = DateTime.now
-      end
-    end
+  def set_completed?
+    status == "complete" && completed.nil?
+  end
 
+  private
     def increment_counters
       submitter.update_counter(:mod_lists_count, 1)
     end

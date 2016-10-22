@@ -1,10 +1,13 @@
 class Correction < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, Reportable, ScopeHelpers, Trackable, BetterJson
+  include Filterable, Sortable, RecordEnhancements, Reportable, ScopeHelpers, Trackable, BetterJson, Dateable
 
   # ATTRIBUTES
   enum status: [:open, :passed, :failed, :closed]
   enum mod_status: [:good, :outdated, :unstable]
   self.per_page = 25
+
+  # DATE COLUMNS
+  date_column :submitted, :edited
 
   # EVENT TRACKING
   track :added, :hidden, :status
@@ -48,7 +51,7 @@ class Correction < ActiveRecord::Base
 
   # CALLBACKS
   after_create :increment_counters, :schedule_close
-  before_save :set_adult, :set_dates
+  before_save :set_adult
   after_save :recompute_correctable_standing
   after_destroy :decrement_counters, :recompute_correctable_standing
 
@@ -97,30 +100,22 @@ class Correction < ActiveRecord::Base
   end
 
   private
-  def set_dates
-    if self.submitted.nil?
-      self.submitted = DateTime.now
-    else
-      self.edited = DateTime.now
+    def set_adult
+      self.has_adult_content = correctable.has_adult_content
+      true
     end
-  end
 
-  def set_adult
-    self.has_adult_content = correctable.has_adult_content
-    true
-  end
+    def increment_counters
+      correctable.update_counter(:corrections_count, 1)
+      submitter.update_counter(:corrections_count, 1)
+    end
 
-  def increment_counters
-    correctable.update_counter(:corrections_count, 1)
-    submitter.update_counter(:corrections_count, 1)
-  end
+    def decrement_counters
+      correctable.update_counter(:corrections_count, -1)
+      submitter.update_counter(:corrections_count, -1)
+    end
 
-  def decrement_counters
-    correctable.update_counter(:corrections_count, -1)
-    submitter.update_counter(:corrections_count, -1)
-  end
-
-  def schedule_close
-    Correction.delay_for(1.week).close(id)
-  end
+    def schedule_close
+      Correction.delay_for(1.week).close(id)
+    end
 end

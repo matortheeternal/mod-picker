@@ -1,8 +1,11 @@
 class LoadOrderNote < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, Correctable, Helpfulable, Reportable, Approveable, ScopeHelpers, Trackable, BetterJson
+  include Filterable, Sortable, RecordEnhancements, Correctable, Helpfulable, Reportable, Approveable, ScopeHelpers, Trackable, BetterJson, Dateable
 
   # ATTRIBUTES
   self.per_page = 25
+
+  # DATE COLUMNS
+  date_column :submitted, :edited
 
   # EVENT TRACKING
   track :added, :approved, :hidden
@@ -56,7 +59,7 @@ class LoadOrderNote < ActiveRecord::Base
 
   # CALLBACKS
   after_create :increment_counters
-  before_save :set_adult, :set_dates
+  before_save :set_adult
   before_destroy :decrement_counters
 
   def get_existing_note(plugin_ids)
@@ -108,14 +111,6 @@ class LoadOrderNote < ActiveRecord::Base
   end
 
   private
-    def set_dates
-      if self.submitted.nil?
-        self.submitted = DateTime.now
-      else
-        self.edited = DateTime.now
-      end
-    end
-
     def set_adult
       self.has_adult_content = first_mod.has_adult_content || second_mod.has_adult_content
       true

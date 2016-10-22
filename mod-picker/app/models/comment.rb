@@ -1,8 +1,11 @@
 class Comment < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, Reportable, ScopeHelpers, Trackable, BetterJson
+  include Filterable, Sortable, RecordEnhancements, Reportable, ScopeHelpers, Trackable, BetterJson, Dateable
 
   # ATTRIBUTES
   self.per_page = 50
+
+  # DATE COLUMNS
+  date_column :submitted, :edited
 
   # EVENT TRACKING
   track :added, :hidden
@@ -39,7 +42,7 @@ class Comment < ActiveRecord::Base
   validate :nesting
 
   # CALLBACKS
-  before_save :set_adult, :set_dates
+  before_save :set_adult
   after_create :increment_counter_caches
   before_destroy :decrement_counter_caches
 
@@ -86,14 +89,6 @@ class Comment < ActiveRecord::Base
 
   # Private methods
   private
-    def set_dates
-      if self.submitted.nil?
-        self.submitted = DateTime.now
-      else
-        self.edited = DateTime.now
-      end
-    end
-
     def set_adult
       if commentable.respond_to?(:has_adult_content)
         self.has_adult_content = commentable.has_adult_content

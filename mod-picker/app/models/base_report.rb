@@ -1,5 +1,8 @@
 class BaseReport < ActiveRecord::Base
-  include RecordEnhancements, Filterable, Sortable, ScopeHelpers, BetterJson
+  include RecordEnhancements, Filterable, Sortable, ScopeHelpers, BetterJson, Dateable
+
+  # DATE COLUMNS
+  date_column :submitted, :edited
 
   # SCOPES
   polymorphic_scope :reportable
@@ -26,16 +29,4 @@ class BaseReport < ActiveRecord::Base
 
   # VALIDATIONS
   validates :reportable_id, :reportable_type, presence: true
-
-  # CALLBACKS
-  before_save :set_dates
-
-  private
-    def set_dates
-      if self.submitted.nil?
-        self.submitted = DateTime.now
-      else
-        self.edited = DateTime.now
-      end
-    end
 end

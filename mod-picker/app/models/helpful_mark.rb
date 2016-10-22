@@ -1,7 +1,11 @@
 class HelpfulMark < ActiveRecord::Base
-  include Filterable, ScopeHelpers, BetterJson
-  
+  include Filterable, ScopeHelpers, BetterJson, Dateable
+
+  # ATTRIBUTES
   self.primary_keys = :submitted_by, :helpfulable_id, :helpfulable_type
+
+  # DATE COLUMNS
+  date_column :submitted
 
   # SCOPES
   value_scope :submitted_by, :alias => 'submitter'
@@ -27,17 +31,10 @@ class HelpfulMark < ActiveRecord::Base
   }
 
   # CALLBACKS
-  before_save :set_dates
   after_create :increment_counters
   before_destroy :decrement_counters
 
   private
-    def set_dates
-      if self.submitted.nil?
-        self.submitted = DateTime.now
-      end
-    end
-
     def decrement_counters
       self.submitter.update_counter(:helpful_marks_count, -1)
       if self.helpful
