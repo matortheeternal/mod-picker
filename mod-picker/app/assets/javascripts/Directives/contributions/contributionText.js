@@ -15,11 +15,14 @@ app.controller('contributionTextController', function($scope, $rootScope, contri
     $scope.permissions = angular.copy($rootScope.permissions);
 
     $scope.removeModeratorMessage = function() {
+        var oldMessage = $scope.target.moderator_message;
         contributionService.removeModeratorMessage($scope.modelObj.route, $scope.target.id, $scope.target).then(function() {
             $scope.$emit("successMessage", "Moderator Note removed successfully.");
         }, function(response) {
             var params = { label: 'Error removing Moderator Note', response: response };
             $scope.$emit('errorMessage', params);
+
+            $scope.target.moderator_message = oldMessage;
         });
     };
 });
