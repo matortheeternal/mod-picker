@@ -182,6 +182,12 @@
         background-color: $error_primary;
         font-weight: 500;
         padding: 5px;
+        display: flex;
+        justify-content: space-between;
+
+        .remove-icon {
+            cursor:pointer;
+        }
       }
 
       .text-container {
