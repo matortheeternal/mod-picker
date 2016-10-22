@@ -8,13 +8,13 @@ class Mod < ActiveRecord::Base
 
   # EVENT TRACKING
   track :added, :hidden, :updated
-  track_change :analysis_updated, :column => 'updated'
+  #track_change :analysis_updated, :column => 'updated'
   track_milestones :column => 'stars_count', :milestones => [10, 50, 100, 500, 1000, 5000, 10000, 50000, 100000, 500000]
 
   # NOTIFICATION SUBSCRIPTIONS
-  subscribe :author_users, to: [:hidden, :unhidden, *Event.milestones]
-  subscribe :contribution_authors, to: [:analysis_updated, :updated]
-  subscribe :user_stars, to: [:analysis_updated]
+  subscribe :author_users, to: [:updated, :hidden, :unhidden, *Event.milestones]
+  # subscribe :contribution_authors, to: [:analysis_updated]
+  # subscribe :user_stars, to: [:analysis_updated]
 
   # SCOPES
   include_scope :has_adult_content, :alias => 'include_adult'
@@ -131,7 +131,7 @@ class Mod < ActiveRecord::Base
   has_many :mod_list_mods, :inverse_of => 'mod', :dependent => :destroy
   has_many :mod_lists, :through => 'mod_list_mods', :inverse_of => 'mods'
 
-  accepts_nested_attributes_for :mod_options
+  accepts_nested_attributes_for :mod_options, allow_destroy: true
   accepts_nested_attributes_for :custom_sources, allow_destroy: true
   accepts_nested_attributes_for :config_files, allow_destroy: true
   # cannot update required mods
@@ -153,7 +153,7 @@ class Mod < ActiveRecord::Base
   before_destroy :decrement_counters
 
   def asset_file_paths
-    self.mod_asset_files.joins(:asset_file).pluck(:subpath, :path).map { |item| item.join('') }
+    mod_asset_files.eager_load(:asset_file).pluck(:subpath, :path).map { |item| item.join('') }
   end
 
   def update_lazy_counters

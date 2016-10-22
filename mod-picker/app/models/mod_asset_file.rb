@@ -51,6 +51,16 @@ class ModAssetFile < ActiveRecord::Base
         eq(mod_asset_files_right[:mod_option_id])).join_sources
   end
 
+  def self.apply_base_paths(game_id, collection, base_paths)
+    collection.each do |maf|
+      path = maf.subpath
+      basepath = base_paths.find { |basepath| path.start_with?(basepath) }
+      next unless basepath.present?
+      asset_file = AssetFile.find_or_create_by(game_id: game_id, path: path.sub(basepath, ''))
+      maf.update(asset_file_id: asset_file.id, subpath: basepath)
+    end
+  end
+
   private
     def increment_counters
       asset_file.update_counter(:mod_asset_files_count, 1) if asset_file_id

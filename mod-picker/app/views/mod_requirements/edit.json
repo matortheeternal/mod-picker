@@ -1,0 +1,6 @@
+{
+  "only": ["id"],
+  "include": {
+    "required_mod": {}
+  }
+}

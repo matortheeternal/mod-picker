@@ -177,7 +177,7 @@ class User < ActiveRecord::Base
   def update_mod_author_role
     if ["user", "mod_author"].include?(role)
       is_author = mod_authors.where("role != 2").exists?
-      new_role = is_author ? "mod_author" : "user"
+      new_role = is_author ? "author" : "user"
       update_column(:role, new_role) if role != new_role
     end
   end

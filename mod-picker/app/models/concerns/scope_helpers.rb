@@ -151,6 +151,10 @@ module ScopeHelpers
       end
     end
 
+    def eval_enum_key(plural_attribute, key)
+      key == "nil" ? nil : public_send(plural_attribute)[key]
+    end
+
     def enum_scope(*attributes, **options)
       attributes.each do |attribute|
         plural_attribute = attribute.to_s.pluralize
@@ -158,7 +162,9 @@ module ScopeHelpers
           scope attribute.to_sym, -> (values) {
             if values.is_a?(Hash)
               array = []
-              values.each_key{ |key| array.push(public_send(plural_attribute)[key]) if values[key] }
+              values.each_key{ |key|
+                array.push(eval_enum_key(plural_attribute, key)) if values[key]
+              }
             else
               array = values
             end

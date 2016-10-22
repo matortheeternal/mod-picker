@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161009184403) do
+ActiveRecord::Schema.define(version: 20161019150658) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -387,7 +387,6 @@ ActiveRecord::Schema.define(version: 20161009184403) do
   end
 
   add_index "mod_asset_files", ["asset_file_id"], name: "maf_id", using: :btree
-  add_index "mod_asset_files", ["mod_option_id", "asset_file_id"], name: "mod_id", unique: true, using: :btree
   add_index "mod_asset_files", ["mod_option_id"], name: "mv_id", using: :btree
 
   create_table "mod_authors", force: :cascade do |t|
@@ -444,12 +443,13 @@ ActiveRecord::Schema.define(version: 20161009184403) do
   add_index "mod_list_custom_plugins", ["mod_list_id"], name: "ml_id", using: :btree
 
   create_table "mod_list_groups", force: :cascade do |t|
-    t.integer "mod_list_id", limit: 4,                 null: false
-    t.integer "index",       limit: 2,                 null: false
-    t.integer "tab",         limit: 1,     default: 0, null: false
-    t.integer "color",       limit: 1,     default: 0, null: false
-    t.string  "name",        limit: 128,               null: false
-    t.text    "description", limit: 65535
+    t.integer "mod_list_id",       limit: 4,                     null: false
+    t.integer "index",             limit: 2,                     null: false
+    t.integer "tab",               limit: 1,     default: 0,     null: false
+    t.integer "color",             limit: 1,     default: 0,     null: false
+    t.boolean "keep_when_sorting",               default: false, null: false
+    t.string  "name",              limit: 128,                   null: false
+    t.text    "description",       limit: 65535
   end
 
   add_index "mod_list_groups", ["mod_list_id"], name: "fk_rails_0abd07c656", using: :btree
@@ -558,7 +558,8 @@ ActiveRecord::Schema.define(version: 20161009184403) do
 
   create_table "mod_options", force: :cascade do |t|
     t.integer "mod_id",            limit: 4,                   null: false
-    t.string  "name",              limit: 255,                 null: false
+    t.string  "name",              limit: 128,                 null: false
+    t.string  "display_name",      limit: 128,                 null: false
     t.integer "size",              limit: 8,   default: 0,     null: false
     t.boolean "default",                       default: false, null: false
     t.boolean "is_fomod_option",               default: false, null: false
@@ -641,10 +642,10 @@ ActiveRecord::Schema.define(version: 20161009184403) do
     t.boolean  "has_stats",                       default: false, null: false
     t.datetime "last_scraped"
     t.integer  "mod_id",              limit: 4
-    t.string   "mod_name",            limit: 255,                 null: false
+    t.string   "mod_name",            limit: 255
     t.string   "uploaded_by",         limit: 128,                 null: false
-    t.string   "authors",             limit: 128,                 null: false
-    t.datetime "released",                                        null: false
+    t.string   "authors",             limit: 128
+    t.datetime "released"
     t.datetime "updated"
     t.string   "current_version",     limit: 32
     t.integer  "nexus_category",      limit: 4

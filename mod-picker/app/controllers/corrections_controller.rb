@@ -3,8 +3,8 @@ class CorrectionsController < ApplicationController
 
   # GET /corrections
   def index
-    @corrections = Correction.preload(:editor).includes(submitter: :reputation).references(submitter: :reputation).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(page: params[:page])
-    count = Correction.accessible_by(current_ability).filter(filtering_params).count
+    @corrections = Correction.preload(:editor).eager_load(:submitter => :reputation).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(page: params[:page])
+    count = Correction.eager_load(:submitter => :reputation).accessible_by(current_ability).filter(filtering_params).count
 
     # get helpful marks
     agreement_marks = AgreementMark.where(submitted_by: current_user.id, correction_id: @corrections.ids)
