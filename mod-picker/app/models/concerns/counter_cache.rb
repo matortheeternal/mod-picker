@@ -43,8 +43,10 @@ module CounterCache
     column_values = {}
     _counter_caches.each do |name, options|
       next unless names.include?(name)
-      reset_counter(name, options[:column]
+      reset_counter(name, options[:column])
+      column_values[options[:column]] = self[options[:column]]
     end
+    update_columns(column_values)
   end
 
   def reset_all_counters
