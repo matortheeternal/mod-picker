@@ -35,8 +35,10 @@ module ModPicker
     config.updated_owner_attributes = [:updated_by, :edited_by]
     config.removed_owner_attributes = [:removed_by]
 
+    # rack attack config
     config.middleware.use Rack::Attack
 
+    # test generators
     config.generators do |g|
       g.test_framework :rspec,
         fixtures: true,
