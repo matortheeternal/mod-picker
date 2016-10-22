@@ -34,13 +34,6 @@ module Dateable
     update_date_column(column) if eval_dateable_condition(options)
   end
 
-  def set_date_column(column, options)
-    unless [:submitted, :edited, :custom].include?(options[:type])
-      raise "Unknown column type #{options[:type]}"
-    end
-    public_send("set_#{options[:type]}_date_column", column, options)
-  end
-
   module ClassMethods
     def date_column(*columns, **options)
       columns.each { |column|
@@ -55,7 +48,7 @@ module Dateable
         before_save :set_dates
         def set_dates
           self.class._date_columns.each do |column, options|
-            set_date_column(column, options)
+            public_send("set_#{options[:type]}_date_column", column, options)
           end
         end
       end
