@@ -1,5 +1,5 @@
 class Review < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, Helpfulable, Reportable, Approveable, ScopeHelpers, Trackable, BetterJson
+  include Filterable, Sortable, RecordEnhancements, Helpfulable, Reportable, Approveable, ScopeHelpers, Trackable, BetterJson, Dateable
 
   # ATTRIBUTES
   self.per_page = 25
@@ -35,6 +35,9 @@ class Review < ActiveRecord::Base
   has_many :mod_author_users, :through => :mod, :source => :author_users
 
   accepts_nested_attributes_for :review_ratings
+
+  # DATE COLUMNS
+  date_column :submitted, :edited
 
   # VALIDATIONS
   validates :game_id, :submitted_by, :mod_id, :text_body, presence: true
@@ -110,14 +113,6 @@ class Review < ActiveRecord::Base
   end
 
   private
-    def set_dates
-      if self.submitted.nil?
-        self.submitted = DateTime.now
-      else
-        self.edited = DateTime.now
-      end
-    end
-
     def set_adult
       self.has_adult_content = mod.has_adult_content
       true
