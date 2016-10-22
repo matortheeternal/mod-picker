@@ -1,5 +1,5 @@
 class Review < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, Helpfulable, Reportable, Approveable, ScopeHelpers, Trackable, BetterJson
+  include Filterable, Sortable, RecordEnhancements, CounterCache, Helpfulable, Reportable, Approveable, ScopeHelpers, Trackable, BetterJson
 
   # ATTRIBUTES
   self.per_page = 25
@@ -34,7 +34,14 @@ class Review < ActiveRecord::Base
   has_one :submitter_reputation, :class_name => 'UserReputation', :through => 'submitter', :source => 'reputation'
   has_many :mod_author_users, :through => :mod, :source => :author_users
 
+  # NESTED ATTRIBUTES
   accepts_nested_attributes_for :review_ratings
+
+  # COUNTER CACHE
+  counter_cache_on :mod, :submitter, conditional: { hidden: false, approved: true }
+
+  # DATE COLUMNS
+  date_column :submitted, :edited
 
   # VALIDATIONS
   validates :game_id, :submitted_by, :mod_id, :text_body, presence: true
@@ -45,11 +52,10 @@ class Review < ActiveRecord::Base
   validates_associated :review_ratings
 
   # CALLBACKS
-  after_create :increment_counters
   before_save :set_adult, :set_dates
   after_save :update_metrics
-  before_destroy :clear_ratings, :decrement_counters
-  after_destroy :update_mod_metrics
+  before_destroy :clear_ratings
+  after_destroy :update_mod_review_metrics
 
   def not_mod_author
     is_author = ModAuthor.where(mod_id: mod_id, role: [0, 1]).exists?
@@ -64,72 +70,23 @@ class Review < ActiveRecord::Base
 
   def update_metrics
     compute_overall_rating
-    update_columns({
-      ratings_count: review_ratings.count,
-      overall_rating: overall_rating
-    })
-    update_mod_metrics
+    save_columns!(:overall_rating, :ratings_count)
+    update_mod_review_metrics
   end
 
-  def update_mod_metrics
-    mod.compute_average_rating
-    mod.compute_reputation
-    mod.update_columns({
-        :reviews_count => mod.reviews_count,
-        :reputation => mod.reputation,
-        :average_rating => mod.average_rating
-    })
+  def update_mod_review_metrics
+    mod.update_review_metrics
   end
 
   def compute_overall_rating
-    total = 0
-    count = 0
-
-    review_ratings.each do |r|
-      total += r.rating
-      count += 1
-    end
-
-    self.overall_rating = (total.to_f / count) if count > 0
-  end
-
-  def self.sortable_columns
-    {
-        :except => [:game_id, :submitted_by, :edited_by, :mod_id, :text_body, :edit_summary, :moderator_message],
-        :include => {
-            :submitter => {
-                :only => [:username],
-                :include => {
-                    :reputation => {
-                        :only => [:overall]
-                    }
-                }
-            }
-        }
-    }
+    total = review_ratings.reduce(0) {|total, r| total += r.rating}
+    ratings_count = review_ratings.length
+    self.overall_rating = (total.to_f / ratings_count) if ratings_count > 0
   end
 
   private
-    def set_dates
-      if self.submitted.nil?
-        self.submitted = DateTime.now
-      else
-        self.edited = DateTime.now
-      end
-    end
-
     def set_adult
       self.has_adult_content = mod.has_adult_content
       true
-    end
-
-    def increment_counters
-      mod.update_counter(:reviews_count, 1)
-      submitter.update_counter(:reviews_count, 1)
-    end
-
-    def decrement_counters
-      mod.update_counter(:reviews_count, -1)
-      submitter.update_counter(:reviews_count, -1)
     end
 end

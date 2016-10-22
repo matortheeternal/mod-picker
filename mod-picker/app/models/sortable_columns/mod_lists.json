@@ -1,0 +1,8 @@
+{
+  "except": ["game_id", "submitted_by", "description"],
+  "include": {
+    "submitter": {
+      "only": ["username"]
+    }
+  }
+}

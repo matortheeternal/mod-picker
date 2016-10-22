@@ -322,17 +322,6 @@ class ModList < ActiveRecord::Base
     a.join("\r\n")
   end
 
-  def self.sortable_columns
-    {
-        :except => [:game_id, :submitted_by, :description],
-        :include => {
-            :submitter => {
-                :only => [:username]
-            }
-        }
-    }
-  end
-
   private
     def set_dates
       if submitted.nil?

@@ -30,12 +30,6 @@ class BaseReport < ActiveRecord::Base
   # CALLBACKS
   before_save :set_dates
 
-  def self.sortable_columns
-    {
-        :only => [:submitted, :edited, :reports_count]
-    }
-  end
-
   private
     def set_dates
       if self.submitted.nil?
