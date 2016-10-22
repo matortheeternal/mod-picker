@@ -25,7 +25,7 @@ module Dateable
     update_date_column(column) if submitted_column_was_not_nil?
   end
 
-  def eval_dateable_conditions(options)
+  def eval_dateable_condition(options)
     return true unless options.has_key?(:conditional)
     instance_eval(options[:conditional])
   end
