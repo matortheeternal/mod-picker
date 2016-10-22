@@ -1,6 +1,19 @@
 module RecordEnhancements
   extend ActiveSupport::Concern
 
+  def column_changes_hash(names)
+    column_changes = changes.inject({}) { |h, (k, v)|
+      h[k] = v[1] if self.class.column_names.include?(k); h }
+    return column_changes unless names.present?
+    column_changes.slice(*names)
+  end
+
+  def save_columns!(*names)
+    column_values = column_changes_hash(names)
+    update_columns(column_values)
+    changes_applied
+  end
+
   # Custom counter updating code
   def update_counter(column, offset)
     # this updates it in memory
