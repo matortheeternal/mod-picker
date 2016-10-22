@@ -10,24 +10,12 @@
     </span>
 </h3>
 <section>
-    <div class="analysis-results" ng-repeat="option in mod.analysis.mod_options">
-        <h4 class="subtitle">{{option.name}} ({{option.size | bytes}})
-            <span class="default-option">
-                <input type="checkbox" ng-model="option.default"> Default
-            </span>
-        </h4>
+    <div class="analysis-container" ng-if="mod.mod_options && !mod.analysis">
+        <mod-option ng-repeat="option in mod.mod_options" option="option" ng-hide="option._destroy"></mod-option>
+    </div>
 
-        <strong ng-show="option.nestedAssets">Asset File Tree</strong>
-        <div class="subsection analysis-container" ng-show="option.nestedAssets">
-            <asset-tree assets="option.nestedAssets"></asset-tree>
-        </div>
-
-        <strong ng-show="option.plugins.length">Plugins</strong>
-        <div class="subsection analysis-container" ng-show="option.plugins.length">
-            <div class="plugin-analysis-item" ng-repeat="plugin in option.plugins">
-                <plugin-metadata plugin="plugin" show-record-groups="true"></plugin-metadata>
-            </div>
-        </div>
+    <div class="analysis-container" ng-if="mod.analysis">
+        <mod-option ng-repeat="option in mod.analysis.mod_options" option="option" old-options="mod.mod_options" ng-hide="option._destroy"></mod-option>
     </div>
 
     <label>

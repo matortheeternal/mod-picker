@@ -104,8 +104,10 @@ app.controller('modCompatibilityController', function($scope, $stateParams, $sta
         var sanitized_text = contributionService.removePrompts(compatibilityNote.text_body);
         var textValid = sanitized_text.length > 512;
         var modsValid = compatibilityNote.mod_id !== undefined;
-        var statusValid = (compatibilityNote.status === "compatibility_mod") ==
-            (compatibilityNote.compatibility_mod !== undefined);
+        var statusValid = true;
+        if (compatibilityNote.status === "compatibility_mod") {
+            statusValid = !!compatibilityNote.compatibility_mod_id;
+        }
 
         compatibilityNote.valid = textValid && modsValid && statusValid;
     };

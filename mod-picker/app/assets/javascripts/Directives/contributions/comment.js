@@ -32,12 +32,6 @@ app.controller('commentController', function($scope, $rootScope, $filter, $timeo
     $scope.target = $scope.comment;
     $scope.errorEvent = $scope.eventPrefix ? $scope.eventPrefix + 'ErrorMessage' : 'errorMessage';
 
-    $scope.getContextLink = function() {
-        var comment = $scope.comment;
-        var subpath = comment.commentable_type === "User" ? "social" : "comments";
-        return comment.commentable_link + '/' + subpath;
-    };
-
     $scope.getDateString = function() {
         var comment = $scope.comment;
         var str = "submitted " + $filter('date')(comment.submitted, 'medium');

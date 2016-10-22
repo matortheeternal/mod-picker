@@ -4,5 +4,6 @@
     "submitter": {
       "format": "submitter"
     }
-  }
+  },
+  "methods": "context_link"
 }
