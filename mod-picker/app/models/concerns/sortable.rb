@@ -62,7 +62,7 @@ module Sortable
     end
 
     def sanitize_column(column)
-      column.split('.').map{|column| connection.quote_column_name(column) }.join('.')
+      column.split('.').map{ |column| connection.quote_column_name(column) }.join('.')
     end
 
     def sanitize_columns(columns)
