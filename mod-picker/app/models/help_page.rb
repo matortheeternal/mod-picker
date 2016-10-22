@@ -1,8 +1,11 @@
 class HelpPage < ActiveRecord::Base
-  include RecordEnhancements, ScopeHelpers, BetterJson
+  include RecordEnhancements, ScopeHelpers, BetterJson, Dateable
 
-  # enum for help page category
+  # ATTRIBUTES
   enum category: [:mod_picker, :modding, :guides]
+
+  # DATE COLUMNS
+  date_column :submitted, :edited
 
   # SCOPES
   game_scope
@@ -20,7 +23,6 @@ class HelpPage < ActiveRecord::Base
   validates :text_body, length: {in: 64..32768}
 
   # CALLBACKS
-  before_save :set_dates
   after_create :increment_counters
   before_destroy :decrement_counters
 
@@ -41,14 +43,6 @@ class HelpPage < ActiveRecord::Base
   end
 
   private
-    def set_dates
-      if self.submitted.nil?
-        self.submitted = DateTime.now
-      else
-        self.edited = DateTime.now
-      end
-    end
-
     def decrement_counters
       self.game.update_counter(:help_pages_count, -1) if self.game_id.present?
     end
