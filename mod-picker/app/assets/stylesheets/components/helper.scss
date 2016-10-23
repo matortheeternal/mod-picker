@@ -5,6 +5,15 @@ helper {
   bottom: 0;
   z-index: 400;
 
+  .help-context {
+    max-width: 200px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    background-color: $secondary_background;
+    border: 1px solid $hard_border_color;
+    padding: 4px;
+  }
+
   .helper-container {
     position: relative;
 
@@ -18,7 +27,7 @@ helper {
     div.helper {
       min-width: 200px;
       min-height: 200px;
-      background-image: $helper_image;
+      background-image: url($helper_image);
     }
   }
 
