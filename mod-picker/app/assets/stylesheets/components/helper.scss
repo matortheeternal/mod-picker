@@ -1,0 +1,32 @@
+helper {
+  display: block;
+  position: fixed;
+  right: 50px;
+  bottom: 0;
+  z-index: 400;
+
+  .helper-container {
+    position: relative;
+
+    .hide-helper {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      cursor: pointer;
+    }
+
+    div.helper {
+      min-width: 200px;
+      min-height: 200px;
+      background-image: $helper_image;
+    }
+  }
+
+  .show-helper {
+    color: $action_color;
+    font-size: 28px;
+    padding-bottom: 8px;
+    display: block;
+    cursor: pointer;
+  }
+}
