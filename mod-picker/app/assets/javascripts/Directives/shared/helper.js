@@ -14,8 +14,6 @@ app.controller('helperController', function($scope, $rootScope, $sce) {
         });
     };
 
-    $scope.trustContexts();
-
     $scope.removeContext = function($index) {
         $scope.helpContexts.splice($index, 1);
     };
