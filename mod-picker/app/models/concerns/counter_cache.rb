@@ -76,6 +76,13 @@ module CounterCache
     end
   end
 
+  def counter_condition_was(options)
+    return true unless options.has_key?(:conditional)
+    options[:conditional].reduce(true) do |result, (k, v)|
+      result = result && attribute_was(k) == v
+    end
+  end
+
   def update_association_counter(name, column, change)
     association = public_send(name)
     association.update_counter(column, change) if association.present?
@@ -117,10 +124,10 @@ module CounterCache
       class_eval do
         before_update :track_counter_conditionals
         def track_counter_conditionals
-          self.class._previous_conditionals = {}
+          self._previous_conditionals = {}
           self.class._counter_cache_on.each do |name, options|
             next unless options.has_key?(:conditional)
-            self.class._previous_conditionals[name] = eval_counter_condition(options)
+            self._previous_conditionals[name] = counter_condition_was(options)
           end
         end
       end
