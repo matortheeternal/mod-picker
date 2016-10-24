@@ -240,6 +240,16 @@ app.controller('contributionActionsController', function($scope, $rootScope, $ti
         $scope.modNote.message = "";
     };
 
+    $scope.editNote = function() {
+        $scope.modNote.addingNote = true;
+
+        var oldMessage = angular.copy($scope.target.moderator_message);
+        $scope.modNote.oldMessage = oldMessage;
+        //set the note to null, to disable the current note's display
+        $scope.target.moderator_message = null;
+        $scope.modNote.message = oldMessage;
+    };
+
     $scope.saveNote = function() {
         $scope.target.moderator_message = $scope.modNote.message;
         contributionService.updateContribution($scope.modelObj.route, $scope.target.id, $scope.target).then(function() {
@@ -247,9 +257,9 @@ app.controller('contributionActionsController', function($scope, $rootScope, $ti
             delete $scope.modNote.addingNote;
             delete $scope.modNote.message;
         }, function(response) {
-            var params = { label: 'Error adding Moderator Note', response: response };
+            var params = { label: 'Error changing Moderator Note', response: response };
             $scope.$emit('errorMessage', params);
-            $scope.target.moderator_message = null;
+            $scope.target.moderator_message = $scope.modNote.oldMessage || null;
         });
     };
 
@@ -283,7 +293,7 @@ app.controller('contributionActionsController', function($scope, $rootScope, $ti
         $scope.canEdit = $scope.edit && (canModerate || isCorrector || isSubmitter && !isLocked);
         $scope.canApprove = $scope.approveable && canModerate;
         $scope.canHide = canModerate;
-        $scope.canAddNote = canModerate;
+        $scope.canEditNote = canModerate;
     };
 
     // watch user so if we get the user object after rendering actions

@@ -25,7 +25,8 @@
             <div class="dropdown-item" ng-if="canReport" ng-click="toggleReportModal(true)">Report</div>
             <div class="dropdown-separator" ng-if="(hasHistory || !agreeable || canReport) && (canEdit || canApprove || canHide)"></div>
             <div class="dropdown-item" ng-if="canEdit" ng-click="edit(target)">Edit</div>
-            <div class="dropdown-item" ng-if="canAddNote" ng-click="addNote()">Add Mod Note</div>
+            <div class="dropdown-item" ng-if="canEditNote && !target.moderator_message" ng-click="addNote()">Add Mod Note</div>
+            <div class="dropdown-item" ng-if="canEditNote && target.moderator_message" ng-click="editNote()">Edit Mod Note</div>
             <div class="dropdown-item" ng-if="canApprove && !target.approved" ng-click="approve(true)">Approve</div>
             <div class="dropdown-item" ng-if="canApprove && target.approved" ng-click="approve(false)">Unapprove</div>
             <div class="dropdown-item" ng-if="canHide && !target.hidden" ng-click="hide(true)">Hide</div>
