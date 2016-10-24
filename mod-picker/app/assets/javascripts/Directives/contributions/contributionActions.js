@@ -251,9 +251,11 @@ app.controller('contributionActionsController', function($scope, $rootScope, $ti
     };
 
     $scope.saveNote = function() {
-        $scope.target.moderator_message = $scope.modNote.message;
-        contributionService.updateContribution($scope.modelObj.route, $scope.target.id, $scope.target).then(function() {
+        contributionService.updateModeratorNote($scope.modelObj.route, $scope.target.id, $scope.modNote.message).then(function() {
             $scope.$emit("successMessage", "Moderator Note added successfully.");
+
+            //update ui if the note is updated successfully on the server
+            $scope.target.moderator_message = $scope.modNote.message;
             delete $scope.modNote.addingNote;
             delete $scope.modNote.message;
         }, function(response) {
