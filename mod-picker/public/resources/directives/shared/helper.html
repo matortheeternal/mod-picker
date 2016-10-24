@@ -6,12 +6,12 @@
         <span ng-bind-html="context"></span>
     </div>
 </div>
-<div class="helper-container" ng-show="showHelper">
+<div class="helper-container" ng-if="showHelper">
     <span class="hide-helper" ng-click="toggleHelper()" title="Hide the helper.">
         <i class="fa fa-times"></i>
     </span>
     <div class="helper"></div>
 </div>
-<span class="show-helper" ng-click="toggleHelper()" ng-hide="showHelper" title="Get help!">
+<span class="show-helper" ng-click="toggleHelper()" ng-if="!showHelper" title="Get help!">
     <i class="fa fa-question-circle"></i>
 </span>

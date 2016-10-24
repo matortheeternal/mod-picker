@@ -5,8 +5,28 @@ helper {
   bottom: 0;
   z-index: 400;
 
+  .help-contexts {
+    &.ng-enter {
+      @include transition(opacity 0.3s ease-in-out 0.6s);
+      opacity: 0;
+    }
+
+    &.ng-enter.ng-enter-active {
+      opacity: 1;
+    }
+
+    &.ng-leave {
+      @include transition(opacity 0.3s ease-in-out);
+      opacity: 1;
+    }
+
+    &.ng-leave.ng-leave-active {
+      opacity: 0;
+    }
+  }
+
   .help-context {
-    max-width: 200px;
+    max-width: 220px;
     position: relative;
     margin-bottom: 20px;
     font-size: 14px;
@@ -38,15 +58,42 @@ helper {
       display: block;
       width: 0;
     }
+
+    .hide-context {
+      float: right;
+      cursor: pointer;
+    }
   }
 
   .helper-container {
     position: relative;
 
+    &.ng-enter {
+      @include transition(margin 0.8s ease-in-out);
+      margin-bottom: -$helper_height;
+    }
+
+    &.ng-enter.ng-enter-active {
+      margin-bottom: 0;
+    }
+
+    &.ng-leave {
+      @include transition(margin 0.8s ease-in-out 0.2s);
+      margin-bottom: 0;
+
+      .hide-helper {
+        display: none;
+      }
+    }
+
+    &.ng-leave.ng-leave-active {
+      margin-bottom: -$helper_height;
+    }
+
     .hide-helper {
       position: absolute;
       top: 2px;
-      right: 2px;
+      right: 24px;
       cursor: pointer;
     }
 
@@ -59,10 +106,18 @@ helper {
   }
 
   .show-helper {
-    color: $action_color;
-    font-size: 28px;
-    padding-bottom: 8px;
+    position: absolute;
     display: block;
+    bottom: 20px;
+    right: 100px;
+    padding-bottom: 8px;
+    color: $action_color;
+    font-size: 36px;
     cursor: pointer;
+    z-index: -1;
+
+    &.ng-leave {
+      @include transition(opacity 1.0s ease-in-out);
+    }
   }
 }
