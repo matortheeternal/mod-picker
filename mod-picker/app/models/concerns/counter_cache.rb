@@ -40,7 +40,7 @@ module CounterCache
   def reset_counter!(name, column=nil)
     column ||= self.class._counter_cache[name.to_sym][:column]
     self[column] = public_send(name).count
-    update_column(column => self[column])
+    update_column(column, self[column])
   end
 
   def reset_counters!(*names)
