@@ -14,7 +14,7 @@
 	</div>
 	<user-column ng-if="showUserColumn" user="note.submitter" editors="note.editors" class="user-column" index="index"></user-column>
     <div class="content-column">
-        <contribution-text model-name="LoadOrderNote" target="note"></contribution-text>
+        <contribution-text target="note"></contribution-text>
         <contribution-actions target="note" model-name="LoadOrderNote" index="index" edit="edit" has-history="true"></contribution-actions>
     </div>
     <div ng-if="showResolutionOptions" class="resolution-column">
