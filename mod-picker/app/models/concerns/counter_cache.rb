@@ -172,17 +172,26 @@ module CounterCache
       create_update_counters_callback
     end
 
-    def get_column_options(name, options)
+    def counter_cache_column(name, options)
       options[:column] = (name.to_s + '_count').to_sym unless options.has_key?(:column)
       options
     end
 
+    def counter_cache_on_column(options)
+      options[:column] = (table_name.to_s + '_count').to_sym unless options.has_key?(:column)
+      options
+    end
+
     def counter_cache(*names, **options)
-      names.each { |name| _counter_cache[name] = get_column_options(name, options.dup) }
+      names.each do |name|
+        _counter_cache[name] = counter_cache_column(name, options.dup)
+      end
     end
 
     def counter_cache_on(*names, **options)
-      names.each { |name| _counter_cache_on[name] = get_column_options(name, options.dup) }
+      names.each do |name|
+        _counter_cache_on[name] = counter_cache_on_column(options.dup)
+      end
       create_counter_callbacks_if_missing
     end
   end
