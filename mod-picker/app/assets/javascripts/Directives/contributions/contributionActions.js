@@ -40,6 +40,8 @@ app.controller('contributionActionsController', function($scope, $rootScope, $ti
     $scope.errorEvent = $scope.eventPrefix ? $scope.eventPrefix + 'ErrorMessage' : 'errorMessage';
     $scope.modelObj = contributionFactory.getModel($scope.modelName);
 
+    $scope.modNote = {};
+
     // determine share url based on the content type
     $scope.buildShareLink = function() {
         var modTarget, modId, targetTab, targetId, baseUrl = location.href.replace(location.hash, "");
@@ -233,6 +235,29 @@ app.controller('contributionActionsController', function($scope, $rootScope, $ti
         });
     };
 
+    $scope.addNote = function() {
+        $scope.modNote.addingNote = true;
+        $scope.modNote.message = "";
+    };
+
+    $scope.saveNote = function() {
+        $scope.target.moderator_message = $scope.modNote.message;
+        contributionService.updateContribution($scope.modelObj.route, $scope.target.id, $scope.target).then(function() {
+            $scope.$emit("successMessage", "Moderator Note added successfully.");
+            delete $scope.modNote.addingNote;
+            delete $scope.modNote.message;
+        }, function(response) {
+            var params = { label: 'Error adding Moderator Note', response: response };
+            $scope.$emit('errorMessage', params);
+            $scope.target.moderator_message = null;
+        });
+    };
+
+    $scope.discardNote = function() {
+        $scope.modNote.message = null;
+        delete $scope.modNote.addingNote;
+    };
+
     $scope.blurDropdown = function() {
         // we have to use a timeout for hiding the dropdown because
         // otherwise we would hide it before the click event on a result
@@ -258,6 +283,7 @@ app.controller('contributionActionsController', function($scope, $rootScope, $ti
         $scope.canEdit = $scope.edit && (canModerate || isCorrector || isSubmitter && !isLocked);
         $scope.canApprove = $scope.approveable && canModerate;
         $scope.canHide = canModerate;
+        $scope.canAddNote = canModerate;
     };
 
     // watch user so if we get the user object after rendering actions

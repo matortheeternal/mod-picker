@@ -7,22 +7,13 @@
     <span ng-show="target.editor">by <a href="#/profile/{{target.editor.id}}">{{target.editor.username}}</a></span><br>
     <span ng-show="target.edit_summary">{{target.edit_summary}}</span>
 </div>
-<div class="moderator-message" ng-if="target.moderator_message || target.adding_mod_note">
+<div class="moderator-message" ng-if="target.moderator_message">
     <div class="message-title">
         Moderator Message
         <div>
             <i class="fa fa-times remove-icon" ng-show="permissions.canModerate" aria-hidden="true" ng-click="removeModeratorMessage()"></i>
-            <i class="fa fa-edit edit-icon" ng-show="permissions.canModerate" aria-hidden="true" ng-click="target.adding_mod_note = true"></i>
         </div>
     </div>
 
     <div class="text-container" ng-if="target.moderator_message && !target.adding_mod_note" marked="target.moderator_message"></div>
-
-    <div ng-if="target.adding_mod_note">
-        <text-area data="target.moderator_message" ng-refresh="updateMDE" class="mod-note-text-area"></text-area>
-        <div class="action-button-container">
-            <input class="btn action-btn" type="submit" value="Submit" ng-click="saveModeratorNote()"/>
-            <input class="btn action-btn" type="button" value="Discard" ng-click="discardModeratorNote()">
-        </div>
-    </div>
 </div>

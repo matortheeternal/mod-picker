@@ -27,19 +27,4 @@ app.controller('contributionTextController', function($scope, $rootScope, contri
             $scope.target.moderator_message = oldMessage;
         });
     };
-
-    $scope.saveModeratorNote = function() {
-        contribtuionService.updateContribution($scope.modelObj.route, $scope.target.id, $scope.target).then(function() {
-            $scope.$emit("successMessage", "Moderator Note added successfully.");
-            delete $scope.target.adding_mod_note;
-        }, function(response) {
-            var params = { label: 'Error adding Moderator Note', response: response };
-            $scope.$emit('errorMessage', params);
-        });
-    };
-
-    $scope.discardModeratorNote = function() {
-        $scope.target.moderator_message = null;
-        delete $scope.target.adding_mod_note;
-    };
 });
