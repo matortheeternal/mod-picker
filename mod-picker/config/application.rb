@@ -30,13 +30,19 @@ module ModPicker
     config.scrape_nexus_statistics = false
     config.scrape_workshop_statistics = true
 
+    # date config
+    config.submitted_columns = [:submitted, :created]
+    config.edited_columns = [:edited, :updated]
+
     # tracking config
     config.added_owner_attributes = [:submitted_by]
     config.updated_owner_attributes = [:updated_by, :edited_by]
     config.removed_owner_attributes = [:removed_by]
 
+    # rack attack config
     config.middleware.use Rack::Attack
 
+    # test generators
     config.generators do |g|
       g.test_framework :rspec,
         fixtures: true,

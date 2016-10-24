@@ -1,10 +1,13 @@
 class Mod < ActiveRecord::Base
-  include Filterable, Sortable, Reportable, Imageable, RecordEnhancements, SourceHelpers, ScopeHelpers, Trackable, BetterJson
+  include Filterable, Sortable, Reportable, Imageable, RecordEnhancements, SourceHelpers, ScopeHelpers, Trackable, BetterJson, Dateable
 
   # ATTRIBUTES
   enum status: [ :good, :outdated, :unstable ]
   attr_accessor :updated_by, :mark_updated
   self.per_page = 100
+
+  # DATE COLUMNS
+  date_column :submitted
 
   # EVENT TRACKING
   track :added, :hidden, :updated
@@ -148,7 +151,7 @@ class Mod < ActiveRecord::Base
   validates :name, :aliases, length: {maximum: 128}
 
   # callbacks
-  before_save :set_dates, :touch_updated
+  before_save :touch_updated
   after_create :increment_counters
   before_destroy :decrement_counters
 
@@ -269,10 +272,6 @@ class Mod < ActiveRecord::Base
   end
 
   private
-    def set_dates
-      self.submitted = DateTime.now if submitted.nil?
-    end
-
     def touch_updated
       if mark_updated
         self.updated ||= DateTime.now
