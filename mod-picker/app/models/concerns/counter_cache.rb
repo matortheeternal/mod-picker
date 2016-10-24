@@ -124,15 +124,12 @@ module CounterCache
     end
 
     def reset_counters!(*names)
-      query = names.map { |name| reset_counter_query(name).to_sql }
+      query = names.map { |name| reset_counter_query(name) }
       update_all(query.join(', '))
     end
 
     def reset_all_counters!
-      query = _counter_cache.map do |name, options|
-        reset_counter_query(name, options[:column]).to_sql
-      end
-      update_all(query.join(', '))
+      reset_counters!(*_counter_cache.keys)
     end
 
     def create_track_counter_conditionals_callback
