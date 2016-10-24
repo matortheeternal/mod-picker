@@ -12,7 +12,7 @@ app.controller('reportsIndexController', function($scope, $rootScope, $statePara
     $scope.globalPermissions = angular.copy($rootScope.permissions);
 
     // set help context
-    $scope.$emit('setHelpContexts', []);
+    helpFactory.setHelpContexts($scope, []);
 
     // sort options for view
     $scope.sortOptions = sortFactory.reportSortOptions();

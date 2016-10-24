@@ -12,7 +12,7 @@ app.controller('modListsController', function($scope, $rootScope, $stateParams, 
     $scope.permissions = angular.copy($rootScope.permissions);
 
     // set help context
-    $scope.$emit('setHelpContexts', [helpFactory.indexPage]);
+    helpFactory.setHelpContexts($scope, [helpFactory.indexPage]);
 
     // columns for view
     $scope.columns = columnsFactory.modListColumns(true);

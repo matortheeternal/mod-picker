@@ -13,7 +13,7 @@ app.controller('pluginsController', function($scope, $rootScope, $stateParams, $
     $scope.permissions = angular.copy($rootScope.permissions);
 
     // set help context
-    $scope.$emit('setHelpContexts', [helpFactory.indexPage]);
+    helpFactory.setHelpContexts($scope, [helpFactory.indexPage]);
 
     // columns for view
     $scope.columns = columnsFactory.pluginColumns(true);

@@ -195,7 +195,7 @@ app.controller('modListController', function($scope, $rootScope, $q, $stateParam
 
     // set help context
     var helpContexts = helpFactory.modListContext($scope.mod_list, $scope.permissions.canManage, $scope.isActive);
-    $scope.$emit('setHelpContexts', helpContexts);
+    helpFactory.setHelpContexts($scope, helpContexts);
 
     // HEADER RELATED LOGIC
     $scope.starModList = function() {

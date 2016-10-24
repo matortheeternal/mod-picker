@@ -83,7 +83,7 @@ app.controller('userSettingsController', function($scope, $rootScope, $q, userOb
     eventHandlerFactory.buildMessageHandlers($scope, true);
 
     // set help context
-    $scope.$emit('setHelpContexts', [helpFactory.userSettings]);
+    helpFactory.setHelpContexts($scope, [helpFactory.userSettings]);
 
     // resets password inputs
     $scope.resetPasswordInputs = function() {

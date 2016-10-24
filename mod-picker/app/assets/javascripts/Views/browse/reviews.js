@@ -11,7 +11,7 @@ app.controller('reviewsController', function($scope, $rootScope, $stateParams, $
     $scope.permissions = $rootScope.permissions;
 
     // set help context
-    $scope.$emit('setHelpContexts', [helpFactory.indexPage]);
+    helpFactory.setHelpContexts($scope, [helpFactory.indexPage]);
 
     // sort options for view
     $scope.sortOptions = sortFactory.reviewSortOptions();

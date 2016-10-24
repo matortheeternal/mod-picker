@@ -174,7 +174,7 @@ app.controller('modController', function($scope, $rootScope, $q, $stateParams, $
     eventHandlerFactory.buildMessageHandlers($scope);
 
     // set help context
-    $scope.$emit('setHelpContexts', [helpFactory.mod]);
+    helpFactory.setHelpContexts($scope, [helpFactory.mod]);
 
     // display a message if the mod is incompatible with the user's active mod list
     if ($scope.mod.incompatible) {

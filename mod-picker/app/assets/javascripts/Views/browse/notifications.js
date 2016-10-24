@@ -17,7 +17,7 @@ app.controller('notificationsController', function($scope, $rootScope, notificat
     notificationsFactory.setCurrentUserID($rootScope.currentUser.id);
 
     // set help context
-    $scope.$emit('setHelpContexts', [helpFactory.notifications]);
+    helpFactory.setHelpContexts($scope, [helpFactory.notifications]);
 
     // data retrieval
     $scope.retrieveNotifications = function(page) {

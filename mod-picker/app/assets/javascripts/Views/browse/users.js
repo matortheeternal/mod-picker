@@ -11,7 +11,7 @@ app.controller('usersController', function($scope, $rootScope, $stateParams, $st
     $scope.permissions = $rootScope.permissions;
 
     // set help context
-    $scope.$emit('setHelpContexts', [helpFactory.indexPage]);
+    helpFactory.setHelpContexts($scope, [helpFactory.indexPage]);
 
     // columns for view
     $scope.columns = columnsFactory.userColumns();

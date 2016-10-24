@@ -1,4 +1,4 @@
-app.service('helpFactory', function() {
+app.service('helpFactory', function($timeout) {
     var factory = this;
 
     this.welcome = 'Welcome to the Mod Picker Beta!  Check out the <a href="#/article/1">Welcome Article</a> for help getting started using the site.';
@@ -47,5 +47,11 @@ app.service('helpFactory', function() {
         } else {
             return modList.is_collection ? [factory.modCollection] : [factory.modList];
         }
+    };
+
+    this.setHelpContexts = function($scope, contexts) {
+        $timeout(function() {
+            $scope.$emit('setHelpContexts', contexts);
+        }, 100);
     };
 });

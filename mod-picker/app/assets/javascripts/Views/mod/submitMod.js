@@ -48,7 +48,7 @@ app.controller('submitModController', function($scope, $rootScope, backend, modS
     $scope.searchMods = modService.searchMods;
 
     // set help context
-    $scope.$emit('setHelpContexts', [helpFactory.submitMod]);
+    helpFactory.setHelpContexts($scope, [helpFactory.submitMod]);
 
     // clear messages when user changes the category
     $scope.$watch('mod.categories', function() {

@@ -11,7 +11,7 @@ app.controller('loadOrderNotesController', function($scope, $rootScope, $statePa
     $scope.permissions = $rootScope.permissions;
 
     // set help context
-    $scope.$emit('setHelpContexts', [helpFactory.indexPage]);
+    helpFactory.setHelpContexts($scope, [helpFactory.indexPage]);
 
     // sort options for view
     $scope.sortOptions = sortFactory.loadOrderNoteSortOptions();

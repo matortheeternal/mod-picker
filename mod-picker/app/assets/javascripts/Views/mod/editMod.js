@@ -48,7 +48,7 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
     eventHandlerFactory.buildMessageHandlers($scope, true);
 
     // set help context
-    $scope.$emit('setHelpContexts', [helpFactory.editMod]);
+    helpFactory.setHelpContexts($scope, [helpFactory.editMod]);
 
     // set up the canManageOptions permission
     var author = $scope.mod.mod_authors.find(function(author) {

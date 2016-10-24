@@ -26,16 +26,13 @@ app.controller('helperController', function($scope, $rootScope, $sce) {
         return $rootScope.currentUser.settings.helper_disabled;
     };
 
-    $scope.$on('enableHelper', function() {
-        if (!$scope.helperDisabled()) {
-            $scope.showHelper = true;
-        }
-    });
-
     $scope.$on('setHelpContexts', function(event, helpContexts) {
         $scope.helpContexts = helpContexts;
         $scope.trustContexts();
-        $scope.helperDisabled = ($scope.helpContexts.length == 0);
-        if ($scope.helperDisabled) $scope.showHelper = false;
+        $scope.hideHelper = ($scope.helpContexts.length == 0);
+        if ($scope.hideHelper) $scope.showHelper = false;
     });
+
+    // initially enable the helper unless it is disabled
+    $scope.showHelper = !$scope.helperDisabled();
 });

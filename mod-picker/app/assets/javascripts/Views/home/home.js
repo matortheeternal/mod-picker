@@ -61,7 +61,7 @@ app.controller('homeController', function($scope, $rootScope, $q, tabsFactory, h
 
     // set help context
     var helpContexts = helpFactory.homeContext($scope.currentUser);
-    $scope.$emit('setHelpContexts', helpContexts);
+    helpFactory.setHelpContexts($scope, helpContexts);
 
     // retrieve data
     homeService.retrieveHome().then(function(data) {

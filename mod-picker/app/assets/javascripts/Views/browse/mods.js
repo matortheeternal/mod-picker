@@ -18,7 +18,7 @@ app.controller('modsController', function($scope, $rootScope, $q, $stateParams, 
     $scope.columnGroups = columnsFactory.modColumnGroups();
 
     // set help context
-    $scope.$emit('setHelpContexts', [helpFactory.modsIndex]);
+    helpFactory.setHelpContexts($scope, [helpFactory.modsIndex]);
 
     /* helper functions */
     // returns true if the input filter is available

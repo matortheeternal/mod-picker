@@ -39,7 +39,7 @@ app.controller('showArticleController', function($scope, $rootScope, $stateParam
     eventHandlerFactory.buildMessageHandlers($scope);
 
     // set help context
-    $scope.$emit('setHelpContexts', [helpFactory.article]);
+    helpFactory.setHelpContexts($scope, [helpFactory.article]);
 
     // retrieves comments on the article
     $scope.retrieveComments = function(page) {

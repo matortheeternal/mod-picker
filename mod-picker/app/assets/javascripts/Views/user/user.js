@@ -99,7 +99,7 @@ app.controller('userController', function($scope, $rootScope, $stateParams, user
 
     // set help context
     var helpContexts = helpFactory.userProfileContext($scope.isCurrentUser);
-    $scope.$emit('setHelpContexts', helpContexts);
+    helpFactory.setHelpContexts($scope, helpContexts);
 
     // creates or removes the current user's endorsement of a user
     $scope.endorse = function() {
