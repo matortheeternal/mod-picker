@@ -109,7 +109,7 @@ helper {
     position: absolute;
     display: block;
     bottom: 20px;
-    right: 100px;
+    right: 200px - $helper_head_offset;
     padding-bottom: 8px;
     color: $action_color;
     font-size: 36px;
