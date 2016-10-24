@@ -1,5 +1,5 @@
 class LoadOrderNote < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, Correctable, Helpfulable, Reportable, Approveable, ScopeHelpers, Trackable, BetterJson, Dateable
+  include Filterable, Sortable, RecordEnhancements, CounterCache, Correctable, Helpfulable, Reportable, Approveable, ScopeHelpers, Trackable, BetterJson, Dateable
 
   # ATTRIBUTES
   self.per_page = 25
@@ -51,6 +51,9 @@ class LoadOrderNote < ActiveRecord::Base
   has_many :history_entries, :class_name => 'LoadOrderNoteHistoryEntry', :inverse_of => 'load_order_note', :foreign_key => 'load_order_note_id'
   has_many :editors, -> { uniq }, :class_name => 'User', :through => 'history_entries'
 
+  # COUNTER CACHE
+  counter_cache_on :first_mod, :second_mod, :submitter, :first_plugin, :second_plugin, conditional: { hidden: false, approved: true }
+
   # VALIDATIONS
   validates :game_id, :submitted_by, :first_plugin_id, :second_plugin_id, :text_body, presence: true
 
@@ -58,9 +61,7 @@ class LoadOrderNote < ActiveRecord::Base
   validate :unique_plugins
 
   # CALLBACKS
-  after_create :increment_counters
   before_save :set_adult
-  before_destroy :decrement_counters
 
   def get_existing_note(plugin_ids)
     table = LoadOrderNote.arel_table
@@ -130,21 +131,5 @@ class LoadOrderNote < ActiveRecord::Base
     def set_adult
       self.has_adult_content = first_mod.has_adult_content || second_mod.has_adult_content
       true
-    end
-
-    def increment_counters
-      first_mod.update_counter(:load_order_notes_count, 1)
-      second_mod.update_counter(:load_order_notes_count, 1)
-      submitter.update_counter(:load_order_notes_count, 1)
-      first_plugin.update_counter(:load_order_notes_count, 1)
-      second_plugin.update_counter(:load_order_notes_count, 1)
-    end
-
-    def decrement_counters
-      first_mod.update_counter(:load_order_notes_count, -1)
-      second_mod.update_counter(:load_order_notes_count, -1)
-      submitter.update_counter(:load_order_notes_count, -1)
-      first_plugin.update_counter(:load_order_notes_count, -1)
-      second_plugin.update_counter(:load_order_notes_count, -1)
     end
 end

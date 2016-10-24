@@ -1,5 +1,5 @@
 class Mod < ActiveRecord::Base
-  include Filterable, Sortable, Reportable, Imageable, RecordEnhancements, SourceHelpers, ScopeHelpers, Trackable, BetterJson, Dateable
+  include Filterable, Sortable, Reportable, Imageable, RecordEnhancements, CounterCache, SourceHelpers, ScopeHelpers, Trackable, BetterJson, Dateable
 
   # ATTRIBUTES
   enum status: [ :good, :outdated, :unstable ]
@@ -146,14 +146,18 @@ class Mod < ActiveRecord::Base
       |attributes| attributes[:id] && attributes[:user_id] && !attributes[:_destroy]
   }, allow_destroy: true
 
+  # COUNTER CACHE
+  counter_cache :required_mods, :required_by, :stars
+  counter_cache :reviews, :compatibility_notes, :install_order_notes, :load_order_notes, conditional: { hidden: false, approved: true }
+  counter_cache :mod_lists, :tags, :corrections, conditional: { hidden: false }
+  counter_cache_on :submitter, column: 'submitted_mods_count', conditional: { hidden: false }
+
   # VALIDATIONS
   validates :game_id, :submitted_by, :name, :authors, :released, presence: true
   validates :name, :aliases, length: {maximum: 128}
 
-  # callbacks
+  # CALLBACKS
   before_save :touch_updated
-  after_create :increment_counters
-  before_destroy :decrement_counters
 
   def asset_file_paths
     mod_asset_files.eager_load(:asset_file).pluck(:subpath, :path).map { |item| item.join('') }
@@ -286,13 +290,5 @@ class Mod < ActiveRecord::Base
         self.updated ||= DateTime.now
         self.updated += 1.second
       end
-    end
-
-    def decrement_counters
-      submitter.update_counter(:submitted_mods_count, -1) if submitted_by.present?
-    end
-
-    def increment_counters
-      submitter.update_counter(:submitted_mods_count, 1) if submitted_by.present?
     end
 end

@@ -1,5 +1,5 @@
 class InstallOrderNote < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, Correctable, Helpfulable, Reportable, Approveable, ScopeHelpers, Trackable, BetterJson, Dateable
+  include Filterable, Sortable, RecordEnhancements, CounterCache, Correctable, Helpfulable, Reportable, Approveable, ScopeHelpers, Trackable, BetterJson, Dateable
 
   # ATTRIBUTES
   self.per_page = 25
@@ -44,6 +44,9 @@ class InstallOrderNote < ActiveRecord::Base
   has_many :history_entries, :class_name => 'InstallOrderNoteHistoryEntry', :inverse_of => 'install_order_note', :foreign_key => 'install_order_note_id'
   has_many :editors, -> { uniq }, :class_name => 'User', :through => 'history_entries'
 
+  # COUNTER CACHE
+  counter_cache_on :first_mod, :second_mod, :submitter, conditional: { hidden: false, approved: true }
+
   # VALIDATIONS
   validates :game_id, :submitted_by, :first_mod_id, :second_mod_id, :text_body, presence: true
 
@@ -51,9 +54,7 @@ class InstallOrderNote < ActiveRecord::Base
   validate :unique_mods
 
   # CALLBACKS
-  after_create :increment_counters
   before_save :set_adult
-  before_destroy :decrement_counters
 
   def get_existing_note(mod_ids)
     table = InstallOrderNote.arel_table
@@ -119,17 +120,5 @@ class InstallOrderNote < ActiveRecord::Base
     def set_adult
       self.has_adult_content = first_mod.has_adult_content || second_mod.has_adult_content
       true
-    end
-
-    def increment_counters
-      first_mod.update_counter(:install_order_notes_count, 1)
-      second_mod.update_counter(:install_order_notes_count, 1)
-      submitter.update_counter(:install_order_notes_count, 1)
-    end
-
-    def decrement_counters
-      first_mod.update_counter(:install_order_notes_count, -1)
-      second_mod.update_counter(:install_order_notes_count, -1)
-      submitter.update_counter(:install_order_notes_count, -1)
     end
 end

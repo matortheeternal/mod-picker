@@ -1,5 +1,5 @@
 class Correction < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, Reportable, ScopeHelpers, Trackable, BetterJson, Dateable
+  include Filterable, Sortable, RecordEnhancements, CounterCache, Reportable, ScopeHelpers, Trackable, BetterJson, Dateable
 
   # ATTRIBUTES
   enum status: [:open, :passed, :failed, :closed]
@@ -45,15 +45,18 @@ class Correction < ActiveRecord::Base
 
   belongs_to :correctable, :polymorphic => true
 
+  # COUNTER CACHE
+  counter_cache_on :correctable, :submitter, conditional: { hidden: false }
+
   # VALIDATIONS
   validates :game_id, :submitted_by, :correctable_id, :correctable_type, :text_body, presence: true
   validates :text_body, length: { in: 64..16384 }
 
   # CALLBACKS
-  after_create :increment_counters, :schedule_close
+  after_create :schedule_close
   before_save :set_adult
   after_save :recompute_correctable_standing
-  after_destroy :decrement_counters, :recompute_correctable_standing
+  after_destroy :recompute_correctable_standing
 
   def self.close(id)
     correction = Correction.find(id)
@@ -109,9 +112,9 @@ class Correction < ActiveRecord::Base
   end
 
   def recompute_correctable_standing
-    if self.correctable.respond_to?(:standing)
-      self.correctable.compute_standing
-      self.correctable.update_column(:standing, self.correctable.standing)
+    if correctable.respond_to?(:standing)
+      correctable.compute_standing
+      correctable.update_column(:standing, correctable.standing)
     end
   end
 
@@ -119,16 +122,6 @@ class Correction < ActiveRecord::Base
     def set_adult
       self.has_adult_content = correctable.has_adult_content
       true
-    end
-
-    def increment_counters
-      correctable.update_counter(:corrections_count, 1)
-      submitter.update_counter(:corrections_count, 1)
-    end
-
-    def decrement_counters
-      correctable.update_counter(:corrections_count, -1)
-      submitter.update_counter(:corrections_count, -1)
     end
 
     def schedule_close
