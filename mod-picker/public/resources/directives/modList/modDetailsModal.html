@@ -67,13 +67,10 @@
                             </a>
                         </td>
                         <td>
-                            {{(!!item.default).toString()}}
+                            {{!!item.default ? 'Yes' : 'No'}}
                         </td>
                         <td>
                             {{item.size | bytes}}
-                        </td>
-                        <td>
-                            {{item.plugins_count}}
                         </td>
                         <td>
                             {{item.asset_files_count}}

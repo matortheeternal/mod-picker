@@ -1078,17 +1078,12 @@ app.service('columnsFactory', function() {
                 data: "size"
             },
             {
-                label: "Plugins",
-                data: "plugins_count",
-                class: "short-column"
-            },
-            {
                 label: "Asset Files",
                 data: "asset_files_count",
                 class: "short-column"
             },
             {
-                label: "Plugin(s)",
+                label: "Plugins",
                 data: "plugins"
             }
             
