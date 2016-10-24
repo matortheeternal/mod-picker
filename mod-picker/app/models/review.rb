@@ -4,6 +4,9 @@ class Review < ActiveRecord::Base
   # ATTRIBUTES
   self.per_page = 25
 
+  # DATE COLUMNS
+  date_column :submitted, :edited
+
   # EVENT TRACKING
   track :added, :approved, :hidden
   track :message, :column => 'moderator_message'
@@ -40,9 +43,6 @@ class Review < ActiveRecord::Base
   # COUNTER CACHE
   counter_cache_on :mod, :submitter, conditional: { hidden: false, approved: true }
 
-  # DATE COLUMNS
-  date_column :submitted, :edited
-
   # VALIDATIONS
   validates :game_id, :submitted_by, :mod_id, :text_body, presence: true
   validates :text_body, length: {in: 512..32768}
@@ -52,7 +52,7 @@ class Review < ActiveRecord::Base
   validates_associated :review_ratings
 
   # CALLBACKS
-  before_save :set_adult, :set_dates
+  before_save :set_adult
   after_save :update_metrics
   before_destroy :clear_ratings
   after_destroy :update_mod_review_metrics
@@ -80,8 +80,8 @@ class Review < ActiveRecord::Base
 
   def compute_overall_rating
     total = review_ratings.reduce(0) {|total, r| total += r.rating}
-    ratings_count = review_ratings.length
-    self.overall_rating = (total.to_f / ratings_count) if ratings_count > 0
+    self.ratings_count = review_ratings.length
+    self.overall_rating = (total.to_f / self.ratings_count) if self.ratings_count > 0
   end
 
   def self.sortable_columns
