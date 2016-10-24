@@ -8,8 +8,6 @@ app.directive('helper', function() {
 });
 
 app.controller('helperController', function($scope, $rootScope, $sce) {
-    $scope.helpContexts = ['Welcome to the Mod Picker Beta!  Check out the <a href="/article/1">Welcome Article</a> for help getting started using the site.'];
-
     $scope.trustContexts = function() {
         $scope.helpContexts = $scope.helpContexts.map(function(context) {
             return $sce.trustAsHtml(context);
@@ -17,6 +15,10 @@ app.controller('helperController', function($scope, $rootScope, $sce) {
     };
 
     $scope.trustContexts();
+
+    $scope.removeContext = function($index) {
+        $scope.helpContexts.splice($index, 1);
+    };
 
     $scope.toggleHelper = function() {
         $scope.showHelper = !$scope.showHelper;
@@ -32,7 +34,7 @@ app.controller('helperController', function($scope, $rootScope, $sce) {
         }
     });
 
-    $scope.$on('setHelpContexts', function(helpContexts) {
+    $scope.$on('setHelpContexts', function(event, helpContexts) {
         $scope.helpContexts = helpContexts;
         $scope.trustContexts();
         $scope.helperDisabled = ($scope.helpContexts.length == 0);

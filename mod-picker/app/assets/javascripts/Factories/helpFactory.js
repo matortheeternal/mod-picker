@@ -31,7 +31,7 @@ app.service('helpFactory', function() {
 
     this.yourProfile = 'This is your profile page.  You can edit what is displayed here from your <a href="#/settings">user settings</a> page.  <a href="/help/user_profile_page">Click here</a> for more information.';
 
-    this.mod = 'This is a mod page.  Here you can view information and contributions for a mod on Mod Picker.  <a href="/help/mod_page">Click here</a> for more information.';
+    this.mod = 'This is a mod page which displays information and contributions for a mod on Mod Picker.  <a href="/help/mod_page">Click here</a> for more information.';
 
     this.userProfileContext = function(isCurrentUser) {
         return isCurrentUser ? [factory.yourProfile] : [factory.userProfile];
