@@ -32,14 +32,20 @@ module CounterCache
     update_column("#{column} = #{column} #{operator} #{offset.abs}")
   end
 
+  def resolve_conditional_association(name, options)
+    return public_send(name) unless options.has_key?(:conditional)
+    public_send(name).where(options[:conditional])
+  end
+
   def reset_counter(name, column=nil)
-    column ||= self.class._counter_cache[name.to_sym][:column]
-    self[column] = public_send(name).count
+    options = self.class._counter_cache[name.to_sym]
+    column ||= options[:column]
+    self[column] = resolve_conditional_association(name, options).count
   end
 
   def reset_counter!(name, column=nil)
     column ||= self.class._counter_cache[name.to_sym][:column]
-    self[column] = public_send(name).count
+    reset_counter(name, column)
     update_column(column, self[column])
   end
 
@@ -47,8 +53,9 @@ module CounterCache
     column_values = {}
     _counter_cache.each do |name, options|
       next unless names.include?(name)
-      reset_counter(name, options[:column])
-      column_values[options[:column]] = self[options[:column]]
+      column = options[:column]
+      reset_counter(name, column)
+      column_values[column] = self[column]
     end
     update_columns(column_values)
   end
@@ -56,8 +63,9 @@ module CounterCache
   def reset_all_counters!
     column_values = {}
     _counter_cache.each do |name, options|
-      reset_counter(name, options[:column])
-      column_values[options[:column]] = self[options[:column]]
+      column = options[:column]
+      reset_counter(name, column)
+      column_values[column] = self[column]
     end
     update_columns(column_values)
   end
