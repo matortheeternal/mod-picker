@@ -56,13 +56,8 @@ app.controller('homeController', function($scope, $rootScope, $q, tabsFactory, h
     $scope.currentUser = $rootScope.currentUser;
     $scope.permissions = angular.copy($rootScope.permissions);
 
-    $scope.tabs = [
-        { name: 'Reviews' },
-        { name: 'Compatibility Notes' },
-        { name: 'Install Order Notes' },
-        { name: 'Load Order Notes' },
-        { name: 'Corrections' }
-    ];
+    // set up tabs
+    $scope.tabs = tabsFactory.buildHomeTabs();
 
     // set help context
     var helpContexts = helpFactory.homeContext($scope.currentUser);
