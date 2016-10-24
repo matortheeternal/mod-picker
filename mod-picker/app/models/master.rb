@@ -1,10 +1,15 @@
 class Master < ActiveRecord::Base
-  include ScopeHelpers
+  include ScopeHelpers, BetterJson
 
   self.primary_keys = :plugin_id, :master_plugin_id
 
   # SCOPES
   ids_scope :plugin_id
+
+  # UNIQUE SCOPES
+  scope :visible, -> {
+    eager_load(:plugin => :mod, :master_plugin => :mod).where(:mods => {hidden: false}).where(:mods_plugins => {hidden: false})
+  }
 
   # ASSOCIATIONS
   belongs_to :plugin, :inverse_of => 'masters'
@@ -12,23 +17,4 @@ class Master < ActiveRecord::Base
 
   # VALIDATIONS
   validates :plugin_id, :master_plugin_id, :index, presence: true
-
-  def as_json(options={})
-    if JsonHelpers.json_options_empty(options)
-      default_options = {
-          :only => [],
-          :include => {
-              :plugin => {
-                  :only => [:id, :mod_id, :filename]
-              },
-              :master_plugin => {
-                  :only => [:id, :mod_id, :filename]
-              }
-          }
-      }
-      super(options.merge(default_options))
-    else
-      super(options)
-    end
-  end
 end

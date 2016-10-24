@@ -1,0 +1,8 @@
+{
+  "except": ["base_report_id", "submitted_by"],
+  "include": {
+    "submitter": {
+      "only": ["id", "username"]
+    }
+  }
+}

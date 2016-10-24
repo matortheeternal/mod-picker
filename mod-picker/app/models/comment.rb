@@ -1,8 +1,11 @@
 class Comment < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, Reportable, ScopeHelpers, Trackable
+  include Filterable, Sortable, RecordEnhancements, Reportable, ScopeHelpers, Trackable, BetterJson, Dateable
 
   # ATTRIBUTES
   self.per_page = 50
+
+  # DATE COLUMNS
+  date_column :submitted, :edited
 
   # EVENT TRACKING
   track :added, :hidden
@@ -10,6 +13,7 @@ class Comment < ActiveRecord::Base
   # NOTIFICATION SUBSCRIPTIONS
   subscribe :commentable_user, to: [:added]
   subscribe :submitter, to: [:hidden, :unhidden]
+  subscribe :parent_submitter, to: [:added]
 
   # SCOPES
   include_scope :hidden
@@ -38,7 +42,7 @@ class Comment < ActiveRecord::Base
   validate :nesting
 
   # CALLBACKS
-  before_save :set_adult, :set_dates
+  before_save :set_adult
   after_create :increment_counter_caches
   before_destroy :decrement_counter_caches
 
@@ -46,7 +50,11 @@ class Comment < ActiveRecord::Base
     parent_id.nil? || parent.parent_id.nil?
   end
 
-  def commentable_link
+  def parent_submitter
+    parent_id.present? && parent.submitter
+  end
+
+  def context_link
     if commentable_type == "Correction"
       if commentable.correctable_type == "Mod"
         "#/mods/" + commentable.correctable_id.to_s + "/appeals/" + commentable_id.to_s
@@ -58,9 +66,13 @@ class Comment < ActiveRecord::Base
         "#/mods/load-order/" + commentable.correctable_id.to_s + "/corrections/" + commentable_id.to_s
       end
     elsif commentable_type == "ModList"
-      "#/mod-list/" + commentable_id.to_s
+      "#/mod-list/" + commentable_id.to_s + "/comments"
+    elsif commentable_type == "Article"
+      "#/article/" + commentable_id.to_s
+    elsif commentable_type == "HelpPage"
+      "/help/" + commentable.url
     elsif commentable_type == "User"
-      "#/user/" + commentable_id.to_s
+      "#/user/" + commentable_id.to_s + "/social"
     end
   end
 
@@ -73,119 +85,6 @@ class Comment < ActiveRecord::Base
       else
         nil
     end
-  end
-
-  def self.index_json(collection)
-    collection.as_json({
-        :except => :submitted_by,
-        :include => {
-            :submitter => {
-                :only => [:id, :username, :role, :title, :joined, :last_sign_in_at, :reviews_count, :compatibility_notes_count, :install_order_notes_count, :load_order_notes_count, :corrections_count, :comments_count],
-                :include => {
-                    :reputation => {:only => [:overall]}
-                },
-                :methods => :avatar
-            }
-        },
-        :methods => :commentable_link
-    })
-  end
-
-  def show_json
-    as_json({
-        :except => :submitted_by,
-        :include => {
-            :submitter => {
-                :only => [:id, :username, :role, :title, :joined, :last_sign_in_at, :reviews_count, :compatibility_notes_count, :install_order_notes_count, :load_order_notes_count, :corrections_count, :comments_count],
-                :include => {
-                    :reputation => {:only => [:overall]}
-                },
-                :methods => :avatar
-            }
-        }
-    })
-  end
-
-  def as_json(options={})
-    if JsonHelpers.json_options_empty(options)
-      default_options = {
-          :except => [:parent_id, :submitted_by],
-          :include => {
-              :submitter => {
-                  :only => [:id, :username, :role, :title],
-                  :include => {
-                      :reputation => {:only => [:overall]}
-                  },
-                  :methods => :avatar
-              },
-              :children => {
-                  :except => :submitted_by,
-                  :include => {
-                      :submitter => {
-                          :only => [:id, :username, :role, :title],
-                          :include => {
-                              :reputation => {:only => [:overall]}
-                          },
-                          :methods => :avatar
-                      },
-                  }
-              }
-          }
-      }
-      super(options.merge(default_options))
-    else
-      super(options)
-    end
-  end
-
-  def notification_json_options(event_type)
-    options = {
-        :only => [:submitted_by, :commentable_type, :commentable_id],
-        :include => {}
-    }
-    if commentable_type == "ModList"
-      options[:include][:commentable] = { :only => [:name] }
-    elsif commentable_type == "Article"
-      options[:include][:commentable] = { :only => [:title] }
-    elsif commentable_type == "Correction"
-      if commentable.correctable_type == "Mod"
-        options[:include][:commentable] = {
-            :only => [:mod_status],
-            :include => {
-                :correctable => { :only => [:id, :name] }
-            }
-        }
-      else
-        options[:include][:commentable] = {
-            :only => [:correctable_id, :correctable_type, :title],
-            :include => {
-                :correctable => {
-                    :only => [],
-                    :include => {
-                        :first_mod => { :only => [:id, :name] }
-                    }
-                }
-            }
-        }
-      end
-    end
-
-    options
-  end
-
-  def reportable_json_options
-    options = {
-        :except => [:parent_id, :submitted_by],
-        :include => {
-            :submitter => {
-                :only => [:id, :username, :role, :title],
-                :include => {
-                    :reputation => {:only => [:overall]}
-                },
-                :methods => :avatar
-            }
-        }
-    }
   end
 
   def self.sortable_columns
@@ -206,14 +105,6 @@ class Comment < ActiveRecord::Base
 
   # Private methods
   private
-    def set_dates
-      if self.submitted.nil?
-        self.submitted = DateTime.now
-      else
-        self.edited = DateTime.now
-      end
-    end
-
     def set_adult
       if commentable.respond_to?(:has_adult_content)
         self.has_adult_content = commentable.has_adult_content
@@ -224,7 +115,7 @@ class Comment < ActiveRecord::Base
     def increment_counter_caches
       submitter.update_counter(:submitted_comments_count, 1)
       commentable.update_counter(:comments_count, 1)
-      if parent_id.present?
+      if parent_id.present? && parent.present?
         parent.update_counter(:children_count, 1)
       end
     end
@@ -232,7 +123,7 @@ class Comment < ActiveRecord::Base
     def decrement_counter_caches
       submitter.update_counter(:submitted_comments_count, -1)
       commentable.update_counter(:comments_count, -1)
-      if parent_id.present?
+      if parent_id.present? && parent.present?
         parent.update_counter(:children_count, -1)
       end
     end

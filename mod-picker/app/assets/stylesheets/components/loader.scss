@@ -14,3 +14,9 @@
 .small-spinner {
   height: 60px;
 }
+
+.spinner {
+  div {
+    background-color: $text_color !important;
+  }
+}

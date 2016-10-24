@@ -1,4 +1,4 @@
-<input type="text" placeholder="{{placeholder}}" ng-model="searchText" ng-keydown="keyDown($event)" ng-keyup="keyUp($event)" ng-blur="blurDropdown($event)" ng-class="{ 'valid' : resultId && !disabled }" ng-disabled="disabled" pu-elastic-input>
+<input type="text" placeholder="{{placeholder}}" ng-model="searchText" ng-keydown="keyDown($event)" ng-keyup="keyUp($event)" ng-blur="blurDropdown($event)" ng-class="{ 'valid' : resultId && !disabled, 'error' : error }" ng-disabled="disabled" pu-elastic-input>
 <div class="dropdown" ng-show="showDropdown">
     <span ng-show="searching">Searching...</span>
     <span ng-show="!searching && (!results || results.length == 0)">No results found</span>

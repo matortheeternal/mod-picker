@@ -58,7 +58,7 @@ app.service('contributionService', function(backend, $q, userTitleService, pageU
     this.retrieveComments = function(route, id, options, pageInformation) {
         var action = $q.defer();
         backend.post('/' + route + '/' + id + '/comments', options).then(function(data) {
-            userTitleService.associateTitles(data.comments);
+            userTitleService.associateCommentTitles(data.comments);
             pageUtils.getPageInformation(data, pageInformation, options.page);
             action.resolve(data.comments);
         }, function(response) {
@@ -147,5 +147,9 @@ app.service('contributionService', function(backend, $q, userTitleService, pageU
                 contribution.helpful = helpfulMark.helpful;
             }
         });
+    };
+
+    this.removePrompts = function(text_body) {
+        return text_body.replace(/([^\n]+)\uFEFF([^\n]+)([\n]+)/g, '');
     };
 });

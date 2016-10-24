@@ -1,22 +1,25 @@
 class Mod < ActiveRecord::Base
-  include Filterable, Sortable, Imageable, RecordEnhancements, SourceHelpers, ScopeHelpers, Trackable
+  include Filterable, Sortable, Reportable, Imageable, RecordEnhancements, SourceHelpers, ScopeHelpers, Trackable, BetterJson, Dateable
 
   # ATTRIBUTES
   enum status: [ :good, :outdated, :unstable ]
-  attr_accessor :updated_by
+  attr_accessor :updated_by, :mark_updated
   self.per_page = 100
+
+  # DATE COLUMNS
+  date_column :submitted
 
   # EVENT TRACKING
   track :added, :hidden, :updated
+  #track_change :analysis_updated, :column => 'updated'
   track_milestones :column => 'stars_count', :milestones => [10, 50, 100, 500, 1000, 5000, 10000, 50000, 100000, 500000]
 
   # NOTIFICATION SUBSCRIPTIONS
-  subscribe :author_users, to: [:hidden, :unhidden, *Event.milestones]
-  subscribe :contribution_authors, to: [:updated]
-  subscribe :user_stars, to: [:updated]
+  subscribe :author_users, to: [:updated, :hidden, :unhidden, *Event.milestones]
+  # subscribe :contribution_authors, to: [:analysis_updated]
+  # subscribe :user_stars, to: [:analysis_updated]
 
   # SCOPES
-  include_scope :hidden
   include_scope :has_adult_content, :alias => 'include_adult'
   include_scope :is_official, :alias => 'include_official'
   include_scope :is_utility, :alias => 'include_utilities'
@@ -49,6 +52,7 @@ class Mod < ActiveRecord::Base
   ]
 
   # UNIQUE SCOPES
+  scope :visible, -> { where(hidden: false) }
   scope :include_games, -> (bool) { where.not(primary_category_id: nil) if !bool }
   scope :compatibility, -> (mod_list_id) {
     mod_list = ModList.find(mod_list_id)
@@ -106,8 +110,8 @@ class Mod < ActiveRecord::Base
   has_many :asset_files, :through => :mod_asset_files, :inverse_of => 'mods'
 
   # requirements associated with the mod
-  has_many :required_mods, :class_name => 'ModRequirement', :inverse_of => 'mod', :dependent => :destroy
-  has_many :required_by, :class_name => 'ModRequirement', :inverse_of => 'required_mod', :foreign_key => 'required_id', :dependent => :destroy
+  has_many :required_mods, -> { order(:required_id) }, :class_name => 'ModRequirement', :inverse_of => 'mod', :dependent => :destroy
+  has_many :required_by, -> { order(:mod_id) }, :class_name => 'ModRequirement', :inverse_of => 'required_mod', :foreign_key => 'required_id', :dependent => :destroy
 
   # config files associated with the mod
   has_many :config_files, :inverse_of => 'mod', :dependent => :destroy
@@ -117,7 +121,7 @@ class Mod < ActiveRecord::Base
   has_many :author_users, :class_name => 'User', :through => 'mod_authors', :source => 'user', :inverse_of => 'mods'
 
   # community feedback on the mod
-  has_many :corrections, :as => 'correctable'
+  has_many :corrections, :as => 'correctable', :dependent => :destroy
   has_many :reviews, :inverse_of => 'mod', :dependent => :destroy
   has_many :mod_stars, :inverse_of => 'mod', :dependent => :destroy
   has_many :user_stars, :class_name => 'User', :through => 'mod_stars', :source => 'user', :inverse_of => 'starred_mods'
@@ -130,7 +134,7 @@ class Mod < ActiveRecord::Base
   has_many :mod_list_mods, :inverse_of => 'mod', :dependent => :destroy
   has_many :mod_lists, :through => 'mod_list_mods', :inverse_of => 'mods'
 
-  accepts_nested_attributes_for :mod_options
+  accepts_nested_attributes_for :mod_options, allow_destroy: true
   accepts_nested_attributes_for :custom_sources, allow_destroy: true
   accepts_nested_attributes_for :config_files, allow_destroy: true
   # cannot update required mods
@@ -147,11 +151,12 @@ class Mod < ActiveRecord::Base
   validates :name, :aliases, length: {maximum: 128}
 
   # callbacks
+  before_save :touch_updated
   after_create :increment_counters
   before_destroy :decrement_counters
 
   def asset_file_paths
-    self.mod_asset_files.joins(:asset_file).pluck(:subpath, :path).map { |item| item.join('') }
+    mod_asset_files.eager_load(:asset_file).pluck(:subpath, :path).map { |item| item.join('') }
   end
 
   def update_lazy_counters
@@ -243,156 +248,6 @@ class Mod < ActiveRecord::Base
     a.join("\r\n") + "\r\n"
   end
 
-  def self.index_json(collection, sources)
-    # Includes hash for mods index query
-    include_hash = { :author_users => { :only => [:id, :username] } }
-    include_hash[:nexus_infos] = {:except => [:mod_id]} if sources[:nexus]
-    include_hash[:lover_infos] = {:except => [:mod_id]} if sources[:lab]
-    include_hash[:workshop_infos] = {:except => [:mod_id]} if sources[:workshop]
-
-    collection.as_json({
-        :include => include_hash
-    })
-  end
-
-  def self.home_json(collection)
-    collection.as_json({
-        :only => [:id, :name, :authors, :released],
-        :include => {
-            :primary_category => {:only => [:name]}
-        },
-        :methods => [:image]
-    })
-  end
-
-  def edit_json
-    self.as_json({
-        :include => {
-            :tags => {
-                :except => [:game_id, :hidden, :mod_lists_count],
-                :include => {
-                    :submitter => {
-                        :only => [:id, :username]
-                    }
-                }
-            },
-            :nexus_infos => {:only => [:id, :last_scraped]},
-            :workshop_infos => {:only => [:id, :last_scraped]},
-            :lover_infos => {:only => [:id, :last_scraped]},
-            :custom_sources => {:except => [:mod_id]},
-            :mod_authors => {
-                :only => [:id, :role, :user_id],
-                :include => {
-                    :user => {
-                        :only => [:username]
-                    }
-                }
-            },
-            :required_mods => {
-                :only => [:id],
-                :include => {
-                    :required_mod => {
-                        :only => [:id, :name]
-                    }
-                }
-            },
-            :config_files => {
-                :except => [:game_id, :mod_id, :mod_lists_count]
-            }
-        },
-        :methods => :image
-    })
-  end
-
-  def show_json
-    self.as_json({
-        :except => [:disallow_contributors, :hidden],
-        :include => {
-            :tags => {
-                :except => [:game_id, :hidden, :mod_lists_count],
-                :include => {
-                    :submitter => {
-                        :only => [:id, :username]
-                    }
-                }
-            },
-            :nexus_infos => {:except => [:mod_id]},
-            :workshop_infos => {:except => [:mod_id]},
-            :lover_infos => {:except => [:mod_id]},
-            :plugins => {:only => [:id, :filename]},
-            :custom_sources => {:except => [:mod_id]},
-            :mod_authors => {
-                :only => [:id, :role, :user_id],
-                :include => {
-                    :user => {
-                        :only => [:username]
-                    }
-                }
-            },
-            :required_mods => {
-                :only => [],
-                :include => {
-                    :required_mod => {
-                        :only => [:id, :name]
-                    }
-                }
-            },
-            :required_by => {
-                :only => [],
-                :include => {
-                    :mod => {
-                        :only => [:id, :name]
-                    }
-                }
-            }
-        },
-        :methods => :image
-    })
-  end
-
-  def as_json(options={})
-    if JsonHelpers.json_options_empty(options)
-      default_options = {
-          :only => [:id, :name]
-      }
-      super(options.merge(default_options))
-    else
-      super(options)
-    end
-  end
-
-  def notification_json_options(event_type)
-    { :only => [:name] }
-  end
-
-  # TODO: trim down json for reports
-  def reportable_json_options
-    {
-        :except => [:disallow_contributors, :hidden],
-        :include => {
-            :nexus_infos => {:except => [:mod_id]},
-            :workshop_infos => {:except => [:mod_id]},
-            :lover_infos => {:except => [:mod_id]},
-            :custom_sources => {:except => [:mod_id]},
-            :mod_authors => {
-                :only => [:id, :role, :user_id],
-                :include => {
-                    :user => {
-                        :only => [:username]
-                    }
-                }
-            },
-            :primary_category => {
-                :only => [:name]
-            },
-            :secondary_category => {
-                :only => [:name]
-            }
-        },
-        :methods => :image
-    }
-  end
-
   def self.sortable_columns
     {
         :except => [:game_id, :submitted_by, :primary_category_id, :secondary_category_id],
@@ -417,6 +272,13 @@ class Mod < ActiveRecord::Base
   end
 
   private
+    def touch_updated
+      if mark_updated
+        self.updated ||= DateTime.now
+        self.updated += 1.second
+      end
+    end
+
     def decrement_counters
       submitter.update_counter(:submitted_mods_count, -1) if submitted_by.present?
     end

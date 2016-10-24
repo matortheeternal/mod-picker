@@ -1,0 +1,9 @@
+{
+  "only": [],
+  "include": {
+    "tag": {
+      "only": ["text"]
+    },
+    "mod": {}
+  }
+}

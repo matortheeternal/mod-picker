@@ -3,6 +3,7 @@ app.directive('categoryTree', function() {
         restrict: 'E',
         templateUrl: '/resources/directives/shared/categoryTree.html',
         controller: 'categoryTreeController',
+        transclude: true,
         scope: {
             categories: '=',
             selection: '=',

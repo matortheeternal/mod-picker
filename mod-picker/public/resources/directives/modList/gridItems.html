@@ -7,7 +7,7 @@
                 <span class="fa fa-times" ng-click="removeGroup(model, item, $index)"></span>
             </div>
             <div class="group-name">
-                <input type="text" ng-model="item.name" ng-click="focusText($event)" pu-elastic-input ng-disabled="!editing"/>
+                <input class="fuzzy-input" type="text" ng-model="item.name" ng-click="focusText($event)" pu-elastic-input ng-disabled="!editing"/>
             </div>
             <div class="group-color" ng-if="editing">
                 <strong>Color:</strong>

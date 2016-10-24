@@ -1,8 +1,11 @@
 class LoadOrderNote < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, Correctable, Helpfulable, Reportable, ScopeHelpers, Trackable
+  include Filterable, Sortable, RecordEnhancements, Correctable, Helpfulable, Reportable, Approveable, ScopeHelpers, Trackable, BetterJson, Dateable
 
   # ATTRIBUTES
   self.per_page = 25
+
+  # DATE COLUMNS
+  date_column :submitted, :edited
 
   # EVENT TRACKING
   track :added, :approved, :hidden
@@ -56,8 +59,13 @@ class LoadOrderNote < ActiveRecord::Base
 
   # CALLBACKS
   after_create :increment_counters
-  before_save :set_adult, :set_dates
+  before_save :set_adult
   before_destroy :decrement_counters
+
+  def get_existing_note(plugin_ids)
+    table = LoadOrderNote.arel_table
+    LoadOrderNote.plugins(plugin_ids).where(table[:hidden].eq(0).and(table[:id].not_eq(id))).first
+  end
 
   def unique_plugins
     if first_plugin_id == second_plugin_id
@@ -65,8 +73,7 @@ class LoadOrderNote < ActiveRecord::Base
       return
     end
 
-    plugin_ids = [first_plugin_id, second_plugin_id]
-    note = LoadOrderNote.plugins(plugin_ids).where("hidden = 0 and id != ?", self.id).first
+    note = get_existing_note([first_plugin_id, second_plugin_id])
     if note.present?
       if note.approved
         errors.add(:plugins, "A Load Order Note for these plugins already exists.")
@@ -103,97 +110,6 @@ class LoadOrderNote < ActiveRecord::Base
     LoadOrderNote.where(id: ids).joins(:first_mod, :second_mod).update_all("load_order_notes.has_adult_content = mods.has_adult_content OR second_mods_load_order_notes.has_adult_content")
   end
 
-  def as_json(options={})
-    if JsonHelpers.json_options_empty(options)
-      default_options = {
-          :except => [:submitted_by],
-          :include => {
-              :submitter => {
-                  :only => [:id, :username, :role, :title, :joined, :last_sign_in_at, :reviews_count, :compatibility_notes_count, :install_order_notes_count, :load_order_notes_count, :corrections_count, :comments_count],
-                  :include => {
-                      :reputation => {:only => [:overall]}
-                  },
-                  :methods => :avatar
-              },
-              :editor => {
-                  :only => [:id, :username, :role]
-              },
-              :editors => {
-                  :only => [:id, :username, :role]
-              },
-              :first_plugin => {
-                  :only => [:id, :filename]
-              },
-              :second_plugin => {
-                  :only => [:id, :filename]
-              },
-              :first_mod => {
-                  :only => [:id, :name]
-              },
-              :second_mod => {
-                  :only => [:id, :name]
-              }
-          }
-      }
-      super(options.merge(default_options))
-    else
-      super(options)
-    end
-  end
-
-  def reportable_json_options
-    {
-        :except => [:submitted_by],
-        :include => {
-            :submitter => {
-                :only => [:id, :username, :role, :title],
-                :include => {
-                    :reputation => {:only => [:overall]}
-                },
-                :methods => :avatar
-            },
-            :editor => {
-                :only => [:id, :username, :role]
-            },
-            :editors => {
-                :only => [:id, :username, :role]
-            },
-            :first_plugin => {
-                :only => [:id, :filename]
-            },
-            :second_plugin => {
-                :only => [:id, :filename]
-            },
-            :first_mod => {
-                :only => [:id, :name]
-            },
-            :second_mod => {
-                :only => [:id, :name]
-            }
-        }
-    }
-  end
-
-  def notification_json_options(event_type)
-    {
-        :only => [:submitted_by, (:moderator_message if event_type == :message)].compact,
-        :include => {
-            :first_plugin => {
-                :only => [:id, :filename]
-            },
-            :second_plugin => {
-                :only => [:id, :filename]
-            },
-            :first_mod => {
-                :only => [:id, :name]
-            },
-            :second_mod => {
-                :only => [:id, :name]
-            }
-        }
-    }
-  end
-
   def self.sortable_columns
     {
         :except => [:game_id, :submitted_by, :edited_by, :corrector_id, :first_plugin_id, :second_plugin_id, :text_body, :edit_summary, :moderator_message],
@@ -211,14 +127,6 @@ class LoadOrderNote < ActiveRecord::Base
   end
 
   private
-    def set_dates
-      if self.submitted.nil?
-        self.submitted = DateTime.now
-      else
-        self.edited = DateTime.now
-      end
-    end
-
     def set_adult
       self.has_adult_content = first_mod.has_adult_content || second_mod.has_adult_content
       true

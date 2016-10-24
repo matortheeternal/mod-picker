@@ -112,7 +112,7 @@ app.controller('correctionsModalController', function($scope, contributionServic
             correction: {
                 game_id: $scope.target.game_id,
                 correctable_id: $scope.target.id,
-                correctable_type: $scope.model.name,
+                correctable_type: $scope.modelObj.name,
                 title: $scope.activeCorrection.title,
                 text_body: $scope.activeCorrection.text_body
             }

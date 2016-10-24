@@ -10,6 +10,7 @@ app.directive('searchInput', function() {
             onChange: '=?',
             excludedId: '=?',
             disabled: '=?',
+            error: '=?',
             pause: '=?',
             minLength: '=?',
             placeholder: '@',
@@ -21,7 +22,7 @@ app.directive('searchInput', function() {
 
 app.controller('searchInputController', function($scope, $timeout) {
     // default scope attributes
-    angular.default($scope, 'pause', 700);
+    angular.default($scope, 'pause', 300);
     angular.default($scope, 'minLength', 2);
     angular.default($scope, 'placeholder', 'Enter ' + $scope.label + ' ' + $scope.key);
 
@@ -65,7 +66,7 @@ app.controller('searchInputController', function($scope, $timeout) {
         // went through
         $timeout(function() {
             $scope.showDropdown = false;
-        }, 100);
+        }, 250);
     };
 
     $scope.keyDown = function($event) {

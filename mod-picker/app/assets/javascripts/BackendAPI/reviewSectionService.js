@@ -61,12 +61,4 @@ app.service('reviewSectionService', function(backend, $q) {
         });
       });
     };
-
-    this.preparePrompt = function(section) {
-        return '*' + section.prompt.replace(/\ /g, '\uFEFF ') + '*\n\n';
-    };
-
-    this.removePrompts = function(review_text_body) {
-        return review_text_body.replace(/([^\n]+)\uFEFF([^\n]+)([\n]+)/g, '');
-    };
 });

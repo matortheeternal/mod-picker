@@ -1,0 +1,6 @@
+{
+  "only": ["id", "filename", "install_path"],
+  "include": {
+    "mod": {}
+  }
+}

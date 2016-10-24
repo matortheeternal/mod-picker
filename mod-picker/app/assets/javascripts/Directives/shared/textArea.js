@@ -9,9 +9,15 @@ app.directive('textArea', function($timeout) {
             refresh: '=ngRefresh'
         },
         link: function(scope, element, attrs) {
+            var user = scope.$root.currentUser;
+            var enableSpellCheck = user && user.settings.enable_spellcheck;
+
             // get text area element and turn it into a markdown editor
             var textarea = element.children()[0];
-            var mde = new SimpleMDE({ element: textarea, spellChecker: false });
+            var mde = new SimpleMDE({
+                element: textarea,
+                spellChecker: enableSpellCheck
+            });
 
             // two-way data binding to and from mde
             scope.$watch('data', function(newVal){

@@ -21,8 +21,10 @@ class ReputationWorker
   def perform
     Benchmark.bm do |benchmark|
       puts "\nCalculating base reputation"
+      start_time = DateTime.now
       benchmark.report("B") {
         UserReputation.computable.find_each do |user_reputation|
+          user_reputation.last_computed = start_time
           user_reputation.calculate_site_rep!
           user_reputation.calculate_contribution_rep!
           user_reputation.calculate_author_rep!

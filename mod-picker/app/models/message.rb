@@ -1,5 +1,5 @@
 class Message < ActiveRecord::Base
-  include Trackable
+  include Trackable, BetterJson, Dateable
 
   # EVENT TRACKING
   track :added
@@ -19,18 +19,4 @@ class Message < ActiveRecord::Base
   def recipient_users
     sent_to ? recipient : User.all
   end
-
-  def notification_json_options(event_type)
-    { :only => [:text] }
-  end
-
-  # Private methods
-  private
-    def set_dates
-      if self.submitted.nil?
-        self.submitted = DateTime.now
-      else
-        self.edited = DateTime.now
-      end
-    end
 end

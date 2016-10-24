@@ -1,10 +1,13 @@
 class Correction < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, Reportable, ScopeHelpers, Trackable
+  include Filterable, Sortable, RecordEnhancements, Reportable, ScopeHelpers, Trackable, BetterJson, Dateable
 
   # ATTRIBUTES
   enum status: [:open, :passed, :failed, :closed]
   enum mod_status: [:good, :outdated, :unstable]
   self.per_page = 25
+
+  # DATE COLUMNS
+  date_column :submitted, :edited
 
   # EVENT TRACKING
   track :added, :hidden, :status
@@ -48,7 +51,7 @@ class Correction < ActiveRecord::Base
 
   # CALLBACKS
   after_create :increment_counters, :schedule_close
-  before_save :set_adult, :set_dates
+  before_save :set_adult
   after_save :recompute_correctable_standing
   after_destroy :decrement_counters, :recompute_correctable_standing
 
@@ -89,81 +92,6 @@ class Correction < ActiveRecord::Base
     Comment.commentables("Correction", ids).joins("INNER JOIN corrections ON corrections.id = comments.commentable_id").update_all("comments.has_adult_content = corrections.has_adult_content")
   end
 
-  def self.index_json(collection)
-    collection.as_json({
-        :include => {
-            :submitter => {
-                :only => [:id, :username, :role, :title, :joined, :last_sign_in_at, :reviews_count, :compatibility_notes_count, :install_order_notes_count, :load_order_notes_count, :corrections_count, :comments_count],
-                :include => {
-                    :reputation => {:only => [:overall]}
-                },
-                :methods => :avatar
-            },
-            :correctable => {
-                :only => [:id, :name],
-                :include => {
-                    :submitter => {
-                        :only => [:id, :username]
-                    }
-                },
-                :methods => :mods
-            },
-        }
-    })
-  end
-
-  def as_json(options={})
-    if JsonHelpers.json_options_empty(options)
-      default_options = {
-          :include => {
-              :submitter => {
-                  :only => [:id, :username, :role, :title, :joined, :last_sign_in_at, :reviews_count, :compatibility_notes_count, :install_order_notes_count, :load_order_notes_count, :corrections_count, :comments_count],
-                  :include => {
-                      :reputation => {:only => [:overall]}
-                  },
-                  :methods => :avatar
-              }
-          }
-      }
-      super(options.merge(default_options))
-    else
-      super(options)
-    end
-  end
-
-  def notification_json_options(event_type)
-    is_appeal = correctable_type == "Mod"
-    {
-        :only => [:submitted_by, :correctable_type, :status, (:mod_status if is_appeal)].compact,
-        :include => {
-            :correctable => {
-                :only => [:id, (:name if is_appeal)].compact,
-                :methods => [(:mods if !is_appeal), (:plugins if correctable_type == "LoadOrderNote")].compact
-            }
-        }
-    }
-  end
-
-  def reportable_json_options
-    is_appeal = correctable_type == "Mod"
-    {
-        :only => [:submitted_by, :correctable_type, (:mod_status if is_appeal), :text_body, :submitted].compact,
-        :include => {
-            :correctable => {
-                :only => [:id, (:name if is_appeal)].compact,
-                :methods => [(:mods if !is_appeal), (:plugins if correctable_type == "LoadOrderNote")].compact
-            },
-            :submitter => {
-                :only => [:id, :username, :role, :title],
-                :include => {
-                    :reputation => {:only => [:overall]}
-                },
-                :methods => :avatar
-            }
-        }
-    }
-  end
-
   def self.sortable_columns
     {
         :except => [:game_id, :submitted_by, :edited_by, :correctable_id, :text_body],
@@ -188,14 +116,6 @@ class Correction < ActiveRecord::Base
   end
 
   private
-    def set_dates
-      if self.submitted.nil?
-        self.submitted = DateTime.now
-      else
-        self.edited = DateTime.now
-      end
-    end
-
     def set_adult
       self.has_adult_content = correctable.has_adult_content
       true

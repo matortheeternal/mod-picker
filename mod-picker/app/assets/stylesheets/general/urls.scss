@@ -3,7 +3,7 @@ a {
   color: $link_color;
   text-decoration: none;
   cursor: pointer;
-  @include transition(all 0.2s ease-in-out);
+  @include transition(color 0.2s ease-in-out);
 
   &:hover {
     color: $link_hover_color_secondary;

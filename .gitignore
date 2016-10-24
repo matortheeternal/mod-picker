@@ -91,3 +91,5 @@ vagrant.yml
 ubuntu-xenial-16.04-cloudimg-console.log
 database.yml
 mod-picker/node_modules/
+spikes/PyEmailHandler/*.txt
+dumps/

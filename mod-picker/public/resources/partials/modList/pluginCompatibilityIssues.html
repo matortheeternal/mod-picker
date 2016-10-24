@@ -3,7 +3,7 @@
         <span class="note-item">
             ({{showUnresolvedPluginCompatibility ? 'Unresolved' : 'All'}})
         </span>
-        <span class="right-item action-box" ng-if="notes.unresolved_plugin_compatibility.length" ng-click="resolveAllCompatibility()">
+        <span class="right-item action-box" ng-if="notes.unresolved_plugin_compatibility.length && editing" ng-click="resolveAllCompatibility()">
             <i class="fa fa-check"></i> Resolve All
         </span>
         <span class="right-item toggle-item" ng-click="showUnresolvedPluginCompatibility = !showUnresolvedPluginCompatibility">
@@ -12,14 +12,14 @@
     </div>
     <div class="content-container">
         <div ng-if="showUnresolvedPluginCompatibility" ng-repeat="note in notes.unresolved_plugin_compatibility" class="content-block">
-            <compatibility-note note="note" index="100 + $index" show-resolution-options="editing"></compatibility-note>
+            <compatibility-note note="note" index="100 + $index" show-resolution-options="editing" mod-data-loaded="!!mod_list.mods"></compatibility-note>
         </div>
         <div ng-show="showUnresolvedPluginCompatibility && !notes.unresolved_plugin_compatibility.length" class="content-message">
             No unresolved compatibility issues to display.
         </div>
 
         <div ng-if="!showUnresolvedPluginCompatibility" ng-repeat="note in notes.plugin_compatibility" class="content-block" ng-hide="note._destroy">
-            <compatibility-note note="note" index="100 + $index" show-resolution-options="editing"></compatibility-note>
+            <compatibility-note note="note" index="100 + $index" show-resolution-options="editing"  mod-data-loaded="!!mod_list.mods"></compatibility-note>
         </div>
         <div ng-show="!showUnresolvedPluginCompatibility && isEmpty(notes.plugin_compatibility)" class="content-message">
             No compatibility issues to display.

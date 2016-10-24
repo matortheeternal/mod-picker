@@ -1,4 +1,6 @@
 class CustomSource < ActiveRecord::Base
+  include BetterJson
+
   belongs_to :mod, :inverse_of => :custom_sources
 
   # VALIDATIONS

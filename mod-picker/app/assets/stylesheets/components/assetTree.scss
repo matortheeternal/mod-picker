@@ -13,6 +13,8 @@ ul.asset-tree-list {
 
 .asset-tree-expandable {
   cursor: pointer;
+  display: inline-block;
+  padding-right: 10px;
 }
 
 .file-icon {

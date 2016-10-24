@@ -1,5 +1,5 @@
 class NexusInfo < ActiveRecord::Base
-  include Scrapeable
+  include Scrapeable, BetterJson
 
   # ASSOCIATIONS
   belongs_to :mod
@@ -7,6 +7,13 @@ class NexusInfo < ActiveRecord::Base
 
   # VALIDATIONS
   validates :game_id, :mod_name, :uploaded_by, :authors, :released, presence: true
+
+  def self.prepare_for_mod(id, game_id)
+    raise "cannot scrape Nexus Info with no game id" unless game_id
+    info = NexusInfo.find_or_initialize_by(id: id, game_id: game_id)
+    raise Exceptions::ModExistsError.new(info.mod) if info.mod_id
+    info
+  end
 
   def scrape
     # scrape using the Nexus Helper
@@ -21,12 +28,18 @@ class NexusInfo < ActiveRecord::Base
     after_scrape
   end
 
+  def self.edit_json_format
+    { :only => [:id, :last_scraped] }
+  end
+
+  def self.base_json_format
+    { :except => [:mod_id] }
+  end
+
   def notification_json_options(event_type)
     {
         :only => [],
-        :include => {
-            :mod => { :only => [:id, :name] }
-        }
+        :include => { :mod => Mod.base_json_format }
     }
   end
 

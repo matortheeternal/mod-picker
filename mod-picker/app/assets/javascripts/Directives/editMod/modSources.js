@@ -9,23 +9,22 @@ app.directive('modSources', function() {
 
 app.controller('modSourcesController', function($scope, sitesFactory, scrapeService) {
     $scope.addSource = function() {
-        if ($scope.sources.length == $scope.sites.length)
-            return;
-        $scope.sources.push({
+        if ($scope.mod.sources.length == $scope.sites.length) return;
+        $scope.mod.sources.push({
             label: "Nexus Mods",
             url: ""
         });
     };
 
     $scope.removeSource = function(source) {
-        var index = $scope.sources.indexOf(source);
-        $scope.sources.splice(index, 1);
+        var index = $scope.mod.sources.indexOf(source);
+        $scope.mod.sources.splice(index, 1);
     };
 
     $scope.validateSource = function(source) {
         var site = sitesFactory.getSite(source.label);
-        var sourceIndex = $scope.sources.indexOf(source);
-        var sourceUsed = $scope.sources.find(function(item, index) {
+        var sourceIndex = $scope.mod.sources.indexOf(source);
+        var sourceUsed = $scope.mod.sources.find(function(item, index) {
             return index != sourceIndex && item.label === source.label
         });
         var match = source.url.match(site.modUrlFormat);
@@ -54,69 +53,57 @@ app.controller('modSourcesController', function($scope, sitesFactory, scrapeServ
 
         var gameId = window._current_game_id;
         var modId = match[2];
-        switch (source.label) {
-            case "Nexus Mods":
-                $scope.nexus = {};
-                $scope.nexus.scraping = true;
-                scrapeService.scrapeNexus(gameId, modId).then(function(data) {
-                    $scope.nexus = data;
-                    source.scraped = true;
-                    $scope.loadGeneralStats(data, true);
-                }, function(response) {
-                    delete $scope.nexus;
-                    var params = {
-                        label: "Error scraping Nexus Mods mod page",
-                        response: response
-                    };
-                    $scope.$emit('errorMessage', params);
+
+        var key = site.dataLabel;
+        var baseUrl = location.href.replace(location.hash, "");
+        $scope.mod[key] = {};
+        $scope.mod[key].scraping = true;
+
+        var successCallback = function(data) {
+            $scope.mod[key] = data;
+            source.scraped = true;
+            $scope.loadGeneralStats(data, true);
+        };
+        var failCallback = function(response) {
+            delete $scope[key];
+            if (response.data.mod_id) {
+                $scope.$emit('customMessage', {
+                    type: 'error',
+                    text: "Error scraping "+source.label+" mod page, "+response.data.error,
+                    url: baseUrl + "#/mod/" + response.data.mod_id
                 });
-                break;
-            case "Lover's Lab":
-                $scope.lab = {};
-                $scope.lab.scraping = true;
-                scrapeService.scrapeLab(modId).then(function(data) {
-                    $scope.lab = data;
-                    source.scraped = true;
-                    $scope.loadGeneralStats(data);
-                }, function(response) {
-                    delete $scope.lab;
-                    var params = {
-                        label: "Error scraping Lover's Lab mod page",
-                        response: response
-                    };
-                    $scope.$emit('errorMessage', params);
+            } else {
+                $scope.$emit('errorMessage', {
+                    label: "Error scraping "+source.label+" mod page",
+                    response: response
                 });
-                break;
-            case "Steam Workshop":
-                $scope.workshop = {};
-                $scope.workshop.scraping = true;
-                scrapeService.scrapeWorkshop(modId).then(function(data) {
-                    $scope.workshop = data;
-                    source.scraped = true;
-                    $scope.loadGeneralStats(data);
-                }, function(response) {
-                    delete $scope.workshop;
-                    var params = {
-                        label: "Error scraping Steam Workshop mod page",
-                        response: response
-                    };
-                    $scope.$emit('errorMessage', params);
-                });
-                break;
+            }
+        };
+
+        var scrapeKey = "scrape" + key.capitalize();
+        var scrapeFunction = scrapeService[scrapeKey];
+        if (site.includeGame) {
+            scrapeFunction(gameId, modId).then(successCallback, failCallback);
+        } else {
+            scrapeFunction(modId).then(successCallback, failCallback);
         }
     };
 
     /* custom sources */
     $scope.addCustomSource = function() {
-        $scope.customSources.push({
+        $scope.mod.custom_sources.push({
             label: "Custom",
             url: ""
         });
     };
 
     $scope.removeCustomSource = function(source) {
-        var index = $scope.customSources.indexOf(source);
-        $scope.customSources.splice(index, 1);
+        var index = $scope.mod.custom_sources.indexOf(source);
+        if (source.id) {
+            source._destroy = true;
+        } else {
+            $scope.mod.custom_sources.splice(index, 1);
+        }
     };
 
     $scope.validateCustomSource = function(source) {

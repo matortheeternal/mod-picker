@@ -5,23 +5,23 @@ app.config(['$stateProvider', function($stateProvider) {
         templateUrl: '/resources/partials/base/base.html',
         controller: 'baseController',
         resolve: {
-            currentUser: function(userService) {
-                return userService.retrieveCurrentUser();
+            currentUser: function(errorService, userService) {
+                return errorService.criticalRequest(userService.retrieveCurrentUser);
             },
-            activeModList: function(modListService) {
-                return modListService.retrieveActiveModList();
+            activeModList: function(errorService, modListService) {
+                return errorService.criticalRequest(modListService.retrieveActiveModList);
             },
-            currentGame: function(gameService) {
-                return gameService.getGameById(window._current_game_id);
+            currentGame: function(errorService, gameService) {
+                return errorService.criticalRequest(gameService.getGameById, window._current_game_id);
             },
-            games: function(gameService) {
-                return gameService.getAvailableGames();
+            games: function(errorService, gameService) {
+                return errorService.criticalRequest(gameService.getAvailableGames);
             },
-            categories: function(categoryService) {
-                return categoryService.retrieveCategories();
+            categories: function(errorService, categoryService) {
+                return errorService.criticalRequest(categoryService.retrieveCategories);
             },
-            categoryPriorities: function(categoryService) {
-                return categoryService.retrieveCategoryPriorities();
+            categoryPriorities: function(errorService, categoryService) {
+                return errorService.criticalRequest(categoryService.retrieveCategoryPriorities);
             }
         },
         onEnter: function(themesService, currentUser) {
@@ -58,7 +58,7 @@ app.controller('baseController', function($scope, $rootScope, $state, $window, $
         var showKey = 'show' + key + 'Dropdown';
         $timeout(function() {
             $scope[showKey] = false;
-        }, 200);
+        }, 250);
     };
 
     // user selected to start a new mod list

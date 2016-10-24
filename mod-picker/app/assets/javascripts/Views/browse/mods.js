@@ -1,7 +1,7 @@
 app.run(function($futureState, indexFactory, filtersFactory) {
     // dynamically construct and apply state
     var filterPrototypes = filtersFactory.modFilters();
-    var state = indexFactory.buildState('name', 'ASC', 'mods', filterPrototypes);
+    var state = indexFactory.buildState('id', 'DESC', 'mods', filterPrototypes);
     $futureState.futureState(state);
 });
 
@@ -102,7 +102,6 @@ app.controller('modsController', function($scope, $rootScope, $q, $stateParams, 
     $scope.statFilters = filtersFactory.modStatisticFilters();
     $scope.filters = {
         game: $scope.currentGame.id,
-        include_adult: $scope.currentUser && $scope.currentUser.settings.allow_adult_content,
         categories: []
     };
 

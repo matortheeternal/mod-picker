@@ -1,8 +1,8 @@
 class ModBuilder
-  attr_accessor :mod, :current_user, :params, :tag_names, :nexus_info_id, :lover_info_id, :workshop_info_id
+  attr_accessor :mod, :current_user, :params, :tag_names, :nexus_info_id, :lover_info_id, :workshop_info_id, :plugin_ids, :curate
 
   def builder_attributes
-    [:tag_names, :nexus_info_id, :lover_info_id, :workshop_info_id]
+    [:tag_names, :nexus_info_id, :lover_info_id, :workshop_info_id, :curate]
   end
 
   def initialize(current_user, params={})
@@ -29,10 +29,10 @@ class ModBuilder
 
   def update
     mod.updated_by = @current_user.id
-    destroy_analysis
     update!
     true
-  rescue
+  rescue Exception => x
+    mod.errors.add(:error, x.message)
     false
   end
 
@@ -82,6 +82,7 @@ class ModBuilder
   def after_save
     link_sources
     create_tags
+    create_curator
   end
 
   def set_config_file_game_ids
@@ -130,8 +131,10 @@ class ModBuilder
     end
   end
 
-  def destroy_analysis
-    mod.mod_options.destroy_all if @params.has_key?(:mod_options_attributes)
+  def find_new_plugin(new_plugin_records, old_plugin)
+    new_plugin_records.detect{|new_plugin|
+      new_plugin.filename == old_plugin.filename
+    }
   end
 
   def update_mod_list_mods
@@ -174,7 +177,7 @@ class ModBuilder
 
   def link_source(info_id, model)
     if info_id
-      info = NexusInfo.find(info_id)
+      info = model.find(info_id)
       info.mod_id = mod.id
       info.link_uploader
       info.save!
@@ -188,12 +191,30 @@ class ModBuilder
 
         # create tag if we couldn't find it
         if tag.nil?
-          tag = Tag.create(text: text, game_id: mod.game_id, submitted_by: @current_user.id)
+          tag = Tag.create!({
+              text: text,
+              game_id: mod.game_id,
+              submitted_by: @current_user.id
+          })
         end
 
         # associate tag with mod
-        mod.mod_tags.create(tag_id: tag.id, submitted_by: @current_user.id)
+        ModTag.create!({
+            mod_id: mod.id,
+            tag_id: tag.id,
+            submitted_by: @current_user.id
+        })
       end
+    end
+  end
+
+  def create_curator
+    if @curate
+      ModAuthor.create!({
+          mod_id: mod.id,
+          user_id: @current_user.id,
+          role: 2
+      })
     end
   end
 

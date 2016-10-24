@@ -17,21 +17,19 @@ app.directive('comment', function() {
 app.controller('commentController', function($scope, $rootScope, $filter, $timeout, contributionService) {
     // inherited variables
     $scope.currentUser = $rootScope.currentUser;
+    $scope.currentGame = $rootScope.currentGame;
 
-    // this is the report object
+    // initialize local variables
     $scope.report = {
         reportable_id: $scope.comment.id,
         reportable_type: 'Comment'
     };
-
     $scope.modelObj = {
         name: "Comment",
         label: "Comment",
         route: "comments"
     };
-
     $scope.target = $scope.comment;
-    // initialize local variables
     $scope.errorEvent = $scope.eventPrefix ? $scope.eventPrefix + 'ErrorMessage' : 'errorMessage';
 
     $scope.getDateString = function() {

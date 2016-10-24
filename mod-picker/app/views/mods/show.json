@@ -1,0 +1,23 @@
+{
+  "except": ["disallow_contributors", "hidden"],
+  "include": {
+    "tags": {
+      "format": "mod_tags"
+    },
+    "nexus_infos": {},
+    "workshop_infos": {},
+    "lover_infos": {},
+    "plugins": {
+      "format": "simple"
+    },
+    "custom_sources": {},
+    "mod_authors": {},
+    "required_mods": {
+      "format": "required_mods"
+    },
+    "required_by": {
+      "format": "required_by"
+    }
+  },
+  "methods": "image"
+}

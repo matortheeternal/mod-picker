@@ -1,5 +1,5 @@
 class UserReputation < ActiveRecord::Base
-  include Filterable, RecordEnhancements, Trackable
+  include Filterable, RecordEnhancements, Trackable, BetterJson
 
   # EVENT TRACKING
   track_milestones :column => 'overall', :milestones => [10, 20, 40, 80, 160, 320, 640, 1280]
@@ -41,6 +41,7 @@ class UserReputation < ActiveRecord::Base
   LNOTE_HELPFUL_RATIO = 0.1
   OPEN_CORRECTION_REP = 1
   CLOSED_CORRECTION_REP = 3
+  SUBMITTED_MOD_REP = 1
   NEW_TAG_REP = 0.2
   MOD_TAG_REP = 0.1
   MOD_LIST_TAG_REP = 0.05
@@ -129,6 +130,9 @@ class UserReputation < ActiveRecord::Base
     closed_corrections_count = user.corrections.visible.status([1, 3]).count
     self.contribution_rep += open_corrections_count * OPEN_CORRECTION_REP
     self.contribution_rep += closed_corrections_count * CLOSED_CORRECTION_REP
+
+    # MODS
+    self.contribution_rep += user.submitted_mods_count * SUBMITTED_MOD_REP
 
     # TAGS
     self.contribution_rep += user.tags_count * NEW_TAG_REP

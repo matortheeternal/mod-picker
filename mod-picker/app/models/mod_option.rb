@@ -1,4 +1,6 @@
 class ModOption < ActiveRecord::Base
+  include BetterJson
+
   attr_accessor :asset_paths, :plugin_dumps
 
   # SCOPES
@@ -12,55 +14,79 @@ class ModOption < ActiveRecord::Base
 
   has_many :mod_list_mod_options, :inverse_of => 'mod_option', :dependent => :destroy
 
+  # VALIDATIONS
+  validates :name, :display_name, presence: true
+
   # CALLBACKS
-  after_create :create_asset_files, :create_plugins, :update_counters
-  before_destroy :destroy_mod_asset_files
+  after_save :create_asset_files, :create_plugins, :update_counters
+  before_destroy :clear_assets
+
+  # FIX ATTR ACCESSORS DIRTY DETECTION
+  def asset_paths=(value)
+    attribute_will_change!("asset_paths") if @asset_paths != value
+    @asset_paths = value
+  end
+
+  def plugin_dumps=(value)
+    attribute_will_change!("plugin_dumps") if @plugin_dumps != value
+    @plugin_dumps = value
+  end
 
   # INSTANCE METHODS
-  def create_asset_files
-    if @asset_paths
-      if !is_fomod_option
-        basepaths = []
-        @asset_paths.each do |path|
-          # prioritize files over data folder matching
-          split_paths = path.split(/(?<=\.bsa\\|\.esp|\.esm|Data\\)/)
-          basepaths |= [split_paths[0]] if split_paths.length > 1
-        end
-        # sort by longest path first so nested paths are prioritized
-        basepaths.sort { |a,b| b.length - a.length }
-      else
-        basepaths = [""]
-      end
-
-      @asset_paths.each do |path|
-        basepath = basepaths.find { |basepath| path.start_with?(basepath) }
-        if basepath.nil?
-          mod_asset_files.create(subpath: path)
-        else
-          asset_file = AssetFile.find_or_create_by(game_id: mod.game_id, path: path.sub(basepath, ''))
-          mod_asset_files.create(asset_file_id: asset_file.id, subpath: basepath)
-        end
-      end
+  def get_base_paths
+    if !is_fomod_option
+      basepaths = DataPathUtils.get_base_paths(@asset_paths)
+    else
+      basepaths = [""]
     end
   end
 
-  def destroy_mod_asset_files
-    query = "DELETE FROM mod_asset_files WHERE mod_option_id = #{id}"
-    ActiveRecord::Base.connection.execute(query)
+  def create_asset_file(basepaths, path)
+    basepath = basepaths.find { |basepath| path.start_with?(basepath) }
+    if basepath.nil?
+      mod_asset_files.create(subpath: path)
+    else
+      asset_file = AssetFile.find_or_create_by(game_id: mod.game_id, path: path.sub(basepath, ''))
+      mod_asset_files.create(asset_file_id: asset_file.id, subpath: basepath)
+    end
+  end
+
+  def create_asset_files
+    if @asset_paths
+      clear_assets
+      basepaths = get_base_paths
+      @asset_paths.each { |path| create_asset_file(basepaths, path) }
+    end
+  end
+
+  def clear_assets
+    mod_asset_files.destroy_all
+  end
+
+  def asset_file_paths
+    mod_asset_files.eager_load(:asset_file).pluck(:subpath, :path).map { |item| item.join('') }
+  end
+
+  def update_existing_plugin(dump)
+    plugin = Plugin.find(dump[:id])
+    dump[:_destroy] ? plugin.destroy : plugin.update(dump)
+  end
+
+  def create_new_plugin(dump)
+    dump[:game_id] = mod.game_id
+    plugin = Plugin.find_by(filename: dump[:filename], crc_hash: dump[:crc_hash])
+    if plugin.nil?
+      plugin = plugins.create(dump)
+    else
+      plugin.mod_option_id = id
+      plugin.save!
+    end
   end
 
   def create_plugins
     if @plugin_dumps
       @plugin_dumps.each do |dump|
-        # create plugin from dump
-        dump[:game_id] = mod.game_id
-        plugin = Plugin.find_by(filename: dump[:filename], crc_hash: dump[:crc_hash])
-        if plugin.nil?
-          plugin = plugins.create(dump)
-        else
-          plugin.mod_option_id = id
-          plugin.save!
-        end
+        dump.has_key?(:id) ? update_existing_plugin(dump) : create_new_plugin(dump)
       end
     end
   end
@@ -72,16 +98,5 @@ class ModOption < ActiveRecord::Base
         plugins_count: plugins_count,
         asset_files_count: asset_files_count
     })
-  end
-
-  def as_json(options={})
-    if JsonHelpers.json_options_empty(options)
-      default_options = {
-          :only => [:id, :name, :default]
-      }
-      super(options.merge(default_options))
-    else
-      super(options)
-    end
   end
 end

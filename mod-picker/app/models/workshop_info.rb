@@ -1,5 +1,5 @@
 class WorkshopInfo < ActiveRecord::Base
-  include Scrapeable
+  include Scrapeable, BetterJson
 
   # ASSOCIATIONS
   belongs_to :mod
@@ -7,6 +7,12 @@ class WorkshopInfo < ActiveRecord::Base
 
   # VALIDATIONS
   validates :game_id, :mod_name, :uploaded_by, :released, presence: true
+
+  def self.prepare_for_mod(id)
+    info = WorkshopInfo.find_or_initialize_by(id: id)
+    raise Exceptions::ModExistsError.new(info.mod_id) if info.mod_id
+    info
+  end
 
   def scrape
     # scrape using the Workshop Helper
@@ -21,15 +27,6 @@ class WorkshopInfo < ActiveRecord::Base
 
   def url
     WorkshopHelper.mod_url(id)
-  end
-
-  def notification_json_options(event_type)
-    {
-        :only => [],
-        :include => {
-            :mod => { :only => [:id, :name] }
-        }
-    }
   end
 
   def link_uploader

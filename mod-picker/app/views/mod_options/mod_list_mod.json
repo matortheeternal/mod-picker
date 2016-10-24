@@ -1,0 +1,11 @@
+{
+  "only": ["id", "name", "display_name", "default"],
+  "include": {
+    "plugins": {
+      "only": ["id", "filename"],
+      "include": {
+        "mod": {}
+      }
+    }
+  }
+}

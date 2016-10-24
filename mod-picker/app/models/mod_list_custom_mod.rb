@@ -1,7 +1,7 @@
 class ModListCustomMod < ActiveRecord::Base
-  include RecordEnhancements, ScopeHelpers
+  include RecordEnhancements, ScopeHelpers, BetterJson
 
-  # Scopes
+  # SCOPES
   value_scope :is_utility
 
   # ASSOCIATIONS
@@ -15,18 +15,6 @@ class ModListCustomMod < ActiveRecord::Base
   # CALLBACKS
   after_create :increment_counters
   before_destroy :decrement_counters
-
-  def as_json(options={})
-    if JsonHelpers.json_options_empty(options)
-      # TODO: Revise this as necessary
-      default_options = {
-          :except => [:mod_list_id]
-      }
-      super(options.merge(default_options))
-    else
-      super(options)
-    end
-  end
 
   private
     def increment_counters

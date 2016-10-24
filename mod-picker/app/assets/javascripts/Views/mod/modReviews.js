@@ -1,4 +1,4 @@
-app.controller('modReviewsController', function($scope, $stateParams, $state, modService, reviewSectionService, contributionService, sortFactory, formUtils, objectUtils) {
+app.controller('modReviewsController', function($scope, $stateParams, $state, modService, reviewSectionService, contributionService, contributionFactory, sortFactory, formUtils, objectUtils) {
     $scope.sort.reviews = {
         column: $stateParams.scol,
         direction: $stateParams.sdir
@@ -6,17 +6,18 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
 
     // inherited functions
     $scope.focusText = formUtils.focusText;
+    $scope.pages.reviews.current = $stateParams.page || 1;
 
     // BASE RETRIEVAL LOGIC
     $scope.retrieveReviews = function(page) {
         // retrieve the reviews
         var options = {
             sort: $scope.sort.reviews,
-            //if no page is specified load the first one
-            page: page || 1
+            page: page || $scope.pages.reviews.current
         };
         modService.retrieveModReviews($stateParams.modId, options, $scope.pages.reviews).then(function(data) {
             $scope.mod.reviews = data.reviews;
+            if ($scope.errors.reviews) delete $scope.errors.reviews;
             if (data.user_review && objectUtils.isEmptyObject(data.user_review)) {
                 $scope.userReviewHidden = true;
             } else {
@@ -51,13 +52,6 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
         };
         $state.go($state.current.name, params);
     };
-    //retrieve the reviews when the state is first loaded
-    $scope.retrieveReviews($stateParams.page);
-
-    // re-retrieve reviews when the sort object changes
-    $scope.$watch('sort', function() {
-        $scope.retrieveReviews();
-    }, true);
 
     //retrieve review sections
     reviewSectionService.getSectionsForMod($scope.mod).then(function(modSections) {
@@ -67,6 +61,8 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
     });
 
     // re-retrieve reviews when the sort object changes
+    // this will be called once automatically when the tab loads when we
+    // build the sort object at line 2 in this controller
     $scope.$watch('sort.reviews', function() {
         $scope.retrieveReviews();
     }, true);
@@ -101,7 +97,7 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
         $scope.activeReview.ratings.forEach(function(rating) {
             var section = rating.section;
             $scope.activeReview.text_body += "## " + section.name + "\n";
-            $scope.activeReview.text_body += reviewSectionService.preparePrompt(section);
+            $scope.activeReview.text_body += contributionFactory.preparePrompt(section.prompt);
         });
 
         // update the markdown editor
@@ -149,7 +145,7 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
         // build the rating object and append it to the ratings array
         var ratingObj = {
             section: section,
-            rating: 100
+            rating: null
         };
         $scope.activeReview.ratings.push(ratingObj);
     };
@@ -189,8 +185,13 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
     };
 
     $scope.validateReview = function() {
-        var sanitized_text = reviewSectionService.removePrompts($scope.activeReview.text_body);
-        $scope.activeReview.valid = sanitized_text.length > 512;
+        var review = $scope.activeReview;
+        var sanitized_text = contributionService.removePrompts(review.text_body);
+        var textValid = sanitized_text.length > 512;
+        var ratingsValid = review.ratings.reduce(function(valid, section) {
+            return valid && section.rating;
+        }, true);
+        $scope.activeReview.valid = textValid && ratingsValid;
     };
 
     // discard a new review object
@@ -217,14 +218,13 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
     // save a review
     $scope.saveReview = function() {
         // return if the review is invalid
-        if (!$scope.activeReview.valid) {
-            return;
-        }
+        var review = $scope.activeReview;
+        if (!review.valid) return;
 
         // submit the review
-        var sanitized_text = reviewSectionService.removePrompts($scope.activeReview.text_body);
+        var sanitized_text = contributionService.removePrompts(review.text_body);
         var review_ratings = [];
-        $scope.activeReview.ratings.forEach(function(item) {
+        review.ratings.forEach(function(item) {
             review_ratings.push({
                 review_section_id: item.section.id,
                 rating: item.rating
@@ -235,16 +235,16 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
                 game_id: $scope.mod.game_id,
                 mod_id: $scope.mod.id,
                 text_body: sanitized_text,
-                edit_summary: $scope.activeReview.edit_summary,
-                moderator_message: $scope.activeReview.moderator_message,
+                edit_summary: review.edit_summary,
+                moderator_message: review.moderator_message,
                 review_ratings_attributes: review_ratings
             }
         };
-        $scope.activeReview.submitting = true;
+        review.submitting = true;
 
         // use update or submit contribution
-        if ($scope.activeReview.editing) {
-            var reviewId = $scope.activeReview.original.id;
+        if (review.editing) {
+            var reviewId = review.original.id;
             contributionService.updateContribution("reviews", reviewId, reviewObj).then(function() {
                 $scope.$emit("successMessage", "Review updated successfully.");
                 // update original review object and discard copy
@@ -284,8 +284,10 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
         }
     };
     $scope.keyUp = function(review_rating) {
-        var output = parseInt(review_rating.rating) || 0;
-        review_rating.rating = output > 100 ? 100 : (output < 0 ? 0 : output);
+        if (review_rating.rating) {
+            var output = parseInt(review_rating.rating) || 0;
+            review_rating.rating = output > 100 ? 100 : (output < 0 ? 0 : output);
+        }
         $scope.updateOverallRating();
     };
 });

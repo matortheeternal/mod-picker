@@ -1,28 +1,21 @@
 <h3 class="section-title">
     Mod Analysis
     <a href="/help/mod_analyzer">
-        <span class="help-tooltip" title="Submitting a mod requires uploading an analysis file which &#13;includes an asset file tree and one or more plugin dumps. &#13;You can generate a mod analysis file using Mod Analyzer.  &#13;Click here for more information and download links.">?</span>
+        <span class="help-tooltip" ng-hide="hideTooltips" title="A mod analysis file includes an asset file tree and one or more plugin &#13;dumps. You can generate a mod analysis file using Mod Analyzer. &#13;Click here for more information and download links.">
+            <i class="fa fa-question-circle"></i>
+        </span>
     </a>
+    <span ng-hide="analysisValid" class="error-tooltip" title="A mod analysis is required.">
+        <i class="fa fa-exclamation-circle"></i>
+    </span>
 </h3>
 <section>
-    <div class="analysis-results" ng-repeat="option in mod.analysis.mod_options">
-        <h4 class="subtitle">{{option.name}} ({{option.size | bytes}})
-            <span class="default-option">
-                <input type="checkbox" ng-model="option.default"> Default
-            </span>
-        </h4>
+    <div class="analysis-container" ng-if="mod.mod_options && !mod.analysis">
+        <mod-option ng-repeat="option in mod.mod_options" option="option" ng-hide="option._destroy"></mod-option>
+    </div>
 
-        <strong ng-show="option.nestedAssets">Asset File Tree</strong>
-        <div class="subsection analysis-container" ng-show="option.nestedAssets">
-            <asset-tree assets="option.nestedAssets"></asset-tree>
-        </div>
-
-        <strong ng-show="option.plugins.length">Plugins</strong>
-        <div class="subsection analysis-container" ng-show="option.plugins.length">
-            <div class="plugin-analysis-item" ng-repeat="plugin in option.plugins">
-                <plugin-metadata plugin="plugin" show-record-groups="true"></plugin-metadata>
-            </div>
-        </div>
+    <div class="analysis-container" ng-if="mod.analysis">
+        <mod-option ng-repeat="option in mod.analysis.mod_options" option="option" old-options="mod.mod_options" ng-hide="option._destroy"></mod-option>
     </div>
 
     <label>

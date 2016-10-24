@@ -1,6 +1,6 @@
 <div class="contribution-container box-shadow">
 	<div class="content-title">
-		<span ng-if="modId">
+		<span ng-if="modId" class="root">
             Install
             <span ng-if="note.first_mod.id == modId">
                 Before
@@ -11,14 +11,14 @@
                 <a ng-href="#/mod/{{note.first_mod.id}}" target="_blank">{{note.first_mod.name}}</a>
             </span>
         </span>
-        <span ng-if="!modId">
+        <span ng-if="!modId" class="root">
             Install
             <a ng-href="#/mod/{{note.first_mod.id}}" target="_blank">{{note.first_mod.name}}</a>
             Before
             <a ng-href="#/mod/{{note.second_mod.id}}" target="_blank">{{note.second_mod.name}}</a>
         </span>
-        <span class="right-item">
-            <span class="standing capitalize">{{note.standing}} standing</span>
+        <span class="standing-item" title="This contribution is in {{note.standing}} standing">
+            <i class="fa {{standingClasses[note.standing]}}"></i>
         </span>
 	</div>
     <user-column ng-if="showUserColumn" user="note.submitter" editors="note.editors" class="user-column" index="index"></user-column>

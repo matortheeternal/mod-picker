@@ -1,17 +1,56 @@
 <div class="modal-container">
-    <div class="modal huge-modal">
+    <div class="modal huge-modal extra-wide-modal">
         <div class="close-modal">
             <span class="fa fa-times" ng-click="toggleManagePluginsModal()"></span>
         </div>
 
         <h2>Manage Plugins</h2>
+        <div class="box-shadow">
+            <table ng-show="plugins_store.length" class="browse-table">
+                <thead>
+                    <tr>
+                        <th ng-repeat="column in columns" ng-click="sortColumn(column)" class="{{column.class}}">
+                            {{column.label}}
+                            <div class="sorting-options" ng-if="sort && !column.unsortable">
+                                <div class="sort-up" ng-class="{ 'active' : column.up }">
+                                    <i class="fa fa-caret-up"></i>
+                                </div>
+                                <div class="sort-down" ng-class="{ 'active' : column.down }">
+                                    <i class="fa fa-caret-down"></i>
+                                </div>
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in plugins_store | orderBy:sort.column:(sort.direction === 'DESC')">
+                        <td>
+                            <label class="manage-item">
+                                <input type="checkbox" ng-click="togglePlugin(item)" ng-model="item.active" ng-hide="item._destroy"/>
+                            </label>
+                        </td>
+                        <td class="primary-column">
+                            <a ng-href="{{getPluginLink(item)}}" target="_blank">
+                                {{item.filename || item.plugin.filename}}
+                            </a>
+                        </td>
+                        <td class="center">
+                            {{item.mod_index}}
+                        </td>
+                        <td>
+                            <a ng-href="{{getModLink(item)}}" target="_blank">
+                                {{item.mod ? item.mod.name: ""}}
+                            </a>
+                        </td>
+                        <td>
+                            {{item.mod_option ? item.mod_option.name : ""}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
 
-        <label class="manage-item" ng-repeat="plugin in plugins_store" ng-hide="plugin._destroy">
-            <input type="checkbox" ng-click="togglePlugin(plugin)" ng-model="plugin.active"/> {{plugin.filename}}
-        </label>
-
-        <div class="content-message" ng-if="!plugins_store.length">
-            No available plugins to manage.  Try adding some mods to your mod list.
+            <div class="content-message" ng-if="!plugins_store.length">
+                No available plugins to manage. Try adding some mods to your mod list.
+            </div>
         </div>
     </div>
-</div>

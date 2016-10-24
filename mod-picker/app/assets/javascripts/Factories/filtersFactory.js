@@ -358,7 +358,7 @@ app.service("filtersFactory", function() {
                 common: false,
                 data: "tags_count",
                 type: "Range",
-                max: 1000,
+                max: 10,
                 param: "tc"
             }
         ];
@@ -834,6 +834,12 @@ app.service("filtersFactory", function() {
 
     this.correctionModStatusFilters = function() {
         return [
+            {
+                data: "mod_status.nil",
+                param: "msn",
+                type: "Boolean",
+                default: true
+            },
             {
                 data: "mod_status.good",
                 param: "msg",
