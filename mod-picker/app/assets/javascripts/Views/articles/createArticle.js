@@ -72,9 +72,9 @@ app.controller('createArticleController', function($scope, $rootScope, $state, $
                     link: "#/article/" + articleId,
                     linkLabel: "view the new article." 
                 },
-                {
-                    link: "#/articles",
-                    linkLabel: "return to the articles index page."
+                { 
+                    link: "#/home",
+                    linkLabel: "return to the home page."
                 }
             ]);
         }, function() {
