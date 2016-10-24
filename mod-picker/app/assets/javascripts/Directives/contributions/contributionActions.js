@@ -266,7 +266,7 @@ app.controller('contributionActionsController', function($scope, $rootScope, $ti
     };
 
     $scope.discardNote = function() {
-        $scope.modNote.message = null;
+        $scope.modNote.message = $scope.modNote.oldMessage || null;
         delete $scope.modNote.addingNote;
     };
 
