@@ -106,7 +106,7 @@ app.config(['$stateProvider', function($stateProvider) {
     });
 }]);
 
-app.controller('modController', function($scope, $rootScope, $q, $stateParams, $state, $timeout, $window, modObject, modService, modListService, contributionService, categoryService, tagService, smoothScroll, tabsFactory, sortFactory, eventHandlerFactory) {
+app.controller('modController', function($scope, $rootScope, $q, $stateParams, $state, $timeout, $window, modObject, modService, modListService, contributionService, categoryService, tagService, smoothScroll, helpFactory, tabsFactory, sortFactory, eventHandlerFactory) {
     // get parent variables
     $scope.mod = modObject.mod;
     $scope.mod.star = modObject.star;
@@ -172,6 +172,9 @@ app.controller('modController', function($scope, $rootScope, $q, $stateParams, $
 
     // shared function setup
     eventHandlerFactory.buildMessageHandlers($scope);
+
+    // set help context
+    $scope.$emit('setHelpContexts', [helpFactory.mod]);
 
     // display a message if the mod is incompatible with the user's active mod list
     if ($scope.mod.incompatible) {

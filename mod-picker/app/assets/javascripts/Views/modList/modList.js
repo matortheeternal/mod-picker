@@ -113,7 +113,7 @@ app.config(['$stateProvider', function($stateProvider) {
     })
 }]);
 
-app.controller('modListController', function($scope, $rootScope, $q, $stateParams, $timeout, modListObject, modListService, objectUtils, tabsFactory, baseFactory, eventHandlerFactory, listUtils) {
+app.controller('modListController', function($scope, $rootScope, $q, $stateParams, $timeout, modListObject, modListService, objectUtils, helpFactory, tabsFactory, baseFactory, eventHandlerFactory, listUtils) {
     // inherited variables
     $scope.currentUser = $rootScope.currentUser;
     $scope.activeModList = $rootScope.activeModList;
@@ -192,6 +192,10 @@ app.controller('modListController', function($scope, $rootScope, $q, $stateParam
     var isAuthor = $scope.mod_list.submitter.id == $scope.currentUser.id;
     $scope.permissions.isAuthor = isAuthor;
     $scope.permissions.canManage = $scope.permissions.canModerate || isAuthor;
+
+    // set help context
+    var helpContexts = helpFactory.modListContext($scope.mod_list, $scope.permissions.canManage, $scope.isActive);
+    $scope.$emit('setHelpContexts', helpContexts);
 
     // HEADER RELATED LOGIC
     $scope.starModList = function() {

@@ -52,7 +52,7 @@ app.config(['$stateProvider', function($stateProvider) {
     });
 }]);
 
-app.controller('homeController', function($scope, $rootScope, $q, homeService) {
+app.controller('homeController', function($scope, $rootScope, $q, tabsFactory, helpFactory, homeService) {
     $scope.currentUser = $rootScope.currentUser;
     $scope.permissions = angular.copy($rootScope.permissions);
 
@@ -64,6 +64,11 @@ app.controller('homeController', function($scope, $rootScope, $q, homeService) {
         { name: 'Corrections' }
     ];
 
+    // set help context
+    var helpContexts = helpFactory.homeContext($scope.currentUser);
+    $scope.$emit('setHelpContexts', helpContexts);
+
+    // retrieve data
     homeService.retrieveHome().then(function(data) {
         $scope.recent = data.recent;
         $scope.articles = data.articles;

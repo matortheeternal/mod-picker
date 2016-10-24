@@ -23,7 +23,7 @@ app.config(['$stateProvider', function($stateProvider) {
     });
 }]);
 
-app.controller('showArticleController', function($scope, $rootScope, $stateParams, article, contributionService, eventHandlerFactory) {
+app.controller('showArticleController', function($scope, $rootScope, $stateParams, article, contributionService, helpFactory, eventHandlerFactory) {
     // inherited variables
     $scope.currentUser = $rootScope.currentUser;
     $scope.permissions = angular.copy($rootScope.permissions);
@@ -37,6 +37,9 @@ app.controller('showArticleController', function($scope, $rootScope, $stateParam
 
     // shared function setup
     eventHandlerFactory.buildMessageHandlers($scope);
+
+    // set help context
+    $scope.$emit('setHelpContexts', [helpFactory.article]);
 
     // retrieves comments on the article
     $scope.retrieveComments = function(page) {

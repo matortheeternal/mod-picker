@@ -5,10 +5,13 @@ app.run(function($futureState, indexFactory, filtersFactory) {
     $futureState.futureState(state);
 });
 
-app.controller('usersController', function($scope, $rootScope, $stateParams, $state, userService, columnsFactory, filtersFactory, indexService, indexFactory) {
+app.controller('usersController', function($scope, $rootScope, $stateParams, $state, userService, helpFactory, columnsFactory, filtersFactory, indexService, indexFactory) {
     // get parent variables
     $scope.currentUser = $rootScope.currentUser;
     $scope.permissions = $rootScope.permissions;
+
+    // set help context
+    $scope.$emit('setHelpContexts', [helpFactory.indexPage]);
 
     // columns for view
     $scope.columns = columnsFactory.userColumns();

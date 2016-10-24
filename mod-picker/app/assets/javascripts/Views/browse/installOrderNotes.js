@@ -5,10 +5,13 @@ app.run(function($futureState, indexFactory, filtersFactory) {
     $futureState.futureState(state);
 });
 
-app.controller('installOrderNotesController', function($scope, $rootScope, $stateParams, $state, contributionService, indexService,  filtersFactory, indexFactory, sortFactory) {
+app.controller('installOrderNotesController', function($scope, $rootScope, $stateParams, $state, contributionService, indexService, helpFactory, filtersFactory, indexFactory, sortFactory) {
     // get parent variables
     $scope.currentUser = $rootScope.currentUser;
     $scope.permissions = $rootScope.permissions;
+
+    // set help context
+    $scope.$emit('setHelpContexts', [helpFactory.indexPage]);
 
     // sort options for view
     $scope.sortOptions = sortFactory.installOrderNoteSortOptions();

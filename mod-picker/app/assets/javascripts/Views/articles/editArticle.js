@@ -36,6 +36,9 @@ app.controller('editArticleController', function($scope, $stateParams, article, 
     // shared function setup
     eventHandlerFactory.buildMessageHandlers($scope);
 
+    // set help context
+    $scope.$emit('setHelpContexts', []);
+
     // returns true if the article is valid
     $scope.articleValid = function() {
         var article = $scope.article;
