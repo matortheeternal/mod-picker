@@ -182,6 +182,10 @@
         background-color: $error_primary;
         font-weight: 500;
         padding: 5px;
+
+        .remove-item {
+          cursor:pointer;
+        }
       }
 
       .text-container {

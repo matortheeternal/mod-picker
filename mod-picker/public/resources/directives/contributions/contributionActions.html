@@ -1,9 +1,9 @@
 <div class="moderator-message" ng-if="modNote.addingNote">
     <div class="message-title">
         New Moderator Message
-        <div>
-            <i class="fa fa-times remove-icon" aria-hidden="true" ng-click="discardNote()"></i>
-        </div>
+        <span class="right-item remove-item" ng-click="discardNote()">
+            <i class="fa fa-times" aria-hidden="true"></i>
+        </span>
     </div>
 
     <text-area data="modNote.message" ng-refresh="updateMDE" class="mod-note-text-area"></text-area>
