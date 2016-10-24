@@ -35,5 +35,7 @@ app.controller('helperController', function($scope, $rootScope, $sce) {
     $scope.$on('setHelpContexts', function(helpContexts) {
         $scope.helpContexts = helpContexts;
         $scope.trustContexts();
+        $scope.helperDisabled = ($scope.helpContexts.length == 0);
+        if ($scope.helperDisabled) $scope.showHelper = false;
     });
 });
