@@ -147,7 +147,8 @@ class Mod < ActiveRecord::Base
   }, allow_destroy: true
 
   # COUNTER CACHE
-  counter_cache :required_mods, :required_by, :stars
+  counter_cache :required_mods, :required_by
+  counter_cache :mod_stars, column: 'stars_count'
   counter_cache :reviews, :compatibility_notes, :install_order_notes, :load_order_notes, conditional: { hidden: false, approved: true }
   counter_cache :mod_lists, :tags, :corrections, conditional: { hidden: false }
   counter_cache_on :submitter, column: 'submitted_mods_count', conditional: { hidden: false }
