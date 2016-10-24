@@ -7,11 +7,37 @@ helper {
 
   .help-context {
     max-width: 200px;
+    position: relative;
     margin-bottom: 20px;
     font-size: 14px;
     background-color: $secondary_background;
     border: 1px solid $hard_border_color;
+    border-radius: 4px;
     padding: 4px;
+
+    &::before {
+      content: "";
+      position: absolute;
+      bottom: -16px;
+      left: $helper_head_offset;
+      border-width: 15px 9px 0;
+      border-style: solid;
+      border-color: $hard_border_color transparent;
+      display: block;
+      width: 0;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: -14px;
+      left: $helper_head_offset + 1px;
+      border-width: 14px 8px 0;
+      border-style: solid;
+      border-color: $secondary_background transparent;
+      display: block;
+      width: 0;
+    }
   }
 
   .helper-container {
@@ -25,9 +51,10 @@ helper {
     }
 
     div.helper {
-      min-width: 200px;
-      min-height: 200px;
+      min-width: 220px;
+      min-height: $helper_height;
       background-image: url($helper_image);
+      background-repeat: no-repeat;
     }
   }
 

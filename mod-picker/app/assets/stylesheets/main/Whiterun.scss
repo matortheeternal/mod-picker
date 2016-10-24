@@ -2,6 +2,8 @@
 
 $banner_image: image_path("whiterun.jpg");
 $helper_image: image_path("farengar.png");
+$helper_head_offset: 84px;
+$helper_height: 180px;
 
 $text_color: #000;
 $inverse_text_color: #eee;
@@ -23,7 +25,7 @@ $h2_color: #000;
 $h3_color: #665b50;
 $h4_color: #575964;
 
-$action_color: #c29d57; // #c0a060, #c2944a
+$action_color: #c29d57;
 $action_text_color: #eee;
 $bright_action_color: #ebcf94;
 
@@ -34,7 +36,7 @@ $bar_text_color: #eee;
 $bar_highlight_text_color: #c9a9a9;
 
 $link_color: #182e8f;
-$link_hover_color_primary: #3678BF; // #406bba, #2c85c5, #3678BF
+$link_hover_color_primary: #3678BF;
 $link_hover_color_secondary: #508bda;
 
 $slider_bg_color: #cacaca;
