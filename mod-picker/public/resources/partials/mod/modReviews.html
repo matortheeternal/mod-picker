@@ -65,7 +65,7 @@
      <!-- current user's review -->
     <div class="content-block user-review" ng-if="mod.user_review">
         <div class="content-title" ng-click="myReviewExpanded = !myReviewExpanded">
-            Your Review ({{mod.user_review.overall_rating}}/100)
+            Your Review ({{mod.user_review.overall_rating | number:0}}}/100)
             <i class="fa fa-caret-down" aria-hidden="true" ng-hide="myReviewExpanded"></i>
             <i class="fa fa-caret-up" aria-hidden="true" ng-show="myReviewExpanded"></i>
         </div>
