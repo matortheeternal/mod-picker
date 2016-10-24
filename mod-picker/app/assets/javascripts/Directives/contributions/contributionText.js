@@ -16,10 +16,12 @@ app.controller('contributionTextController', function($scope, $rootScope, contri
 
     $scope.removeModeratorMessage = function() {
         var oldMessage = $scope.target.moderator_message;
-        $scope.target.moderator_message = null;
 
-        contributionService.updateContribution($scope.modelObj.route, $scope.target.id, $scope.target).then(function() {
+        contributionService.removeModeratorNote($scope.modelObj.route, $scope.target.id).then(function() {
             $scope.$emit("successMessage", "Moderator Note removed successfully.");
+
+            //update ui if the note is successfully removed on the server
+            $scope.target.moderator_message = null;
         }, function(response) {
             var params = { label: 'Error removing Moderator Note', response: response };
             $scope.$emit('errorMessage', params);

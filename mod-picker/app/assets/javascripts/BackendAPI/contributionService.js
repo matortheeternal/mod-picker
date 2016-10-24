@@ -55,6 +55,10 @@ app.service('contributionService', function(backend, $q, userTitleService, pageU
         return backend.update('/' + route + '/' + id, contribution);
     };
 
+    this.removeModeratorNote = function(route, id) {
+        return backend.update('/' + route + '/' + id, { moderator_message: null });
+    };
+
     this.retrieveComments = function(route, id, options, pageInformation) {
         var action = $q.defer();
         backend.post('/' + route + '/' + id + '/comments', options).then(function(data) {
