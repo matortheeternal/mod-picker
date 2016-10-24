@@ -1,9 +1,12 @@
 class CompatibilityNote < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, Correctable, Helpfulable, Reportable, Approveable, ScopeHelpers, Trackable, BetterJson
+  include Filterable, Sortable, RecordEnhancements, Correctable, Helpfulable, Reportable, Approveable, ScopeHelpers, Trackable, BetterJson, Dateable
 
   # ATTRIBUTES
   enum status: [ :incompatible, :partially_incompatible, :compatibility_mod, :compatibility_option, :make_custom_patch ]
   self.per_page = 25
+
+  # DATE COLUMNS
+  date_column :submitted, :edited
 
   # EVENT TRACKING
   track :added, :approved, :hidden
@@ -54,7 +57,7 @@ class CompatibilityNote < ActiveRecord::Base
 
   # CALLBACKS
   after_create :increment_counters
-  before_save :set_adult, :set_dates
+  before_save :set_adult
   before_destroy :decrement_counters
 
   def get_existing_note(mod_ids)
@@ -121,14 +124,6 @@ class CompatibilityNote < ActiveRecord::Base
   end
 
   private
-    def set_dates
-      if submitted.nil?
-        self.submitted = DateTime.now
-      else
-        self.edited = DateTime.now
-      end
-    end
-
     def set_adult
       self.has_adult_content = first_mod.has_adult_content || second_mod.has_adult_content
       true
