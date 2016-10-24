@@ -126,11 +126,11 @@ module CounterCache
       end
     end
 
-    def create_update_counters_callback
-      return if respond_to?(:update_counters)
+    def create_change_counters_callback
+      return if respond_to?(:change_counters)
       class_eval do
-        after_update :update_counters
-        def update_counters
+        after_update :change_counters
+        def change_counters
           self.class._counter_cache_on.each do |name, options|
             change = get_counter_change(name, options)
             next unless change != 0
@@ -169,7 +169,8 @@ module CounterCache
     def create_counter_callbacks_if_missing
       create_increment_counters_callback
       create_decrement_counters_callback
-      create_update_counters_callback
+      create_track_counter_conditionals_callback
+      create_change_counters_callback
     end
 
     def counter_cache_column(name, options)
