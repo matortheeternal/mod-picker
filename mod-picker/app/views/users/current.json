@@ -1,5 +1,5 @@
 {
-  "only": ["id", "username", "role", "title"],
+  "only": ["id", "username", "role", "title", "sign_in_count"],
   "include": {
     "reputation": {
       "only": ["overall", "rep_to_count"]
