@@ -97,18 +97,26 @@ module CounterCache
   end
 
   module ClassMethods
-    def count_subquery(name)
-      # TODO: Support conditional here
-      reflection = self.class.reflections[name.to_s]
+    def apply_conditional_to_subquery(subquery, subquery_table, options)
+      return subquery unless options.has_key?(:conditional)
+      subquery.where(options[:conditional].map { |(k, v)|
+        subquery_table[k].eq(v)
+      }.inject(:and))
+    end
+
+    def count_subquery(name, options)
+      reflection = reflections[name.to_s]
       subquery_table = reflection.klass.arel_table
-      subquery_table.where(arel_table[:id].
+      subquery = subquery_table.where(arel_table[:id].
           eq(subquery_table[reflection.foreign_key.to_sym])).
           project(Arel.sql('*').count)
+      apply_conditional_to_subquery(subquery, subquery_table, options)
     end
 
     def reset_counter_query(name, column=nil)
-      column ||= self.class._counter_cache[name.to_sym][:column]
-      arel_table[column].eq(count_subquery(name)).to_sql
+      options = _counter_cache[name.to_sym]
+      column ||= options[:column]
+      arel_table[column].eq(count_subquery(name, options)).to_sql
     end
 
     def reset_counter!(name, column=nil)
