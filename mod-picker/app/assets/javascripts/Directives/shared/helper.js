@@ -7,7 +7,17 @@ app.directive('helper', function() {
     }
 });
 
-app.controller('helperController', function($scope, $rootScope) {
+app.controller('helperController', function($scope, $rootScope, $sce) {
+    $scope.helpContexts = ['Welcome to the Mod Picker Beta!  Check out the <a href="/article/1">Welcome Article</a> for help getting started using the site.'];
+
+    $scope.trustContexts = function() {
+        $scope.helpContexts = $scope.helpContexts.map(function(context) {
+            return $sce.trustAsHtml(context);
+        });
+    };
+
+    $scope.trustContexts();
+
     $scope.toggleHelper = function() {
         $scope.showHelper = !$scope.showHelper;
     };
@@ -22,7 +32,8 @@ app.controller('helperController', function($scope, $rootScope) {
         }
     });
 
-    $scope.$on('setHelperContext', function(helperContext) {
-        $scope.helperContext = helperContext;
+    $scope.$on('setHelpContexts', function(helpContexts) {
+        $scope.helpContexts = helpContexts;
+        $scope.trustContexts();
     });
 });

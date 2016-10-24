@@ -1,5 +1,10 @@
-<div class="help-context" ng-show="showHelper">
-    Welcome to the Mod Picker Beta!  Check out the <a href="/article/1">Welcome Article</a> for help getting started using the site.
+<div class="help-contexts" ng-if="showHelper">
+    <div class="help-context" ng-repeat="context in helpContexts">
+        <!--<span class="hide-context" ng-click="removeContext($index)">
+            <i class="fa fa-times"></i>
+        </span>-->
+        <span ng-bind-html="context"></span>
+    </div>
 </div>
 <div class="helper-container" ng-show="showHelper">
     <span class="hide-helper" ng-click="toggleHelper()" title="Hide the helper.">
