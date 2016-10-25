@@ -47,10 +47,8 @@ class InstallOrderNote < ActiveRecord::Base
   has_many :editors, -> { uniq }, :class_name => 'User', :through => 'history_entries'
 
   # VALIDATIONS
-  validates :game_id, :submitted_by, :first_mod_id, :second_mod_id, :text_body, presence: true
-
+  validates :game_id, :submitted_by, :text_body, presence: true
   validates :text_body, length: { in: 256..16384 }
-  validate :unique_mods
 
   # CALLBACKS
   after_create :increment_counters

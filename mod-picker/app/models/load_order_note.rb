@@ -51,10 +51,8 @@ class LoadOrderNote < ActiveRecord::Base
   has_many :editors, -> { uniq }, :class_name => 'User', :through => 'history_entries'
 
   # VALIDATIONS
-  validates :game_id, :submitted_by, :first_plugin_id, :second_plugin_id, :text_body, presence: true
-
+  validates :game_id, :submitted_by, :text_body, presence: true
   validates :text_body, length: {in: 256..16384}
-  validate :unique_plugins
 
   # CALLBACKS
   after_create :increment_counters
