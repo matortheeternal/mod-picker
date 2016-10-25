@@ -17,14 +17,13 @@ class HelpPage < ActiveRecord::Base
 
   has_many :comments, :as => 'commentable'
 
+  # COUNTER CACHE
+  counter_cache_on :game
+
   # VALIDATIONS
   validates :title, :text_body, :category, presence: true
   validates :title, length: {in: 4..128}
   validates :text_body, length: {in: 64..32768}
-
-  # CALLBACKS
-  after_create :increment_counters
-  before_destroy :decrement_counters
 
   # show image banner via post id
   def display_image
@@ -41,13 +40,4 @@ class HelpPage < ActiveRecord::Base
     # TODO: This isn't properly reversible, need to just make string url_safe maybe?
     self.title.parameterize.underscore
   end
-
-  private
-    def decrement_counters
-      self.game.update_counter(:help_pages_count, -1) if self.game_id.present?
-    end
-
-    def increment_counters
-      self.game.update_counter(:help_pages_count, 1) if self.game_id.present?
-    end
 end
