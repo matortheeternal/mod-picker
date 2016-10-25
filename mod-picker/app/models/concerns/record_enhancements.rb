@@ -28,5 +28,17 @@ module RecordEnhancements
     def update_all_counters(model, column, foreign_key)
       model.update_all("#{column} = (SELECT COUNT(*) from #{table_name} WHERE #{model.table_name}.id = #{table_name}.#{foreign_key})")
     end
+
+    def shortcut_methods(primary_methods, secondary_methods, names)
+      primary_methods.each_with_index do |p, pi|
+        secondary_methods.each_with_index do |s, si|
+          class_eval <<-shortcut
+            def #{names[pi*secondary_methods.length + si]}
+              #{p}.#{s}
+            end
+          shortcut
+        end
+      end
+    end
   end
 end
