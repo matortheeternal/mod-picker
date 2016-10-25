@@ -64,4 +64,8 @@ class NexusInfo < ActiveRecord::Base
       ModAuthor.find_or_create_by(mod_id: mod_id, user_id: bio.user_id)
     end
   end
+
+  def self.can_scrape_statistics?
+    Rails.application.config.scrape_nexus_statistics
+  end
 end
