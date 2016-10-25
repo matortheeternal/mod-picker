@@ -149,8 +149,16 @@ class Mod < ActiveRecord::Base
   # COUNTER CACHE
   counter_cache :required_mods, :required_by
   counter_cache :mod_stars, column: 'stars_count'
-  counter_cache :reviews, :compatibility_notes, :install_order_notes, :load_order_notes, conditional: { hidden: false, approved: true }
-  counter_cache :mod_lists, :tags, :corrections, conditional: { hidden: false }
+  counter_cache :reviews, conditional: { hidden: false, approved: true }
+  counter_cache :compatibility_notes, conditional: { hidden: false, approved: true },
+      custom_reflection: { klass: CompatibilityNote, query_method: 'count_subquery' }
+  counter_cache :install_order_notes, conditional: { hidden: false, approved: true },
+      custom_reflection: { klass: InstallOrderNote, query_method: 'count_subquery' }
+  counter_cache :load_order_notes, conditional: { hidden: false, approved: true },
+      custom_reflection: { klass: LoadOrderNote, query_method: 'count_subquery' }
+  counter_cache :corrections, conditional: { hidden: false, correctable_type: 'Mod' }
+  counter_cache :mod_tags, column: 'tags_count'
+  counter_cache :mod_list_mods, column: 'mod_lists_count'
   counter_cache_on :submitter, column: 'submitted_mods_count', conditional: { hidden: false }
 
   # VALIDATIONS
