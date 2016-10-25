@@ -17,6 +17,9 @@ class LoadOrderNote < ActiveRecord::Base
   subscribe :mod_author_users, to: [:added, :approved, :unhidden]
   subscribe :submitter, to: [:message, :approved, :unapproved, :hidden, :unhidden]
 
+  # SHORTCUT METHODS
+  shortcut_methods [:plugins, :mods], [:first, :second], [:first_plugin, :second_plugin, :first_mod, :second_mod]
+
   # SCOPES
   include_scope :hidden
   include_scope :has_adult_content, :alias => 'include_adult'
@@ -58,23 +61,6 @@ class LoadOrderNote < ActiveRecord::Base
   after_create :increment_counters
   before_save :set_adult
   before_destroy :decrement_counters
-
-  # TODO: Make some kind of shortcut method macro for these
-  def first_plugin
-    plugins.first
-  end
-
-  def second_plugin
-    plugins.second
-  end
-
-  def first_mod
-    first_plugin.mod
-  end
-
-  def second_mod
-    second_plugin.mod
-  end
 
   def mod_author_users
     User.includes(:mod_authors).where(:mod_authors => {mod_id: mods.ids})

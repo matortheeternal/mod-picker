@@ -17,6 +17,9 @@ class InstallOrderNote < ActiveRecord::Base
   subscribe :mod_author_users, to: [:added, :approved, :unhidden]
   subscribe :submitter, to: [:message, :approved, :unapproved, :hidden, :unhidden]
 
+  # SHORTCUT METHODS
+  shortcut_methods [:mods], [:first, :second], [:first_mod, :second_mod]
+
   # SCOPES
   include_scope :hidden
   include_scope :has_adult_content, :alias => 'include_adult'
@@ -54,15 +57,6 @@ class InstallOrderNote < ActiveRecord::Base
   after_create :increment_counters
   before_save :set_adult
   before_destroy :decrement_counters
-
-  # TODO: Make some kind of shortcut method macro for these
-  def first_mod
-    mods.first
-  end
-
-  def second_mod
-    mods.second
-  end
 
   def mod_author_users
     User.includes(:mod_authors).where(:mod_authors => {mod_id: mods.ids})
