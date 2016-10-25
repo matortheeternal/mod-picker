@@ -227,19 +227,6 @@ class Mod < ActiveRecord::Base
     save!
   end
 
-  # note associations
-  def compatibility_notes
-    CompatibilityNote.where('first_mod_id = :mod_id OR second_mod_id = :mod_id', mod_id: id)
-  end
-
-  def install_order_notes
-    InstallOrderNote.where('first_mod_id = :mod_id OR second_mod_id = :mod_id', mod_id: id)
-  end
-
-  def load_order_notes
-    LoadOrderNote.where('first_plugin_id in (:plugin_ids) OR second_plugin_id in (:plugin_ids)', plugin_ids: plugins.ids)
-  end
-
   def contribution_authors
     User.contributors(self)
   end
