@@ -2,6 +2,8 @@ class LoadOrderNote < ActiveRecord::Base
   include Filterable, Sortable, RecordEnhancements, Correctable, Helpfulable, Reportable, Approveable, ScopeHelpers, Trackable, BetterJson, Dateable
 
   # ATTRIBUTES
+  # this is a hack so the migration will run
+  attr_accessor(:first_plugin_id, :second_plugin_id) unless respond_to?(:first_plugin_id)
   self.per_page = 25
 
   # DATE COLUMNS
@@ -37,12 +39,9 @@ class LoadOrderNote < ActiveRecord::Base
   has_one :submitter_reputation, :class_name => 'UserReputation', :through => 'submitter', :source => 'reputation'
 
   # plugins associatied with this load order note
-  belongs_to :first_plugin, :foreign_key => 'first_plugin_id', :class_name => 'Plugin'
-  belongs_to :second_plugin, :foreign_key => 'second_plugin_id', :class_name => 'Plugin'
-
-  # mods associated with this load order note
-  has_one :first_mod, :through => :first_plugin, :class_name => 'Mod', :source => 'mod', :foreign_key => 'mod_id'
-  has_one :second_mod, :through => :second_plugin, :class_name => 'Mod', :source => 'mod', :foreign_key => 'mod_id'
+  has_many :plugin_load_order_notes, -> { order(:index) }
+  has_many :plugins, :through => :plugin_load_order_notes
+  has_many :mods, :through => :plugin_load_order_notes
 
   # mod lists this load order note is ignored on
   has_many :mod_list_ignored_notes, :as => 'note'
@@ -62,38 +61,25 @@ class LoadOrderNote < ActiveRecord::Base
   before_save :set_adult
   before_destroy :decrement_counters
 
-  def get_existing_note(plugin_ids)
-    table = LoadOrderNote.arel_table
-    LoadOrderNote.plugins(plugin_ids).where(table[:hidden].eq(0).and(table[:id].not_eq(id))).first
+  # TODO: Make some kind of shortcut method macro for these
+  def first_plugin
+    plugins.first
   end
 
-  def unique_plugins
-    if first_plugin_id == second_plugin_id
-      errors.add(:plugins, "You cannot create a Load Order Note between a plugin and itself.")
-      return
-    end
-
-    note = get_existing_note([first_plugin_id, second_plugin_id])
-    if note.present?
-      if note.approved
-        errors.add(:plugins, "A Load Order Note for these plugins already exists.")
-        errors.add(:link_id, note.id)
-      else
-        errors.add(:plugins, "An unapproved Load Order Note for these plugins already exists.")
-      end
-    end
+  def second_plugin
+    plugins.second
   end
 
-  def mods
-    [first_mod, second_mod]
+  def first_mod
+    first_plugin.mod
+  end
+
+  def second_mod
+    second_plugin.mod
   end
 
   def mod_author_users
-    User.includes(:mod_authors).where(:mod_authors => {mod_id: [first_mod.id, second_mod.id]})
-  end
-
-  def plugins
-    [first_plugin, second_plugin]
+    User.includes(:mod_authors).where(:mod_authors => {mod_id: mods.ids})
   end
 
   def create_history_entry
@@ -107,7 +93,7 @@ class LoadOrderNote < ActiveRecord::Base
   end
 
   def self.update_adult(ids)
-    LoadOrderNote.where(id: ids).joins(:first_mod, :second_mod).update_all("load_order_notes.has_adult_content = mods.has_adult_content OR second_mods_load_order_notes.has_adult_content")
+    find(ids).joins(:mods).update_all("load_order_notes.has_adult_content = mods.has_adult_content")
   end
 
   def self.sortable_columns
