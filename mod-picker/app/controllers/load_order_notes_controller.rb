@@ -51,6 +51,6 @@ class LoadOrderNotesController < ContributionsController
     # Params that can be updated
     def contribution_update_params
       # TODO: only allow swapping the first and second plugin ids
-      params.require(:load_order_note).permit(:first_plugin_id, :second_plugin_id, :text_body, :edit_summary, (:moderator_message if current_user.can_moderate?))
+      params.require(:load_order_note).permit(:swap_plugins, :text_body, :edit_summary, (:moderator_message if current_user.can_moderate?))
     end
 end
