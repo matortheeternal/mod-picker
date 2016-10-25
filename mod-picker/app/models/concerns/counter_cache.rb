@@ -228,9 +228,9 @@ module CounterCache
       end
     end
 
-    def bool_counter_cache(name, conditional_column, columns)
-      counter_cache name, column: columns[true], conditional: { conditional_column => true }
-      counter_cache name, column: columns[false], conditional: { conditional_column => false }
+    def bool_counter_cache(name, conditional_column, aliases)
+      counter_cache aliases[true], method: name, conditional: { conditional_column => true }
+      counter_cache aliases[false], method: name, conditional: { conditional_column => false }
     end
 
     def counter_cache_on(*names, **options)
@@ -240,9 +240,9 @@ module CounterCache
       create_counter_callbacks_if_missing
     end
 
-    def bool_counter_cache_on(name, conditional_column, columns)
-      counter_cache name, column: columns[true], conditional: { conditional_column => true }
-      counter_cache name, column: columns[false], conditional: { conditional_column => false }
+    def bool_counter_cache_on(name, conditional_column, aliases)
+      counter_cache_on aliases[true], method: name, conditional: { conditional_column => true }, column: "#{aliases[true]}_count"
+      counter_cache_on aliases[false], method: name, conditional: { conditional_column => false }, column: "#{aliases[false]}_count"
     end
   end
 end
