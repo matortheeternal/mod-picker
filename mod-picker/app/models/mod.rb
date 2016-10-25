@@ -86,26 +86,23 @@ class Mod < ActiveRecord::Base
     where(where_clause.join(" OR "), author: author)
   }
 
+  # ASSOCIATIONS
   belongs_to :game, :inverse_of => 'mods'
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'submitted_mods'
 
-  # categories the mod belongs to
+  # categories
   belongs_to :primary_category, :class_name => 'Category', :foreign_key => 'primary_category_id', :inverse_of => 'primary_mods'
   belongs_to :secondary_category, :class_name => 'Category', :foreign_key => 'secondary_category_id', :inverse_of => 'secondary_mods'
 
-  # site statistics associated with the mod
+  # sources
   has_one :nexus_infos, :class_name => 'NexusInfo', :dependent => :nullify
   has_one :lover_infos, :class_name => 'LoverInfo', :dependent => :nullify
   has_one :workshop_infos, :class_name => 'WorkshopInfo', :dependent => :nullify
-
-  # custom sources
   has_many :custom_sources, :inverse_of => 'mod', :dependent => :destroy
 
-  # mod options
+  # analysis information
   has_many :mod_options, :inverse_of => 'mod', :dependent => :destroy
-  # plugins associated with the mod
   has_many :plugins, :inverse_of => 'mod', :through => 'mod_options'
-  # assets associated with the mod
   has_many :mod_asset_files, :inverse_of => 'mod', :through => 'mod_options'
   has_many :asset_files, :through => :mod_asset_files, :inverse_of => 'mods'
 
@@ -120,9 +117,18 @@ class Mod < ActiveRecord::Base
   has_many :mod_authors, :inverse_of => 'mod', :dependent => :destroy
   has_many :author_users, :class_name => 'User', :through => 'mod_authors', :source => 'user', :inverse_of => 'mods'
 
-  # community feedback on the mod
-  has_many :corrections, :as => 'correctable', :dependent => :destroy
+  # contributions on the mod
   has_many :reviews, :inverse_of => 'mod', :dependent => :destroy
+  has_many :mod_compatibility_notes, :inverse_of => 'mod'
+  has_many :compatibility_notes, :through => 'mod_compatibility_notes', :inverse_of => 'mods', :dependent => :destroy
+  has_many :mod_install_order_notes, :inverse_of => 'mod'
+  has_many :install_order_notes, :through => 'mod_install_order_notes', :inverse_of => 'mods', :dependent => :destroy
+  has_many :plugin_load_order_notes, :through => 'plugins', :inverse_of => 'mod'
+  has_many :load_order_notes, :through => 'plugin_load_order_notes', :inverse_of => 'mods', :dependent => :destroy
+  has_many :reviews, :inverse_of => 'mod', :dependent => :destroy
+  has_many :corrections, :as => 'correctable', :dependent => :destroy
+
+  # stars
   has_many :mod_stars, :inverse_of => 'mod', :dependent => :destroy
   has_many :user_stars, :class_name => 'User', :through => 'mod_stars', :source => 'user', :inverse_of => 'starred_mods'
 
