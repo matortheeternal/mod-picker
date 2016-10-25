@@ -122,6 +122,12 @@ class CompatibilityNote < ActiveRecord::Base
     }
   end
 
+  def self.count_subquery
+    arel_table.where(Mod.arel_table[:id].eq(arel_table[:first_mod_id]).
+        or(Mod.arel_table[:id].eq(arel_table[:second_mod_id]))).
+        project(Arel.sql('*').count)
+  end
+
   private
     def set_adult
       self.has_adult_content = first_mod.has_adult_content || second_mod.has_adult_content

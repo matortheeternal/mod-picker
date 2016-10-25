@@ -121,6 +121,24 @@ class LoadOrderNote < ActiveRecord::Base
     }
   end
 
+  def self.join_to_mod_options(query, source_column, plugins, options)
+    query.join(plugins).on(arel_table[source_column].eq(plugins[:id])).
+        join(options).on(plugins[:mod_option_id].eq(options[:id]))
+  end
+
+  def self.count_subquery
+    mod_options = ModOption.arel_table
+    mod_options_alias = ModOption.arel_table.alias
+    [
+        [:first_plugin_id, Plugin.arel_table, mod_options],
+        [:second_plugin_id, Plugin.arel_table.alias, mod_options_alias]
+    ].inject(arel_table) { |query, args|
+      query = join_to_mod_options(query, *args)
+    }.where(Mod.arel_table[:id].eq(mod_options[:mod_id]).
+        or(Mod.arel_table[:id].eq(mod_options_alias[:mod_id]))).
+        project(Arel.sql('*').count)
+  end
+
   private
     def set_adult
       self.has_adult_content = first_mod.has_adult_content || second_mod.has_adult_content
