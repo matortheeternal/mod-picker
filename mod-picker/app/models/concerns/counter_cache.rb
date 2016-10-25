@@ -32,15 +32,15 @@ module CounterCache
     update_column("#{column} = #{column} #{operator} #{offset.abs}")
   end
 
-  def resolve_conditional_association(name, options)
-    return public_send(name) unless options.has_key?(:conditional)
-    public_send(name).where(options[:conditional])
+  def resolve_conditional_association(association_name, options)
+    return public_send(association_name) unless options.has_key?(:conditional)
+    public_send(association_name).where(options[:conditional])
   end
 
   def reset_counter(name, column=nil)
     options = self.class._counter_cache[name.to_sym]
     column ||= options[:column]
-    self[column] = resolve_conditional_association(name, options).count
+    self[column] = resolve_conditional_association(options[:method] || name, options).count
   end
 
   def reset_counter!(name, column=nil)
@@ -91,51 +91,51 @@ module CounterCache
     end
   end
 
-  def update_association_counter(name, column, change)
-    association = public_send(name)
+  def update_association_counter(association_name, column, change)
+    association = public_send(association_name)
     association.update_counter(column, change) if association.present?
   end
 
   module ClassMethods
-    def subquery_table(name, options)
+    def subquery_table(association_name, options)
       if options.has_key?(:custom_reflection)
         options[:custom_reflection][:klass].arel_table
       else
-        reflections[name.to_s].klass.arel_table
+        reflections[association_name.to_s].klass.arel_table
       end
     end
 
-    def apply_conditional_to_subquery(subquery, name, options)
+    def apply_conditional_to_subquery(subquery, association_name, options)
       return subquery unless options.has_key?(:conditional)
-      reflection_table = subquery_table(name, options)
+      reflection_table = subquery_table(association_name, options)
       subquery.where(options[:conditional].map { |(k, v)|
         reflection_table[k].eq(v)
       }.inject(:and))
     end
 
-    def custom_count_subquery(name, options)
+    def custom_count_subquery(association_name, options)
       custom_reflection = options[:custom_reflection]
       custom_reflection[:klass].public_send(custom_reflection[:query_method])
     end
 
-    def reflection_count_subquery(name, options)
-      reflection = reflections[name.to_s]
+    def reflection_count_subquery(association_name, options)
+      reflection = reflections[association_name.to_s]
       reflection_table = reflection.klass.arel_table
       foreign_key = reflection.foreign_key.to_sym
       reflection_table.where(arel_table[:id].eq(reflection_table[foreign_key])).
           project(Arel.sql('*').count)
     end
 
-    def count_subquery(name, options)
+    def count_subquery(association_name, options)
       subquery_method = options.has_key?(:custom_reflection) ? :custom : :reflection
-      subquery = public_send("#{subquery_method}_count_subquery", name, options)
-      apply_conditional_to_subquery(subquery, name, options)
+      subquery = public_send("#{subquery_method}_count_subquery", association_name, options)
+      apply_conditional_to_subquery(subquery, association_name, options)
     end
 
     def reset_counter_query(name, column=nil)
       options = _counter_cache[name.to_sym]
       column ||= options[:column]
-      arel_table[column].eq(count_subquery(name, options)).to_sql
+      arel_table[column].eq(count_subquery(options[:method] || name, options)).to_sql
     end
 
     def reset_counter!(name, column=nil)
@@ -171,9 +171,9 @@ module CounterCache
         after_update :change_counters
         def change_counters
           self.class._counter_cache_on.each do |name, options|
-            change = get_counter_change(name, options)
+            change = get_counter_change(options[:method] || name, options)
             next unless change != 0
-            update_association_counter(name, options[:column], change)
+            update_association_counter(options[:method] || name, options[:column], change)
           end
         end
       end
@@ -186,7 +186,7 @@ module CounterCache
         def increment_counters
           self.class._counter_cache_on.each do |name, options|
             next unless eval_counter_condition(options)
-            update_association_counter(name, options[:column], 1)
+            update_association_counter(options[:method] || name, options[:column], 1)
           end
         end
       end
@@ -199,7 +199,7 @@ module CounterCache
         def decrement_counters
           self.class._counter_cache_on.each do |name, options|
             next unless eval_counter_condition(options)
-            update_association_counter(name, options[:column], -1)
+            update_association_counter(options[:method] || name, options[:column], -1)
           end
         end
       end
