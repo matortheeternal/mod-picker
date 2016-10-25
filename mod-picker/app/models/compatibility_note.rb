@@ -38,8 +38,8 @@ class CompatibilityNote < ActiveRecord::Base
   has_one :submitter_reputation, :class_name => 'UserReputation', :through => 'submitter', :source => 'reputation'
 
   # mods associatied with this compatibility note
-  has_many :mod_compatibility_order_notes, -> { order(:index) }
-  has_many :mods, :through => :mod_compatibility_order_notes
+  has_many :mod_compatibility_notes, -> { order(:index) }
+  has_many :mods, :through => :mod_compatibility_notes
 
   # associated compatibility plugin/compatibilty mod for automatic resolution purposes
   belongs_to :compatibility_plugin, :class_name => 'Plugin', :foreign_key => 'compatibility_plugin_id', :inverse_of => 'compatibility_notes'
