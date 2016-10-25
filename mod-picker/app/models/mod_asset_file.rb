@@ -1,5 +1,5 @@
 class ModAssetFile < ActiveRecord::Base
-  include ScopeHelpers, BetterJson
+  include ScopeHelpers, BetterJson, CounterCache
 
   self.primary_keys = :mod_option_id, :asset_file_id
 
@@ -22,9 +22,8 @@ class ModAssetFile < ActiveRecord::Base
   has_one :mod, :through => 'mod_option', :inverse_of => 'mod_asset_files'
   belongs_to :asset_file, :inverse_of => 'mod_asset_files'
 
-  # CALLBACKS
-  after_create :increment_counters
-  before_destroy :decrement_counters
+  # COUNTER CACHE
+  counter_cache_on :asset_file
 
   def self.mod_asset_files
     @mod_asset_files ||= arel_table
@@ -60,13 +59,4 @@ class ModAssetFile < ActiveRecord::Base
       maf.update(asset_file_id: asset_file.id, subpath: basepath)
     end
   end
-
-  private
-    def increment_counters
-      asset_file.update_counter(:mod_asset_files_count, 1) if asset_file_id
-    end
-
-    def decrement_counters
-      asset_file.update_counter(:mod_asset_files_count, -1) if asset_file_id
-    end
 end
