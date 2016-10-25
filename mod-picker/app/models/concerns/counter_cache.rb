@@ -228,11 +228,21 @@ module CounterCache
       end
     end
 
+    def bool_counter_cache(name, conditional_column, columns)
+      counter_cache name, column: columns[true], conditional: { conditional_column => true }
+      counter_cache name, column: columns[false], conditional: { conditional_column => false }
+    end
+
     def counter_cache_on(*names, **options)
       names.each do |name|
         _counter_cache_on[name] = counter_cache_on_column(options.dup)
       end
       create_counter_callbacks_if_missing
+    end
+
+    def bool_counter_cache_on(name, conditional_column, columns)
+      counter_cache name, column: columns[true], conditional: { conditional_column => true }
+      counter_cache name, column: columns[false], conditional: { conditional_column => false }
     end
   end
 end
