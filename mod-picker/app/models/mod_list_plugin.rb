@@ -1,7 +1,7 @@
 class ModListPlugin < ActiveRecord::Base
   include RecordEnhancements, BetterJson, CounterCache
 
-  # Scopes
+  # SCOPES
   scope :official, -> (bool) {
     joins(:plugin => :mod).where(:mods => { is_official: bool })
   }
@@ -20,10 +20,6 @@ class ModListPlugin < ActiveRecord::Base
   validates :cleaned, :merged, inclusion: [true, false]
   # can only have a mod on a given mod list once
   validates :plugin_id, uniqueness: { scope: :mod_list_id, :message => "The plugin is already present on the mod list." }
-
-  # CALLBACKS
-  after_create :increment_counters
-  before_destroy :decrement_counters
 
   def required_plugins
     Master.plugins([self.plugin_id]).order(:master_plugin_id)
