@@ -1,11 +1,14 @@
 class ModListCustomMod < ActiveRecord::Base
-  include RecordEnhancements, ScopeHelpers, BetterJson
+  include RecordEnhancements, ScopeHelpers, BetterJson, CounterCache
 
   # SCOPES
   value_scope :is_utility
 
   # ASSOCIATIONS
   belongs_to :mod_list, :inverse_of => 'custom_mods'
+
+  # COUNTER CACHE
+  bool_counter_cache_on :mod_list, :is_utility, { true => :custom_tools, false => :custom_mods }
 
   # VALIDATIONS
   validates :mod_list_id, :index, :name, presence: true
@@ -15,21 +18,4 @@ class ModListCustomMod < ActiveRecord::Base
   # CALLBACKS
   after_create :increment_counters
   before_destroy :decrement_counters
-
-  private
-    def increment_counters
-      if self.is_utility
-        self.mod_list.update_counter(:custom_tools_count, 1)
-      else
-        self.mod_list.update_counter(:custom_mods_count, 1)
-      end
-    end
-
-    def decrement_counters
-      if self.is_utility
-        self.mod_list.update_counter(:custom_tools_count, -1)
-      else
-        self.mod_list.update_counter(:custom_mods_count, -1)
-      end
-    end
 end
