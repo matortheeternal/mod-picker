@@ -2,6 +2,8 @@ class CompatibilityNote < ActiveRecord::Base
   include Filterable, Sortable, RecordEnhancements, Correctable, Helpfulable, Reportable, Approveable, ScopeHelpers, Trackable, BetterJson, Dateable
 
   # ATTRIBUTES
+  # this is a hack so the migration will run
+  attr_accessor(:first_mod_id, :second_mod_id) unless respond_to?(:first_mod_id)
   enum status: [ :incompatible, :partially_incompatible, :compatibility_mod, :compatibility_option, :make_custom_patch ]
   self.per_page = 25
 
@@ -35,9 +37,9 @@ class CompatibilityNote < ActiveRecord::Base
 
   has_one :submitter_reputation, :class_name => 'UserReputation', :through => 'submitter', :source => 'reputation'
 
-  # associated mods
-  belongs_to :first_mod, :class_name => 'Mod', :foreign_key => 'first_mod_id'
-  belongs_to :second_mod, :class_name => 'Mod', :foreign_key => 'second_mod_id'
+  # mods associatied with this compatibility note
+  has_many :mod_compatibility_order_notes, -> { order(:index) }
+  has_many :mods, :through => :mod_compatibility_order_notes
 
   # associated compatibility plugin/compatibilty mod for automatic resolution purposes
   belongs_to :compatibility_plugin, :class_name => 'Plugin', :foreign_key => 'compatibility_plugin_id', :inverse_of => 'compatibility_notes'
@@ -60,34 +62,17 @@ class CompatibilityNote < ActiveRecord::Base
   before_save :set_adult
   before_destroy :decrement_counters
 
-  def get_existing_note(mod_ids)
-    table = CompatibilityNote.arel_table
-    CompatibilityNote.mods(mod_ids).where(table[:hidden].eq(0).and(table[:id].not_eq(id))).first
+  # TODO: Make some kind of shortcut method macro for these
+  def first_mod
+    mods.first
   end
 
-  def unique_mods
-    if first_mod_id == second_mod_id
-      errors.add(:mods, "You cannot create a Compatibility Note between a mod and itself.")
-      return
-    end
-
-    note = get_existing_note([first_mod_id, second_mod_id])
-    if note.present?
-      if note.approved
-        errors.add(:mods, "A Compatibility Note for these mods already exists.")
-        errors.add(:link_id, note.id)
-      else
-        errors.add(:mods, "An unapproved Compatibility Note for these mods already exists.")
-      end
-    end
-  end
-
-  def mods
-    [first_mod, second_mod]
+  def second_mod
+    mods.second
   end
 
   def mod_author_users
-    User.includes(:mod_authors).where(:mod_authors => {mod_id: [first_mod_id, second_mod_id]})
+    User.includes(:mod_authors).where(:mod_authors => {mod_id: mods.ids})
   end
 
   def create_history_entry
@@ -104,7 +89,7 @@ class CompatibilityNote < ActiveRecord::Base
   end
 
   def self.update_adult(ids)
-    CompatibilityNote.where(id: ids).joins(:first_mod, :second_mod).update_all("compatibility_notes.has_adult_content = mods.has_adult_content OR second_mods_compatibility_notes.has_adult_content")
+    find(ids).joins(:mods).update_all("compatibility_notes.has_adult_content = mods.has_adult_content")
   end
 
   def self.sortable_columns
