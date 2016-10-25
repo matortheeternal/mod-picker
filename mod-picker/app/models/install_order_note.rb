@@ -2,6 +2,8 @@ class InstallOrderNote < ActiveRecord::Base
   include Filterable, Sortable, RecordEnhancements, Correctable, Helpfulable, Reportable, Approveable, ScopeHelpers, Trackable, BetterJson, Dateable
 
   # ATTRIBUTES
+  # this is a hack so the migration will run
+  attr_accessor(:first_mod_id, :second_mod_id) unless respond_to?(:first_mod_id)
   self.per_page = 25
 
   # DATE COLUMNS
@@ -34,8 +36,8 @@ class InstallOrderNote < ActiveRecord::Base
   has_one :submitter_reputation, :class_name => 'UserReputation', :through => 'submitter', :source => 'reputation'
 
   # mods associatied with this install order note
-  belongs_to :first_mod, :foreign_key => 'first_mod_id', :class_name => 'Mod'
-  belongs_to :second_mod, :foreign_key => 'second_mod_id', :class_name => 'Mod'
+  has_many :mod_install_order_notes, -> { order(:index) }
+  has_many :mods, :through => :mod_install_order_notes
 
   # mod lists this install order note appears on
   has_many :mod_list_ignored_notes, :as => 'note'
@@ -55,34 +57,17 @@ class InstallOrderNote < ActiveRecord::Base
   before_save :set_adult
   before_destroy :decrement_counters
 
-  def get_existing_note(mod_ids)
-    table = InstallOrderNote.arel_table
-    InstallOrderNote.mods(mod_ids).where(table[:hidden].eq(0).and(table[:id].not_eq(id))).first
+  # TODO: Make some kind of shortcut method macro for these
+  def first_mod
+    mods.first
   end
 
-  def unique_mods
-    if first_mod_id == second_mod_id
-      errors.add(:mods, "You cannot create a Install Order Note between a mod and itself.")
-      return
-    end
-
-    note = get_existing_note([first_mod_id, second_mod_id])
-    if note.present?
-      if note.approved
-        errors.add(:mods, "An Install Order Note for these mods already exists.")
-        errors.add(:link_id, note.id)
-      else
-        errors.add(:mods, "An unapproved Install Order Note for these mods already exists.")
-      end
-    end
-  end
-
-  def mods
-    [first_mod, second_mod]
+  def second_mod
+    mods.second
   end
 
   def mod_author_users
-    User.includes(:mod_authors).where(:mod_authors => {mod_id: [first_mod_id, second_mod_id]})
+    User.includes(:mod_authors).where(:mod_authors => {mod_id: mods.ids})
   end
 
   def create_history_entry
@@ -96,7 +81,7 @@ class InstallOrderNote < ActiveRecord::Base
   end
 
   def self.update_adult(ids)
-    InstallOrderNote.where(id: ids).joins(:first_mod, :second_mod).update_all("install_order_notes.has_adult_content = mods.has_adult_content OR second_mods_install_order_notes.has_adult_content")
+    find(ids).joins(:mods).update_all("install_order_notes.has_adult_content = mods.has_adult_content")
   end
 
   def self.sortable_columns
