@@ -46,6 +46,8 @@ class Correction < ActiveRecord::Base
   belongs_to :correctable, :polymorphic => true
 
   # COUNTER CACHE
+  bool_counter_cache :agreement_marks, :agree, { true => :agree, false => :disagree }
+  counter_cache :comments, conditional: { hidden: false, commentable_type: 'Correction' }
   counter_cache_on :correctable, :submitter, conditional: { hidden: false }
 
   # VALIDATIONS
