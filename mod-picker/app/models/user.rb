@@ -1,8 +1,7 @@
 class User < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, Imageable, Reportable, ScopeHelpers, Trackable, BetterJson
+  include Filterable, Sortable, RecordEnhancements, CounterCache, Imageable, Reportable, ScopeHelpers, Trackable, BetterJson
 
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable and :omniauthable
+  # Include devise modules
   devise :invitable, :database_authenticatable, :registerable, :confirmable,
          :recoverable, :rememberable, :trackable, :validatable
 
@@ -79,14 +78,18 @@ class User < ActiveRecord::Base
 
   accepts_nested_attributes_for :settings, reject_if: :new_record?
 
+  # COUNTER CACHE
+  counter_cache :profile_comments, column: 'comments_count', conditional: { hidden: false }
+  counter_cache :comments, column: 'submitted_comments_count', conditional: { hidden: false }
+  counter_cache :starred_mods, :starred_mod_lists, :mod_tags, :mod_list_tags, :helpful_marks, :agreement_marks
+  counter_cache :reviews, :compatibility_notes, :install_order_notes, :load_order_notes, :corrections, :tags, conditional: { hidden: false }
+  bool_counter_cache :mod_lists, :is_collection, { true => :mod_collections, false => :mod_lists }
+
   # VALIDATIONS
   validates :username, :email, :role, presence: true
   validates :username, uniqueness: { case_sensitive: false }, length: {in: 4..32 }
-
-  # email validation
   validates :email, uniqueness: { case_sensitive: false }, length: {in: 7..255}
   validates_format_of :email, :with => /\A\S+@.+\.\S+\z/
-
   validates :about_me, length: {maximum: 16384}
 
   # CALLBACKS
@@ -94,7 +97,7 @@ class User < ActiveRecord::Base
   after_initialize :init
 
   def user
-    User.find(self.id)
+    User.find(id)
   end
 
   # alias for image method
