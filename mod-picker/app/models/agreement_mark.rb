@@ -14,7 +14,7 @@ class AgreementMark < ActiveRecord::Base
 
   # COUNTER CACHE
   counter_cache_on :submitter
-  bool_counter_cache_on :correction, :agree, { true => 'agree_count', false => 'disagree_count' }
+  bool_counter_cache_on :correction, :agree, { true => :agree, false => :disagree }
 
   # VALIDATIONS
   validates :correction_id, :submitted_by, presence: true
