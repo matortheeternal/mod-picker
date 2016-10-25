@@ -100,7 +100,7 @@ class User < ActiveRecord::Base
     User.find(id)
   end
 
-  # wrapper for the image method
+  # returns nil if the user doesn't have a custom title or a custom avatar
   def avatar
     avatar_path = image
     self.title.nil? && avatar_path == "/users/Default.png" ? nil : avatar_path
