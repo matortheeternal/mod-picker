@@ -58,7 +58,7 @@ class LoadOrderNote < ActiveRecord::Base
   validates :game_id, :submitted_by, :first_plugin_id, :second_plugin_id, :text_body, presence: true
 
   validates :text_body, length: {in: 256..16384}
-  validate :unique_plugins
+  validate :validate_unique_plugins
 
   # CALLBACKS
   before_save :set_adult
@@ -68,33 +68,27 @@ class LoadOrderNote < ActiveRecord::Base
     LoadOrderNote.plugins(plugin_ids).where(table[:hidden].eq(0).and(table[:id].not_eq(id))).first
   end
 
-  def unique_plugins
-    if first_plugin_id == second_plugin_id
-      errors.add(:plugins, "You cannot create a Load Order Note between a plugin and itself.")
-      return
-    end
-
-    note = get_existing_note([first_plugin_id, second_plugin_id])
-    if note.present?
-      if note.approved
-        errors.add(:plugins, "A Load Order Note for these plugins already exists.")
-        errors.add(:link_id, note.id)
-      else
-        errors.add(:plugins, "An unapproved Load Order Note for these plugins already exists.")
-      end
+  def note_exists_error(existing_note)
+    if existing_note.approved
+      errors.add(:plugins, "A Load Order Note for these plugins already exists.")
+      errors.add(:link_id, existing_note.id)
+    else
+      errors.add(:plugins, "An unapproved Load Order Note for these plugins already exists.")
     end
   end
 
-  def mods
-    [first_mod, second_mod]
+  def duplicate_plugins_error
+    errors.add(:plugins, "You cannot create a Load Order Note between a plugin and itself.") if @first_plugin_id == @second_plugin_id
+  end
+
+  def validate_unique_plugins
+    return if duplicate_plugins_error
+    existing_note = get_existing_note([@first_plugin_id, @second_plugin_id])
+    note_exists_error(existing_note) if existing_note.present?
   end
 
   def mod_author_users
     User.includes(:mod_authors).where(:mod_authors => {mod_id: [first_mod.id, second_mod.id]})
-  end
-
-  def plugins
-    [first_plugin, second_plugin]
   end
 
   def create_history_entry
