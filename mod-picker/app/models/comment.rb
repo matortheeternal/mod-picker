@@ -1,5 +1,5 @@
 class Comment < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, Reportable, ScopeHelpers, Trackable, BetterJson, Dateable
+  include Filterable, Sortable, RecordEnhancements, CounterCache, Reportable, ScopeHelpers, Trackable, BetterJson, Dateable
 
   # ATTRIBUTES
   self.per_page = 50
@@ -34,6 +34,12 @@ class Comment < ActiveRecord::Base
   belongs_to :parent, :class_name => 'Comment', :foreign_key => 'parent_id', :inverse_of => 'children'
   has_many :children, :class_name => 'Comment', :foreign_key => 'parent_id', :inverse_of => 'parent', :dependent => :destroy
 
+  # COUNTER CACHE
+  counter_cache :children, conditional: { hidden: false }
+  counter_cache_on :submitter, column: 'submitted_comments_count', conditional: { hidden: false }
+  counter_cache_on :commentable, conditional: { hidden: false }
+  counter_cache_on :parent, column: 'children_count', conditional: { hidden: false }
+
   # VALIDATIONS
   validates :submitted_by, :commentable_type, :commentable_id, :text_body, presence: true
   validates :hidden, inclusion: [true, false]
@@ -43,8 +49,6 @@ class Comment < ActiveRecord::Base
 
   # CALLBACKS
   before_save :set_adult
-  after_create :increment_counter_caches
-  before_destroy :decrement_counter_caches
 
   def nesting
     parent_id.nil? || parent.parent_id.nil?
@@ -111,21 +115,4 @@ class Comment < ActiveRecord::Base
       end
       true
     end
-
-    def increment_counter_caches
-      submitter.update_counter(:submitted_comments_count, 1)
-      commentable.update_counter(:comments_count, 1)
-      if parent_id.present? && parent.present?
-        parent.update_counter(:children_count, 1)
-      end
-    end
-
-    def decrement_counter_caches
-      submitter.update_counter(:submitted_comments_count, -1)
-      commentable.update_counter(:comments_count, -1)
-      if parent_id.present? && parent.present?
-        parent.update_counter(:children_count, -1)
-      end
-    end
-
 end
