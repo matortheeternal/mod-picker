@@ -14,8 +14,4 @@ class ModListCustomMod < ActiveRecord::Base
   validates :mod_list_id, :index, :name, presence: true
   validates :is_utility, inclusion: [true, false]
   validates :description, length: {maximum: 4096}
-
-  # CALLBACKS
-  after_create :increment_counters
-  before_destroy :decrement_counters
 end
