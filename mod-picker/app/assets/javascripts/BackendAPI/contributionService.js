@@ -21,21 +21,21 @@ app.service('contributionService', function(backend, $q, userTitleService, pageU
     };
 
     this.helpfulMark = function(route, id, helpful) {
-        var helpfulObj = helpful == undefined ? {} : {helpful: helpful};
+        var helpfulObj = helpful == undefined ? {} : { helpful: helpful };
         return backend.post('/' + route + '/' + id + '/helpful', helpfulObj);
     };
 
     this.agreementMark = function(route, id, agree) {
-        var agreeObj = agree == undefined ? {} : {agree: agree};
+        var agreeObj = agree == undefined ? {} : { agree: agree };
         return backend.post('/' + route + '/' + id + '/agreement', agreeObj)
     };
 
     this.hide = function(route, id, hidden) {
-        return backend.post('/' + route + '/' + id + '/hide', {hidden: hidden});
+        return backend.post('/' + route + '/' + id + '/hide', { hidden: hidden });
     };
 
     this.approve = function(route, id, approved) {
-        return backend.post('/' + route + '/' + id + '/approve', {approved: approved});
+        return backend.post('/' + route + '/' + id + '/approve', { approved: approved });
     };
 
     this.submitContribution = function(route, contribution) {
@@ -53,6 +53,10 @@ app.service('contributionService', function(backend, $q, userTitleService, pageU
 
     this.updateContribution = function(route, id, contribution) {
         return backend.update('/' + route + '/' + id, contribution);
+    };
+
+    this.removeModeratorNote = function(route, id) {
+        return backend.update('/' + route + '/' + id, { moderator_message: null });
     };
 
     this.retrieveComments = function(route, id, options, pageInformation) {
