@@ -170,56 +170,27 @@ class Mod < ActiveRecord::Base
     self.plugins_count = Plugin.mod_options(mod_option_ids).count
   end
 
-  def compute_extra_metrics
-    days_since_release = DateTime.now - self.released.to_date
-
-    # compute extra nexus metrics
-    nex = nexus_infos
-    if nex.present? && Rails.application.config.scrape_nexus_statistics
-      nex.endorsement_rate = (nex.endorsements / days_since_release) if days_since_release > 0
-      nex.dl_rate = (nex.unique_downloads / days_since_release) if days_since_release > 0
-      nex.udl_to_endorsements = (nex.unique_downloads / nex.endorsements) if nex.endorsements > 0
-      nex.udl_to_posts = (nex.unique_downloads / nex.posts_count) if nex.posts_count > 0
-      nex.tdl_to_udl = (nex.total_downloads / nex.unique_downloads) if nex.unique_downloads > 0
-      nex.views_to_tdl = (nex.views / nex.total_downloads) if nex.total_downloads > 0
-      nex.save!
-    end
+  def compute_average_rating
+    total = reviews.visible.reduce(0) { |total, r| total += r.overall_rating }
+    self.average_rating = total / (reviews.length || 1)
   end
 
-  def compute_average_rating
-    total = 0.0
-    count = 0
-    reviews.where(hidden: false, approved: true).each do |r|
-      total += r.overall_rating
-      count += 1
-    end
-    if count > 0
-      self.average_rating = (total / count)
-    else
-      self.average_rating = 0
-    end
+  def review_reputation
+    (average_rating / 100)**3 * (510.0 / (1 + Math::exp(-0.2 * (reviews_count - 10))) - 60)
+  end
+
+  def use_nexus_reputation
+    reviews_count < 5 && NexusInfo.can_scrape_statistics? && nexus_infos.present?
   end
 
   def compute_reputation
-    if reviews_count < 5 && Rails.application.config.scrape_nexus_statistics
-      if nexus_infos.present?
-        endorsement_reputation = 100.0 / (1.0 + Math::exp(-0.15 * (self.endorsement_rate - 25)))
-        self.reputation = endorsement_reputation
-      end
-    else
-      review_reputation = (average_rating / 100)**3 * (510.0 / (1 + Math::exp(-0.2 * (reviews_count - 10))) - 60)
-      self.reputation = review_reputation
-    end
-
-    if status == :unstable
-      self.reputation = self.reputation / 4
-    elsif status == :outdated
-      self.reputation = self.reputation / 2
-    end
+    self.reputation = use_nexus_reputation ? nexus_infos.endorsement_reputation : review_reputation
+    self.reputation = reputation / 4 if status == :unstable
+    self.reputation = reputation / 2 if status == :outdated
   end
 
   def update_metrics
-    compute_extra_metrics
+    nexus_infos.compute_extra_metrics if nexus_infos.present?
     compute_average_rating
     compute_reputation
     update_lazy_counters
