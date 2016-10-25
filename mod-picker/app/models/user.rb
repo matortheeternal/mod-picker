@@ -100,36 +100,14 @@ class User < ActiveRecord::Base
     User.find(id)
   end
 
-  # alias for image method
+  # wrapper for the image method
   def avatar
-    png_path = File.join(Rails.public_path, "users/#{id}.png")
-    jpg_path = File.join(Rails.public_path, "users/#{id}.jpg")
-    if File.exists?(png_path)
-      "/users/#{id}.png"
-    elsif File.exists?(jpg_path)
-      "/users/#{id}.jpg"
-    elsif self.title.nil?
-      nil
-    else
-      "/users/Default.png"
-    end
+    avatar_path = image
+    self.title.nil? && avatar_path == "/users/Default.png" ? nil : avatar_path
   end
 
   def recent_notifications
     notifications.unread.limit(10)
-  end
-
-  def self.find_first_by_auth_conditions(warden_conditions)
-    conditions = warden_conditions.dup
-    if (login = conditions.delete(:login))
-      where(conditions).where(["lower(username) = :value OR lower(email) = :value", { :value => login.downcase }]).first
-    else
-      if conditions[:username].nil?
-        where(conditions).first
-      else
-        where(username: conditions[:username]).first
-      end
-    end
   end
 
   def admin?
@@ -190,6 +168,23 @@ class User < ActiveRecord::Base
     self.role   ||= :user
   end
 
+  def self.find_first_by_auth_conditions(warden_conditions)
+    conditions = warden_conditions.dup
+    if (login = conditions.delete(:login))
+      where(conditions).where(["lower(username) = :value OR lower(email) = :value", { :value => login.downcase }]).first
+    else
+      if conditions[:username].nil?
+        where(conditions).first
+      else
+        where(username: conditions[:username]).first
+      end
+    end
+  end
+
+  def self.failed_emails
+    @failed_emails ||= []
+  end
+
   def self.batch_invite!(emails, current_inviter)
     emails.each do |email|
       if /\A\S+@.+\.\S+\z/.match(email)
@@ -202,14 +197,10 @@ class User < ActiveRecord::Base
     failed_emails.empty?
   end
 
-  def self.failed_emails
-    @failed_emails ||= []
-  end
-
   def create_associations
-    create_reputation({ user_id: id })
-    create_settings({ user_id: id })
-    create_bio({ user_id: id })
+    create_reputation(user_id: id)
+    create_settings(user_id: id)
+    create_bio(user_id: id)
   end
 
   def self.sortable_columns
