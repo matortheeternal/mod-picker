@@ -52,7 +52,7 @@ class LoadOrderNote < ActiveRecord::Base
   has_many :editors, -> { uniq }, :class_name => 'User', :through => 'history_entries'
 
   # COUNTER CACHE
-  counter_cache_on :first_mod, :second_mod, :submitter, :first_plugin, :second_plugin, conditional: { hidden: false, approved: true }
+  counter_cache_on :first_plugin, :second_plugin, :first_mod, :second_mod, :submitter, conditional: { hidden: false, approved: true }
 
   # VALIDATIONS
   validates :game_id, :submitted_by, :first_plugin_id, :second_plugin_id, :text_body, presence: true
