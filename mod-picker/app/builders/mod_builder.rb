@@ -141,6 +141,7 @@ class ModBuilder
     if mod.previous_changes.has_key?(:is_utility)
       mod.mod_list_mods.includes(:mod_list).each do |mod_list_mod|
         mod_list_mod.group_id = nil
+        mod_list_mod.is_utility = mod.is_utility
         mod_list_mod.get_index
         mod_list_mod.save!
       end
