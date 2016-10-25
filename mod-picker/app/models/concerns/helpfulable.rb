@@ -8,35 +8,29 @@ module Helpfulable
     has_many :helpful_marks, :as => 'helpfulable'
   end
 
-  def recompute_helpful_counts
-    self.helpful_count = helpful_marks.helpful(true).count
-    self.not_helpful_count = helpful_marks.helpful(false).count
+  def user_rep
+    submitter.reputation.overall
+  end
+
+  def helpfulness_score
+    [-20, helpful_count - not_helpful_count, 20].sort[1]
+  end
+
+  def user_rep_factor
+    factor = 1 / (1 + Math::exp(-0.0075 * (user_rep - 640)))
+    helpful_count < not_helpful_count ? 1 - factor : 1 + factor
   end
 
   def compute_reputation
-    if respond_to?(:standing)
-      if standing == :bad
-        self.reputation = -100
-        return
-      elsif standing == :unknown
-        self.reputation = 0
-        return
-      end
-    end
-
-    user_rep = submitter.reputation.overall
-    helpfulness = (helpful_count - not_helpful_count)
-
-    # calculate reputation of contribution based on user reputation and helpfulness
     if user_rep < 0
-      self.reputation = user_rep + helpfulness
+      self.reputation = user_rep + helpfulness_score
     else
-      user_rep_factor = 2 / (1 + Math::exp(-0.0075 * (user_rep - 640)))
-      if helpful_count < not_helpful_count
-        self.reputation = (1 - user_rep_factor / 2) * helpfulness
-      else
-        self.reputation = (1 + user_rep_factor / 2) * helpfulness
-      end
+      self.reputation = user_rep_factor * helpfulness_score
     end
+  end
+
+  def compute_reputation!
+    compute_reputation
+    update_column(:reputation, self.reputation)
   end
 end
