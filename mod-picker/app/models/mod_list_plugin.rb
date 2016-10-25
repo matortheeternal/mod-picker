@@ -1,13 +1,19 @@
 class ModListPlugin < ActiveRecord::Base
-  include RecordEnhancements, BetterJson
+  include RecordEnhancements, BetterJson, CounterCache
 
   # Scopes
-  scope :official, -> (bool) { joins(:plugin => :mod).where(:mods => { is_official: bool }) }
+  scope :official, -> (bool) {
+    joins(:plugin => :mod).where(:mods => { is_official: bool })
+  }
 
   # ASSOCIATIONS
   belongs_to :mod_list, :inverse_of => 'mod_list_plugins'
   belongs_to :plugin, :inverse_of => 'mod_list_plugins'
   has_one :mod, :through => 'plugin'
+
+  # COUNTER CACHE
+  counter_cache_on :mod_list, column: 'plugins_count'
+  counter_cache_on :plugin, column: 'mod_lists_count'
 
   # VALIDATIONS
   validates :mod_list_id, :plugin_id, :index, presence: true
@@ -22,15 +28,4 @@ class ModListPlugin < ActiveRecord::Base
   def required_plugins
     Master.plugins([self.plugin_id]).order(:master_plugin_id)
   end
-
-  private
-    def increment_counters
-      self.mod_list.update_counter(:plugins_count, 1)
-      self.plugin.update_counter(:mod_lists_count, 1)
-    end
-
-    def decrement_counters
-      self.mod_list.update_counter(:plugins_count, -1)
-      self.plugin.update_counter(:mod_lists_count, -1)
-    end
 end
