@@ -1,18 +1,3 @@
-# COUNTER CACHE FUNCTIONS
-# - Can increment/decrement a single counter on a single record
-# - Can reset a single counter for a single record (using joins)
-# - Can reset a single counter for multiple records (using joins)
-# - Can reset a multiple counters for a single record (using joins)
-# - Can reset a multiple counters for multiple records (using joins)
-# - Can reset all counters for a single record (using joins)
-# - Can reset all counters for all records (using joins)
-#
-# MACROS
-#
-# counter_cache :name, conditional: "visible?"
-#
-# CODE
-
 module CounterCache
   extend ActiveSupport::Concern
 
