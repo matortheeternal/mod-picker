@@ -1,5 +1,5 @@
 class BaseReport < ActiveRecord::Base
-  include RecordEnhancements, Filterable, Sortable, ScopeHelpers, BetterJson, Dateable
+  include RecordEnhancements, CounterCache, Filterable, Sortable, ScopeHelpers, BetterJson, Dateable
 
   # DATE COLUMNS
   date_column :submitted, :edited
@@ -26,6 +26,9 @@ class BaseReport < ActiveRecord::Base
   # ASSOCIATIONS
   belongs_to :reportable, :polymorphic => true
   has_many :reports, :inverse_of => 'base_report', :dependent => :destroy
+
+  # COUNTER CACHE
+  counter_cache :reports
 
   # VALIDATIONS
   validates :reportable_id, :reportable_type, presence: true
