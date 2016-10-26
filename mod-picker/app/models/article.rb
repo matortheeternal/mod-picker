@@ -30,10 +30,4 @@ class Article < ActiveRecord::Base
 
   # VALIDATIONS
   validates :submitted_by, :title, :text_body, presence: true
-
-  def self.sortable_columns
-    {
-        :except => [:game_id, :submitted_by, :text_body]
-    }
-  end
 end

@@ -29,10 +29,4 @@ class BaseReport < ActiveRecord::Base
 
   # VALIDATIONS
   validates :reportable_id, :reportable_type, presence: true
-
-  def self.sortable_columns
-    {
-        :only => [:submitted, :edited, :reports_count]
-    }
-  end
 end

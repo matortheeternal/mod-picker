@@ -1,37 +1,52 @@
 module Sortable
   extend ActiveSupport::Concern
 
+  included do
+    class_attribute :sortable_columns
+    self.sortable_columns = {}
+    load_sortable_columns
+  end
+
   module ClassMethods
-    def allowed_columns(model, options)
-      only_keys = options[:only]
-      excluded_keys = options[:except]
-      columns = model.columns_hash.select do |key, value|
-        value.type != :boolean &&
-            (!excluded_keys || !excluded_keys.include?(key.to_sym)) &&
-            (!only_keys || only_keys.include?(key.to_sym))
+    def sortable_columns_path
+      filename = name.underscore.pluralize + ".json"
+      Rails.root.join('app', 'models', 'sortable_columns', filename)
+    end
+
+    def load_sortable_columns
+      file_path = sortable_columns_path
+      return unless File.exists?(file_path)
+      self.sortable_columns = JSON.parse(File.read(file_path)).deep_symbolize_keys
+    end
+
+    def key_allowed(key, opts)
+      key = key.to_sym
+      return false if opts.has_key?(:except) && opts[:except].include?(key)
+      return false if opts.has_key?(:only) && opts[:only].exclude?(key)
+      true
+    end
+
+    def included_columns(model, options)
+      columns = allowed_columns(model, options)
+      columns.map do |column|
+        column.include?('.') ? column : "#{model.table_name}.#{column}"
       end
-      columns = columns.keys
+    end
 
-      # include association columns
-      if options.has_key?(:include)
-        options[:include].each do |key, value|
-          if !model.reflections.has_key?(key.to_s)
-            raise "Could not find association #{key} on #{self.class.name}"
-          end
-
-          reflection_model = model.reflections[key.to_s].klass
-          included_columns = allowed_columns(reflection_model, value)
-          included_columns.each do |column|
-            if !column.include?('.')
-              columns.push("#{reflection_model.table_name}.#{column}")
-            else
-              columns.push(column)
-            end
-          end
-        end
+    def include_association_columns(columns, model, options)
+      return columns unless options.has_key?(:include)
+      options[:include].each do |key, value|
+        reflection = model.reflections[key.to_s]
+        columns.push(*included_columns(reflection.klass, value))
       end
-
       columns
+    end
+
+    def allowed_columns(model, options)
+      columns = model.columns_hash.select do |key, value|
+        value.type != :boolean && key_allowed(key, options)
+      end
+      include_association_columns(columns.keys.dup, model, options)
     end
 
     def check_options(options)
@@ -47,26 +62,29 @@ module Sortable
     end
 
     def sanitize_column(column)
-      column.split('.').map{|column| connection.quote_column_name(column) }.join('.')
+      column.split('.').map{ |column| connection.quote_column_name(column) }.join('.')
+    end
+
+    def sanitize_columns(columns)
+      columns.split(',').map{ |column| sanitize_column(column) }.join(',')
+    end
+
+    def apply_sort_options(options)
+      if options[:column].include?(',')
+        order("GREATEST(#{sanitize_columns(options[:column])}) #{options[:direction]}")
+      elsif options[:column].include?('.')
+        order("#{sanitize_column(options[:column])} #{options[:direction]}")
+      else
+        # this is necessary so the column we're sorting on won't be ambiguous
+        order(options[:column] => options[:direction])
+      end
     end
 
     def sort(options)
       results = self.where(nil)
-
       if options.present? && options.has_key?(:column) && options.has_key?(:direction)
         check_options(options)
-
-        # NOTE: This is safe against SQL injection because we are strong-arming
-        # the allowing options in check_options
-        if options[:column].include?(",")
-          columns = options[:column].split(',').map{|column| sanitize_column(column)}
-          results = results.
-              order("GREATEST(#{columns.join(',')}) #{options[:direction]}")
-        elsif options[:column].include?(".")
-          results = results.order("#{sanitize_column(options[:column])} #{options[:direction]}")
-        else
-          results = results.order(options[:column] => options[:direction])
-        end
+        results = apply_sort_options(options)
       end
       results
     end
