@@ -32,7 +32,7 @@ class ModBuilder
     update!
     true
   rescue Exception => x
-    mod.errors.add(:error, x.message)
+    raise x unless mod.errors.present?
     false
   end
 
@@ -62,7 +62,8 @@ class ModBuilder
     mod.submitted_by = @current_user.id
     save!
     true
-  rescue
+  rescue Exception => x
+    raise x unless mod.errors.present?
     false
   end
 
