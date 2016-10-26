@@ -115,7 +115,6 @@ class ModList < ActiveRecord::Base
 
   # CALLBACKS
   before_update :hide_comments, :unset_active_if_hidden
-  after_update :update_lazy_counters!
   before_destroy :unset_active
 
   def update_all_counters!
