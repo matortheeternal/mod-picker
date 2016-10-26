@@ -166,6 +166,7 @@ table.browse-table {
   .text-cell {
     min-width: 125px;
     white-space: normal;
+    @include wordbreak;
   }
 
   .main-cell {
