@@ -14,6 +14,8 @@ class Tag < ActiveRecord::Base
   has_many :mod_lists, :through => 'mod_list_tags', :inverse_of => 'tags'
 
   # COUNTER CACHE
+  counter_cache :mod_tags, column: 'mods_count'
+  counter_cache :mod_list_tags, column: 'mod_lists_count'
   counter_cache_on :submitter, conditional: { hidden: false }
 
   # VALIDATIONS
