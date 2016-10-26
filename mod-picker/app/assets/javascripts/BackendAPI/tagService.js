@@ -13,7 +13,7 @@ app.service('tagService', function(backend, $q) {
     this.updateModTags = function(mod, tags) {
         var putData = {
             game_id: mod.game_id,
-            tags: tags
+            tags: tags || []
         };
         return backend.update('/mods/' + mod.id + '/tags', putData);
     };
@@ -21,7 +21,7 @@ app.service('tagService', function(backend, $q) {
     this.updateModListTags = function(mod_list, tags) {
         var putData = {
             game_id: mod_list.game_id,
-            tags: tags
+            tags: tags || []
         };
         return backend.update('/mod_lists/' + mod_list.id + '/tags', putData);
     };
