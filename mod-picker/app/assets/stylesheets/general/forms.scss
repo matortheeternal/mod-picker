@@ -89,6 +89,9 @@ input[type="file"] {
 .text-container {
   width: 100%;
   margin: 10px 0;
+}
+
+.text-container, .comment-text-container {
   @include wordbreak;
 
   h1 {
