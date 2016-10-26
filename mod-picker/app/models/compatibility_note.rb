@@ -68,7 +68,7 @@ class CompatibilityNote < ActiveRecord::Base
 
   def note_exists_error(existing_note)
     if existing_note.approved
-      errors.add(:mods, "An Compatibility Note for these mods already exists.")
+      errors.add(:mods, "A Compatibility Note for these mods already exists.")
       errors.add(:link_id, existing_note.id)
     else
       errors.add(:mods, "An unapproved Compatibility Note for these mods already exists.")
