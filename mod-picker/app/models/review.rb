@@ -84,22 +84,6 @@ class Review < ActiveRecord::Base
     self.overall_rating = (total.to_f / self.ratings_count) if self.ratings_count > 0
   end
 
-  def self.sortable_columns
-    {
-        :except => [:game_id, :submitted_by, :edited_by, :mod_id, :text_body, :edit_summary, :moderator_message],
-        :include => {
-            :submitter => {
-                :only => [:username],
-                :include => {
-                    :reputation => {
-                        :only => [:overall]
-                    }
-                }
-            }
-        }
-    }
-  end
-
   private
     def set_adult
       self.has_adult_content = mod.has_adult_content

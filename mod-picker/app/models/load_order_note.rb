@@ -105,22 +105,6 @@ class LoadOrderNote < ActiveRecord::Base
     LoadOrderNote.where(id: ids).joins(:first_mod, :second_mod).update_all("load_order_notes.has_adult_content = mods.has_adult_content OR second_mods_load_order_notes.has_adult_content")
   end
 
-  def self.sortable_columns
-    {
-        :except => [:game_id, :submitted_by, :edited_by, :corrector_id, :first_plugin_id, :second_plugin_id, :text_body, :edit_summary, :moderator_message],
-        :include => {
-            :submitter => {
-                :only => [:username],
-                :include => {
-                    :reputation => {
-                        :only => [:overall]
-                    }
-                }
-            }
-        }
-    }
-  end
-
   def self.join_to_mod_options(query, source_column, plugins, options)
     query.join(plugins).on(arel_table[source_column].eq(plugins[:id])).
         join(options).on(plugins[:mod_option_id].eq(options[:id]))

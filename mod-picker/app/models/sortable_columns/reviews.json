@@ -1,0 +1,13 @@
+{
+  "except" : ["game_id", "submitted_by", "edited_by", "mod_id", "text_body", "edit_summary", "moderator_message"],
+  "include" : {
+    "submitter" : {
+      "only" : ["username"],
+      "include" : {
+        "reputation" : {
+          "only" : ["overall"]
+        }
+      }
+    }
+  }
+}

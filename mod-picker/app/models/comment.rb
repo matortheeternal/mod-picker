@@ -91,22 +91,6 @@ class Comment < ActiveRecord::Base
     end
   end
 
-  def self.sortable_columns
-    {
-        :except => [:parent_id, :submitted_by, :commentable_id, :text_body],
-        :include => {
-            :submitter => {
-                :only => [:username],
-                :include => {
-                    :reputation => {
-                        :only => [:overall]
-                    }
-                }
-            }
-        }
-    }
-  end
-
   # Private methods
   private
     def set_adult
