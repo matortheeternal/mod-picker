@@ -110,7 +110,7 @@ class LoadOrderNote < ActiveRecord::Base
         join(options).on(plugins[:mod_option_id].eq(options[:id]))
   end
 
-  def self.count_subquery
+  def self.mod_count_subquery
     mod_options = ModOption.arel_table
     mod_options_alias = ModOption.arel_table.alias
     [

@@ -151,11 +151,11 @@ class Mod < ActiveRecord::Base
   counter_cache :mod_stars, column: 'stars_count'
   counter_cache :reviews, conditional: { hidden: false, approved: true }
   counter_cache :compatibility_notes, conditional: { hidden: false, approved: true },
-      custom_reflection: { klass: CompatibilityNote, query_method: 'count_subquery' }
+      custom_reflection: { klass: CompatibilityNote, query_method: 'mod_count_subquery' }
   counter_cache :install_order_notes, conditional: { hidden: false, approved: true },
-      custom_reflection: { klass: InstallOrderNote, query_method: 'count_subquery' }
+      custom_reflection: { klass: InstallOrderNote, query_method: 'mod_count_subquery' }
   counter_cache :load_order_notes, conditional: { hidden: false, approved: true },
-      custom_reflection: { klass: LoadOrderNote, query_method: 'count_subquery' }
+      custom_reflection: { klass: LoadOrderNote, query_method: 'mod_count_subquery' }
   counter_cache :corrections, conditional: { hidden: false, correctable_type: 'Mod' }
   counter_cache :mod_tags, column: 'tags_count'
   counter_cache :mod_list_mods, column: 'mod_lists_count'
