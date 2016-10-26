@@ -16,7 +16,7 @@ module Sortable
     def load_sortable_columns
       file_path = sortable_columns_path
       return unless File.exists?(file_path)
-      self.sortable_columns = JSON.parse(File.read(file_path)).symbolize_keys
+      self.sortable_columns = JSON.parse(File.read(file_path)).deep_symbolize_keys
     end
 
     def key_allowed(key, opts)
@@ -29,7 +29,7 @@ module Sortable
     def included_columns(model, options)
       columns = allowed_columns(model, options)
       columns.map do |column|
-        column.include?('.') ? column : "#{table_name}.#{column}"
+        column.include?('.') ? column : "#{model.table_name}.#{column}"
       end
     end
 
