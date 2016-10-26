@@ -4,18 +4,18 @@
             Install
             <span ng-if="note.first_mod.id == modId">
                 Before
-                <a ng-href="#/mod/{{note.second_mod.id}}" target="_blank">{{note.second_mod.name}}</a>
+                <a ng-href="#/mod/{{note.second_mod.id}}">{{note.second_mod.name}}</a>
             </span>
             <span ng-if="note.second_mod.id == modId">
                 After
-                <a ng-href="#/mod/{{note.first_mod.id}}" target="_blank">{{note.first_mod.name}}</a>
+                <a ng-href="#/mod/{{note.first_mod.id}}">{{note.first_mod.name}}</a>
             </span>
         </span>
         <span ng-if="!modId" class="root">
             Install
-            <a ng-href="#/mod/{{note.first_mod.id}}" target="_blank">{{note.first_mod.name}}</a>
+            <a ng-href="#/mod/{{note.first_mod.id}}">{{note.first_mod.name}}</a>
             Before
-            <a ng-href="#/mod/{{note.second_mod.id}}" target="_blank">{{note.second_mod.name}}</a>
+            <a ng-href="#/mod/{{note.second_mod.id}}">{{note.second_mod.name}}</a>
         </span>
         <span class="standing-item" title="This contribution is in {{note.standing}} standing">
             <i class="fa {{standingClasses[note.standing]}}"></i>
