@@ -1,5 +1,5 @@
 class ModList < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, Reportable, ScopeHelpers, Trackable, BetterJson, Dateable
+  include Filterable, Sortable, RecordEnhancements, CounterCache, Reportable, ScopeHelpers, Trackable, BetterJson, Dateable
 
   # ATTRIBUTES
   enum status: [ :under_construction, :testing, :complete ]

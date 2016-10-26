@@ -1,5 +1,5 @@
 class HelpPage < ActiveRecord::Base
-  include RecordEnhancements, ScopeHelpers, BetterJson, Dateable
+  include RecordEnhancements, CounterCache, ScopeHelpers, BetterJson, Dateable
 
   # ATTRIBUTES
   enum category: [:mod_picker, :modding, :guides]

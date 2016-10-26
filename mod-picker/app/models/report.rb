@@ -1,5 +1,5 @@
 class Report < ActiveRecord::Base
-  include RecordEnhancements, BetterJson, Dateable
+  include RecordEnhancements, BetterJson, Dateable, CounterCache
 
   # ATTRIBUTES
   enum reason: [:be_respectful, :be_trustworthy, :be_constructive, :spam, :piracy, :adult_content, :other]

@@ -1,5 +1,5 @@
 class ModAuthor < ActiveRecord::Base
-  include Trackable, BetterJson
+  include Trackable, BetterJson, CounterCache
 
   # ATTRIBUTES
   enum role: [:author, :contributor, :curator]
