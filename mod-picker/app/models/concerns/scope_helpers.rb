@@ -145,7 +145,6 @@ module ScopeHelpers
           class_eval do
             scope scope_name.to_sym, -> (search) {
               where(build_search(attribute, search))
-              #where(arel_table[attribute.to_sym].matches("%#{search}%"))
             }
           end
         end
