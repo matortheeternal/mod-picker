@@ -9,12 +9,16 @@ module CounterCache
     self._counter_cache_on = {}
   end
 
+  def raw_update(query)
+    self.class.unscoped.where(self.class.primary_key => id).update_all(query)
+  end
+
   def update_counter(column, offset)
     # update counter in memory
     self[column] += offset
     # update column directly so we don't trigger callbacks
     operator = offset < 0 ? '-' : '+'
-    update_column("#{column} = #{column} #{operator} #{offset.abs}")
+    raw_update("#{column} = #{column} #{operator} #{offset.abs}")
   end
 
   def resolve_conditional_association(association_name, options)
