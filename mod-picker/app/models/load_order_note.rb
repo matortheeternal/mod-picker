@@ -123,6 +123,12 @@ class LoadOrderNote < ActiveRecord::Base
         project(Arel.sql('*').count)
   end
 
+  def self.plugin_count_subquery
+    where(Plugin.arel_table[:id].eq(arel_table[:first_plugin_id]).
+        or(Plugin.arel_table[:id].eq(arel_table[:second_plugin_id]))).
+        project(Arel.sql('*').count)
+  end
+
   private
     def set_adult
       self.has_adult_content = first_mod.has_adult_content || second_mod.has_adult_content

@@ -1,5 +1,5 @@
 class Plugin < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, ScopeHelpers, BetterJson
+  include Filterable, Sortable, RecordEnhancements, CounterCache, ScopeHelpers, BetterJson
 
   # ATTRIBUTES
   attr_accessor :master_plugins
@@ -46,6 +46,10 @@ class Plugin < ActiveRecord::Base
   has_many :second_load_order_notes, :class_name => 'LoadOrderNote', :foreign_key => 'second_plugin_id', :inverse_of => 'second_plugin', :dependent => :destroy
 
   accepts_nested_attributes_for :plugin_record_groups, :overrides, :plugin_errors
+
+  # COUNTER CACHE
+  counter_cache :mod_list_plugins, column: 'mod_lists_count'
+  counter_cache :load_order_notes, conditional: { hidden: false, approved: true }, custom_reflection: { klass: LoadOrderNote, query_method: 'plugin_count_subquery' }
 
   # VALIDATIONS
   validates :game_id, :mod_option_id, :filename, :crc_hash, :file_size, presence: true
