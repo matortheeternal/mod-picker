@@ -78,12 +78,12 @@ class LoadOrderNote < ActiveRecord::Base
   end
 
   def duplicate_plugins_error
-    errors.add(:plugins, "You cannot create a Load Order Note between a plugin and itself.") if @first_plugin_id == @second_plugin_id
+    errors.add(:plugins, "You cannot create a Load Order Note between a plugin and itself.") if first_plugin_id == second_plugin_id
   end
 
   def validate_unique_plugins
     return if duplicate_plugins_error
-    existing_note = get_existing_note([@first_plugin_id, @second_plugin_id])
+    existing_note = get_existing_note([first_plugin_id, second_plugin_id])
     note_exists_error(existing_note) if existing_note.present?
   end
 

@@ -71,12 +71,12 @@ class InstallOrderNote < ActiveRecord::Base
   end
 
   def duplicate_mods_error
-    errors.add(:mods, "You cannot create a Install Order Note between a mod and itself.") if @first_mod_id == @second_mod_id
+    errors.add(:mods, "You cannot create a Install Order Note between a mod and itself.") if first_mod_id == second_mod_id
   end
 
   def validate_unique_mods
     return if duplicate_mods_error
-    existing_note = get_existing_note([@first_mod_id, @second_mod_id])
+    existing_note = get_existing_note([first_mod_id, second_mod_id])
     note_exists_error(existing_note) if existing_note.present?
   end
 
