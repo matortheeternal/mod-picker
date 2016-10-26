@@ -326,7 +326,7 @@ app.controller('modListController', function($scope, $rootScope, $q, $stateParam
     };
 
     $scope.findConfig = function(configId, ignoreDestroyed) {
-        return listUtils.genericFind($scope.model.configs, listUtils.findConfig, configId, ignoreDestroyed);
+        return listUtils.genericFind($scope.model.config_files, listUtils.findConfig, configId, ignoreDestroyed);
     };
 
     $scope.findIgnoredNote = function(note_type, note_id, ignoreDestroyed) {
