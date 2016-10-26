@@ -43,6 +43,14 @@ module CounterCache
     self[column] = resolve_conditional_association(options[:method] || name, options).count
   end
 
+  def reset_counters(*names)
+    _counter_cache.each do |name, options|
+      next unless names.include?(name)
+      column = options[:column]
+      reset_counter(name, column)
+    end
+  end
+
   def reset_counter!(name, column=nil)
     column ||= self.class._counter_cache[name.to_sym][:column]
     reset_counter(name, column)
