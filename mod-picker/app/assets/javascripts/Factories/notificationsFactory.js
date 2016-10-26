@@ -119,7 +119,7 @@ app.service('notificationsFactory', function() {
         },
         Correction: {
             key: "correctable",
-            Mod: '<a href="#/mod/{{content.correctable_id}}">your appeal</a>',
+            Mod: '<a href="#/mod/{{content.correctable.id}}">{{content.correctable.name}}</a>',
             CompatibilityNote: noteCorrectionLink("compatibility"),
             InstallOrderNote: noteCorrectionLink("install order"),
             LoadOrderNote: noteCorrectionLink("load order")

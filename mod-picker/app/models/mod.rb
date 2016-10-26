@@ -180,7 +180,7 @@ class Mod < ActiveRecord::Base
 
   def compute_average_rating
     total = reviews.visible.reduce(0) { |total, r| total += r.overall_rating }
-    self.average_rating = total / (reviews.length || 1)
+    self.average_rating = total / (reviews.length.nonzero? || 1)
   end
 
   def review_reputation

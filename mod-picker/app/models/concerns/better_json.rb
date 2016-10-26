@@ -37,7 +37,7 @@ module BetterJson
   end
 
   def inherit_template(options)
-    get_json_template(options[:inherit_from]).merge(options)
+    self.class.get_json_template(options[:inherit_from]).merge(options)
   end
 
   def build_template(options)
