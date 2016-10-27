@@ -35,7 +35,7 @@ app.controller('modCategoriesController', function($scope, categoryService) {
         var messageText = dominantCategory.name + " > " + recessiveCategory.name + "\n" + categoryPriority.description;
         $scope.categoryMessages.push({
             text: messageText,
-            klass: "priority-message"
+            klass: "cat-warning-message"
         });
     };
 
