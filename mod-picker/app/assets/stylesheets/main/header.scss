@@ -142,7 +142,7 @@ nav {
       display: block;
       float: left;
       position: relative;
-      z-index: 100;
+      z-index: 99;
       @include transition(background-color 0.2s ease-in-out);
 
       &:hover, &:focus {
