@@ -41,6 +41,15 @@ app.controller('baseController', function($scope, $rootScope, $state, $window, $
     $rootScope.categories = categories;
     $rootScope.categoryPriorities = categoryPriorities;
 
+    // load artist credit
+    $scope.loadArtistCredit = function() {
+        var creditElement = document.getElementById('artist-credit');
+        creditElement.className = 'credit-link';
+        var afterElement = window.getComputedStyle(creditElement, ':before');
+        $scope.creditLink = afterElement.getPropertyValue('content').slice(1, -1);
+        creditElement.className = '';
+    };
+
     // user selected an option from the my contributions dropdown
     $scope.navigateTo = function(newLocation) {
         $window.location.hash = newLocation;
@@ -116,6 +125,14 @@ app.controller('baseController', function($scope, $rootScope, $state, $window, $
         var rep = user.reputation.overall;
         user.permissions.canEndorse = (rep >= 40 && numEndorsed < 5) || (rep >= 160 && numEndorsed < 10) || (rep >= 640 && numEndorsed < 15);
     });
+
+    $rootScope.$on('themeChanged', function() {
+        $timeout(function() {
+            $scope.loadArtistCredit();
+        }, 500);
+    });
+
+    $scope.loadArtistCredit();
 });
 
 app.controller('searchController', function($scope, $state) {

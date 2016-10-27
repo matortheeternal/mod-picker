@@ -111,8 +111,8 @@ app.service('listMetaFactory', function($q, $timeout, modListService, categorySe
 
         // ADD CUSTOM ITEM
         var addCustomLabel = 'addCustom' + capLabel;
-        var newModListCustomItemKey = 'newModListCustom' + capLabel;
-        var mod_list_custom_item_key = 'mod_list_custom_' + label;
+        var newModListCustomItemKey = 'newModListCustom' + dataKey.capitalize();
+        var mod_list_custom_item_key = 'mod_list_custom_' + dataKey;
         var customKey = 'custom_' + pluralLabel;
         var customItemAddedMessage = 'custom' + dataKey.capitalize() + 'Added';
 

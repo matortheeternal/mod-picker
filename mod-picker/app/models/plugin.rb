@@ -139,15 +139,4 @@ class Plugin < ActiveRecord::Base
     end
     output
   end
-
-  def self.sortable_columns
-    {
-        :except => [:game_id, :mod_option_id, :description],
-        :include => {
-            :mod => {
-                :only => [:name]
-            }
-        }
-    }
-  end
 end

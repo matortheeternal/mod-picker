@@ -53,7 +53,7 @@ class CompatibilityNote < ActiveRecord::Base
   # VALIDATIONS
   validates :game_id, :submitted_by, :status, :first_mod_id, :second_mod_id, :text_body, presence: true
   validates :text_body, length: { in: 256..16384 }
-  validate :unique_mods
+  validate :validate_unique_mods
 
   # CALLBACKS
   after_create :increment_counters
@@ -65,25 +65,23 @@ class CompatibilityNote < ActiveRecord::Base
     CompatibilityNote.mods(mod_ids).where(table[:hidden].eq(0).and(table[:id].not_eq(id))).first
   end
 
-  def unique_mods
-    if first_mod_id == second_mod_id
-      errors.add(:mods, "You cannot create a Compatibility Note between a mod and itself.")
-      return
-    end
-
-    note = get_existing_note([first_mod_id, second_mod_id])
-    if note.present?
-      if note.approved
-        errors.add(:mods, "A Compatibility Note for these mods already exists.")
-        errors.add(:link_id, note.id)
-      else
-        errors.add(:mods, "An unapproved Compatibility Note for these mods already exists.")
-      end
+  def note_exists_error(existing_note)
+    if existing_note.approved
+      errors.add(:mods, "An Compatibility Note for these mods already exists.")
+      errors.add(:link_id, existing_note.id)
+    else
+      errors.add(:mods, "An unapproved Compatibility Note for these mods already exists.")
     end
   end
 
-  def mods
-    [first_mod, second_mod]
+  def duplicate_mods_error
+    errors.add(:mods, "You cannot create a Compatibility Note between a mod and itself.") if first_mod_id == second_mod_id
+  end
+
+  def validate_unique_mods
+    return if duplicate_mods_error
+    existing_note = get_existing_note([first_mod_id, second_mod_id])
+    note_exists_error(existing_note) if existing_note.present?
   end
 
   def mod_author_users
@@ -105,22 +103,6 @@ class CompatibilityNote < ActiveRecord::Base
 
   def self.update_adult(ids)
     CompatibilityNote.where(id: ids).joins(:first_mod, :second_mod).update_all("compatibility_notes.has_adult_content = mods.has_adult_content OR second_mods_compatibility_notes.has_adult_content")
-  end
-
-  def self.sortable_columns
-    {
-        :except => [:game_id, :submitted_by, :edited_by, :corrector_id, :first_mod_id, :second_mod_id, :compatibility_mod_id, :compatibility_plugin_id, :text_body, :edit_summary, :moderator_message],
-        :include => {
-            :submitter => {
-                :only => [:username],
-                :include => {
-                    :reputation => {
-                        :only => [:overall]
-                    }
-                }
-            }
-        }
-    }
   end
 
   private

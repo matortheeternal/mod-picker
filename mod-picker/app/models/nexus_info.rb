@@ -48,13 +48,10 @@ class NexusInfo < ActiveRecord::Base
   end
 
   def after_scrape
-    # update mod extra metrics
-    if mod_id.present?
-      mod.compute_extra_metrics
-      if Rails.application.config.scrape_nexus_statistics && mod.reviews_count < 5
-        mod.compute_reputation
-        mod.save!
-      end
+    compute_extra_metrics
+    if mod_id.present? && Rails.application.config.scrape_nexus_statistics && mod.reviews_count < 5
+      mod.compute_reputation
+      mod.save!
     end
   end
 
@@ -63,5 +60,26 @@ class NexusInfo < ActiveRecord::Base
     if bio.present? && mod_id.present?
       ModAuthor.find_or_create_by(mod_id: mod_id, user_id: bio.user_id)
     end
+  end
+
+  def compute_extra_metrics
+    days_since_release = DateTime.now - released.to_date
+    if Rails.application.config.scrape_nexus_statistics
+      self.endorsement_rate = (endorsements / days_since_release) if days_since_release > 0
+      self.dl_rate = (unique_downloads / days_since_release) if days_since_release > 0
+      self.udl_to_endorsements = (unique_downloads / endorsements) if endorsements > 0
+      self.udl_to_posts = (unique_downloads / posts_count) if posts_count > 0
+      self.tdl_to_udl = (total_downloads / unique_downloads) if unique_downloads > 0
+      self.views_to_tdl = (views / total_downloads) if total_downloads > 0
+      save!
+    end
+  end
+
+  def endorsement_reputation
+    100.0 / (1.0 + Math::exp(-0.15 * (endorsement_rate - 25)))
+  end
+
+  def self.can_scrape_statistics?
+    Rails.application.config.scrape_nexus_statistics
   end
 end

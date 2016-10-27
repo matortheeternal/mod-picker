@@ -372,3 +372,32 @@ ul,ol         { list-style:none; }
   outline: medium none;
   outline-offset: -2px;
 }
+
+/* CUSTOM CSS */
+#artist-credit {
+  position: absolute;
+  bottom: 60px;
+  right: 10px;
+  padding: 5px;
+  background: rgba(238, 238, 238, 0.7);
+  font-size: 11px;
+  font-family: 'Roboto', sans-serif;
+  color: #000;
+  cursor: default;
+
+  a {
+    color: #000;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+
+    -webkit-transition: color 0.2s ease-in-out;
+    -moz-transition: color 0.2s ease-in-out;
+    -o-transition: color 0.2s ease-in-out;
+    transition: color 0.2s ease-in-out;
+
+    &:hover {
+      color: #3678BF;
+    }
+  }
+}

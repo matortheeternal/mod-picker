@@ -4,23 +4,23 @@
             <span class="capitalize">{{note.status | humanize}}</span>
             {{note.compatibility_verb}}
             <span ng-if="note.first_mod.id == modId">
-                <a ng-href="#/mod/{{note.second_mod.id}}" target="_blank">{{note.second_mod.name}}</a>
+                <a ng-href="#/mod/{{note.second_mod.id}}">{{note.second_mod.name}}</a>
             </span>
             <span ng-if="note.second_mod.id == modId">
-                <a ng-href="#/mod/{{note.first_mod.id}}" target="_blank">{{note.first_mod.name}}</a>
+                <a ng-href="#/mod/{{note.first_mod.id}}">{{note.first_mod.name}}</a>
             </span>
         </span>
         <span ng-if="!modId" class="root">
             <span ng-if="note.compatibility_verb === 'for'">
                 <span class="capitalize">{{note.status | humanize}}</span> for
-                <a ng-href="#/mod/{{note.first_mod.id}}" target="_blank">{{note.first_mod.name}}</a>
+                <a ng-href="#/mod/{{note.first_mod.id}}">{{note.first_mod.name}}</a>
                 and
-                <a ng-href="#/mod/{{note.second_mod.id}}" target="_blank">{{note.second_mod.name}}</a>
+                <a ng-href="#/mod/{{note.second_mod.id}}">{{note.second_mod.name}}</a>
             </span>
             <span ng-if="note.compatibility_verb === 'with'">
-                <a ng-href="#/mod/{{note.first_mod.id}}" target="_blank">{{note.first_mod.name}}</a>
+                <a ng-href="#/mod/{{note.first_mod.id}}">{{note.first_mod.name}}</a>
                 is <span class="capitalize">{{note.status | humanize}}</span> with
-                <a ng-href="#/mod/{{note.second_mod.id}}" target="_blank">{{note.second_mod.name}}</a>
+                <a ng-href="#/mod/{{note.second_mod.id}}">{{note.second_mod.name}}</a>
             </span>
         </span>
         <span class="standing-item" title="This contribution is in {{note.standing}} standing">
@@ -29,7 +29,7 @@
     </div>
     <user-column ng-if="showUserColumn" user="note.submitter" editors="note.editors" class="user-column" index="index"></user-column>
     <div class="content-column">
-        <contribution-text target="note"></contribution-text>
+        <contribution-text model-name="CompatibilityNote" target="note"></contribution-text>
         <contribution-actions target="note" index="index" model-name="CompatibilityNote" edit="edit" has-history="true"></contribution-actions>
     </div>
     <div ng-if="showResolutionOptions" class="resolution-column">

@@ -1,0 +1,8 @@
+{
+  "except": ["game_id", "mod_option_id", "description"],
+  "include": {
+    "mod": {
+      "only": ["name"]
+    }
+  }
+}

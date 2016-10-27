@@ -61,7 +61,7 @@
             <div ng-repeat="errorType in mod.currentPlugin.plugin_errors" ng-if="errorType.errors.length && (!errorType.benign || showBenignErrors)">
                 <h3 class="section-title">
                     {{errorType.errors.length}} {{errorType.name}} ({{errorType.acronym}}s)
-                    <a ng-href="/help/plugin_errors#{{errorType.acronym}}s">
+                    <a ng-href="/help/plugin_errors#{{errorType.acronym}}s" target="_blank">
                         <span class="help-tooltip" title="{{(errorType.caption + '  Click for more information.').wordwrap()}}">
                             <i class="fa fa-question-circle"></i>
                         </span>
