@@ -29,20 +29,19 @@
 
     <!-- Mod Options -->
     <div class="modal extra-wide-modal" ng-if="detailsItem.mod">
-            <div class="close-modal">
-                <span class="fa fa-times" ng-click="toggleDetailsModal()"></span>
-            </div>
+        <div class="close-modal">
+            <span class="fa fa-times" ng-click="toggleDetailsModal()"></span>
+        </div>
 
-            <h2 ng-show="editing">{{ detailsItem.is_utility ? 'Edit Tool Options' : 'Edit Mod Options' }}</h2>
-            <h2 ng-hide="editing">{{ detailsItem.is_utility ? 'View Tool Options' : 'View Mod Options' }}</h2>
-
+        <h2 ng-show="editing">{{ detailsItem.is_utility ? 'Edit Tool Options' : 'Edit Mod Options' }}</h2>
+        <h2 ng-hide="editing">{{ detailsItem.is_utility ? 'View Tool Options' : 'View Mod Options' }}</h2>
 
         <div class="box-shadow">
             <table ng-show="detailsItem.mod.mod_options.length" class="browse-table">
                 <thead>
                     <tr>
                         <th ng-repeat="column in columns" ng-click="sortColumn(column)" class="{{column.class}}" title="{{column.title}}">
-                            {{column.label}}
+                            {{::column.label}}
                             <div class="sorting-options" ng-if="sort && !column.unsortable">
                                 <div class="sort-up" ng-class="{ 'active' : column.up }">
                                     <i class="fa fa-caret-up"></i>
@@ -67,7 +66,7 @@
                             </a>
                         </td>
                         <td>
-                            {{!!item.default ? 'Yes' : 'No'}}
+                            {{item.default ? 'Yes' : 'No'}}
                         </td>
                         <td>
                             {{item.size | bytes}}
@@ -78,11 +77,11 @@
                         <td>
                             <span ng-repeat="plugin in item.plugins">
                                 {{plugin.filename}}{{$last ? '' : ', '}}
-                                <br ng-if="!$last" />
+                                <br bindonce bo-if="!$last" />
                             </span>
                         </td>
                     </tr>
                 </tbody>
             </table>
+        </div>
     </div>
-</div>

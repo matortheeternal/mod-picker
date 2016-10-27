@@ -270,4 +270,20 @@ app.service('sortUtils', function($q, categoryService, colorsFactory, modListSer
             return a.index - b.index;
         });
     }
+
+    // load sort into view
+    this.loadSort = function(columns, sortedColumn, sort) {
+        columns.forEach(function(column) {
+            if (service.getSortData(column) === sort.column) {
+                var sortKey = sort.direction === "ASC" ? "up" : "down";
+                column[sortKey] = true;
+                sortedColumn = column;
+            }
+        });
+    };
+
+    // get the sort data key for a column
+    this.getSortData = function(column) {
+        return column.sortData || (typeof column.data === "string" ? column.data : objectUtils.csv(column.data));
+    };
 });

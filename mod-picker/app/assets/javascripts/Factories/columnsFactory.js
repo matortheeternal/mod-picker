@@ -1075,7 +1075,8 @@ app.service('columnsFactory', function() {
             },
             {
                 label: "File Size",
-                data: "size"
+                data: "size",
+                class: "short-column"
             },
             {
                 label: "Asset Files",

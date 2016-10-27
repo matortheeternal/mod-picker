@@ -7,10 +7,9 @@ app.directive('modDetailsModal', function() {
     };
 });
 
-app.controller('modDetailsModalController', function($scope, $rootScope, eventHandlerFactory, columnsFactory) {
+app.controller('modDetailsModalController', function($scope, $rootScope, eventHandlerFactory, columnsFactory, sortUtils) {
     // shared function setup
     eventHandlerFactory.buildModalMessageHandlers($scope);
-
 
     // initialize variables
     $scope.columns = columnsFactory.modListModDetailsColumns();
@@ -21,22 +20,6 @@ app.controller('modDetailsModalController', function($scope, $rootScope, eventHa
         column: '',
         direction: 'ASC'
     }
-
-    // load sort into view
-    $scope.loadSort = function() {
-        $scope.columns.forEach(function(column) {
-            if ($scope.getSortData(column) === $scope.sort.column) {
-                var sortKey = $scope.sort.direction === "ASC" ? "up" : "down";
-                column[sortKey] = true;
-                sortedColumn = column;
-            }
-        });
-    };
-
-    // get the sort data key for a column
-    $scope.getSortData = function(column) {
-        return column.sortData || (typeof column.data === "string" ? column.data : objectUtils.csv(column.data));
-    };
 
     // sorts by column
     $scope.sortColumn = function(column) {
@@ -52,7 +35,7 @@ app.controller('modDetailsModalController', function($scope, $rootScope, eventHa
 
         // send data to backend
         if (column.up || column.down) {
-            $scope.sort.column = $scope.getSortData(column);
+            $scope.sort.column = sortUtils.getSortData(column);
             $scope.sort.direction = column.up ? "ASC" : "DESC";
         } else {
             delete $scope.sort.column;
@@ -69,11 +52,6 @@ app.controller('modDetailsModalController', function($scope, $rootScope, eventHa
         column[secondKey] = b1;
         column[firstKey] = !b1 && !b2;
     };
-
-    // load sort into view
-    if ($scope.columns && $scope.sort && $scope.sort.column) {
-        $scope.loadSort();
-    }
 
     $scope.findModOption = function(optionId) {
         var optionsArray = $scope.detailsItem.mod_list_mod_options;
@@ -113,6 +91,11 @@ app.controller('modDetailsModalController', function($scope, $rootScope, eventHa
             $scope.removeModOption(option.id);
         }
     };
+
+    // load sort into view
+    if ($scope.columns && $scope.sort && $scope.sort.column) {
+        sortUtils.loadSort($scope.columns, sortedColumn, $scope.sort);
+    }
 
     // load option active states
     if ($scope.detailsItem.mod) {
