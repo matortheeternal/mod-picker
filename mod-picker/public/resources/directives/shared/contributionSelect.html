@@ -1,0 +1,13 @@
+<a class="inverse-link no-select" ng-click="toggleContributions()" tabindex="0">
+    My Contributions
+</a>
+<div class="dropdown" ng-show="showContributions" ng-click="stopPropagation($event)">
+    <a href="/settings/mods">Mods</a>
+    <a href="/settings/mod-lists">Mod Lists</a>
+    <a ng-href="/comments?s={{currentUser.username}}">Comments</a>
+    <a ng-href="/reviews?s={{currentUser.username}}">Reviews</a>
+    <a ng-href="/compatibility-notes?s={{currentUser.username}}">Compatibility Notes</a>
+    <a ng-href="/install-order-notes?s={{currentUser.username}}">Install Order Notes</a>
+    <a ng-href="/load-order-notes?s={{currentUser.username}}">Load Order Notes</a>
+    <a ng-href="/corrections?s={{currentUser.username}}">Corrections</a>
+</div>
