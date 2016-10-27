@@ -7,8 +7,27 @@ header {
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
+  position: relative;
   height: 192px;
   z-index: 100;
+
+  #artist-credit {
+    position: absolute;
+    bottom: 6px;
+    right: 6px;
+    padding: 5px;
+    background: rgba($inverse_text_color, 0.7);
+    font-size: 11px;
+    cursor: default;
+
+    a:before {
+      content: $banner_artist;
+    }
+
+    &.credit-link:before {
+      content: $banner_credit_link;
+    }
+  }
 }
 
 .header {
