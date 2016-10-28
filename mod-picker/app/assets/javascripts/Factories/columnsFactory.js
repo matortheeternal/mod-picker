@@ -1085,7 +1085,8 @@ app.service('columnsFactory', function() {
             },
             {
                 label: "Plugins",
-                data: "plugins"
+                data: "plugins",
+                sortData: "plugins.length"
             }
             
         ];
