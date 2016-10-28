@@ -1,8 +1,9 @@
 class ModListMod < ActiveRecord::Base
-  include RecordEnhancements, ScopeHelpers, BetterJson
+  include RecordEnhancements, ScopeHelpers, BetterJson, CounterCache
 
   # SCOPES
-  value_scope :is_utility, :is_official, :association => 'mod'
+  value_scope :is_utility
+  value_scope :is_official, :association => 'mod'
 
   # ASSOCIATIONS
   belongs_to :mod_list, :inverse_of => 'mod_list_mods'
@@ -13,15 +14,19 @@ class ModListMod < ActiveRecord::Base
   # NESTED ATTRIBUTES
   accepts_nested_attributes_for :mod_list_mod_options, allow_destroy: true
 
+  # COUNTER CACHE
+  counter_cache_on :mod, column: 'mod_lists_count'
+  bool_counter_cache_on :mod_list, :is_utility, { true => :tools, false => :mods }
+
   # VALIDATIONS
   validates :mod_list_id, :mod_id, :index, presence: true
-  # can only have a mod on a given mod list once
-  # TODO: If we don't allow the user to change the mod_id with nested attributes we could refactor this validation to be an after_create callback
   validates :mod_id, uniqueness: { scope: :mod_list_id, :message => "The mod is already present on the mod list." }
+  validates :is_utility, inclusion: [true, false]
 
   # CALLBACKS
-  after_create :increment_counter_caches, :add_default_mod_options
-  before_destroy :decrement_counter_caches, :destroy_mod_list_plugins
+  before_create :set_index_and_is_utility
+  after_create :add_default_mod_options
+  before_destroy :destroy_mod_list_plugins
 
   def mod_compatibility_notes
     mod_ids = mod_list.mod_list_mod_ids
@@ -60,31 +65,13 @@ class ModListMod < ActiveRecord::Base
   end
 
   def get_index
-    if mod.is_utility
-      self.index = mod_list.tools_count + 1
-    else
-      self.index = mod_list.mods_count + 1
-    end
+    self.index = is_utility ? mod_list.tools_count : mod_list.mods_count + 1
   end
 
   private
-    # counter caches
-    def increment_counter_caches
-      if mod.is_utility
-        mod_list.update_counter(:tools_count, 1)
-      else
-        mod_list.update_counter(:mods_count, 1)
-      end
-      mod.update_counter(:mod_lists_count, 1)
-    end
-
-    def decrement_counter_caches
-      if mod.is_utility
-        mod_list.update_counter(:tools_count, -1)
-      else
-        mod_list.update_counter(:mods_count, -1)
-      end
-      mod.update_counter(:mod_lists_count, -1)
+    def set_index_and_is_utility
+      self.is_utility = mod.is_utility
+      get_index if self.index.nil?
     end
 
     def add_default_mod_options

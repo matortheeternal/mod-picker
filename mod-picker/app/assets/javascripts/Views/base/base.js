@@ -109,6 +109,13 @@ app.controller('baseController', function($scope, $rootScope, $state, $window, $
         });
     };
 
+    // sets the page title
+    $scope.setPageTitle = function(title) {
+        var gameName = $rootScope.currentGame.display_name;
+        $rootScope.pageTitle = 'Mod Picker: ' + gameName;
+        if (title) $rootScope.pageTitle = title + ' | Mod Picker';
+    };
+
     $scope.$on('reloadCurrentUser', function() {
         $scope.retrieveCurrentUser();
     });
@@ -132,7 +139,12 @@ app.controller('baseController', function($scope, $rootScope, $state, $window, $
         }, 500);
     });
 
+    $rootScope.$on('setPageTitle', function(event, title) {
+        $scope.setPageTitle(title);
+    });
+
     $scope.loadArtistCredit();
+    $scope.setPageTitle();
 });
 
 app.controller('searchController', function($scope, $state) {

@@ -56,6 +56,9 @@ app.controller('homeController', function($scope, $rootScope, $q, homeService) {
     $scope.currentUser = $rootScope.currentUser;
     $scope.permissions = angular.copy($rootScope.permissions);
 
+    // set page title
+    $scope.$emit('setPageTitle', 'Home');
+
     $scope.tabs = [
         { name: 'Reviews' },
         { name: 'Compatibility Notes' },

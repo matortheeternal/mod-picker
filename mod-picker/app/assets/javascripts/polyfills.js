@@ -107,6 +107,19 @@ Array.prototype.contains = function(needle) {
     return (this.indexOf(needle) > -1);
 };
 
+Array.prototype.groupBy = function(propertyName) {
+    var obj = {};
+    this.forEach(function(item) {
+        var key = item[propertyName] + '';
+        if (obj.hasOwnProperty(key)) {
+            obj[key].push(item);
+        } else {
+            obj[key] = [item];
+        }
+    });
+    return obj;
+};
+
 // angular polyfills
 angular.inherit = function(scope, attribute) {
     if (angular.isUndefined(scope[attribute])) {

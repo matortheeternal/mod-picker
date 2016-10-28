@@ -20,7 +20,6 @@ module Sortable
     end
 
     def key_allowed(key, opts)
-      key = key.to_sym
       return false if opts.has_key?(:except) && opts[:except].include?(key)
       return false if opts.has_key?(:only) && opts[:only].exclude?(key)
       true

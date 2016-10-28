@@ -79,6 +79,9 @@ app.controller('userSettingsController', function($scope, $rootScope, $q, userOb
         src: $scope.defaultSrc
     };
 
+    // set page title
+    $scope.$emit('setPageTitle', 'Settings');
+
     // shared function setup
     eventHandlerFactory.buildMessageHandlers($scope, true);
 

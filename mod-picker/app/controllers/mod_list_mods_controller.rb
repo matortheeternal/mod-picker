@@ -2,7 +2,6 @@ class ModListModsController < ApplicationController
   # POST /mod_list_mods
   def create
     @mod_list_mod = ModListMod.new(mod_list_mod_params)
-    @mod_list_mod.get_index
     authorize! :read, @mod_list_mod.mod
     authorize! :update, @mod_list_mod.mod_list
 

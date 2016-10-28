@@ -33,6 +33,9 @@ app.controller('editArticleController', function($scope, $stateParams, article, 
         src: $scope.article.image
     };
 
+    // set page title
+    $scope.$emit('setPageTitle', 'Edit Article');
+
     // shared function setup
     eventHandlerFactory.buildMessageHandlers($scope);
 
@@ -64,7 +67,16 @@ app.controller('editArticleController', function($scope, $stateParams, article, 
         $scope.startSubmission("Updating article...");
         articleService.updateArticle(articleDiff).then(function() {
             if (!$scope.image.file) {
-                $scope.submissionSuccess("Article updated successfully", "#/article/" + articleId, "view the updated article.");
+                $scope.submissionSuccess("Article updated successfully", [
+                    { 
+                        link: "#/article/" + articleId,
+                        linkLabel: "view the updated article."
+                    },
+                    {
+                        link: "#/articles",
+                        linkLabel: "return to the articles index."
+                    }
+                ]);
             }
         }, function(response) {
             $scope.submissionError("There were errors updating the article.", response);
@@ -73,7 +85,16 @@ app.controller('editArticleController', function($scope, $stateParams, article, 
         // if we have a new article image, send it as well
         if ($scope.image.file) {
             articleService.submitImage(articleId, $scope.image.file).then(function() {
-                $scope.submissionSuccess("Article updated successfully", "#/article/" + articleId, "view the updated article.");
+                $scope.submissionSuccess("Article updated successfully", [
+                    { 
+                        link: "#/article/" + articleId,
+                        linkLabel: "view the updated article."
+                    },
+                    {
+                        link: "#/articles",
+                        linkLabel: "return to the articles index."
+                    }
+                ]);
             }, function(response) {
                 $scope.submissionError("There were errors updating the article image.", response);
             });
@@ -84,7 +105,7 @@ app.controller('editArticleController', function($scope, $stateParams, article, 
     $scope.deleteArticle = function() {
         $scope.startSubmission("Deleting article...");
         articleService.deleteArticle($scope.article.id).then(function() {
-            $scope.submissionSuccess("Article deleted successfully", "#/articles", "return to the articles index.");
+            $scope.submissionSuccess("Article deleted successfully", [{ link: "#/articles", linkLabel: "return to the articles index."}]);
         }, function(response) {
             $scope.submissionError("There were errors deleting the article.", response);
         });

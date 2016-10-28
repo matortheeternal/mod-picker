@@ -1,5 +1,5 @@
 class AssetFile < ActiveRecord::Base
-  include RecordEnhancements, BetterJson
+  include RecordEnhancements, BetterJson, CounterCache
 
   belongs_to :game, :inverse_of => 'asset_files'
 

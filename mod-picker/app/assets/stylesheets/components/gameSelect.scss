@@ -1,0 +1,37 @@
+game-select {
+  display: inline-block;
+  width: 95px;
+  text-align: center;
+  position: relative;
+
+  .game-icon .game-label {
+    padding: 5px 5px 5px 0;
+    line-height: 32px;
+    vertical-align: middle;
+    display: inline-block;
+  }
+
+  .game-icon {
+    display: inline-block;
+    font-weight: 700;
+    padding-left: 32px;
+    background-size: 32px 32px;
+    background-position: 0 5px;
+    background-repeat: no-repeat;
+  }
+
+  .icon-sk {
+    background-image: url(image_path("skyrim_icon.png"));
+  }
+
+  .dropdown {
+    cursor: default;
+    min-width: 100px;
+    left: -2px;
+    top: 39px;
+    padding: 0;
+    z-index: 200;
+    text-align: center;
+    background-color: $secondary_background;
+  }
+}
