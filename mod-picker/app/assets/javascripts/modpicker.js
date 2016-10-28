@@ -50,6 +50,8 @@ app.run(['$rootScope', '$state', 'smoothScroll', function($rootScope, $state, sm
             // scroll to the top of the page
             smoothScroll(document.body, {duration: 300});
         }
+        // set page title to loading
+        $rootScope.$emit('setPageTitle', 'Loading...');
     });
 
     // handle state change errors
