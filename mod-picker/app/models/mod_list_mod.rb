@@ -65,7 +65,7 @@ class ModListMod < ActiveRecord::Base
   end
 
   def get_index
-    self.index = is_utility ? mod_list.tools_count : mod_list.mods_count + 1
+    self.index = (is_utility ? mod_list.tools_count : mod_list.mods_count) + 1
   end
 
   private
