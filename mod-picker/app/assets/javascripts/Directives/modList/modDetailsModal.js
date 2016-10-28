@@ -7,7 +7,10 @@ app.directive('modDetailsModal', function() {
     };
 });
 
-app.controller('modDetailsModalController', function($scope, $rootScope, eventHandlerFactory) {
+app.controller('modDetailsModalController', function($scope, $rootScope, eventHandlerFactory, formUtils) {
+    // inherited functions
+    $scope.unfocusModDetailsModal = formUtils.unfocusModal($scope.toggleDetailsModal);
+
     // shared function setup
     eventHandlerFactory.buildModalMessageHandlers($scope);
 
