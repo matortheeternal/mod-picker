@@ -7,7 +7,7 @@ app.directive('modDetailsModal', function() {
     };
 });
 
-app.controller('modDetailsModalController', function($scope, $rootScope, eventHandlerFactory, columnsFactory, sortUtils, formUtils) {
+app.controller('modDetailsModalController', function($scope, $rootScope, eventHandlerFactory, columnsFactory, sortUtils, tableUtils, formUtils) {
     // inherited functions
     $scope.unfocusModDetailsModal = formUtils.unfocusModal($scope.toggleDetailsModal);
 
@@ -17,44 +17,13 @@ app.controller('modDetailsModalController', function($scope, $rootScope, eventHa
     // initialize variables
     $scope.columns = columnsFactory.modListModDetailsColumns();
 
-    var sortedColumn;
-
     $scope.sort = {
         column: '',
         direction: 'ASC'
     };
 
-    // sorts by column
-    $scope.sortColumn = function(column) {
-        // return if we don't have a sort object or the column isn't sortable
-        if (!$scope.sort || column.unsortable) return;
-
-        if (sortedColumn && sortedColumn !== column) {
-            sortedColumn.up = false;
-            sortedColumn.down = false;
-        }
-        sortedColumn = column;
-        $scope.toggleSort(column);
-
-        // send data to backend
-        if (column.up || column.down) {
-            $scope.sort.column = sortUtils.getSortData(column);
-            $scope.sort.direction = column.up ? "ASC" : "DESC";
-        } else {
-            delete $scope.sort.column;
-            delete $scope.sort.direction;
-        }
-    };
-
-    // this function will toggle sorting for an input column between
-    // up, down, and no sorting
-    $scope.toggleSort = function(column) {
-        var firstKey = column.invertSort ? "up" : "down";
-        var secondKey = column.invertSort ? "down" : "up";
-        var b1 = column[firstKey], b2 = column[secondKey];
-        column[secondKey] = b1;
-        column[firstKey] = !b1 && !b2;
-    };
+    // expose service function to be usable in html 
+    $scope.sortColumn = tableUtils.sortColumn;
 
     $scope.findModOption = function(optionId) {
         var optionsArray = $scope.detailsItem.mod_list_mod_options;
@@ -97,7 +66,7 @@ app.controller('modDetailsModalController', function($scope, $rootScope, eventHa
 
     // load sort into view
     if ($scope.columns && $scope.sort && $scope.sort.column) {
-        sortUtils.loadSort($scope.columns, sortedColumn, $scope.sort);
+        sortUtils.loadSort($scope.columns, $scope.sortedColumn, $scope.sort);
     }
 
     // load option active states
