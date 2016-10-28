@@ -10,6 +10,9 @@ app.controller('loadOrderNotesController', function($scope, $rootScope, $statePa
     $scope.currentUser = $rootScope.currentUser;
     $scope.permissions = $rootScope.permissions;
 
+    // set page title
+    $scope.$emit('setPageTitle', 'Browse Load Order Notes');
+
     // sort options for view
     $scope.sortOptions = sortFactory.loadOrderNoteSortOptions();
 

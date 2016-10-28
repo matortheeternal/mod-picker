@@ -10,6 +10,9 @@ app.controller('usersController', function($scope, $rootScope, $stateParams, $st
     $scope.currentUser = $rootScope.currentUser;
     $scope.permissions = $rootScope.permissions;
 
+    // set page title
+    $scope.$emit('setPageTitle', 'Browse Users');
+
     // columns for view
     $scope.columns = columnsFactory.userColumns();
     $scope.columnGroups = columnsFactory.userColumnGroups();

@@ -1,5 +1,5 @@
 class Mod < ActiveRecord::Base
-  include Filterable, Sortable, Reportable, Imageable, RecordEnhancements, SourceHelpers, ScopeHelpers, Trackable, BetterJson, Dateable
+  include Filterable, Sortable, Reportable, Imageable, RecordEnhancements, CounterCache, SourceHelpers, ScopeHelpers, Trackable, BetterJson, Dateable
 
   # ATTRIBUTES
   enum status: [ :good, :outdated, :unstable ]
@@ -146,14 +146,27 @@ class Mod < ActiveRecord::Base
       |attributes| attributes[:id] && attributes[:user_id] && !attributes[:_destroy]
   }, allow_destroy: true
 
+  # COUNTER CACHE
+  counter_cache :required_mods, :required_by
+  counter_cache :mod_stars, column: 'stars_count'
+  counter_cache :reviews, conditional: { hidden: false, approved: true }
+  counter_cache :compatibility_notes, conditional: { hidden: false, approved: true },
+      custom_reflection: { klass: CompatibilityNote, query_method: 'mod_count_subquery' }
+  counter_cache :install_order_notes, conditional: { hidden: false, approved: true },
+      custom_reflection: { klass: InstallOrderNote, query_method: 'mod_count_subquery' }
+  counter_cache :load_order_notes, conditional: { hidden: false, approved: true },
+      custom_reflection: { klass: LoadOrderNote, query_method: 'mod_count_subquery' }
+  counter_cache :corrections, conditional: { hidden: false, correctable_type: 'Mod' }
+  counter_cache :mod_tags, column: 'tags_count'
+  counter_cache :mod_list_mods, column: 'mod_lists_count'
+  counter_cache_on :submitter, column: 'submitted_mods_count', conditional: { hidden: false }
+
   # VALIDATIONS
   validates :game_id, :submitted_by, :name, :authors, :released, presence: true
   validates :name, :aliases, length: {maximum: 128}
 
-  # callbacks
+  # CALLBACKS
   before_save :touch_updated
-  after_create :increment_counters
-  before_destroy :decrement_counters
 
   def asset_file_paths
     mod_asset_files.eager_load(:asset_file).pluck(:subpath, :path).map { |item| item.join('') }
@@ -192,6 +205,15 @@ class Mod < ActiveRecord::Base
     save!
   end
 
+  def update_review_metrics
+    compute_average_rating
+    compute_reputation
+    update_columns({
+        :reputation => reputation,
+        :average_rating => average_rating
+    })
+  end
+
   # note associations
   def compatibility_notes
     CompatibilityNote.mod(id)
@@ -225,13 +247,5 @@ class Mod < ActiveRecord::Base
         self.updated ||= DateTime.now
         self.updated += 1.second
       end
-    end
-
-    def decrement_counters
-      submitter.update_counter(:submitted_mods_count, -1) if submitted_by.present?
-    end
-
-    def increment_counters
-      submitter.update_counter(:submitted_mods_count, 1) if submitted_by.present?
     end
 end

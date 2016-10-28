@@ -1,5 +1,5 @@
 class LoadOrderNote < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, Correctable, Helpfulable, Reportable, Approveable, ScopeHelpers, Trackable, BetterJson, Dateable
+  include Filterable, Sortable, RecordEnhancements, CounterCache, Correctable, Helpfulable, Reportable, Approveable, ScopeHelpers, Trackable, BetterJson, Dateable
 
   # ATTRIBUTES
   self.per_page = 25
@@ -51,6 +51,9 @@ class LoadOrderNote < ActiveRecord::Base
   has_many :history_entries, :class_name => 'LoadOrderNoteHistoryEntry', :inverse_of => 'load_order_note', :foreign_key => 'load_order_note_id'
   has_many :editors, -> { uniq }, :class_name => 'User', :through => 'history_entries'
 
+  # COUNTER CACHE
+  counter_cache_on :first_plugin, :second_plugin, :first_mod, :second_mod, :submitter, conditional: { hidden: false, approved: true }
+
   # VALIDATIONS
   validates :game_id, :submitted_by, :first_plugin_id, :second_plugin_id, :text_body, presence: true
 
@@ -58,9 +61,7 @@ class LoadOrderNote < ActiveRecord::Base
   validate :validate_unique_plugins
 
   # CALLBACKS
-  after_create :increment_counters
   before_save :set_adult
-  before_destroy :decrement_counters
 
   def get_existing_note(plugin_ids)
     table = LoadOrderNote.arel_table
@@ -69,10 +70,10 @@ class LoadOrderNote < ActiveRecord::Base
 
   def note_exists_error(existing_note)
     if existing_note.approved
-      errors.add(:mods, "A Load Order Note for these plugins already exists.")
+      errors.add(:plugins, "A Load Order Note for these plugins already exists.")
       errors.add(:link_id, existing_note.id)
     else
-      errors.add(:mods, "An unapproved Load Order Note for these plugins already exists.")
+      errors.add(:plugins, "An unapproved Load Order Note for these plugins already exists.")
     end
   end
 
@@ -90,10 +91,6 @@ class LoadOrderNote < ActiveRecord::Base
     User.includes(:mod_authors).where(:mod_authors => {mod_id: [first_mod.id, second_mod.id]})
   end
 
-  def plugins
-    [first_plugin, second_plugin]
-  end
-
   def create_history_entry
     history_summary = edited_by.nil? ? "Load Order Note Created" : edit_summary
     history_entries.create(
@@ -108,25 +105,33 @@ class LoadOrderNote < ActiveRecord::Base
     LoadOrderNote.where(id: ids).joins(:first_mod, :second_mod).update_all("load_order_notes.has_adult_content = mods.has_adult_content OR second_mods_load_order_notes.has_adult_content")
   end
 
+  def self.join_to_mod_options(query, source_column, plugins, options)
+    query.join(plugins).on(arel_table[source_column].eq(plugins[:id])).
+        join(options).on(plugins[:mod_option_id].eq(options[:id]))
+  end
+
+  def self.mod_count_subquery
+    mod_options = ModOption.arel_table
+    mod_options_alias = ModOption.arel_table.alias
+    [
+        [:first_plugin_id, Plugin.arel_table, mod_options],
+        [:second_plugin_id, Plugin.arel_table.alias, mod_options_alias]
+    ].inject(arel_table) { |query, args|
+      query = join_to_mod_options(query, *args)
+    }.where(Mod.arel_table[:id].eq(mod_options[:mod_id]).
+        or(Mod.arel_table[:id].eq(mod_options_alias[:mod_id]))).
+        project(Arel.sql('*').count)
+  end
+
+  def self.plugin_count_subquery
+    where(Plugin.arel_table[:id].eq(arel_table[:first_plugin_id]).
+        or(Plugin.arel_table[:id].eq(arel_table[:second_plugin_id]))).
+        project(Arel.sql('*').count)
+  end
+
   private
     def set_adult
       self.has_adult_content = first_mod.has_adult_content || second_mod.has_adult_content
       true
-    end
-
-    def increment_counters
-      first_mod.update_counter(:load_order_notes_count, 1)
-      second_mod.update_counter(:load_order_notes_count, 1)
-      submitter.update_counter(:load_order_notes_count, 1)
-      first_plugin.update_counter(:load_order_notes_count, 1)
-      second_plugin.update_counter(:load_order_notes_count, 1)
-    end
-
-    def decrement_counters
-      first_mod.update_counter(:load_order_notes_count, -1)
-      second_mod.update_counter(:load_order_notes_count, -1)
-      submitter.update_counter(:load_order_notes_count, -1)
-      first_plugin.update_counter(:load_order_notes_count, -1)
-      second_plugin.update_counter(:load_order_notes_count, -1)
     end
 end

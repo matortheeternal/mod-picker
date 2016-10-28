@@ -14,10 +14,11 @@ app.controller('submissionModalController', function($scope, errorService) {
         $scope.$emit('toggleModal', true);
     };
 
-    $scope.submissionSuccess = function(label, link, linkLabel) {
+    $scope.submissionSuccess = function(label, linksList) {
+        // array of objects containing linkLabel and link in case success message
+        // needs multiple links
+        $scope.linksList = linksList;
         $scope.submittingStatus = label;
-        $scope.successLink = link;
-        $scope.successLabel = linkLabel;
         $scope.success = true;
     };
 

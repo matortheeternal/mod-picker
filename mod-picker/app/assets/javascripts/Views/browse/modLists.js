@@ -11,6 +11,9 @@ app.controller('modListsController', function($scope, $rootScope, $stateParams, 
     $scope.currentGame = $rootScope.currentGame;
     $scope.permissions = angular.copy($rootScope.permissions);
 
+    // set page title
+    $scope.$emit('setPageTitle', 'Browse Mod Lists');
+
     // columns for view
     $scope.columns = columnsFactory.modListColumns(true);
     $scope.columnGroups = columnsFactory.modListColumnGroups();

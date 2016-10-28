@@ -32,7 +32,7 @@ class ModBuilder
     update!
     true
   rescue Exception => x
-    mod.errors.add(:error, x.message)
+    raise x unless mod.errors.present?
     false
   end
 
@@ -62,7 +62,8 @@ class ModBuilder
     mod.submitted_by = @current_user.id
     save!
     true
-  rescue
+  rescue Exception => x
+    raise x unless mod.errors.present?
     false
   end
 
@@ -141,6 +142,7 @@ class ModBuilder
     if mod.previous_changes.has_key?(:is_utility)
       mod.mod_list_mods.includes(:mod_list).each do |mod_list_mod|
         mod_list_mod.group_id = nil
+        mod_list_mod.is_utility = mod.is_utility
         mod_list_mod.get_index
         mod_list_mod.save!
       end

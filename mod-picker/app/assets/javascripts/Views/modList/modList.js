@@ -184,6 +184,9 @@ app.controller('modListController', function($scope, $rootScope, $q, $stateParam
     $scope.target = $scope.mod_list;
     $scope.isActive = $scope.activeModList && $scope.activeModList.id == $scope.mod_list.id;
 
+    // set page title
+    $scope.$emit('setPageTitle', 'View Mod List');
+
     // shared function setup
     $scope.isEmpty = objectUtils.isEmptyArray;
     eventHandlerFactory.buildMessageHandlers($scope, true);

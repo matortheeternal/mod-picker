@@ -1,5 +1,5 @@
 class UserReputation < ActiveRecord::Base
-  include Filterable, RecordEnhancements, Trackable, BetterJson
+  include Filterable, RecordEnhancements, CounterCache, Trackable, BetterJson
 
   # EVENT TRACKING
   track_milestones :column => 'overall', :milestones => [10, 20, 40, 80, 160, 320, 640, 1280]
@@ -17,6 +17,10 @@ class UserReputation < ActiveRecord::Base
   has_many :outgoing_reputation_links, :class_name => 'ReputationLink', :inverse_of => 'source_reputation', :foreign_key => 'from_rep_id', :dependent => :destroy
   has_many :target_reputations, :class_name => 'UserReputation', :through => 'outgoing_reputation_links', :source => 'target_reputation'
   has_many :source_reputations, :class_name => 'UserReputation', :through => 'incoming_reputation_links', :source => 'source_reputation'
+
+  # COUNTER CACHE
+  counter_cache :incoming_reputation_links, column: 'rep_from_count'
+  counter_cache :outgoing_reputation_links, column: 'rep_to_count'
 
   # VALIDATIONS
   validates :user_id, presence: true

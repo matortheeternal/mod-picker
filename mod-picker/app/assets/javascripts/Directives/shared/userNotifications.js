@@ -1,19 +1,11 @@
-app.directive('userNotifications', function($document) {
+app.directive('userNotifications', function(formUtils) {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/shared/userNotifications.html',
         scope: {
             notifications: '='
         },
-        link: function(scope, element) {
-            $document.on('click', function(e) {
-                if (element !== e.target && !element[0].contains(e.target)) {
-                    scope.$applyAsync(function() {
-                        scope.showNotifications = false;
-                    })
-                }
-            });
-        },
+        link: formUtils.hideWhenDocumentClicked('showNotifications'),
         controller: 'userNotificationsController'
     }
 });

@@ -7,19 +7,20 @@ app.directive('modDetailsModal', function() {
     };
 });
 
-app.controller('modDetailsModalController', function($scope, $rootScope, eventHandlerFactory, columnsFactory, sortUtils, tableUtils) {
+app.controller('modDetailsModalController', function($scope, $rootScope, eventHandlerFactory, columnsFactory, sortUtils, tableUtils, formUtils) {
+    // inherited functions
+    $scope.unfocusModDetailsModal = formUtils.unfocusModal($scope.toggleDetailsModal);
+
     // shared function setup
     eventHandlerFactory.buildModalMessageHandlers($scope);
 
     // initialize variables
     $scope.columns = columnsFactory.modListModDetailsColumns();
 
-    $scope.sortedColumn;
-
     $scope.sort = {
         column: '',
         direction: 'ASC'
-    }
+    };
 
     // expose service function to be usable in html 
     $scope.sortColumn = tableUtils.sortColumn;

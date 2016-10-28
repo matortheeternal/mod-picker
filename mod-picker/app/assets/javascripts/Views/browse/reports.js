@@ -11,6 +11,9 @@ app.controller('reportsIndexController', function($scope, $rootScope, $statePara
     $scope.currentUser = $rootScope.currentUser;
     $scope.globalPermissions = angular.copy($rootScope.permissions);
 
+    // set page title
+    $scope.$emit('setPageTitle', 'Reports');
+
     // sort options for view
     $scope.sortOptions = sortFactory.reportSortOptions();
 
