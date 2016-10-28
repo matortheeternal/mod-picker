@@ -40,7 +40,7 @@
             <table ng-show="detailsItem.mod.mod_options.length" class="browse-table">
                 <thead>
                     <tr>
-                        <th ng-repeat="column in columns" ng-click="sortColumn(column)" class="{{column.class}}" title="{{column.title}}">
+                        <th ng-repeat="column in columns" ng-click="sortColumn(column, sort, sortedColumn)" class="{{column.class}}" title="{{column.title}}">
                             {{::column.label}}
                             <div class="sorting-options" ng-if="sort && !column.unsortable">
                                 <div class="sort-up" ng-class="{ 'active' : column.up }">

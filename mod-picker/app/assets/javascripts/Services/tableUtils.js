@@ -1,4 +1,4 @@
-app.service('tableUtils', function($filter, objectUtils) {
+app.service('tableUtils', function($filter, objectUtils, sortUtils) {
     var service = this;
 
     // sanitizes a filter to be a class by removing any filter params
@@ -121,5 +121,37 @@ app.service('tableUtils', function($filter, objectUtils) {
             }
             return false;
         }
+    };
+
+    // sorts by column
+    this.sortColumn = function(column, sort, sortedColumn) {
+        // return if we don't have a sort object or the column isn't sortable
+        if (!sort || column.unsortable) return;
+
+        if (sortedColumn && sortedColumn !== column) {
+            sortedColumn.up = false;
+            sortedColumn.down = false;
+        }
+        sortedColumn = column;
+        service.toggleSort(column);
+
+        // send data to backend
+        if (column.up || column.down) {
+            sort.column = sortUtils.getSortData(column);
+            sort.direction = column.up ? "ASC" : "DESC";
+        } else {
+            delete sort.column;
+            delete sort.direction;
+        }
+    };
+
+    // this function will toggle sorting for an input column between
+    // up, down, and no sorting
+    this.toggleSort = function(column) {
+        var firstKey = column.invertSort ? "up" : "down";
+        var secondKey = column.invertSort ? "down" : "up";
+        var b1 = column[firstKey], b2 = column[secondKey];
+        column[secondKey] = b1;
+        column[firstKey] = !b1 && !b2;
     };
 });
