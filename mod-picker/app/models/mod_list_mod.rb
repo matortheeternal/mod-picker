@@ -25,8 +25,8 @@ class ModListMod < ActiveRecord::Base
 
   # CALLBACKS
   before_create :set_index_and_is_utility
-  after_create :increment_counter_caches, :add_default_mod_options
-  before_destroy :decrement_counter_caches, :destroy_mod_list_plugins
+  after_create :add_default_mod_options
+  before_destroy :destroy_mod_list_plugins
 
   def mod_compatibility_notes
     mod_ids = mod_list.mod_list_mod_ids
