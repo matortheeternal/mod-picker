@@ -19,7 +19,7 @@ class ModListMod < ActiveRecord::Base
   bool_counter_cache_on :mod_list, :is_utility, { true => :tools, false => :mods }
 
   # VALIDATIONS
-  validates :mod_list_id, :mod_id, :index, presence: true
+  validates :mod_list_id, :mod_id, presence: true
   validates :mod_id, uniqueness: { scope: :mod_list_id, :message => "The mod is already present on the mod list." }
   validates :is_utility, inclusion: [true, false]
 
