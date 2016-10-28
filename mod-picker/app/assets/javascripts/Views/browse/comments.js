@@ -11,6 +11,9 @@ app.controller('commentsIndexController', function($scope, $rootScope, $statePar
     $scope.currentUser = $rootScope.currentUser;
     $scope.permissions = $rootScope.permissions;
 
+    // set page title
+    $scope.$emit('setPageTitle', 'Browse Comments');
+
     // sort options for view
     $scope.sortOptions = sortFactory.commentSortOptions();
 

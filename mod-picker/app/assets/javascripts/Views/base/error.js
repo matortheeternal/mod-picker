@@ -39,6 +39,9 @@ app.controller('errorController', function($scope, $state, errorObj, quoteServic
         return;
     }
 
+    // set page title
+    $scope.$emit('setPageTitle', 'Error '+$scope.status);
+
     // get a quote for the error
     $scope.quote = quoteService.getErrorQuote($scope.status);
     $scope.defaultExplanations = {

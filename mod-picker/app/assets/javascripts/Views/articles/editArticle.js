@@ -33,6 +33,9 @@ app.controller('editArticleController', function($scope, $stateParams, article, 
         src: $scope.article.image
     };
 
+    // set page title
+    $scope.$emit('setPageTitle', 'Edit Article');
+
     // shared function setup
     eventHandlerFactory.buildMessageHandlers($scope);
 

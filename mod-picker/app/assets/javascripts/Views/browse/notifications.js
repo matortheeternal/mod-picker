@@ -13,6 +13,9 @@ app.controller('notificationsController', function($scope, $rootScope, notificat
         notifications: {}
     };
 
+    // set page title
+    $scope.$emit('setPageTitle', 'Notifications');
+
     $scope.retrieveNotifications = function(page) {
         var options = {
             page: page || 1

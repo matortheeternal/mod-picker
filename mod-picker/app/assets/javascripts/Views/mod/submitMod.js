@@ -43,6 +43,9 @@ app.controller('submitModController', function($scope, $rootScope, backend, modS
         requirements: []
     };
 
+    // set page title
+    $scope.$emit('setPageTitle', 'Submit Mod');
+
     // shared function setup
     eventHandlerFactory.buildMessageHandlers($scope, true);
     $scope.searchMods = modService.searchMods;

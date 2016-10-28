@@ -10,6 +10,9 @@ app.controller('compatibilityNotesController', function($scope, $rootScope, $sta
     $scope.currentUser = $rootScope.currentUser;
     $scope.permissions = $rootScope.permissions;
 
+    // set page title
+    $scope.$emit('setPageTitle', 'Browse Compatibility Notes');
+
     // sort options for view
     $scope.sortOptions = sortFactory.compatibilityNoteSortOptions();
 

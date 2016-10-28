@@ -28,6 +28,9 @@ app.controller('createArticleController', function($scope, $rootScope, $state, $
     $scope.article = article;
     $scope.image = {};
 
+    // set page title
+    $scope.$emit('setPageTitle', 'Create Article');
+
     // shared function setup
     eventHandlerFactory.buildMessageHandlers($scope);
 

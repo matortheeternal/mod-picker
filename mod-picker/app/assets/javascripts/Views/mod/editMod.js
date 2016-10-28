@@ -44,6 +44,9 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
     };
     $scope.analysisValid = true;
 
+    // set page title
+    $scope.$emit('setPageTitle', 'Edit Mod');
+
     // shared function setup
     eventHandlerFactory.buildMessageHandlers($scope, true);
 

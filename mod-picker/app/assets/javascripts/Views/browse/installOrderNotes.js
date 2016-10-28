@@ -10,6 +10,9 @@ app.controller('installOrderNotesController', function($scope, $rootScope, $stat
     $scope.currentUser = $rootScope.currentUser;
     $scope.permissions = $rootScope.permissions;
 
+    // set page title
+    $scope.$emit('setPageTitle', 'Browse Install Order Notes');
+
     // sort options for view
     $scope.sortOptions = sortFactory.installOrderNoteSortOptions();
 
