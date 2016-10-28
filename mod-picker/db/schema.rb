@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161024070807) do
+ActiveRecord::Schema.define(version: 20161028064557) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -380,7 +380,7 @@ ActiveRecord::Schema.define(version: 20161024070807) do
   add_index "messages", ["sent_to"], name: "fk_rails_c6b55ed9a4", using: :btree
   add_index "messages", ["submitted_by"], name: "fk_rails_1364e4d956", using: :btree
 
-  create_table "mod_asset_files", id: false, force: :cascade do |t|
+  create_table "mod_asset_files", force: :cascade do |t|
     t.integer "mod_option_id", limit: 4,   null: false
     t.integer "asset_file_id", limit: 4
     t.string  "subpath",       limit: 255
@@ -471,10 +471,11 @@ ActiveRecord::Schema.define(version: 20161024070807) do
   add_index "mod_list_mod_options", ["mod_option_id"], name: "fk_rails_431e3255e3", using: :btree
 
   create_table "mod_list_mods", force: :cascade do |t|
-    t.integer "mod_list_id", limit: 4, null: false
+    t.integer "mod_list_id", limit: 4,                 null: false
     t.integer "group_id",    limit: 4
-    t.integer "mod_id",      limit: 4, null: false
-    t.integer "index",       limit: 2, null: false
+    t.integer "mod_id",      limit: 4,                 null: false
+    t.integer "index",       limit: 2,                 null: false
+    t.boolean "is_utility",            default: false, null: false
   end
 
   add_index "mod_list_mods", ["group_id"], name: "fk_rails_cb3cdf0fc4", using: :btree

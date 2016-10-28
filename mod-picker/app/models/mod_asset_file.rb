@@ -1,8 +1,6 @@
 class ModAssetFile < ActiveRecord::Base
   include ScopeHelpers, BetterJson
 
-  self.primary_keys = :mod_option_id, :asset_file_id
-
   # SCOPES
   ids_scope :mod_option_id
 
