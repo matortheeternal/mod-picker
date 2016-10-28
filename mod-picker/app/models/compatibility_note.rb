@@ -1,5 +1,5 @@
 class CompatibilityNote < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, Correctable, Helpfulable, Reportable, Approveable, ScopeHelpers, Trackable, BetterJson, Dateable
+  include Filterable, Sortable, RecordEnhancements, CounterCache, Correctable, Helpfulable, Reportable, Approveable, ScopeHelpers, Trackable, BetterJson, Dateable
 
   # ATTRIBUTES
   enum status: [ :incompatible, :partially_incompatible, :compatibility_mod, :compatibility_option, :make_custom_patch ]
@@ -50,15 +50,16 @@ class CompatibilityNote < ActiveRecord::Base
   has_many :history_entries, :class_name => 'CompatibilityNoteHistoryEntry', :inverse_of => 'compatibility_note', :foreign_key => 'compatibility_note_id'
   has_many :editors, -> { uniq }, :class_name => 'User', :through => 'history_entries'
 
+  # COUNTER CACHE
+  counter_cache_on :first_mod, :second_mod, :submitter, conditional: { hidden: false, approved: true }
+
   # VALIDATIONS
   validates :game_id, :submitted_by, :status, :first_mod_id, :second_mod_id, :text_body, presence: true
   validates :text_body, length: { in: 256..16384 }
   validate :validate_unique_mods
 
   # CALLBACKS
-  after_create :increment_counters
   before_save :set_adult
-  before_destroy :decrement_counters
 
   def get_existing_note(mod_ids)
     table = CompatibilityNote.arel_table
@@ -67,7 +68,7 @@ class CompatibilityNote < ActiveRecord::Base
 
   def note_exists_error(existing_note)
     if existing_note.approved
-      errors.add(:mods, "An Compatibility Note for these mods already exists.")
+      errors.add(:mods, "A Compatibility Note for these mods already exists.")
       errors.add(:link_id, existing_note.id)
     else
       errors.add(:mods, "An unapproved Compatibility Note for these mods already exists.")
@@ -105,21 +106,15 @@ class CompatibilityNote < ActiveRecord::Base
     CompatibilityNote.where(id: ids).joins(:first_mod, :second_mod).update_all("compatibility_notes.has_adult_content = mods.has_adult_content OR second_mods_compatibility_notes.has_adult_content")
   end
 
+  def self.mod_count_subquery
+    arel_table.where(Mod.arel_table[:id].eq(arel_table[:first_mod_id]).
+        or(Mod.arel_table[:id].eq(arel_table[:second_mod_id]))).
+        project(Arel.sql('*').count)
+  end
+
   private
     def set_adult
       self.has_adult_content = first_mod.has_adult_content || second_mod.has_adult_content
       true
-    end
-
-    def increment_counters
-      first_mod.update_counter(:compatibility_notes_count, 1)
-      second_mod.update_counter(:compatibility_notes_count, 1)
-      submitter.update_counter(:compatibility_notes_count, 1)
-    end
-
-    def decrement_counters
-      first_mod.update_counter(:compatibility_notes_count, -1)
-      second_mod.update_counter(:compatibility_notes_count, -1)
-      submitter.update_counter(:compatibility_notes_count, -1)
     end
 end
