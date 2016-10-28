@@ -77,7 +77,7 @@
                         <td>
                             <span ng-repeat="plugin in item.plugins">
                                 {{plugin.filename}}{{$last ? '' : ', '}}
-                                <br bindonce bo-if="!$last" />
+                                <br ng-if="!$last" />
                             </span>
                         </td>
                     </tr>
