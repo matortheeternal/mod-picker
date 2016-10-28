@@ -90,8 +90,9 @@ app.service('sitesFactory', function() {
             default:
                 return [
                     'Navigate to your public forum profile page.',
+                    'Go to the profile feed section.',
                     'Post a status update with the verification key provided below.',
-                    'Copy the web address of your profile page into the Profile URL input below.',
+                    'Copy the web address of your profile page into the Profile URL input.',
                     'Click the Verify button.'
                 ];
         }
