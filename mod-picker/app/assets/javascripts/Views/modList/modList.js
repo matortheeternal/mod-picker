@@ -446,7 +446,6 @@ app.controller('modListController', function($scope, $rootScope, $q, $stateParam
             action.reject(response);
         });
 
-        //
         return action.promise;
     };
 
