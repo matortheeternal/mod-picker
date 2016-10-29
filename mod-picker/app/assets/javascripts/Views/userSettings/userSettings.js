@@ -79,6 +79,9 @@ app.controller('userSettingsController', function($scope, $rootScope, $q, userOb
         src: $scope.defaultSrc
     };
 
+    // set page title
+    $scope.$emit('setPageTitle', 'Settings');
+
     // shared function setup
     eventHandlerFactory.buildMessageHandlers($scope, true);
 
@@ -115,10 +118,10 @@ app.controller('userSettingsController', function($scope, $rootScope, $q, userOb
             $scope.$emit('customMessage', message);
             return;
         }
-        userSettingsService.updateUserRegistration(userDiff).then(function () {
+        userSettingsService.updateUserRegistration(userDiff).then(function() {
             $scope.resetPasswordInputs();
             $scope.$emit('successMessage', 'User registration saved successfully.')
-        }, function (response) {
+        }, function(response) {
             var params = {
                 label: 'Error saving user registration',
                 response: response
@@ -129,10 +132,13 @@ app.controller('userSettingsController', function($scope, $rootScope, $q, userOb
 
     $scope.updateUserSettings = function(userDiff) {
         if (!userDiff.title && !userDiff.about_me && !userDiff.settings) return;
-        userSettingsService.updateUserSettings(userDiff).then(function () {
+        userSettingsService.updateUserSettings(userDiff).then(function() {
             themesService.changeTheme($scope.settings.theme);
-            $scope.$emit('successMessage', 'User settings saved successfully.')
-        }, function (response) {
+            $scope.$emit('successMessage', 'User settings saved successfully.');
+
+            // update `originalUser` to include successfully changed settings
+            $scope.originalUser = angular.copy($scope.user);
+        }, function(response) {
             var params = {
                 label: 'Error saving user settings',
                 response: response

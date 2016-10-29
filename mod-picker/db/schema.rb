@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161001200408) do
+ActiveRecord::Schema.define(version: 20161028064557) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -188,7 +188,7 @@ ActiveRecord::Schema.define(version: 20161001200408) do
 
   add_index "custom_sources", ["mod_id"], name: "fk_rails_4da082b3d0", using: :btree
 
-  create_table "dummy_masters", id: false, force: :cascade do |t|
+  create_table "dummy_masters", force: :cascade do |t|
     t.integer "plugin_id", limit: 4,   null: false
     t.integer "index",     limit: 1,   null: false
     t.string  "filename",  limit: 128, null: false
@@ -366,6 +366,7 @@ ActiveRecord::Schema.define(version: 20161001200408) do
     t.integer "index",            limit: 1, null: false
   end
 
+  add_index "masters", ["master_plugin_id"], name: "fk_rails_00e5251b7c", using: :btree
   add_index "masters", ["plugin_id"], name: "pl_id", using: :btree
 
   create_table "messages", force: :cascade do |t|
@@ -379,14 +380,13 @@ ActiveRecord::Schema.define(version: 20161001200408) do
   add_index "messages", ["sent_to"], name: "fk_rails_c6b55ed9a4", using: :btree
   add_index "messages", ["submitted_by"], name: "fk_rails_1364e4d956", using: :btree
 
-  create_table "mod_asset_files", id: false, force: :cascade do |t|
+  create_table "mod_asset_files", force: :cascade do |t|
     t.integer "mod_option_id", limit: 4,   null: false
     t.integer "asset_file_id", limit: 4
     t.string  "subpath",       limit: 255
   end
 
   add_index "mod_asset_files", ["asset_file_id"], name: "maf_id", using: :btree
-  add_index "mod_asset_files", ["mod_option_id", "asset_file_id"], name: "mod_id", unique: true, using: :btree
   add_index "mod_asset_files", ["mod_option_id"], name: "mv_id", using: :btree
 
   create_table "mod_authors", force: :cascade do |t|
@@ -443,12 +443,13 @@ ActiveRecord::Schema.define(version: 20161001200408) do
   add_index "mod_list_custom_plugins", ["mod_list_id"], name: "ml_id", using: :btree
 
   create_table "mod_list_groups", force: :cascade do |t|
-    t.integer "mod_list_id", limit: 4,                 null: false
-    t.integer "index",       limit: 2,                 null: false
-    t.integer "tab",         limit: 1,     default: 0, null: false
-    t.integer "color",       limit: 1,     default: 0, null: false
-    t.string  "name",        limit: 128,               null: false
-    t.text    "description", limit: 65535
+    t.integer "mod_list_id",       limit: 4,                     null: false
+    t.integer "index",             limit: 2,                     null: false
+    t.integer "tab",               limit: 1,     default: 0,     null: false
+    t.integer "color",             limit: 1,     default: 0,     null: false
+    t.boolean "keep_when_sorting",               default: false, null: false
+    t.string  "name",              limit: 128,                   null: false
+    t.text    "description",       limit: 65535
   end
 
   add_index "mod_list_groups", ["mod_list_id"], name: "fk_rails_0abd07c656", using: :btree
@@ -474,6 +475,7 @@ ActiveRecord::Schema.define(version: 20161001200408) do
     t.integer "group_id",    limit: 4
     t.integer "mod_id",      limit: 4, null: false
     t.integer "index",       limit: 2, null: false
+    t.boolean "is_utility",            null: false
   end
 
   add_index "mod_list_mods", ["group_id"], name: "fk_rails_cb3cdf0fc4", using: :btree
@@ -557,7 +559,8 @@ ActiveRecord::Schema.define(version: 20161001200408) do
 
   create_table "mod_options", force: :cascade do |t|
     t.integer "mod_id",            limit: 4,                   null: false
-    t.string  "name",              limit: 255,                 null: false
+    t.string  "name",              limit: 128,                 null: false
+    t.string  "display_name",      limit: 128,                 null: false
     t.integer "size",              limit: 8,   default: 0,     null: false
     t.boolean "default",                       default: false, null: false
     t.boolean "is_fomod_option",               default: false, null: false
@@ -626,6 +629,7 @@ ActiveRecord::Schema.define(version: 20161001200408) do
     t.boolean  "hidden",                                default: false, null: false
     t.datetime "released",                                              null: false
     t.datetime "updated"
+    t.datetime "submitted",                                             null: false
   end
 
   add_index "mods", ["edited_by"], name: "fk_rails_9ec1af790b", using: :btree
@@ -639,10 +643,10 @@ ActiveRecord::Schema.define(version: 20161001200408) do
     t.boolean  "has_stats",                       default: false, null: false
     t.datetime "last_scraped"
     t.integer  "mod_id",              limit: 4
-    t.string   "mod_name",            limit: 255,                 null: false
+    t.string   "mod_name",            limit: 255
     t.string   "uploaded_by",         limit: 128,                 null: false
-    t.string   "authors",             limit: 128,                 null: false
-    t.datetime "released",                                        null: false
+    t.string   "authors",             limit: 128
+    t.datetime "released"
     t.datetime "updated"
     t.string   "current_version",     limit: 32
     t.integer  "nexus_category",      limit: 4
@@ -708,7 +712,7 @@ ActiveRecord::Schema.define(version: 20161001200408) do
 
   create_table "plugins", force: :cascade do |t|
     t.integer "game_id",                limit: 4,               null: false
-    t.integer "mod_option_id",          limit: 4,               null: false
+    t.integer "mod_option_id",          limit: 4
     t.string  "filename",               limit: 64,              null: false
     t.string  "crc_hash",               limit: 8,               null: false
     t.integer "file_size",              limit: 4,               null: false
@@ -753,7 +757,7 @@ ActiveRecord::Schema.define(version: 20161001200408) do
   add_index "reports", ["base_report_id"], name: "fk_rails_619eb511d7", using: :btree
   add_index "reports", ["submitted_by"], name: "fk_rails_41fbf0e712", using: :btree
 
-  create_table "reputation_links", id: false, force: :cascade do |t|
+  create_table "reputation_links", force: :cascade do |t|
     t.integer "from_rep_id", limit: 4, null: false
     t.integer "to_rep_id",   limit: 4, null: false
   end
@@ -864,6 +868,8 @@ ActiveRecord::Schema.define(version: 20161001200408) do
     t.boolean "allow_nexus_mods",                default: true,  null: false
     t.boolean "allow_lovers_lab",                default: true,  null: false
     t.boolean "allow_steam_workshop",            default: true,  null: false
+    t.boolean "enable_spellcheck",               default: true,  null: false
+    t.boolean "disable_helper",                  default: false, null: false
   end
 
   add_index "user_settings", ["user_id"], name: "user_id", using: :btree
@@ -1004,6 +1010,7 @@ ActiveRecord::Schema.define(version: 20161001200408) do
   add_foreign_key "load_order_notes", "users", column: "submitted_by"
   add_foreign_key "lover_infos", "games"
   add_foreign_key "lover_infos", "mods"
+  add_foreign_key "masters", "plugins", column: "master_plugin_id"
   add_foreign_key "masters", "plugins", name: "masters_ibfk_1"
   add_foreign_key "messages", "users", column: "sent_to"
   add_foreign_key "messages", "users", column: "submitted_by"

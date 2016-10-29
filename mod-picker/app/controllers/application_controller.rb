@@ -6,6 +6,13 @@ class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
 
   # Render 401 or 403 as appropriate
+
+  rescue_from ::StandardError do |exception|
+    error_hash = { error: exception.message }
+    error_hash[:backtrace] = exception.backtrace unless Rails.env.production?
+    render json: error_hash, status: 500
+  end
+
   rescue_from CanCan::AccessDenied do |exception|
     if exception.message != "You are not authorized to access this page."
       render json: {error: exception.message}, status: 403
@@ -16,6 +23,10 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  rescue_from Exceptions::ModExistsError do |exception|
+    render json: exception.response_object, status: 500
+  end
+
   def after_sign_in_path_for(resource)
     '/skyrim'
   end
@@ -24,6 +35,17 @@ class ApplicationController < ActionController::Base
     unless current_user.present?
       render json: { error: "You must be logged in to perform this action." }, status: 401
     end
+  end
+
+  def json_format(resource, format=nil)
+    format ||= action_name.to_sym
+    resource.as_json(format: format)
+  end
+
+  def respond_with_json(resource, format=nil, root=nil)
+    format ||= action_name.to_sym
+    resource_json = resource.as_json(format: format)
+    render json: root ? { root => resource_json } : resource_json
   end
 
   protected

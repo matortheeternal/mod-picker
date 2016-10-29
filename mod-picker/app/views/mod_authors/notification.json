@@ -1,0 +1,7 @@
+{
+  "only": ["role"],
+  "include": {
+    "user": {},
+    "mod": {}
+  }
+}

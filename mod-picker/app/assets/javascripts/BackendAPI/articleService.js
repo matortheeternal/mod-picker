@@ -11,7 +11,7 @@ app.service('articleService', function($q, backend, userTitleService, pageUtils,
 
     this.retrieveArticles = function(options, pageInformation) {
         var action = $q.defer();
-        backend.post('/articles/index', options).then(function (data) {
+        backend.post('/articles/index', options).then(function(data) {
             // resolve page information and data
             pageUtils.getPageInformation(data, pageInformation, options.page);
             action.resolve(data);

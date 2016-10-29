@@ -1,0 +1,28 @@
+{
+  "include": {
+    "tags": {
+      "format": "mod_tags"
+    },
+    "nexus_infos": {
+      "format": "edit"
+    },
+    "workshop_infos": {
+      "format": "edit"
+    },
+    "lover_infos": {
+      "format": "edit"
+    },
+    "custom_sources": {},
+    "mod_authors": {},
+    "required_mods": {
+      "format": "edit"
+    },
+    "config_files": {
+      "format": "edit"
+    },
+    "mod_options": {
+      "format": "edit"
+    }
+  },
+  "methods": "image"
+}

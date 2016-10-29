@@ -1,7 +1,7 @@
-app.service('userTitleService', function (backend, $q) {
+app.service('userTitleService', function(backend, $q) {
     var service = this;
 
-    this.retrieveUserTitles = function () {
+    this.retrieveUserTitles = function() {
         var userTitles = $q.defer();
 
         backend.retrieve('/user_titles').then(function(titles) {
@@ -28,7 +28,7 @@ app.service('userTitleService', function (backend, $q) {
     });
 
 
-    this.getUserTitle = function (reputation) {
+    this.getUserTitle = function(reputation) {
         var output = $q.defer();
         gameTitles.then(function(titles) {
             var prevTitle = titles[0];
@@ -46,7 +46,7 @@ app.service('userTitleService', function (backend, $q) {
     };
 
     this.associateUserTitle = function(user) {
-        if (user && !user.title) {
+        if (user && !user.title && user.reputation) {
             // get their default title
             service.getUserTitle(user.reputation.overall).then(function(title) {
                 user.title = title;
@@ -56,8 +56,18 @@ app.service('userTitleService', function (backend, $q) {
 
     this.associateTitles = function(data) {
         data.forEach(function(item) {
-            // if user is defined and they don't have a custom title
             service.associateUserTitle(item.submitter);
+        });
+    };
+
+    this.associateCommentTitles = function(comments) {
+        comments.forEach(function(comment) {
+            service.associateUserTitle(comment.submitter);
+            if (comment.children && comment.children.length) {
+                comment.children.forEach(function(child) {
+                    service.associateUserTitle(child.submitter);
+                });
+            }
         });
     };
 

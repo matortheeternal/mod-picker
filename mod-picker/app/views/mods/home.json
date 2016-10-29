@@ -1,0 +1,9 @@
+{
+  "only": ["id", "name", "authors", "released"],
+  "include": {
+    "primary_category": {
+      "only": ["name"]
+    }
+  },
+  "methods": "image"
+}

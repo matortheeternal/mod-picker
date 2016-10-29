@@ -5,10 +5,13 @@ app.run(function($futureState, indexFactory, filtersFactory) {
     $futureState.futureState(state);
 });
 
-app.controller('correctionsController', function ($scope, $rootScope, $stateParams, $state, contributionService, indexService,  filtersFactory, indexFactory, sortFactory) {
+app.controller('correctionsController', function($scope, $rootScope, $stateParams, $state, contributionService, indexService,  filtersFactory, indexFactory, sortFactory) {
     // get parent variables
     $scope.currentUser = $rootScope.currentUser;
     $scope.permissions = $rootScope.permissions;
+
+    // set page title
+    $scope.$emit('setPageTitle', 'Browse Corrections');
 
     // sort options for view
     $scope.sortOptions = sortFactory.correctionSortOptions();

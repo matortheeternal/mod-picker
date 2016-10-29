@@ -1,4 +1,4 @@
-app.directive('correctionsModal', function () {
+app.directive('correctionsModal', function() {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/contributions/correctionsModal.html',
@@ -7,7 +7,10 @@ app.directive('correctionsModal', function () {
     };
 });
 
-app.controller('correctionsModalController', function ($scope, contributionService, contributionFactory, eventHandlerFactory) {
+app.controller('correctionsModalController', function($scope, contributionService, contributionFactory, eventHandlerFactory, formUtils) {
+    // inherited functions
+    $scope.unfocusCorrectionsModal = formUtils.unfocusModal($scope.toggleCorrectionsModal);
+
     // shared function setup
     eventHandlerFactory.buildModalMessageHandlers($scope);
 
@@ -92,7 +95,7 @@ app.controller('correctionsModalController', function ($scope, contributionServi
     };
 
     // update an correction locally
-    $scope.updateCorrection = function () {
+    $scope.updateCorrection = function() {
         var originalCorrection = $scope.activeCorrection.original;
         var updatedCorrection = $scope.activeCorrection;
         // update the values on the original correction
@@ -112,7 +115,7 @@ app.controller('correctionsModalController', function ($scope, contributionServi
             correction: {
                 game_id: $scope.target.game_id,
                 correctable_id: $scope.target.id,
-                correctable_type: $scope.model.name,
+                correctable_type: $scope.modelObj.name,
                 title: $scope.activeCorrection.title,
                 text_body: $scope.activeCorrection.text_body
             }

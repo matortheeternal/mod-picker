@@ -3,12 +3,14 @@
 // accounts
 
 // userIndex is the regex group to capture to get the user's username/id
-app.service('sitesFactory', function () {
+app.service('sitesFactory', function() {
     this.sites = function() {
         return [
             {
                 label: "Nexus Mods",
                 shortLabel: "Nexus",
+                dataLabel: "nexus",
+                includeGame: true,
                 modUrlFormat: /(http[s]:\/\/?)?www\.nexusmods\.com\/skyrim\/mods\/([0-9]+)(\/\?)?/i,
                 baseUserUrlFormat: "https://forums.nexusmods.com/index.php?showuser=",
                 userUrlFormat: /(http[s]:\/\/?)?forums\.nexusmods\.com\/index\.php\?showuser=([0-9]+)(\/)?/i,
@@ -21,6 +23,7 @@ app.service('sitesFactory', function () {
             {
                 label: "Steam Workshop",
                 shortLabel: "Steam",
+                dataLabel: "workshop",
                 modUrlFormat: /(http[s]:\/\/?)?steamcommunity\.com\/sharedfiles\/filedetails\/\?id=([0-9]+)(\&)?.*/i,
                 userUrlFormat: /(http[s]:\/\/?)?steamcommunity\.com\/(id|profiles)\/([A-Za-z0-9\_]+)(\/)?/i,
                 modUrlBase: "https://steamcommunity.com/sharedfiles/filedetails/?id={id}",
@@ -31,8 +34,9 @@ app.service('sitesFactory', function () {
             {
                 label: "Lover's Lab",
                 shortLabel: "Lab",
+                dataLabel: "lab",
                 modUrlFormat: /(http[s]:\/\/?)?www\.loverslab\.com\/files\/file\/([0-9]+)\-([0-9a-z\-]+)(\/)?/i,
-                userUrlFormat: /(http[s]:\/\/?)?www\.loverslab\.com\/user\/([0-9]+)\-([a-zA-Z0-9]+)(\/)?/i,
+                userUrlFormat: /(http[s]:\/\/?)?www\.loverslab\.com\/user\/([a-zA-Z0-9\-]+)(\/)?/i,
                 modUrlBase: "https://www.loverslab.com/files/file/{id}",
                 userIndex: 2,
                 loginUrl: "https://www.loverslab.com/",
@@ -86,8 +90,9 @@ app.service('sitesFactory', function () {
             default:
                 return [
                     'Navigate to your public forum profile page.',
+                    'Go to the profile feed section.',
                     'Post a status update with the verification key provided below.',
-                    'Copy the web address of your profile page into the Profile URL input below.',
+                    'Copy the web address of your profile page into the Profile URL input.',
                     'Click the Verify button.'
                 ];
         }

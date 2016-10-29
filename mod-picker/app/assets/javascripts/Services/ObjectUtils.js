@@ -1,4 +1,4 @@
-app.service('objectUtils', function () {
+app.service('objectUtils', function() {
     var service = this;
 
     this.shallowCopy = function(original) {
@@ -20,7 +20,7 @@ app.service('objectUtils', function () {
 
     this.deepValue = function(obj, path){
         for (var i = 0, path = path.split('.'), len = path.length; i < len; i++) {
-            if (path[i] in obj) {
+            if (obj && (path[i] in obj)) {
                 obj = obj[path[i]];
             } else {
                 return null;
@@ -89,24 +89,35 @@ app.service('objectUtils', function () {
         }
     };
 
+    this.getDifferentArrayObjectValues = function(newItem, oldArray, result) {
+        // new items that have an id should exist in the oldArray
+        // find and compare them against their corresponding item in oldArray
+        if (newItem.hasOwnProperty('id')) {
+            var oldItem = oldArray.find(function(item) {
+                return item.id == newItem.id;
+            });
+            var diff = oldItem && service.getDifferentValues(oldItem, newItem);
+            if (!diff || service.isEmptyObject(diff)) return;
+            result.push(diff);
+        } else {
+            result.push(newItem);
+        }
+    };
+
     this.getDifferentArrayValues = function(oldArray, newArray) {
         var result = [];
-        var i, oldItem, newItem, diff;
+        var i, newItem;
         for (i = 0; i < newArray.length; i++) {
             newItem = newArray[i];
-            // new items that have an id should exist in the oldArray
-            // find and compare them against their corresponding item in oldArray
-            if (newItem.hasOwnProperty('id')) {
-                oldItem = oldArray.find(function(item) {
-                    return item.id == newItem.id;
-                });
-                diff = oldItem && service.getDifferentValues(oldItem, newItem);
-                if (!diff || service.isEmptyObject(diff)) {
-                    continue;
-                }
-                result.push(diff);
+            if (typeof newItem === 'object') {
+                service.getDifferentArrayObjectValues(newItem, oldArray, result);
             } else {
-                result.push(newItem);
+                var oldItem = oldArray.find(function(item) {
+                    return item === newItem;
+                });
+                if (!oldItem) {
+                    result.push(newItem);
+                }
             }
         }
         // return the result array
@@ -162,6 +173,7 @@ app.service('objectUtils', function () {
             if (obj.hasOwnProperty(property)) {
                 var v = obj[property];
                 var vt = typeof v;
+                if (v === null) continue;
                 if (vt === 'undefined' || (v.constructor === Array && !v.length) || (deleteEmptyStrings && v === "")) {
                     delete obj[property];
                 } else if (recurse && vt === 'object') {
@@ -169,6 +181,14 @@ app.service('objectUtils', function () {
                 }
             }
         }
+    };
+
+    this.keysCount = function(obj) {
+        var count = 0;
+        for (var key in obj) {
+            if (obj.hasOwnProperty(key)) count++;
+        }
+        return count;
     };
 
     this.getShortTypeString = function(obj) {
@@ -220,5 +240,16 @@ app.service('objectUtils', function () {
             }
         }
         return a.join(separator || ',');
-    }
+    };
+
+    this.removeProperties = function(obj, shouldRemove) {
+        var newObj = angular.copy(obj);
+        for (var prop in newObj) {
+            if (!newObj.hasOwnProperty(prop)) continue;
+            if (shouldRemove(prop, newObj[prop], newObj)) {
+                delete newObj[prop];
+            }
+        }
+        return newObj;
+    };
 });

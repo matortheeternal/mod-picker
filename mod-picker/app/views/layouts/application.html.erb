@@ -2,7 +2,7 @@
 <html lang="en" ng-app="modPicker">
 <head>
     <meta charset="UTF-8">
-    <title>Mod Picker: <%= @current_game.display_name %></title>
+    <title ng-bind="pageTitle" ng-init="pageTitle = 'Mod Picker: <%= @current_game.display_name %>'"></title>
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,700,500' rel='stylesheet' type='text/css'>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <%= stylesheet_link_tag 'rzslider.min' %>
@@ -26,6 +26,7 @@
 
     <!-- defered load of scripts, which is way more performant for browsers -->
     <%= javascript_include_tag 'marked.min' %>
+    <%= javascript_include_tag 'bindonce' %>
     <%= javascript_include_tag 'angular-marked.min' %>
     <%= javascript_include_tag 'angular-drag-and-drop-lists.min' %>
     <%= javascript_include_tag 'angular-ui-router.min' %>

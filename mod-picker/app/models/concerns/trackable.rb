@@ -10,12 +10,23 @@ module Trackable
     has_many :events, :as => 'content', :dependent => :destroy
   end
 
+  def get_subscription_users(subscription)
+    unless respond_to?(subscription[:users])
+      raise "Subscription association for #{subscription[:users]} not found"
+    end
+    users = public_send(subscription[:users]) || []
+    if users.respond_to?(:to_a)
+      users
+    else
+      [users]
+    end
+  end
+
   def subscriber_ids_for(event)
     user_ids = []
     subscriptions.each do |subscription|
       next unless subscription[:actions].include?(event.event_type.to_sym)
-      users = public_send(subscription[:users]) || []
-      users = [users] if !users.respond_to?(:to_a)
+      users = get_subscription_users(subscription)
       users.each do |user|
         if user.subscribed_to?(event) && Ability.new(user).can?(:read, self)
           user_ids.push(user.id)
@@ -36,9 +47,9 @@ module Trackable
   def event_owner_attributes(event_type)
     config = Rails.application.config
     case event_type
-      when "added"
+      when :added
         return config.added_owner_attributes || [:added_by]
-      when "removed"
+      when :removed
         return config.removed_owner_attributes || [:removed_by]
       else
         return config.updated_owner_attributes || [:updated_by]
@@ -56,7 +67,7 @@ module Trackable
     events.create(user_id: get_owner_id(event_type), event_type: event_type)
   end
 
-  def track_column_change(event, column)
+  def track_attribute_change(event, column)
     return unless attribute_changed?(column)
     if self.class.columns_hash[column.to_s].type == :boolean
       create_event(self.public_send(column) ? event : :"un#{event}")
@@ -67,7 +78,7 @@ module Trackable
 
   def get_milestone(milestones, value)
     for index in 0 ... milestones.size
-      return index - 1 if value < milestones[index]
+      return index if value < milestones[index]
     end
   end
 
@@ -127,7 +138,7 @@ module Trackable
             if tracking.has_key?(:milestones)
               track_milestone_change(tracking[:column], tracking[:milestones])
             else
-              track_column_change(tracking[:event], tracking[:column])
+              track_attribute_change(tracking[:event], tracking[:column])
             end
           end
         end

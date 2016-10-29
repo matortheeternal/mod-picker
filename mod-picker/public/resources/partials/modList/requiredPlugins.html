@@ -3,7 +3,7 @@
         <span class="note-item">
             ({{showMissingPlugins ? 'Missing' : 'All'}})
         </span>
-        <span class="right-item action-box" ng-if="required.missing_plugins.length" ng-click="resolveAllRequirements()">
+        <span class="right-item action-box" ng-if="required.missing_plugins.length && editing" ng-click="resolveAllRequirements()">
             <i class="fa fa-check"></i> Resolve All
         </span>
         <span class="right-item toggle-item" ng-click="showMissingPlugins = !showMissingPlugins">
@@ -20,7 +20,7 @@
                 </span>
                 <span ng-if="requirement.plugins.length > 2">
                     and
-                    <span class="help-tooltip no-margin" title="{{getRequirerList(requirement, 2)}}">{{requirement.plugins.length - 2}} more</span>
+                    <span class="text-tooltip no-margin" title="{{getRequirerList(requirement, 2)}}">{{requirement.plugins.length - 2}} more</span>
                 </span>
                 <!-- resolution options -->
                 <div class="inline-flex" ng-if="editing">
@@ -42,7 +42,7 @@
                 </span>
                 <span ng-if="requirement.plugins.length > 2">
                     and
-                    <span class="help-tooltip no-margin" title="{{getRequirerList(requirement, 2)}}">{{requirement.plugins.length - 2}} more</span>
+                    <span class="text-tooltip no-margin" title="{{getRequirerList(requirement, 2)}}">{{requirement.plugins.length - 2}} more</span>
                 </span>
             </li>
         </ul>

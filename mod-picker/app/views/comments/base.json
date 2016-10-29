@@ -1,0 +1,11 @@
+{
+  "except": ["parent_id", "submitted_by"],
+  "include": {
+    "submitter": {
+      "format": "submitter"
+    },
+    "children": {
+      "format": "show"
+    }
+  }
+}

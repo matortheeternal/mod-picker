@@ -4,14 +4,14 @@ class InstallOrderNotesController < ContributionsController
   # GET /install_order_notes
   def index
     # prepare install order notes
-    @install_order_notes = InstallOrderNote.preload(:editor, :editors).includes(:submitter => :reputation).references(:submitter => :reputation).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(:page => params[:page])
+    @install_order_notes = InstallOrderNote.preload(:editor, :editors).includes(submitter: :reputation).references(submitter: :reputation).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(page: params[:page])
     count = InstallOrderNote.accessible_by(current_ability).filter(filtering_params).count
 
     # prepare helpful marks
     helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("InstallOrderNote", @install_order_notes.ids)
 
     # render response
-    render :json => {
+    render json: {
         install_order_notes: @install_order_notes,
         helpful_marks: helpful_marks,
         max_entries: count,

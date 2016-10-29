@@ -1,24 +1,17 @@
 class ModStar < ActiveRecord::Base
+  include RecordEnhancements, CounterCache, BetterJson
+
+  # ATTRIBUTES
   self.primary_keys = :mod_id, :user_id
 
+  # ASSOCIATIONS
   belongs_to :user, :inverse_of => 'mod_stars'
   belongs_to :mod, :inverse_of => 'mod_stars'
 
+  # COUNTER CACHE
+  counter_cache_on :user, column: 'starred_mods_count'
+  counter_cache_on :mod, column: 'stars_count'
+
   # VALIDATIONS
   validates :mod_id, :user_id, presence: true
-
-  # CALLBACKS
-  after_create :increment_counters
-  before_destroy :decrement_counters
-
-  private
-    def increment_counters
-      self.user.update_counter(:starred_mod_lists_count, 1)
-      self.mod.update_counter(:stars_count, 1)
-    end
-
-    def decrement_counters
-      self.user.update_counter(:starred_mod_lists_count, -1)
-      self.mod.update_counter(:stars_count, -1)
-    end
 end

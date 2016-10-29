@@ -1,4 +1,4 @@
-app.directive('loadOrderNote', function () {
+app.directive('loadOrderNote', function() {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/contributions/loadOrderNote.html',
@@ -10,11 +10,14 @@ app.directive('loadOrderNote', function () {
             showMarks: '=?',
             showUserColumn: '=?',
             showResolutionOptions: '=?'
+        },
+        link: function(scope, element) {
+            scope.element = element;
         }
     };
 });
 
-app.controller('loadOrderNoteController', function ($scope, $rootScope) {
+app.controller('loadOrderNoteController', function($scope, $rootScope) {
     // inherited variables
     $scope.currentUser = $rootScope.currentUser;
 
@@ -22,6 +25,14 @@ app.controller('loadOrderNoteController', function ($scope, $rootScope) {
     angular.default($scope, 'showUserColumn', true);
     angular.default($scope, 'showMarks', true);
 
+    // initialize variables
+    $scope.standingClasses = {
+        good: 'fa-check-circle',
+        unknown: 'fa-question-circle',
+        bad: 'fa-exclamation-circle'
+    };
+
+    // helper functions
     $scope.resolve = function(action, index) {
         if ($scope.note.resolved) {
             return;

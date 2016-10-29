@@ -1,10 +1,10 @@
-app.service('recordGroupService', function (backend, $q) {
+app.service('recordGroupService', function(backend, $q) {
     var service = this;
-    this.retrieveRecordGroups = function () {
+    this.retrieveRecordGroups = function() {
         return backend.retrieve('/record_groups', {game_id: window._current_game_id});
     };
 
-    this.getGroupFromSignature = function (recordGroups, sig) {
+    this.getGroupFromSignature = function(recordGroups, sig) {
         return recordGroups.find(function(group) {
             return group.signature === sig;
         });

@@ -1,4 +1,4 @@
-app.directive('helpPageComments', function () {
+app.directive('helpPageComments', function() {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/help/helpPageComments.html',
@@ -9,7 +9,10 @@ app.directive('helpPageComments', function () {
     };
 });
 
-app.controller('helpPageCommentsController', function($scope, contributionService, userService) {
+app.controller('helpPageCommentsController', function($scope, $rootScope, contributionService, userService) {
+    $rootScope.currentGame = {
+        nexus_name: "skyrim"
+    };
     $scope.errors = {};
     $scope.pages = {
         comments: {}
@@ -20,6 +23,7 @@ app.controller('helpPageCommentsController', function($scope, contributionServic
 
     // retrieve current user
     userService.retrieveCurrentUser().then(function(currentUser) {
+        $rootScope.currentUser = currentUser;
         $scope.currentUser = currentUser;
         $scope.permissions = currentUser.permissions;
     }, function(response) {

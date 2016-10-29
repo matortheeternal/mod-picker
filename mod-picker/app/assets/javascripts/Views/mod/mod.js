@@ -165,10 +165,13 @@ app.controller('modController', function($scope, $rootScope, $q, $stateParams, $
         name: "Mod",
         label: "Mod",
         route: "mods"
-    }
+    };
     $scope.target = $scope.mod;
     $scope.retrieving = {};
     $scope.errors = {};
+
+    // set page title
+    $scope.$emit('setPageTitle', $scope.mod.name);
 
     // shared function setup
     eventHandlerFactory.buildMessageHandlers($scope);
@@ -189,8 +192,10 @@ app.controller('modController', function($scope, $rootScope, $q, $stateParams, $
         return author.user_id == $scope.currentUser.id;
     });
     var isAuthor = angular.isDefined(author);
+    var isCurator = isAuthor && (author.role === 'curator');
     $scope.permissions.isAuthor = isAuthor;
     $scope.permissions.canManage = $scope.permissions.canModerate || isAuthor;
+    $scope.permissions.canReview = $scope.permissions.canContribute && (isCurator || !isAuthor);
 
     var redirectToFirstTab = function() {
         var tab = $scope.tabs[0];

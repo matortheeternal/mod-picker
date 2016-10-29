@@ -6,7 +6,7 @@ class UserSettingsController < ApplicationController
   # GET /settings/:id
   def show
     authorize! :update, @user
-    render :json => { user: @user.settings_json }
+    respond_with_json(@user, :settings, :user)
   end
 
   # PATCH/PUT /settings/:id
@@ -25,18 +25,8 @@ class UserSettingsController < ApplicationController
   # GET /settings/link_account
   def link_account
     bio = @user.bio
-    case params[:site]
-      when "Nexus Mods"
-        verified = bio.verify_nexus_account(params[:user_path])
-      when "Lover's Lab"
-        verified = bio.verify_lover_account(params[:user_path])
-      when "Steam Workshop"
-        verified = bio.verify_workshop_account(params[:user_path])
-      else
-        verified = false
-    end
 
-    if verified
+    if bio.verify_account(params[:site], params[:user_path])
       render json: {status: :ok, verified: true, bio: bio}
     else
       render json: {status: :ok, verified: false}
@@ -66,10 +56,10 @@ class UserSettingsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:username, :role, :title, :joined, :about_me, :settings_attributes => [:id, :theme, :allow_comments, :show_notifications, :email_notifications, :email_public, :allow_adult_content, :allow_nexus_mods, :allow_lovers_lab, :allow_steam_workshop])
+      params.require(:user).permit(:username, :role, :title, :joined, :about_me, :settings_attributes => [:id, :theme, :allow_comments, :show_notifications, :email_notifications, :email_public, :allow_adult_content, :enable_spellcheck, :allow_nexus_mods, :allow_lovers_lab, :allow_steam_workshop])
     end
 
     def avatar_params
-      {:image_file => params[:avatar]}
+      {image_file: params[:avatar]}
     end
 end

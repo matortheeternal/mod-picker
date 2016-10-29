@@ -6,6 +6,12 @@ Rails.application.configure do
   # since you don't have to restart the web server when you make code changes.
   config.cache_classes = false
 
+  # BetterJSON templates are not cached in memory
+  config.cache_json_templates = false
+
+  # BetterJSON template not found exceptions help us debug
+  config.raise_template_not_found_exceptions = true
+
   # Do not eager load code on boot.
   config.eager_load = false
 

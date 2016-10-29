@@ -1,14 +1,17 @@
 app.run(function($futureState, indexFactory, filtersFactory) {
     // dynamically construct and apply state
     var filterPrototypes = filtersFactory.compatibilityNoteFilters();
-    var state = indexFactory.buildState('reputation', 'DESC', 'compatibilityNotes', filterPrototypes);
+    var state = indexFactory.buildState('submitted', 'DESC', 'compatibilityNotes', filterPrototypes);
     $futureState.futureState(state);
 });
 
-app.controller('compatibilityNotesController', function ($scope, $rootScope, $stateParams, $state,  contributionService, indexService, filtersFactory, indexFactory, sortFactory) {
+app.controller('compatibilityNotesController', function($scope, $rootScope, $stateParams, $state,  contributionService, indexService, filtersFactory, indexFactory, sortFactory) {
     // get parent variables
     $scope.currentUser = $rootScope.currentUser;
     $scope.permissions = $rootScope.permissions;
+
+    // set page title
+    $scope.$emit('setPageTitle', 'Browse Compatibility Notes');
 
     // sort options for view
     $scope.sortOptions = sortFactory.compatibilityNoteSortOptions();

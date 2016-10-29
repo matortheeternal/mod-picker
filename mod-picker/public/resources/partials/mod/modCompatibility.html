@@ -28,20 +28,20 @@
         <span class="select compatibility-dropdown">
             <select ng-model="activeCompatibilityNote.status">
                 <option value="incompatible">Incompatible with</option>
-                <option value="partially incompatible">Partially Incompatible with</option>
-                <option value="compatibility mod">Compatibility Mod for</option>
-                <option value="compatibility option">Compatibility Option for</option>
-                <option value="make custom patch">Make Custom Patch for</option>
+                <option value="partially_incompatible">Partially Incompatible with</option>
+                <option value="compatibility_mod">Compatibility Mod for</option>
+                <option value="compatibility_option">Compatibility Option for</option>
+                <option value="make_custom_patch">Make Custom Patch for</option>
             </select>
         </span>
         <search-input search-function="searchMods" result-id="activeCompatibilityNote.mod_id" search-text="activeCompatibilityNote.mod_name" excluded-id="mod.id" on-change="validateCompatibilityNote" disabled="activeCompatibilityNote.original" label="mod" key="name"></search-input>
     </div>
-    <div class="content-options" ng-show="['compatibility mod', 'compatibility option'].indexOf(activeCompatibilityNote.status) > -1">
-        <span ng-if="activeCompatibilityNote.status === 'compatibility mod'">
+    <div class="content-options" ng-show="['compatibility_mod', 'compatibility_option'].indexOf(activeCompatibilityNote.status) > -1">
+        <span ng-if="activeCompatibilityNote.status === 'compatibility_mod'">
             <strong>Compatibility Mod</strong>
             <search-input search-function="searchMods" result-id="activeCompatibilityNote.compatibility_mod_id" excluded-id="mod.id" on-change="validateCompatibilityNote" label="mod" key="name"></search-input>
         </span>
-        <span ng-if="activeCompatibilityNote.status === 'compatibility option'">
+        <span ng-if="activeCompatibilityNote.status === 'compatibility_option'">
             <strong>Compatibility Plugin</strong>
             <search-input search-function="searchPlugins" result-id="activeCompatibilityNote.compatibility_plugin_id" on-change="validateCompatibilityNote" label="plugin" key="filename"></search-input>
         </span>
@@ -77,7 +77,7 @@
      </div>
 
      <!-- the rest of the notes -->
-    <div ng-repeat="note in mod.compatibility_notes" class="content-block" ng-if="!note.editing">
+    <div ng-repeat="note in mod.compatibility_notes" class="content-block" ng-hide="note.editing">
         <compatibility-note note="note" mod-id="mod.id" index="100 + $index" edit="editCompatibilityNote"></compatibility-note>
     </div>
 

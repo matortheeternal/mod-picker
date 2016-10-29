@@ -15,6 +15,12 @@
   }
 }
 
+ul.required-list {
+  .text-tooltip {
+    margin-left: 0;
+  }
+}
+
 .tab-bar-item {
   .issue-item {
     margin: 0 12px;
@@ -74,10 +80,30 @@
   }
 }
 
+.analysis-container {
+  .show-more, .show-less {
+    font-size: 16px;
+    margin: 4px;
+    display: inline-block;
+    cursor: pointer;
+    color: $link_hover_color_primary;
+    @include transition(color 0.2s ease);
+
+    &:hover {
+      color: $text_color;
+    }
+  }
+}
+
 .modal {
   .manage-item {
     padding-left: 20px;
     display: block;
+  }
+
+  .short-column {
+    min-width: 70px;
+    width: 70px;
   }
 }
 

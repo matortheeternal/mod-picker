@@ -1,4 +1,4 @@
-app.service('eventHandlerFactory', function (errorService) {
+app.service('eventHandlerFactory', function(errorService) {
     this.buildMessageHandlers = function($scope, allowCustomMessages) {
         // display error messages
         $scope.$on('errorMessage', function(event, params) {

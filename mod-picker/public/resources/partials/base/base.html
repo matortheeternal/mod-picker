@@ -15,22 +15,7 @@
                         <user-notifications notifications="currentUser.recent_notifications"></user-notifications>
                     </li>
                     <li>
-                        <a class="inverse-link">
-                            <form id="contribution-select-form">
-                                <select class="contribution-selector" ng-model="newLocation" ng-change="navigateTo(newLocation); newLocation = ''">
-                                    <option selected disabled hidden style='display: none' value=''></option>
-                                    <option value="/settings/mods">Mods</option>
-                                    <option value="/settings/mod-lists">Mod Lists</option>
-                                    <option value="/comments?s={{currentUser.username}}">Comments</option>
-                                    <option value="/reviews?s={{currentUser.username}}">Reviews</option>
-                                    <option value="/compatibility-notes?s={{currentUser.username}}">Compatibility Notes</option>
-                                    <option value="/install-order-notes?s={{currentUser.username}}">Install Order Notes</option>
-                                    <option value="/load-order-notes?s={{currentUser.username}}">Load Order Notes</option>
-                                    <option value="/corrections?s={{currentUser.username}}">Corrections</option>
-                                </select>
-                                <span class="contributions-label">My Contributions</span>
-                            </form>
-                        </a>
+                        <contribution-select></contribution-select>
                     </li>
                     <li>
                         <a class="inverse-link" href="#/settings">Settings</a>
@@ -56,6 +41,9 @@
                 </ul>
             </div>
         </div>
+    </div>
+    <div id="artist-credit">
+        Credit: <a class="medium inverse-link" ng-href="{{creditLink}}" target="_blank"></a>
     </div>
 </header>
 
@@ -224,19 +212,21 @@
             <section>
                 <span class="section-title">Mod Picker</span>
                 <ul>
+                    <li><a class="inverse-link" href="/help">Help Center</a></li>
                     <li><a class="inverse-link" href="/help/about_us">About Us</a></li>
                     <li><a class="inverse-link" href="/legal/tos">Terms of Service</a></li>
                     <li><a class="inverse-link" href="/legal/privacy">Privacy Policy</a></li>
-                    <li><a class="inverse-link" href="/help">Help Center</a></li>
                     <li><a class="inverse-link" href="#/donate">Donate</a></li>
                 </ul>
             </section>
             <section>
                 <span class="section-title">Other Links</span>
                 <ul>
+                    <li><a class="inverse-link" href="https://discord.gg/GCKrwTU">Discord</a></li>
+                    <li><a class="inverse-link" href="https://www.facebook.com/modpicker">Facebook</a></li>
                     <li><a class="inverse-link" href="https://twitter.com/Mod_Picker">Twitter</a></li>
                     <li><a class="inverse-link" href="https://www.youtube.com/channel/UCWqJeb-T5-k-AnWZTF_0ZAw">YouTube</a></li>
-                    <li><a class="inverse-link" href="https://www.facebook.com/modpicker">Facebook</a></li>
+                    <!--<li><a class="inverse-link" href="https://steamcommunity.com/groups/mod-picker">Steam Group</a></li>-->
                     <li><a class="inverse-link" href="https://github.com/matortheeternal/mod-picker-issues">Report a bug</a></li>
                 </ul>
             </section>

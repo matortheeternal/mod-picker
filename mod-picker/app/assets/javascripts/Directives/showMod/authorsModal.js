@@ -1,7 +1,13 @@
-app.directive('authorsModal', function () {
+app.directive('authorsModal', function() {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/showMod/authorsModal.html',
-        scope: false
+        scope: false,
+        controller: 'authorsModalController'
     };
+});
+
+app.controller('authorsModalController', function($scope, formUtils) {
+    // inherited functions
+    $scope.unfocusAuthorsModal = formUtils.unfocusModal($scope.toggleAuthorsModal);
 });

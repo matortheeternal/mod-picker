@@ -89,6 +89,9 @@ input[type="file"] {
 .text-container {
   width: 100%;
   margin: 10px 0;
+}
+
+.text-container, .comment-text-container {
   @include wordbreak;
 
   h1 {
@@ -186,6 +189,14 @@ form {
       padding: 4px;
     }
 
+    input[type="text"].fuzzy-input {
+      vertical-align: initial;
+      min-width: 100px;
+      font-size: inherit;
+      height: initial;
+      padding: initial;
+    }
+
     input[type="date"] {
       width: 150px;
       font-family: inherit;
@@ -230,5 +241,30 @@ form {
 
   .input-block {
     display: inline-block;
+  }
+}
+
+input.fuzzy-input {
+  background: none;
+  border: none;
+  font: inherit;
+  margin-top: -2px;
+  padding: 0 4px;
+  max-width: 850px;
+  @include transition(box-shadow 0.2s ease-in-out);
+
+  &:hover {
+    box-shadow: 0 0 3px 1px $action_color;
+  }
+
+  &:focus {
+    background-color: $input_background;
+    box-shadow: 0 0 3px 1px $action_color;
+    outline: none;
+  }
+
+  &:disabled {
+    box-shadow: none !important;
+    border: none;
   }
 }

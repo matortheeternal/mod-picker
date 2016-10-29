@@ -1,9 +1,12 @@
 class CompatibilityNote < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, Correctable, Helpfulable, Reportable, ScopeHelpers, Trackable
+  include Filterable, Sortable, RecordEnhancements, CounterCache, Correctable, Helpfulable, Reportable, Approveable, ScopeHelpers, Trackable, BetterJson, Dateable
 
   # ATTRIBUTES
-  enum status: [ :incompatible, :"partially incompatible", :"compatibility mod", :"compatibility option", :"make custom patch" ]
+  enum status: [ :incompatible, :partially_incompatible, :compatibility_mod, :compatibility_option, :make_custom_patch ]
   self.per_page = 25
+
+  # DATE COLUMNS
+  date_column :submitted, :edited
 
   # EVENT TRACKING
   track :added, :approved, :hidden
@@ -38,7 +41,7 @@ class CompatibilityNote < ActiveRecord::Base
 
   # associated compatibility plugin/compatibilty mod for automatic resolution purposes
   belongs_to :compatibility_plugin, :class_name => 'Plugin', :foreign_key => 'compatibility_plugin_id', :inverse_of => 'compatibility_notes'
-  belongs_to :compatibility_mod, :class_name => 'Mod', :foreign_key => 'compatibility_mod_id', :inverse_of => 'compatibility_note_mods'
+  belongs_to :compatibility_mod, :class_name => 'Mod', :foreign_key => 'compatibility_mod_id'
 
   # mod lists this compatibility note is ignored on
   has_many :mod_list_ignored_notes, :as => 'note'
@@ -47,36 +50,39 @@ class CompatibilityNote < ActiveRecord::Base
   has_many :history_entries, :class_name => 'CompatibilityNoteHistoryEntry', :inverse_of => 'compatibility_note', :foreign_key => 'compatibility_note_id'
   has_many :editors, -> { uniq }, :class_name => 'User', :through => 'history_entries'
 
+  # COUNTER CACHE
+  counter_cache_on :first_mod, :second_mod, :submitter, conditional: { hidden: false, approved: true }
+
   # VALIDATIONS
   validates :game_id, :submitted_by, :status, :first_mod_id, :second_mod_id, :text_body, presence: true
   validates :text_body, length: { in: 256..16384 }
-  validate :unique_mods
+  validate :validate_unique_mods
 
   # CALLBACKS
-  after_create :increment_counters
-  before_save :set_adult, :set_dates
-  before_destroy :decrement_counters
+  before_save :set_adult
 
-  def unique_mods
-    if first_mod_id == second_mod_id
-      errors.add(:mods, "You cannot create a Compatibility Note between a mod and itself.")
-      return
-    end
+  def get_existing_note(mod_ids)
+    table = CompatibilityNote.arel_table
+    CompatibilityNote.mods(mod_ids).where(table[:hidden].eq(0).and(table[:id].not_eq(id))).first
+  end
 
-    mod_ids = [first_mod_id, second_mod_id]
-    note = CompatibilityNote.mods(mod_ids).where("hidden = 0 and id != ?", self.id).first
-    if note.present?
-      if note.approved
-        errors.add(:mods, "A Compatibility Note for these mods already exists.")
-        errors.add(:link_id, note.id)
-      else
-        errors.add(:mods, "An unapproved Compatibility Note for these mods already exists.")
-      end
+  def note_exists_error(existing_note)
+    if existing_note.approved
+      errors.add(:mods, "A Compatibility Note for these mods already exists.")
+      errors.add(:link_id, existing_note.id)
+    else
+      errors.add(:mods, "An unapproved Compatibility Note for these mods already exists.")
     end
   end
 
-  def mods
-    [first_mod, second_mod]
+  def duplicate_mods_error
+    errors.add(:mods, "You cannot create a Compatibility Note between a mod and itself.") if first_mod_id == second_mod_id
+  end
+
+  def validate_unique_mods
+    return if duplicate_mods_error
+    existing_note = get_existing_note([first_mod_id, second_mod_id])
+    note_exists_error(existing_note) if existing_note.present?
   end
 
   def mod_author_users
@@ -100,118 +106,15 @@ class CompatibilityNote < ActiveRecord::Base
     CompatibilityNote.where(id: ids).joins(:first_mod, :second_mod).update_all("compatibility_notes.has_adult_content = mods.has_adult_content OR second_mods_compatibility_notes.has_adult_content")
   end
 
-  def as_json(options={})
-    if JsonHelpers.json_options_empty(options)
-      default_options = {
-          :except => [:submitted_by],
-          :include => {
-              :submitter => {
-                  :only => [:id, :username, :role, :title, :joined, :last_sign_in_at, :reviews_count, :compatibility_notes_count, :install_order_notes_count, :load_order_notes_count, :corrections_count, :comments_count],
-                  :include => {
-                      :reputation => {:only => [:overall]}
-                  },
-                  :methods => :avatar
-              },
-              :editor => {
-                  :only => [:id, :username, :role]
-              },
-              :editors => {
-                  :only => [:id, :username, :role]
-              },
-              :first_mod => {
-                  :only => [:id, :name]
-              },
-              :second_mod => {
-                  :only => [:id, :name]
-              }
-          }
-      }
-      super(options.merge(default_options))
-    else
-      super(options)
-    end
-  end
-
-  def notification_json_options(event_type)
-    {
-        :only => [:submitted_by, (:moderator_message if event_type == :message)].compact,
-        :include => {
-            :first_mod => {
-                :only => [:id, :name]
-            },
-            :second_mod => {
-                :only => [:id, :name]
-            }
-        }
-    }
-  end
-
-  def reportable_json_options
-    {
-          :except => [:submitted_by],
-          :include => {
-              :submitter => {
-                  :only => [:id, :username, :role, :title],
-                  :include => {
-                      :reputation => {:only => [:overall]}
-                  },
-                  :methods => :avatar
-              },
-              :editor => {
-                  :only => [:id, :username, :role]
-              },
-              :editors => {
-                  :only => [:id, :username, :role]
-              },
-              :first_mod => {
-                  :only => [:id, :name]
-              },
-              :second_mod => {
-                  :only => [:id, :name]
-              }
-          }
-      }
-  end
-
-  def self.sortable_columns
-    {
-        :except => [:game_id, :submitted_by, :edited_by, :corrector_id, :first_mod_id, :second_mod_id, :compatibility_mod_id, :compatibility_plugin_id, :text_body, :edit_summary, :moderator_message],
-        :include => {
-            :submitter => {
-                :only => [:username],
-                :include => {
-                    :reputation => {
-                        :only => [:overall]
-                    }
-                }
-            }
-        }
-    }
+  def self.mod_count_subquery
+    arel_table.where(Mod.arel_table[:id].eq(arel_table[:first_mod_id]).
+        or(Mod.arel_table[:id].eq(arel_table[:second_mod_id]))).
+        project(Arel.sql('*').count)
   end
 
   private
-    def set_dates
-      if submitted.nil?
-        self.submitted = DateTime.now
-      else
-        self.edited = DateTime.now
-      end
-    end
-
     def set_adult
       self.has_adult_content = first_mod.has_adult_content || second_mod.has_adult_content
       true
-    end
-
-    def increment_counters
-      first_mod.update_counter(:compatibility_notes_count, 1)
-      second_mod.update_counter(:compatibility_notes_count, 1)
-      submitter.update_counter(:compatibility_notes_count, 1)
-    end
-
-    def decrement_counters
-      first_mod.update_counter(:compatibility_notes_count, -1)
-      second_mod.update_counter(:compatibility_notes_count, -1)
-      submitter.update_counter(:compatibility_notes_count, -1)
     end
 end

@@ -4,7 +4,7 @@ app.config(['$stateProvider', function($stateProvider) {
         templateUrl: '/resources/partials/base/error.html',
         controller: 'errorController',
         resolve: {
-            errorObj: function () {
+            errorObj: function() {
                 return this.self.error;
             }
         }
@@ -38,6 +38,9 @@ app.controller('errorController', function($scope, $state, errorObj, quoteServic
         $state.go('base');
         return;
     }
+
+    // set page title
+    $scope.$emit('setPageTitle', 'Error '+$scope.status);
 
     // get a quote for the error
     $scope.quote = quoteService.getErrorQuote($scope.status);

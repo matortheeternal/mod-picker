@@ -42,32 +42,34 @@ app.controller('contributionActionsController', function($scope, $rootScope, $ti
 
     // determine share url based on the content type
     $scope.buildShareLink = function() {
-        var modTarget, targetTab, targetId, baseUrl = location.href.replace(location.hash, "");
+        var modTarget, modId, targetTab, targetId, baseUrl = location.href.replace(location.hash, "");
         if ($scope.modelName === "Correction") {
             var correctableType = $scope.target.correctable_type;
             if (correctableType === "Mod") {
-                var modId = $scope.target.correctable_id;
+                modId = $scope.target.correctable_id;
                 $scope.shareLink = baseUrl + '#/mod/' + modId + '/appeals';
             } else {
                 var correctable = $scope.target.correctable;
                 var correctableModel = contributionFactory.getModel(correctableType);
                 modTarget = correctable.mod || correctable.first_mod;
+                modId = modTarget.id;
                 targetTab = correctableModel.tab;
                 targetId = $scope.target.correctable_id;
-                $scope.shareLink = baseUrl + '#/mod/' + modTarget.id + '/' + targetTab + '/' + targetId + '/corrections';
+                $scope.shareLink = baseUrl + '#/mod/' + modId + '/' + targetTab + '/' + targetId + '/corrections';
             }
         } else {
-            modTarget = $scope.target.mod || $scope.target.first_mod;
+            modId = $scope.target.mod_id || $scope.target.first_mod_id;
             targetTab = $scope.modelObj.tab;
             targetId = $scope.target.id;
-            $scope.shareLink = baseUrl + '#/mod/' + modTarget.id + '/' + targetTab + '/' + targetId;
+            $scope.shareLink = baseUrl + '#/mod/' + modId + '/' + targetTab + '/' + targetId;
         }
     };
-    $scope.buildShareLink();
 
     // compute whether or not the target is open if it is agreeable
     if ($scope.agreeable) {
         $scope.isOpen = $scope.target.status === 'open';
+    } else {
+        $scope.buildShareLink();
     }
 
     // compute agree percentage helper
@@ -237,7 +239,7 @@ app.controller('contributionActionsController', function($scope, $rootScope, $ti
         // went through
         $timeout(function() {
             $scope.showDropdown = false;
-        }, 100);
+        }, 250);
     };
 
     $scope.setPermissions = function() {
@@ -245,12 +247,12 @@ app.controller('contributionActionsController', function($scope, $rootScope, $ti
         var user = $scope.currentUser;
         if (!user) return;
         var canModerate = $scope.permissions.canModerate;
-        var isSubmitter = user && user.id == $scope.target.submitted_by;
+        var isSubmitter = user && user.id == $scope.target.submitter.id;
         var isCorrector = user && user.id == $scope.target.corrector_id;
         var isLocked = $scope.target.corrector_id;
         // set up permissions
         $scope.isSubmitter = isSubmitter;
-        $scope.canReport = $scope.permissions.canReport;
+        $scope.canReport = $scope.permissions.canReport && !isSubmitter;
         $scope.canAgree = $scope.agreeable && $scope.isOpen && $scope.permissions.canAgree;
         $scope.canCorrect = $scope.permissions.canCorrect;
         $scope.canEdit = $scope.edit && (canModerate || isCorrector || isSubmitter && !isLocked);

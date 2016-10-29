@@ -1,8 +1,11 @@
 class LoadOrderNote < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, Correctable, Helpfulable, Reportable, ScopeHelpers, Trackable
+  include Filterable, Sortable, RecordEnhancements, CounterCache, Correctable, Helpfulable, Reportable, Approveable, ScopeHelpers, Trackable, BetterJson, Dateable
 
   # ATTRIBUTES
   self.per_page = 25
+
+  # DATE COLUMNS
+  date_column :submitted, :edited
 
   # EVENT TRACKING
   track :added, :approved, :hidden
@@ -48,45 +51,44 @@ class LoadOrderNote < ActiveRecord::Base
   has_many :history_entries, :class_name => 'LoadOrderNoteHistoryEntry', :inverse_of => 'load_order_note', :foreign_key => 'load_order_note_id'
   has_many :editors, -> { uniq }, :class_name => 'User', :through => 'history_entries'
 
+  # COUNTER CACHE
+  counter_cache_on :first_plugin, :second_plugin, :first_mod, :second_mod, :submitter, conditional: { hidden: false, approved: true }
+
   # VALIDATIONS
   validates :game_id, :submitted_by, :first_plugin_id, :second_plugin_id, :text_body, presence: true
 
   validates :text_body, length: {in: 256..16384}
-  validate :unique_plugins
+  validate :validate_unique_plugins
 
   # CALLBACKS
-  after_create :increment_counters
-  before_save :set_adult, :set_dates
-  before_destroy :decrement_counters
+  before_save :set_adult
 
-  def unique_plugins
-    if first_plugin_id == second_plugin_id
-      errors.add(:plugins, "You cannot create a Load Order Note between a plugin and itself.")
-      return
-    end
+  def get_existing_note(plugin_ids)
+    table = LoadOrderNote.arel_table
+    LoadOrderNote.plugins(plugin_ids).where(table[:hidden].eq(0).and(table[:id].not_eq(id))).first
+  end
 
-    plugin_ids = [first_plugin_id, second_plugin_id]
-    note = LoadOrderNote.plugins(plugin_ids).where("hidden = 0 and id != ?", self.id).first
-    if note.present?
-      if note.approved
-        errors.add(:plugins, "A Load Order Note for these plugins already exists.")
-        errors.add(:link_id, note.id)
-      else
-        errors.add(:plugins, "An unapproved Load Order Note for these plugins already exists.")
-      end
+  def note_exists_error(existing_note)
+    if existing_note.approved
+      errors.add(:plugins, "A Load Order Note for these plugins already exists.")
+      errors.add(:link_id, existing_note.id)
+    else
+      errors.add(:plugins, "An unapproved Load Order Note for these plugins already exists.")
     end
   end
 
-  def mods
-    [first_mod, second_mod]
+  def duplicate_plugins_error
+    errors.add(:plugins, "You cannot create a Load Order Note between a plugin and itself.") if first_plugin_id == second_plugin_id
+  end
+
+  def validate_unique_plugins
+    return if duplicate_plugins_error
+    existing_note = get_existing_note([first_plugin_id, second_plugin_id])
+    note_exists_error(existing_note) if existing_note.present?
   end
 
   def mod_author_users
     User.includes(:mod_authors).where(:mod_authors => {mod_id: [first_mod.id, second_mod.id]})
-  end
-
-  def plugins
-    [first_plugin, second_plugin]
   end
 
   def create_history_entry
@@ -103,140 +105,33 @@ class LoadOrderNote < ActiveRecord::Base
     LoadOrderNote.where(id: ids).joins(:first_mod, :second_mod).update_all("load_order_notes.has_adult_content = mods.has_adult_content OR second_mods_load_order_notes.has_adult_content")
   end
 
-  def as_json(options={})
-    if JsonHelpers.json_options_empty(options)
-      default_options = {
-          :except => [:submitted_by],
-          :include => {
-              :submitter => {
-                  :only => [:id, :username, :role, :title, :joined, :last_sign_in_at, :reviews_count, :compatibility_notes_count, :install_order_notes_count, :load_order_notes_count, :corrections_count, :comments_count],
-                  :include => {
-                      :reputation => {:only => [:overall]}
-                  },
-                  :methods => :avatar
-              },
-              :editor => {
-                  :only => [:id, :username, :role]
-              },
-              :editors => {
-                  :only => [:id, :username, :role]
-              },
-              :first_plugin => {
-                  :only => [:id, :filename]
-              },
-              :second_plugin => {
-                  :only => [:id, :filename]
-              },
-              :first_mod => {
-                  :only => [:id, :name]
-              },
-              :second_mod => {
-                  :only => [:id, :name]
-              }
-          }
-      }
-      super(options.merge(default_options))
-    else
-      super(options)
-    end
+  def self.join_to_mod_options(query, source_column, plugins, options)
+    query.join(plugins).on(arel_table[source_column].eq(plugins[:id])).
+        join(options).on(plugins[:mod_option_id].eq(options[:id]))
   end
 
-  def reportable_json_options
-    {
-        :except => [:submitted_by],
-        :include => {
-            :submitter => {
-                :only => [:id, :username, :role, :title],
-                :include => {
-                    :reputation => {:only => [:overall]}
-                },
-                :methods => :avatar
-            },
-            :editor => {
-                :only => [:id, :username, :role]
-            },
-            :editors => {
-                :only => [:id, :username, :role]
-            },
-            :first_plugin => {
-                :only => [:id, :filename]
-            },
-            :second_plugin => {
-                :only => [:id, :filename]
-            },
-            :first_mod => {
-                :only => [:id, :name]
-            },
-            :second_mod => {
-                :only => [:id, :name]
-            }
-        }
-    }
+  def self.mod_count_subquery
+    mod_options = ModOption.arel_table
+    mod_options_alias = ModOption.arel_table.alias
+    [
+        [:first_plugin_id, Plugin.arel_table, mod_options],
+        [:second_plugin_id, Plugin.arel_table.alias, mod_options_alias]
+    ].inject(arel_table) { |query, args|
+      query = join_to_mod_options(query, *args)
+    }.where(Mod.arel_table[:id].eq(mod_options[:mod_id]).
+        or(Mod.arel_table[:id].eq(mod_options_alias[:mod_id]))).
+        project(Arel.sql('*').count)
   end
 
-  def notification_json_options(event_type)
-    {
-        :only => [:submitted_by, (:moderator_message if event_type == :message)].compact,
-        :include => {
-            :first_plugin => {
-                :only => [:id, :filename]
-            },
-            :second_plugin => {
-                :only => [:id, :filename]
-            },
-            :first_mod => {
-                :only => [:id, :name]
-            },
-            :second_mod => {
-                :only => [:id, :name]
-            }
-        }
-    }
-  end
-
-  def self.sortable_columns
-    {
-        :except => [:game_id, :submitted_by, :edited_by, :corrector_id, :first_plugin_id, :second_plugin_id, :text_body, :edit_summary, :moderator_message],
-        :include => {
-            :submitter => {
-                :only => [:username],
-                :include => {
-                    :reputation => {
-                        :only => [:overall]
-                    }
-                }
-            }
-        }
-    }
+  def self.plugin_count_subquery
+    where(Plugin.arel_table[:id].eq(arel_table[:first_plugin_id]).
+        or(Plugin.arel_table[:id].eq(arel_table[:second_plugin_id]))).
+        project(Arel.sql('*').count)
   end
 
   private
-    def set_dates
-      if self.submitted.nil?
-        self.submitted = DateTime.now
-      else
-        self.edited = DateTime.now
-      end
-    end
-
     def set_adult
       self.has_adult_content = first_mod.has_adult_content || second_mod.has_adult_content
       true
-    end
-
-    def increment_counters
-      first_mod.update_counter(:load_order_notes_count, 1)
-      second_mod.update_counter(:load_order_notes_count, 1)
-      submitter.update_counter(:load_order_notes_count, 1)
-      first_plugin.update_counter(:load_order_notes_count, 1)
-      second_plugin.update_counter(:load_order_notes_count, 1)
-    end
-
-    def decrement_counters
-      first_mod.update_counter(:load_order_notes_count, -1)
-      second_mod.update_counter(:load_order_notes_count, -1)
-      submitter.update_counter(:load_order_notes_count, -1)
-      first_plugin.update_counter(:load_order_notes_count, -1)
-      second_plugin.update_counter(:load_order_notes_count, -1)
     end
 end

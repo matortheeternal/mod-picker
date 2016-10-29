@@ -1,13 +1,19 @@
 class ModListPlugin < ActiveRecord::Base
-  include RecordEnhancements
+  include RecordEnhancements, BetterJson, CounterCache
 
-  # Scopes
-  scope :official, -> (bool) { joins(:plugin => :mod).where(:mods => { is_official: bool }) }
+  # SCOPES
+  scope :official, -> (bool) {
+    joins(:plugin => :mod).where(:mods => { is_official: bool })
+  }
 
   # ASSOCIATIONS
   belongs_to :mod_list, :inverse_of => 'mod_list_plugins'
   belongs_to :plugin, :inverse_of => 'mod_list_plugins'
   has_one :mod, :through => 'plugin'
+
+  # COUNTER CACHE
+  counter_cache_on :mod_list, column: 'plugins_count'
+  counter_cache_on :plugin, column: 'mod_lists_count'
 
   # VALIDATIONS
   validates :mod_list_id, :plugin_id, :index, presence: true
@@ -15,53 +21,7 @@ class ModListPlugin < ActiveRecord::Base
   # can only have a mod on a given mod list once
   validates :plugin_id, uniqueness: { scope: :mod_list_id, :message => "The plugin is already present on the mod list." }
 
-  # CALLBACKS
-  after_create :increment_counters
-  before_destroy :decrement_counters
-
   def required_plugins
     Master.plugins([self.plugin_id]).order(:master_plugin_id)
   end
-
-  def self.load_order_json(collection)
-    collection.as_json({
-        :only => [:plugin_id, :index, :merged],
-        :include => {
-            :plugin => {
-                :only => [:mod_id, :filename]
-            }
-        }
-    })
-  end
-
-  def as_json(options={})
-    if JsonHelpers.json_options_empty(options)
-      # TODO: Revise this as necessary
-      default_options = {
-          :only => [:id, :index, :group_id, :cleaned, :merged],
-          :include => {
-              :plugin => {
-                  :except => [:game_id, :mod_id, :description, :mod_lists_count, :load_order_notes_count]
-              },
-              :mod => {
-                  :only => [:id, :name, :is_official, :primary_category_id, :secondary_category_id]
-              }
-          }
-      }
-      super(options.merge(default_options))
-    else
-      super(options)
-    end
-  end
-
-  private
-    def increment_counters
-      self.mod_list.update_counter(:plugins_count, 1)
-      self.plugin.update_counter(:mod_lists_count, 1)
-    end
-
-    def decrement_counters
-      self.mod_list.update_counter(:plugins_count, -1)
-      self.plugin.update_counter(:mod_lists_count, -1)
-    end
 end

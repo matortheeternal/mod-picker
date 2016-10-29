@@ -1,4 +1,4 @@
-app.directive('actions', function () {
+app.directive('actions', function() {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/browse/actions.html',
@@ -17,7 +17,7 @@ app.controller('actionsController', function($scope, $timeout) {
     $scope.blurDropdown = function(action, item) {
         $timeout(function() {
             item[action.key] = false;
-        }, 100);
+        }, 250);
     };
     $scope.actionClick = function(action, item) {
         if (action.items) {

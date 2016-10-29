@@ -1,4 +1,4 @@
-app.directive('userCard', function () {
+app.directive('userCard', function() {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/shared/userCard.html',

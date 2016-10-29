@@ -1,4 +1,4 @@
-app.config(['$stateProvider', function ($stateProvider) {
+app.config(['$stateProvider', function($stateProvider) {
     $stateProvider.state('base.mod-list', {
         templateUrl: '/resources/partials/modList/modList.html',
         controller: 'modListController',
@@ -184,6 +184,9 @@ app.controller('modListController', function($scope, $rootScope, $q, $stateParam
     $scope.target = $scope.mod_list;
     $scope.isActive = $scope.activeModList && $scope.activeModList.id == $scope.mod_list.id;
 
+    // set page title
+    $scope.$emit('setPageTitle', 'View Mod List');
+
     // shared function setup
     $scope.isEmpty = objectUtils.isEmptyArray;
     eventHandlerFactory.buildMessageHandlers($scope, true);
@@ -260,6 +263,7 @@ app.controller('modListController', function($scope, $rootScope, $q, $stateParam
 
     // MOD LIST EDITING LOGIC
     $scope.flattenModel = function(label, associationLabel, mainBase, customBase, pushGroups) {
+        var groupBase = baseFactory.getModListGroupBase();
         var custom_label = 'custom_' + label;
         var cleanedItem;
         if ($scope.model[label]) {
@@ -267,7 +271,10 @@ app.controller('modListController', function($scope, $rootScope, $q, $stateParam
             $scope.mod_list[custom_label] = [];
             $scope.model[label].forEach(function(item) {
                 if (item.children) {
-                    if (pushGroups) $scope.mod_list.groups.push(item);
+                    if (pushGroups) {
+                        var cleanedGroup = objectUtils.cleanAttributes(item, groupBase);
+                        $scope.mod_list.groups.push(cleanedGroup);
+                    }
                     item.children.forEach(function(child) {
                         if (child.hasOwnProperty(associationLabel)) {
                             cleanedItem = objectUtils.cleanAttributes(child, mainBase);
@@ -276,7 +283,7 @@ app.controller('modListController', function($scope, $rootScope, $q, $stateParam
                             cleanedItem = objectUtils.cleanAttributes(child, customBase);
                             $scope.mod_list[custom_label].push(cleanedItem);
                         }
-                    })
+                    });
                 } else if (item.hasOwnProperty(associationLabel)) {
                     cleanedItem = objectUtils.cleanAttributes(item, mainBase);
                     $scope.mod_list[label].push(cleanedItem);
@@ -310,47 +317,23 @@ app.controller('modListController', function($scope, $rootScope, $q, $stateParam
     };
 
     $scope.findTool = function(toolId, ignoreDestroyed) {
-        if (!$scope.model.tools) {
-            return true;
-        }
-        var foundTool = listUtils.findMod($scope.model.tools, toolId);
-        if (foundTool && ignoreDestroyed && foundTool._destroy) {
-            return;
-        }
-        return foundTool;
+        return listUtils.genericFind($scope.model.tools, listUtils.findMod, toolId, ignoreDestroyed);
     };
 
     $scope.findMod = function(modId, ignoreDestroyed) {
-        if (!$scope.model.mods) {
-            return true;
-        }
-        var foundMod = listUtils.findMod($scope.model.mods, modId);
-        if (foundMod && ignoreDestroyed && foundMod._destroy) {
-            return;
-        }
-        return foundMod;
+        return listUtils.genericFind($scope.model.mods, listUtils.findMod, modId, ignoreDestroyed);
     };
 
     $scope.findPlugin = function(pluginId, ignoreDestroyed) {
-        if (!$scope.model.plugins) {
-            return true;
-        }
-        var foundPlugin = listUtils.findPlugin($scope.model.plugins, pluginId);
-        if (foundPlugin && ignoreDestroyed && foundPlugin._destroy) {
-            return;
-        }
-        return foundPlugin;
+        return listUtils.genericFind($scope.model.plugins, listUtils.findPlugin, pluginId, ignoreDestroyed);
     };
 
     $scope.findCustomPlugin = function(noteId, ignoreDestroyed) {
-        if (!$scope.model.plugins) {
-            return false;
-        }
-        var foundPlugin = listUtils.findCustomPlugin($scope.model.plugins, noteId);
-        if (foundPlugin && ignoreDestroyed && foundPlugin._destroy) {
-            return;
-        }
-        return foundPlugin;
+        return listUtils.genericFind($scope.model.plugins, listUtils.findCustomPlugin, noteId, ignoreDestroyed);
+    };
+
+    $scope.findConfig = function(configId, ignoreDestroyed) {
+        return listUtils.genericFind($scope.model.config_files, listUtils.findConfig, configId, ignoreDestroyed);
     };
 
     $scope.findIgnoredNote = function(note_type, note_id, ignoreDestroyed) {
@@ -360,24 +343,28 @@ app.controller('modListController', function($scope, $rootScope, $q, $stateParam
         if (foundIgnoredNote && ignoreDestroyed && foundIgnoredNote._destroy) {
             return;
         }
-         return foundIgnoredNote;
-    };
-
-    $scope.findConfig = function(configId, ignoreDestroyed) {
-        if (!$scope.model.configs) {
-            return true;
-        }
-        var foundConfig = listUtils.findConfig($scope.model.configs, configId);
-        if (foundConfig && ignoreDestroyed && foundConfig._destroy) {
-            return;
-        }
-        return foundConfig;
+        return foundIgnoredNote;
     };
 
     $scope.associateIgnore = function(notes, note_type) {
         notes.forEach(function(note) {
             note.ignored = !!$scope.findIgnoredNote(note_type, note.id, true);
         });
+    };
+
+    $scope.loadGroups = function(groups) {
+        $scope.mod_list.groups = Array.prototype.concat($scope.mod_list.groups || [], groups);
+        $scope.originalModList.groups = angular.copy($scope.mod_list.groups);
+    };
+
+    $scope.loadAndTrack = function(data, key) {
+        $scope.mod_list[key] = data[key];
+        $scope.originalModList[key] = angular.copy($scope.mod_list[key]);
+    };
+
+    $scope.loadNotes = function(data, key, modelKey, modelName) {
+        $scope.notes[modelKey] = data[key];
+        $scope.associateIgnore($scope.notes[modelKey], modelName);
     };
 
     $scope.addGroup = function(tab) {
@@ -387,7 +374,8 @@ app.controller('modListController', function($scope, $rootScope, $q, $stateParam
             index: listUtils.getNextIndex(model) - 1,
             tab: tab,
             color: 'red',
-            name: 'New Group'
+            name: 'New Group',
+            keep_when_sorting: true
         };
         modListService.newModListGroup(newGroup).then(function(data) {
             var group = data;
@@ -458,7 +446,6 @@ app.controller('modListController', function($scope, $rootScope, $q, $stateParam
             action.reject(response);
         });
 
-        //
         return action.promise;
     };
 

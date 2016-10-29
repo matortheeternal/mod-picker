@@ -1,7 +1,7 @@
 class Game < ActiveRecord::Base
-  include RecordEnhancements
-  
-  # parent/child games
+  include RecordEnhancements, CounterCache, BetterJson
+
+  # ASSOCIATIONS
   belongs_to :parent_game, :class_name => 'Game', :foreign_key => 'parent_game_id', :inverse_of => 'children_games'
   has_many :children_games, :class_name => 'Game', :foreign_key => 'parent_game_id', :inverse_of => 'parent_game'
 
@@ -21,6 +21,9 @@ class Game < ActiveRecord::Base
   has_many :plugins, :inverse_of => 'game'
   has_many :help_pages, :inverse_of => 'game'
 
+  # COUNTER CACHE
+  counter_cache :mods, :nexus_infos, :lover_infos, :workshop_infos, :mod_lists, :config_files, :asset_files, :compatibility_notes, :corrections, :install_order_notes, :load_order_notes, :reviews, :plugins, :help_pages
+
   # VALIDATIONS
   validates :display_name, :long_name, :abbr_name, presence: true
 
@@ -38,21 +41,8 @@ class Game < ActiveRecord::Base
     end 
   end
 
-  def update_lazy_counters
-    self.mods_count = self.mods.count
-    self.nexus_infos_count = self.nexus_infos.count
-    self.lover_infos_count = self.lover_infos.count
-    self.workshop_infos_count = self.workshop_infos.count
-    self.mod_lists_count = self.mod_lists.count
-    self.config_files_count = self.config_files.count
-    self.asset_files_count = self.asset_files.count
-    self.compatibility_notes_count = self.compatibility_notes.count
-    self.corrections_count = self.corrections.count
-    self.install_order_notes_count = self.install_order_notes.count
-    self.load_order_notes_count = self.load_order_notes.count
-    self.reviews_count = self.reviews.count
-    self.plugins_count = self.plugins.count
-    self.help_pages_count = self.help_pages.count
+  def update_lazy_counters!
+    reset_counters!(:mods, :nexus_infos, :lover_infos, :workshop_infos, :mod_lists, :config_files, :asset_files, :compatibility_notes, :corrections, :install_order_notes, :load_order_notes, :reviews, :plugins, :help_pages)
   end
 
   def url

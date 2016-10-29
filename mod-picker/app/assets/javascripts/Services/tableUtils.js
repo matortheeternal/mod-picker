@@ -1,20 +1,37 @@
-app.service('tableUtils', function (objectUtils) {
+app.service('tableUtils', function($filter, objectUtils, sortUtils) {
     var service = this;
 
     // sanitizes a filter to be a class by removing any filter params
     this.filterClass = function(filter) {
-        if (filter && filter.indexOf(':') > -1) {
-            return filter.split(':')[0];
+        if (filter) {
+            if (filter.indexOf(':') > -1) {
+                return filter.split(':')[0] + '-cell';
+            } else {
+                return filter + '-cell';
+            }
         } else {
-            return filter;
+            return 'text-cell';
         }
+    };
+
+    this.buildColumnClasses = function(columns, firstColumnClass) {
+        columns.forEach(function(column, index) {
+            column.fullClass = '';
+            if (column.class) {
+                column.fullClass += column.class;
+            }
+            column.fullClass += ' ' + service.filterClass(column.filter);
+            if (index == 0 && firstColumnClass) {
+                column.fullClass += ' ' + firstColumnClass;
+            }
+        });
     };
 
     // this function uses objectUtils.deepValue to retrieve the value
     // of a data item based on the data path described in the column's
     // data property.  if the data property has multiple paths it will
     // test them sequentially until it finds a non-null value.
-    this.columnValue = function (item, data) {
+    this.columnValue = function(item, data) {
         // a lot of the time the data property of the column is just
         // a string denoting the path to look at in the item to find
         // the value we want to display
@@ -44,6 +61,20 @@ app.service('tableUtils', function (objectUtils) {
             // that we recognize this function can return null explicitly
             return null;
         }
+    };
+
+    this.buildItemData = function(item, columns, resolve) {
+        var pickerFilter = $filter('picker');
+        item.columnData = [];
+        columns.forEach(function(column) {
+            var columnValue = service.columnValue(item, column.data);
+            if (column.filter) columnValue = pickerFilter(columnValue, column.filter);
+            var columnData = { data: columnValue };
+            if (column.note) columnData.note = resolve(column.note, item);
+            if (column.link) columnData.link = column.link(item);
+            if (column.image) columnData.image = column.image(item);
+            item.columnData.push(columnData);
+        });
     };
 
     // this function returns the number of columns visible (plus 1 for the
@@ -90,5 +121,37 @@ app.service('tableUtils', function (objectUtils) {
             }
             return false;
         }
+    };
+
+    // sorts by column
+    this.sortColumn = function(column, sort, sortedColumn) {
+        // return if we don't have a sort object or the column isn't sortable
+        if (!sort || column.unsortable) return;
+
+        if (sortedColumn && sortedColumn !== column) {
+            sortedColumn.up = false;
+            sortedColumn.down = false;
+        }
+        sortedColumn = column;
+        service.toggleSort(column);
+
+        // send data to backend
+        if (column.up || column.down) {
+            sort.column = sortUtils.getSortData(column);
+            sort.direction = column.up ? "ASC" : "DESC";
+        } else {
+            delete sort.column;
+            delete sort.direction;
+        }
+    };
+
+    // this function will toggle sorting for an input column between
+    // up, down, and no sorting
+    this.toggleSort = function(column) {
+        var firstKey = column.invertSort ? "up" : "down";
+        var secondKey = column.invertSort ? "down" : "up";
+        var b1 = column[firstKey], b2 = column[secondKey];
+        column[secondKey] = b1;
+        column[firstKey] = !b1 && !b2;
     };
 });

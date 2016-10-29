@@ -175,9 +175,11 @@
   .content-options {
     .compatibility-dropdown {
       width: 260px;
+      margin-right: 10px;
     }
 
     .order-dropdown {
+      margin: 0 8px;
       min-width: 85px;
     }
 
@@ -404,7 +406,7 @@
   label {
     display: inline-block;
     margin-right: 16px;
-    min-width: 235px;
+    min-width: 365px;
   }
 }
 

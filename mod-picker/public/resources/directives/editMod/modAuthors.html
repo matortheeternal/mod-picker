@@ -1,5 +1,12 @@
 <h3 class="section-title">Mod Authors
-    <span class="help-tooltip" title="The users who can edit this mod.  Click for &#13;more information.">?</span>
+    <a href="/help/mod_authors">
+        <span class="help-tooltip" ng-hide="hideTooltips" title="The users who can edit this mod.  Click for &#13;more information.">
+            <i class="fa fa-question-circle"></i>
+        </span>
+    </a>
+    <span ng-hide="authorsValid" class="error-tooltip" title="One or more mod author entries is invalid.">
+        <i class="fa fa-exclamation-circle"></i>
+    </span>
 </h3>
 <section>
     <div class="dynamic-item" ng-repeat="author in mod.mod_authors" ng-hide="author._destroy">
@@ -8,7 +15,7 @@
             <option value="contributor">Contributor</option>
             <option value="curator">Curator</option>
         </select>
-        <search-input search-function="searchUsers" result-id="author.user_id" search-text="author.user.username" disabled="author.id" label="user" key="username" placeholder="Enter username"></search-input>
+        <search-input search-function="searchUsers" result-id="author.user_id" search-text="author.user.username" disabled="author.id" error="author.error" label="user" key="username" placeholder="Enter username"></search-input>
         <span class="remove-item" ng-click="removeAuthor(author)" title="Remove author">
             <i class="fa fa-times"></i>
         </span>

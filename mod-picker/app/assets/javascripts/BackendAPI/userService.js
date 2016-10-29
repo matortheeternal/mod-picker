@@ -1,9 +1,9 @@
-app.service('userService', function (backend, $q, userSettingsService, userTitleService, pageUtils) {
+app.service('userService', function(backend, $q, userSettingsService, userTitleService, pageUtils) {
     var service = this;
 
     this.retrieveUsers = function(options, pageInformation) {
         var action = $q.defer();
-        backend.post('/users/index', options).then(function (data) {
+        backend.post('/users/index', options).then(function(data) {
             // associate user titles
             data.users.forEach(function(user) {
                 if (!user.title) {
@@ -70,12 +70,12 @@ app.service('userService', function (backend, $q, userSettingsService, userTitle
         permissions.canContribute = !permissions.isRestricted;
         permissions.canUseCustomSources = permissions.canModerate;
         permissions.canSetGeneralModInfo = permissions.canModerate;
-        permissions.canChangeAvatar = (rep >= 10) || permissions.canModerate;
+        permissions.canChangeAvatar = (rep >= 20) || permissions.canModerate;
         permissions.canChangeTitle = (rep >= 1280) || permissions.canModerate;
 
         // permissions block for actions users who are NOT restricted can do
         if(!permissions.isRestricted) {
-            permissions.canCreateTags = (rep >= 20) || permissions.canModerate;
+            permissions.canCreateTags = (rep >= 5) || permissions.canModerate;
             permissions.canAppeal = (rep >= 40) || permissions.canModerate;
             permissions.canCorrect = (rep >= 40) || permissions.canModerate;
             permissions.canAgree = (rep >= 40) || permissions.canModerate;

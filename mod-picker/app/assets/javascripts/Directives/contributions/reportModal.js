@@ -7,7 +7,8 @@ app.directive('reportModal', function() {
     };
 });
 
-app.controller('reportModalController', function($scope, reportService, eventHandlerFactory) {
+app.controller('reportModalController', function($scope, reportService, eventHandlerFactory, formUtils) {
+    $scope.unfocusReportModal = formUtils.unfocusModal($scope.toggleReportModal);
 
     // selectedTag's value is set to an object property because the select/option elements are within a child scope if ng-if
     // so updating just `selectedTag` within that child scope will NOT update its parent scope(this controller).

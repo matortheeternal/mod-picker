@@ -1,18 +1,23 @@
 class ModList < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, Reportable, ScopeHelpers, Trackable
+  include Filterable, Sortable, RecordEnhancements, CounterCache, Reportable, ScopeHelpers, Trackable, BetterJson, Dateable
 
   # ATTRIBUTES
   enum status: [ :under_construction, :testing, :complete ]
   enum visibility: [ :visibility_private, :visibility_unlisted, :visibility_public ]
+  attr_accessor :updated_by
   self.per_page = 100
 
+  # DATE COLUMNS
+  date_column :submitted, :updated
+  date_column :completed, conditional: "set_completed?"
+
   # EVENT TRACKING
-  track :added, :updated, :hidden
+  track :added, :updated, :hidden, :status
   track_milestones :column => 'stars_count', :milestones => [10, 50, 100, 500, 1000, 5000, 10000, 50000, 100000, 500000]
 
   # NOTIFICATION SUBSCRIPTIONS
-  subscribe :submitter, to: [:hidden, :unhidden, *Event.milestones]
-  subscribe :user_stars, to: [:updated]
+  subscribe :submitter, to: [:updated, :hidden, :unhidden, *Event.milestones]
+  subscribe :user_stars, to: [:status]
 
   # SCOPES
   include_scope :has_adult_content, :alias => 'include_adult'
@@ -74,8 +79,8 @@ class ModList < ActiveRecord::Base
   has_many :tags, :through => 'mod_list_tags', :inverse_of => 'mod_lists'
 
   # STARS
-  has_many :mod_list_stars, :inverse_of => 'mod_list', :dependent => :destroy
-  has_many :user_stars, :through => 'mod_list_stars', :source => 'user', :class_name => 'User', :inverse_of => 'starred_mod_lists'
+  has_many :stars, :class_name => 'ModListStar', :inverse_of => 'mod_list', :dependent => :destroy
+  has_many :user_stars, :through => 'stars', :source => 'user', :class_name => 'User', :inverse_of => 'starred_mod_lists'
 
   # COMMENTS
   has_many :comments, -> { where(parent_id: nil) }, :as => 'commentable', :dependent => :destroy
@@ -90,6 +95,12 @@ class ModList < ActiveRecord::Base
   accepts_nested_attributes_for :custom_config_files, allow_destroy: true
   accepts_nested_attributes_for :ignored_notes, allow_destroy: true
 
+  # COUNTER CACHE
+  counter_cache_on :submitter
+  bool_counter_cache :mod_list_mods, :is_utility, { true => :tools, false => :mods }
+  bool_counter_cache :custom_mods, :is_utility, { true => :custom_tools, false => :custom_mods }
+  counter_cache :plugins, :custom_plugins, :config_files, :custom_config_files, :ignored_notes, :tags, :stars, :comments
+
   # VALIDATIONS
   validates :game_id, :submitted_by, :name, presence: true
 
@@ -103,28 +114,18 @@ class ModList < ActiveRecord::Base
   validates :name, length: { maximum: 255 }
 
   # CALLBACKS
-  after_create :increment_counters
   before_update :hide_comments, :unset_active_if_hidden
-  before_save :set_dates
-  before_destroy :decrement_counters, :unset_active
+  before_destroy :unset_active
 
-  def update_all_counters
-    self.tools_count = mod_list_mods.utility(true).count
-    self.mods_count = mod_list_mods.utility(false).count
-    self.custom_tools_count = custom_mods.utility(true).count
-    self.custom_mods_count = custom_mods.utility(false).count
-    self.plugins_count = mod_list_plugins.count
-    self.custom_plugins_count = custom_plugins.count
-    self.config_files_count = config_files.count
-    self.custom_config_files_count = custom_config_files.count
-    self.ignored_notes_count = ignored_notes.count
-    self.tags_count = tags.count
-    self.stars_count = mod_list_stars.count
-    self.comments_count = comments.count
-
-    save_counters([:tools_count, :mods_count, :custom_tools_count, :custom_mods_count, :plugins_count, :custom_plugins_count, :config_files_count, :custom_config_files_count, :ignored_notes_count, :tags_count, :stars_count, :comments_count])
-
+  def update_all_counters!
+    reset_counters(:tools, :mods, :custom_tools, :custom_mods, :plugins, :custom_plugins, :config_files, :custom_config_files, :ignored_notes, :tags, :stars, :comments)
     update_lazy_counters
+    save_columns!
+  end
+
+  def update_lazy_counters!
+    update_lazy_counters
+    save_columns!
   end
 
   def update_lazy_counters
@@ -143,8 +144,6 @@ class ModList < ActiveRecord::Base
     self.records_count = Plugin.where(id: plugin_ids).sum(:record_count)
     self.override_records_count = Plugin.where(id: plugin_ids).sum(:override_count)
     self.plugin_errors_count = PluginError.plugins(plugin_ids).count
-
-    save_counters([:available_plugins_count, :master_plugins_count, :compatibility_notes_count, :install_order_notes_count, :load_order_notes_count, :bsa_files_count, :asset_files_count, :records_count, :override_records_count, :plugin_errors_count])
   end
 
   def hide_comments
@@ -177,7 +176,7 @@ class ModList < ActiveRecord::Base
 
   def conflicting_assets
     mod_option_ids = mod_list_mod_options.utility(false).official(false).pluck(:mod_option_id)
-    ModAssetFile.conflicting.mod_options(mod_option_ids).includes(:asset_file)
+    ModAssetFile.conflicting(mod_option_ids).eager_load(:asset_file)
   end
 
   def self.update_adult(ids)
@@ -206,7 +205,7 @@ class ModList < ActiveRecord::Base
   def plugins_store
     mod_option_ids = mod_list_mod_option_ids
     return Plugin.none if mod_option_ids.empty?
-
+    
     Plugin.mod_options(mod_option_ids).includes(:mod)
   end
 
@@ -242,21 +241,21 @@ class ModList < ActiveRecord::Base
     mod_ids = mod_list_mod_ids
     return ModRequirement.none if mod_ids.empty?
 
-    ModRequirement.mods(mod_ids).includes(:required_mod, :mod).utility(true)
+    ModRequirement.utility(true).mods(mod_ids).visible.order(:required_id)
   end
 
   def required_mods
     mod_ids = mod_list_mod_ids
     return ModRequirement.none if mod_ids.empty?
 
-    ModRequirement.mods(mod_ids).utility(false).includes(:required_mod, :mod).order(:required_id)
+    ModRequirement.utility(false).mods(mod_ids).visible.order(:required_id)
   end
 
   def required_plugins
     plugin_ids = mod_list_plugin_ids
     return Master.none if plugin_ids.empty?
 
-    Master.plugins(plugin_ids).includes(:plugin, :master_plugin).order(:master_plugin_id)
+    Master.plugins(plugin_ids).visible.order(:master_plugin_id)
   end
 
   def incompatible_mod_ids
@@ -321,120 +320,11 @@ class ModList < ActiveRecord::Base
     a.join("\r\n")
   end
 
-  def show_json
-    self.as_json({
-        :except => [:submitted_by],
-        :include => {
-            :submitter => {
-                :only => [:id, :username, :role, :title],
-                :include => {
-                    :reputation => {:only => [:overall]}
-                },
-                :methods => :avatar
-            },
-            :tags => {
-                :except => [:game_id, :hidden, :mods_count],
-                :include => {
-                    :submitter => {
-                        :only => [:id, :username]
-                    }
-                }
-            },
-            :ignored_notes => {
-                :except => [:mod_list_id]
-            }
-        }
-    })
-  end
-
-  def tracking_json
-    self.as_json({
-        :only => [:id, :name, :tools_count, :custom_tools_count, :mods_count, :custom_mods_count, :plugins_count, :custom_plugins_count],
-        :methods => :mod_list_mod_ids
-    })
-  end
-
-  def self.home_json(collection)
-    # TODO: Revise this as needed
-    collection.as_json({
-        :only => [:id, :name, :completed, :mods_count, :plugins_count],
-        :include => {
-            :submitter => {
-                :only => [:id, :username, :role, :title],
-                :include => {
-                    :reputation => {:only => [:overall]}
-                },
-                :methods => :avatar
-            }
-        }
-    })
-  end
-
-  def as_json(options={})
-    if JsonHelpers.json_options_empty(options)
-      default_options = {
-          :except => [:game_id, :submitted_by],
-          :include => {
-              :submitter => {
-                  :only => [:id, :username]
-              }
-          }
-      }
-      super(options.merge(default_options))
-    else
-      super(options)
-    end
-  end
-
-  def notification_json_options(event_type)
-    { :only => [:name] }
-  end
-
-  def reportable_json_options
-      { :only => [:name, :id, :description, :status, :submitted, :visibility],
-          :include => {
-              :submitter => {
-                  :only => [:id, :username, :role, :title],
-                  :include => {
-                      :reputation => {:only => [:overall]}
-                  },
-                  :methods => :avatar
-              }
-          }
-      }
-  end
-
-  def self.sortable_columns
-    {
-        :except => [:game_id, :submitted_by, :description],
-        :include => {
-            :submitter => {
-                :only => [:username]
-            }
-        }
-    }
+  def set_completed?
+    status == "complete" && completed.nil?
   end
 
   private
-    def set_dates
-      if submitted.nil?
-        self.submitted = DateTime.now
-      else
-        self.updated = DateTime.now
-      end
-      if status == "complete" && completed.nil?
-        self.completed = DateTime.now
-      end
-    end
-
-    def increment_counters
-      submitter.update_counter(:mod_lists_count, 1)
-    end
-
-    def decrement_counters
-      submitter.update_counter(:mod_lists_count, -1)
-    end
-
     def unset_active_if_hidden
       unset_active if attribute_changed?(:hidden) && hidden
     end

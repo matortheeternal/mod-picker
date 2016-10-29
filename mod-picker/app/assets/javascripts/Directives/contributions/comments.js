@@ -1,4 +1,4 @@
-app.directive('comments', function () {
+app.directive('comments', function() {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/contributions/comments.html',
@@ -13,7 +13,7 @@ app.directive('comments', function () {
     };
 });
 
-app.controller('commentsController', function ($scope, $rootScope, contributionService) {
+app.controller('commentsController', function($scope, $rootScope, contributionService) {
     // inherited variables
     $scope.currentUser = $rootScope.currentUser;
 
@@ -71,7 +71,10 @@ app.controller('commentsController', function ($scope, $rootScope, contributionS
                 return parent_comment.id == comment.parent_id;
             });
             if (parent) {
-                parent.children.unshift(comment);
+                if (!parent.children) {
+                    parent.children = [];
+                }
+                parent.children.push(comment);
             }
         } else {
             $scope.comments.unshift(comment);

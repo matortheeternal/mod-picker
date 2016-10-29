@@ -1,4 +1,4 @@
-app.directive('tableItems', function () {
+app.directive('tableItems', function() {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/modList/tableItems.html',
@@ -20,6 +20,9 @@ app.controller('tableItemsController', function($scope, $timeout, colorsFactory,
     // initialize variables
     $scope.colorOptions = colorsFactory.getColors();
     $scope.draggingGroup = false;
+    $scope.itemTemplateUrl = '/resources/directives/modList/tableItem.html';
+    $scope.groupTemplateUrl = '/resources/directives/modList/tableGroup.html';
+    tableUtils.buildColumnClasses($scope.columns);
 
     // inherited functions
     $scope.isEmpty = objectUtils.isEmptyArray;
@@ -68,6 +71,28 @@ app.controller('tableItemsController', function($scope, $timeout, colorsFactory,
         $scope.draggingGroup = false;
     };
 
+    $scope.buildItemData = function() {
+        $scope.builtItemData = true;
+        listUtils.forEachItem($scope.model, function(item) {
+            tableUtils.buildItemData(item, $scope.columns, $scope.resolve);
+        });
+    };
+
+    $scope.buildAttributes = function() {
+        $scope.model.forEach(function(item) {
+            if (item.children) {
+                item.dragType = 'group';
+                item.hasChildren = true;
+                item.class = 'group bg-'+item.color;
+                item.childrenEmpty = $scope.isEmpty(item.children);
+                item.templateUrl = $scope.groupTemplateUrl;
+            } else {
+                item.dragType = 'item';
+                item.templateUrl = $scope.itemTemplateUrl;
+            }
+        });
+    };
+
     $scope.$on('moveItem', function(event, options) {
         var errorMessage = listUtils.moveItem($scope.model, $scope.type, options);
         if (errorMessage) {
@@ -82,4 +107,15 @@ app.controller('tableItemsController', function($scope, $timeout, colorsFactory,
     $scope.$on('updateItems', function() {
         listUtils.updateItems($scope.model, $scope.startingIndex);
     });
+
+    $scope.$watch('columns', function() {
+        $scope.activeColumnsCount = $scope.getNumCols($scope.columns);
+    }, true);
+
+    $scope.$watch('model', function() {
+        if (!$scope.model) return;
+        $scope.modelEmpty = $scope.isEmpty($scope.model);
+        $scope.buildAttributes();
+        $scope.buildItemData();
+    }, true);
 });

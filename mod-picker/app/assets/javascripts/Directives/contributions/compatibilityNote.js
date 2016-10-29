@@ -1,4 +1,4 @@
-app.directive('compatibilityNote', function () {
+app.directive('compatibilityNote', function() {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/contributions/compatibilityNote.html',
@@ -12,11 +12,14 @@ app.directive('compatibilityNote', function () {
             showResolutionOptions: '=?',
             modDataLoaded: '=?',
             modId: '=?'
+        },
+        link: function(scope, element) {
+            scope.element = element;
         }
     }
 });
 
-app.controller('compatibilityNoteController', function ($scope, $rootScope) {
+app.controller('compatibilityNoteController', function($scope, $rootScope) {
     // inherited variables
     $scope.currentUser = $rootScope.currentUser;
 
@@ -24,7 +27,15 @@ app.controller('compatibilityNoteController', function ($scope, $rootScope) {
     angular.default($scope, 'showUserColumn', true);
     angular.default($scope, 'showMarks', true);
 
-    $scope.getVerb = function () {
+    // initialize variables
+    $scope.standingClasses = {
+        good: 'fa-check-circle',
+        unknown: 'fa-question-circle',
+        bad: 'fa-exclamation-circle'
+    };
+
+    // helper functions
+    $scope.getVerb = function() {
         switch ($scope.note.status) {
             case "incompatible":
                 return "with";

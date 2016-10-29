@@ -1,4 +1,4 @@
-app.directive('appealsModal', function () {
+app.directive('appealsModal', function() {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/showMod/appealsModal.html',
@@ -7,7 +7,10 @@ app.directive('appealsModal', function () {
     };
 });
 
-app.controller('appealsModalController', function ($scope, contributionService, contributionFactory, eventHandlerFactory) {
+app.controller('appealsModalController', function($scope, contributionService, contributionFactory, eventHandlerFactory, formUtils) {
+    // inherited functions
+    $scope.unfocusAppealsModal = formUtils.unfocusModal($scope.toggleStatusModal);
+
     // shared function setup
     eventHandlerFactory.buildModalMessageHandlers($scope);
 
@@ -94,7 +97,7 @@ app.controller('appealsModalController', function ($scope, contributionService, 
     };
 
     // update an appeal locally
-    $scope.updateAppeal = function () {
+    $scope.updateAppeal = function() {
         var originalAppeal = $scope.activeAppeal.original;
         var updatedAppeal = $scope.activeAppeal;
         // update the values on the original appeal

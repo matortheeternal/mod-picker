@@ -1,4 +1,6 @@
 app.service('columnsFactory', function() {
+    var factory = this;
+
     this.modColumns = function() {
         return [
             {
@@ -9,13 +11,15 @@ app.service('columnsFactory', function() {
                 data: "name",
                 link: function(mod) {
                     return "#/mod/" + mod.id
-                }
+                },
+                invertSort: true
             },
             {
                 group: "General",
                 visibility: true,
                 label: "Authors",
-                data: "authors"
+                data: "authors",
+                invertSort: true
             },
             {
                 group: "General",
@@ -30,6 +34,13 @@ app.service('columnsFactory', function() {
                 label: "Secondary Category",
                 data: "secondary_category.name",
                 unsortable: true
+            },
+            {
+                group: "General",
+                visibility: false,
+                label: "Submitted",
+                data: "submitted",
+                filter: "date"
             },
             {
                 group: "General",
@@ -282,7 +293,8 @@ app.service('columnsFactory', function() {
                 imageClass: "avatar-small",
                 link: function(user) {
                     return "#/user/" + user.id
-                }
+                },
+                invertSort: true
             },
             {
                 group: "General",
@@ -462,7 +474,8 @@ app.service('columnsFactory', function() {
                 label: "Index",
                 data: "index",
                 filter: "number",
-                class: "index-column"
+                class: "index-column",
+                dynamic: true
             },
             {
                 group: "General",
@@ -472,27 +485,31 @@ app.service('columnsFactory', function() {
                 data: function(item) {
                     return item.name || item.mod.name;
                 },
-                link: function (item) {
+                link: function(item) {
                     if (item.mod) {
                         return "#/mod/" + item.mod.id;
                     }
                 },
                 class: "primary-column",
-                sortData: "mods.name"
+                sortData: "mods.name",
+                invertSort: true,
+                dynamic: true
             },
             {
                 group: "General",
                 visibility: false,
                 label: "Aliases",
                 data: "mod.aliases",
-                class: "aliases-column"
+                class: "aliases-column",
+                invertSort: true
             },
             {
                 group: "General",
                 visibility: true,
                 label: "Authors",
                 data: "mod.authors",
-                class: "author-column"
+                class: "author-column",
+                invertSort: true
             },
             {
                 group: "General",
@@ -540,6 +557,20 @@ app.service('columnsFactory', function() {
             },
             {
                 group: "General",
+                visibility: false,
+                label: "Asset Files",
+                data: "mod.asset_files_count",
+                filter: "number"
+            },
+            {
+                group: "General",
+                visibility: false,
+                label: "Plugins",
+                data: "mod.plugins_count",
+                filter: "number"
+            },
+            {
+                group: "General",
                 visibility: true,
                 label: "Released",
                 data: "mod.released",
@@ -573,7 +604,8 @@ app.service('columnsFactory', function() {
                     if (item.merged) return 'merged';
                 },
                 filter: "number",
-                class: "index-column"
+                class: "index-column",
+                dynamic: true
             },
             {
                 group: "General",
@@ -587,7 +619,8 @@ app.service('columnsFactory', function() {
                     if (item.merged) return 'merged';
                 },
                 filter: "hex",
-                class: "load-order-column"
+                class: "load-order-column",
+                dynamic: true
             },
             {
                 group: "General",
@@ -597,7 +630,7 @@ app.service('columnsFactory', function() {
                 data: function(item) {
                     return item.filename || item.plugin.filename;
                 },
-                link: function (item) {
+                link: function(item) {
                     if (item.mod && item.plugin) {
                         return "#/mod/" + item.mod.id + "/analysis?plugin=" + item.plugin.id;
                     }
@@ -605,40 +638,46 @@ app.service('columnsFactory', function() {
                 note: function($scope, item) {
                     return item.cleaned ? '(cleaned)' : '';
                 },
-                class: "primary-column"
+                class: "primary-column",
+                invertSort: true,
+                dynamic: true
             },
             {
                 group: "General",
                 visibility: false,
                 label: "Mod",
                 data: "mod.name",
-                link: function (item) {
+                link: function(item) {
                     if (item.mod) {
                         return "#/mod/" + item.mod.id;
                     }
                 },
-                sortData: "mods.name"
+                sortData: "mods.name",
+                invertSort: true
             },
             {
                 group: "General",
                 visibility: true,
                 label: "Primary Category",
                 data: "mod.primary_category.name",
-                class: 'category-column'
+                class: 'category-column',
+                unsortable: true
             },
             {
                 group: "General",
                 visibility: false,
                 label: "Secondary Category",
                 data: "mod.secondary_category.name",
-                class: 'category-column'
+                class: 'category-column',
+                unsortable: true
             },
             {
                 group: "General",
                 visibility: false,
                 label: "CRC",
                 data: "plugin.crc_hash",
-                class: "crc-column"
+                class: "crc-column",
+                invertSort: true
             },
             {
                 group: "General",
@@ -652,7 +691,8 @@ app.service('columnsFactory', function() {
                 visibility: false,
                 label: "Author",
                 data: "plugin.author",
-                class: "author-column"
+                class: "author-column",
+                invertSort: true
             },
             {
                 group: "General",
@@ -691,19 +731,21 @@ app.service('columnsFactory', function() {
                 label: "Name",
                 data: "name",
                 class: "primary-column",
-                link: function (item) {
+                link: function(item) {
                     return "#/mod-list/" + item.id;
-                }
+                },
+                invertSort: true
             },
             {
                 group: "General",
                 visibility: false,
                 label: "Submitter",
                 data: "submitter.username",
-                link: function (item) {
+                link: function(item) {
                     return "#/user/" + item.submitter.id;
                 },
-                sortData: "users.username"
+                sortData: "users.username",
+                invertSort: true
             },
             {
                 group: "General",
@@ -903,31 +945,35 @@ app.service('columnsFactory', function() {
                 label: "Filename",
                 data: "filename",
                 class: "primary-column",
-                link: function (item) {
+                link: function(item) {
                     return "#/mod/" + item.mod.id + "/analysis?plugin=" + item.id;
-                }
+                },
+                invertSort: true
             },
             {
                 group: "General",
                 visibility: true,
                 label: "Mod",
                 data: "mod.name",
-                link: function (item) {
+                link: function(item) {
                     return "#/mod/" + item.mod.id;
                 },
-                sortData: "mods.name"
+                sortData: "mods.name",
+                invertSort: true
             },
             {
                 group: "General",
                 visibility: false,
                 label: "CRC",
-                data: "crc_hash"
+                data: "crc_hash",
+                invertSort: true
             },
             {
                 group: "General",
                 visibility: false,
                 label: "Author",
-                data: "author"
+                data: "author",
+                invertSort: true
             },
             {
                 group: "General",
@@ -977,4 +1023,73 @@ app.service('columnsFactory', function() {
     this.pluginColumnGroups = function() {
         return ["General"];
     };
+    
+    this.modListPluginStoreColumns = function() {
+        return [
+            {
+                label: "Active",
+                data: "active",
+                class: "short-column"
+            },
+            {
+                label: "Filename",
+                data: "filename",
+                invertSort: true
+            },
+            {
+                label: "Mod Index",
+                data: "mod_index",
+                class: "short-column",
+                invertSort: true
+            },
+            {
+                label: "Mod",
+                data: "mod.name",
+                invertSort: true
+            },
+            {
+                label: "Mod Option",
+                data: "mod_option.name",
+                invertSort: true
+            }
+
+        ];
+    };
+
+    this.modListModDetailsColumns = function() {
+        return [
+            {
+                label: "Active",
+                data: "active",
+                class: "short-column"
+            },
+            {
+                label: "Name",
+                data: "display_name",
+                title: "name"
+            },
+            {
+                label: "Default",
+                data: "default",
+                class: "short-column"
+            },
+            {
+                label: "File Size",
+                data: "size",
+                class: "short-column"
+            },
+            {
+                label: "Asset Files",
+                data: "asset_files_count",
+                class: "short-column"
+            },
+            {
+                label: "Plugins",
+                data: "plugins",
+                sortData: "plugins.length"
+            }
+            
+        ];
+    };
+
 });

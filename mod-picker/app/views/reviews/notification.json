@@ -1,0 +1,6 @@
+{
+  "only": ["submitted_by"],
+  "include": {
+    "mod": {}
+  }
+}

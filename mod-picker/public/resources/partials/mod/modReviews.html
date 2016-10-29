@@ -9,7 +9,7 @@
     </div>
 
     <div class="tab-bar-item">
-        <input class="btn" type="button" value="Add Review" ng-click="startNewReview()" ng-disabled="activeReview || mod.user_review || userReviewHidden || !permissions.canContribute" title="{{ mod.user_review || userReviewHidden ? 'You have already submitted a review for this mod.' : 'Add a new review' }}"/>
+        <input class="btn" type="button" value="Add Review" ng-click="startNewReview()" ng-disabled="activeReview || mod.user_review || userReviewHidden || !permissions.canReview" title="{{ mod.user_review || userReviewHidden ? 'You have already submitted a review for this mod.' : 'Add a new review' }}"/>
     </div>
 </div>
 
@@ -30,7 +30,7 @@
                 </select>:
                 <i class="fa fa-caret-down" aria-hidden="true"></i>
             </div>
-            <input ng-keyup="keyUp(rating)" ng-keypress="keyPress($event)" ng-model="rating.rating" ng-click="focusText($event)" pu-elastic-input>
+            <input ng-keyup="keyUp(rating)" ng-keypress="keyPress($event)" ng-model="rating.rating" ng-click="focusText($event)" placeholder="?" ng-change="validateReview()" title="Rating out of 100" pu-elastic-input>
         </div>
         <div class="section-tools right-tools">
             <i class="fa fa-plus" aria-hidden="true" ng-class="{ 'disabled' : activeReview.ratings.length >= 5 || availableSections.length == 0 }" ng-click="addNewRating()" title="{{ activeReview.ratings.length >= 5 || availableSections.length == 0 ? 'Maximum review sections reached.  You can\'t add any more!' : 'Add review section' }}"></i>
@@ -65,7 +65,7 @@
      <!-- current user's review -->
     <div class="content-block user-review" ng-if="mod.user_review">
         <div class="content-title" ng-click="myReviewExpanded = !myReviewExpanded">
-            Your Review ({{mod.user_review.overall_rating}}/100)
+            Your Review ({{mod.user_review.overall_rating | number:0}}/100)
             <i class="fa fa-caret-down" aria-hidden="true" ng-hide="myReviewExpanded"></i>
             <i class="fa fa-caret-up" aria-hidden="true" ng-show="myReviewExpanded"></i>
         </div>
@@ -79,7 +79,7 @@
         <review review="currentReview" show-user-column="true" index="99" edit="editReview"></review>
     </div>
 
-    <div ng-repeat="review in mod.reviews" class="content-block" ng-if="!review.editing">
+    <div ng-repeat="review in mod.reviews" class="content-block" ng-hide="review.editing">
         <review review="review" show-user-column="true" index="100 + $index" edit="editReview"></review>
     </div>
 

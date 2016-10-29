@@ -1,5 +1,6 @@
 app.controller('modListAnalysisController', function($scope, modListService, pluginService) {
     $scope.buildConflictingOverrides = function() {
+        $scope.analysis.maxOverrides = 1000;
         $scope.analysis.conflicting_overrides = [];
         $scope.analysis.load_order_overrides.forEach(function(override) {
             if (override.plugin_ids.length > 1) {
@@ -22,10 +23,17 @@ app.controller('modListAnalysisController', function($scope, modListService, plu
         });
     };
 
+    $scope.buildTotalPluginErrors = function() {
+        $scope.analysis.totalPluginErrors = $scope.analysis.plugins.reduce(function(total, plugin) {
+            return total + plugin.errors_count;
+        }, 0);
+    };
+
     $scope.retrieveAnalysis = function() {
         modListService.retrieveModListAnalysis($scope.mod_list.id).then(function(data) {
             $scope.analysis = data;
             $scope.buildConflictingOverrides();
+            $scope.buildTotalPluginErrors();
             $scope.analysisReady = true;
         }, function(response) {
             $scope.errors.analysis = response;
@@ -35,11 +43,13 @@ app.controller('modListAnalysisController', function($scope, modListService, plu
     // retrieve analysis when the state is first loaded
     $scope.retrieveAnalysis();
 
-    // returns true if there are no errors to display
-    $scope.noPluginErrors = function() {
-        if (!$scope.analysis || !$scope.analysis.plugins) return true;
-        return !$scope.analysis.plugins.find(function(plugin) {
-            return plugin.errors_count > 0;
-        })
+    $scope.showMoreOverrides = function() {
+        $scope.analysis.maxOverrides += 1000;
+    };
+
+    $scope.showLessOverrides = function() {
+        if ($scope.analysis.maxOverrides > 1000) {
+            $scope.analysis.maxOverrides -= 1000;
+        }
     };
 });

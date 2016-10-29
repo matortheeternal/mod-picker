@@ -4,7 +4,7 @@
             <a ng-if="isAppeal" ng-href="#/mod/{{correction.correctable.id}}" target="_blank">{{correction.correctable.name}}</a>:
         </span>
         <span ng-if="showCorrectable && !isAppeal">
-            <a ng-href="#/mod/{{correction.correctable.first_mod.id}}/{{tabState}}/{{correction.correctable.id}}" target="_blank">{{correction.submitter.username}}'s {{label}}</a>:
+            <a ng-href="#/mod/{{correction.correctable.first_mod.id}}/{{tabState}}/{{correction.correctable.id}}" target="_blank">{{correction.correctable.submitter.username}}'s {{label}}</a>:
         </span>
         <span ng-if="correction.mod_status">
             Change Status to <span class="capitalize">{{correction.mod_status}}</span>
@@ -15,7 +15,7 @@
     </div>
     <user-column user="correction.submitter" ng-if="showUserColumn" class="user-column" index="index"></user-column>
     <div class="content-column">
-        <contribution-text target="correction"></contribution-text>
+        <contribution-text model-name="Correction" target="correction"></contribution-text>
         <contribution-actions target="correction" model-name="Correction" index="index" current-user="currentUser" edit="edit" agreeable="true" approveable="false" correctable="false" event-prefix="eventPrefix"></contribution-actions>
     </div>
 </div>

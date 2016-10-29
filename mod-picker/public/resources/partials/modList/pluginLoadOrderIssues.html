@@ -3,7 +3,7 @@
         <span class="note-item">
             ({{showUnresolvedLoadOrder ? 'Unresolved' : 'All'}})
         </span>
-        <span class="right-item action-box" ng-if="required.out_of_order_plugins.length || notes.unresolved_load_order.length" ng-click="resolveAllLoadOrder()">
+        <span class="right-item action-box" ng-if="(required.out_of_order_plugins.length || notes.unresolved_load_order.length) && editing" ng-click="resolveAllLoadOrder()">
             <i class="fa fa-check"></i> Resolve All
         </span>
         <span class="right-item toggle-item" ng-click="showUnresolvedLoadOrder = !showUnresolvedLoadOrder">
@@ -25,7 +25,7 @@
                         </span>
                         <span ng-if="requirement.plugins.length > 2">
                             and
-                            <span class="help-tooltip no-margin" title="{{getRequirerList(requirement, 2)}}">{{requirement.plugins.length - 2}} more</span>
+                            <span class="text-tooltip no-margin" title="{{getRequirerList(requirement, 2)}}">{{requirement.plugins.length - 2}} more</span>
                         </span>
                         <!-- resolution options -->
                         <div class="inline-flex" ng-if="editing">

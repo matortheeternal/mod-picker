@@ -1,8 +1,9 @@
 class ModListMod < ActiveRecord::Base
-  include RecordEnhancements, ScopeHelpers
+  include RecordEnhancements, ScopeHelpers, BetterJson, CounterCache
 
   # SCOPES
-  value_scope :is_utility, :is_official, :association => 'mod'
+  value_scope :is_utility
+  value_scope :is_official, :association => 'mod'
 
   # ASSOCIATIONS
   belongs_to :mod_list, :inverse_of => 'mod_list_mods'
@@ -13,54 +14,19 @@ class ModListMod < ActiveRecord::Base
   # NESTED ATTRIBUTES
   accepts_nested_attributes_for :mod_list_mod_options, allow_destroy: true
 
+  # COUNTER CACHE
+  counter_cache_on :mod, column: 'mod_lists_count'
+  bool_counter_cache_on :mod_list, :is_utility, { true => :tools, false => :mods }
+
   # VALIDATIONS
-  validates :mod_list_id, :mod_id, :index, presence: true
-  # can only have a mod on a given mod list once
-  # TODO: If we don't allow the user to change the mod_id with nested attributes we could refactor this validation to be an after_create callback
+  validates :mod_list_id, :mod_id, presence: true
   validates :mod_id, uniqueness: { scope: :mod_list_id, :message => "The mod is already present on the mod list." }
+  validates :is_utility, inclusion: [true, false]
 
   # CALLBACKS
-  after_create :increment_counter_caches, :add_default_mod_options
-  before_destroy :decrement_counter_caches, :destroy_mod_list_plugins
-
-  def self.install_order_json(collection)
-    collection.as_json({
-        :only => [:mod_id, :index],
-        :include => {
-            :mod => {
-                :only => [:name]
-            },
-            :mod_list_mod_options => {
-                :only => [:mod_option_id]
-            }
-        }
-    })
-  end
-
-  def as_json(options={})
-    if JsonHelpers.json_options_empty(options)
-      default_options = {
-          :only => [:id, :group_id, :index, :active],
-          :include => {
-              :mod => {
-                  :only => [:id, :is_official, :name, :aliases, :authors, :status, :primary_category_id, :secondary_category_id, :average_rating, :reputation, :asset_files_count, :stars_count, :released, :updated],
-                  :include => {
-                      :mod_options => {
-                          :only => [:id, :name, :default]
-                      }
-                  },
-                  :methods => :image
-              },
-              :mod_list_mod_options => {
-                  :only => [:id, :mod_option_id, :enabled]
-              }
-          }
-      }
-      super(options.merge(default_options))
-    else
-      super(options)
-    end
-  end
+  before_create :set_index_and_is_utility
+  after_create :add_default_mod_options
+  before_destroy :destroy_mod_list_plugins
 
   def mod_compatibility_notes
     mod_ids = mod_list.mod_list_mod_ids
@@ -98,24 +64,14 @@ class ModListMod < ActiveRecord::Base
     ModRequirement.mods(mod_id).utility(false)
   end
 
-  private
-    # counter caches
-    def increment_counter_caches
-      if mod.is_utility
-        mod_list.update_counter(:tools_count, 1)
-      else
-        mod_list.update_counter(:mods_count, 1)
-      end
-      mod.update_counter(:mod_lists_count, 1)
-    end
+  def get_index
+    self.index = (is_utility ? mod_list.tools_count : mod_list.mods_count) + 1
+  end
 
-    def decrement_counter_caches
-      if mod.is_utility
-        mod_list.update_counter(:tools_count, -1)
-      else
-        mod_list.update_counter(:mods_count, -1)
-      end
-      mod.update_counter(:mod_lists_count, -1)
+  private
+    def set_index_and_is_utility
+      self.is_utility = mod.is_utility
+      get_index if self.index.nil?
     end
 
     def add_default_mod_options

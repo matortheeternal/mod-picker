@@ -1,4 +1,4 @@
-app.config(['$stateProvider', function ($stateProvider) {
+app.config(['$stateProvider', function($stateProvider) {
     $stateProvider.state('base.submit-mod', {
             templateUrl: '/resources/partials/mod/submitMod.html',
             controller: 'submitModController',
@@ -24,7 +24,7 @@ app.config(['$stateProvider', function ($stateProvider) {
     );
 }]);
 
-app.controller('submitModController', function ($scope, $rootScope, backend, modService, scrapeService, pluginService, categoryService, sitesFactory, eventHandlerFactory) {
+app.controller('submitModController', function($scope, $rootScope, backend, modService, modValidationService, scrapeService, pluginService, categoryService, sitesFactory, eventHandlerFactory) {
     // access parent variables
     $scope.currentUser = $rootScope.currentUser;
     $scope.categories = $rootScope.categories;
@@ -35,13 +35,16 @@ app.controller('submitModController', function ($scope, $rootScope, backend, mod
     $scope.sites = sitesFactory.sites();
     $scope.mod = {
         game_id: window._current_game_id,
+        sources: [{
+            label: "Nexus Mods",
+            url: ""
+        }],
+        custom_sources: [],
         requirements: []
     };
-    $scope.sources = [{
-        label: "Nexus Mods",
-        url: ""
-    }];
-    $scope.customSources = [];
+
+    // set page title
+    $scope.$emit('setPageTitle', 'Submit Mod');
 
     // shared function setup
     eventHandlerFactory.buildMessageHandlers($scope, true);
@@ -59,52 +62,32 @@ app.controller('submitModController', function ($scope, $rootScope, backend, mod
 
     // submission isn't allowed until the user has provided at least one valid source,
     // a mod analysis, and at least one category
-    $scope.modValid = function () {
-        // main source validation
-        var sourcesValid = true;
-        $scope.sources.forEach(function(source) {
-            sourcesValid = sourcesValid && source.valid;
-        });
-
-        // custom source validation
-        if ($scope.customSources.length) {
-            $scope.customSources.forEach(function(source) {
-                sourcesValid = sourcesValid && source.valid;
-            });
-            // if we are only submitting custom soruces, we need to verify
-            // we have all general info
-            if (!$scope.sources.length) {
-                sourcesValid = sourcesValid && $scope.mod.name && $scope.mod.authors &&
-                    $scope.mod.released;
-            }
-        }
-        else {
-            // if we don't have any custom sources we should verify we have
-            // the scraped data for at least one official source
-            sourcesValid = sourcesValid && ($scope.nexus || $scope.workshop || $scope.lab);
-        }
-
-        // categories are valid if there are 1-2 categories selected
-        var categoriesValid = $scope.mod.categories && $scope.mod.categories.length &&
-            $scope.mod.categories.length <= 2;
-        return (sourcesValid && categoriesValid && $scope.mod.analysis)
+    $scope.modValid = function() {
+        $scope.sourcesValid = modValidationService.sourcesValid($scope.mod);
+        $scope.categoriesValid = modValidationService.categoriesValid($scope.mod);
+        $scope.requirementsValid = modValidationService.requirementsValid($scope.mod.requirements);
+        $scope.analysisValid = !!$scope.mod.analysis;
+        return $scope.sourcesValid && $scope.categoriesValid && $scope.analysisValid;
     };
 
-    $scope.submit = function () {
+    $scope.submit = function() {
         // return if mod is invalid
         if (!$scope.modValid()) {
             return;
         }
 
-        var sources = {
-            nexus: $scope.nexus,
-            workshop: $scope.workshop,
-            lab: $scope.lab
-        };
         $scope.startSubmission("Submitting Mod...");
-
-        modService.submitMod($scope.mod, sources, $scope.customSources).then(function() {
-            $scope.submissionSuccess("Mod submitted successfully!", "#/mods", "return to the mods index.");
+        modService.submitMod($scope.mod).then(function(data) {
+            $scope.submissionSuccess("Mod submitted successfully!", [
+                { 
+                    link: "#/mod/" + data.id, 
+                    linkLabel: "view the new mod."
+                },
+                {
+                    link: "#/mods", 
+                    linkLabel: "return to the mods index page." 
+                }
+            ]);
         }, function(response) {
             $scope.submissionError("There were errors submitting your mod.", response);
         });

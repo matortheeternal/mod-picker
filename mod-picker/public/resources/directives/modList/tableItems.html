@@ -1,9 +1,7 @@
-<table class="browse-table" ng-hide="isEmpty(model)">
+<table class="browse-table" ng-hide="modelEmpty">
     <thead>
         <tr>
-            <th ng-repeat="column in columns" class="no-action" ng-class="{ 'hidden' : !column.visibility, '{{filterClass(column.filter)}}-cell' : !!column.filter, '{{column.class}}' : !!column.class }">
-                {{column.label}}
-            </th>
+            <th bindonce ng-repeat="column in columns" ng-show="column.visibility" class="no-action" bo-class="column.fullClass" bo-text="column.label"></th>
             <th class="actions-header">
                 <a ng-click="toggleModal(true)">
                     <i class="fa fa-columns" title="Edit Columns"></i>
@@ -12,16 +10,15 @@
         </tr>
     </thead>
     <tbody dnd-list="model" ng-class="{ 'dragging-group' : draggingGroup }">
-        <tr ng-repeat="item in model" class="{{item.children ? 'group bg-'+item.color : ''}}" ng-if="!item._destroy" dnd-draggable="item" dnd-moved="itemMoved(model, $index)" dnd-effect-allowed="move" dnd-disable-if="!editing" dnd-type="{{item.children ? '\'group\'' : '\'item\''}}" dnd-dragstart="dragStart(item)" dnd-dragend="dragEnd()" ng-class="{ 'merged' : item.merged }" table-item>
-        </tr>
+        <tr ng-repeat="item in model" class="{{item.class}}" ng-hide="item._destroy" dnd-draggable="item" dnd-moved="itemMoved(model, $index)" dnd-effect-allowed="move" dnd-disable-if="!editing" dnd-type="item.dragType" dnd-dragstart="dragStart(item)" dnd-dragend="dragEnd()" ng-class="{ 'merged' : item.merged }" ng-include="item.templateUrl"></tr>
         <!-- drag and drop placeholder -->
         <tr class="dndPlaceholder">
-            <td colspan="{{getNumCols(columns)}}"></td>
+            <td colspan="{{activeColumnsCount}}"></td>
         </tr>
     </tbody>
 </table>
 
-<div class="content-message" ng-show="isEmpty(model)">
+<div class="content-message" ng-show="modelEmpty">
     There are no {{type}} in this list.
 </div>
 

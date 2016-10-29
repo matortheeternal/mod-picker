@@ -1,8 +1,7 @@
 class User < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, Imageable, Reportable, ScopeHelpers, Trackable
+  include Filterable, Sortable, RecordEnhancements, CounterCache, Imageable, Reportable, ScopeHelpers, Trackable, BetterJson
 
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable and :omniauthable
+  # Include devise modules
   devise :invitable, :database_authenticatable, :registerable, :confirmable,
          :recoverable, :rememberable, :trackable, :validatable
 
@@ -79,14 +78,19 @@ class User < ActiveRecord::Base
 
   accepts_nested_attributes_for :settings, reject_if: :new_record?
 
+  # COUNTER CACHE
+  counter_cache :profile_comments, column: 'comments_count', conditional: { hidden: false }
+  counter_cache :comments, column: 'submitted_comments_count', conditional: { hidden: false }
+  counter_cache :starred_mods, :starred_mod_lists, :mod_tags, :mod_list_tags, :helpful_marks, :agreement_marks
+  counter_cache :mod_authors, column: 'authored_mods_count'
+  counter_cache :submitted_mods, :reviews, :compatibility_notes, :install_order_notes, :load_order_notes, :corrections, :tags, conditional: { hidden: false }
+  bool_counter_cache :mod_lists, :is_collection, { true => :mod_collections, false => :mod_lists }
+
   # VALIDATIONS
   validates :username, :email, :role, presence: true
   validates :username, uniqueness: { case_sensitive: false }, length: {in: 4..32 }
-
-  # email validation
   validates :email, uniqueness: { case_sensitive: false }, length: {in: 7..255}
   validates_format_of :email, :with => /\A\S+@.+\.\S+\z/
-
   validates :about_me, length: {maximum: 16384}
 
   # CALLBACKS
@@ -94,39 +98,17 @@ class User < ActiveRecord::Base
   after_initialize :init
 
   def user
-    User.find(self.id)
+    User.find(id)
   end
 
-  # alias for image method
+  # returns nil if the user doesn't have a custom title or a custom avatar
   def avatar
-    png_path = File.join(Rails.public_path, "users/#{id}.png")
-    jpg_path = File.join(Rails.public_path, "users/#{id}.jpg")
-    if File.exists?(png_path)
-      "/users/#{id}.png"
-    elsif File.exists?(jpg_path)
-      "/users/#{id}.jpg"
-    elsif self.title.nil?
-      nil
-    else
-      "/users/Default.png"
-    end
+    avatar_path = image
+    self.title.nil? && avatar_path == "/users/Default.png" ? nil : avatar_path
   end
 
   def recent_notifications
     notifications.unread.limit(10)
-  end
-
-  def self.find_first_by_auth_conditions(warden_conditions)
-    conditions = warden_conditions.dup
-    if (login = conditions.delete(:login))
-      where(conditions).where(["lower(username) = :value OR lower(email) = :value", { :value => login.downcase }]).first
-    else
-      if conditions[:username].nil?
-        where(conditions).first
-      else
-        where(username: conditions[:username]).first
-      end
-    end
   end
 
   def admin?
@@ -161,6 +143,10 @@ class User < ActiveRecord::Base
     !settings.allow_comments
   end
 
+  def has_auto_approval?
+    reputation.overall > 20
+  end
+
   def subscribed_to?(event)
     if respond_to?(:notification_settings)
       key = "#{event.content_type.underscore}_#{event.event_type}"
@@ -170,9 +156,34 @@ class User < ActiveRecord::Base
     end
   end
 
+  def update_mod_author_role
+    if ["user", "mod_author"].include?(role)
+      is_author = mod_authors.where("role != 2").exists?
+      new_role = is_author ? "author" : "user"
+      update_column(:role, new_role) if role != new_role
+    end
+  end
+
   def init
     self.joined ||= DateTime.current
     self.role   ||= :user
+  end
+
+  def self.find_first_by_auth_conditions(warden_conditions)
+    conditions = warden_conditions.dup
+    if (login = conditions.delete(:login))
+      where(conditions).where(["lower(username) = :value OR lower(email) = :value", { :value => login.downcase }]).first
+    else
+      if conditions[:username].nil?
+        where(conditions).first
+      else
+        where(username: conditions[:username]).first
+      end
+    end
+  end
+
+  def self.failed_emails
+    @failed_emails ||= []
   end
 
   def self.batch_invite!(emails, current_inviter)
@@ -187,117 +198,9 @@ class User < ActiveRecord::Base
     failed_emails.empty?
   end
 
-  def self.failed_emails
-    @failed_emails ||= []
-  end
-
   def create_associations
-    create_reputation({ user_id: id })
-    create_settings({ user_id: id })
-    create_bio({ user_id: id })
-  end
-
-  def self.search_json(collection)
-    collection.as_json({
-        :only => [:id, :username]
-    })
-  end
-
-  def current_json
-    self.as_json({
-        :only => [:id, :username, :role, :title],
-        :include => {
-            :reputation => {
-                :only => [:overall, :rep_to_count]
-            },
-            :settings => {
-                :only => [:theme, :show_notifications, :allow_adult_content]
-            }
-        },
-        :methods => [:avatar, :recent_notifications]
-    })
-  end
-
-  def settings_json
-    self.as_json({
-        :except => [:active_mod_list_id, :invitation_token, :invitation_created_at, :invitation_sent_at, :invitation_accepted_at, :invitation_limit, :invited_by_id, :invited_by_type, :invitations_count],
-        :include => {
-            :bio => {
-                :except => [:user_id]
-            },
-            :reputation => {
-                :except => [:user_id, :dont_compute]
-            },
-            :settings => {
-                :except => [:user_id]
-            }
-        },
-        :methods => :avatar
-    })
-  end
-
-  def show_json(current_user)
-    # email handling
-    methods = [:avatar, :last_sign_in_at, :current_sign_in_at, :comments_disabled?]
-    methods.push(:email) if email_public?
-
-    as_json({
-        :except => [:email, :active_mod_list_id, :invitation_token, :invitation_created_at, :invitation_sent_at, :invitation_accepted_at, :invitation_limit, :invited_by_id, :invited_by_type, :invitations_count],
-        :include => {
-            :bio => {
-                :except => [:user_id, :nexus_verification_token, :lover_verification_token, :workshop_verification_token]
-            },
-            :reputation => {
-                :only => [:overall]
-            }
-        },
-        :methods => methods
-    })
-  end
-
-  def as_json(options={})
-    if JsonHelpers.json_options_empty(options)
-      default_options = {
-          :except => [:active_mod_list_id, :invitation_token, :invitation_created_at, :invitation_sent_at, :invitation_accepted_at, :invitation_limit, :invited_by_id, :invited_by_type, :invitations_count],
-          :methods => [:avatar, :last_sign_in_at, :current_sign_in_at],
-          :include => {
-              :reputation => {
-                  :only => [:overall]
-              }
-          }
-      }
-      super(options.merge(default_options))
-    else
-      super(options)
-    end
-  end
-
-  def notification_json_options(event_type)
-    {
-        :only => [:username, :role]
-    }
-  end
-
-  def reportable_json_options
-    {
-        :only => [:id, :username, :role, :title, :about_me, :last_sign_in_at, :joined, :current_sign_in_at, :last_sign_in_at],
-        :include => {
-            :reputation => {
-                :only => [:overall, :rep_to_count]
-            }
-        },
-        :methods => [:avatar]
-    }
-  end
-
-  def self.sortable_columns
-    {
-        :only => [:username, :role, :title, :comments_count, :authored_mods_count, :submitted_mods_count, :reviews_count, :compatibility_notes_count, :install_order_notes_count, :load_order_notes_count, :corrections_count, :submitted_comments_count, :mod_lists_count, :mod_collections_count, :tags_count, :mod_tags_count, :mod_list_tags_count, :helpful_marks_count, :agreement_marks_count, :starred_mods_count, :starred_mod_lists_count, :mod_stars_count, :joined, :last_sign_in_at, :current_sign_in_at],
-        :include => {
-            :reputation => {
-                :only => [:overall]
-            }
-        }
-    }
+    create_reputation(user_id: id)
+    create_settings(user_id: id)
+    create_bio(user_id: id)
   end
 end

@@ -49,7 +49,7 @@ module ScopeHelpers
         if options[:association]
           table_name = options[:table] || options[:association].to_s.pluralize
           class_eval do
-            scope scope_name.to_sym, -> (value) { includes(options[:association]).
+            scope scope_name.to_sym, -> (value) { eager_load(options[:association]).
               where(table_name => {attribute => value}) }
           end
         else
@@ -60,26 +60,27 @@ module ScopeHelpers
       end
     end
 
+    def columns_in(columns, ids, connector=:or)
+      columns.map{ |column|
+        arel_table[column].in(ids)
+      }.inject(connector)
+    end
+
     def ids_scope(*attributes, **options)
       attributes.each do |attribute|
+        scope_name = attribute.to_s.remove('_id')
         if options[:columns]
-          scope_name = attribute.to_s.remove('_id')
-          scope_wheres = []
-          options[:columns].each do |column|
-            scope_wheres.push("#{column} IN (:ids)")
-          end
           class_eval do
             scope scope_name.to_sym, -> (ids) {
-              where("#{scope_wheres.join(' OR ')}", ids: ids)
+              where(columns_in(options[:columns], ids))
             }
             scope scope_name.pluralize.to_sym, -> (ids) {
-              where("#{scope_wheres.join(' AND ')}", ids: ids)
+              where(columns_in(options[:columns], ids, :and))
             }
           end
         else
-          scope_name = attribute.to_s.remove('_id').pluralize
           class_eval do
-            scope scope_name.to_sym, -> (ids) { where(attribute => ids) }
+            scope scope_name.pluralize.to_sym, -> (ids) { where(attribute => ids) }
           end
         end
       end
@@ -122,11 +123,20 @@ module ScopeHelpers
       end
     end
 
+    def build_search(attribute, search)
+      search_terms = search.split
+      search_terms.map{ |term|
+        arel_table[attribute.to_sym].matches("%#{term}%")
+      }.inject(:and)
+    end
+
     def search_scope(*attributes, **options)
       if options[:combine]
         class_eval do
             scope :search, -> (search) {
-              where(attributes.map{|attribute| arel_table[attribute.to_sym].matches("%#{search}%") }.inject(:or))
+              where(attributes.map{ |attribute|
+                build_search(attribute, search)
+              }.inject(:or))
             }
         end
       else
@@ -134,27 +144,33 @@ module ScopeHelpers
           scope_name = options[:alias] || attribute
           class_eval do
             scope scope_name.to_sym, -> (search) {
-              where(arel_table[attribute.to_sym].matches("%#{search}%"))
+              where(build_search(attribute, search))
             }
           end
         end
       end
     end
 
+    def eval_enum_key(plural_attribute, key)
+      key == "nil" ? nil : public_send(plural_attribute)[key]
+    end
+
     def enum_scope(*attributes, **options)
       attributes.each do |attribute|
         plural_attribute = attribute.to_s.pluralize
-        class_eval <<-buildscope
-          scope :#{attribute}, -> (values) {
+        class_eval do
+          scope attribute.to_sym, -> (values) {
             if values.is_a?(Hash)
               array = []
-              values.each_key{ |key| array.push(#{plural_attribute}[key]) if values[key] }
+              values.each_key{ |key|
+                array.push(eval_enum_key(plural_attribute, key)) if values[key]
+              }
             else
               array = values
             end
-            where(#{attribute}: array)
+            where(attribute => array)
           }
-        buildscope
+        end
       end
     end
 

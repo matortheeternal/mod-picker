@@ -1,4 +1,4 @@
-app.directive('tagInput', function () {
+app.directive('tagInput', function() {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/shared/tagInput.html',
@@ -28,20 +28,34 @@ app.controller('tagInputController', function($scope, $timeout, formUtils) {
         $scope.currentIndex = index;
     };
 
+    $scope.getTagMatches = function(str) {
+        var matches = [];
+        for (var i = 0; i < $scope.tags.length; i++) {
+            var tag = $scope.tags[i];
+            var match = tag.text.toLowerCase().includes(str);
+
+            if (match) {
+                matches[matches.length] = tag;
+                if (matches.length == 10) break;
+            }
+        }
+        return matches;
+    };
+
+    $scope.sortTagMatches = function(str, matches) {
+        matches.sort(function(a, b) {
+            var ax = a.text.toLowerCase().indexOf(str);
+            var bx = b.text.toLowerCase().indexOf(str);
+            return ax - bx;
+        });
+    };
+
     $scope.searchTags = function(str) {
         // Begin the search
         str = str.toLowerCase();
         if (str.length > 0) {
-            var matches = [];
-
-            for (var i = 0; i < $scope.tags.length; i++) {
-                var tag = $scope.tags[i];
-                var match = tag.text.toLowerCase().startsWith(str);
-
-                if (match) {
-                    matches[matches.length] = tag;
-                }
-            }
+            var matches = $scope.getTagMatches(str);
+            $scope.sortTagMatches(str, matches);
 
             $scope.searching = false;
             $scope.results = matches;
@@ -72,10 +86,10 @@ app.controller('tagInputController', function($scope, $timeout, formUtils) {
                 }
                 $scope.showDropdown = false;
             }
-        }, 100);
+        }, 250);
     };
 
-    $scope.keyDown = function ($event) {
+    $scope.keyDown = function($event) {
         var key = $event.keyCode;
         var len = $event.target.value.length;
 
@@ -129,7 +143,7 @@ app.controller('tagInputController', function($scope, $timeout, formUtils) {
         }
     };
 
-    $scope.keyUp = function ($event) {
+    $scope.keyUp = function($event) {
         var key = $event.keyCode;
         var len = $event.target.value.length;
 
@@ -154,18 +168,18 @@ app.controller('tagInputController', function($scope, $timeout, formUtils) {
 
             // search for matching tags
             $scope.searching = true;
-            $scope.searchTimer = setTimeout(function () {
+            $scope.searchTimer = setTimeout(function() {
                 $scope.searchTags($scope.tag.text);
             }, pause);
         }
     }
 });
 
-app.directive('autoSelect', function ($timeout) {
-    return function (scope, element, attrs) {
-        scope.$watch(attrs.autoSelect, function (newval) {
+app.directive('autoSelect', function($timeout) {
+    return function(scope, element, attrs) {
+        scope.$watch(attrs.autoSelect, function(newval) {
             if (newval) {
-                $timeout(function () {
+                $timeout(function() {
                     element[0].select();
                 }, 0, false);
             }

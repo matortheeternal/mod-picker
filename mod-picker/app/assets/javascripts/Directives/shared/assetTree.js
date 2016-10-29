@@ -1,4 +1,4 @@
-app.directive('assetTree', function () {
+app.directive('assetTree', function() {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/shared/assetTree.html',
@@ -7,7 +7,7 @@ app.directive('assetTree', function () {
         },
         link: function(scope) {
             scope.expanded = false;
-            scope.toggle = function (asset) {
+            scope.toggle = function(asset) {
                 asset.expanded = !asset.expanded;
             }
         }

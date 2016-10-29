@@ -25,7 +25,7 @@ app.controller('modCompatibilityIssuesController', function($scope, listUtils) {
             }
             switch (note.status) {
                 case 'incompatible':
-                case 'partially compatible':
+                case 'partially_compatible':
                     // unresolved if both mods are present
                     if ($scope.findMod(note.first_mod.id, true) && $scope.findMod(note.second_mod.id, true)) {
                         note.resolved = false;
@@ -34,7 +34,7 @@ app.controller('modCompatibilityIssuesController', function($scope, listUtils) {
                         note.resolved = true;
                     }
                     break;
-                case 'compatibility mod':
+                case 'compatibility_mod':
                     // unresolved if the compatibility mod is not present and both mods are present
                     if (!$scope.findMod(note.compatibility_mod_id, true) &&
                         $scope.findMod(note.first_mod.id, true) && $scope.findMod(note.second_mod.id, true)) {

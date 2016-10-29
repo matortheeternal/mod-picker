@@ -40,7 +40,7 @@ form {
       width: 100%;
       white-space: pre-line;
     }
-    .priority-message {
+    .cat-warning-message {
       background-color: $warning_primary;
     }
     .cat-error-message {
@@ -55,14 +55,27 @@ form {
     display: none;
   }
 
-  .analysis-results {
+  mod-option {
     .subtitle {
       margin-bottom: 15px;
 
-      .default-option {
-        margin-left: 10px;
-        text-transform: none;
-        font-weight: normal;
+      .remove-item {
+        color: $text_color;
+        margin-left: 16px;
+        cursor: pointer;
+      }
+    }
+
+    label {
+      display: block;
+      margin-left: 10px;
+      text-transform: none;
+      margin-bottom: 10px;
+
+      span {
+        color: $text_color;
+        font-weight: bold;
+        margin-right: 16px;
       }
     }
 
@@ -78,6 +91,19 @@ form {
       .plugin-analysis-item {
         margin-bottom: 8px;
 
+        label {
+          margin-left: 30px;
+          font-size: 14px;
+
+          span {
+            display: inline-block;
+            width: 120px;
+            margin-right: 40px;
+            color: $h4_color;
+            font-weight: 500;
+          }
+        }
+
         .stat-item {
           padding-left: 30px;
           margin-bottom: 4px;
@@ -85,7 +111,6 @@ form {
         }
       }
     }
-
   }
 
   .subsection {
@@ -94,9 +119,15 @@ form {
   }
 
   .dynamic-item {
-    margin-bottom: 6px;
+    margin-bottom: 8px;
     display: block;
     line-height: 32px;
+
+    search-input {
+      input {
+        margin-top: 0;
+      }
+    }
 
     .source-label {
       font-size: 13px;

@@ -1,4 +1,6 @@
 class DummyMaster < ActiveRecord::Base
+  include BetterJson
+
   belongs_to :plugin, :inverse_of => 'dummy_masters'
 
   # VALIDATIONS

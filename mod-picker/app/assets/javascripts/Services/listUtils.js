@@ -1,4 +1,4 @@
-app.service('listUtils', function () {
+app.service('listUtils', function() {
     var service = this;
 
     this.getNextIndex = function(model) {
@@ -63,6 +63,84 @@ app.service('listUtils', function () {
         });
     };
 
+    this.genericFind = function(model, findFunction, itemId, ignoreDestroyed) {
+        if (!model) {
+            return true;
+        }
+        var foundItem = findFunction(model, itemId);
+        if (foundItem && ignoreDestroyed && foundItem._destroy) {
+            return;
+        }
+        return foundItem;
+    };
+
+    this.buildGroups = function(model, groups, tab, items) {
+        groups.forEach(function(group) {
+            if (group.tab !== tab) return;
+            var modelGroup = angular.copy(group);
+            modelGroup.dragType = 'group';
+            modelGroup.hasChildren = true;
+            modelGroup.class = 'group bg-' + modelGroup.color;
+            modelGroup.children = items.filter(function(item) {
+                return item.group_id == modelGroup.id;
+            }).sort(function(a, b) {
+                return a.index - b.index;
+            });
+            model.push(modelGroup);
+        });
+    };
+
+    this.buildOrphans = function(model, items) {
+        items.forEach(function(item) {
+            if (item.group_id) return;
+            var insertIndex = model.findIndex(function(searchItem) {
+                return searchItem.index > item.index;
+            });
+            if (insertIndex == -1) {
+                insertIndex = model.length;
+            } else if (item.merged) {
+                insertIndex--;
+            }
+            model.splice(insertIndex, 0, item);
+        });
+    };
+
+    this.buildModel = function(models, modList, label) {
+        models[label] = [];
+        var model = models[label];
+        var groups = modList.groups;
+        var customLabel = 'custom_' + label;
+        var items = modList[label].concat(modList[customLabel]);
+        service.buildGroups(model, groups, label, items);
+        service.buildOrphans(model, items);
+    };
+
+    this.forEachItem = function(model, callback) {
+        model.forEach(function(item) {
+            item.children ? item.children.forEach(callback) : callback(item);
+        });
+    };
+
+    this.forMatchingItems = function(model, key, value, callback) {
+        service.forEachItem(model, function(item) {
+            if (item[key] && item[key] == value) callback(item);
+        });
+    };
+
+    this.forMatching = function(items, key, value, callback) {
+        items.forEach(function(item) {
+            if (item[key] == value) callback(item);
+        });
+    };
+
+    this.destroyItem = function(item) {
+        item._destroy = true;
+    };
+
+    this.recoverItem = function(item) {
+        if (item._destroy) delete item._destroy;
+    };
+
     this.removeGroup = function(model, group, index) {
         // handle the group children
         group.children.forEach(function(child) {
@@ -96,40 +174,55 @@ app.service('listUtils', function () {
         });
     };
 
-    this.moveItem = function(model, key, options) {
-        var destItem = service.findItem(model, key, 'id', options.destId);
+    // if both items are in the same group, move within the group
+    // or if options.insert is true and the destination item is in
+    // a group, move the item somewhere inside of the destItem group
+    this.getMoveModel = function(model, destItem, moveItem, allowInsert) {
+        if (!!moveItem.group_id && moveItem.group_id == destItem.group_id) {
+            return service.findGroup(model, moveItem.group_id).children;
+        } else if (allowInsert && !!destItem.group_id) {
+            return service.findGroup(model, destItem.group_id).children;
+        }
+        return model;
+    };
 
-        // check if the destination item is on the view model
+    // send a cursor down the model until the index of the item we're
+    // on exceeds the destItem's index
+    // then reinserts the item before or after the found item
+    this.insertItem = function(model, destItem, moveItem, after) {
+        var newIndex = model.findIndex(function(item) {
+            return item.index >= destItem.index;
+        });
+        model.splice(after ? newIndex + 1 : newIndex, 0, moveItem);
+    };
+
+    this.getCanInsert = function(key, moveItem) {
+        return key === "plugin" && moveItem.mod.primary_category.name === "Fixes - Patches";
+    };
+
+    this.moveItem = function(model, key, options) {
+        // get the destination item
+        var destItem = service.findItem(model, key, 'id', options.destId);
         if (!destItem) {
             return 'Failed to move '+key+', could not find destination '+key+'.';
         }
 
-        // this splices the item if found
+        // get the item to move and splice it out of the model if found
         var moveItem = service.findItem(model, key, 'id', options.moveId, true);
-
-        // check if the item be moved is on the view model
         if (!moveItem) {
             return 'Failed to move '+key+', could not find '+key+' to move.';
         }
 
-        var moveModel = model;
-        // if both items are in the same group, move within the group
-        if (!!moveItem.group_id && moveItem.group_id == destItem.group_id) {
-            moveModel = service.findGroup(model, moveItem.group_id).children;
-        }
-        // send a cursor down the model until the index of the item we're on exceeds the destItem's index
-        var newIndex = moveModel.findIndex(function(item) {
-            return item.index >= destItem.index;
-        });
-
-        // reinsert the mod at the new index
-        moveModel.splice(options.after ? newIndex + 1 : newIndex, 0, moveItem);
+        // insert the item to move after/before the destination item
+        var canInsert = service.getCanInsert(key, moveItem);
+        var moveModel = service.getMoveModel(model, destItem, moveItem, canInsert);
+        service.insertItem(moveModel, destItem, moveItem, options.after);
     };
 
     this.recoverDestroyed = function(model) {
         model.forEach(function(item) {
             if (item._destroy) {
-                 delete item._destroy;
+                delete item._destroy;
             }
         });
     };

@@ -1,4 +1,4 @@
-app.directive('correction', function () {
+app.directive('correction', function() {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/contributions/correction.html',

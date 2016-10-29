@@ -1,4 +1,4 @@
-app.directive('errorDisplay', function () {
+app.directive('errorDisplay', function() {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/shared/errorDisplay.html',

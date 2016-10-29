@@ -9,7 +9,7 @@ app.controller('modListDetailsController', function($scope, $q, $timeout, tagSer
     $scope.blurExportDropdown = function() {
         $timeout(function() {
             $scope.showExportDropdown = false;
-        }, 100);
+        }, 250);
     };
 
     $scope.saveTags = function(updatedTags) {
@@ -24,4 +24,12 @@ app.controller('modListDetailsController', function($scope, $q, $timeout, tagSer
         });
         return action.promise;
     };
+
+    // update the markdown editor
+    $scope.updateEditor = function() {
+        $scope.updateMDE = ($scope.updateMDE || 0) + 1;
+    };
+
+    $scope.$watch('editing', $scope.updateEditor);
+    if ($scope.editing) $scope.updateEditor();
 });

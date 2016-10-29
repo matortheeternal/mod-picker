@@ -1,0 +1,11 @@
+{
+  "only": [],
+  "include": {
+    "target_user": {
+      "only": ["id", "username"]
+    },
+    "source_user": {
+      "only": ["id", "username"]
+    }
+  }
+}

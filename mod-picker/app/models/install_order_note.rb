@@ -1,8 +1,11 @@
 class InstallOrderNote < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, Correctable, Helpfulable, Reportable, ScopeHelpers, Trackable
+  include Filterable, Sortable, RecordEnhancements, CounterCache, Correctable, Helpfulable, Reportable, Approveable, ScopeHelpers, Trackable, BetterJson, Dateable
 
   # ATTRIBUTES
   self.per_page = 25
+
+  # DATE COLUMNS
+  date_column :submitted, :edited
 
   # EVENT TRACKING
   track :added, :approved, :hidden
@@ -41,37 +44,40 @@ class InstallOrderNote < ActiveRecord::Base
   has_many :history_entries, :class_name => 'InstallOrderNoteHistoryEntry', :inverse_of => 'install_order_note', :foreign_key => 'install_order_note_id'
   has_many :editors, -> { uniq }, :class_name => 'User', :through => 'history_entries'
 
+  # COUNTER CACHE
+  counter_cache_on :first_mod, :second_mod, :submitter, conditional: { hidden: false, approved: true }
+
   # VALIDATIONS
   validates :game_id, :submitted_by, :first_mod_id, :second_mod_id, :text_body, presence: true
 
   validates :text_body, length: { in: 256..16384 }
-  validate :unique_mods
+  validate :validate_unique_mods
 
   # CALLBACKS
-  after_create :increment_counters
-  before_save :set_adult, :set_dates
-  before_destroy :decrement_counters
+  before_save :set_adult
 
-  def unique_mods
-    if first_mod_id == second_mod_id
-      errors.add(:mods, "You cannot create a Install Order Note between a mod and itself.")
-      return
-    end
+  def get_existing_note(mod_ids)
+    table = InstallOrderNote.arel_table
+    InstallOrderNote.mods(mod_ids).where(table[:hidden].eq(0).and(table[:id].not_eq(id))).first
+  end
 
-    mod_ids = [first_mod_id, second_mod_id]
-    note = InstallOrderNote.mods(mod_ids).where("hidden = 0 and id != ?", self.id).first
-    if note.present?
-      if note.approved
-        errors.add(:mods, "An Install Order Note for these mods already exists.")
-        errors.add(:link_id, note.id)
-      else
-        errors.add(:mods, "An unapproved Install Order Note for these mods already exists.")
-      end
+  def note_exists_error(existing_note)
+    if existing_note.approved
+      errors.add(:mods, "An Install Order Note for these mods already exists.")
+      errors.add(:link_id, existing_note.id)
+    else
+      errors.add(:mods, "An unapproved Install Order Note for these mods already exists.")
     end
   end
 
-  def mods
-    [first_mod, second_mod]
+  def duplicate_mods_error
+    errors.add(:mods, "You cannot create a Install Order Note between a mod and itself.") if first_mod_id == second_mod_id
+  end
+
+  def validate_unique_mods
+    return if duplicate_mods_error
+    existing_note = get_existing_note([first_mod_id, second_mod_id])
+    note_exists_error(existing_note) if existing_note.present?
   end
 
   def mod_author_users
@@ -92,119 +98,15 @@ class InstallOrderNote < ActiveRecord::Base
     InstallOrderNote.where(id: ids).joins(:first_mod, :second_mod).update_all("install_order_notes.has_adult_content = mods.has_adult_content OR second_mods_install_order_notes.has_adult_content")
   end
 
-  def as_json(options={})
-    if JsonHelpers.json_options_empty(options)
-      default_options = {
-          :except => [:submitted_by],
-          :include => {
-              :submitter => {
-                  :only => [:id, :username, :role, :title, :joined, :last_sign_in_at, :reviews_count, :compatibility_notes_count, :install_order_notes_count, :load_order_notes_count, :corrections_count, :comments_count],
-                  :include => {
-                      :reputation => {:only => [:overall]}
-                  },
-                  :methods => :avatar
-              },
-              :editor => {
-                  :only => [:id, :username, :role]
-              },
-              :editors => {
-                  :only => [:id, :username, :role]
-              },
-              :first_mod => {
-                  :only => [:id, :name]
-              },
-              :second_mod => {
-                  :only => [:id, :name]
-              }
-          }
-      }
-      super(options.merge(default_options))
-    else
-      super(options)
-    end
-  end
-
-  def notification_json_options(event_type)
-    {
-        :only => [:submitted_by, (:moderator_message if event_type == :message)].compact,
-        :include => {
-            :first_mod => {
-                :only => [:id, :name]
-            },
-            :second_mod => {
-                :only => [:id, :name]
-            }
-        }
-    }
-  end
-
-  # TODO: trim down reportable json options
-  def reportable_json_options
-    {
-          :except => [:submitted_by],
-          :include => {
-              :submitter => {
-                  :only => [:id, :username, :role, :title],
-                  :include => {
-                      :reputation => {:only => [:overall]}
-                  },
-                  :methods => :avatar
-              },
-              :editor => {
-                  :only => [:id, :username, :role]
-              },
-              :editors => {
-                  :only => [:id, :username, :role]
-              },
-              :first_mod => {
-                  :only => [:id, :name]
-              },
-              :second_mod => {
-                  :only => [:id, :name]
-              }
-          }
-      }
-  end
-
-  def self.sortable_columns
-    {
-        :except => [:game_id, :submitted_by, :edited_by, :corrector_id, :first_mod_id, :second_mod_id, :text_body, :edit_summary, :moderator_message],
-        :include => {
-            :submitter => {
-                :only => [:username],
-                :include => {
-                    :reputation => {
-                        :only => [:overall]
-                    }
-                }
-            }
-        }
-    }
+  def self.mod_count_subquery
+    arel_table.where(Mod.arel_table[:id].eq(arel_table[:first_mod_id]).
+        or(Mod.arel_table[:id].eq(arel_table[:second_mod_id]))).
+        project(Arel.sql('*').count)
   end
 
   private
-    def set_dates
-      if self.submitted.nil?
-        self.submitted = DateTime.now
-      else
-        self.edited = DateTime.now
-      end
-    end
-
     def set_adult
       self.has_adult_content = first_mod.has_adult_content || second_mod.has_adult_content
       true
-    end
-
-    def increment_counters
-      first_mod.update_counter(:install_order_notes_count, 1)
-      second_mod.update_counter(:install_order_notes_count, 1)
-      submitter.update_counter(:install_order_notes_count, 1)
-    end
-
-    def decrement_counters
-      first_mod.update_counter(:install_order_notes_count, -1)
-      second_mod.update_counter(:install_order_notes_count, -1)
-      submitter.update_counter(:install_order_notes_count, -1)
     end
 end

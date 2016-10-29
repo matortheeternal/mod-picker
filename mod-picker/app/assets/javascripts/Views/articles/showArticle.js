@@ -35,6 +35,9 @@ app.controller('showArticleController', function($scope, $rootScope, $stateParam
     };
     $scope.errors = {};
 
+    // set page title
+    $scope.$emit('setPageTitle', article.title);
+
     // shared function setup
     eventHandlerFactory.buildMessageHandlers($scope);
 

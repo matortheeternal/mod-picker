@@ -4,14 +4,16 @@
         </loader>
         <h2>{{submittingStatus}}</h2>
         <div ng-show="success">
-            <a ng-href="{{successLink}}">Click here</a> to {{successLabel}}
+            <div ng-repeat="line in linksList" class="success-line">
+                <a ng-href="{{line.link}}">Click here</a> to {{line.linkLabel}}
+            </div>
         </div>
         <div ng-show="errors">
             <div ng-repeat="error in errors">
-                {{error.message}}
+                {{error}}
             </div>
-            <div>
-                <a ng-click="closeModal()">Click here</a> to return the submission form
+            <div class="submission-actions">
+                <a ng-click="closeModal()">Click here</a> to return to the submission form
             </div>
         </div>
     </div>

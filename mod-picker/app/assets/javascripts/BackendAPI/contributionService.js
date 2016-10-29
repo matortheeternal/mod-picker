@@ -1,4 +1,4 @@
-app.service('contributionService', function (backend, $q, userTitleService, pageUtils, reviewSectionService) {
+app.service('contributionService', function(backend, $q, userTitleService, pageUtils, reviewSectionService) {
     var service = this;
 
     this.retrieveContributions = function(route, options, pageInformation) {
@@ -21,21 +21,21 @@ app.service('contributionService', function (backend, $q, userTitleService, page
     };
 
     this.helpfulMark = function(route, id, helpful) {
-        var helpfulObj = helpful == undefined ? {} : {helpful: helpful};
+        var helpfulObj = helpful == undefined ? {} : { helpful: helpful };
         return backend.post('/' + route + '/' + id + '/helpful', helpfulObj);
     };
 
     this.agreementMark = function(route, id, agree) {
-        var agreeObj = agree == undefined ? {} : {agree: agree};
+        var agreeObj = agree == undefined ? {} : { agree: agree };
         return backend.post('/' + route + '/' + id + '/agreement', agreeObj)
     };
 
     this.hide = function(route, id, hidden) {
-        return backend.post('/' + route + '/' + id + '/hide', {hidden: hidden});
+        return backend.post('/' + route + '/' + id + '/hide', { hidden: hidden });
     };
 
     this.approve = function(route, id, approved) {
-        return backend.post('/' + route + '/' + id + '/approve', {approved: approved});
+        return backend.post('/' + route + '/' + id + '/approve', { approved: approved });
     };
 
     this.submitContribution = function(route, contribution) {
@@ -55,10 +55,14 @@ app.service('contributionService', function (backend, $q, userTitleService, page
         return backend.update('/' + route + '/' + id, contribution);
     };
 
+    this.removeModeratorNote = function(route, id) {
+        return backend.update('/' + route + '/' + id, { moderator_message: null });
+    };
+
     this.retrieveComments = function(route, id, options, pageInformation) {
         var action = $q.defer();
         backend.post('/' + route + '/' + id + '/comments', options).then(function(data) {
-            userTitleService.associateTitles(data.comments);
+            userTitleService.associateCommentTitles(data.comments);
             pageUtils.getPageInformation(data, pageInformation, options.page);
             action.resolve(data.comments);
         }, function(response) {
@@ -69,7 +73,7 @@ app.service('contributionService', function (backend, $q, userTitleService, page
 
     this.retrieveCorrections = function(type, id) {
         var action = $q.defer();
-        backend.retrieve('/' + type + '/' + id + '/corrections').then(function (data) {
+        backend.retrieve('/' + type + '/' + id + '/corrections').then(function(data) {
             userTitleService.associateTitles(data.corrections);
             service.associateAgreementMarks(data.corrections, data.agreement_marks);
             action.resolve(data.corrections);
@@ -81,7 +85,7 @@ app.service('contributionService', function (backend, $q, userTitleService, page
 
     this.retrieveHistory = function(type, id) {
         var action = $q.defer();
-        backend.retrieve('/' + type + '/' + id + '/history').then(function (data) {
+        backend.retrieve('/' + type + '/' + id + '/history').then(function(data) {
             userTitleService.associateTitles(data);
             action.resolve(data);
         }, function(response) {
@@ -147,5 +151,9 @@ app.service('contributionService', function (backend, $q, userTitleService, page
                 contribution.helpful = helpfulMark.helpful;
             }
         });
+    };
+
+    this.removePrompts = function(text_body) {
+        return text_body.replace(/([^\n]+)\uFEFF([^\n]+)([\n]+)/g, '');
     };
 });

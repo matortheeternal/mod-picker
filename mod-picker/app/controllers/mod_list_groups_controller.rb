@@ -3,7 +3,7 @@ class ModListGroupsController < ApplicationController
   # Creates a new mod list group and renders it as JSON
   def create
     @mod_list_group = ModListGroup.new(mod_list_group_params)
-    authorize! :create, @mod_list_group
+    authorize! :update, @mod_list_group.mod_list
 
     if @mod_list_group.save
       render json: @mod_list_group
@@ -14,6 +14,6 @@ class ModListGroupsController < ApplicationController
 
   private
     def mod_list_group_params
-      params.require(:mod_list_group).permit(:mod_list_id, :index, :tab, :color, :name, :description)
+      params.require(:mod_list_group).permit(:mod_list_id, :index, :tab, :color, :keep_when_sorting, :name, :description)
     end
 end

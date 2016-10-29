@@ -1,15 +1,15 @@
-app.service('quoteService', function (backend, $q) {
+app.service('quoteService', function(backend, $q) {
     function randomElement(array) {
         return array[Math.floor(Math.random() * array.length)];
     }
 
-    this.retrieveQuotes = function () {
+    this.retrieveQuotes = function() {
         return backend.retrieve('/quotes');
     };
 
     var allQuotes = this.retrieveQuotes();
 
-    this.getRandomQuote = function (label) {
+    this.getRandomQuote = function(label) {
         var output = $q.defer();
         allQuotes.then(function(quotes) {
             if (label) {

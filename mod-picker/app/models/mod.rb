@@ -1,21 +1,25 @@
 class Mod < ActiveRecord::Base
-  include Filterable, Sortable, Imageable, RecordEnhancements, SourceHelpers, ScopeHelpers, Trackable
+  include Filterable, Sortable, Reportable, Imageable, RecordEnhancements, CounterCache, SourceHelpers, ScopeHelpers, Trackable, BetterJson, Dateable
 
   # ATTRIBUTES
   enum status: [ :good, :outdated, :unstable ]
+  attr_accessor :updated_by, :mark_updated
   self.per_page = 100
+
+  # DATE COLUMNS
+  date_column :submitted
 
   # EVENT TRACKING
   track :added, :hidden, :updated
+  #track_change :analysis_updated, :column => 'updated'
   track_milestones :column => 'stars_count', :milestones => [10, 50, 100, 500, 1000, 5000, 10000, 50000, 100000, 500000]
 
   # NOTIFICATION SUBSCRIPTIONS
-  subscribe :author_users, to: [:hidden, :unhidden, *Event.milestones]
-  subscribe :contribution_authors, to: [:updated]
-  subscribe :user_stars, to: [:updated]
+  subscribe :author_users, to: [:updated, :hidden, :unhidden, *Event.milestones]
+  # subscribe :contribution_authors, to: [:analysis_updated]
+  # subscribe :user_stars, to: [:analysis_updated]
 
   # SCOPES
-  include_scope :hidden
   include_scope :has_adult_content, :alias => 'include_adult'
   include_scope :is_official, :alias => 'include_official'
   include_scope :is_utility, :alias => 'include_utilities'
@@ -48,6 +52,7 @@ class Mod < ActiveRecord::Base
   ]
 
   # UNIQUE SCOPES
+  scope :visible, -> { where(hidden: false) }
   scope :include_games, -> (bool) { where.not(primary_category_id: nil) if !bool }
   scope :compatibility, -> (mod_list_id) {
     mod_list = ModList.find(mod_list_id)
@@ -105,8 +110,8 @@ class Mod < ActiveRecord::Base
   has_many :asset_files, :through => :mod_asset_files, :inverse_of => 'mods'
 
   # requirements associated with the mod
-  has_many :required_mods, :class_name => 'ModRequirement', :inverse_of => 'mod', :dependent => :destroy
-  has_many :required_by, :class_name => 'ModRequirement', :inverse_of => 'required_mod', :foreign_key => 'required_id', :dependent => :destroy
+  has_many :required_mods, -> { order(:required_id) }, :class_name => 'ModRequirement', :inverse_of => 'mod', :dependent => :destroy
+  has_many :required_by, -> { order(:mod_id) }, :class_name => 'ModRequirement', :inverse_of => 'required_mod', :foreign_key => 'required_id', :dependent => :destroy
 
   # config files associated with the mod
   has_many :config_files, :inverse_of => 'mod', :dependent => :destroy
@@ -116,7 +121,7 @@ class Mod < ActiveRecord::Base
   has_many :author_users, :class_name => 'User', :through => 'mod_authors', :source => 'user', :inverse_of => 'mods'
 
   # community feedback on the mod
-  has_many :corrections, :as => 'correctable'
+  has_many :corrections, :as => 'correctable', :dependent => :destroy
   has_many :reviews, :inverse_of => 'mod', :dependent => :destroy
   has_many :mod_stars, :inverse_of => 'mod', :dependent => :destroy
   has_many :user_stars, :class_name => 'User', :through => 'mod_stars', :source => 'user', :inverse_of => 'starred_mods'
@@ -129,7 +134,7 @@ class Mod < ActiveRecord::Base
   has_many :mod_list_mods, :inverse_of => 'mod', :dependent => :destroy
   has_many :mod_lists, :through => 'mod_list_mods', :inverse_of => 'mods'
 
-  accepts_nested_attributes_for :mod_options
+  accepts_nested_attributes_for :mod_options, allow_destroy: true
   accepts_nested_attributes_for :custom_sources, allow_destroy: true
   accepts_nested_attributes_for :config_files, allow_destroy: true
   # cannot update required mods
@@ -141,16 +146,30 @@ class Mod < ActiveRecord::Base
       |attributes| attributes[:id] && attributes[:user_id] && !attributes[:_destroy]
   }, allow_destroy: true
 
+  # COUNTER CACHE
+  counter_cache :required_mods, :required_by
+  counter_cache :mod_stars, column: 'stars_count'
+  counter_cache :reviews, conditional: { hidden: false, approved: true }
+  counter_cache :compatibility_notes, conditional: { hidden: false, approved: true },
+      custom_reflection: { klass: CompatibilityNote, query_method: 'mod_count_subquery' }
+  counter_cache :install_order_notes, conditional: { hidden: false, approved: true },
+      custom_reflection: { klass: InstallOrderNote, query_method: 'mod_count_subquery' }
+  counter_cache :load_order_notes, conditional: { hidden: false, approved: true },
+      custom_reflection: { klass: LoadOrderNote, query_method: 'mod_count_subquery' }
+  counter_cache :corrections, conditional: { hidden: false, correctable_type: 'Mod' }
+  counter_cache :mod_tags, column: 'tags_count'
+  counter_cache :mod_list_mods, column: 'mod_lists_count'
+  counter_cache_on :submitter, column: 'submitted_mods_count', conditional: { hidden: false }
+
   # VALIDATIONS
   validates :game_id, :submitted_by, :name, :authors, :released, presence: true
   validates :name, :aliases, length: {maximum: 128}
 
-  # callbacks
-  after_create :increment_counters
-  before_destroy :decrement_counters
+  # CALLBACKS
+  before_save :touch_updated
 
   def asset_file_paths
-    self.mod_asset_files.joins(:asset_file).pluck(:subpath, :path).map { |item| item.join('') }
+    mod_asset_files.eager_load(:asset_file).pluck(:subpath, :path).map { |item| item.join('') }
   end
 
   def update_lazy_counters
@@ -159,73 +178,53 @@ class Mod < ActiveRecord::Base
     self.plugins_count = Plugin.mod_options(mod_option_ids).count
   end
 
-  def compute_extra_metrics
-    days_since_release = DateTime.now - self.released.to_date
-
-    # compute extra nexus metrics
-    nex = nexus_infos
-    if nex.present? && Rails.application.config.scrape_nexus_statistics
-      nex.endorsement_rate = (nex.endorsements / days_since_release) if days_since_release > 0
-      nex.dl_rate = (nex.unique_downloads / days_since_release) if days_since_release > 0
-      nex.udl_to_endorsements = (nex.unique_downloads / nex.endorsements) if nex.endorsements > 0
-      nex.udl_to_posts = (nex.unique_downloads / nex.posts_count) if nex.posts_count > 0
-      nex.tdl_to_udl = (nex.total_downloads / nex.unique_downloads) if nex.unique_downloads > 0
-      nex.views_to_tdl = (nex.views / nex.total_downloads) if nex.total_downloads > 0
-      nex.save!
-    end
+  def compute_average_rating
+    total = reviews.visible.reduce(0) { |total, r| total += r.overall_rating }
+    self.average_rating = total / (reviews.length.nonzero? || 1)
   end
 
-  def compute_average_rating
-    total = 0.0
-    count = 0
-    reviews.where(hidden: false, approved: true).each do |r|
-      total += r.overall_rating
-      count += 1
-    end
-    if count > 0
-      self.average_rating = (total / count)
-    else
-      self.average_rating = 0
-    end
+  def review_reputation
+    (average_rating / 100)**3 * (510.0 / (1 + Math::exp(-0.2 * (reviews_count - 10))) - 60)
+  end
+
+  def use_nexus_reputation
+    reviews_count < 5 && NexusInfo.can_scrape_statistics? && nexus_infos.present?
   end
 
   def compute_reputation
-    if reviews_count < 5 && Rails.application.config.scrape_nexus_statistics
-      if nexus_infos.present?
-        endorsement_reputation = 100.0 / (1.0 + Math::exp(-0.15 * (self.endorsement_rate - 25)))
-        self.reputation = endorsement_reputation
-      end
-    else
-      review_reputation = (average_rating / 100)**3 * (510.0 / (1 + Math::exp(-0.2 * (reviews_count - 10))) - 60)
-      self.reputation = review_reputation
-    end
-
-    if status == :unstable
-      self.reputation = self.reputation / 4
-    elsif status == :outdated
-      self.reputation = self.reputation / 2
-    end
+    self.reputation = use_nexus_reputation ? nexus_infos.endorsement_reputation : review_reputation
+    self.reputation = reputation / 4 if status == :unstable
+    self.reputation = reputation / 2 if status == :outdated
   end
 
   def update_metrics
-    compute_extra_metrics
+    nexus_infos.compute_extra_metrics if nexus_infos.present?
     compute_average_rating
     compute_reputation
     update_lazy_counters
     save!
   end
 
+  def update_review_metrics
+    compute_average_rating
+    compute_reputation
+    update_columns({
+        :reputation => reputation,
+        :average_rating => average_rating
+    })
+  end
+
   # note associations
   def compatibility_notes
-    CompatibilityNote.where('first_mod_id = :mod_id OR second_mod_id = :mod_id', mod_id: id)
+    CompatibilityNote.mod(id)
   end
 
   def install_order_notes
-    InstallOrderNote.where('first_mod_id = :mod_id OR second_mod_id = :mod_id', mod_id: id)
+    InstallOrderNote.mod(id)
   end
 
   def load_order_notes
-    LoadOrderNote.where('first_plugin_id in (:plugin_ids) OR second_plugin_id in (:plugin_ids)', plugin_ids: plugins.ids)
+    LoadOrderNote.plugin(plugins.ids)
   end
 
   def contribution_authors
@@ -242,185 +241,11 @@ class Mod < ActiveRecord::Base
     a.join("\r\n") + "\r\n"
   end
 
-  def self.index_json(collection, sources)
-    # Includes hash for mods index query
-    include_hash = { :author_users => { :only => [:id, :username] } }
-    include_hash[:nexus_infos] = {:except => [:mod_id]} if sources[:nexus]
-    include_hash[:lover_infos] = {:except => [:mod_id]} if sources[:lab]
-    include_hash[:workshop_infos] = {:except => [:mod_id]} if sources[:workshop]
-
-    collection.as_json({
-        :include => include_hash
-    })
-  end
-
-  def self.home_json(collection)
-    collection.as_json({
-        :only => [:id, :name, :authors, :released],
-        :include => {
-            :primary_category => {:only => [:name]}
-        },
-        :methods => [:image]
-    })
-  end
-
-  def edit_json
-    self.as_json({
-        :include => {
-            :tags => {
-                :except => [:game_id, :hidden, :mod_lists_count],
-                :include => {
-                    :submitter => {
-                        :only => [:id, :username]
-                    }
-                }
-            },
-            :nexus_infos => {:only => [:id, :last_scraped]},
-            :workshop_infos => {:only => [:id, :last_scraped]},
-            :lover_infos => {:only => [:id, :last_scraped]},
-            :custom_sources => {:except => [:mod_id]},
-            :mod_authors => {
-                :only => [:id, :role, :user_id],
-                :include => {
-                    :user => {
-                        :only => [:username]
-                    }
-                }
-            },
-            :required_mods => {
-                :only => [:id],
-                :include => {
-                    :required_mod => {
-                        :only => [:id, :name]
-                    }
-                }
-            },
-            :config_files => {
-                :except => [:game_id, :mod_id, :mod_lists_count]
-            }
-        },
-        :methods => :image
-    })
-  end
-
-  def show_json
-    self.as_json({
-        :except => [:disallow_contributors, :hidden],
-        :include => {
-            :tags => {
-                :except => [:game_id, :hidden, :mod_lists_count],
-                :include => {
-                    :submitter => {
-                        :only => [:id, :username]
-                    }
-                }
-            },
-            :nexus_infos => {:except => [:mod_id]},
-            :workshop_infos => {:except => [:mod_id]},
-            :lover_infos => {:except => [:mod_id]},
-            :plugins => {:only => [:id, :filename]},
-            :custom_sources => {:except => [:mod_id]},
-            :mod_authors => {
-                :only => [:id, :role, :user_id],
-                :include => {
-                    :user => {
-                        :only => [:username]
-                    }
-                }
-            },
-            :required_mods => {
-                :only => [],
-                :include => {
-                    :required_mod => {
-                        :only => [:id, :name]
-                    }
-                }
-            },
-            :required_by => {
-                :only => [],
-                :include => {
-                    :mod => {
-                        :only => [:id, :name]
-                    }
-                }
-            }
-        },
-        :methods => :image
-    })
-  end
-
-  def as_json(options={})
-    if JsonHelpers.json_options_empty(options)
-      default_options = {
-          :only => [:id, :name]
-      }
-      super(options.merge(default_options))
-    else
-      super(options)
-    end
-  end
-
-  def notification_json_options(event_type)
-    { :only => [:name] }
-  end
-
-  # TODO: trim down json for reports
-  def reportable_json_options
-    {
-        :except => [:disallow_contributors, :hidden],
-        :include => {
-            :nexus_infos => {:except => [:mod_id]},
-            :workshop_infos => {:except => [:mod_id]},
-            :lover_infos => {:except => [:mod_id]},
-            :custom_sources => {:except => [:mod_id]},
-            :mod_authors => {
-                :only => [:id, :role, :user_id],
-                :include => {
-                    :user => {
-                        :only => [:username]
-                    }
-                }
-            },
-            :primary_category => {
-                :only => [:name]
-            },
-            :secondary_category => {
-                :only => [:name]
-            }
-        },
-        :methods => :image
-    }
-  end
-
-  def self.sortable_columns
-    {
-        :except => [:game_id, :submitted_by, :primary_category_id, :secondary_category_id],
-        :include => {
-            :primary_category => {
-                :only => [:name]
-            },
-            :secondary_category => {
-                :only => [:name]
-            },
-            :nexus_infos => {
-                :except => [:game_id, :last_scraped, :mod_id, :mod_name]
-            },
-            :lover_infos => {
-                :except => [:game_id, :last_scraped, :mod_id, :mod_name]
-            },
-            :workshop_infos => {
-                :except => [:game_id, :last_scraped, :mod_id, :mod_name]
-            }
-        }
-    }
-  end
-
   private
-    def decrement_counters
-      self.submitter.update_counter(:submitted_mods_count, -1) if self.submitted_by.present?
-    end
-
-    def increment_counters
-      self.submitter.update_counter(:submitted_mods_count, 1) if self.submitted_by.present?
+    def touch_updated
+      if mark_updated
+        self.updated ||= DateTime.now
+        self.updated += 1.second
+      end
     end
 end

@@ -1,0 +1,3 @@
+{
+  "except": ["game_id", "mod_id", "description", "mod_lists_count", "load_order_notes_count"]
+}

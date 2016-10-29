@@ -1,10 +1,15 @@
-app.directive('sticky', function () {
+app.directive('sticky', function($timeout) {
     return {
         restrict: 'A',
         link: function(scope, element, attrs) {
             var $placeholder, $elem = element[0];
-            var placeholderHeight, bottom, top = $elem.getBoundingClientRect().top;
+            var placeholderHeight, bottom, top;
             var fixed = false;
+
+            // we have to set top on a timeout else the values may be wrong
+            $timeout(function() {
+                top = $elem.getBoundingClientRect().top;
+            });
 
             var toggleSticky = function(scrollPos) {
                 if (fixed) {

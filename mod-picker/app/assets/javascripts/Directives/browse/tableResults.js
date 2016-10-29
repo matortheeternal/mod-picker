@@ -1,4 +1,4 @@
-app.directive('tableResults', function () {
+app.directive('tableResults', function() {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/browse/tableResults.html',
@@ -34,6 +34,7 @@ app.controller('tableResultsController', function($scope, $rootScope, tableUtils
     angular.default($scope, 'message', defaultMessage);
 
     // initialize variables
+    tableUtils.buildColumnClasses($scope.columns, 'main-cell');
     $scope.showModal = false;
     var sortedColumn;
 
@@ -77,29 +78,22 @@ app.controller('tableResultsController', function($scope, $rootScope, tableUtils
     // this function will toggle sorting for an input column between
     // up, down, and no sorting
     $scope.toggleSort = function(column) {
-        if (column.down) {
-            column.up = true;
-            column.down = false;
-        } else if (column.up) {
-            column.up = false;
-        } else {
-            column.down = true;
-        }
+        var firstKey = column.invertSort ? "up" : "down";
+        var secondKey = column.invertSort ? "down" : "up";
+        var b1 = column[firstKey], b2 = column[secondKey];
+        column[secondKey] = b1;
+        column[firstKey] = !b1 && !b2;
     };
 
-    // sorts by a column
-    $scope.sortColumn = function(column) {
-        // return if we don't have a sort object or the column isn't sortable
-        if (!$scope.sort || column.unsortable) return;
-
+    $scope.setSortColumn = function(column) {
         if (sortedColumn && sortedColumn !== column) {
             sortedColumn.up = false;
             sortedColumn.down = false;
         }
         sortedColumn = column;
-        $scope.toggleSort(column);
+    };
 
-        // send data to backend
+    $scope.updateSortObject = function(column) {
         if (column.up || column.down) {
             $scope.sort.column = $scope.getSortData(column);
             $scope.sort.direction = column.up ? "ASC" : "DESC";
@@ -109,8 +103,29 @@ app.controller('tableResultsController', function($scope, $rootScope, tableUtils
         }
     };
 
+    // sorts by a column
+    $scope.sortColumn = function(column) {
+        // return if we don't have a sort object or the column isn't sortable
+        if (!$scope.sort || column.unsortable) return;
+        $scope.setSortColumn(column);
+        $scope.toggleSort(column);
+        $scope.updateSortObject(column);
+    };
+
     // load sort into view
     if ($scope.columns && $scope.sort && $scope.sort.column) {
         $scope.loadSort();
     }
+
+    $scope.buildItemData = function() {
+        $scope.builtItemData = true;
+        $scope.data.forEach(function(item) {
+            tableUtils.buildItemData(item, $scope.columns, $scope.resolve);
+        });
+    };
+
+    $scope.$watch('data', function() {
+        if (!$scope.data) return;
+        $scope.buildItemData();
+    }, true);
 });
