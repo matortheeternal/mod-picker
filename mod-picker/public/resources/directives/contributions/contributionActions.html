@@ -13,6 +13,15 @@
     </div>
 </div>
 
+<div class="moderator-message" ng-if="target.moderator_message && !target.newModeratorNote">
+    <div class="message-title">
+        Moderator Message
+        <span class="right-item remove-item" ng-if="canRemoveNote" ng-click="removeModeratorMessage()">
+            <i class="fa fa-times" aria-hidden="true"></i>
+        </span>
+    </div>
+    <div class="text-container" marked="target.moderator_message"></div>
+</div>
 <div class="actions-container">
     <div class="action-box" ng-if="correctable" tabindex="{{index}}" ng-click="toggleCorrectionsModal(true)">View Corrections</div>
     <div class="action-box" ng-focus="showDropdown = true" ng-blur="blurDropdown()" tabindex="{{index}}">

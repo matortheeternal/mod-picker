@@ -7,12 +7,3 @@
     <span ng-show="target.editor">by <a href="#/profile/{{target.editor.id}}">{{target.editor.username}}</a></span><br>
     <span ng-show="target.edit_summary">{{target.edit_summary}}</span>
 </div>
-<div class="moderator-message" ng-if="target.moderator_message">
-    <div class="message-title">
-        Moderator Message
-        <span class="right-item remove-item" ng-if="permissions.canModerate" ng-click="removeModeratorMessage()">
-            <i class="fa fa-times" aria-hidden="true"></i>
-        </span>
-    </div>
-    <div class="text-container" marked="target.moderator_message"></div>
-</div>
