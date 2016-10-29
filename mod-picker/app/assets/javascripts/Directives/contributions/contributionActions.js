@@ -40,8 +40,6 @@ app.controller('contributionActionsController', function($scope, $rootScope, $ti
     $scope.errorEvent = $scope.eventPrefix ? $scope.eventPrefix + 'ErrorMessage' : 'errorMessage';
     $scope.modelObj = contributionFactory.getModel($scope.modelName);
 
-    $scope.modNote = {};
-
     // determine share url based on the content type
     $scope.buildShareLink = function() {
         var modTarget, modId, targetTab, targetId, baseUrl = location.href.replace(location.hash, "");
@@ -235,39 +233,25 @@ app.controller('contributionActionsController', function($scope, $rootScope, $ti
         });
     };
 
-    $scope.addNote = function() {
-        $scope.modNote.addingNote = true;
-        $scope.modNote.message = "";
-    };
-
     $scope.editNote = function() {
-        $scope.modNote.addingNote = true;
-
-        var oldMessage = angular.copy($scope.target.moderator_message);
-        $scope.modNote.oldMessage = oldMessage;
-        //set the note to null, to disable the current note's display
-        $scope.target.moderator_message = null;
-        $scope.modNote.message = oldMessage;
+        $scope.target.newModeratorNote = angular.copy($scope.target.moderator_message) || " ";
     };
 
     $scope.saveNote = function() {
-        contributionService.updateModeratorNote($scope.modelObj.route, $scope.target.id, $scope.modNote.message).then(function() {
+        contributionService.updateModeratorNote($scope.modelObj.route, $scope.target.id, $scope.target.newModeratorNote).then(function() {
             $scope.$emit("successMessage", "Moderator Note added successfully.");
 
             //update ui if the note is updated successfully on the server
-            $scope.target.moderator_message = $scope.modNote.message;
-            delete $scope.modNote.addingNote;
-            delete $scope.modNote.message;
+            $scope.target.moderator_message = $scope.target.newModeratorNote;
+            $scope.target.newModeratorNote = null;
         }, function(response) {
             var params = { label: 'Error changing Moderator Note', response: response };
             $scope.$emit('errorMessage', params);
-            $scope.target.moderator_message = $scope.modNote.oldMessage || null;
         });
     };
 
     $scope.discardNote = function() {
-        $scope.modNote.message = $scope.modNote.oldMessage || null;
-        delete $scope.modNote.addingNote;
+        $scope.target.newModeratorNote = null;
     };
 
     $scope.removeModeratorMessage = function() {
