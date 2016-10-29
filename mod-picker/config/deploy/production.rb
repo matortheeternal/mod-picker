@@ -7,10 +7,10 @@
 # server 'example.com', user: 'deploy', roles: %w{app web}, other_property: :other_value
 # server 'db.example.com', user: 'deploy', roles: %w{db}
 
-role :app, %w{ deploy@mod-picker.com }
-role :db, %w{ deploy@mod-picker.com }
-role :web, %w{ deploy@mod-picker.com }
-role :worker, %w{ deploy@mod-picker.com }
+role :app, %w{ deploy@modpicker.com }
+role :db, %w{ deploy@modpicker.com }
+role :web, %w{ deploy@modpicker.com }
+role :worker, %w{ deploy@modpicker.com }
 
 set :sidekiq_role, :worker
 set :sidekiq_config, -> { File.join(shared_path, 'config', 'sidekiq.yml') }
@@ -49,11 +49,9 @@ set :rails_env, 'production'
 #
 # Global options
 # --------------
-#  set :ssh_options, {
-#    keys: %w(/home/rlisowski/.ssh/id_rsa),
-#    forward_agent: false,
-#    auth_methods: %w(password)
-#  }
+set :ssh_options, {
+  port: 48993
+}
 #
 # The server-based syntax can be used to override options:
 # ------------------------------------

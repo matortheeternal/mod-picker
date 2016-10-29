@@ -20,11 +20,11 @@ set :passenger_restart_with_touch, true
 # set :pty, true
 
 # Default value for :linked_files is []
-set :linked_files, %w{ config/database.yml config/scheduler.yml config/secrets.yml }
+set :linked_files, %w( config/database.yml config/scheduler.yml config/secrets.yml )
 
 # Default value for linked_dirs is []
 # TODO: Correct the uploads folder path and remove unnecessary paths
-set :linked_dirs, %w{ log tmp/pids tmp/cache tmp/sessions tmp/sockets vendor/bundle public/system public/uploads }
+set :linked_dirs, %w( log tmp/pids tmp/cache tmp/sessions tmp/sockets vendor/bundle public/system public/uploads )
 
 # Default value for default_env is {}
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
@@ -32,12 +32,8 @@ set :linked_dirs, %w{ log tmp/pids tmp/cache tmp/sessions tmp/sockets vendor/bun
 # Default value for keep_releases is 5
 # set :keep_releases, 5
 
-set :rbenv_type, :system
-set :rbenv_ruby, File.read('.ruby-version').strip
-
-set :rbenv_prefix, "RBENV_ROOT=#{fetch(:rbenv_path)} RBENV_VERSION=#{fetch(:rbenv_ruby)} #{fetch(:rbenv_path)}/bin/rbenv exec"
-set :rbenv_map_bins, %w{rake gem bundle ruby rails sidekiq sidekiqctl}
-set :rbenv_roles, :app
+set :rvm_type, :user
+set :rvm_roles, [:app]
 
 SSHKit.config.umask = "0002"
 
