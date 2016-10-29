@@ -62,7 +62,7 @@
         <tab-views></tab-views>
     </div>
 
-    <div class="action-button-container" ng-if="editing && tabEditable">
+    <div class="action-button-container" ng-if="editing && tabEditable" sticky sticky-type="bottom">
         <div class="page-container">
             <input class="btn action-btn" type="submit" value="Save" ng-click="saveChanges()"/>
             <input class="btn action-btn" type="button" value="Reset" ng-click="discardChanges()"/>

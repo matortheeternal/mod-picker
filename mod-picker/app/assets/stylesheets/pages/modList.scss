@@ -27,6 +27,23 @@ ul.required-list {
   }
 }
 
+.action-button-container {
+  &.sticky {
+    position: fixed;
+    z-index: 3000;
+    bottom: 0;
+    left: 0;
+    display: block;
+    background-color: $primary_background;
+    width: 100%;
+
+    .page-container {
+      border-top: 1px solid $border-color;
+      padding: 6px;
+    }
+  }
+}
+
 .winning-asset {
   color: $success_secondary;
   font-weight: bold;
