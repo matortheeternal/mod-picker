@@ -7,7 +7,10 @@ app.directive('managePluginsModal', function() {
     };
 });
 
-app.controller('managePluginsModalController', function($scope, columnsFactory, objectUtils) {
+app.controller('managePluginsModalController', function($scope, columnsFactory, objectUtils, formUtils) {
+    // inherited functions
+    $scope.unfocusManagePluginsModal = formUtils.unfocusModal($scope.toggleManagePluginsModal);
+
     // re-initialize plugins store active booleans to false
     $scope.plugins_store.forEach(function(plugin) {
         plugin.active = false;
@@ -50,7 +53,7 @@ app.controller('managePluginsModalController', function($scope, columnsFactory, 
     $scope.sort = {
         column: '',
         direction: 'ASC'
-    }
+    };
 
     // helper functions to get links to plugin/mods
     $scope.getPluginLink = function(item) {
@@ -63,7 +66,7 @@ app.controller('managePluginsModalController', function($scope, columnsFactory, 
         if (item.mod) {
             return "#/mod/" + item.mod.id;
         }
-    }
+    };
 
     // load sort into view
     $scope.loadSort = function() {

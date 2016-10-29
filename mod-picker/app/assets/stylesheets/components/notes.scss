@@ -182,6 +182,10 @@
         background-color: $error_primary;
         font-weight: 500;
         padding: 5px;
+
+        .remove-item {
+          cursor:pointer;
+        }
       }
 
       .text-container {
@@ -190,6 +194,15 @@
         p {
           margin: 0 2px;
         }
+      }
+
+      textarea {
+        width: 100%;
+        resize: vertical;
+        border: 0;
+        background-color: transparent;
+        padding: 10px;
+        font: inherit;
       }
     }
 

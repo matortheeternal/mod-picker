@@ -27,6 +27,29 @@ ul.required-list {
   }
 }
 
+.tabs-column {
+  .action-button-container {
+    padding: 10px 0 6px;
+    margin-top: 0;
+
+    &.sticky {
+      position: fixed;
+      z-index: 3000;
+      bottom: 0;
+      left: 0;
+      display: block;
+      background-color: $primary_background;
+      width: 100%;
+      padding: 0;
+
+      .page-container {
+        border-top: 1px solid $border-color;
+        padding: 10px 0 6px
+      }
+    }
+  }
+}
+
 .winning-asset {
   color: $success_secondary;
   font-weight: bold;

@@ -6,6 +6,6 @@ app.config(['$stateProvider', function($stateProvider) {
     });
 }]);
 
-app.controller('donateController', function($scope, $rootScope) {
-    // TODO: Some logic in here maybe?
+app.controller('donateController', function($scope) {
+    $scope.$emit('setPageTitle', 'Donate');
 });

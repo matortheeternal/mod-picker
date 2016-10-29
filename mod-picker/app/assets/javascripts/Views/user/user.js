@@ -54,7 +54,7 @@ app.config(['$stateProvider', function($stateProvider) {
     });
 }]);
 
-app.controller('userController', function($scope, $rootScope, $stateParams, userObject, userService, eventHandlerFactory, moderationActionsFactory, tabsFactory) {
+app.controller('userController', function($scope, $rootScope, $stateParams, userObject, userService, helpFactory, eventHandlerFactory, moderationActionsFactory, tabsFactory) {
     // get parent variables
     $scope.currentUser = $rootScope.currentUser;
     $scope.permissions = angular.copy($rootScope.permissions);
@@ -93,9 +93,16 @@ app.controller('userController', function($scope, $rootScope, $stateParams, user
 
     $scope.target = $scope.user;
 
+    // set page title
+    $scope.$emit('setPageTitle', $scope.user.username + "'s Profile");
+
     // shared function setup
     eventHandlerFactory.buildMessageHandlers($scope);
     moderationActionsFactory.buildActions($scope);
+
+    // set help context
+    var helpContexts = helpFactory.userProfileContext($scope.isCurrentUser);
+    helpFactory.setHelpContexts($scope, helpContexts);
 
     // creates or removes the current user's endorsement of a user
     $scope.endorse = function() {

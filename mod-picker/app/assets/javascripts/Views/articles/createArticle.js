@@ -28,8 +28,14 @@ app.controller('createArticleController', function($scope, $rootScope, $state, $
     $scope.article = article;
     $scope.image = {};
 
+    // set page title
+    $scope.$emit('setPageTitle', 'Create Article');
+
     // shared function setup
     eventHandlerFactory.buildMessageHandlers($scope);
+
+    // set help context
+    helpFactory.setHelpContexts($scope, []);
 
     // returns true if the article is valid
     $scope.articleValid = function() {
@@ -49,7 +55,16 @@ app.controller('createArticleController', function($scope, $rootScope, $state, $
             if ($scope.image.file) {
                 $scope.submitImage(data.id);
             } else {
-                $scope.submissionSuccess("Article submitted successfully.", "#/article/"+data.id, "view the new article.");
+                $scope.submissionSuccess("Article submitted successfully.", [
+                    { 
+                        link: "#/article/" + data.id,
+                        linkLabel: "view the new article." 
+                    },
+                    {
+                        link: "#/articles",
+                        linkLabel: "return to the articles index page."
+                    }
+                ]);
             }
         }, function(response) {
             $scope.submissionError("There were errors submitting the article.", response);
@@ -58,9 +73,27 @@ app.controller('createArticleController', function($scope, $rootScope, $state, $
 
     $scope.submitImage = function(articleId) {
         articleService.submitImage(articleId, $scope.image.file).then(function() {
-            $scope.submissionSuccess("Article submitted successfully.", "#/article/"+articleId, "view the new article.");
+            $scope.submissionSuccess("Article submitted successfully.", [
+                { 
+                    link: "#/article/" + articleId,
+                    linkLabel: "view the new article." 
+                },
+                { 
+                    link: "#/home",
+                    linkLabel: "return to the home page."
+                }
+            ]);
         }, function() {
-            $scope.submissionSuccess("Article submitted successfully, image submission failed.", "#/article/"+articleId, "view the new article.");
+            $scope.submissionSuccess("Article submitted successfully, image submission failed.", [
+                { 
+                    link: "#/article/" + articleId,
+                    linkLabel: "view the new article." 
+                },
+                {
+                    link: "#/home",
+                    linkLabel: "return to the home page."
+                }
+            ]);
         });
     };
 });

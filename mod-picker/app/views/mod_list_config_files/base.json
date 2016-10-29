@@ -2,7 +2,7 @@
   "only": ["id", "text_body"],
   "include": {
     "config_file": {
-      "format": "edit"
+      "format": "mod_list"
     }
   }
 }

@@ -1,0 +1,13 @@
+{
+  "except": ["parent_id", "submitted_by", "commentable_id", "text_body"],
+  "include": {
+    "submitter": {
+      "only": ["username"],
+      "include": {
+        "reputation": {
+          "only": ["overall"]
+        }
+      }
+    }
+  }
+}

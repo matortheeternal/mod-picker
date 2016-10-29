@@ -5,12 +5,17 @@ app.run(function($futureState, indexFactory, filtersFactory) {
     $futureState.futureState(state);
 });
 
-app.controller('pluginsController', function($scope, $rootScope, $stateParams, $state, pluginService, columnsFactory, filtersFactory, actionsFactory, indexService, indexFactory) {
+app.controller('pluginsController', function($scope, $rootScope, $stateParams, $state, pluginService, helpFactory, columnsFactory, filtersFactory, actionsFactory, indexService, indexFactory) {
     // get parent variables
     $scope.currentUser = $rootScope.currentUser;
     $scope.currentGame = $rootScope.currentGame;
     $scope.categories = $rootScope.categories;
     $scope.permissions = angular.copy($rootScope.permissions);
+
+    // set page title
+    $scope.$emit('setPageTitle', 'Browse Plugins');
+    // set help context
+    helpFactory.setHelpContexts($scope, [helpFactory.indexPage]);
 
     // columns for view
     $scope.columns = columnsFactory.pluginColumns(true);

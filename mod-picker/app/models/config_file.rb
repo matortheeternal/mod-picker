@@ -6,5 +6,13 @@ class ConfigFile < ActiveRecord::Base
   has_many :mod_list_config_files, :inverse_of => 'config_file'
 
   # VALIDATIONS
-  validates :game_id, :mod_id, :filename, :install_path, presence: true
+  validates :filename, :install_path, presence: true
+
+  # CALLBACKS
+  before_create :set_game_id
+
+  private
+    def set_game_id
+      self.game_id = mod.game_id
+    end
 end

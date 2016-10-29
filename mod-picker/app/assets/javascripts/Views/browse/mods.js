@@ -5,7 +5,7 @@ app.run(function($futureState, indexFactory, filtersFactory) {
     $futureState.futureState(state);
 });
 
-app.controller('modsController', function($scope, $rootScope, $q, $stateParams, $state, modService, categoryService, modListService, indexService, sliderFactory, columnsFactory, filtersFactory, actionsFactory, indexFactory, eventHandlerFactory) {
+app.controller('modsController', function($scope, $rootScope, $q, $stateParams, $state, modService, categoryService, modListService, indexService, helpFactory, sliderFactory, columnsFactory, filtersFactory, actionsFactory, indexFactory, eventHandlerFactory) {
     // inherited variables
     $scope.currentUser = $rootScope.currentUser;
     $scope.currentGame = $rootScope.currentGame;
@@ -13,9 +13,15 @@ app.controller('modsController', function($scope, $rootScope, $q, $stateParams, 
     $scope.activeModList = $rootScope.activeModList;
     $scope.permissions = angular.copy($rootScope.permissions);
 
+    // set page title
+    $scope.$emit('setPageTitle', 'Browse Mods');
+
     // columns for view
     $scope.columns = columnsFactory.modColumns();
     $scope.columnGroups = columnsFactory.modColumnGroups();
+
+    // set help context
+    helpFactory.setHelpContexts($scope, [helpFactory.modsIndex]);
 
     /* helper functions */
     // returns true if the input filter is available

@@ -240,5 +240,16 @@ app.service('objectUtils', function() {
             }
         }
         return a.join(separator || ',');
-    }
+    };
+
+    this.removeProperties = function(obj, shouldRemove) {
+        var newObj = angular.copy(obj);
+        for (var prop in newObj) {
+            if (!newObj.hasOwnProperty(prop)) continue;
+            if (shouldRemove(prop, newObj[prop], newObj)) {
+                delete newObj[prop];
+            }
+        }
+        return newObj;
+    };
 });

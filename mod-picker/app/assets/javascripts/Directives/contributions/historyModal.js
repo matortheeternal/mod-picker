@@ -7,7 +7,10 @@ app.directive('historyModal', function() {
     };
 });
 
-app.controller('historyModalController', function($scope, contributionFactory) {
+app.controller('historyModalController', function($scope, formUtils) {
+    // inherited functions
+    $scope.unfocusHistoryModal = formUtils.unfocusModal($scope.toggleHistoryModal);
+
     $scope.showHistory = function(entry) {
         $scope.activeHistoryEntry = angular.copy($scope.target);
         if (entry) {

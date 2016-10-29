@@ -1,0 +1,3 @@
+{
+  "only": ["submitted", "edited", "reports_count"]
+}

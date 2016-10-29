@@ -24,7 +24,7 @@ app.config(['$stateProvider', function($stateProvider) {
     );
 }]);
 
-app.controller('submitModController', function($scope, $rootScope, backend, modService, modValidationService, scrapeService, pluginService, categoryService, sitesFactory, eventHandlerFactory) {
+app.controller('submitModController', function($scope, $rootScope, backend, modService, modValidationService, scrapeService, pluginService, categoryService, helpFactory, sitesFactory, eventHandlerFactory) {
     // access parent variables
     $scope.currentUser = $rootScope.currentUser;
     $scope.categories = $rootScope.categories;
@@ -43,9 +43,15 @@ app.controller('submitModController', function($scope, $rootScope, backend, modS
         requirements: []
     };
 
+    // set page title
+    $scope.$emit('setPageTitle', 'Submit Mod');
+
     // shared function setup
     eventHandlerFactory.buildMessageHandlers($scope, true);
     $scope.searchMods = modService.searchMods;
+
+    // set help context
+    helpFactory.setHelpContexts($scope, [helpFactory.submitMod]);
 
     // clear messages when user changes the category
     $scope.$watch('mod.categories', function() {
@@ -74,8 +80,17 @@ app.controller('submitModController', function($scope, $rootScope, backend, modS
         }
 
         $scope.startSubmission("Submitting Mod...");
-        modService.submitMod($scope.mod).then(function() {
-            $scope.submissionSuccess("Mod submitted successfully!", "#/mods", "return to the mods index.");
+        modService.submitMod($scope.mod).then(function(data) {
+            $scope.submissionSuccess("Mod submitted successfully!", [
+                { 
+                    link: "#/mod/" + data.id, 
+                    linkLabel: "view the new mod."
+                },
+                {
+                    link: "#/mods", 
+                    linkLabel: "return to the mods index page." 
+                }
+            ]);
         }, function(response) {
             $scope.submissionError("There were errors submitting your mod.", response);
         });

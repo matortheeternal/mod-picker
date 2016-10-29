@@ -1,6 +1,7 @@
 /* tab styling */
 .tabs {
   a {
+    @include transition(background-color 0.2s ease-in-out);
     display: inline-block;
     cursor: pointer;
     color: $action_text_color;

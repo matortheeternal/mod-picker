@@ -8,7 +8,9 @@ class ApplicationController < ActionController::Base
   # Render 401 or 403 as appropriate
 
   rescue_from ::StandardError do |exception|
-    render json: { error: exception.message }, status: 500
+    error_hash = { error: exception.message }
+    error_hash[:backtrace] = exception.backtrace unless Rails.env.production?
+    render json: error_hash, status: 500
   end
 
   rescue_from CanCan::AccessDenied do |exception|

@@ -5,11 +5,16 @@ app.run(function($futureState, indexFactory, filtersFactory) {
     $futureState.futureState(state);
 });
 
-app.controller('modListsController', function($scope, $rootScope, $stateParams, $state, modListService, columnsFactory, filtersFactory, actionsFactory, indexService, indexFactory) {
+app.controller('modListsController', function($scope, $rootScope, $stateParams, $state, modListService, helpFactory, columnsFactory, filtersFactory, actionsFactory, indexService, indexFactory) {
     // get parent variables
     $scope.currentUser = $rootScope.currentUser;
     $scope.currentGame = $rootScope.currentGame;
     $scope.permissions = angular.copy($rootScope.permissions);
+
+    // set page title
+    $scope.$emit('setPageTitle', 'Browse Mod Lists');
+    // set help context
+    helpFactory.setHelpContexts($scope, [helpFactory.indexPage]);
 
     // columns for view
     $scope.columns = columnsFactory.modListColumns(true);

@@ -233,6 +233,35 @@ app.controller('contributionActionsController', function($scope, $rootScope, $ti
         });
     };
 
+    $scope.editNote = function() {
+        $scope.target.newModeratorNote = angular.copy($scope.target.moderator_message);
+    };
+
+    $scope.saveNote = function() {
+        contributionService.updateModeratorNote($scope.modelObj.route, $scope.target.id, $scope.target.newModeratorNote).then(function() {
+            $scope.$emit("successMessage", "Moderator Note added successfully.");
+            $scope.target.moderator_message = $scope.target.newModeratorNote;
+            delete $scope.target.newModeratorNote;
+        }, function(response) {
+            var params = { label: 'Error changing Moderator Note', response: response };
+            $scope.$emit('errorMessage', params);
+        });
+    };
+
+    $scope.discardNote = function() {
+        delete $scope.target.newModeratorNote;
+    };
+
+    $scope.removeModeratorMessage = function() {
+        contributionService.removeModeratorNote($scope.modelObj.route, $scope.target.id).then(function() {
+            $scope.$emit("successMessage", "Moderator Note removed successfully.");
+            delete $scope.target.moderator_message;
+        }, function(response) {
+            var params = { label: 'Error removing Moderator Note', response: response };
+            $scope.$emit('errorMessage', params);
+        });
+    };
+
     $scope.blurDropdown = function() {
         // we have to use a timeout for hiding the dropdown because
         // otherwise we would hide it before the click event on a result
@@ -247,7 +276,7 @@ app.controller('contributionActionsController', function($scope, $rootScope, $ti
         var user = $scope.currentUser;
         if (!user) return;
         var canModerate = $scope.permissions.canModerate;
-        var isSubmitter = user && user.id == $scope.target.submitted_by;
+        var isSubmitter = user && user.id == $scope.target.submitter.id;
         var isCorrector = user && user.id == $scope.target.corrector_id;
         var isLocked = $scope.target.corrector_id;
         // set up permissions
@@ -258,6 +287,8 @@ app.controller('contributionActionsController', function($scope, $rootScope, $ti
         $scope.canEdit = $scope.edit && (canModerate || isCorrector || isSubmitter && !isLocked);
         $scope.canApprove = $scope.approveable && canModerate;
         $scope.canHide = canModerate;
+        $scope.canEditNote = canModerate;
+        $scope.canRemoveNote = canModerate;
     };
 
     // watch user so if we get the user object after rendering actions

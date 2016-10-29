@@ -77,7 +77,7 @@
                     <input type="checkbox" ng-model="mod_list.hidden">
                     Delete
                 </label>
-                <a href="/help/data_policies">
+                <a href="/help/data_policies" target="_blank">
                     <span class="help-tooltip small" title="Checking this box will delete this mod list.  Click for more information &#13;on our data deletion and recovery policies.">
                         <i class="fa fa-question-circle"></i>
                     </span>
@@ -88,8 +88,3 @@
 </div>
 
 <tag-selector active-tags="mod_list.tags" new-tags="newTags" max-tags="10" show-mod-lists-count="true" show-add="!mod_list.lock_tags || editing" can-create="permissions.canCreateTags" show-remove="permissions.canManage && (!mod_list.lock_tags || editing)" save-callback="saveTags" class="wide-tag-selector"></tag-selector>
-
-<div class="action-button-container" ng-if="editing">
-    <input class="btn action-btn" type="submit" value="Save" ng-click="saveChanges()"/>
-    <input class="btn action-btn" type="button" value="Reset" ng-click="discardChanges()"/>
-</div>

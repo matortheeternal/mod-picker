@@ -23,7 +23,7 @@ app.config(['$stateProvider', function($stateProvider) {
     });
 }]);
 
-app.controller('editModController', function($scope, $rootScope, $state, modObject, modService, modLoaderService, modValidationService, userService, tagService, categoryService, sitesFactory, eventHandlerFactory, objectUtils) {
+app.controller('editModController', function($scope, $rootScope, $state, modObject, modService, modLoaderService, modValidationService, userService, tagService, categoryService, helpFactory, sitesFactory, eventHandlerFactory, objectUtils) {
     // get parent variables
     $scope.currentUser = $rootScope.currentUser;
     $scope.categories = $rootScope.categories;
@@ -44,8 +44,14 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
     };
     $scope.analysisValid = true;
 
+    // set page title
+    $scope.$emit('setPageTitle', 'Edit Mod');
+
     // shared function setup
     eventHandlerFactory.buildMessageHandlers($scope, true);
+
+    // set help context
+    helpFactory.setHelpContexts($scope, [helpFactory.editMod]);
 
     // set up the canManageOptions permission
     var author = $scope.mod.mod_authors.find(function(author) {
@@ -147,8 +153,16 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
 
     $scope.displaySuccess = function() {
         if ($scope.imageSuccess && $scope.modSuccess) {
-            $scope.submissionSuccess("Mod updated successfully!", "#/mod/"+$scope.mod.id,
-                "return to the mod page.");
+            $scope.submissionSuccess("Mod updated successfully!", [
+                { 
+                    link: "#/mod/" + $scope.mod.id, 
+                    linkLabel: "return to the mod page."
+                },
+                {
+                    link: "#/mods", 
+                    linkLabel: "return to the mods index page." 
+                }
+            ]);
         }
     };
 });

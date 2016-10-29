@@ -2,7 +2,6 @@ class ModListModsController < ApplicationController
   # POST /mod_list_mods
   def create
     @mod_list_mod = ModListMod.new(mod_list_mod_params)
-    @mod_list_mod.get_index
     authorize! :read, @mod_list_mod.mod
     authorize! :update, @mod_list_mod.mod_list
 
@@ -22,8 +21,10 @@ class ModListModsController < ApplicationController
         l_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("LoadOrderNote", load_order_notes.ids)
 
         # render response
+        # TODO: Don't render current plugins if the plugins tab isn't loaded
         render json: {
             mod_list_mod: @mod_list_mod,
+            mod_list_plugins: @mod_list_mod.current_plugins,
             required_tools: @mod_list_mod.required_tools,
             required_mods: @mod_list_mod.required_mods,
             mod_compatibility_notes: mod_compatibility_notes,

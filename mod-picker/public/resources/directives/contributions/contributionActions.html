@@ -1,3 +1,25 @@
+<div class="moderator-message" ng-if="target.hasOwnProperty('newModeratorNote')">
+    <div class="message-title">
+        {{target.moderator_message ? 'Edit' : 'New'}} Moderator Message
+    </div>
+
+    <textarea ng-model="target.newModeratorNote"></textarea>
+    <div class="action-button-container">
+        <input class="btn" type="submit" value="Save" ng-click="saveNote()"/>
+        <input class="btn" type="button" value="Cancel" ng-click="discardNote()">
+    </div>
+</div>
+
+<div class="moderator-message" ng-if="target.moderator_message && !target.hasOwnProperty('newModeratorNote')">
+    <div class="message-title">
+        Moderator Message
+        <span class="right-item remove-item" ng-if="canRemoveNote" ng-click="removeModeratorMessage()">
+            <i class="fa fa-times" aria-hidden="true"></i>
+        </span>
+    </div>
+    <div class="text-container" marked="target.moderator_message"></div>
+</div>
+
 <div class="actions-container">
     <div class="action-box" ng-if="correctable" tabindex="{{index}}" ng-click="toggleCorrectionsModal(true)">View Corrections</div>
     <div class="action-box" ng-focus="showDropdown = true" ng-blur="blurDropdown()" tabindex="{{index}}">
@@ -10,6 +32,9 @@
             <div class="dropdown-item" ng-if="canReport" ng-click="toggleReportModal(true)">Report</div>
             <div class="dropdown-separator" ng-if="(hasHistory || !agreeable || canReport) && (canEdit || canApprove || canHide)"></div>
             <div class="dropdown-item" ng-if="canEdit" ng-click="edit(target)">Edit</div>
+            <div class="dropdown-item" ng-if="canEditNote" ng-click="editNote()">
+                {{target.moderator_message? "Edit" : "Add"}} Mod Note
+            </div>
             <div class="dropdown-item" ng-if="canApprove && !target.approved" ng-click="approve(true)">Approve</div>
             <div class="dropdown-item" ng-if="canApprove && target.approved" ng-click="approve(false)">Unapprove</div>
             <div class="dropdown-item" ng-if="canHide && !target.hidden" ng-click="hide(true)">Hide</div>

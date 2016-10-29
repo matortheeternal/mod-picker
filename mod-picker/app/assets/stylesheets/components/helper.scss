@@ -1,0 +1,123 @@
+helper {
+  display: block;
+  position: fixed;
+  right: 50px;
+  bottom: 0;
+  z-index: 400;
+
+  .help-contexts {
+    &.ng-enter {
+      @include transition(opacity 0.3s ease-in-out 0.6s);
+      opacity: 0;
+    }
+
+    &.ng-enter.ng-enter-active {
+      opacity: 1;
+    }
+
+    &.ng-leave {
+      @include transition(opacity 0.3s ease-in-out);
+      opacity: 1;
+    }
+
+    &.ng-leave.ng-leave-active {
+      opacity: 0;
+    }
+  }
+
+  .help-context {
+    max-width: 220px;
+    position: relative;
+    margin-bottom: 20px;
+    font-size: 14px;
+    background-color: $secondary_background;
+    border: 1px solid $hard_border_color;
+    border-radius: 4px;
+    padding: 4px;
+
+    &::before {
+      content: "";
+      position: absolute;
+      bottom: -16px;
+      left: $helper_head_offset;
+      border-width: 15px 9px 0;
+      border-style: solid;
+      border-color: $hard_border_color transparent;
+      display: block;
+      width: 0;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: -14px;
+      left: $helper_head_offset + 1px;
+      border-width: 14px 8px 0;
+      border-style: solid;
+      border-color: $secondary_background transparent;
+      display: block;
+      width: 0;
+    }
+
+    .hide-context {
+      float: right;
+      cursor: pointer;
+    }
+  }
+
+  .helper-container {
+    position: relative;
+
+    &.ng-enter {
+      @include transition(margin 0.8s ease-in-out);
+      margin-bottom: -$helper_height;
+    }
+
+    &.ng-enter.ng-enter-active {
+      margin-bottom: 0;
+    }
+
+    &.ng-leave {
+      @include transition(margin 0.8s ease-in-out 0.2s);
+      margin-bottom: 0;
+
+      .hide-helper {
+        display: none;
+      }
+    }
+
+    &.ng-leave.ng-leave-active {
+      margin-bottom: -$helper_height;
+    }
+
+    .hide-helper {
+      position: absolute;
+      top: 2px;
+      right: 24px;
+      cursor: pointer;
+    }
+
+    div.helper {
+      min-width: 220px;
+      min-height: $helper_height;
+      background-image: url($helper_image);
+      background-repeat: no-repeat;
+    }
+  }
+
+  .show-helper {
+    position: absolute;
+    display: block;
+    bottom: 20px;
+    right: 200px - $helper_head_offset;
+    padding-bottom: 8px;
+    color: $action_color;
+    font-size: 36px;
+    cursor: pointer;
+    z-index: -1;
+
+    &.ng-leave {
+      @include transition(opacity 1.0s ease-in-out);
+    }
+  }
+}

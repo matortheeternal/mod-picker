@@ -52,18 +52,20 @@ app.config(['$stateProvider', function($stateProvider) {
     });
 }]);
 
-app.controller('homeController', function($scope, $rootScope, $q, homeService) {
+app.controller('homeController', function($scope, $rootScope, $q, tabsFactory, helpFactory, homeService) {
     $scope.currentUser = $rootScope.currentUser;
     $scope.permissions = angular.copy($rootScope.permissions);
 
-    $scope.tabs = [
-        { name: 'Reviews' },
-        { name: 'Compatibility Notes' },
-        { name: 'Install Order Notes' },
-        { name: 'Load Order Notes' },
-        { name: 'Corrections' }
-    ];
+    // set page title
+    $scope.$emit('setPageTitle', 'Home');
+    // set up tabs
+    $scope.tabs = tabsFactory.buildHomeTabs();
 
+    // set help context
+    var helpContexts = helpFactory.homeContext($scope.currentUser);
+    helpFactory.setHelpContexts($scope, helpContexts);
+
+    // retrieve data
     homeService.retrieveHome().then(function(data) {
         $scope.recent = data.recent;
         $scope.articles = data.articles;

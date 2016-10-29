@@ -1,6 +1,16 @@
 app.service("tabsFactory", function() {
     var factory = this;
 
+    this.buildHomeTabs = function() {
+        return [
+            { name: 'Reviews' },
+            { name: 'Compatibility Notes' },
+            { name: 'Install Order Notes' },
+            { name: 'Load Order Notes' },
+            { name: 'Corrections' }
+        ];
+    };
+
     this.buildUserTabs = function() {
         return [
             { name: 'Social'},

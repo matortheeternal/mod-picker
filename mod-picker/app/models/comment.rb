@@ -1,8 +1,11 @@
 class Comment < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, Reportable, ScopeHelpers, Trackable, BetterJson
+  include Filterable, Sortable, RecordEnhancements, CounterCache, Reportable, ScopeHelpers, Trackable, BetterJson, Dateable
 
   # ATTRIBUTES
   self.per_page = 50
+
+  # DATE COLUMNS
+  date_column :submitted, :edited
 
   # EVENT TRACKING
   track :added, :hidden
@@ -31,6 +34,12 @@ class Comment < ActiveRecord::Base
   belongs_to :parent, :class_name => 'Comment', :foreign_key => 'parent_id', :inverse_of => 'children'
   has_many :children, :class_name => 'Comment', :foreign_key => 'parent_id', :inverse_of => 'parent', :dependent => :destroy
 
+  # COUNTER CACHE
+  counter_cache :children, conditional: { hidden: false }
+  counter_cache_on :submitter, column: 'submitted_comments_count', conditional: { hidden: false }
+  counter_cache_on :commentable, conditional: { hidden: false }
+  counter_cache_on :parent, column: 'children_count', conditional: { hidden: false }
+
   # VALIDATIONS
   validates :submitted_by, :commentable_type, :commentable_id, :text_body, presence: true
   validates :hidden, inclusion: [true, false]
@@ -39,9 +48,7 @@ class Comment < ActiveRecord::Base
   validate :nesting
 
   # CALLBACKS
-  before_save :set_adult, :set_dates
-  after_create :increment_counter_caches
-  before_destroy :decrement_counter_caches
+  before_save :set_adult
 
   def nesting
     parent_id.nil? || parent.parent_id.nil?
@@ -84,53 +91,12 @@ class Comment < ActiveRecord::Base
     end
   end
 
-  def self.sortable_columns
-    {
-        :except => [:parent_id, :submitted_by, :commentable_id, :text_body],
-        :include => {
-            :submitter => {
-                :only => [:username],
-                :include => {
-                    :reputation => {
-                        :only => [:overall]
-                    }
-                }
-            }
-        }
-    }
-  end
-
   # Private methods
   private
-    def set_dates
-      if self.submitted.nil?
-        self.submitted = DateTime.now
-      else
-        self.edited = DateTime.now
-      end
-    end
-
     def set_adult
       if commentable.respond_to?(:has_adult_content)
         self.has_adult_content = commentable.has_adult_content
       end
       true
     end
-
-    def increment_counter_caches
-      submitter.update_counter(:submitted_comments_count, 1)
-      commentable.update_counter(:comments_count, 1)
-      if parent_id.present? && parent.present?
-        parent.update_counter(:children_count, 1)
-      end
-    end
-
-    def decrement_counter_caches
-      submitter.update_counter(:submitted_comments_count, -1)
-      commentable.update_counter(:comments_count, -1)
-      if parent_id.present? && parent.present?
-        parent.update_counter(:children_count, -1)
-      end
-    end
-
 end
