@@ -1,4 +1,4 @@
-<div class="moderator-message" ng-if="target.newModeratorNote">
+<div class="moderator-message" ng-if="target.hasOwnProperty('newModeratorNote')">
     <div class="message-title">
         New Moderator Message
         <span class="right-item remove-item" ng-click="discardNote()">
@@ -13,7 +13,7 @@
     </div>
 </div>
 
-<div class="moderator-message" ng-if="target.moderator_message && !target.newModeratorNote">
+<div class="moderator-message" ng-if="target.moderator_message && !target.hasOwnProperty('newModeratorNote')">
     <div class="message-title">
         Moderator Message
         <span class="right-item remove-item" ng-if="canRemoveNote" ng-click="removeModeratorMessage()">

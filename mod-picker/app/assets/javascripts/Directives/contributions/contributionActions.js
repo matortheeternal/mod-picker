@@ -234,16 +234,14 @@ app.controller('contributionActionsController', function($scope, $rootScope, $ti
     };
 
     $scope.editNote = function() {
-        $scope.target.newModeratorNote = angular.copy($scope.target.moderator_message) || " ";
+        $scope.target.newModeratorNote = angular.copy($scope.target.moderator_message);
     };
 
     $scope.saveNote = function() {
         contributionService.updateModeratorNote($scope.modelObj.route, $scope.target.id, $scope.target.newModeratorNote).then(function() {
             $scope.$emit("successMessage", "Moderator Note added successfully.");
-
-            //update ui if the note is updated successfully on the server
             $scope.target.moderator_message = $scope.target.newModeratorNote;
-            $scope.target.newModeratorNote = null;
+            delete $scope.target.newModeratorNote;
         }, function(response) {
             var params = { label: 'Error changing Moderator Note', response: response };
             $scope.$emit('errorMessage', params);
@@ -251,22 +249,16 @@ app.controller('contributionActionsController', function($scope, $rootScope, $ti
     };
 
     $scope.discardNote = function() {
-        $scope.target.newModeratorNote = null;
+        delete $scope.target.newModeratorNote;
     };
 
     $scope.removeModeratorMessage = function() {
-        var oldMessage = $scope.target.moderator_message;
-
         contributionService.removeModeratorNote($scope.modelObj.route, $scope.target.id).then(function() {
             $scope.$emit("successMessage", "Moderator Note removed successfully.");
-
-            //update ui if the note is successfully removed on the server
-            $scope.target.moderator_message = null;
+            delete $scope.target.moderator_message;
         }, function(response) {
             var params = { label: 'Error removing Moderator Note', response: response };
             $scope.$emit('errorMessage', params);
-
-            $scope.target.moderator_message = oldMessage;
         });
     };
 
