@@ -57,7 +57,10 @@ app.directive('sticky', function($timeout) {
             window.onscroll = function() {
                 toggleSticky(window.scrollY);
             };
-            toggleSticky();
+            $timeout(function() {
+                toggleSticky(window.scrollY);
+            });
+
         }
     }
 });
