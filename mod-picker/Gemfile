@@ -35,8 +35,8 @@ gem 'sidekiq-scheduler', '~> 2.0'
 
 # Use redcarpet for rendering markdown in the help center
 gem 'redcarpet'
-# Use ActiveModel has_secure_password
-# gem 'bcrypt', '~> 3.1.7'
+# Use bcrypt
+gem 'bcrypt-ruby', '3.0.0', :require => 'bcrypt'
 
 # Use will_paginate for pagination
 gem 'will_paginate'
