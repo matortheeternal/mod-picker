@@ -1,22 +1,31 @@
 <div class="primary-nav">
-    <a class="nav-item" ng-if="activeModList" ng-href="#/mod-list/{{activeModList.id}}">
+    <a class="nav-item" ng-click="toggleDropdown($event, 'ModLists')" tabindex="0"
+       ng-blur="blurDropdown('ModLists')">
         <span class="nav-icon">
-            <i class="fa fa-pencil-square-o"></i>
+            <i class="fa fa-list-ol"></i>
         </span>
         <span class="nav-text">
-            <b>Edit your</b>
-            Mod List
+            <b>Manage your</b>
+            Mod Lists
+        </span>
+        <span class="dropdown-icon">
+            <i class="fa fa-chevron-down"></i>
         </span>
     </a>
-    <a class="nav-item" ng-if="!activeModList" ng-click="newModList()">
-        <span class="nav-icon">
+    <div class="nav-dropdown" id="mod-lists-dropdown" ng-show="showModListsDropdown">
+        <a class="nav-category" ng-href="#/mod-list/{{activeModList.id}}" ng-if="activeModList">
             <i class="fa fa-pencil-square-o"></i>
-        </span>
-        <span class="nav-text">
-            <b>Start a new</b>
-            Mod List
-        </span>
-    </a>
+            Edit Active Mod List
+        </a>
+        <a class="nav-category" ng-click="newModList()">
+            <i class="fa fa-plus-square"></i>
+            Start A New Mod List
+        </a>
+        <a class="nav-category" href="#/settings/mod-lists">
+            <i class="fa fa-briefcase"></i>
+            View Your Mod Lists
+        </a>
+    </div>
     <a class="nav-item" ng-click="toggleDropdown($event, 'Contributions')" tabindex="0"
        ng-blur="blurDropdown('Contributions')">
         <span class="nav-icon">
