@@ -74,9 +74,19 @@ app.service('listMetaFactory', function($q, $timeout, modListService, categorySe
 
         // ADDING NEW ITEMS
         var addNewLabel = 'addNew' + capLabel;
+        var addNewItemLabel = addNewLabel + 'Item';
         var newModListItemKey = 'newModList' + capLabel;
         var mod_list_item_key = 'mod_list_' + label;
         var itemAddedMessage = dataKey + 'Added';
+
+        $scope[addNewItemLabel] = function(modListItem) {
+            associateCategories(modListItem);
+            $scope.mod_list[pluralLabel].push(modListItem);
+            $scope.model[pluralLabel].push(modListItem);
+            $scope.originalModList[pluralLabel].push(angular.copy(modListItem));
+            incrementCounter();
+            $scope.$broadcast('updateItems');
+        };
 
         $scope[addNewLabel] = function(itemId) {
             var mod_list_item = {};
@@ -86,16 +96,11 @@ app.service('listMetaFactory', function($q, $timeout, modListService, categorySe
 
             modListService[newModListItemKey](mod_list_item).then(function(data) {
                 var modListItem = data[mod_list_item_key];
-                associateCategories(modListItem);
-                $scope.mod_list[pluralLabel].push(modListItem);
-                $scope.model[pluralLabel].push(modListItem);
-                $scope.originalModList[pluralLabel].push(angular.copy(modListItem));
-                incrementCounter();
+                $scope[addNewItemLabel](modListItem);
+                customCallback(addNewLabel, modListItem);
 
                 // update modules
                 $rootScope.$broadcast(itemAddedMessage, data);
-                $scope.$broadcast('updateItems');
-                customCallback(addNewLabel, modListItem);
 
                 // success message
                 var name = getItemName(modListItem);

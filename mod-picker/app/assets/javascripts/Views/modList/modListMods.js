@@ -80,13 +80,15 @@ app.controller('modListModsController', function($scope, $rootScope, $timeout, $
 
     // CUSTOM CALLBACKS
     $scope.recoverModCallback = $scope.recoverModOptions;
-    $scope.addNewModCallback = $scope.addDefaultModOptions;
     $scope.removeModCallback = $scope.removeActiveModOptions;
 
     // EVENT TRIGGERS
     $scope.$on('removeMod', function(event, modId) {
         var foundMod = $scope.findMod(modId);
         if (foundMod) $scope.removeMod(foundMod);
+    });
+    $scope.$on('modAdded', function(event, data) {
+        $scope.addDefaultModOptions(data.mod_list_mod);
     });
     $scope.$on('modRemoved', function(event, modId) {
         $scope.removedModIds.push(modId);

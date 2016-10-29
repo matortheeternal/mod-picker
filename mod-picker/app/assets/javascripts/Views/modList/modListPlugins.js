@@ -100,11 +100,6 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, catego
 
     // PLUGINS STORE HELPER FUNCTIONS
     $scope.togglePlugin = function(pluginItem) {
-        /* 
-        * adds plugin on TRUE because togglePlugin is called on a checkbox input that changes the plugin's
-        * active state BEFORE calling this function. i.e if active ==true then user just toggled
-        * from false -> true and wants the plugin added and vice versa
-        */
         if (pluginItem.active) {
             $scope.addPlugin(pluginItem.id);
         } else {
@@ -132,6 +127,9 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, catego
     // event triggers
     $scope.$on('removeItem', function(event, modListPlugin) {
         $scope.removePlugin(modListPlugin);
+    });
+    $scope.$on('modAdded', function(event, data) {
+        data.mod_list_plugins.forEach($scope.addNewPluginItem);
     });
     $scope.$on('modOptionRemoved', function(event, modOptionId) {
         var model = $scope.model.plugins;
