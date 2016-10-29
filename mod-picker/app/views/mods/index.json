@@ -1,5 +1,8 @@
 {
   "except": ["game_id", "submitted_by", "edited_by", "disallow_contributions", "disable_reviews", "lock_tags"],
+  "include": {
+    "author_users": {}
+  },
   "conditional_include": [{
     "include": {
       "nexus_infos": {}
