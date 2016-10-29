@@ -6,7 +6,7 @@ app.directive('sticky', function($timeout) {
         },
         link: function(scope, element, attrs) {
             var $placeholder, $elem = element[0];
-            var placeholderHeight, phTop, top;
+            var placeholderHeight, phBottom, top;
             var fixed = false;
             var stickBottom = scope.stickyType === 'bottom';
 
@@ -27,7 +27,6 @@ app.directive('sticky', function($timeout) {
                 $placeholder.style.height = placeholderHeight + 'px';
                 $elem.parentElement.appendChild($placeholder);
                 $elem.classList.add('sticky');
-                phTop = $placeholder.offsetTop;
             };
 
             var fixHeightDiff = function(heightDiff) {
@@ -53,9 +52,10 @@ app.directive('sticky', function($timeout) {
                 var bottom = $elem.offsetTop + $elem.offsetHeight;
                 if (fixed) {
                     // unfix if we are at or below the top of the element
-                    if (scrollPos >= phTop) unstick();
+                    if (scrollPos >= phBottom) unstick();
                 } else if (scrollPos < bottom) {
                     stick();
+                    phBottom = bottom;
                 }
             };
 
