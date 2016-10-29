@@ -38,9 +38,13 @@
 }
 
 .tabs-column {
-  padding: 20px 0;
+  padding: 20px 0 20px 20px;
 
   .section-title {
     font-size: 20px;
   }
+}
+
+.mod-list-tabs-column {
+  padding-left: 0;
 }
