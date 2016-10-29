@@ -1,7 +1,7 @@
 app.directive('userNotifications', function(formUtils) {
     return {
         restrict: 'E',
-        templateUrl: '/resources/directives/shared/userNotifications.html',
+        templateUrl: '/resources/directives/base/userNotifications.html',
         scope: {
             notifications: '='
         },

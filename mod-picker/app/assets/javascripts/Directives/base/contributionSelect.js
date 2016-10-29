@@ -2,7 +2,7 @@ app.directive('contributionSelect', function(formUtils) {
     return {
         priority: 100,
         restrict: 'E',
-        templateUrl: '/resources/directives/shared/contributionSelect.html',
+        templateUrl: '/resources/directives/base/contributionSelect.html',
         scope: false,
         link: formUtils.hideWhenDocumentClicked('showContributions'),
         controller: 'contributionSelectController'

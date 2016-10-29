@@ -1,7 +1,7 @@
 app.directive('notification', function() {
     return {
         restrict: 'E',
-        templateUrl: '/resources/directives/shared/notification.html',
+        templateUrl: '/resources/directives/base/notification.html',
         scope: {
             notification: '=?',
             showCreated: '=?'

@@ -2,7 +2,7 @@ app.directive('gameSelect', function(formUtils) {
     return {
         priority: 100,
         restrict: 'E',
-        templateUrl: '/resources/directives/shared/gameSelect.html',
+        templateUrl: '/resources/directives/base/gameSelect.html',
         scope: {
             games: '=',
             selectedGame: '='

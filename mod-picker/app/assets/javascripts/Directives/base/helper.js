@@ -1,7 +1,7 @@
 app.directive('helper', function() {
     return {
         restrict: 'E',
-        templateUrl: '/resources/directives/shared/helper.html',
+        templateUrl: '/resources/directives/base/helper.html',
         scope: false,
         controller: 'helperController'
     }
