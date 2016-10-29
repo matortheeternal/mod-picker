@@ -76,7 +76,10 @@ class ModListMod < ActiveRecord::Base
 
     def add_default_mod_options
       mod.mod_options.default.each do |mod_option|
-        ModListModOption.create!(mod_list_mod_id: id, mod_option_id: mod_option.id)
+        mod_list_mod_option = ModListModOption.create!({
+            mod_list_mod_id: id, mod_option_id: mod_option.id
+        })
+        mod_list_mod_option.add_plugins
       end
     end
 
