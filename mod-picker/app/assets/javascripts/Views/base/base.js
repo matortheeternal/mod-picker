@@ -50,11 +50,6 @@ app.controller('baseController', function($scope, $rootScope, $state, $window, $
         creditElement.className = '';
     };
 
-    // user selected an option from the my contributions dropdown
-    $scope.navigateTo = function(newLocation) {
-        $window.location.hash = newLocation;
-    };
-
     // toggle navbar dropdowns
     $scope.toggleDropdown = function($event, key) {
         var showKey = 'show' + key + 'Dropdown';
