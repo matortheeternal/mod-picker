@@ -57,9 +57,16 @@
 <messages></messages>
 
 <div class="page-container tabs-column">
-    <tabs tabs='tabs' class="secondary-tabs"></tabs>
+    <tabs tabs="tabs" class="secondary-tabs"></tabs>
     <div class="tab mod-list-tab box-shadow">
         <tab-views></tab-views>
+    </div>
+
+    <div class="action-button-container" ng-if="editing && tabEditable">
+        <div class="page-container">
+            <input class="btn action-btn" type="submit" value="Save" ng-click="saveChanges()"/>
+            <input class="btn action-btn" type="button" value="Reset" ng-click="discardChanges()"/>
+        </div>
     </div>
 </div>
 
