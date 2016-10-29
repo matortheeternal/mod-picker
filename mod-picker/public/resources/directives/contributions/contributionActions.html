@@ -1,15 +1,12 @@
 <div class="moderator-message" ng-if="target.hasOwnProperty('newModeratorNote')">
     <div class="message-title">
-        New Moderator Message
-        <span class="right-item remove-item" ng-click="discardNote()">
-            <i class="fa fa-times" aria-hidden="true"></i>
-        </span>
+        {{target.moderator_message ? 'Edit' : 'New'}} Moderator Message
     </div>
 
-    <text-area data="target.newModeratorNote" ng-refresh="updateMDE" class="mod-note-text-area"></text-area>
+    <textarea ng-model="target.newModeratorNote"></textarea>
     <div class="action-button-container">
-        <input class="btn action-btn" type="submit" value="Submit" ng-click="saveNote()"/>
-        <input class="btn action-btn" type="button" value="Discard" ng-click="discardNote()">
+        <input class="btn" type="submit" value="Save" ng-click="saveNote()"/>
+        <input class="btn" type="button" value="Cancel" ng-click="discardNote()">
     </div>
 </div>
 

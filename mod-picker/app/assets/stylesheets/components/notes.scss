@@ -195,6 +195,15 @@
           margin: 0 2px;
         }
       }
+
+      textarea {
+        width: 100%;
+        resize: vertical;
+        border: 0;
+        background-color: transparent;
+        padding: 10px;
+        font: inherit;
+      }
     }
 
     .actions-container {
