@@ -113,7 +113,7 @@ app.config(['$stateProvider', function($stateProvider) {
     })
 }]);
 
-app.controller('modListController', function($scope, $rootScope, $q, $state, $stateParams, $timeout, modListObject, modListService, objectUtils, tabsFactory, baseFactory, eventHandlerFactory, listUtils) {
+app.controller('modListController', function($scope, $rootScope, $q, $state, $stateParams, $timeout, modListObject, modListService, objectUtils, helpFactory, tabsFactory, baseFactory, eventHandlerFactory, listUtils) {
     // inherited variables
     $scope.currentUser = $rootScope.currentUser;
     $scope.activeModList = $rootScope.activeModList;
@@ -202,6 +202,10 @@ app.controller('modListController', function($scope, $rootScope, $q, $state, $st
         var uneditableTabs = ["Comments", "Analysis"];
         $scope.tabEditable = uneditableTabs.indexOf(tabName) == -1;
     });
+
+    // set help context
+    var helpContexts = helpFactory.modListContext($scope.mod_list, $scope.permissions.canManage, $scope.isActive);
+    helpFactory.setHelpContexts($scope, helpContexts);
 
     // HEADER RELATED LOGIC
     $scope.starModList = function() {

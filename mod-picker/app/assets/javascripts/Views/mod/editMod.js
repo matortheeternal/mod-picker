@@ -23,7 +23,7 @@ app.config(['$stateProvider', function($stateProvider) {
     });
 }]);
 
-app.controller('editModController', function($scope, $rootScope, $state, modObject, modService, modLoaderService, modValidationService, userService, tagService, categoryService, sitesFactory, eventHandlerFactory, objectUtils) {
+app.controller('editModController', function($scope, $rootScope, $state, modObject, modService, modLoaderService, modValidationService, userService, tagService, categoryService, helpFactory, sitesFactory, eventHandlerFactory, objectUtils) {
     // get parent variables
     $scope.currentUser = $rootScope.currentUser;
     $scope.categories = $rootScope.categories;
@@ -49,6 +49,9 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
 
     // shared function setup
     eventHandlerFactory.buildMessageHandlers($scope, true);
+
+    // set help context
+    helpFactory.setHelpContexts($scope, [helpFactory.editMod]);
 
     // set up the canManageOptions permission
     var author = $scope.mod.mod_authors.find(function(author) {

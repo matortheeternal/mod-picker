@@ -6,8 +6,8 @@ app.config(['$stateProvider', function($stateProvider) {
     })
 }]);
 
-app.controller('notificationsController', function($scope, $rootScope, notificationService, notificationsFactory) {
-    notificationsFactory.setCurrentUserID($rootScope.currentUser.id);
+app.controller('notificationsController', function($scope, $rootScope, notificationService, helpFactory, notificationsFactory) {
+    // initialize local variables
     $scope.errors = {};
     $scope.pages = {
         notifications: {}
@@ -15,7 +15,13 @@ app.controller('notificationsController', function($scope, $rootScope, notificat
 
     // set page title
     $scope.$emit('setPageTitle', 'Notifications');
+    // set help context
+    helpFactory.setHelpContexts($scope, [helpFactory.notifications]);
 
+    // prepare notifications factory
+    notificationsFactory.setCurrentUserID($rootScope.currentUser.id);
+
+    // data retrieval
     $scope.retrieveNotifications = function(page) {
         var options = {
             page: page || 1

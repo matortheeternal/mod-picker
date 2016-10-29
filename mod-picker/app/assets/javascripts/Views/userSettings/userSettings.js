@@ -62,7 +62,7 @@ app.config(['$stateProvider', function($stateProvider) {
     });
 }]);
 
-app.controller('userSettingsController', function($scope, $rootScope, $q, userObject, userSettingsService, themesService, eventHandlerFactory, tabsFactory, objectUtils) {
+app.controller('userSettingsController', function($scope, $rootScope, $q, userObject, userSettingsService, themesService, helpFactory, eventHandlerFactory, tabsFactory, objectUtils) {
     // inherited variables
     $scope.currentUser = $rootScope.currentUser;
     $scope.activeModList = $rootScope.activeModList;
@@ -84,6 +84,9 @@ app.controller('userSettingsController', function($scope, $rootScope, $q, userOb
 
     // shared function setup
     eventHandlerFactory.buildMessageHandlers($scope, true);
+
+    // set help context
+    helpFactory.setHelpContexts($scope, [helpFactory.userSettings]);
 
     // resets password inputs
     $scope.resetPasswordInputs = function() {

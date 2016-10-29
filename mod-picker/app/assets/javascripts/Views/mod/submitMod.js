@@ -24,7 +24,7 @@ app.config(['$stateProvider', function($stateProvider) {
     );
 }]);
 
-app.controller('submitModController', function($scope, $rootScope, backend, modService, modValidationService, scrapeService, pluginService, categoryService, sitesFactory, eventHandlerFactory) {
+app.controller('submitModController', function($scope, $rootScope, backend, modService, modValidationService, scrapeService, pluginService, categoryService, helpFactory, sitesFactory, eventHandlerFactory) {
     // access parent variables
     $scope.currentUser = $rootScope.currentUser;
     $scope.categories = $rootScope.categories;
@@ -49,6 +49,9 @@ app.controller('submitModController', function($scope, $rootScope, backend, modS
     // shared function setup
     eventHandlerFactory.buildMessageHandlers($scope, true);
     $scope.searchMods = modService.searchMods;
+
+    // set help context
+    helpFactory.setHelpContexts($scope, [helpFactory.submitMod]);
 
     // clear messages when user changes the category
     $scope.$watch('mod.categories', function() {
