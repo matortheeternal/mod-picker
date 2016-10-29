@@ -10,25 +10,38 @@ app.directive('sticky', function($timeout) {
             var fixed = false;
             var stickBottom = scope.stickyType === 'bottom';
 
+            var unstick = function() {
+                fixed = false;
+                if ($placeholder) $placeholder.remove();
+                $elem.classList.remove('sticky');
+            };
+
+            var stick = function() {
+                fixed = true;
+                placeholderHeight = $elem.offsetHeight;
+                $placeholder = document.createElement('div');
+                $placeholder.style.height = placeholderHeight + 'px';
+                $elem.parentElement.appendChild($placeholder);
+                $elem.classList.add('sticky');
+                phTop = $placeholder.offsetTop;
+            };
+
+            var fixHeightDiff = function(heightDiff) {
+                if (heightDiff != 0) window.scrollBy(0, -heightDiff);
+            };
+
             var toggleStickyTop = function(scrollPos) {
                 var top = $elem.offsetTop;
                 if (fixed) {
-                    // unfix if we are at or above the top of the element + the difference in the placeholder and the element's height
+                    // unfix if we are at or above the top of the element + the
+                    // difference in the placeholder and the element's height
                     var heightDiff = placeholderHeight - $elem.offsetHeight;
                     if (scrollPos <= top + heightDiff) {
-                        fixed = false;
-                        if ($placeholder) $placeholder.remove();
-                        if (heightDiff != 0) window.scrollBy(0, -heightDiff);
-                        $elem.classList.remove('sticky');
+                        fixHeightDiff(heightDiff);
+                        unstick();
                     }
                 } else if (scrollPos > top) {
-                    fixed = true;
-                    placeholderHeight = $elem.offsetHeight;
-                    $placeholder = document.createElement('div');
-                    $placeholder.style.height = placeholderHeight + 'px';
-                    $elem.parentElement.appendChild($placeholder);
-                    phTop = $placeholder.offsetTop;
-                    $elem.classList.add('sticky');
+                    stick();
                 }
             };
 
@@ -37,19 +50,9 @@ app.directive('sticky', function($timeout) {
                 var bottom = $elem.offsetTop + $elem.offsetHeight;
                 if (fixed) {
                     // unfix if we are at or below the top of the element
-                    if (scrollPos >= phTop) {
-                        fixed = false;
-                        if ($placeholder) $placeholder.remove();
-                        $elem.classList.remove('sticky');
-                    }
+                    if (scrollPos >= phTop) unstick();
                 } else if (scrollPos < bottom) {
-                    fixed = true;
-                    placeholderHeight = $elem.offsetHeight;
-                    $placeholder = document.createElement('div');
-                    $placeholder.style.height = placeholderHeight + 'px';
-                    $elem.parentElement.appendChild($placeholder);
-                    phTop = $placeholder.offsetTop;
-                    $elem.classList.add('sticky');
+                    stick();
                 }
             };
 
@@ -61,6 +64,10 @@ app.directive('sticky', function($timeout) {
                 toggleSticky(window.scrollY);
             });
 
+            // destroy placeholder on the $destroy event
+            scope.$on('$destroy', function() {
+                if (fixed) unstick();
+            });
         }
     }
 });
