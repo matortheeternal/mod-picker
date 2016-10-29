@@ -56,13 +56,6 @@
             </label>
         </div>
 
-        <div class="message-input" ng-if="permissions.canModerate">
-            <label>
-                <div>Moderator Message</div>
-                <input type="text" ng-model="activeCompatibilityNote.moderator_message" maxlength="255">
-            </label>
-        </div>
-
         <div class="action-button-container">
             <input class="btn action-btn" type="submit" value="Submit" ng-click="saveCompatibilityNote()" ng-disabled="!activeCompatibilityNote.valid" title="{{activeCompatibilityNote.valid ? 'Submit your compatibility note' : 'Your compatibility note is either too short or incomplete.'}}"/>
             <input class="btn action-btn" type="button" value="Discard" ng-click="discardCompatibilityNote()">

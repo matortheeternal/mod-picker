@@ -40,13 +40,6 @@
             </label>
         </div>
 
-        <div class="message-input" ng-if="permissions.canModerate">
-            <label>
-                <div>Moderator Message</div>
-                <input type="text" ng-model="activeLoadOrderNote.moderator_message" maxlength="255">
-            </label>
-        </div>
-
         <div class="action-button-container">
             <input class="btn action-btn" type="submit" value="Submit" ng-click="saveLoadOrderNote()" ng-disabled="!activeLoadOrderNote.valid" title="{{activeLoadOrderNote.valid ? 'Submit your load order note' : 'Your load order note is either too short or incomplete.'}}"/>
             <input class="btn action-btn" type="button" value="Discard" ng-click="discardLoadOrderNote()">
