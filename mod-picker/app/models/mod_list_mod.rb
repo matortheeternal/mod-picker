@@ -68,6 +68,10 @@ class ModListMod < ActiveRecord::Base
     self.index = (is_utility ? mod_list.tools_count : mod_list.mods_count) + 1
   end
 
+  def current_plugins
+    mod_list.mod_list_plugins.where(plugin_id: mod.plugins.ids)
+  end
+
   private
     def set_index_and_is_utility
       self.is_utility = mod.is_utility
