@@ -30,7 +30,7 @@ app.config(['$stateProvider', function($stateProvider) {
     })
 }]);
 
-app.controller('baseController', function($scope, $rootScope, $state, $window, $timeout, currentUser, activeModList, games, currentGame, categories, categoryPriorities, userService, modListService) {
+app.controller('baseController', function($scope, $rootScope, $state, $window, $timeout, currentUser, activeModList, games, currentGame, categories, categoryPriorities, userService) {
     // shared variables - used on multiple states.  These have to stored on the
     // $rootScope else we can't modify them for all states
     $rootScope.currentUser = currentUser;
@@ -48,44 +48,6 @@ app.controller('baseController', function($scope, $rootScope, $state, $window, $
         var afterElement = window.getComputedStyle(creditElement, ':before');
         $scope.creditLink = afterElement.getPropertyValue('content').slice(1, -1);
         creditElement.className = '';
-    };
-
-    // toggle navbar dropdowns
-    $scope.toggleDropdown = function($event, key) {
-        var showKey = 'show' + key + 'Dropdown';
-        $scope[showKey] = !$scope[showKey];
-        if (!$scope[showKey]) {
-            $event.currentTarget.blur();
-        }
-    };
-    $scope.blurDropdown = function(key) {
-        var showKey = 'show' + key + 'Dropdown';
-        $timeout(function() {
-            $scope[showKey] = false;
-        }, 250);
-    };
-
-    // user selected to start a new mod list
-    $scope.newModList = function() {
-        var mod_list = {
-            game_id: window._current_game_id,
-            name: $rootScope.currentUser.username + "'s Mod List",
-            // TODO: Should have a default description set on the backend
-            description: "A brand new mod list!"
-        };
-
-        modListService.newModList(mod_list, true).then(function(data) {
-            $rootScope.activeModList = data.mod_list;
-            $state.go('base.mod-list', {modListId: data.mod_list.id});
-        }, function(response) {
-            $state.get('base.error').error = {
-                text: 'Error creating new mod list.',
-                response: response,
-                stateName: 'base',
-                stateUrl: window.location.hash
-            };
-            $state.go('base.error');
-        });
     };
 
     //reload when the user object is changed in the settings
@@ -140,11 +102,4 @@ app.controller('baseController', function($scope, $rootScope, $state, $window, $
 
     $scope.loadArtistCredit();
     $scope.setPageTitle();
-});
-
-app.controller('searchController', function($scope, $state) {
-    $scope.loading = false;
-    $scope.processSearch = function() {
-        $state.go("base.mods", {q: $scope.search}, {notify: true});
-    };
 });
