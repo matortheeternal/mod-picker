@@ -57,9 +57,10 @@ app.directive('sticky', function($timeout) {
             };
 
             var toggleSticky = stickBottom ? toggleStickyBottom : toggleStickyTop;
-            window.onscroll = function() {
+            var onScrollEvent = function() {
                 toggleSticky(window.scrollY);
             };
+            window.addEventListener('scroll', onScrollEvent);
             $timeout(function() {
                 toggleSticky(window.scrollY);
             });
@@ -67,6 +68,7 @@ app.directive('sticky', function($timeout) {
             // destroy placeholder on the $destroy event
             scope.$on('$destroy', function() {
                 if (fixed) unstick();
+                window.removeEventListener('scroll', onScrollEvent);
             });
         }
     }
