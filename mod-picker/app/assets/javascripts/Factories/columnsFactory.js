@@ -179,7 +179,7 @@ app.service('columnsFactory', function() {
                 visibility: false,
                 label: "Favorites",
                 data: {
-                    labe: "lover_infos.followers_count",
+                    lab: "lover_infos.followers_count",
                     workshop: "workshop_infos.favorites"
                 }
             },
