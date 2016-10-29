@@ -6,9 +6,13 @@ app.directive('sticky', function($timeout) {
         },
         link: function(scope, element, attrs) {
             var $placeholder, $elem = element[0];
-            var placeholderHeight, phTop;
+            var placeholderHeight, phTop, top;
             var fixed = false;
             var stickBottom = scope.stickyType === 'bottom';
+
+            $timeout(function() {
+                top = $elem.getBoundingClientRect().top;
+            });
 
             var unstick = function() {
                 fixed = false;
@@ -31,7 +35,6 @@ app.directive('sticky', function($timeout) {
             };
 
             var toggleStickyTop = function(scrollPos) {
-                var top = $elem.offsetTop;
                 if (fixed) {
                     // unfix if we are at or above the top of the element + the
                     // difference in the placeholder and the element's height
