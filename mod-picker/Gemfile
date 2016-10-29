@@ -85,7 +85,7 @@ group :development do
   gem 'capistrano', '~> 3.6.1'
   gem 'capistrano-rails', '~> 1.1', require: false
   gem 'capistrano-maintenance', '~> 1.0', require: false
-  gem 'capistrano-rvm', require: false
+  gem 'capistrano-rbenv', '~> 2.0', require: false
   gem 'capistrano-passenger', require: false
   gem 'capistrano-sidekiq', require: false
   gem 'capistrano-ssh-doctor', '~> 1.0', require: false

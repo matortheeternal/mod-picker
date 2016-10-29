@@ -50,7 +50,8 @@ set :rails_env, 'production'
 # Global options
 # --------------
 set :ssh_options, {
-  port: 48993
+  port: 48993,
+  forward_agent: true,
 }
 #
 # The server-based syntax can be used to override options:

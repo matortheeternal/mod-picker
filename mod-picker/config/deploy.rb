@@ -32,8 +32,12 @@ set :linked_dirs, %w( log tmp/pids tmp/cache tmp/sessions tmp/sockets vendor/bun
 # Default value for keep_releases is 5
 # set :keep_releases, 5
 
-set :rvm_type, :user
-set :rvm_roles, [:app]
+set :rbenv_type, :system
+set :rbenv_ruby, File.read('.ruby-version').strip
+
+set :rbenv_prefix, "RBENV_ROOT=#{fetch(:rbenv_path)} RBENV_VERSION=#{fetch(:rbenv_ruby)} #{fetch(:rbenv_path)}/bin/rbenv exec"
+set :rbenv_map_bins, %w{rake gem bundle ruby rails sidekiq sidekiqctl}
+set :rbenv_roles, :app
 
 SSHKit.config.umask = "0002"
 
