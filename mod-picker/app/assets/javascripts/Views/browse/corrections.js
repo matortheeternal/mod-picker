@@ -10,6 +10,9 @@ app.controller('correctionsController', function($scope, $rootScope, $stateParam
     $scope.currentUser = $rootScope.currentUser;
     $scope.permissions = $rootScope.permissions;
 
+    // set page title
+    $scope.$emit('setPageTitle', 'Browse Corrections');
+
     // sort options for view
     $scope.sortOptions = sortFactory.correctionSortOptions();
 

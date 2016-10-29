@@ -13,6 +13,9 @@ app.controller('modsController', function($scope, $rootScope, $q, $stateParams, 
     $scope.activeModList = $rootScope.activeModList;
     $scope.permissions = angular.copy($rootScope.permissions);
 
+    // set page title
+    $scope.$emit('setPageTitle', 'Browse Mods');
+
     // columns for view
     $scope.columns = columnsFactory.modColumns();
     $scope.columnGroups = columnsFactory.modColumnGroups();

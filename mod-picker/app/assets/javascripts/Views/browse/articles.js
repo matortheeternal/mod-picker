@@ -11,6 +11,9 @@ app.controller('articlesIndexController', function($scope, $rootScope, $statePar
     $scope.currentUser = $rootScope.currentUser;
     $scope.permissions = $rootScope.permissions;
 
+    // set page title
+    $scope.$emit('setPageTitle', 'Browse Articles');
+
     // sort options for view
     $scope.sortOptions = sortFactory.articleSortOptions();
 

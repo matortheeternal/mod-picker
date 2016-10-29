@@ -1,5 +1,8 @@
 class BaseReport < ActiveRecord::Base
-  include RecordEnhancements, Filterable, Sortable, ScopeHelpers, BetterJson
+  include RecordEnhancements, CounterCache, Filterable, Sortable, ScopeHelpers, BetterJson, Dateable
+
+  # DATE COLUMNS
+  date_column :submitted, :edited
 
   # SCOPES
   polymorphic_scope :reportable
@@ -24,24 +27,9 @@ class BaseReport < ActiveRecord::Base
   belongs_to :reportable, :polymorphic => true
   has_many :reports, :inverse_of => 'base_report', :dependent => :destroy
 
+  # COUNTER CACHE
+  counter_cache :reports
+
   # VALIDATIONS
   validates :reportable_id, :reportable_type, presence: true
-
-  # CALLBACKS
-  before_save :set_dates
-
-  def self.sortable_columns
-    {
-        :only => [:submitted, :edited, :reports_count]
-    }
-  end
-
-  private
-    def set_dates
-      if self.submitted.nil?
-        self.submitted = DateTime.now
-      else
-        self.edited = DateTime.now
-      end
-    end
 end

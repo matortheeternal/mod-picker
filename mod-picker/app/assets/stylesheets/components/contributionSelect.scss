@@ -1,0 +1,18 @@
+contribution-select {
+  position: relative;
+
+  .dropdown {
+    cursor: default;
+    width: 150px;
+    padding: 10px;
+    left: -28px;
+    z-index: 200;
+    text-align: center;
+    background-color: $secondary_background;
+    font-size: 14px;
+
+    a {
+      display: block;
+    }
+  }
+}

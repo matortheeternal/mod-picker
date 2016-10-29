@@ -12,6 +12,9 @@ app.controller('pluginsController', function($scope, $rootScope, $stateParams, $
     $scope.categories = $rootScope.categories;
     $scope.permissions = angular.copy($rootScope.permissions);
 
+    // set page title
+    $scope.$emit('setPageTitle', 'Browse Plugins');
+
     // columns for view
     $scope.columns = columnsFactory.pluginColumns(true);
     $scope.columnGroups = columnsFactory.pluginColumnGroups();

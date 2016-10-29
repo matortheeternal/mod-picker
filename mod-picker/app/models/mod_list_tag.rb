@@ -1,5 +1,5 @@
 class ModListTag < ActiveRecord::Base
-  include Trackable, BetterJson
+  include Trackable, BetterJson, CounterCache
 
   # EVENT TRACKING
   track :added
@@ -13,25 +13,13 @@ class ModListTag < ActiveRecord::Base
   belongs_to :submitter, :class_name => 'User', :inverse_of => 'mod_list_tags', :foreign_key => 'submitted_by'
   has_one :mod_list_submitter, :through => :mod_list, :source => 'submitter'
 
+  # COUNTER CACHE
+  counter_cache_on :mod_list, column: 'tags_count'
+  counter_cache_on :tag, column: 'mod_lists_count'
+  counter_cache_on :submitter
+
   # VALIDATIONS
   validates :mod_list_id, :tag_id, :submitted_by, presence: true
   # can only use a tag on a given mod list once
   validates :tag_id, uniqueness: { scope: :mod_list_id, :message => "This tag already exists on this mod list." }
-
-  # CALLBACKS
-  after_create :increment_counters
-  before_destroy :decrement_counters
-
-  private
-    def increment_counters
-      self.mod_list.update_counter(:tags_count, 1)
-      self.tag.update_counter(:mod_lists_count, 1)
-      self.submitter.update_counter(:mod_list_tags_count, 1)
-    end
-
-    def decrement_counters
-      self.mod_list.update_counter(:tags_count, -1)
-      self.tag.update_counter(:mod_lists_count, -1)
-      self.submitter.update_counter(:mod_list_tags_count, -1)
-    end
 end

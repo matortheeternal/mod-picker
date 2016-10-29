@@ -43,6 +43,9 @@ app.controller('submitModController', function($scope, $rootScope, backend, modS
         requirements: []
     };
 
+    // set page title
+    $scope.$emit('setPageTitle', 'Submit Mod');
+
     // shared function setup
     eventHandlerFactory.buildMessageHandlers($scope, true);
     $scope.searchMods = modService.searchMods;
@@ -74,8 +77,17 @@ app.controller('submitModController', function($scope, $rootScope, backend, modS
         }
 
         $scope.startSubmission("Submitting Mod...");
-        modService.submitMod($scope.mod).then(function() {
-            $scope.submissionSuccess("Mod submitted successfully!", "#/mods", "return to the mods index.");
+        modService.submitMod($scope.mod).then(function(data) {
+            $scope.submissionSuccess("Mod submitted successfully!", [
+                { 
+                    link: "#/mod/" + data.id, 
+                    linkLabel: "view the new mod."
+                },
+                {
+                    link: "#/mods", 
+                    linkLabel: "return to the mods index page." 
+                }
+            ]);
         }, function(response) {
             $scope.submissionError("There were errors submitting your mod.", response);
         });

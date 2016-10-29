@@ -15,22 +15,7 @@
                         <user-notifications notifications="currentUser.recent_notifications"></user-notifications>
                     </li>
                     <li>
-                        <a class="inverse-link">
-                            <form id="contribution-select-form">
-                                <select class="contribution-selector" ng-model="newLocation" ng-change="navigateTo(newLocation); newLocation = ''">
-                                    <option selected disabled hidden style='display: none' value=''></option>
-                                    <option value="/settings/mods">Mods</option>
-                                    <option value="/settings/mod-lists">Mod Lists</option>
-                                    <option value="/comments?s={{currentUser.username}}">Comments</option>
-                                    <option value="/reviews?s={{currentUser.username}}">Reviews</option>
-                                    <option value="/compatibility-notes?s={{currentUser.username}}">Compatibility Notes</option>
-                                    <option value="/install-order-notes?s={{currentUser.username}}">Install Order Notes</option>
-                                    <option value="/load-order-notes?s={{currentUser.username}}">Load Order Notes</option>
-                                    <option value="/corrections?s={{currentUser.username}}">Corrections</option>
-                                </select>
-                                <span class="contributions-label">My Contributions</span>
-                            </form>
-                        </a>
+                        <contribution-select></contribution-select>
                     </li>
                     <li>
                         <a class="inverse-link" href="#/settings">Settings</a>
@@ -56,6 +41,9 @@
                 </ul>
             </div>
         </div>
+    </div>
+    <div id="artist-credit">
+        Credit: <a class="medium inverse-link" ng-href="{{creditLink}}" target="_blank"></a>
     </div>
 </header>
 

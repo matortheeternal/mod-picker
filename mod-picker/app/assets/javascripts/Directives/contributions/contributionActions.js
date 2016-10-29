@@ -284,7 +284,7 @@ app.controller('contributionActionsController', function($scope, $rootScope, $ti
         var user = $scope.currentUser;
         if (!user) return;
         var canModerate = $scope.permissions.canModerate;
-        var isSubmitter = user && user.id == $scope.target.submitted_by;
+        var isSubmitter = user && user.id == $scope.target.submitter.id;
         var isCorrector = user && user.id == $scope.target.corrector_id;
         var isLocked = $scope.target.corrector_id;
         // set up permissions

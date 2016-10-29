@@ -35,4 +35,8 @@ class LoverInfo < ActiveRecord::Base
       ModAuthor.find_or_create_by(mod_id: mod_id, user_id: bio.user_id)
     end
   end
+
+  def can_scrape_statistics?
+    true
+  end
 end

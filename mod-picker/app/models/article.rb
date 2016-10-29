@@ -1,8 +1,11 @@
 class Article < ActiveRecord::Base
-  include Filterable, Sortable, Imageable, RecordEnhancements, ScopeHelpers, BetterJson
+  include Filterable, Sortable, Imageable, RecordEnhancements, ScopeHelpers, BetterJson, Dateable
 
   # ATTRIBUTES
   self.per_page = 15
+
+  # DATE COLUMNS
+  date_column :submitted, :edited
 
   # SCOPES
   search_scope :title, :alias => 'search'
@@ -27,22 +30,4 @@ class Article < ActiveRecord::Base
 
   # VALIDATIONS
   validates :submitted_by, :title, :text_body, presence: true
-
-  # CALLBACKS
-  before_save :set_dates
-
-  def self.sortable_columns
-    {
-        :except => [:game_id, :submitted_by, :text_body]
-    }
-  end
-
-  private
-    def set_dates
-      if self.submitted.nil?
-        self.submitted = DateTime.now
-      else
-        self.edited = DateTime.now
-      end
-    end
 end

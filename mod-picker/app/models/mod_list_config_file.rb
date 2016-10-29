@@ -1,8 +1,13 @@
 class ModListConfigFile < ActiveRecord::Base
-  include BetterJson
+  include BetterJson, CounterCache
 
+  # ASSOCIATIONS
   belongs_to :mod_list, :inverse_of => 'mod_list_config_files'
   belongs_to :config_file, :inverse_of => 'mod_list_config_files'
+
+  # COUNTER CACHE
+  counter_cache_on :mod_list, column: 'config_files_count'
+  counter_cache_on :config_file, column: 'mod_lists_count'
 
   # VALIDATIONS
   validates :mod_list_id, :config_file_id, presence: true
@@ -12,21 +17,9 @@ class ModListConfigFile < ActiveRecord::Base
 
   # CALLBACKS
   before_create :set_default_text_body
-  after_create :increment_counters
-  before_destroy :decrement_counters
 
   private
     def set_default_text_body
       self.text_body ||= self.config_file.text_body
-    end
-
-    def increment_counters
-      self.mod_list.update_counter(:config_files_count, 1)
-      self.config_file.update_counter(:mod_lists_count, 1)
-    end
-
-    def decrement_counters
-      self.mod_list.update_counter(:config_files_count, -1)
-      self.config_file.update_counter(:mod_lists_count, -1)
     end
 end

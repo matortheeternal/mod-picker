@@ -44,6 +44,9 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
     };
     $scope.analysisValid = true;
 
+    // set page title
+    $scope.$emit('setPageTitle', 'Edit Mod');
+
     // shared function setup
     eventHandlerFactory.buildMessageHandlers($scope, true);
 
@@ -147,8 +150,16 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
 
     $scope.displaySuccess = function() {
         if ($scope.imageSuccess && $scope.modSuccess) {
-            $scope.submissionSuccess("Mod updated successfully!", "#/mod/"+$scope.mod.id,
-                "return to the mod page.");
+            $scope.submissionSuccess("Mod updated successfully!", [
+                { 
+                    link: "#/mod/" + $scope.mod.id, 
+                    linkLabel: "return to the mod page."
+                },
+                {
+                    link: "#/mods", 
+                    linkLabel: "return to the mods index page." 
+                }
+            ]);
         }
     };
 });

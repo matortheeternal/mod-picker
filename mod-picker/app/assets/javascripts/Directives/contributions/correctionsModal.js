@@ -7,7 +7,10 @@ app.directive('correctionsModal', function() {
     };
 });
 
-app.controller('correctionsModalController', function($scope, contributionService, contributionFactory, eventHandlerFactory) {
+app.controller('correctionsModalController', function($scope, contributionService, contributionFactory, eventHandlerFactory, formUtils) {
+    // inherited functions
+    $scope.unfocusCorrectionsModal = formUtils.unfocusModal($scope.toggleCorrectionsModal);
+
     // shared function setup
     eventHandlerFactory.buildModalMessageHandlers($scope);
 

@@ -93,6 +93,9 @@ app.controller('userController', function($scope, $rootScope, $stateParams, user
 
     $scope.target = $scope.user;
 
+    // set page title
+    $scope.$emit('setPageTitle', $scope.user.username + "'s Profile");
+
     // shared function setup
     eventHandlerFactory.buildMessageHandlers($scope);
     moderationActionsFactory.buildActions($scope);

@@ -170,6 +170,9 @@ app.controller('modController', function($scope, $rootScope, $q, $stateParams, $
     $scope.retrieving = {};
     $scope.errors = {};
 
+    // set page title
+    $scope.$emit('setPageTitle', $scope.mod.name);
+
     // shared function setup
     eventHandlerFactory.buildMessageHandlers($scope);
 

@@ -1,5 +1,5 @@
 class ReputationLink < ActiveRecord::Base
-  include Trackable, BetterJson
+  include Trackable, BetterJson, CounterCache
 
   # EVENT TRACKING
   track :added
@@ -13,21 +13,10 @@ class ReputationLink < ActiveRecord::Base
   has_one :target_user, :class_name => 'User', :through => :target_reputation, :source => 'user'
   has_one :source_user, :class_name => 'User', :through => :source_reputation, :source => 'user'
 
+  # COUNTER CACHE
+  counter_cache_on :source_reputation, column: 'rep_to_count'
+  counter_cache_on :target_reputation, column: 'rep_from_count'
+
   # VALIDATIONS
   validates :from_rep_id, :to_rep_id, presence: true
-
-  # CALLBACKS
-  after_create :increment_counters
-  before_destroy :decrement_counters
-
-  private
-    def decrement_counters
-      source_reputation.update_counter(:rep_to_count, -1)
-      target_reputation.update_counter(:rep_from_count, -1)
-    end
-
-    def increment_counters
-      source_reputation.update_counter(:rep_to_count, 1)
-      target_reputation.update_counter(:rep_from_count, 1)
-    end
 end

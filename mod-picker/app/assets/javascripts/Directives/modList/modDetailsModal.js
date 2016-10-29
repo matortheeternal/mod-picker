@@ -7,9 +7,23 @@ app.directive('modDetailsModal', function() {
     };
 });
 
-app.controller('modDetailsModalController', function($scope, $rootScope, eventHandlerFactory) {
+app.controller('modDetailsModalController', function($scope, $rootScope, eventHandlerFactory, columnsFactory, sortUtils, tableUtils, formUtils) {
+    // inherited functions
+    $scope.unfocusModDetailsModal = formUtils.unfocusModal($scope.toggleDetailsModal);
+
     // shared function setup
     eventHandlerFactory.buildModalMessageHandlers($scope);
+
+    // initialize variables
+    $scope.columns = columnsFactory.modListModDetailsColumns();
+
+    $scope.sort = {
+        column: '',
+        direction: 'ASC'
+    };
+
+    // expose service function to be usable in html 
+    $scope.sortColumn = tableUtils.sortColumn;
 
     $scope.findModOption = function(optionId) {
         var optionsArray = $scope.detailsItem.mod_list_mod_options;
@@ -49,6 +63,11 @@ app.controller('modDetailsModalController', function($scope, $rootScope, eventHa
             $scope.removeModOption(option.id);
         }
     };
+
+    // load sort into view
+    if ($scope.columns && $scope.sort && $scope.sort.column) {
+        sortUtils.loadSort($scope.columns, $scope.sortedColumn, $scope.sort);
+    }
 
     // load option active states
     if ($scope.detailsItem.mod) {

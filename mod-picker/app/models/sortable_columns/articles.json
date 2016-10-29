@@ -1,0 +1,3 @@
+{
+  "except": ["game_id", "submitted_by", "text_body"]
+}

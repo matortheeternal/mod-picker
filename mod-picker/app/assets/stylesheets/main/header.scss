@@ -7,8 +7,27 @@ header {
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
+  position: relative;
   height: 192px;
   z-index: 100;
+
+  #artist-credit {
+    position: absolute;
+    bottom: 6px;
+    right: 6px;
+    padding: 5px;
+    background: rgba($inverse_text_color, 0.7);
+    font-size: 11px;
+    cursor: default;
+
+    a:before {
+      content: $banner_artist;
+    }
+
+    &.credit-link:before {
+      content: $banner_credit_link;
+    }
+  }
 }
 
 .header {
@@ -50,63 +69,6 @@ header {
   }
 }
 
-#game-select-form {
-  display: inline-block;
-  width: 95px;
-  text-align: center;
-
-  .game-selector {
-    position: absolute;
-    opacity: 0;
-    height: 42px;
-    font-size: 12px;
-    cursor: pointer;
-  }
-
-  .game-icon .game-label {
-    padding: 5px 5px 5px 0;
-    line-height: 32px;
-    vertical-align: middle;
-    display: inline-block;
-  }
-
-  .game-icon {
-    display: inline-block;
-    font-weight: 700;
-    padding-left: 32px;
-    background-size: 32px 32px;
-    background-position: 0 5px;
-    background-repeat: no-repeat;
-  }
-
-  .icon-sk {
-    background-image: url(image_path("skyrim_icon.png"));
-  }
-}
-
-#contribution-select-form {
-  display: inline-block;
-  width: 100px;
-  text-align: center;
-
-  .contributions-label {
-    padding: 5px 5px 5px 0;
-    line-height: 32px;
-    vertical-align: middle;
-    display: inline-block;
-    width: 110px;
-  }
-
-  .contribution-selector {
-    position: absolute;
-    opacity: 0;
-    height: 42px;
-    font-size: 12px;
-    cursor: pointer;
-    width: 110px;
-  }
-}
-
 /* css for navbar */
 nav {
   display: block;
@@ -123,7 +85,7 @@ nav {
       display: block;
       float: left;
       position: relative;
-      z-index: 100;
+      z-index: 99;
       @include transition(background-color 0.2s ease-in-out);
 
       &:hover, &:focus {

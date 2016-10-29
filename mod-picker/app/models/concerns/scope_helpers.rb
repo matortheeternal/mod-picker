@@ -60,26 +60,27 @@ module ScopeHelpers
       end
     end
 
+    def columns_in(columns, ids, connector=:or)
+      columns.map{ |column|
+        arel_table[column].in(ids)
+      }.inject(connector)
+    end
+
     def ids_scope(*attributes, **options)
       attributes.each do |attribute|
+        scope_name = attribute.to_s.remove('_id')
         if options[:columns]
-          scope_name = attribute.to_s.remove('_id')
-          scope_wheres = []
-          options[:columns].each do |column|
-            scope_wheres.push("#{column} IN (:ids)")
-          end
           class_eval do
             scope scope_name.to_sym, -> (ids) {
-              where("#{scope_wheres.join(' OR ')}", ids: ids)
+              where(columns_in(options[:columns], ids))
             }
             scope scope_name.pluralize.to_sym, -> (ids) {
-              where("#{scope_wheres.join(' AND ')}", ids: ids)
+              where(columns_in(options[:columns], ids, :and))
             }
           end
         else
-          scope_name = attribute.to_s.remove('_id').pluralize
           class_eval do
-            scope scope_name.to_sym, -> (ids) { where(attribute => ids) }
+            scope scope_name.pluralize.to_sym, -> (ids) { where(attribute => ids) }
           end
         end
       end
@@ -144,7 +145,6 @@ module ScopeHelpers
           class_eval do
             scope scope_name.to_sym, -> (search) {
               where(build_search(attribute, search))
-              #where(arel_table[attribute.to_sym].matches("%#{search}%"))
             }
           end
         end

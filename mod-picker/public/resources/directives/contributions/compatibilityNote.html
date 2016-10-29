@@ -4,23 +4,23 @@
             <span class="capitalize">{{note.status | humanize}}</span>
             {{note.compatibility_verb}}
             <span ng-if="note.first_mod.id == modId">
-                <a ng-href="#/mod/{{note.second_mod.id}}" target="_blank">{{note.second_mod.name}}</a>
+                <a ng-href="#/mod/{{note.second_mod.id}}">{{note.second_mod.name}}</a>
             </span>
             <span ng-if="note.second_mod.id == modId">
-                <a ng-href="#/mod/{{note.first_mod.id}}" target="_blank">{{note.first_mod.name}}</a>
+                <a ng-href="#/mod/{{note.first_mod.id}}">{{note.first_mod.name}}</a>
             </span>
         </span>
         <span ng-if="!modId" class="root">
             <span ng-if="note.compatibility_verb === 'for'">
                 <span class="capitalize">{{note.status | humanize}}</span> for
-                <a ng-href="#/mod/{{note.first_mod.id}}" target="_blank">{{note.first_mod.name}}</a>
+                <a ng-href="#/mod/{{note.first_mod.id}}">{{note.first_mod.name}}</a>
                 and
-                <a ng-href="#/mod/{{note.second_mod.id}}" target="_blank">{{note.second_mod.name}}</a>
+                <a ng-href="#/mod/{{note.second_mod.id}}">{{note.second_mod.name}}</a>
             </span>
             <span ng-if="note.compatibility_verb === 'with'">
-                <a ng-href="#/mod/{{note.first_mod.id}}" target="_blank">{{note.first_mod.name}}</a>
+                <a ng-href="#/mod/{{note.first_mod.id}}">{{note.first_mod.name}}</a>
                 is <span class="capitalize">{{note.status | humanize}}</span> with
-                <a ng-href="#/mod/{{note.second_mod.id}}" target="_blank">{{note.second_mod.name}}</a>
+                <a ng-href="#/mod/{{note.second_mod.id}}">{{note.second_mod.name}}</a>
             </span>
         </span>
         <span class="standing-item" title="This contribution is in {{note.standing}} standing">
