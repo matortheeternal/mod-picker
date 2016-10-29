@@ -1,5 +1,5 @@
 class Article < ActiveRecord::Base
-  include Filterable, Sortable, Imageable, RecordEnhancements, ScopeHelpers, BetterJson, Dateable
+  include Filterable, Sortable, Imageable, RecordEnhancements, CounterCache, ScopeHelpers, BetterJson, Dateable
 
   # ATTRIBUTES
   self.per_page = 15
