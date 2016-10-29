@@ -23,7 +23,7 @@ app.config(['$stateProvider', function($stateProvider) {
     });
 }]);
 
-app.controller('createArticleController', function($scope, $rootScope, $state, $stateParams, article, articleService, eventHandlerFactory) {
+app.controller('createArticleController', function($scope, $rootScope, $state, $stateParams, article, articleService, helpFactory, eventHandlerFactory) {
     // set up local variables
     $scope.article = article;
     $scope.image = {};

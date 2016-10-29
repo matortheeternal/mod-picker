@@ -23,7 +23,7 @@ app.config(['$stateProvider', function($stateProvider) {
     });
 }]);
 
-app.controller('editArticleController', function($scope, $stateParams, article,  articleService, eventHandlerFactory, objectUtils) {
+app.controller('editArticleController', function($scope, $stateParams, article,  articleService, helpFactory, eventHandlerFactory, objectUtils) {
     // get parent variables
     $scope.article = angular.copy(article);
     $scope.originalArticle = article;
