@@ -1,6 +1,6 @@
 <div class="primary-nav">
-    <a class="nav-item" ng-click="toggleDropdown($event, 'ModLists')" tabindex="0"
-       ng-blur="blurDropdown('ModLists')">
+    <a class="nav-item" ng-click="toggleDropdown($event, 'ManageLists')" tabindex="0"
+       ng-blur="blurDropdown('ManageLists')">
         <span class="nav-icon">
             <i class="fa fa-list-ol"></i>
         </span>
@@ -12,7 +12,7 @@
             <i class="fa fa-chevron-down"></i>
         </span>
     </a>
-    <div class="nav-dropdown" id="mod-lists-dropdown" ng-show="showModListsDropdown">
+    <div class="nav-dropdown" id="manage-lists-dropdown" ng-show="showManageListsDropdown">
         <a class="nav-category" ng-href="#/mod-list/{{activeModList.id}}" ng-if="activeModList">
             <i class="fa fa-pencil-square-o"></i>
             Edit Active Mod List
@@ -46,15 +46,32 @@
         <a href="#/load-order-notes">Load Order Notes</a>
         <a href="#/corrections">Corrections</a>
     </div>
-    <a class="nav-item" href="#/mod-lists">
+    <a class="nav-item" ng-click="toggleDropdown($event, 'ModLists')" tabindex="0" ng-blur="blurDropdown('ModLists')">
         <span class="nav-icon">
             <i class="fa fa-list-ul"></i>
         </span>
         <span class="nav-text">
-            <b>See all</b>
-            Public Mod Lists
+            <b>Browse</b>
+            Mod Lists
+        </span>
+        <span class="dropdown-icon">
+            <i class="fa fa-chevron-down"></i>
         </span>
     </a>
+    <div class="nav-dropdown" id="mod-lists-dropdown" ng-show="showModListsDropdown">
+        <a class="nav-category" href="#/mod-lists?ste=1&sun=1&clc=1">
+            <i class="fa fa-files-o"></i>
+            All Public Mod Lists
+        </a>
+        <a class="nav-category" href="#/mod-lists" >
+            <i class="fa fa-list-alt"></i>
+            Completed Mod Lists
+        </a>
+        <a class="nav-category" href="#/mod-lists?cln=0&clc=1" >
+            <i class="fa fa-th-large"></i>
+            Completed Collections
+        </a>
+    </div>
     <a class="nav-item" ng-click="toggleDropdown($event, 'Mods')" tabindex="0" ng-blur="blurDropdown('Mods')">
         <span class="nav-icon">
             <i class="fa fa-globe"></i>
