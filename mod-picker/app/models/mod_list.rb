@@ -52,6 +52,7 @@ class ModList < ActiveRecord::Base
   # LOAD ORDER
   has_many :mod_list_plugins, :inverse_of => 'mod_list', :dependent => :destroy
   has_many :custom_plugins, :class_name => 'ModListCustomPlugin', :inverse_of => 'mod_list', :dependent => :destroy
+  has_many :plugins, :through => 'mod_list_plugins'
 
   # INSTALL ORDER
   has_many :mod_list_mods, :inverse_of => 'mod_list', :dependent => :destroy
@@ -99,7 +100,8 @@ class ModList < ActiveRecord::Base
   counter_cache_on :submitter
   bool_counter_cache :mod_list_mods, :is_utility, { true => :tools, false => :mods }
   bool_counter_cache :custom_mods, :is_utility, { true => :custom_tools, false => :custom_mods }
-  counter_cache :plugins, :custom_plugins, :config_files, :custom_config_files, :ignored_notes, :tags, :stars, :comments
+  counter_cache :custom_plugins, :config_files, :custom_config_files, :ignored_notes, :tags, :stars, :comments
+  counter_cache :plugins, custom_reflection: { klass: Plugin, query_method: 'mod_list_count_subquery' }
 
   # VALIDATIONS
   validates :game_id, :submitted_by, :name, presence: true
