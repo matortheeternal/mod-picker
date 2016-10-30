@@ -1,5 +1,5 @@
 class ConfigFile < ActiveRecord::Base
-  include RecordEnhancements, BetterJson
+  include RecordEnhancements, BetterJson, CounterCache
 
   belongs_to :game, :inverse_of => 'config_files'
   belongs_to :mod, :inverse_of => 'config_files'
