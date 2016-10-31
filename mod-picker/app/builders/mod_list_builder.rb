@@ -25,10 +25,7 @@ class ModListBuilder
 
   def copy_model(model, label)
     index = @other_mod_list.public_send("#{label}_count") + 1
-    model.each do |item|
-      item.copy_to(@other_mod_list)
-      index += 1
-    end
+    model.each { |item|  index += 1 if item.copy_to(@other_mod_list, index) }
   end
 
   def groups_by_tab(label)
