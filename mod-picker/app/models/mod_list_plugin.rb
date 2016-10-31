@@ -28,4 +28,14 @@ class ModListPlugin < ActiveRecord::Base
   def required_plugins
     Master.plugins([self.plugin_id]).order(:master_plugin_id)
   end
+
+  def copy_attributes(mod_list_id, index, group_id)
+    attributes.except("id").merge({ mod_list_id: mod_list_id, index: index, group_id: group_id })
+  end
+
+  def copy_to(other_mod_list, index, new_group_id=nil)
+    unless other_mod_list.mod_list_plugins.where(plugin_id: plugin_id).exists?
+      ModListPlugin.create(copy_attributes(other_mod_list.id, index, new_group_id))
+    end
+  end
 end
