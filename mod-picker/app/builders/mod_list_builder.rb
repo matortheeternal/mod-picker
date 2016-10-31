@@ -23,11 +23,6 @@ class ModListBuilder
     @other_mod_list.description = "A cloned Mod List."
   end
 
-  def build_model(label)
-    a = @mod_list.mod_list_groups.where(tab: label)
-    a.push(@mod_list.mod_list_mods)
-  end
-
   def copy_model(model, label)
     index = @other_mod_list.public_send("#{label}_count") + 1
     model.each do |item|
@@ -42,31 +37,31 @@ class ModListBuilder
 
   def copy_tools
     model = groups_by_tab("tools").to_a
-    model.push(*@mod_list.mod_list_mods.is_utility(true).orphans)
-    model.push(*@mod_list.custom_mods.is_utility(true).orphans)
+    model.push(*@mod_list.mod_list_mods.is_utility(true).orphans.to_a)
+    model.push(*@mod_list.custom_mods.is_utility(true).orphans.to_a)
     model.sort { |x, y| x.index <=> y.index }
     copy_model(model, :tools)
   end
 
   def copy_mods
     model = groups_by_tab("mods").to_a
-    model.push(*@mod_list.mod_list_mods.is_utility(false).orphans)
-    model.push(*@mod_list.custom_mods.is_utility(false).orphans)
+    model.push(*@mod_list.mod_list_mods.is_utility(false).orphans.to_a)
+    model.push(*@mod_list.custom_mods.is_utility(false).orphans.to_a)
     model.sort { |x, y| x.index <=> y.index }
     copy_model(model, :mods)
   end
 
   def copy_plugins
     model = groups_by_tab("plugins").to_a
-    model.push(*@mod_list.mod_list_plugins.orphans)
-    model.push(*@mod_list.custom_plugins.orphans)
+    model.push(*@mod_list.mod_list_plugins.orphans.to_a)
+    model.push(*@mod_list.custom_plugins.orphans.to_a)
     model.sort { |x, y| x.index <=> y.index }
     copy_model(model, :plugins)
   end
 
   def copy_configs
-    copy_config = proc { |config_file| config_file.copy_to(@other_mod_list) }
-    @mod_list.mod_list_config_files.each copy_config
-    @mod_list.custom_config_files copy_config
+    model = @mod_list.mod_list_config_files.to_a
+    model.push(*@mod_list.custom_config_files.to_a)
+    model.each { |item| item.copy_to(@other_mod_list) }
   end
 end
