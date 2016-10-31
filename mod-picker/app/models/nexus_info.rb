@@ -28,21 +28,6 @@ class NexusInfo < ActiveRecord::Base
     after_scrape
   end
 
-  def self.edit_json_format
-    { :only => [:id, :last_scraped] }
-  end
-
-  def self.base_json_format
-    { :except => [:mod_id] }
-  end
-
-  def notification_json_options(event_type)
-    {
-        :only => [],
-        :include => { :mod => Mod.base_json_format }
-    }
-  end
-
   def url
     NexusHelper.mod_url(game.nexus_name, id)
   end

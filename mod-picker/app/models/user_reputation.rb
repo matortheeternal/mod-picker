@@ -210,8 +210,4 @@ class UserReputation < ActiveRecord::Base
       0
     end
   end
-
-  def notification_json_options(event_type)
-    { :only => [:overall] }
-  end
 end
