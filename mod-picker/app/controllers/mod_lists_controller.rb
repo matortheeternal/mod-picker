@@ -214,6 +214,16 @@ class ModListsController < ApplicationController
     builder.clone!
     new_mod_list_response(@new_mod_list)
   end
+
+  # POST /mod_lists/1/add
+  def add
+    authorize! :read, @mod_list
+    @target_mod_list = current_user.active_mod_list
+    builder = ModListBuilder.new(@target_mod_list, @mod_list)
+    builder.copy!
+    respond_with_json(@target_mod_list, :tracking, :mod_list)
+  end
+
   # POST /mod_lists/active
   def set_active
     @mod_list = nil

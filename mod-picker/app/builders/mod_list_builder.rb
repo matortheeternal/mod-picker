@@ -4,14 +4,14 @@ class ModListBuilder
     @other_mod_list = other_mod_list
   end
 
-  def copy
+  def copy!
     copy_tools
     copy_mods
     copy_plugins
     copy_configs
   end
 
-  def clone
+  def clone!
     copy_properties
     copy
   end
