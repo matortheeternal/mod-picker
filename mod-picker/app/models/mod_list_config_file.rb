@@ -1,5 +1,8 @@
 class ModListConfigFile < ActiveRecord::Base
-  include BetterJson, CounterCache
+  include BetterJson, CounterCache, ScopeHelpers
+
+  # SCOPES
+  ids_scope :config_file_id
 
   # ASSOCIATIONS
   belongs_to :mod_list, :inverse_of => 'mod_list_config_files'
