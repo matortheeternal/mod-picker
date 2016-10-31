@@ -37,16 +37,16 @@ class ModListBuilder
 
   def copy_tools
     model = groups_by_tab("tools").to_a
-    model.push(*@mod_list.mod_list_mods.is_utility(true).orphans.to_a)
-    model.push(*@mod_list.custom_mods.is_utility(true).orphans.to_a)
+    model.push(*@mod_list.mod_list_mods.utility(true).orphans.to_a)
+    model.push(*@mod_list.custom_mods.utility(true).orphans.to_a)
     model.sort { |x, y| x.index <=> y.index }
     copy_model(model, :tools)
   end
 
   def copy_mods
     model = groups_by_tab("mods").to_a
-    model.push(*@mod_list.mod_list_mods.is_utility(false).orphans.to_a)
-    model.push(*@mod_list.custom_mods.is_utility(false).orphans.to_a)
+    model.push(*@mod_list.mod_list_mods.utility(false).orphans.to_a)
+    model.push(*@mod_list.custom_mods.utility(false).orphans.to_a)
     model.sort { |x, y| x.index <=> y.index }
     copy_model(model, :mods)
   end
