@@ -17,14 +17,12 @@ class Comment < ActiveRecord::Base
 
   # SCOPES
   include_scope :hidden
+  include_scope :parent_id, value: nil, alias: 'include_replies'
   search_scope :text_body, :alias => 'search'
   user_scope :submitter
   polymorphic_scope :commentable
   range_scope :children_count, :alias => 'replies'
   date_scope :submitted, :edited
-
-  # UNIQUE SCOPES
-  scope :include_replies, -> (bool) { where(parent_id: nil) if !bool }
 
   # ASSOCIATIONS
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'comments'

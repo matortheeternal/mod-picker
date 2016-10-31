@@ -4,9 +4,8 @@ class ModListMod < ActiveRecord::Base
   # SCOPES
   value_scope :is_utility
   value_scope :is_official, :association => 'mod'
-
-  # UNIQUE SCOPES
-  scope :orphans, -> { where(group_id: nil) }
+  ids_scope :mod_id
+  nil_scope :group_id, alias: 'orphans'
 
   # ASSOCIATIONS
   belongs_to :mod_list, :inverse_of => 'mod_list_mods'
@@ -28,7 +27,6 @@ class ModListMod < ActiveRecord::Base
 
   # CALLBACKS
   before_create :set_index_and_is_utility
-  after_create :add_default_mod_options
   before_destroy :destroy_mod_list_plugins
 
   def mod_compatibility_notes
@@ -75,19 +73,19 @@ class ModListMod < ActiveRecord::Base
     mod_list.mod_list_plugins.where(plugin_id: mod.plugins.ids)
   end
 
+  def add_default_mod_options
+    mod.mod_options.default.each do |mod_option|
+      mod_list_mod_option = ModListModOption.create!({
+          mod_list_mod_id: id, mod_option_id: mod_option.id
+      })
+      mod_list_mod_option.add_plugins
+    end
+  end
+
   private
     def set_index_and_is_utility
       self.is_utility = mod.is_utility
       get_index if self.index.nil?
-    end
-
-    def add_default_mod_options
-      mod.mod_options.default.each do |mod_option|
-        mod_list_mod_option = ModListModOption.create!({
-            mod_list_mod_id: id, mod_option_id: mod_option.id
-        })
-        mod_list_mod_option.add_plugins
-      end
     end
 
     def destroy_mod_list_plugins

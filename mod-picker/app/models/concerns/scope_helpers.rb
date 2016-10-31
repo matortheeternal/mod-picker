@@ -36,7 +36,7 @@ module ScopeHelpers
     def include_scope(*attributes, **options)
       attributes.each do |attribute|
         scope_name = options[:alias] || 'include_' + attribute.to_s
-        value = options[:value] || 'false'
+        value = options.has_key?(:value) ? options[:value] : 'false'
         class_eval do
           scope scope_name.to_sym, -> (bool) { where(attribute => value) if !bool }
         end
@@ -45,7 +45,7 @@ module ScopeHelpers
 
     def value_scope(*attributes, **options)
       attributes.each do |attribute|
-        scope_name = options[:alias] ||attribute.to_s.remove('is_')
+        scope_name = options[:alias] || attribute.to_s.remove('is_')
         if options[:association]
           table_name = options[:table] || options[:association].to_s.pluralize
           class_eval do
@@ -57,6 +57,13 @@ module ScopeHelpers
             scope scope_name.to_sym, -> (value) { where(attribute => value) }
           end
         end
+      end
+    end
+
+    def nil_scope(attribute, **options)
+      scope_name = options[:alias] || "nil_#{attribute.to_s}"
+      class_eval do
+        scope scope_name.to_sym, -> { where(attribute => nil) }
       end
     end
 

@@ -169,7 +169,7 @@ module CounterCache
         after_update :change_counters
         def change_counters
           self.class._counter_cache_on.each do |name, options|
-            change = get_counter_change(options[:method] || name, options)
+            change = get_counter_change(name, options)
             next unless change != 0
             update_association_counter(options[:method] || name, options[:column], change)
           end

@@ -1,11 +1,14 @@
 class ModListPlugin < ActiveRecord::Base
-  include RecordEnhancements, BetterJson, CounterCache
+  include RecordEnhancements, BetterJson, CounterCache, ScopeHelpers
 
   # SCOPES
+  ids_scope :mod_id
+  nil_scope :group_id, alias: 'orphans'
+
+  # UNIQUE SCOPES
   scope :official, -> (bool) {
     joins(:plugin => :mod).where(:mods => { is_official: bool })
   }
-  scope :orphans, -> { where(group_id: nil) }
 
   # ASSOCIATIONS
   belongs_to :mod_list, :inverse_of => 'mod_list_plugins'

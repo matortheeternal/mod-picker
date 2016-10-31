@@ -3,9 +3,7 @@ class ModListCustomMod < ActiveRecord::Base
 
   # SCOPES
   value_scope :is_utility
-
-  # UNIQUE SCOPES
-  scope :orphans, -> { where(group_id: nil) }
+  nil_scope :group_id, alias: 'orphans'
 
   # ASSOCIATIONS
   belongs_to :mod_list, :inverse_of => 'custom_mods'

@@ -10,8 +10,4 @@ class ModListGroup < ActiveRecord::Base
 
   # VALIDATIONS
   validates :mod_list_id, :name, presence: true
-
-  def self.base_json_format
-    { :except => [:mod_list_id] }
-  end
 end
