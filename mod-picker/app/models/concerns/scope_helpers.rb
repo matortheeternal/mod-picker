@@ -60,6 +60,13 @@ module ScopeHelpers
       end
     end
 
+    def nil_scope(attribute, **options)
+      scope_name = options[:alias] || "nil_#{attribute.to_s}"
+      class_eval do
+        scope scope_name.to_sym, -> { where(attribute => nil) }
+      end
+    end
+
     def columns_in(columns, ids, connector=:or)
       columns.map{ |column|
         arel_table[column].in(ids)
