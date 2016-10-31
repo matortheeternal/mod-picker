@@ -1,6 +1,6 @@
 class ModListsController < ApplicationController
   before_action :check_sign_in, only: [:create, :set_active, :update, :update_tags, :create_star, :destroy_star]
-  before_action :set_mod_list, only: [:show, :hide, :update, :update_tags, :tools, :mods, :plugins, :export_modlist, :export_plugins, :export_links, :config_files, :analysis, :comments]
+  before_action :set_mod_list, only: [:show, :hide, :clone, :add, :update, :update_tags, :tools, :mods, :plugins, :export_modlist, :export_plugins, :export_links, :config_files, :analysis, :comments]
 
   # GET /mod_lists
   def index
@@ -199,17 +199,21 @@ class ModListsController < ApplicationController
 
     if @mod_list.save
       @mod_list.add_official_content
-      if params.has_key?(:active) && params[:active]
-        @mod_list.set_active
-        respond_with_json(@mod_list, :tracking, :mod_list)
-      else
-        respond_with_json(@mod_list, :base, :mod_list)
-      end
+      new_mod_list_response(@mod_list)
     else
       render json: @mod_list.errors, status: :unprocessable_entity
     end
   end
 
+  # POST /mod_lists/1/clone
+  def clone
+    authorize! :read, @mod_list
+    @new_mod_list = ModList.new(submitted_by: current_user.id)
+    @new_mod_list.save!
+    builder = ModListBuilder.new(@new_mod_list, @mod_list)
+    builder.clone!
+    new_mod_list_response(@new_mod_list)
+  end
   # POST /mod_lists/active
   def set_active
     @mod_list = nil
@@ -329,6 +333,16 @@ class ModListsController < ApplicationController
 
     def force_download(filename)
       response.headers["Content-Disposition"] = "attachment; filename=#{filename}"
+    end
+
+    def new_mod_list_response(mod_list)
+      mod_list.reload
+      if params.has_key?(:active) && params[:active]
+        mod_list.set_active
+        respond_with_json(mod_list, :tracking, :mod_list)
+      else
+        respond_with_json(mod_list, :base, :mod_list)
+      end
     end
 
     def filtering_params
