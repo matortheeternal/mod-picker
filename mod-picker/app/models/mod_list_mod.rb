@@ -5,6 +5,9 @@ class ModListMod < ActiveRecord::Base
   value_scope :is_utility
   value_scope :is_official, :association => 'mod'
 
+  # UNIQUE SCOPES
+  scope :orphans, -> { where(group_id: nil) }
+
   # ASSOCIATIONS
   belongs_to :mod_list, :inverse_of => 'mod_list_mods'
   belongs_to :mod, :inverse_of => 'mod_list_mods'

@@ -5,6 +5,7 @@ class ModListPlugin < ActiveRecord::Base
   scope :official, -> (bool) {
     joins(:plugin => :mod).where(:mods => { is_official: bool })
   }
+  scope :orphans, -> { where(group_id: nil) }
 
   # ASSOCIATIONS
   belongs_to :mod_list, :inverse_of => 'mod_list_plugins'
