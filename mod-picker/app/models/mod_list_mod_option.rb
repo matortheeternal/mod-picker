@@ -17,13 +17,15 @@ class ModListModOption < ActiveRecord::Base
   def add_plugins
     mod_list = mod_list_mod.mod_list
     plugin_ids = mod_list.mod_list_plugin_ids
+    index = mod_list.plugins_count + 1
     mod_option.plugins.each do |plugin|
       next if plugin_ids.include?(plugin.id)
       ModListPlugin.create!({
           mod_list_id: mod_list.id,
           plugin_id: plugin.id,
-          index: mod_list.plugins_count + 1
+          index: index
       })
+      index += 1
     end
   end
 end
