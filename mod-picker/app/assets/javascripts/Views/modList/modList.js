@@ -217,6 +217,30 @@ app.controller('modListController', function($scope, $rootScope, $q, $state, $st
         });
     };
 
+    $scope.cloneModList = function() {
+        modListService.cloneModList($scope.mod_list.id).then(function(data) {
+            $rootScope.activeModList = data.mod_list;
+            var params = {
+                type: "success",
+                text: "Cloned mod list successfully.  Click here to view it.",
+                url: "#/mod-list/"+data.mod_list.id
+            };
+            $scope.$emit('customMessage', params);
+        }, function(response) {
+            var params = {label: 'Error cloning mod list', response: response};
+            $scope.$emit('errorMessage', params);
+        });
+    };
+
+    $scope.addModCollection = function() {
+        modListService.addModCollection($scope.mod_list.id).then(function() {
+            $scope.$emit('successMessage', "Added " + $scope.mod_list.name + " to your active mod list.");
+        }, function(response) {
+            var params = { label: 'Error adding mod collection to your active mod list', response: response };
+            $scope.$emit('errorMessage', params);
+        });
+    };
+
     $scope.toggleEditing = function() {
         $scope.editing = !$scope.editing;
         if (!$scope.editing) {
