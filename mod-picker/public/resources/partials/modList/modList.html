@@ -19,7 +19,7 @@
         <section>
             <div class="header-box">
                 ACTIONS
-                <div class="action-box" ng-if="permissions.canReport && !permissions.isAuthor" ng-click="toggleReportModal(true)">
+                <div class="action-box" ng-if="permissions.canReport && !permissions.canManage" ng-click="toggleReportModal(true)">
                     <i class="fa fa-flag-o" aria-hidden="true"></i> Report
                 </div>
                 <div ng-if="permissions.canManage" class="action-box" ng-click="toggleEditing()">
