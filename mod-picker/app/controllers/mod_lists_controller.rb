@@ -210,16 +210,20 @@ class ModListsController < ApplicationController
     authorize! :read, @mod_list
     @new_mod_list = ModList.new(submitted_by: current_user.id)
     @new_mod_list.save!
-    builder = ModListBuilder.new(@new_mod_list, @mod_list)
+    # clone the target mod list into the new mod list
+    builder = ModListBuilder.new(@mod_list, @new_mod_list)
     builder.clone!
-    new_mod_list_response(@new_mod_list)
+    # make the new mod list active and respond with it
+    @new_mod_list.reload
+    @new_mod_list.set_active
+    respond_with_json(@new_mod_list, :tracking, :mod_list)
   end
 
   # POST /mod_lists/1/add
   def add
     authorize! :read, @mod_list
     @target_mod_list = current_user.active_mod_list
-    builder = ModListBuilder.new(@target_mod_list, @mod_list)
+    builder = ModListBuilder.new(@mod_list, @target_mod_list)
     builder.copy!
     respond_with_json(@target_mod_list, :tracking, :mod_list)
   end
