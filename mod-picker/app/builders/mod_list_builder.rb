@@ -14,15 +14,16 @@ class ModListBuilder
   end
 
   def clone!
-    copy_properties
-    copy
+    copy_properties!
+    copy!
   end
 
-  def copy_properties
+  def copy_properties!
     @target_mod_list.game_id = @mod_list.game_id
     @target_mod_list.is_collection = @mod_list.is_collection
     @target_mod_list.name = "#{@mod_list.name} [Clone]"
     @target_mod_list.description = "A cloned Mod List."
+    @target_mod_list.save!
   end
 
   def copy_model(model, label)

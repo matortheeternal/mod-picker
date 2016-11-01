@@ -209,10 +209,9 @@ class ModListsController < ApplicationController
   def clone
     authorize! :read, @mod_list
     @new_mod_list = ModList.new(submitted_by: current_user.id)
-    @new_mod_list.save!
-    # clone the target mod list into the new mod list
     builder = ModListBuilder.new(@mod_list, @new_mod_list)
     builder.clone!
+
     # make the new mod list active and respond with it
     @new_mod_list.reload
     @new_mod_list.set_active
