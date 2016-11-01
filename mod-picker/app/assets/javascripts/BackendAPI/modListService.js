@@ -253,8 +253,12 @@ app.service('modListService', function(backend, $q, userTitleService, contributi
         return backend.post('/mod_list_custom_config_files', {mod_list_custom_config_file: custom_config_file});
     };
 
-    this.cloneModList = function(modlist) {
-        return backend.post('/mod_lists/clone/' + modlist.id, {});
+    this.cloneModList = function(modListId) {
+        return backend.post('/mod_lists/' + modListId + '/clone', {});
+    };
+
+    this.addModCollection = function(modListId) {
+        return backend.post('/mod_lists/' + modListId + '/add', {});
     };
 
     this.hideModList = function(modListId, hidden) {
