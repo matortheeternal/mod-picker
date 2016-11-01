@@ -157,7 +157,7 @@ class ModList < ActiveRecord::Base
   def add_official_content
     official_content = Mod.game(game_id).where(is_official: true)
     official_content.each_with_index do |m, index|
-      mod_list_mod = ModListMod.new(mod_list_id: id, mod_id: m.id, index: index)
+      mod_list_mod = ModListMod.new(mod_list_id: id, mod_id: m.id, index: index + 1)
       mod_list_mod.save!
       mod_list_mod.add_default_mod_options
     end
