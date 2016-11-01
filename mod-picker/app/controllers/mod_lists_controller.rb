@@ -261,6 +261,7 @@ class ModListsController < ApplicationController
 
     @mod_list.updated_by = current_user.id
     if @mod_list.update(mod_list_params) && @mod_list.update_lazy_counters!
+      @mod_list.compact_plugins
       respond_with_json(@mod_list, :tracking, :mod_list)
     else
       render json: @mod_list.errors, status: :unprocessable_entity
