@@ -26,7 +26,7 @@ class ModListConfigFile < ActiveRecord::Base
   end
 
   def copy_to(other_mod_list)
-    unless other_mod_list.mod_list_config_files.config_file(config_file_id).exists?
+    unless other_mod_list.mod_list_config_files.config_files(config_file_id).exists?
       ModListConfigFile.create(copy_attributes(other_mod_list.id))
     end
   end

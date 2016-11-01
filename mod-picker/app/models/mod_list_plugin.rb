@@ -2,7 +2,7 @@ class ModListPlugin < ActiveRecord::Base
   include RecordEnhancements, BetterJson, CounterCache, ScopeHelpers
 
   # SCOPES
-  ids_scope :mod_id
+  ids_scope :plugin_id
   nil_scope :group_id, alias: 'orphans'
 
   # UNIQUE SCOPES
@@ -34,7 +34,7 @@ class ModListPlugin < ActiveRecord::Base
   end
 
   def copy_to(other_mod_list, index, new_group_id=nil)
-    unless other_mod_list.mod_list_plugins.where(plugin_id: plugin_id).exists?
+    unless other_mod_list.mod_list_plugins.plugins(plugin_id).exists?
       ModListPlugin.create(copy_attributes(other_mod_list.id, index, new_group_id))
     end
   end
