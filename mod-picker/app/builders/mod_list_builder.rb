@@ -27,7 +27,8 @@ class ModListBuilder
   end
 
   def copy_model(model, label)
-    index = @target_mod_list.public_send("#{label}_count") + 1
+    index = @target_mod_list.public_send("#{label}_count")
+    index += 1 unless (label == :plugins) && (index == 0)
     model.each { |item|  index += 1 if item.copy_to(@target_mod_list, index) }
   end
 
