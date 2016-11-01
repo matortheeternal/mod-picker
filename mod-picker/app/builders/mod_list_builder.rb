@@ -1,7 +1,9 @@
 class ModListBuilder
-  def initialize(mod_list, other_mod_list)
+  attr_accessor :mod_list, :target_mod_list
+
+  def initialize(mod_list, target_mod_list)
     @mod_list = mod_list
-    @other_mod_list = other_mod_list
+    @target_mod_list = target_mod_list
   end
 
   def copy!
@@ -17,15 +19,15 @@ class ModListBuilder
   end
 
   def copy_properties
-    @other_mod_list.game_id = @mod_list.game_id
-    @other_mod_list.is_collection = @mod_list.is_collection
-    @other_mod_list.name = "#{@mod_list.name} [Clone]"
-    @other_mod_list.description = "A cloned Mod List."
+    @target_mod_list.game_id = @mod_list.game_id
+    @target_mod_list.is_collection = @mod_list.is_collection
+    @target_mod_list.name = "#{@mod_list.name} [Clone]"
+    @target_mod_list.description = "A cloned Mod List."
   end
 
   def copy_model(model, label)
-    index = @other_mod_list.public_send("#{label}_count") + 1
-    model.each { |item|  index += 1 if item.copy_to(@other_mod_list, index) }
+    index = @target_mod_list.public_send("#{label}_count") + 1
+    model.each { |item|  index += 1 if item.copy_to(@target_mod_list, index) }
   end
 
   def groups_by_tab(label)
@@ -59,6 +61,6 @@ class ModListBuilder
   def copy_configs
     model = @mod_list.mod_list_config_files.to_a
     model.push(*@mod_list.custom_config_files.to_a)
-    model.each { |item| item.copy_to(@other_mod_list) }
+    model.each { |item| item.copy_to(@target_mod_list) }
   end
 end
