@@ -456,6 +456,14 @@ app.controller('modListController', function($scope, $rootScope, $q, $state, $st
         }
     };
 
+    $scope.updateCounters = function(updatedModList) {
+        var counts = ["tools_conut", "mods_count", "plugins_count", "configs_count"];
+        counts.forEach(function(count) {
+            $scope.mod_list[count] = updatedModList[count];
+        });
+        $scope.updateTabs();
+    };
+
     $scope.saveChanges = function(skipFlatten) {
         var action = $q.defer();
         // get changed mod fields
@@ -470,10 +478,10 @@ app.controller('modListController', function($scope, $rootScope, $q, $state, $st
         }
 
         // else submit changes to the backend
-        modListService.updateModList(modListDiff).then(function() {
-            // update modules
+        modListService.updateModList(modListDiff).then(function(data) {
+            $rootScope.activeModList = data.mod_list;
+            $scope.updateCounters(data.mod_list);
             $scope.$broadcast('saveChanges');
-            // success message
             $scope.$emit('successMessage', 'Mod list saved successfully.');
             action.resolve(true);
         }, function(response) {
