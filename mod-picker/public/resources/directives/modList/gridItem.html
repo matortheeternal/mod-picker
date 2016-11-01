@@ -15,7 +15,7 @@
         <span ng-show="!item.mod">{{item.name}}</span>
         <span ng-if="item.mod.aliases">({{item.mod.aliases.split(',')[0]}})</span>
     </li>
-    <li ng-show="item.mod">by {{item.mod.authors}}</li>
+    <li ng-show="item.mod" class="mod-authors">by {{item.mod.authors}}</li>
     <li ng-show="item.mod">Released {{item.mod.released | date}}</li>
     <li ng-if="item.mod.updated">Updated {{item.mod.updated | date}}</li>
 </ul>
