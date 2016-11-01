@@ -36,7 +36,7 @@
                       <div>
                         ACTIONS
                       </div>
-                      <div class="action-box" ng-if="permissions.canReport && !permissions.isAuthor" ng-click="toggleReportModal(true)">
+                      <div class="action-box" ng-if="permissions.canReport && !permissions.canManage" ng-click="toggleReportModal(true)">
                           <i class="fa fa-flag-o" aria-hidden="true"></i> Report
                       </div>
                       <div class="action-box" ng-if="permissions.canManage" ng-click="editMod()">
