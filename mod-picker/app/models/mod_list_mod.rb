@@ -78,9 +78,12 @@ class ModListMod < ActiveRecord::Base
   end
 
   def copy_to(other_mod_list, index, new_group_id=nil)
-    unless other_mod_list.mod_list_mods.where(mod_id: mod_id).exists?
-      ModListMod.create(copy_attributes(other_mod_list.id, index, new_group_id))
+    other_mod_list_mod = other_mod_list.mod_list_mods.mods(mod_id).first
+    unless other_mod_list_mod.present?
+      other_mod_list_mod = ModListMod.new(copy_attributes(other_mod_list.id, index, new_group_id))
+      other_mod_list_mod.save!
     end
+    mod_list_mod_options.each { |option| option.copy_to(other_mod_list_mod) }
   end
 
   def add_default_mod_options
