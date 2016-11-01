@@ -313,6 +313,15 @@ class ModList < ActiveRecord::Base
     status == "complete" && completed.nil?
   end
 
+  def compact_plugins
+    mod_list_plugins.order(:index).each_with_index do |p, i|
+      if p.index != i
+        p.index = i
+        p.save!
+      end
+    end
+  end
+
   private
     def unset_active_if_hidden
       unset_active if attribute_changed?(:hidden) && hidden
