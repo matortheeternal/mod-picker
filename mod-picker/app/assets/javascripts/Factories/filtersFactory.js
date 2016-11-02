@@ -954,13 +954,13 @@ app.service("filtersFactory", function() {
                 data: "status.testing",
                 param: "ste",
                 type: "Boolean",
-                default: false
+                default: true
             },
             {
                 data: "status.under_construction",
                 param: "sun",
                 type: "Boolean",
-                default: false
+                default: true
             },
             {
                 data: "kind.normal",
@@ -972,7 +972,7 @@ app.service("filtersFactory", function() {
                 data: "kind.collection",
                 param: "clc",
                 type: "Boolean",
-                default: false
+                default: true
             }
         ];
     };
