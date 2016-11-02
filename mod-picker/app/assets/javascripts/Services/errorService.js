@@ -12,6 +12,19 @@ app.service('errorService', function($q) {
         }
     };
 
+    this.frontendError = function(errorText, stateName, statusCode, statusText) {
+        return {
+            text: errorText,
+            stateName: stateName,
+            response: {
+                status: statusCode,
+                statusText: statusText,
+                data: null
+            },
+            stateUrl: window.location.hash
+        };
+    };
+
     this.criticalRequest = function(requestFunction, arg) {
         var request = $q.defer();
         requestFunction(arg).then(function(data) {
