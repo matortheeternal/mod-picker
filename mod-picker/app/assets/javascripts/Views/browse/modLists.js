@@ -25,8 +25,7 @@ app.controller('modListsController', function($scope, $rootScope, $stateParams, 
     $scope.dateFilters = filtersFactory.modListDateFilters();
     $scope.statFilters = filtersFactory.modListStatisticFilters();
     $scope.filters = {
-        game: $scope.currentGame.id,
-        include_adult: $scope.currentUser && $scope.currentUser.settings.allow_adult_content
+        game: $scope.currentGame.id
     };
 
     // build generic controller stuff
