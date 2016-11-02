@@ -46,8 +46,8 @@ app.controller('errorController', function($scope, $state, helpFactory, errorObj
     // get a quote for the error
     $scope.quote = quoteService.getErrorQuote($scope.status);
     $scope.defaultExplanations = {
-        unauthorized: "You aren't authorized to access this resource.",
-        not_found: "Unfortunately, we weren't able to display the page you were looking for.",
+        unauthorized: "You are not authorized to access this resource.",
+        not_found: "We were unable to display the page you were looking for.",
         unavailable: "The resource is unavailable.  The server is either down or overburdened."
     };
 
