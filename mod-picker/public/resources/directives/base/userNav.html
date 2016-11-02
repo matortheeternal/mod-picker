@@ -9,6 +9,9 @@
     <li>
         <contribution-select></contribution-select>
     </li>
+    <li ng-if="currentUser.permissions.canModerate">
+        <a class="inverse-link" href="#/moderator-cp">Moderator CP</a>
+    </li>
     <li>
         <a class="inverse-link" href="#/settings">Settings</a>
     </li>
