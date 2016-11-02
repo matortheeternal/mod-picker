@@ -50,7 +50,7 @@ app.service('listUtils', function() {
     this.findConfig = function(model, configId, splice) {
         for (var i = 0; i < model.length; i++) {
             var group = model[i];
-            var foundConfig = service.findItem(group.configs, 'config_file', 'id', configId, splice);
+            var foundConfig = service.findItem(group.children, 'config_file', 'id', configId, splice);
             if (foundConfig) {
                 return foundConfig;
             }

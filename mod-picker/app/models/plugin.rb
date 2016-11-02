@@ -132,6 +132,14 @@ class Plugin < ActiveRecord::Base
     ModListPlugin.where(plugin_id: id).delete_all
   end
 
+  def self.mod_list_count_subquery
+    mod_list_plugins_table = ModListPlugin.arel_table
+    arel_table.join(mod_list_plugins_table).
+        on(arel_table[:id].eq(mod_list_plugins_table[:plugin_id])).
+        where(ModList.arel_table[:id].eq(mod_list_plugins_table[:mod_list_id])).
+        project(Arel.sql('*').count)
+  end
+
   def formatted_overrides
     output = {}
     self.overrides.each do |ovr|
