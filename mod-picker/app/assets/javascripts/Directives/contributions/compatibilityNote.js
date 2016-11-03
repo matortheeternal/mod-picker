@@ -46,6 +46,12 @@ app.controller('compatibilityNoteController', function($scope, $rootScope) {
         }
     };
 
+    $scope.getShowCompatibilityContainer = function() {
+        var note = $scope.note;
+        var hasExtraData = note.compatibility_mod || note.compatibility_plugin;
+        return hasExtraData && !$scope.showResolutionOptions;
+    };
+
     $scope.resolve = function(action, index) {
         if ($scope.note.resolved) {
             return;
@@ -67,4 +73,5 @@ app.controller('compatibilityNoteController', function($scope, $rootScope) {
 
     // set compatibility_verb
     $scope.note.compatibility_verb = $scope.getVerb();
+    $scope.showCompatibilityContainer = $scope.getShowCompatibilityContainer();
 });
