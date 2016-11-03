@@ -9,7 +9,7 @@ app.run(function($futureState, indexFactory, filtersFactory) {
 app.controller('reportsIndexController', function($scope, $rootScope, $stateParams, $state, reportService, helpFactory, columnsFactory, filtersFactory, indexService, indexFactory, sortFactory) {
     // get parent variables
     $scope.currentUser = $rootScope.currentUser;
-    $scope.globalPermissions = angular.copy($rootScope.permissions);
+    $scope.permissions = angular.copy($rootScope.permissions);
 
     // set page title
     $scope.$emit('setPageTitle', 'Reports');
