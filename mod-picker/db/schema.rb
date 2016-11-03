@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161031225932) do
+ActiveRecord::Schema.define(version: 20161103075623) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -711,18 +711,19 @@ ActiveRecord::Schema.define(version: 20161031225932) do
   add_index "plugin_record_groups", ["plugin_id"], name: "pl_id", using: :btree
 
   create_table "plugins", force: :cascade do |t|
-    t.integer "game_id",                limit: 4,               null: false
+    t.integer "game_id",                limit: 4,                   null: false
     t.integer "mod_option_id",          limit: 4
-    t.string  "filename",               limit: 64,              null: false
-    t.string  "crc_hash",               limit: 8,               null: false
-    t.integer "file_size",              limit: 4,               null: false
+    t.string  "filename",               limit: 64,                  null: false
+    t.string  "crc_hash",               limit: 8,                   null: false
+    t.integer "file_size",              limit: 4,                   null: false
     t.string  "author",                 limit: 128
     t.string  "description",            limit: 512
-    t.integer "record_count",           limit: 4,   default: 0, null: false
-    t.integer "override_count",         limit: 4,   default: 0, null: false
-    t.integer "errors_count",           limit: 4,   default: 0, null: false
-    t.integer "mod_lists_count",        limit: 4,   default: 0, null: false
-    t.integer "load_order_notes_count", limit: 4,   default: 0, null: false
+    t.integer "record_count",           limit: 4,   default: 0,     null: false
+    t.integer "override_count",         limit: 4,   default: 0,     null: false
+    t.integer "errors_count",           limit: 4,   default: 0,     null: false
+    t.integer "mod_lists_count",        limit: 4,   default: 0,     null: false
+    t.integer "load_order_notes_count", limit: 4,   default: 0,     null: false
+    t.boolean "has_adult_content",                  default: false, null: false
   end
 
   add_index "plugins", ["game_id"], name: "fk_rails_5a7ba47709", using: :btree
