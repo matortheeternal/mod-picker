@@ -88,10 +88,12 @@
     position: relative;
     padding-bottom: 35px;
 
-    .ratings-container {
+    .compatibility-container, .ratings-container {
       padding: 6px 20px;
       font-size: 20px;
+    }
 
+    .ratings-container {
       .rating-item {
         padding-top: 3px;
         padding-bottom: 3px;
