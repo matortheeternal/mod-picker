@@ -48,8 +48,7 @@ app.controller('compatibilityNoteController', function($scope, $rootScope) {
 
     $scope.getShowCompatibilityContainer = function() {
         var note = $scope.note;
-        var hasExtraData = note.compatibility_mod || note.compatibility_plugin;
-        return hasExtraData && !$scope.showResolutionOptions;
+        return note.compatibility_mod || note.compatibility_plugin;
     };
 
     $scope.resolve = function(action, index) {

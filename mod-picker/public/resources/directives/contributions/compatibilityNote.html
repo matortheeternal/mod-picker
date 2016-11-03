@@ -29,7 +29,7 @@
     </div>
     <user-column ng-if="showUserColumn" user="note.submitter" editors="note.editors" class="user-column" index="index"></user-column>
     <div class="content-column">
-        <div class="compatibility-container" ng-if="showCompatibilityContainer">
+        <div class="compatibility-container" ng-if="showCompatibilityContainer && !showResolutionOptions">
             <span ng-if="note.compatibility_mod">
                 Compatibility Mod: <a ng-href="#/mod/{{note.compatibility_mod.id}">
                     {{note.compatibility_mod.name}}
