@@ -250,6 +250,7 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
                 // update original review object and discard copy
                 $scope.updateReview();
                 $scope.discardReview();
+                $scope.myReviewExpanded = true;
             }, function(response) {
                 var params = { label: 'Error updating Review', response: response };
                 $scope.$emit('errorMessage', params);
@@ -259,6 +260,7 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
                 $scope.$emit("successMessage", "Review submitted successfully.");
                 $scope.mod.user_review = review;
                 $scope.discardReview();
+                $scope.myReviewExpanded = true;
             }, function(response) {
                 var params = { label: 'Error submitting Review', response: response };
                 $scope.$emit('errorMessage', params);
