@@ -14,6 +14,36 @@ app.service("filtersFactory", function() {
         data: "editor",
         param: "e"
     };
+    this.includeAdultFilter = {
+        data: "include_adult",
+        param: "adu",
+        type: "Boolean",
+        default: true
+    };
+    this.hiddenFilter = {
+        data: "hidden",
+        param: "hdn",
+        type: "Boolean",
+        default: true
+    };
+    this.unhiddenFilter = {
+        data: "unhidden",
+        param: "unh",
+        type: "Boolean",
+        default: true
+    };
+    this.approvedFilter = {
+        data: "approved",
+        param: "apr",
+        type: "Boolean",
+        default: true
+    };
+    this.unapprovedFilter = {
+        data: "unapproved",
+        param: "una",
+        type: "Boolean",
+        default: true
+    };
     this.contributionHelpfulnessFilter = {
         label: "Helpfulness",
         common: true,
