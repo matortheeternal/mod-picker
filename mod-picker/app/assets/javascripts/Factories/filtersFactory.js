@@ -151,7 +151,12 @@ app.service("filtersFactory", function() {
                 param: "ot",
                 type: "Boolean",
                 default: true
-            }
+            },
+            factory.includeAdultFilter,
+            factory.hiddenFilter,
+            factory.unhiddenFilter,
+            factory.approvedFilter,
+            factory.unapprovedFilter
         ]
     };
 
@@ -577,8 +582,13 @@ app.service("filtersFactory", function() {
     this.contributionGeneralFilters = function() {
         return [
             factory.searchFilter,
-            factory.submitterFilter
-            //factory.editorFilter
+            factory.submitterFilter,
+            //factory.editorFilter,
+            factory.includeAdultFilter,
+            factory.hiddenFilter,
+            factory.unhiddenFilter,
+            factory.approvedFilter,
+            factory.unapprovedFilter
         ]
     };
     
@@ -625,6 +635,9 @@ app.service("filtersFactory", function() {
         return [
             factory.searchFilter,
             factory.submitterFilter,
+            factory.includeAdultFilter,
+            factory.hiddenFilter,
+            factory.unhiddenFilter,
             {
                 data: "include_replies",
                 param: "c",
@@ -784,13 +797,18 @@ app.service("filtersFactory", function() {
     /* load order notes index filters */
     this.loadOrderNoteGeneralFilters = function() {
         return [
-                factory.searchFilter,
-                factory.submitterFilter,
-                //factory.editorFilter,
-                {
-                    data: "plugin_filename",
-                    param: "p"
-                }
+            factory.searchFilter,
+            factory.submitterFilter,
+            //factory.editorFilter,
+            {
+                data: "plugin_filename",
+                param: "p"
+            },
+            factory.includeAdultFilter,
+            factory.hiddenFilter,
+            factory.unhiddenFilter,
+            factory.approvedFilter,
+            factory.unapprovedFilter
         ];
     };
 
@@ -804,6 +822,17 @@ app.service("filtersFactory", function() {
     };
 
     /* corrections index filters */
+    this.correctionGeneralFilters = function() {
+        return [
+            factory.searchFilter,
+            factory.submitterFilter,
+            //factory.editorFilter,
+            factory.includeAdultFilter,
+            factory.hiddenFilter,
+            factory.unhiddenFilter
+        ];
+    };
+
     this.correctionTypeFilters = function() {
         return [
             {
@@ -923,7 +952,7 @@ app.service("filtersFactory", function() {
 
     this.correctionFilters = function() {
         return Array.prototype.concat(
-            factory.contributionGeneralFilters(),
+            factory.correctionGeneralFilters(),
             factory.correctionTypeFilters(),
             factory.correctionStatusFilters(),
             factory.correctionModStatusFilters(),
@@ -969,6 +998,9 @@ app.service("filtersFactory", function() {
                 param: "t"
             },
             factory.submitterFilter,
+            factory.includeAdultFilter,
+            factory.hiddenFilter,
+            factory.unhiddenFilter,
             {
                 data: "tags",
                 param: "t",
@@ -1192,7 +1224,7 @@ app.service("filtersFactory", function() {
         )
     };
 
-    this.pluginSearchFilters = function() {
+    this.pluginGeneralFilters = function() {
         return [
             factory.searchFilter,
             {
@@ -1202,7 +1234,12 @@ app.service("filtersFactory", function() {
             {
                 data: "description",
                 param: "d"
-            }
+            },
+            factory.includeAdultFilter,
+            factory.hiddenFilter,
+            factory.unhiddenFilter,
+            factory.approvedFilter,
+            factory.unapprovedFilter
         ]
     };
 
@@ -1262,14 +1299,26 @@ app.service("filtersFactory", function() {
 
     this.pluginFilters = function() {
         return Array.prototype.concat(
-            factory.pluginSearchFilters(),
+            factory.pluginGeneralFilters(),
             factory.pluginStatisticFilters()
         )
     };
 
     this.reportSearchFilters = function() {
         return [
-            factory.submitterFilter
+            factory.submitterFilter,
+            {
+                data: "resolved",
+                param: "res",
+                type: "Boolean",
+                default: true
+            },
+            {
+                data: "unresolved",
+                param: "unr",
+                type: "Boolean",
+                default: false
+            }
         ];
     };
 
