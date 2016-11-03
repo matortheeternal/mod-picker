@@ -8,7 +8,8 @@ app.run(function($futureState, indexFactory, filtersFactory) {
 app.controller('installOrderNotesController', function($scope, $rootScope, $stateParams, $state, contributionService, indexService, helpFactory, filtersFactory, indexFactory, sortFactory) {
     // get parent variables
     $scope.currentUser = $rootScope.currentUser;
-    $scope.permissions = $rootScope.permissions;
+    $scope.permissions = angular.copy($rootScope.permissions);
+    $scope.allowAdult = $scope.currentUser && $scope.currentUser.settings.allow_adult_content;
 
     // set page title
     $scope.$emit('setPageTitle', 'Browse Install Order Notes');
