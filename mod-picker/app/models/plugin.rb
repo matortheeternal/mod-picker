@@ -62,6 +62,7 @@ class Plugin < ActiveRecord::Base
   validates_associated :plugin_record_groups, :plugin_errors, :overrides
 
   # callbacks
+  before_save :set_adult
   after_create :convert_dummy_masters
   after_save :create_associations, :update_lazy_counters
   before_update :clear_associations
@@ -151,4 +152,10 @@ class Plugin < ActiveRecord::Base
     end
     output
   end
+
+  private
+    def set_adult
+      self.has_adult_content = mod.has_adult_content
+      true
+    end
 end
