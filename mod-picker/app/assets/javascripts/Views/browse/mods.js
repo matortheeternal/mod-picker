@@ -12,6 +12,7 @@ app.controller('modsController', function($scope, $rootScope, $q, $stateParams, 
     $scope.categories = $rootScope.categories;
     $scope.activeModList = $rootScope.activeModList;
     $scope.permissions = angular.copy($rootScope.permissions);
+    $scope.allowAdult = $scope.currentUser && $scope.currentUser.settings.allow_adult_content;
 
     // set page title
     $scope.$emit('setPageTitle', 'Browse Mods');
