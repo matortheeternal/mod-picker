@@ -29,6 +29,18 @@
     </div>
     <user-column ng-if="showUserColumn" user="note.submitter" editors="note.editors" class="user-column" index="index"></user-column>
     <div class="content-column">
+        <div class="compatibility-container" ng-if="showCompatibilityContainer">
+            <span ng-if="note.compatibility_mod">
+                Compatibility Mod: <a ng-href="#/mod/{{note.compatibility_mod.id}">
+                    {{note.compatibility_mod.name}}
+                </a>
+            </span>
+            <span ng-if="note.compatibility_plugin">
+                Compatibility Plugin: <a ng-href="#/mod/{{note.compatibility_plugin.mod.id}}/analysis?plugin={{note.compatibility_plugin.id}}">
+                    {{note.compatibility_plugin.filename}}
+                </a>
+            </span>
+        </div>
         <contribution-text target="note"></contribution-text>
         <contribution-actions target="note" index="index" model-name="CompatibilityNote" edit="edit" has-history="true"></contribution-actions>
     </div>
