@@ -128,8 +128,8 @@ namespace :reset do
     end
 
     task stars: :environment do
-      ModStar.update_all_counters(Mod, :stars_count, :mod_id)
-      ModListStar.update_all_counters(ModList, :stars_count, :mod_list_id)
+      ModStar.reset_all_counters!
+      ModListStar.reset_all_counters!
     end
   end
 end
