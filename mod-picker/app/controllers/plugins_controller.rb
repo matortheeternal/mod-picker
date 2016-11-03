@@ -43,7 +43,7 @@ class PluginsController < ApplicationController
 
     # Params we allow filtering on
     def filtering_params
-      params[:filters].slice(:game, :search, :author, :description, :categories, :file_size, :records, :overrides, :errors, :mod_lists, :load_order_notes)
+      params[:filters].slice(:game, :include_adult, :search, :author, :description, :categories, :file_size, :records, :overrides, :errors, :mod_lists, :load_order_notes)
     end
 
     # Params we allow searching on

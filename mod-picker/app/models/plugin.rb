@@ -7,6 +7,7 @@ class Plugin < ActiveRecord::Base
 
   # SCOPES
   game_scope
+  include_scope :has_adult_content, alias: 'include_adult'
   ids_scope :mod_option_id
   search_scope :filename, :alias => :search
   search_scope :author, :description
