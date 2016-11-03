@@ -113,6 +113,14 @@ namespace :reset do
     end
   end
 
+  namespace :adult do
+    task plugins: :environment do
+      puts "\nResetting plugins has_adult_content values"
+      Plugin.joins(:mod).update_all("plugins.has_adult_content = mods.has_adult_content")
+      puts "#{Plugin.where(has_adult_content: true).count} plugins marked as having adult content"
+    end
+  end
+
   namespace :counters do
     task all: :environment do
       puts "\nResetting all counter cache columns"
