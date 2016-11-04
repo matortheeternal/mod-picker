@@ -78,6 +78,7 @@ class ModsController < ApplicationController
   def update
     authorize! :update, @mod
     authorize! :hide, @mod, :message => "You are not allowed to hide/unhide this mod." if params[:mod].has_key?(:hidden)
+    authorize! :approve, @mod, :message => "You are not allowed to approve/unapprove this mod." if params[:mod].has_key?(:approved)
     authorize! :update_authors, @mod, :message => "You are not allowed to update this mod's authors." if params[:mod].has_key?(:mod_authors_attributes)
     authorize! :update_options, @mod, :message => "You are not allowed to update this mod's advanced options." if options_params.any?
     authorize! :assign_custom_sources, @mod, :message => "You are not allowed to assign custom sources." if params[:mod].has_key?(:custom_sources_attributes)
@@ -403,7 +404,7 @@ class ModsController < ApplicationController
     end
 
     def mod_update_params
-      p = params.require(:mod).permit(:name, :authors, :aliases, :is_utility, :has_adult_content, :primary_category_id, :secondary_category_id, :released, :updated, :mark_updated, :nexus_info_id, :lover_info_id, :workshop_info_id, :disallow_contributors, :disable_reviews, :lock_tags, :hidden,
+      p = params.require(:mod).permit(:name, :authors, :aliases, :is_utility, :has_adult_content, :primary_category_id, :secondary_category_id, :released, :updated, :mark_updated, :nexus_info_id, :lover_info_id, :workshop_info_id, :disallow_contributors, :disable_reviews, :lock_tags, :hidden, :approved,
          required_mods_attributes: [:id, :required_id, :_destroy],
          mod_authors_attributes: [:id, :role, :user_id, :_destroy],
           custom_sources_attributes: [:id, :label, :url, :_destroy],
