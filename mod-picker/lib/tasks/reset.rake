@@ -113,6 +113,13 @@ namespace :reset do
     end
   end
 
+  task mod_approval: :environment do
+    puts "\nApproving all mods"
+    unapproved_mods_count = Mod.where(approved: false).count
+    Mod.update_all(approved: true)
+    puts "#{unapproved_mods_count} mods approved"
+  end
+
   namespace :adult do
     task plugins: :environment do
       puts "\nResetting plugins has_adult_content values"
