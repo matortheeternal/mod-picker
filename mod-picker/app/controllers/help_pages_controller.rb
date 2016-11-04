@@ -92,6 +92,7 @@ class HelpPagesController < ApplicationController
   # PATCH/PUT /help/1
   def update
     authorize! :update, @help_page
+    authorize! :approve, @help_page, :message => "You are not allowed to approve/unapprove this help page." if params[:help_page].has_key?(:approved)
     if @help_page.update(help_page_params)
       redirect_to "/help/#{@help_page.url}"
     else
@@ -127,6 +128,6 @@ class HelpPagesController < ApplicationController
     end
 
     def help_page_params
-      params.require(:help_page).permit(:game_id, :category, :title, :text_body)
+      params.require(:help_page).permit(:game_id, :approved, :category, :title, :text_body)
     end
 end

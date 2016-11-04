@@ -58,23 +58,34 @@
       }
     }
 
-    .item-title {
+    .item-header {
       margin: 8px 0;
       color: $text_color;
       @include transition(color 0.2s ease-in-out);
+
+      .item-title {
+        margin-right: 0.5rem;
+      }
 
       &:hover {
         color: $link_hover_color_primary;
       }
 
-      .new-label {
+      .new-label, .unapproved-label {
         font-weight: normal;
         font-size: 12px;
-        margin-left: 0.5rem;
         padding: 0 0.5rem;
+        text-transform: uppercase;
+      }
+
+      .unapproved-label {
+        color: $error_secondary;
+        border: 1px solid $error_secondary;
+      }
+
+      .new-label {
         color: $success_secondary;
         border: 1px solid $success_secondary;
-        text-transform: uppercase;
       }
     }
   }

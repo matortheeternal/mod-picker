@@ -83,7 +83,8 @@ class User < ActiveRecord::Base
   counter_cache :comments, column: 'submitted_comments_count', conditional: { hidden: false }
   counter_cache :starred_mods, :starred_mod_lists, :mod_tags, :mod_list_tags, :helpful_marks, :agreement_marks
   counter_cache :mod_authors, column: 'authored_mods_count'
-  counter_cache :submitted_mods, :reviews, :compatibility_notes, :install_order_notes, :load_order_notes, :corrections, :tags, conditional: { hidden: false }
+  counter_cache :submitted_mods, :reviews, :compatibility_notes, :install_order_notes, :load_order_notes, conditional: { hidden: false, approved: true }
+  counter_cache  :corrections, :tags, conditional: { hidden: false }
   bool_counter_cache :mod_lists, :is_collection, { true => :mod_collections, false => :mod_lists }
 
   # VALIDATIONS
@@ -145,6 +146,10 @@ class User < ActiveRecord::Base
 
   def has_auto_approval?
     reputation.overall > 20
+  end
+
+  def has_mod_auto_approval?
+    reputation.overall > 80
   end
 
   def subscribed_to?(event)

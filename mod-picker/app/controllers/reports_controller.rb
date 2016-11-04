@@ -1,4 +1,6 @@
 class ReportsController < ApplicationController
+  before_action :set_base_report, only: [:resolve]
+
   # POST /reports/index
   def index
     @reports = BaseReport.includes(reports: :submitter).references(reports: :submitter).preload(:reportable).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(page: params[:page])
@@ -43,11 +45,12 @@ class ReportsController < ApplicationController
     end
   end
 
-  # DELETE /reports/1
-  # DELETE /reports/1.json
-  def destroy
-    if @report.destroy
-      render json: {status: :ok}
+  # POST /reports/1/resolve
+  def resolve
+    authorize! :resolve, @report
+    @report.resolved = params[:resolved]
+    if @report.save
+      render json: {statrus: :ok}
     else
       render json: @report.errors, status: :unprocessable_entity
     end

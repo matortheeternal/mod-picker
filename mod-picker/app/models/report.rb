@@ -17,4 +17,13 @@ class Report < ActiveRecord::Base
   # VALIDATIONS
   validates :base_report_id, :submitted_by, :reason, presence: true
   validates :note, length: {maximum: 128}
+
+  # CALLBACK
+  after_create :unresolve_base_report
+
+  private
+    def unresolve_base_report
+      base_report.resolved = false
+      base_report.save!
+    end
 end

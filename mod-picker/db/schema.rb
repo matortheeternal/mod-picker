@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161103075623) do
+ActiveRecord::Schema.define(version: 20161104182674) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -44,10 +44,11 @@ ActiveRecord::Schema.define(version: 20161103075623) do
   add_index "asset_files", ["path"], name: "filepath", unique: true, using: :btree
 
   create_table "base_reports", force: :cascade do |t|
-    t.integer  "reportable_id",   limit: 4,               null: false
-    t.string   "reportable_type", limit: 255,             null: false
-    t.integer  "reports_count",   limit: 4,   default: 0, null: false
-    t.datetime "submitted",                               null: false
+    t.integer  "reportable_id",   limit: 4,                   null: false
+    t.string   "reportable_type", limit: 255,                 null: false
+    t.integer  "reports_count",   limit: 4,   default: 0,     null: false
+    t.boolean  "resolved",                    default: false, null: false
+    t.datetime "submitted",                                   null: false
     t.datetime "edited"
   end
 
@@ -235,12 +236,13 @@ ActiveRecord::Schema.define(version: 20161103075623) do
 
   create_table "help_pages", force: :cascade do |t|
     t.integer  "game_id",        limit: 4
-    t.integer  "category",       limit: 1,     default: 0, null: false
-    t.integer  "submitted_by",   limit: 4,                 null: false
-    t.string   "title",          limit: 128,               null: false
-    t.text     "text_body",      limit: 65535,             null: false
-    t.integer  "comments_count", limit: 4,     default: 0, null: false
-    t.datetime "submitted",                                null: false
+    t.integer  "category",       limit: 1,     default: 0,     null: false
+    t.integer  "submitted_by",   limit: 4,                     null: false
+    t.string   "title",          limit: 128,                   null: false
+    t.text     "text_body",      limit: 65535,                 null: false
+    t.integer  "comments_count", limit: 4,     default: 0,     null: false
+    t.boolean  "approved",                     default: false, null: false
+    t.datetime "submitted",                                    null: false
     t.datetime "edited"
   end
 
@@ -627,6 +629,7 @@ ActiveRecord::Schema.define(version: 20161103075623) do
     t.boolean  "lock_tags",                             default: false, null: false
     t.boolean  "has_adult_content",                     default: false, null: false
     t.boolean  "hidden",                                default: false, null: false
+    t.boolean  "approved",                              default: false, null: false
     t.datetime "released",                                              null: false
     t.datetime "updated"
     t.datetime "submitted",                                             null: false

@@ -1,14 +1,4 @@
 app.service('reportService', function($q, backend, pageUtils, userTitleService, reviewSectionService) {
-    this.retrieveReport = function(reportId) {
-        var output = $q.defer();
-        backend.retrieve('/reports/' + reportId).then(function(reportData) {
-            output.resolve(reportData);
-        }, function(response) {
-            output.reject(response);
-        });
-        return output.promise;
-    };
-
     this.retrieveReports = function(options, pageInformation) {
         var action = $q.defer();
         backend.post('/reports/index', options).then(function(data) {
@@ -28,6 +18,10 @@ app.service('reportService', function($q, backend, pageUtils, userTitleService, 
         });
 
         return action.promise;
+    };
+
+    this.resolveReport = function(reportId, resolved) {
+        return backend.post('/reports/' + reportId + '/resolve', {resolved: resolved});
     };
 
     this.submitReport = function(report) {

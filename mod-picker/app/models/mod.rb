@@ -1,10 +1,11 @@
 class Mod < ActiveRecord::Base
-  include Filterable, Sortable, Reportable, Imageable, RecordEnhancements, CounterCache, SourceHelpers, ScopeHelpers, Trackable, BetterJson, Dateable
+  include Filterable, Sortable, Reportable, Imageable, RecordEnhancements, CounterCache, SourceHelpers, ScopeHelpers, Trackable, BetterJson, Dateable, Approveable
 
   # ATTRIBUTES
   enum status: [ :good, :outdated, :unstable ]
   attr_accessor :updated_by, :mark_updated
   self.per_page = 100
+  self.approval_method = :has_mod_auto_approval?
 
   # DATE COLUMNS
   date_column :submitted
@@ -52,7 +53,7 @@ class Mod < ActiveRecord::Base
   ]
 
   # UNIQUE SCOPES
-  scope :visible, -> { where(hidden: false) }
+  scope :visible, -> { where(hidden: false, approved: true) }
   scope :include_games, -> (bool) { where.not(primary_category_id: nil) if !bool }
   scope :compatibility, -> (mod_list_id) {
     mod_list = ModList.find(mod_list_id)
@@ -159,7 +160,7 @@ class Mod < ActiveRecord::Base
   counter_cache :corrections, conditional: { hidden: false, correctable_type: 'Mod' }
   counter_cache :mod_tags, column: 'tags_count'
   counter_cache :mod_list_mods, column: 'mod_lists_count'
-  counter_cache_on :submitter, column: 'submitted_mods_count', conditional: { hidden: false }
+  counter_cache_on :submitter, column: 'submitted_mods_count', conditional: { hidden: false, approved: true }
 
   # VALIDATIONS
   validates :game_id, :submitted_by, :name, :authors, :released, presence: true

@@ -19,13 +19,13 @@ class Ability
       can :set_custom_title, User, id: user.id
 
       # can create and update help pages
-      can [:create, :update], HelpPage
+      can [:approve, :create, :update], HelpPage
 
       # can hide mod lists
       can :hide, ModList
 
       # can update or hide any mod
-      can [:update, :hide, :assign_custom_sources, :update_authors, :update_options], Mod
+      can [:update, :hide, :approve, :assign_custom_sources, :update_authors, :update_options], Mod
       can :destroy, ModRequirement
 
       # can update, approve, or hide any contribution
@@ -41,9 +41,8 @@ class Ability
       can :destroy, ModTag
       can :destroy, ModListTag
 
-      # can read reports
-      can :read, Report
-      can :read, BaseReport
+      # can resolve/unresolve reports
+      can :resolve, BaseReport
     else
       # users that are not admins or moderators
       # cannot read private mod lists unless they submitted them
@@ -55,12 +54,16 @@ class Ability
       cannot :read, InstallOrderNote, approved: false
       cannot :read, LoadOrderNote, approved: false
       cannot :read, Review, approved: false
+      cannot :read, Mod, approved: false
+      cannot :read, HelpPage, approved: false
 
       # can read unapproved content they submitted
       can :read, CompatibilityNote, approved: false, submitted_by: user.id
       can :read, InstallOrderNote, approved: false, submitted_by: user.id
       can :read, LoadOrderNote, approved: false, submitted_by: user.id
       can :read, Review, approved: false, submitted_by: user.id
+      can :read, Mod, approved: false, submitted_by: user.id
+      can :read, HelpPage, approved: false, submitted_by: user.id
 
         # cannot read hidden content
       cannot :read, Comment, hidden: true
@@ -102,6 +105,7 @@ class Ability
       can :update, LoadOrderNote, submitted_by: user.id, hidden: false
       can :update, InstallOrderNote, submitted_by: user.id, hidden: false
       can :update, Review, submitted_by: user.id, hidden: false
+      can :update, HelpPage, submitted_by: user.id
 
       # can update contributions they have a passed correction for
       can :update, CompatibilityNote, corrector_id: user.id, hidden: false
@@ -134,9 +138,7 @@ class Ability
         can :create, Correction  # can report something as incorrect
         can :create, AgreementMark  # can agree/disagree with corrections
         can :create, ReputationLink # can give reputation other users
-      end
-      if user.reputation.overall >= 160
-        # TODO: mod submission here after the beta
+        can :create, HelpPage # can create new help pages
       end
       if user.reputation.overall >= 320
         # can update compatibility notes, install order notes, and

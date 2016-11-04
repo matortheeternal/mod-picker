@@ -1,21 +1,24 @@
 <!--outer report container-->
 <div class="content-title">
-  <span class="capitalize">
-    <span ng-bind-html="reportableUrl"></span>
-  </span>
-  <span class="right-item">
+    <span class="capitalize">
+        <span ng-bind-html="reportableUrl"></span>
+    </span>
+    <span class="action-box right-item {{ report.resolved ? 'green-box' : 'red-box' }}" ng-click="toggleResolved()" title="Click here to mark this report as {{ report.resolved ? 'un' : ''}}resolved.">
+        {{ report.resolved ? 'R' : 'Unr' }}esolved
+    </span>
+    <span class="right-item">
         <a href="#/mod-lists?t={{report.reportable.text}}">Mod Lists</a>
         <span class="reportable-count yellow-box">{{report.reportable.mod_lists_count}}</span>
         <a href="#/mods?t={{report.reportable.text}}">Mods</a> <span class="reportable-count yellow-box">{{report.reportable.mods_count}}</span>
-  </span>
+    </span>
 </div>
 
 <!-- report content container-->
 <div class="content-container">
 
-  <!-- main content reportable content-->
-  <span>
-      <em>{{report.reportable.text}}</em>
-      by <a class="link" ng-href="#/user/{{report.reportable.submitter.id}}" target="_blank" tabindex="{{index}}">{{report.reportable.submitter.username}}</a>
-    </span>
+    <!-- main content reportable content-->
+    <span>
+        <em>{{report.reportable.text}}</em>
+        by <a class="link" ng-href="#/user/{{report.reportable.submitter.id}}" target="_blank" tabindex="{{index}}">{{report.reportable.submitter.username}}</a>
+      </span>
 </div>

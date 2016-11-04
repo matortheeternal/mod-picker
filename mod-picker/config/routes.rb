@@ -54,6 +54,7 @@ Rails.application.routes.draw do
     match '/mods/index', to: 'mods#index', via: [:get, :post]
     match '/mods/search', to: 'mods#search', via: [:post]
     match '/mods/:id/hide', to: 'mods#hide', via: [:post]
+    match '/mods/:id/approve', to: 'mods#approve', via: [:post]
     resources :mods, only: [:show, :new, :create, :edit, :update]
 
     # plugins
@@ -184,6 +185,7 @@ Rails.application.routes.draw do
     # reports
     match '/reports/index', to: 'reports#index', via: [:get, :post]
     match '/reports', to: 'reports#create', via: [:post]
+    match '/reports/:id/resolve', to: 'reports#resolve', via: [:post]
   end
 
   # welcome page
