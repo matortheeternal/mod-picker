@@ -53,7 +53,7 @@ class Mod < ActiveRecord::Base
   ]
 
   # UNIQUE SCOPES
-  scope :visible, -> { where(hidden: false) }
+  scope :visible, -> { where(hidden: false, approved: true) }
   scope :include_games, -> (bool) { where.not(primary_category_id: nil) if !bool }
   scope :compatibility, -> (mod_list_id) {
     mod_list = ModList.find(mod_list_id)
