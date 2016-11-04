@@ -132,6 +132,10 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
         return backend.post('/mods/' + modId + '/hide', {hidden: hidden});
     };
 
+    this.approveMod = function(modId, approved) {
+        return backend.post('/mods/' + modId + '/approve', {approved: approved});
+    };
+
     this.prepareModAuthors = function(mod) {
         var mod_authors = [];
         mod.mod_authors && mod.mod_authors.forEach(function(author) {
