@@ -120,6 +120,13 @@ namespace :reset do
     puts "#{unapproved_mods_count} mods approved"
   end
 
+  task help_page_approval: :environment do
+    puts "\nApproving all help pages"
+    unapproved_help_pages_count = HelpPage.where(approved: false).count
+    HelpPage.update_all(approved: true)
+    puts "#{unapproved_help_pages_count} help pages approved"
+  end
+
   namespace :adult do
     task plugins: :environment do
       puts "\nResetting plugins has_adult_content values"
