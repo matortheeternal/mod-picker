@@ -41,9 +41,8 @@ class Ability
       can :destroy, ModTag
       can :destroy, ModListTag
 
-      # can read reports
-      can :read, Report
-      can :read, BaseReport
+      # can resolve/unresolve reports
+      can :resolve, BaseReport
     else
       # users that are not admins or moderators
       # cannot read private mod lists unless they submitted them
