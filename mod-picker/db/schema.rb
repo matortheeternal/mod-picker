@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161104043050) do
+ActiveRecord::Schema.define(version: 20161104182634) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -749,11 +749,12 @@ ActiveRecord::Schema.define(version: 20161104043050) do
   add_index "record_groups", ["game_id", "signature"], name: "index_record_groups_on_game_id_and_signature", unique: true, using: :btree
 
   create_table "reports", force: :cascade do |t|
-    t.integer  "base_report_id", limit: 4,   null: false
-    t.integer  "submitted_by",   limit: 4,   null: false
-    t.integer  "reason",         limit: 1,   null: false
+    t.integer  "base_report_id", limit: 4,                   null: false
+    t.integer  "submitted_by",   limit: 4,                   null: false
+    t.integer  "reason",         limit: 1,                   null: false
     t.string   "note",           limit: 128
-    t.datetime "submitted",                  null: false
+    t.boolean  "resolved",                   default: false, null: false
+    t.datetime "submitted",                                  null: false
     t.datetime "edited"
   end
 
