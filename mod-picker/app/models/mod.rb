@@ -1,10 +1,11 @@
 class Mod < ActiveRecord::Base
-  include Filterable, Sortable, Reportable, Imageable, RecordEnhancements, CounterCache, SourceHelpers, ScopeHelpers, Trackable, BetterJson, Dateable
+  include Filterable, Sortable, Reportable, Imageable, RecordEnhancements, CounterCache, SourceHelpers, ScopeHelpers, Trackable, BetterJson, Dateable, Approveable
 
   # ATTRIBUTES
   enum status: [ :good, :outdated, :unstable ]
   attr_accessor :updated_by, :mark_updated
   self.per_page = 100
+  self.approval_method = :has_mod_auto_approval?
 
   # DATE COLUMNS
   date_column :submitted
