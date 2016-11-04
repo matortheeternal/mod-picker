@@ -25,7 +25,7 @@ class Ability
       can :hide, ModList
 
       # can update or hide any mod
-      can [:update, :hide, :assign_custom_sources, :update_authors, :update_options], Mod
+      can [:update, :hide, :approve, :assign_custom_sources, :update_authors, :update_options], Mod
       can :destroy, ModRequirement
 
       # can update, approve, or hide any contribution
@@ -55,12 +55,14 @@ class Ability
       cannot :read, InstallOrderNote, approved: false
       cannot :read, LoadOrderNote, approved: false
       cannot :read, Review, approved: false
+      cannot :read, Mod, approved: false
 
       # can read unapproved content they submitted
       can :read, CompatibilityNote, approved: false, submitted_by: user.id
       can :read, InstallOrderNote, approved: false, submitted_by: user.id
       can :read, LoadOrderNote, approved: false, submitted_by: user.id
       can :read, Review, approved: false, submitted_by: user.id
+      can :read, Mod, approved: false, submitted_by: user.id
 
         # cannot read hidden content
       cannot :read, Comment, hidden: true
