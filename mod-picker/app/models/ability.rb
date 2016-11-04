@@ -19,7 +19,7 @@ class Ability
       can :set_custom_title, User, id: user.id
 
       # can create and update help pages
-      can [:create, :update], HelpPage
+      can [:approve, :create, :update], HelpPage
 
       # can hide mod lists
       can :hide, ModList
@@ -106,6 +106,7 @@ class Ability
       can :update, LoadOrderNote, submitted_by: user.id, hidden: false
       can :update, InstallOrderNote, submitted_by: user.id, hidden: false
       can :update, Review, submitted_by: user.id, hidden: false
+      can :update, HelpPage, submitted_by: user.id
 
       # can update contributions they have a passed correction for
       can :update, CompatibilityNote, corrector_id: user.id, hidden: false
@@ -138,9 +139,7 @@ class Ability
         can :create, Correction  # can report something as incorrect
         can :create, AgreementMark  # can agree/disagree with corrections
         can :create, ReputationLink # can give reputation other users
-      end
-      if user.reputation.overall >= 160
-        # TODO: mod submission here after the beta
+        can :create, HelpPage # can create new help pages
       end
       if user.reputation.overall >= 320
         # can update compatibility notes, install order notes, and
