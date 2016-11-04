@@ -1,5 +1,5 @@
 class ModsController < ApplicationController
-  before_action :set_mod, only: [:edit, :update, :hide, :update_tags, :image, :corrections, :reviews, :compatibility_notes, :install_order_notes, :load_order_notes, :analysis, :destroy]
+  before_action :set_mod, only: [:edit, :update, :hide, :approve, :update_tags, :image, :corrections, :reviews, :compatibility_notes, :install_order_notes, :load_order_notes, :analysis, :destroy]
 
   # POST /mods
   def index
@@ -95,6 +95,17 @@ class ModsController < ApplicationController
   def hide
     authorize! :hide, @mod
     @mod.hidden = params[:hidden]
+    if @mod.save
+      render json: {status: :ok}
+    else
+      render json: @mod.errors, status: :unprocessable_entity
+    end
+  end
+
+  # POST /mods/1/approve
+  def approve
+    authorize! :approve, @mod
+    @mod.approved = params[:approved]
     if @mod.save
       render json: {status: :ok}
     else
