@@ -6,7 +6,7 @@ app.run(function($futureState, indexFactory, filtersFactory) {
     $futureState.futureState(state);
 });
 
-app.controller('reportsIndexController', function($scope, $rootScope, $stateParams, $state, reportService, helpFactory, columnsFactory, filtersFactory, indexService, indexFactory, sortFactory) {
+app.controller('reportsIndexController', function($scope, $rootScope, $stateParams, $state, reportService, eventHandlerFactory, helpFactory, columnsFactory, filtersFactory, indexService, indexFactory, sortFactory) {
     // get parent variables
     $scope.currentUser = $rootScope.currentUser;
     $scope.globalPermissions = angular.copy($rootScope.permissions);
@@ -28,4 +28,5 @@ app.controller('reportsIndexController', function($scope, $rootScope, $statePara
     $scope.route = 'reports';
     $scope.retrieve = reportService.retrieveReports;
     indexFactory.buildIndex($scope, $stateParams, $state, indexService);
+    eventHandlerFactory.buildMessageHandlers($scope);
 });
