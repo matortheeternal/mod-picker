@@ -56,6 +56,7 @@ class Ability
       cannot :read, LoadOrderNote, approved: false
       cannot :read, Review, approved: false
       cannot :read, Mod, approved: false
+      cannot :read, HelpPage, approved: false
 
       # can read unapproved content they submitted
       can :read, CompatibilityNote, approved: false, submitted_by: user.id
@@ -63,6 +64,7 @@ class Ability
       can :read, LoadOrderNote, approved: false, submitted_by: user.id
       can :read, Review, approved: false, submitted_by: user.id
       can :read, Mod, approved: false, submitted_by: user.id
+      can :read, HelpPage, approved: false, submitted_by: user.id
 
         # cannot read hidden content
       cannot :read, Comment, hidden: true
