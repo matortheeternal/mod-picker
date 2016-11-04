@@ -160,7 +160,7 @@ class Mod < ActiveRecord::Base
   counter_cache :corrections, conditional: { hidden: false, correctable_type: 'Mod' }
   counter_cache :mod_tags, column: 'tags_count'
   counter_cache :mod_list_mods, column: 'mod_lists_count'
-  counter_cache_on :submitter, column: 'submitted_mods_count', conditional: { hidden: false }
+  counter_cache_on :submitter, column: 'submitted_mods_count', conditional: { hidden: false, approved: true }
 
   # VALIDATIONS
   validates :game_id, :submitted_by, :name, :authors, :released, presence: true
