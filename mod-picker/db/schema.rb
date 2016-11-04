@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161104034234) do
+ActiveRecord::Schema.define(version: 20161104043050) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -235,12 +235,13 @@ ActiveRecord::Schema.define(version: 20161104034234) do
 
   create_table "help_pages", force: :cascade do |t|
     t.integer  "game_id",        limit: 4
-    t.integer  "category",       limit: 1,     default: 0, null: false
-    t.integer  "submitted_by",   limit: 4,                 null: false
-    t.string   "title",          limit: 128,               null: false
-    t.text     "text_body",      limit: 65535,             null: false
-    t.integer  "comments_count", limit: 4,     default: 0, null: false
-    t.datetime "submitted",                                null: false
+    t.integer  "category",       limit: 1,     default: 0,     null: false
+    t.integer  "submitted_by",   limit: 4,                     null: false
+    t.string   "title",          limit: 128,                   null: false
+    t.text     "text_body",      limit: 65535,                 null: false
+    t.integer  "comments_count", limit: 4,     default: 0,     null: false
+    t.boolean  "approved",                     default: false, null: false
+    t.datetime "submitted",                                    null: false
     t.datetime "edited"
   end
 
