@@ -379,7 +379,8 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
                 disable_reviews: mod.disable_reviews,
                 lock_tags: mod.lock_tags,
                 has_adult_content: mod.has_adult_content,
-                hidden: mod.hidden
+                hidden: mod.hidden,
+                approved: mod.approved
             }
         };
         objectUtils.deleteEmptyProperties(modData, 1);

@@ -90,6 +90,11 @@
                 <label class="checkbox-option" ng-if="permissions.canModerate">
                     <input type="checkbox" ng-model="mod.hidden">
                     Hidden
+                </label><br/>
+
+                <label class="checkbox-option" ng-if="permissions.canModerate">
+                    <input type="checkbox" ng-model="mod.approved">
+                    Approved
                 </label>
             </section>
 
