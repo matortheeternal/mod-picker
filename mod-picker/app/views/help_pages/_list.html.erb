@@ -9,10 +9,15 @@
 
         <div class="meta-container">
             <%= link_to "/help/#{page.url}", method: :get do %>
-                <h4 class="item-title">
-                    <%= page.title %>
+                <h4 class="item-header">
+                    <span class="item-title">
+                        <%= page.title %>
+                    </span>
                     <% if page.submitted.between?((DateTime.now - 2.weeks), DateTime.now) %>
                     <span class="new-label">NEW</span>
+                    <% end %>
+                    <% unless page.approved %>
+                    <span class="unapproved-label">UNAPPROVED</span>
                     <% end %>
                 </h4>
             <% end %>
