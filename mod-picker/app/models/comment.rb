@@ -16,6 +16,7 @@ class Comment < ActiveRecord::Base
   subscribe :parent_submitter, to: [:added]
 
   # SCOPES
+  hash_scope :hidden, alias: 'hidden'
   include_scope :hidden
   include_scope :has_adult_content, alias: 'include_adult'
   include_scope :parent_id, value: nil, alias: 'include_replies'

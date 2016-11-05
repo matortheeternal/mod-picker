@@ -18,6 +18,7 @@ class Correction < ActiveRecord::Base
   subscribe :mod_author_users, to: [:added, :status]
 
   # SCOPES
+  hash_scope :hidden, alias: 'hidden'
   include_scope :hidden
   include_scope :has_adult_content, :alias => 'include_adult'
   game_scope

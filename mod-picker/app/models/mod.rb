@@ -21,6 +21,8 @@ class Mod < ActiveRecord::Base
   # subscribe :user_stars, to: [:analysis_updated]
 
   # SCOPES
+  hash_scope :approved, alias: 'approved'
+  hash_scope :hidden, alias: 'hidden'
   include_scope :has_adult_content, :alias => 'include_adult'
   include_scope :is_official, :alias => 'include_official'
   include_scope :is_utility, :alias => 'include_utilities'

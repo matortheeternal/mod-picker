@@ -7,6 +7,8 @@ class Plugin < ActiveRecord::Base
 
   # SCOPES
   game_scope
+  hash_scope :approved, alias: 'approved', table: 'mods'
+  hash_scope :hidden, alias: 'hidden', table: 'mods'
   include_scope :has_adult_content, alias: 'include_adult'
   ids_scope :mod_option_id
   search_scope :filename, :alias => :search

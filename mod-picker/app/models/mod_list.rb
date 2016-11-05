@@ -20,6 +20,7 @@ class ModList < ActiveRecord::Base
   subscribe :user_stars, to: [:status]
 
   # SCOPES
+  hash_scope :hidden, alias: 'hidden'
   include_scope :has_adult_content, :alias => 'include_adult'
   game_scope
   search_scope :name, :alias => 'search'

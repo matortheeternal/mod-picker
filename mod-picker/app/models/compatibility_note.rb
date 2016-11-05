@@ -17,6 +17,8 @@ class CompatibilityNote < ActiveRecord::Base
   subscribe :submitter, to: [:message, :approved, :unapproved, :hidden, :unhidden]
 
   # SCOPES
+  hash_scope :approved, alias: 'approved'
+  hash_scope :hidden, alias: 'hidden'
   include_scope :hidden
   include_scope :has_adult_content, :alias => 'include_adult'
   visible_scope :approvable => true
