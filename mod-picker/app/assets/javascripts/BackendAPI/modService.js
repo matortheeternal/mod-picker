@@ -164,7 +164,7 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
                     id: requirement.id,
                     _destroy: true
                 })
-            } else {
+            } else if (!requirement.hasOwnProperty('id')) {
                 required_mods.push({
                     required_id: requirement.required_id
                 })
