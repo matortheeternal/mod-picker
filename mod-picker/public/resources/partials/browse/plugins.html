@@ -27,19 +27,19 @@
                         </ul>
                         <ul class="checkbox-list" ng-if="permissions.canModerate">
                             <li>
-                                <label><input type="checkbox" ng-model="filters.hidden">
+                                <label><input type="checkbox" ng-model="filters.hidden['1']">
                                     Hidden</label>
                             </li>
                             <li>
-                                <label><input type="checkbox" ng-model="filters.unhidden">
+                                <label><input type="checkbox" ng-model="filters.hidden['0']">
                                     Unhidden</label>
                             </li>
                             <li>
-                                <label><input type="checkbox" ng-model="filters.approved">
+                                <label><input type="checkbox" ng-model="filters.approved['1']">
                                     Approved</label>
                             </li>
                             <li>
-                                <label><input type="checkbox" ng-model="filters.unapproved">
+                                <label><input type="checkbox" ng-model="filters.approved['0']">
                                     Unapproved</label>
                             </li>
                         </ul>

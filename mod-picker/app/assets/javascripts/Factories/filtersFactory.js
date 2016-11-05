@@ -21,25 +21,25 @@ app.service("filtersFactory", function() {
         default: true
     };
     this.hiddenFilter = {
-        data: "hidden",
+        data: "hidden.1",
         param: "hdn",
         type: "Boolean",
         default: true
     };
     this.unhiddenFilter = {
-        data: "unhidden",
+        data: "hidden.0",
         param: "unh",
         type: "Boolean",
         default: true
     };
     this.approvedFilter = {
-        data: "approved",
+        data: "approved.1",
         param: "apr",
         type: "Boolean",
         default: true
     };
     this.unapprovedFilter = {
-        data: "unapproved",
+        data: "approved.0",
         param: "una",
         type: "Boolean",
         default: true
