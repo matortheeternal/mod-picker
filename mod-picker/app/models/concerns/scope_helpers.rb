@@ -189,7 +189,11 @@ module ScopeHelpers
           scope scope_name.to_sym, -> (hash) {
             array = []
             hash.each_key{ |key| array.push(key) if hash[key] }
-            where(column_name => array)
+            if options.has_key?(:table)
+              where("#{options[:table]}.#{column_name} IN (?)", array)
+            else
+              where(column_name => array)
+            end
           }
         end
       end
