@@ -19,8 +19,8 @@ class Correction < ActiveRecord::Base
 
   # SCOPES
   hash_scope :hidden, alias: 'hidden'
+  hash_scope :adult, alias: 'adult', column: 'has_adult_content'
   include_scope :hidden
-  include_scope :has_adult_content, :alias => 'include_adult'
   game_scope
   visible_scope
   search_scope :title, :text_body, :combine => true

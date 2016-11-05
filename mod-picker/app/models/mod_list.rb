@@ -21,7 +21,7 @@ class ModList < ActiveRecord::Base
 
   # SCOPES
   hash_scope :hidden, alias: 'hidden'
-  include_scope :has_adult_content, :alias => 'include_adult'
+  hash_scope :adult, alias: 'adult', column: 'has_adult_content'
   game_scope
   search_scope :name, :alias => 'search'
   search_scope :description

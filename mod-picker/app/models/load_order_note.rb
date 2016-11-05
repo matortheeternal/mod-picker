@@ -18,8 +18,8 @@ class LoadOrderNote < ActiveRecord::Base
   # SCOPES
   hash_scope :approved, alias: 'approved'
   hash_scope :hidden, alias: 'hidden'
+  hash_scope :adult, alias: 'adult', column: 'has_adult_content'
   include_scope :hidden
-  include_scope :has_adult_content, :alias => 'include_adult'
   visible_scope :approvable => true
   game_scope
   search_scope :text_body, :alias => 'search'

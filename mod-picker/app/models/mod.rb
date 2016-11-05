@@ -23,7 +23,7 @@ class Mod < ActiveRecord::Base
   # SCOPES
   hash_scope :approved, alias: 'approved'
   hash_scope :hidden, alias: 'hidden'
-  include_scope :has_adult_content, :alias => 'include_adult'
+  hash_scope :adult, alias: 'adult', column: 'has_adult_content'
   include_scope :is_official, :alias => 'include_official'
   include_scope :is_utility, :alias => 'include_utilities'
   value_scope :is_utility

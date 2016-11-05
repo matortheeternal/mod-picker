@@ -17,8 +17,8 @@ class Comment < ActiveRecord::Base
 
   # SCOPES
   hash_scope :hidden, alias: 'hidden'
+  hash_scope :adult, alias: 'adult', column: 'has_adult_content'
   include_scope :hidden
-  include_scope :has_adult_content, alias: 'include_adult'
   include_scope :parent_id, value: nil, alias: 'include_replies'
   search_scope :text_body, :alias => 'search'
   user_scope :submitter
