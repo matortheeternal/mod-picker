@@ -63,9 +63,9 @@ app.service('tableUtils', function($filter, objectUtils, sortUtils) {
         }
     };
 
-    this.buildItemData = function(item, columns, resolve) {
+    this.buildItemData = function(item, columns, resolve, key) {
         var pickerFilter = $filter('picker');
-        item.columnData = [];
+        item[key] = [];
         columns.forEach(function(column) {
             var columnValue = service.columnValue(item, column.data);
             if (column.filter) columnValue = pickerFilter(columnValue, column.filter);
@@ -73,7 +73,7 @@ app.service('tableUtils', function($filter, objectUtils, sortUtils) {
             if (column.note) columnData.note = resolve(column.note, item);
             if (column.link) columnData.link = column.link(item);
             if (column.image) columnData.image = column.image(item);
-            item.columnData.push(columnData);
+            item[key].push(columnData);
         });
     };
 
