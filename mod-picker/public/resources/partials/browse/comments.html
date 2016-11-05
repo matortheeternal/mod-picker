@@ -18,8 +18,12 @@
                     <div class="sidebar-box box-shadow">
                         <ul class="checkbox-list" ng-if="allowAdult">
                             <li>
-                                <label><input type="checkbox" ng-model="filters.include_adult">
-                                    Include Adult Content</label>
+                                <label><input type="checkbox" ng-model="filters.adult['1']">
+                                    Show Adult Content</label>
+                            </li>
+                            <li>
+                                <label><input type="checkbox" ng-model="filters.adult['0']">
+                                    Show Non-Adult Content</label>
                             </li>
                         </ul>
                         <ul class="checkbox-list" ng-if="permissions.canModerate">
