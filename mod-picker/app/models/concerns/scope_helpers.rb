@@ -43,6 +43,13 @@ module ScopeHelpers
       end
     end
 
+    def bool_scope(attribute, mapping)
+      class_eval do
+        scope mapping[true].to_sym -> (bool) { where(attribute => false) if !bool }
+        scope mapping[false].to_sym -> (bool) { where(attribute => true) if !bool }
+      end
+    end
+
     def value_scope(*attributes, **options)
       attributes.each do |attribute|
         scope_name = options[:alias] || attribute.to_s.remove('is_')
