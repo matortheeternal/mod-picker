@@ -14,9 +14,15 @@ app.service("filtersFactory", function() {
         data: "editor",
         param: "e"
     };
-    this.includeAdultFilter = {
-        data: "include_adult",
-        param: "adu",
+    this.showAdultFilter = {
+        data: "adult.1",
+        param: "adc",
+        type: "Boolean",
+        default: false
+    };
+    this.showNonAdultFilter = {
+        data: "adult.0",
+        param: "nac",
         type: "Boolean",
         default: true
     };
@@ -152,7 +158,8 @@ app.service("filtersFactory", function() {
                 type: "Boolean",
                 default: true
             },
-            factory.includeAdultFilter,
+            factory.showAdultFilter,
+            factory.showNonAdultFilter,
             factory.hiddenFilter,
             factory.unhiddenFilter,
             factory.approvedFilter,
@@ -584,7 +591,8 @@ app.service("filtersFactory", function() {
             factory.searchFilter,
             factory.submitterFilter,
             //factory.editorFilter,
-            factory.includeAdultFilter,
+            factory.showAdultFilter,
+            factory.showNonAdultFilter,
             factory.hiddenFilter,
             factory.unhiddenFilter,
             factory.approvedFilter,
@@ -635,7 +643,8 @@ app.service("filtersFactory", function() {
         return [
             factory.searchFilter,
             factory.submitterFilter,
-            factory.includeAdultFilter,
+            factory.showAdultFilter,
+            factory.showNonAdultFilter,
             factory.hiddenFilter,
             factory.unhiddenFilter,
             {
@@ -804,7 +813,8 @@ app.service("filtersFactory", function() {
                 data: "plugin_filename",
                 param: "p"
             },
-            factory.includeAdultFilter,
+            factory.showAdultFilter,
+            factory.showNonAdultFilter,
             factory.hiddenFilter,
             factory.unhiddenFilter,
             factory.approvedFilter,
@@ -827,7 +837,8 @@ app.service("filtersFactory", function() {
             factory.searchFilter,
             factory.submitterFilter,
             //factory.editorFilter,
-            factory.includeAdultFilter,
+            factory.showAdultFilter,
+            factory.showNonAdultFilter,
             factory.hiddenFilter,
             factory.unhiddenFilter
         ];
@@ -998,7 +1009,8 @@ app.service("filtersFactory", function() {
                 param: "t"
             },
             factory.submitterFilter,
-            factory.includeAdultFilter,
+            factory.showAdultFilter,
+            factory.showNonAdultFilter,
             factory.hiddenFilter,
             factory.unhiddenFilter,
             {
@@ -1235,7 +1247,8 @@ app.service("filtersFactory", function() {
                 data: "description",
                 param: "d"
             },
-            factory.includeAdultFilter,
+            factory.showAdultFilter,
+            factory.showNonAdultFilter,
             factory.hiddenFilter,
             factory.unhiddenFilter,
             factory.approvedFilter,
