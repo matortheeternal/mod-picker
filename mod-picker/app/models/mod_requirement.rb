@@ -13,7 +13,8 @@ class ModRequirement < ActiveRecord::Base
   belongs_to :required_mod, :class_name => 'Mod', :inverse_of => 'required_by', :foreign_key => 'required_id'
 
   # COUNTER CACHE
-  counter_cache_on :mod, :required_mod
+  counter_cache_on :mod, column: 'required_mods_count'
+  counter_cache_on :required_mod, column: 'required_by_count'
 
   # VALIDATIONS
   validates :required_id, presence: true
