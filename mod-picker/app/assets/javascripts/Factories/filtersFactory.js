@@ -1308,16 +1308,16 @@ app.service("filtersFactory", function() {
         return [
             factory.submitterFilter,
             {
-                data: "resolved",
+                data: "resolved.1",
                 param: "res",
                 type: "Boolean",
-                default: true
+                default: false
             },
             {
-                data: "unresolved",
+                data: "resolved.0",
                 param: "unr",
                 type: "Boolean",
-                default: false
+                default: true
             }
         ];
     };

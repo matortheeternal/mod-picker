@@ -5,7 +5,7 @@ class BaseReport < ActiveRecord::Base
   date_column :submitted, :edited
 
   # SCOPES
-  bool_scope :resolved, { true => :resolved, false => :unresolved }
+  hash_scope :resolved, alias: 'resolved'
   polymorphic_scope :reportable
   date_scope :submitted
   range_scope :reports_count
