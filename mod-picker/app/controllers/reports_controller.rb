@@ -50,7 +50,7 @@ class ReportsController < ApplicationController
     authorize! :resolve, @report
     @report.resolved = params[:resolved]
     if @report.save
-      render json: {statrus: :ok}
+      render json: {status: :ok}
     else
       render json: @report.errors, status: :unprocessable_entity
     end
