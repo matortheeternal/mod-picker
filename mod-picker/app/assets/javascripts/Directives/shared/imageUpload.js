@@ -9,13 +9,17 @@ app.directive('imageUpload', function() {
             label: '@',
             imageClass: '@',
             maxWidth: '@',
-            maxHeight: '@'
+            maxHeight: '@',
+            maxFileSize: '=?'
         },
         controller: 'imageUploadController'
     }
 });
 
-app.controller('imageUploadController', function($scope, $element, fileUtils) {
+app.controller('imageUploadController', function($scope, $element, $filter, fileUtils) {
+    // set default value
+    angular.default($scope, 'maxFileSize', 262144);
+
     $scope.browseImage = function() {
         var fileInput = $element[0].children[1].children[0];
         fileInput.click();
@@ -47,10 +51,11 @@ app.controller('imageUploadController', function($scope, $element, fileUtils) {
             }
 
             // check filesize
-            if (imageFile.size > 1048576) {
+            if (imageFile.size > $scope.maxFileSize) {
+                var maxFileSizeStr = $filter('bytes')($scope.maxFileSize);
                 errorObj = {
                     type: "error",
-                    text: capLabel+" file is too big.  Maximum file size 1.0MB."
+                    text: capLabel+" file is too big.  Maximum file size "+maxFileSizeStr+"."
                 };
                 $scope.$emit("customMessage", errorObj);
                 $scope.resetImage();
