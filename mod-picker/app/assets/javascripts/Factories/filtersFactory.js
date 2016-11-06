@@ -676,6 +676,12 @@ app.service("filtersFactory", function() {
                 param: "art",
                 type: "Boolean",
                 default: true
+            },
+            {
+                data: "commentable.HelpPage",
+                param: "hlp",
+                type: "Boolean",
+                default: true
             }
         ]
     };
