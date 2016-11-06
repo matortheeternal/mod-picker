@@ -52,6 +52,10 @@ app.controller('modsController', function($scope, $rootScope, $q, $stateParams, 
         }
     };
 
+    $scope.showDetailsModal = function() {
+        $scope.$broadcast('configureDetails');
+    };
+
     // returns a new subset of the input filters with the unavailable filters removed
     $scope.availableFilters = function(filters) {
         return filters.filter(function(item) {

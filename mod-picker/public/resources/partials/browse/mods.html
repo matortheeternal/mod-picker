@@ -159,7 +159,17 @@
             </div>
 
             <div class="right-column right-browse-column">
-                <h2>Mods</h2>
+                <h2>
+                    Mods
+                    <span class="right-item view-mode-item">
+                        <span class="right-item action-box" ng-click="showDetailsModal()" ng-if="!tableView">
+                            <i class="fa fa-gear"></i> Configure Details
+                        </span>
+                        <span class="right-item action-box" ng-click="tableView = !tableView">
+                            <i class="fa {{ tableView ? 'fa-th-large' : 'fa-list-ul' }}"></i> {{ tableView ? 'Grid View' : 'List View' }}
+                        </span>
+                    </span>
+                </h2>
                 <loader data="mods" content-class="table-container" spinner-class="big-spinner" ng-if="!error">
                     <table-results label="mods" data="mods" ng-if="tableView"></table-results>
                     <grid-results label="mods" data="mods" ng-if="!tableView"></grid-results>
