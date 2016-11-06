@@ -161,7 +161,8 @@
             <div class="right-column right-browse-column">
                 <h2>Mods</h2>
                 <loader data="mods" content-class="table-container" spinner-class="big-spinner" ng-if="!error">
-                    <table-results label="mods" data="mods"></table-results>
+                    <table-results label="mods" data="mods" ng-if="tableView"></table-results>
+                    <grid-results label="mods" data="mods" ng-if="!tableView"></grid-results>
                     <page-results pages="pages" data="mods" callback="getData"></page-results>
                 </loader>
 
