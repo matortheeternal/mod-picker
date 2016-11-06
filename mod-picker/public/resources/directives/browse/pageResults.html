@@ -1,6 +1,12 @@
 <div class="page-results-container" ng-show="data && pages.max > 1">
+    <button class="page-item" ng-if="pages.current > 1" ng-click="callback(pages.current - 1)">
+        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+    </button>
     <span ng-repeat="page in range"><!--
         --><span class="page-ellipsis" ng-if="page - range[$index - 1] > 1">...</span><!--
         --><button class="page-item" ng-click="callback(page);scrollToTop()" ng-disabled="page == pages.current">{{page}}</button><!--
     --></span>
+    <button class="page-item" ng-if="pages.current < pages.max" ng-click="callback(pages.current + 1)">
+        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+    </button>
 </div>
