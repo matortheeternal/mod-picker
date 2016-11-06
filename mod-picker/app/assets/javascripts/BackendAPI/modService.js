@@ -363,6 +363,7 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
                 name: mod.name,
                 aliases: mod.aliases,
                 authors: mod.authors,
+                status: mod.status,
                 is_utility: mod.is_utility,
                 game_id: mod.game_id,
                 released: mod.released,
