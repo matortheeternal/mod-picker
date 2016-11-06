@@ -1,5 +1,6 @@
 app.directive('helper', function() {
     return {
+        priority: 200,
         restrict: 'E',
         templateUrl: '/resources/directives/base/helper.html',
         scope: false,
