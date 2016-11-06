@@ -133,17 +133,25 @@ class Ability
 
       # abilities tied to reputation
       if user.reputation.overall >= 5
+        # TODO: Move this to 20 reputation after the beta
         can :create, Tag # can create new tags
       end
       if user.reputation.overall >= 40
-        can :create, Correction  # can report something as incorrect
-        can :create, AgreementMark  # can agree/disagree with corrections
-        can :create, ReputationLink # can give reputation other users
-        can :create, HelpPage # can create new help pages
+        # can report something as incorrect unless they submitted it and
+        # it is not a mod
+        can :create, Correction
+        cannot :create, Correction, { correctable: { submitted_by: user.id } }
+        can :create, Correction, { correctable_type: "Mod" }
+
+        # can agree/disagree with corrections, give reputation other users, and
+        # can create new help pages
+        can :create, AgreementMark
+        can :create, ReputationLink # can
+        can :create, HelpPage
       end
       if user.reputation.overall >= 320
         # can update compatibility notes, install order notes, and
-        # load order notes  when the user who created them is inactive
+        # load order notes when the user who created them is inactive
         can :update, CompatibilityNote, { submitter: { inactive?: true } }
         can :update, InstallOrderNote, { submitter: { inactive?: true } }
         can :update, LoadOrderNote, { submitter: { inactive?: true } }
