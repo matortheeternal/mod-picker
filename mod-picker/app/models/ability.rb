@@ -127,6 +127,7 @@ class Ability
       # authors
       can :update_authors, Mod, { mod_authors: { user_id: user.id, role: 0 } }
       can :update_options, Mod, { mod_authors: { user_id: user.id, role: 0 } }
+      can :change_status, Mod, { status: 0, mod_authors: { user_id: user.id, role: 0 } }
       # contributors
       cannot [:update, :hide], Mod, { disallow_contributors: true, mod_authors: { user_id: user.id, role: 1 } }
 
