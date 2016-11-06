@@ -58,6 +58,79 @@ app.service("sortFactory", function() {
         value: "mods.average_rating"
     };
 
+    /* mods index sort options (for grid view */
+    this.modSortOptions = function() {
+        return [
+            factory.buildSortOption("ID", "id"),
+            factory.buildSortOption("Mod Name", "name"),
+            factory.buildSortOption("Authors"),
+            factory.buildSortOption("Primary Category", "primary_category.name"),
+            factory.buildSortOption("Secondary Category", "secondary_category.name"),
+            factory.buildSortOption("Submitted"),
+            factory.buildSortOption("Released"),
+            factory.buildSortOption("Updated"),
+            factory.buildCountSortOption("Stars"),
+            factory.buildSortOption("Reputation"),
+            factory.buildSortOption("Avg Rating", "average_rating"),
+            factory.buildSortOption("Plugins", "plugins_count"),
+            factory.buildCountSortOption("Plugins"),
+            factory.buildCountSortOption("Mod Lists"),
+            factory.buildCountSortOption("Required Mods"),
+            factory.buildCountSortOption("Required By"),
+            factory.buildCountSortOption("Tags"),
+            factory.buildCountSortOption("Compatibility Notes"),
+            factory.buildCountSortOption("Install Order Notes"),
+            factory.buildCountSortOption("Load Order Notes"),
+            factory.buildSortOption("Endorsements", {
+                nexus: "nexus_infos.endorsements"
+            }),
+            factory.buildSortOption("Subscribers", {
+                workshop: "workshop_infos.subscribers"
+            }),
+            factory.buildSortOption("Unique DLs", {
+                nexus: "nexus_infos.unique_downloads"
+            }),
+            factory.buildSortOption("Favorites", {
+                lab: "lover_infos.followers_count",
+                workshop: "workshop_infos.favorites"
+            }),
+            factory.buildSortOption("Downloads", {
+                nexus: "nexus_infos.downloads",
+                lab: "lover_infos.downloads"
+            }),
+            factory.buildSortOption("Views", {
+                nexus: "nexus_infos.views",
+                lab: "lover_infos.views",
+                workshop: "workshop_infos.views"
+            }),
+            factory.buildSortOption("Posts", {
+                nexus: "nexus_infos.posts_count",
+                workshop: "workshop_infos.comments_count"
+            }),
+            factory.buildSortOption("Images", {
+                nexus: "nexus_infos.images_count",
+                workshop: "workshop_infos.images_count"
+            }),
+            factory.buildSortOption("Videos", {
+                nexus: "nexus_infos.videos_count",
+                workshop: "workshop_infos.videos_count"
+            }),
+            factory.buildSortOption("Files", {
+                nexus: "nexus_infos.files_count"
+            }),
+            factory.buildSortOption("Bugs", {
+                nexus: "nexus_infos.bugs_count"
+            }),
+            factory.buildSortOption("Discussions", {
+                nexus: "nexus_infos.discussions_count",
+                workshop: "workshop_infos.discussions_count"
+            }),
+            factory.buildSortOption("Articles", {
+                nexus: "nexus_infos.articles_count"
+            })
+        ];
+    };
+
     /* comments index sort options */
     this.commentSortOptions = function() {
         return [
