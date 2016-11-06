@@ -61,7 +61,6 @@ app.service("sortFactory", function() {
     /* mods index sort options (for grid view */
     this.modSortOptions = function() {
         return [
-            factory.buildSortOption("ID", "id"),
             factory.buildSortOption("Mod Name", "name"),
             factory.buildSortOption("Authors"),
             factory.buildSortOption("Primary Category", "primary_category.name"),
