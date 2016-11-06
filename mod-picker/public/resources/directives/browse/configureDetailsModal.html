@@ -1,0 +1,27 @@
+<div class="modal-container" ng-if="showModal" ng-click="unfocusDetailsModal($event)">
+    <div class="modal big-modal">
+        <form>
+            <h3 class="section-title">Configure Details</h3>
+            <div class="columns-list">
+                <section ng-repeat="group in detailGroups">
+                    <h3>{{group}}</h3>
+                    <ul class="checkbox-list">
+                        <li ng-repeat="detail in groupDetails(availableDetailData, details, group) as groupedDetails">
+                            <label>
+                                <input type="checkbox" ng-model="detail.visibility">
+                                {{detail.label}}
+                            </label>
+                        </li>
+                        <li ng-hide="groupedDetails.length">
+                            No details available.
+                        </li>
+                    </ul>
+                </section>
+            </div>
+
+            <div class="action-button-container">
+                <input type="submit" class="btn" value="Close" ng-click="toggleModal(false)">
+            </div>
+        </form>
+    </div>
+</div>
