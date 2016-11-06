@@ -80,7 +80,7 @@
 
   sort-control {
     font-size: 14px;
-    margin-right: 8px;
+    margin: 0 8px;
 
     .sort-direction {
       font-size: 18px;
@@ -277,8 +277,8 @@ grid-results {
     vertical-align: middle;
     background-color: $secondary_background;
     border: 1px solid $border_color;
-    margin: 10px;
-    width: 210px;
+    margin: 9px;
+    width: 212px;
     overflow: hidden;
 
     .item-title {
@@ -308,7 +308,7 @@ grid-results {
 
       img {
         max-width: 100%;
-        max-height: 200px;
+        max-height: 210px;
         display: block;
         margin: auto;
       }

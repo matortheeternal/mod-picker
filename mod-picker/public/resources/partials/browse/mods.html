@@ -162,6 +162,9 @@
                 <h2>
                     Mods
                     <span class="right-item view-mode-item">
+                        <span class="right-item" ng-if="!tableView">
+                            <sort-control></sort-control>
+                        </span>
                         <span class="right-item action-box" ng-click="showDetailsModal()" ng-if="!tableView">
                             <i class="fa fa-gear"></i> Configure Details
                         </span>

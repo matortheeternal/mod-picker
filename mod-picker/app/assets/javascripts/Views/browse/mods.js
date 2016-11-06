@@ -5,7 +5,7 @@ app.run(function($futureState, indexFactory, filtersFactory) {
     $futureState.futureState(state);
 });
 
-app.controller('modsController', function($scope, $rootScope, $q, $stateParams, $state, modService, categoryService, modListService, indexService, helpFactory, sliderFactory, columnsFactory, detailsFactory, filtersFactory, actionsFactory, indexFactory, eventHandlerFactory) {
+app.controller('modsController', function($scope, $rootScope, $q, $stateParams, $state, modService, categoryService, modListService, indexService, helpFactory, sliderFactory, columnsFactory, detailsFactory, sortFactory, filtersFactory, actionsFactory, indexFactory, eventHandlerFactory) {
     // inherited variables
     $scope.currentUser = $rootScope.currentUser;
     $scope.currentGame = $rootScope.currentGame;
@@ -24,6 +24,9 @@ app.controller('modsController', function($scope, $rootScope, $q, $stateParams, 
     // details for view
     $scope.details = detailsFactory.modDetails();
     $scope.detailGroups = detailsFactory.modDetailGroups();
+
+    // sort options for view
+    $scope.sortOptions = sortFactory.modSortOptions();
 
     // set help context
     helpFactory.setHelpContexts($scope, [helpFactory.modsIndex]);
