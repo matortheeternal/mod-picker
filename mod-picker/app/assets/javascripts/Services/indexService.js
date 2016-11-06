@@ -98,10 +98,11 @@ app.service('indexService', function(objectUtils) {
         });
     };
 
-    this.getParams = function(filters, sort, filterPrototypes) {
+    this.getParams = function(filters, sort, page, filterPrototypes) {
         var params = {
             scol: sort.column,
-            sdir: sort.direction
+            sdir: sort.direction,
+            page: page
         };
         filterPrototypes.forEach(function(filter) {
             // this is the filter values stored on the scope of the view

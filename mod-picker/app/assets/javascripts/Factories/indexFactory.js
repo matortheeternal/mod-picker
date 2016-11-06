@@ -1,4 +1,4 @@
-app.service('indexFactory', function(indexService, objectUtils) {
+app.service('indexFactory', function(indexService, objectUtils, $timeout) {
     this.buildIndex = function($scope, $stateParams, $state) {
         // initialize local variables
         $scope.availableColumnData = [];
@@ -29,6 +29,10 @@ app.service('indexFactory', function(indexService, objectUtils) {
                 $scope.dataRetrieved = true;
                 delete $scope.error;
                 if ($scope.dataCallback) $scope.dataCallback();
+
+                // set url parameters
+                var params = indexService.getParams($scope.filters, $scope.sort, page, $scope.filterPrototypes);
+                $state.transitionTo($state.current.name, params, { notify: false });
             };
             var errorCallback = function(response) {
                 $scope.dataRetrieved = true;
@@ -41,16 +45,17 @@ app.service('indexFactory', function(indexService, objectUtils) {
             }
         };
 
-        $scope.$watch('[filters, sort]', function() {
+        $scope.$watch('[filters, sort]', function(newValue, oldValue) {
             // fetch data again when filters or sort changes
             var dataWait = $scope.dataRetrieved ? 1000 : 0;
-            clearTimeout($scope.getDataTimeout);
-            $scope.pages.current = 1;
-            $scope.getDataTimeout = setTimeout($scope.getData, dataWait);
-
-            // set url parameters
-            var params = indexService.getParams($scope.filters, $scope.sort, $scope.filterPrototypes);
-            $state.transitionTo($state.current.name, params, { notify: false });
+            $timeout.cancel($scope.getDataTimeout);
+            //if the page is first being loaded, then load the page from params, otherwise go back to page 1
+            if (newValue === oldValue) {
+                $scope.pages.current = $stateParams.page || 1;
+            } else {
+                $scope.pages.current = 1;
+            }
+            $scope.getDataTimeout = $timeout($scope.getData($scope.pages.current), dataWait);
         }, true);
     };
 
@@ -62,7 +67,8 @@ app.service('indexFactory', function(indexService, objectUtils) {
         var params = {
             //column sort
             scol: scol,
-            sdir: sdir
+            sdir: sdir,
+            page: 1
         };
         indexService.setDefaultParamsFromFilters(params, filterPrototypes);
 
