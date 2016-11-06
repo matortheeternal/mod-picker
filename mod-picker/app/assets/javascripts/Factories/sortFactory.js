@@ -1,12 +1,21 @@
 app.service("sortFactory", function() {
     var factory = this;
 
+    // helper function to convert a label to a value data string
+    this.labelToValue = function(label) {
+        return label.toLowerCase().replace(/ /g, "_");
+    };
+
     // helper function to build a sort option prototype from a label
-    this.buildSortOption = function(label) {
-        return {
-            label: label,
-            value: label.toLowerCase().replace(/ /g, "_")
-        };
+    this.buildSortOption = function(label, value) {
+        if (!value) value = factory.labelToValue(label);
+        return { label: label, value: value };
+    };
+
+    // helper function to build a sort option prototype from a count label
+    this.buildCountSortOption = function(label) {
+        var value = factory.labelToValue(label) + "_count";
+        return { label: label, value: value };
     };
 
     /* shared sort option prototypes */
