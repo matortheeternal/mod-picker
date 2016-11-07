@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161104182674) do
+ActiveRecord::Schema.define(version: 20161106205540) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -180,6 +180,16 @@ ActiveRecord::Schema.define(version: 20161104182674) do
   add_index "corrections", ["edited_by"], name: "fk_rails_aafc41fce4", using: :btree
   add_index "corrections", ["game_id"], name: "fk_rails_6d40e5f2cc", using: :btree
   add_index "corrections", ["submitted_by"], name: "submitted_by", using: :btree
+
+  create_table "curator_requests", force: :cascade do |t|
+    t.integer "user_id", limit: 4,               null: false
+    t.integer "mod_id",  limit: 4,               null: false
+    t.string  "message", limit: 255,             null: false
+    t.integer "state",   limit: 1,   default: 0, null: false
+  end
+
+  add_index "curator_requests", ["mod_id"], name: "index_curator_requests_on_mod_id", using: :btree
+  add_index "curator_requests", ["user_id"], name: "index_curator_requests_on_user_id", using: :btree
 
   create_table "custom_sources", force: :cascade do |t|
     t.integer "mod_id", limit: 4,   null: false
@@ -989,6 +999,8 @@ ActiveRecord::Schema.define(version: 20161104182674) do
   add_foreign_key "corrections", "games"
   add_foreign_key "corrections", "users", column: "edited_by"
   add_foreign_key "corrections", "users", column: "submitted_by", name: "corrections_ibfk_4"
+  add_foreign_key "curator_requests", "mods"
+  add_foreign_key "curator_requests", "users"
   add_foreign_key "custom_sources", "mods"
   add_foreign_key "dummy_masters", "plugins"
   add_foreign_key "events", "users"
