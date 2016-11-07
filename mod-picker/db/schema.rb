@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161107004653) do
+ActiveRecord::Schema.define(version: 20161107181516) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -182,11 +182,12 @@ ActiveRecord::Schema.define(version: 20161107004653) do
   add_index "corrections", ["submitted_by"], name: "submitted_by", using: :btree
 
   create_table "curator_requests", force: :cascade do |t|
-    t.integer  "user_id",   limit: 4,               null: false
-    t.integer  "mod_id",    limit: 4,               null: false
-    t.string   "message",   limit: 255,             null: false
-    t.integer  "state",     limit: 1,   default: 0, null: false
-    t.datetime "submitted",                         null: false
+    t.integer  "user_id",           limit: 4,               null: false
+    t.integer  "mod_id",            limit: 4,               null: false
+    t.string   "message",           limit: 255,             null: false
+    t.integer  "state",             limit: 1,   default: 0, null: false
+    t.string   "moderator_message", limit: 255
+    t.datetime "submitted",                                 null: false
     t.datetime "updated"
   end
 
