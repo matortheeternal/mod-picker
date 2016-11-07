@@ -1,8 +1,11 @@
 class CuratorRequest < ActiveRecord::Base
-  include RecordEnhancements, BetterJson, CounterCache, ScopeHelpers
+  include RecordEnhancements, BetterJson, CounterCache, ScopeHelpers, Filterable, Sortable, Dateable
 
   # ATTRIBUTES
   enum state: [:open, :approved, :denied]
+
+  # DATE COLUMNS
+  date_column :submitted, :updated
 
   # ASSOCIATIONS
   belongs_to :user, :inverse_of => 'curator_requests'
