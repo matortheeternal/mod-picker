@@ -56,7 +56,7 @@ class CuratorRequestsController < ApplicationController
 
     # Params we allow filtering on
     def filtering_params
-      params[:filters].permit(:search, :submitter, :submitted, :updated, :state, :mod)
+      params[:filters].slice(:search, :submitter, :mod_name, :state, :submitted, :updated, :mod_released, :mod_updated, :user_reputation)
     end
 
 end
