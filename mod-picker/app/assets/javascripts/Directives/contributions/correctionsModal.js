@@ -19,6 +19,11 @@ app.controller('correctionsModalController', function($scope, contributionServic
         return (correction.agree_count / ((correction.agree_count + correction.disagree_count) || 1)) * 100;
     };
 
+    // update the markdown editor
+    $scope.updateEditor = function() {
+        $scope.updateMDE = ($scope.updateMDE || 0) + 1;
+    };
+
     // start a new correction
     $scope.startNewCorrection = function() {
         $scope.activeCorrection = {
@@ -80,8 +85,9 @@ app.controller('correctionsModalController', function($scope, contributionServic
     };
 
     $scope.validateCorrection = function() {
-        $scope.activeCorrection.valid = ($scope.activeCorrection.title.length > 4) &&
-            ($scope.activeCorrection.text_body.length > 256);
+        var sanitized_text = contributionService.removePrompts($scope.activeCorrection.text_body);
+        var title = $scope.activeCorrection.title;
+        $scope.activeCorrection.valid = title.length > 4 && sanitized_text.length > 256;
     };
 
     // discard a new correction object or stop editing an existing one
@@ -111,12 +117,13 @@ app.controller('correctionsModalController', function($scope, contributionServic
         }
 
         // submit the correction
+        var sanitized_text = contributionService.removePrompts($scope.activeCorrection.text_body);
         var correctionObj = {
             correction: {
                 game_id: $scope.target.game_id,
                 correctable_id: $scope.target.id,
                 correctable_type: $scope.modelObj.name,
-                title: $scope.activeCorrection.title,
+                title: sanitized_text,
                 text_body: $scope.activeCorrection.text_body
             }
         };
