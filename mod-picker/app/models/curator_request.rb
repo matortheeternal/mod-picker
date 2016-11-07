@@ -17,7 +17,7 @@ class CuratorRequest < ActiveRecord::Base
 
   # UNIQUE SCOPES
   scope :mod_name, -> (name) { where("mods.name LIKE ?", "%#{name}%") }
-  scope :user_reputation, -> (range) { where(users: { reputation: (range[:min]..range[:max]) }) }
+  scope :user_reputation, -> (range) { where(users: { user_reputations: (range[:min]..range[:max]) }) }
 
   # ASSOCIATIONS
   belongs_to :user, :inverse_of => 'curator_requests'
