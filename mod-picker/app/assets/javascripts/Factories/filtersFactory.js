@@ -1325,7 +1325,12 @@ app.service("filtersFactory", function() {
 
     this.reportSearchFilters = function() {
         return [
-            factory.submitterFilter,
+            factory.submitterFilter
+        ];
+    };
+
+    this.reportGeneralFilters = function() {
+        return [
             {
                 data: "resolved.1",
                 param: "res",
@@ -1337,12 +1342,7 @@ app.service("filtersFactory", function() {
                 param: "unr",
                 type: "Boolean",
                 default: true
-            }
-        ];
-    };
-
-    this.reportGeneralFilters = function() {
-        return [
+            },
             {
                 data: "reportable.Review",
                 param: "rr",
@@ -1477,6 +1477,87 @@ app.service("filtersFactory", function() {
             factory.reportGeneralFilters(),
             factory.reportDateFilters(),
             factory.reportStatisticFilters()
+        );
+    };
+
+    this.curatorRequestSearchFilters = function() {
+        return [
+            factory.searchFilter,
+            factory.submitterFilter,
+            {
+                label: "Mod Name",
+                data: "mod_name"
+            }
+        ];
+    };
+
+    this.curatorRequestGeneralFilters = function() {
+        return [
+            {
+                data: "state.open",
+                param: "sop",
+                type: "Boolean",
+                default: true
+            },
+            {
+                data: "state.approved",
+                param: "sap",
+                type: "Boolean",
+                default: true
+            },
+            {
+                data: "state.denied",
+                param: "sde",
+                type: "Boolean",
+                default: true
+            }
+        ]
+    };
+
+    this.curatorRequestDateFilters = function() {
+        return [
+            factory.userDateSlider({
+                label: "Created",
+                data: "submitted",
+                param: "dc"
+            }),
+            factory.userDateSlider({
+                label: "Updated",
+                data: "updated",
+                param: "du"
+            }),
+            factory.modDateSlider({
+                label: "Mod Date Released",
+                data: "released",
+                param: "mdr"
+            }),
+            factory.modDateSlider({
+                label: "Mod Date Updated",
+                data: "updated",
+                param: "mdu"
+            })
+        ];
+    };
+
+    this.curatorRequestStatisticFilters = function() {
+        return [
+            {
+                label: "User Reputation",
+                common: true,
+                data: "user_reputation",
+                type: "Range",
+                max: 5000,
+                param: "rep"
+            }
+        ]
+    };
+
+    this.curatorRequestFilters = function() {
+        return Array.prototype.concat(
+            factory.curatorRequestSearchFilters(),
+            factory.curatorRequestGeneralFilters(),
+            factory.curatorRequestDateFilters(),
+            factory.curatorRequestStatisticFilters()
         );
     };
 
