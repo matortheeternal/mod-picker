@@ -2,7 +2,7 @@
   "except": ["user_id", "mod_id"],
   "include": {
     "mod": {},
-    "user": {
+    "submitter": {
       "format": "card"
     }
   }

@@ -4,7 +4,7 @@
     "mod": {
       "only": ["released", "updated"]
     },
-    "user": {
+    "submitter": {
       "include": {
         "reputation": {
           "only": ["overall"]

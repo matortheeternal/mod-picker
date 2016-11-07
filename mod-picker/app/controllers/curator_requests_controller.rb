@@ -3,8 +3,8 @@ class CuratorRequestsController < ApplicationController
 
   # POST /curator_requests/index
   def index
-    @curator_requests = CuratorRequest.eager_load(:mod, :user => :reputation).accessible_by(current_ability).filter(filtering_params).sort(sorting_params).paginate(page: params[:page])
-    count =  CuratorRequest.eager_load(:mod, :user => :reputation).accessible_by(current_ability).filter(filtering_params).count
+    @curator_requests = CuratorRequest.eager_load(:mod, :submitter => :reputation).accessible_by(current_ability).filter(filtering_params).sort(sorting_params).paginate(page: params[:page])
+    count =  CuratorRequest.eager_load(:mod, :submitter => :reputation).accessible_by(current_ability).filter(filtering_params).count
 
     render json: {
         curator_requests: @curator_requests,
@@ -16,7 +16,7 @@ class CuratorRequestsController < ApplicationController
   # POST /curator_requests
   def create
     @curator_request = CuratorRequest.new(curator_request_params)
-    @curator_request.user_id = current_user.id
+    @curator_request.submitted_by = current_user.id
     authorize! :create, @curator_request
 
     if @curator_request.save
@@ -42,7 +42,7 @@ class CuratorRequestsController < ApplicationController
     end
 
     def curator_request_params
-      params.require(:curator_request).permit(:mod_id, :message)
+      params.require(:curator_request).permit(:mod_id, :text_body)
     end
 
     def curator_request_update_params
@@ -56,7 +56,7 @@ class CuratorRequestsController < ApplicationController
 
     # Params we allow filtering on
     def filtering_params
-      params[:filters].slice(:search, :submitter, :mod_name, :state, :submitted, :updated, :mod_released, :mod_updated, :user_reputation)
+      params[:filters].slice(:search, :submitter, :mod_name, :state, :submitted, :updated)
     end
 
 end
