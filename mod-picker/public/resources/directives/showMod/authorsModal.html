@@ -1,5 +1,7 @@
 <div class="modal-container" ng-if="showAuthorsModal" ng-click="unfocusAuthorsModal($event)">
-    <div class="modal huge-modal">
+    <messages event="modalMessage"></messages>
+
+    <div class="modal huge-modal" ng-hide="activeRequest">
         <div class="close-modal">
             <span class="fa fa-times" ng-click="toggleAuthorsModal(false)"></span>
         </div>
@@ -17,7 +19,29 @@
         </ul>
 
         <div class="action-button-container" ng-if="!permissions.isAuthor">
-            <input class="btn" type="button" ng-click="startCuratorRequest()" ng-disabled="!canCreateCuratorRequest" title="{{curatorRequestTitle}}" value="Create Curator Request">
+            <input class="btn" type="button" ng-click="startNewCuratorRequest()" ng-disabled="!canCreateCuratorRequest" title="{{curatorRequestTitle}}" value="Create Curator Request">
+        </div>
+    </div>
+
+    <div class="modal huge-modal" ng-if="activeRequest">
+        <div class="close-modal">
+            <span class="fa fa-times" ng-click="toggleAuthorsModal(false)"></span>
+        </div>
+
+        <h2>{{mod.name}} - New Curator Request</h2>
+
+        <div class="content-block">
+            <div class="content-title">
+                New Curator Request
+            </div>
+            <div class="content-container">
+                <text-area data="activeRequest.text_body" ng-refresh="updateMDE" on-change="validateCuratorRequest"></text-area>
+
+                <div class="action-button-container">
+                    <input class="btn action-btn" type="submit" value="Submit" ng-click="saveCuratorRequest()" ng-disabled="!activeRequest.valid" title="{{activeRequest.valid ? 'Submit your curator request' : 'Your curator request is too short.'}}"/>
+                    <input class="btn action-btn" type="button" value="Discard" ng-click="discardCuratorRequest()">
+                </div>
+            </div>
         </div>
     </div>
 </div>
