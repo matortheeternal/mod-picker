@@ -244,5 +244,17 @@ app.service("sortFactory", function() {
         ];
     };
 
+    /* curator request sort options */
+    this.curatorRequestSortOptions = function() {
+        return [
+            factory.submittedSort,
+            factory.buildSortOption("Date Updated", "updated"),
+            factory.buildSortOption("Mod Released", "mods.released"),
+            factory.buildSortOption("Mod Updated", "mods.updated"),
+            factory.buildSortOption("State"),
+            factory.buildSortOption("User Reputation", "user_reputations.overall")
+        ]
+    };
+
     return factory;
 });
