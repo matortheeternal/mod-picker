@@ -3,8 +3,8 @@ class CuratorRequestsController < ApplicationController
 
   # POST /curator_requests/index
   def index
-    @curator_requests = CuratorRequest.eager_load(:user, :mod).accessible_by(current_ability).filter(filtering_params).sort(sorting_params).paginate(page: params[:page])
-    count =  CuratorRequest.eager_load(:user, :mod).accessible_by(current_ability).filter(filtering_params).count
+    @curator_requests = CuratorRequest.eager_load(:mod, :user => :reputation).accessible_by(current_ability).filter(filtering_params).sort(sorting_params).paginate(page: params[:page])
+    count =  CuratorRequest.eager_load(:mod, :user => :reputation).accessible_by(current_ability).filter(filtering_params).count
 
     render json: {
         mods: json_format(@curator_requests),
