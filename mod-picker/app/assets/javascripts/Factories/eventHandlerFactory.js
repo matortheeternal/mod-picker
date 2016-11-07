@@ -30,6 +30,11 @@ app.service('eventHandlerFactory', function(errorService) {
     };
 
     this.buildModalMessageHandlers = function($scope, allowCustomMessages) {
+        // remove any existing handlers on these events
+        $scope.$$listeners.modalErrorMessage = [];
+        $scope.$$listeners.modalSuccessMessage = [];
+        $scope.$$listeners.modalCustomMessage = [];
+
         // display error messages
         $scope.$on('modalErrorMessage', function(event, params) {
             var errors = errorService.errorMessages(params.label, params.response);
