@@ -1,7 +1,7 @@
 class ModsController < ApplicationController
   before_action :set_mod, only: [:edit, :update, :hide, :approve, :update_tags, :image, :corrections, :reviews, :compatibility_notes, :install_order_notes, :load_order_notes, :analysis, :destroy]
 
-  # POST /mods
+  # POST /mods/index
   def index
     @mods = Mod.eager_load(:author_users, :nexus_infos, :lover_infos, :workshop_infos).accessible_by(current_ability).filter(filtering_params).sort(sorting_params).paginate(page: params[:page])
     count =  Mod.eager_load(:author_users, :nexus_infos, :lover_infos, :workshop_infos).accessible_by(current_ability).filter(filtering_params).count
@@ -52,7 +52,7 @@ class ModsController < ApplicationController
     render json: {status: :ok}
   end
 
-  # POST /mods/submit
+  # POST /mods
   def create
     authorize! :create, Mod
     authorize! :assign_custom_sources, Mod if params[:mod].has_key?(:custom_sources_attributes)
