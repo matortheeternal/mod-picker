@@ -7,7 +7,7 @@ class CuratorRequestsController < ApplicationController
     count =  CuratorRequest.eager_load(:mod, :user => :reputation).accessible_by(current_ability).filter(filtering_params).count
 
     render json: {
-        mods: json_format(@curator_requests),
+        curator_requests: @curator_requests,
         max_entries: count,
         entries_per_page: CuratorRequest.per_page
     }
