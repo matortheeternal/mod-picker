@@ -60,10 +60,11 @@ app.service('userService', function(backend, $q, userSettingsService, userTitleS
         var rep = user.reputation.overall;
         permissions.isAdmin = user.role === 'admin';
         permissions.isModerator = user.role === 'moderator';
+        permissions.isNewsWriter = user.role === 'writer';
         permissions.isRestricted = user.role === 'restricted';
         permissions.isBanned = user.role === 'banned';
         permissions.canModerate = permissions.isAdmin || permissions.isModerator;
-        permissions.canSubmitArticles = permissions.canModerate;
+        permissions.canManageArticles = permissions.isAdmin || permissions.isNewsWriter;
         // TODO: Switch this when beta is over
         permissions.canSubmitMods = true;
         //permissions.canSubmitMods = (rep > 160) || permissions.canModerate;
