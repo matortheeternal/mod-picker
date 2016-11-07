@@ -1503,13 +1503,13 @@ app.service("filtersFactory", function() {
                 data: "state.approved",
                 param: "sap",
                 type: "Boolean",
-                default: true
+                default: false
             },
             {
                 data: "state.denied",
                 param: "sde",
                 type: "Boolean",
-                default: true
+                default: false
             }
         ]
     };
@@ -1525,16 +1525,6 @@ app.service("filtersFactory", function() {
                 label: "Updated",
                 data: "updated",
                 param: "du"
-            }),
-            factory.modDateSlider({
-                label: "Mod Date Released",
-                data: "released",
-                param: "mdr"
-            }),
-            factory.modDateSlider({
-                label: "Mod Date Updated",
-                data: "updated",
-                param: "mdu"
             })
         ];
     };
