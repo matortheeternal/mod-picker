@@ -2,13 +2,9 @@ app.directive('curatorRequest', function() {
     return {
         restrict: 'E',
         templateUrl: '/resources/directives/contributions/curatorRequest.html',
-        controller: 'curatorRequestController',
         scope: {
-            curatorRequest: '=data'
+            curatorRequest: '=data',
+            index: "="
         }
     };
-});
-
-app.controller('curatorRequestController', function($scope) {
-
 });

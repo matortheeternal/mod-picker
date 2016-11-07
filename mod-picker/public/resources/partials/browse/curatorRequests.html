@@ -70,7 +70,9 @@
                     </span>
                 </h2>
                 <loader data="curator_requests" content-class="grid-results" spinner-class="big-spinner" ng-if="!error">
-                    <curator-request data="curatorRequest" ng-repeat="curatorRequest in curator_requests"></curator-request>
+                    <div class="content-block" ng-repeat="curatorRequest in curator_requests">
+                        <curator-request data="curatorRequest" index="$index + 100"></curator-request>
+                    </div>
 
                     <div class="content-message" ng-hide="curator_requests.length">
                         No curator requests were found matching your search criteria.
