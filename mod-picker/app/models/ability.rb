@@ -87,6 +87,11 @@ class Ability
       cannot :read, BaseReport
     end
 
+    # news writers and admins can create and update articles
+    if user.news_writer? || user.admin?
+      can [:create, :update], Article
+    end
+
     # signed in users who aren't restricted or banned
     user_signed_in = User.exists?(user.id)
     if user_signed_in && !user.banned? && !user.restricted?

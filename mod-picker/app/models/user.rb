@@ -126,6 +126,10 @@ class User < ActiveRecord::Base
     admin? || moderator?
   end
 
+  def news_writer?
+    role.to_sym == :writer
+  end
+
   def restricted?
     role.to_sym == :restricted
   end
