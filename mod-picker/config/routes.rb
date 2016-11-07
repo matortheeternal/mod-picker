@@ -71,6 +71,10 @@ Rails.application.routes.draw do
     match '/mods/:id/analysis', to: 'mods#analysis', via: [:get, :post]
     match '/mods/:id/image', to: 'mods#image', via: [:post]
 
+    # curator requests
+    match '/curator_requests/index', to: 'curator_requests#index', via: [:get, :post]
+    resources :curator_requests, only: [:create, :update]
+
     # reviews
     match '/reviews/index', to: 'reviews#index', via: [:get, :post]
     match '/reviews/:id/approve', to: 'reviews#approve', via: [:post]
