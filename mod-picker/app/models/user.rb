@@ -57,6 +57,8 @@ class User < ActiveRecord::Base
 
   has_many :submitted_mods, :class_name => 'Mod', :foreign_key => 'submitted_by', :inverse_of => 'submitter'
 
+  has_many :curator_requests, :inverse_of => 'submitter'
+
   has_many :mod_authors, :inverse_of => 'user'
   has_many :mods, :through => 'mod_authors', :inverse_of => 'author_users'
   has_many :mod_lists, :foreign_key => 'submitted_by', :inverse_of => 'submitter'

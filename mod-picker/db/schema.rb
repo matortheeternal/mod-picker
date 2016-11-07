@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161107181516) do
+ActiveRecord::Schema.define(version: 20161107185241) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -182,17 +182,17 @@ ActiveRecord::Schema.define(version: 20161107181516) do
   add_index "corrections", ["submitted_by"], name: "submitted_by", using: :btree
 
   create_table "curator_requests", force: :cascade do |t|
-    t.integer  "user_id",           limit: 4,               null: false
-    t.integer  "mod_id",            limit: 4,               null: false
-    t.string   "message",           limit: 255,             null: false
-    t.integer  "state",             limit: 1,   default: 0, null: false
+    t.integer  "submitted_by",      limit: 4,                 null: false
+    t.integer  "mod_id",            limit: 4,                 null: false
+    t.text     "text_body",         limit: 65535,             null: false
+    t.integer  "state",             limit: 1,     default: 0, null: false
     t.string   "moderator_message", limit: 255
-    t.datetime "submitted",                                 null: false
+    t.datetime "submitted",                                   null: false
     t.datetime "updated"
   end
 
   add_index "curator_requests", ["mod_id"], name: "index_curator_requests_on_mod_id", using: :btree
-  add_index "curator_requests", ["user_id"], name: "index_curator_requests_on_user_id", using: :btree
+  add_index "curator_requests", ["submitted_by"], name: "index_curator_requests_on_submitted_by", using: :btree
 
   create_table "custom_sources", force: :cascade do |t|
     t.integer "mod_id", limit: 4,   null: false
@@ -1003,7 +1003,7 @@ ActiveRecord::Schema.define(version: 20161107181516) do
   add_foreign_key "corrections", "users", column: "edited_by"
   add_foreign_key "corrections", "users", column: "submitted_by", name: "corrections_ibfk_4"
   add_foreign_key "curator_requests", "mods"
-  add_foreign_key "curator_requests", "users"
+  add_foreign_key "curator_requests", "users", column: "submitted_by"
   add_foreign_key "custom_sources", "mods"
   add_foreign_key "dummy_masters", "plugins"
   add_foreign_key "events", "users"

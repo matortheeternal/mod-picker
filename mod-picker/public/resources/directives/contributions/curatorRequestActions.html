@@ -1,0 +1,40 @@
+<div class="moderator-message" ng-if="target.hasOwnProperty('newModeratorNote')">
+    <div class="message-title">
+        {{target.moderator_message ? 'Edit' : 'New'}} Moderator Message
+    </div>
+
+    <textarea ng-model="target.newModeratorNote"></textarea>
+    <div class="action-button-container">
+        <input class="btn" type="submit" value="Save" ng-click="saveNote()"/>
+        <input class="btn" type="button" value="Cancel" ng-click="discardNote()">
+    </div>
+</div>
+
+<div class="moderator-message" ng-if="target.moderator_message && !target.hasOwnProperty('newModeratorNote')">
+    <div class="message-title">
+        Moderator Message
+        <span class="right-item remove-item" ng-if="canRemoveNote" ng-click="removeModeratorMessage()">
+            <i class="fa fa-times" aria-hidden="true"></i>
+        </span>
+    </div>
+    <div class="text-container" marked="target.moderator_message"></div>
+</div>
+
+<div class="actions-container">
+    <div class="action-box" ng-focus="focusDropdown()" ng-blur="blurDropdown()" tabindex="{{index}}" ng-if="actionsAvailable">
+        Actions <i class="fa fa-caret-down"></i>
+    </div>
+    <span class="actions-dropdown-container">
+        <div class="dropdown" ng-show="showDropdown">
+            <div class="dropdown-item" ng-if="canEditNote" ng-click="editNote()">
+                {{target.moderator_message? "Edit" : "Add"}} Mod Note
+            </div>
+            <div class="dropdown-item" ng-if="target.state !== 'open'" ng-click="changeState('open')">Reopen</div>
+            <div class="dropdown-item" ng-if="target.state !== 'approved'" ng-click="changeState('approved')">Approve</div>
+            <div class="dropdown-item" ng-if="target.state !== 'denied'" ng-click="changeState('denied')">Deny</div>
+        </div>
+    </span>
+    <span class="right-item">
+        <div class="action-box no-action {{stateClasses[target.state]}} capitalize">{{target.state}}</div>
+    </span>
+</div>

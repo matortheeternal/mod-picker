@@ -123,6 +123,9 @@ class Mod < ActiveRecord::Base
   has_many :mod_authors, :inverse_of => 'mod', :dependent => :destroy
   has_many :author_users, :class_name => 'User', :through => 'mod_authors', :source => 'user', :inverse_of => 'mods'
 
+  # curator requests on the mod
+  has_many :curator_requests, :inverse_of => 'mod', :dependent => :destroy
+
   # community feedback on the mod
   has_many :corrections, :as => 'correctable', :dependent => :destroy
   has_many :reviews, :inverse_of => 'mod', :dependent => :destroy

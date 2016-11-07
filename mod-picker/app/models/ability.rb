@@ -37,6 +37,9 @@ class Ability
       can [:update, :approve, :hide], Review
       can [:update, :hide], Tag
 
+      # can approve/deny curator requests
+      can :update, CuratorRequest
+
       # can delete tags
       can :destroy, ModTag
       can :destroy, ModListTag
@@ -74,6 +77,10 @@ class Ability
       cannot :read, Tag, hidden: true
       cannot :read, Mod, hidden: true
       cannot :read, ModList, hidden: true
+
+      # cannot read curator requests they didn't make
+      cannot :read, CuratorRequest
+      can :read, CuratorRequest, user_id: user.id
 
       # cannot read reports
       cannot :read, Report
@@ -128,13 +135,19 @@ class Ability
       can :update_authors, Mod, { mod_authors: { user_id: user.id, role: 0 } }
       can :update_options, Mod, { mod_authors: { user_id: user.id, role: 0 } }
       can :change_status, Mod, { status: 0, mod_authors: { user_id: user.id, role: 0 } }
+      can [:read, :update], CuratorRequest, { mod: { mod_authors: { user_id: user.id, role: 0 } } }
       # contributors
       cannot [:update, :hide], Mod, { disallow_contributors: true, mod_authors: { user_id: user.id, role: 1 } }
 
       # abilities tied to reputation
       if user.reputation.overall >= 5
-        # TODO: Move this to 20 reputation after the beta
+        # TODO: Remove this after beta
         can :create, Tag # can create new tags
+      end
+      if user.reputation.overall >= 20
+        # TODO: Uncomment this after beta
+        #can :create, Tag # can create new tags
+        can :create, CuratorRequest
       end
       if user.reputation.overall >= 40
         # can report something as incorrect unless they submitted it and

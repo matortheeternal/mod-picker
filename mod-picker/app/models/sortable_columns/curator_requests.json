@@ -1,0 +1,15 @@
+{
+  "only": ["submitted", "updated", "state"],
+  "include": {
+    "mod": {
+      "only": ["released", "updated"]
+    },
+    "submitter": {
+      "include": {
+        "reputation": {
+          "only": ["overall"]
+        }
+      }
+    }
+  }
+}
