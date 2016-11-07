@@ -11,4 +11,8 @@ app.service('curatorRequestService', function($q, backend, userTitleService, pag
         });
         return action.promise;
     };
+
+    this.changeState = function(curatorRequestId, newState) {
+        backend.update('/curator_requests/ '+ curatorRequestId, { state: newState });
+    };
 });
