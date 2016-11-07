@@ -21,7 +21,7 @@
 </div>
 
 <div class="actions-container">
-    <div class="action-box" ng-focus="showDropdown = true" ng-blur="blurDropdown()" tabindex="{{index}}" ng-if="actionsAvailable">
+    <div class="action-box" ng-focus="focusDropdown()" ng-blur="blurDropdown()" tabindex="{{index}}" ng-if="actionsAvailable">
         Actions <i class="fa fa-caret-down"></i>
     </div>
     <span class="actions-dropdown-container">
@@ -35,8 +35,6 @@
         </div>
     </span>
     <span class="right-item">
-        <div class="action-box no-action" ng-if="target.state === 'open">Open</div>
-        <div class="action-box green-box no-action" ng-if="target.state === 'approved">Approved</div>
-        <div class="action-box red-box no-action" ng-if="target.state === 'denied">Denied</div>
+        <div class="action-box no-action {{stateClasses[target.state]}} capitalize">{{target.state}}</div>
     </span>
 </div>

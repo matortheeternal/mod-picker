@@ -17,6 +17,11 @@ app.controller('curatorRequestActionsController', function($scope, $rootScope, $
 
     // initialize variables
     $scope.modelObj = contributionFactory.getModel('CuratorRequest');
+    $scope.stateClasses = {
+        open: '',
+        approved: 'green-box',
+        denied: 'red-box'
+    };
 
     // change state of curator request
     $scope.changeState = function(newState) {
@@ -61,6 +66,10 @@ app.controller('curatorRequestActionsController', function($scope, $rootScope, $
         });
     };
 
+    $scope.focusDropdown = function() {
+        $scope.showDropdown = true;
+    };
+
     $scope.blurDropdown = function() {
         // we have to use a timeout for hiding the dropdown because
         // otherwise we would hide it before the click event on a result
@@ -80,7 +89,7 @@ app.controller('curatorRequestActionsController', function($scope, $rootScope, $
         $scope.canChangeState = canModerate;
         $scope.canEditNote = canModerate;
         $scope.canRemoveNote = canModerate;
-        $scope.actionsAvailable = canModerate || isSubmitter;
+        $scope.actionsAvailable = canModerate;
     };
 
     // watch user so if we get the user object after rendering actions
