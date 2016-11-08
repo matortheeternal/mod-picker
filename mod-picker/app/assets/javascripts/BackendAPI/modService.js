@@ -24,6 +24,18 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
         return backend.post('/mods/search', postData);
     };
 
+    this.searchModOptions = function(name, modIds) {
+        var postData = {
+            filters: {
+                search: name
+            }
+        };
+        if (angular.isDefined(modIds)) {
+            postData.filters.mods = modIds;
+        }
+        return backend.post('/mod_options/search', postData);
+    };
+
     this.searchModListMods = function(name) {
         var postData =  {
             filters: {
