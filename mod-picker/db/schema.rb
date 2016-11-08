@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161107185241) do
+ActiveRecord::Schema.define(version: 20161107235237) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -112,29 +112,30 @@ ActiveRecord::Schema.define(version: 20161107185241) do
   add_index "compatibility_note_history_entries", ["edited_by"], name: "fk_rails_7e4343a2d1", using: :btree
 
   create_table "compatibility_notes", force: :cascade do |t|
-    t.integer  "game_id",                 limit: 4,                     null: false
-    t.integer  "submitted_by",            limit: 4,                     null: false
-    t.integer  "edited_by",               limit: 4
-    t.integer  "corrector_id",            limit: 4
-    t.integer  "status",                  limit: 4,     default: 0,     null: false
-    t.integer  "first_mod_id",            limit: 4,                     null: false
-    t.integer  "second_mod_id",           limit: 4,                     null: false
-    t.integer  "compatibility_mod_id",    limit: 4
-    t.integer  "compatibility_plugin_id", limit: 4
-    t.text     "text_body",               limit: 65535,                 null: false
-    t.string   "edit_summary",            limit: 255
-    t.string   "moderator_message",       limit: 255
-    t.float    "reputation",              limit: 24,    default: 0.0,   null: false
-    t.integer  "standing",                limit: 1,     default: 0,     null: false
-    t.integer  "helpful_count",           limit: 4,     default: 0,     null: false
-    t.integer  "not_helpful_count",       limit: 4,     default: 0,     null: false
-    t.integer  "corrections_count",       limit: 4,     default: 0,     null: false
-    t.integer  "history_entries_count",   limit: 4,     default: 0,     null: false
-    t.boolean  "approved",                              default: false, null: false
+    t.integer  "game_id",                     limit: 4,                     null: false
+    t.integer  "submitted_by",                limit: 4,                     null: false
+    t.integer  "edited_by",                   limit: 4
+    t.integer  "corrector_id",                limit: 4
+    t.integer  "status",                      limit: 4,     default: 0,     null: false
+    t.integer  "first_mod_id",                limit: 4,                     null: false
+    t.integer  "second_mod_id",               limit: 4,                     null: false
+    t.integer  "compatibility_mod_id",        limit: 4
+    t.integer  "compatibility_mod_option_id", limit: 4
+    t.integer  "compatibility_plugin_id",     limit: 4
+    t.text     "text_body",                   limit: 65535,                 null: false
+    t.string   "edit_summary",                limit: 255
+    t.string   "moderator_message",           limit: 255
+    t.float    "reputation",                  limit: 24,    default: 0.0,   null: false
+    t.integer  "standing",                    limit: 1,     default: 0,     null: false
+    t.integer  "helpful_count",               limit: 4,     default: 0,     null: false
+    t.integer  "not_helpful_count",           limit: 4,     default: 0,     null: false
+    t.integer  "corrections_count",           limit: 4,     default: 0,     null: false
+    t.integer  "history_entries_count",       limit: 4,     default: 0,     null: false
+    t.boolean  "approved",                                  default: false, null: false
     t.datetime "edited"
-    t.boolean  "hidden",                                default: false, null: false
-    t.boolean  "has_adult_content",                     default: false, null: false
-    t.datetime "submitted",                                             null: false
+    t.boolean  "hidden",                                    default: false, null: false
+    t.boolean  "has_adult_content",                         default: false, null: false
+    t.datetime "submitted",                                                 null: false
   end
 
   add_index "compatibility_notes", ["compatibility_plugin_id"], name: "compatibility_patch", using: :btree
