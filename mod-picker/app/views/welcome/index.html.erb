@@ -1,200 +1,109 @@
-<!-- Header Section Start -->
-<header id="header_part">
-    <div class="header_part" id="head">
-        <div class="overlay">
-            <div class="start_part">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                            <div class="row">
-                                <!-- Logo Start -->
-                                <div class="site_logo">
-                                    <a href="#" title=""><%= image_tag("logo.png", :alt => "Mod Picker") %></a>
-                                </div>
-                                <!-- Logo End-->
-                                <!-- Site Title start-->
-                                <div class="site_title">
-                                    <h1>Coming soon.</h1>
-                                    <p>A powerful tool that will help you build a modded game that meets your needs.<br/>
-                                        We will support Skyrim mods from day 1, with support for other games planned.<br/>
-                                        Are you excited?</p>
-                                    <p>If you're a beta participant, <a href="users/sign_in">click here</a> to sign in.</p>
-                                </div>
-                                <!-- Site Title end-->
-                                <!-- Countdown start -->
-                                <div class="countdown wow bounceInUp">
-                                    <div class="defaultCountdown"></div>
-                                </div>
-                                <!-- Countdown end-->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Menu Start -->
-            <div class="menu_area" id="stick_menu">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                            <nav class="navbar navbar-default" role="navigation">
-                                <div class="container-fluid">
-                                    <div class="collapse navbar-collapse mainnavmenu" id="bs-example-navbar-collapse-1">
-                                        <div id="menu-center">
-                                            <ul class="nav navbar-nav navbar-right mainnav">
-                                                <li><a href="#header_part" >Start</a></li>
-                                                <li><a href="#about_section">About</a></li>
-                                                <li><a href="#email_subscribe_section">Subscribe</a></li>
-                                                <li><a href="#contact_section">Contact</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </nav>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Menu End-->
+<div class="nav-header" sticky>
+    <div class="left">
+        <a class="logo" href="#">
+            <i class="icom-mod_picker"></i>
+            <h1>Mod Picker</h1>
+        </a>
+    </div>
+    <div class="right">
+        <div class="games">
+            <a ng-repeat="game in games" ng-href="/{{game.name}}#">
+                <img ng-src="{{game.image}}"/>
+            </a>
+        </div>
+        <div class="user-nav">
+            <a class="btn" href="/users/sign_in">
+                Log In
+            </a>
+            <a class="btn" href="/users/sign_up">
+                Sign Up
+            </a>
         </div>
     </div>
-    <div id="artist-credit">
-        Credit: <a href="http://www.layerpaint.com/index_gallery_detailed2.php?id=5737" target="_blank">michalkus</a>
-    </div>
-</header>
-<!-- Header Section End -->
-<!-- About Section Start -->
-<section id="about_section">
-    <div class="welcome_section">
-        <div class="container">
-            <div class="row">
-                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                    <div class="row">
-                        <!-- About text start -->
-                        <div class="section-title">
-                            <h2>About Mod Picker</h2>
-                            <p>Helping you choose the right mods for your playstyle.</p>
-                        </div>
-                        <!-- About text end -->
-                    </div>
-                    <!-- About service part start-->
-                    <div class="row">
-                        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
-                            <div class="welcome_part wow fadeInLeft">
-                                <div class="welcome_icon">
-                                    <i class="fa fa-file-image-o fa-4x"></i>
-                                </div>
-                                <h2>CROWD SOURCED DATA</h2>
-                                <p>Mod Picker will operate on crowd sourced data.  As a user you'll be able to submit reviews, compatibiltiy notes, and installation notes.</p>
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
-                            <div class="welcome_part wow fadeInUp">
-                                <div class="welcome_icon">
-                                    <i class="fa fa-life-ring fa-4x"></i>
-                                </div>
-                                <h2>EASY MOD LISTS</h2>
-                                <p>Thanks to crowd-sourced data, creating a mod list will be easy.  Choose your mods and our system will tell you about possible compatibility issues.</p>
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
-                            <div class="welcome_part wow fadeInDown">
-                                <div class="welcome_icon">
-                                    <i class="fa fa-trophy fa-4x"></i>
-                                </div>
-                                <h2>REPUTATION SYSTEM</h2>
-                                <p>User submissions will be evaluated by a clever reputation system.  Your word will count for more if you have a strong reputation in the community.</p>
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
-                            <div class="welcome_part wow fadeInRight">
-                                <div class="welcome_icon">
-                                    <i class="fa fa-briefcase fa-4x"></i>
-                                </div>
-                                <h2>RESTFUL API</h2>
-                                <p>The website will feature a full RESTful API, so you can use our data in your projects.  All data will be served as JSON.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- About service part end-->
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-<!-- About Section End -->
-<!-- Subscriber Section Start -->
-<section id="email_subscribe_section">
-    <div class="email_subscribe_section" >
-        <div class="container">
-            <div class="row">
-                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                    <!-- Email Subscriber text start-->
-                    <div class="section-title">
-                        <h2>Subscribe</h2>
-                        <p>Excited to see this happen?  Subscribe to our email newsletter to keep up to date with our progress!</p>
-                    </div>
-                    <!-- Email Subscriber text end-->
-                    <div class="email_subscribe_form_part wow zoomIn">
-                        <!-- Email Subscribe Form start -->
-                        <form method="post" id="subscriber_form">
-                            <input type="email" id="subscriberemail" name="subscriber_email" class="form-control email_input_box" placeholder="example@gmail.com" required/>
-                            <button type="submit" class="btn btn-primary email_submit_box"><i class="fa fa-envelope-o"></i> Subscribe</button>
-                        </form>
-                        <!-- Email Subscribe Form End -->
-                        <div id="show_subscriber_msg"></div>
-                    </div>
+</div>
 
-                </div>
-            </div>
-        </div>
+<section class="intro-section">
+    <h1>Make awesome mod lists faster and easier.</h1>
+    <h2>Mod Picker helps you find compatible mods to personalize your gaming experience.</h2>
+
+    <a class="btn" href="/users/sign_up">
+        Get Started
+    </a>
+
+    <p>Already have an account?  <a href="/users/sign_in">Log in</a>.</p>
+</section>
+
+<section class="game-section">
+    <h1>Games We Support</h1>
+    <h2>We plan to expand to support more games soon!</h2>
+
+    <div class="game-item" ng-repeat="game in games">
+        <a ng-if="game.available" ng-href="/{{game.name}}#">
+            <img ng-src="{{game.image}}"/>
+        </a>
+        <img ng-src="{{game.image}}"/>
+        <h2>{{game.display_name}}</h2>
+        <span>{{game.explanation}}</span>
     </div>
 </section>
-<!-- Subscriber Section End -->
-<!-- Contact Section Start -->
-<section id="contact_section">
-    <div class="contact_section">
-        <div class="container">
-            <div class="row">
-                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                    <div class="row">
-                        <div class="section-title">
-                            <h2>Contact us.</h2>
-                            <p>Have a question or suggestion?  Shoot us a message!  We'd love to hear your thoughts.</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                            <div class="address_part">
-                                <div class="email">
-                                    <i class="fa fa-envelope-o"></i> modpicker@gmail.com
-                                </div>
-                                <div class="social_icons">
-                                    <ul>
-                                        <li><a href="https://www.facebook.com/modpicker/" data-toggle="tooltip" data-placement="top" title="Facebook" data-rel="tooltip" class="icon_fb" ><i class="fa fa-facebook-square"></i></a></li>
-                                        <li><a href="https://twitter.com/Mod_Picker" data-toggle="tooltip" data-placement="top" title="Twitter" data-rel="tooltip" class="icon_twitter"><i class="fa fa-twitter-square"></i></a></li>
-                                        <li><a href="https://www.youtube.com/channel/UCWqJeb-T5-k-AnWZTF_0ZAw" data-toggle="tooltip" data-placement="top" title="Youtube" data-rel="tooltip" class="icon_youtube"><i class="fa fa-circle fa-youtube-square"></i></a></li>
-                                        <li><a href="https://steamcommunity.com/groups/mod-picker" data-toggle="tooltip" data-placement="top" title="Steam" data-rel="tooltip" class="icon_steam"><i class="fa fa-circle fa-steam-square "></i></a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                            <div class="contact_form">
-                                <div id="show_contact_msg"></div>
-                                <!-- Contact Form Start -->
-                                <form method="post" id="contact_form">
-                                    <input type="text" id="contact_name" name="name" class="form-control contact_input_box wow fadeInUp" placeholder="Name" required/>
-                                    <input type="email" id="contact_email" name="email" class="form-control contact_input_box wow fadeInUp" placeholder="E-mail" required/>
-                                    <textarea id="contact_text" name="message" rows="5" cols="30" class="form-control contact_input_box wow fadeInUp" placeholder="Message" required></textarea>
-                                    <button type="submit" class="btn btn-primary contact_button wow fadeInUp"> <i class="fa fa-send-o"></i>  Send message</button>
-                                </form>
-                                <!-- Contact Form End -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+
+<section class="feature-section">
+    <h1>Build and Share Mod Lists</h1>
+    <h2>Create a list of tools, mods, plugins, and configuration files on the site and share the list with your friends.</h2>
 </section>
-<!-- Contact Section End -->
+
+<section class="feature-section">
+    <h1>Resolve Issues Quickly and Easily</h1>
+    <h2>We track Mod and Plugin Requirements, Compatibility, Install Order, and Load Order issues between mods.  Mod Picker Mod Lists display issues between mods and offer automatic resolution options.</h2>
+</section>
+
+<section class="feature-section">
+    <h1>Learn About Modding and Mod Picker</h1>
+    <h2>Our Help Center is constantly growing offers detailed articles about our platform and modding.</h2>
+</section>
+
+<section class="feature-section">
+    <h1>Powered by the Community</h1>
+    <h2>Reviews, Compatibility Notes, Install Order Notes, and Load Order Notes are submitted by the community.  Contribute to our community to make modding easier and better for everyone.</h2>
+</section>
+
+<section class="feature-section">
+    <h1>Find the Mods You Want</h1>
+    <h2>Mod categories, open tagging, user submitted reviews, and extensive search and filtering options allow you to find the mods you want easier than ever before.</h2>
+</section>
+
+<section class="feature-section">
+    <h1>Find Mods From Many Sources</h1>
+    <h2>Mod Picker does not host mods.  Instead, Mod Picker has pages about mods which link to places where you can download them.  Mod Picker lists mods hosted on Nexus Mods, Steam Workshop, Lover's Lab, and other sources.</h2>
+</section>
+
+<section class="feature-section">
+    <h1>Coming Soon: Mod List Setup</h1>
+    <h2>We're currently working on building a tool which will allow you to quickly download and setup a mod list from Mod Picker.  Once built, the tool will be available to premium members for $5/mo.</h2>
+</section>
+
+<section class="action-section">
+    <h2>
+        Are you ready to revolutionize your modding experience?<br/>
+        Join our growing community and help us make modding easier for everyone.
+    </h2>
+
+    <a class="btn" href="/users/sign_up">
+        Sign Up
+    </a>
+
+    <p>Already have an account?  <a href="/users/sign_in">Log in</a>.</p>
+</section>
+
+<footer>
+    <a href="/help/about_us">About Us</a>
+    <a href="/legal/tos">Terms of Service</a>
+    <a href="/legal/privacy">Privacy Policy</a>
+    <a href="/help">Help Center</a>
+    <a href="/skyrim#/donate">Donate</a>
+    <a href="/help/contact">Contact</a>
+
+    <div>
+        &copy;2016 Mod Picker, LLC. All rights reserved.
+    </div>
+</footer>
