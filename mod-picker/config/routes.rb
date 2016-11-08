@@ -57,6 +57,9 @@ Rails.application.routes.draw do
     match '/mods/:id/approve', to: 'mods#approve', via: [:post]
     resources :mods, only: [:show, :new, :create, :edit, :update]
 
+    # mod options
+    match '/mod_options/search', to: 'mod_options#search', via: [:post]
+
     # plugins
     match '/plugins', to: 'plugins#index', via: [:get, :post]
     match '/plugins/search', to: 'plugins#search', via: [:post]
