@@ -64,7 +64,7 @@ class ModListsController < ApplicationController
     required_mods = @mod_list.required_mods
 
     # prepare notes
-    compatibility_notes = @mod_list.mod_compatibility_notes.preload(:submitter, :compatibility_mod, :compatibility_plugin, :editor, :editors, :first_mod, :second_mod)
+    compatibility_notes = @mod_list.mod_compatibility_notes.preload(:submitter, :compatibility_mod, :compatibility_plugin, :compatibility_mod_option, :editor, :editors, :first_mod, :second_mod)
     install_order_notes = @mod_list.install_order_notes.preload(:submitter, :editor, :editors, :first_mod, :second_mod)
 
     # prepare helpful marks

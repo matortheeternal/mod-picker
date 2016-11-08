@@ -252,8 +252,8 @@ class ModsController < ApplicationController
     authorize! :read, @mod
 
     # prepare compatibility notes
-    compatibility_notes = @mod.compatibility_notes.includes(submitter: :reputation).references(submitter: :reputation).accessible_by(current_ability).sort(params[:sort]).paginate(page: params[:page], per_page: 10)
-    count =  @mod.compatibility_notes.includes(submitter: :reputation).references(submitter: :reputation).accessible_by(current_ability).count
+    compatibility_notes = @mod.compatibility_notes.preload(:first_mod, :second_mod, :editor, :editors, :compatibility_mod, :compatibility_plugin, :compatibility_mod_option).eager_load(:submitter => :reputation).accessible_by(current_ability).sort(params[:sort]).paginate(page: params[:page], per_page: 10)
+    count =  @mod.compatibility_notes.eager_load(:submitter => :reputation).accessible_by(current_ability).count
 
     # prepare helpful marks
     helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("CompatibilityNote", compatibility_notes.ids)

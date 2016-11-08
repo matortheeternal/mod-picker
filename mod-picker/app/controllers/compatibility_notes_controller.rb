@@ -4,7 +4,7 @@ class CompatibilityNotesController < ContributionsController
   # GET /compatibility_notes
   def index
     # prepare compatibility notes
-    @compatibility_notes = CompatibilityNote.preload(:editor, :editors, :first_mod, :second_mod).eager_load(submitter: :reputation).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(page: params[:page])
+    @compatibility_notes = CompatibilityNote.preload(:editor, :editors, :first_mod, :second_mod, :compatibility_mod, :compatibility_plugin, :compatibility_mod_option).eager_load(submitter: :reputation).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(page: params[:page])
     count = CompatibilityNote.eager_load(submitter: :reputation).accessible_by(current_ability).filter(filtering_params).count
 
     # prepare helpful marks
