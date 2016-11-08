@@ -35,6 +35,11 @@
                     {{note.compatibility_mod.name}}
                 </a>
             </span>
+            <span ng-if="note.compatibility_mod_option">
+                Compatibility Mod Option: <a ng-href="#/mod/{{note.compatibility_mod_option.mod_id}}/analysis?options={{note.compatibility_mod_option.id}}" title="{{note.compatibility_mod_option.name}}">
+                    {{note.compatibility_mod_option.display_name}}
+                </a>
+            </span>
             <span ng-if="note.compatibility_plugin">
                 Compatibility Plugin: <a ng-href="#/mod/{{note.compatibility_plugin.mod.id}}/analysis?plugin={{note.compatibility_plugin.id}}">
                     {{note.compatibility_plugin.filename}}
