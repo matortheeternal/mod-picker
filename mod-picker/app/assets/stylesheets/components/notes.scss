@@ -60,7 +60,8 @@
     vertical-align: top;
     border-left: 1px solid $border_color;
     background-color: $bar_highlight_color;
-    width: 200px;
+    min-width: 200px;
+    max-width: 200px;
     padding: 14px;
     text-align: center;
 
@@ -74,6 +75,7 @@
     .resolution-options {
       .action-box {
         margin: 2px 0;
+        @include wordbreak;
       }
 
       .action-box.single {
