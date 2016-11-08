@@ -1,5 +1,5 @@
 class WelcomeController < ApplicationController
   def index
-    render layout: "under_construction"
+    render layout: "landing"
   end
 end
