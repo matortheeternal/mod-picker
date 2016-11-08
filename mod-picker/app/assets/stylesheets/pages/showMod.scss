@@ -254,6 +254,15 @@
   font-weight: 500;
   background-color: $bar_highlight_color;
   color: $bar_text_color;
+  
+  span {
+    display: block;
+    margin: 10px 0 4px;
+
+    &:first-child {
+      margin-top: 4px;
+    }
+  }
 
   a {
     color: $bright_action_color;
