@@ -48,7 +48,7 @@ class PluginsController < ApplicationController
 
     # Params we allow searching on
     def search_params
-      params[:filters].permit(:search, :game)
+      params[:filters].slice(:search, :game, :mods)
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
