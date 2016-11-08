@@ -25,13 +25,30 @@ app.controller('pluginCompatibilityIssuesController', function($scope, listUtils
             }
             switch (note.status) {
                 case 'compatibility_option':
-                    // unresolved if the compatibility plugin is not present and both mods are present
-                    if (!$scope.findPlugin(note.compatibility_plugin_id, true) &&
-                        $scope.findMod(note.first_mod.id, true) && $scope.findMod(note.second_mod.id, true)) {
-                        note.resolved = false;
-                        $scope.notes.unresolved_plugin_compatibility.push(note);
+                    if (note.compatibility_plugin) {
+                        // unresolved if the compatibility plugin is not
+                        // present and both mods are present
+                        var modsPresent = $scope.findMod(note.first_mod.id, true) && $scope.findMod(note.second_mod.id, true);
+                        if (!$scope.findPlugin(note.compatibility_plugin_id, true) && modsPresent) {
+                            note.resolved = false;
+                            $scope.notes.unresolved_plugin_compatibility.push(note);
+                        } else {
+                            note.resolved = true;
+                        }
                     } else {
-                        note.resolved = true;
+                        // unresolved if compatibility option is not
+                        // present or mods are not loaded
+                        var modOptionMod = $scope.findMod(note.compatibility_mod_option.mod_id);
+                        var options = modOptionMod.mod_list_mod_options;
+                        var modOption = options.find(function(option) {
+                            return option.id == note.compatibility_mod_option_id;
+                        });
+                        if (!modOption && modsPresent) {
+                            note.resolved = false;
+                            $scope.notes.unresolved_plugin_compatibility.push(note);
+                        } else {
+                            note.resolved = true;
+                        }
                     }
                     break;
                 case 'make_custom_patch':
@@ -52,7 +69,13 @@ app.controller('pluginCompatibilityIssuesController', function($scope, listUtils
     $scope.$on('resolveCompatibilityNote', function(event, options) {
         switch(options.action) {
             case "add plugin":
+                if (options.note.compatibility_mod_option) {
+                    $scope.addModOption(options.note.compatibility_mod_option_id);
+                }
                 $scope.addPlugin(options.note.compatibility_plugin.id);
+                break;
+            case "add mod option":
+                $scope.addModOption(options.note.compatibility_mod_option_id);
                 break;
             case "add custom plugin":
                 $scope.addCustomPlugin(options.note.id);
