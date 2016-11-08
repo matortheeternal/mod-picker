@@ -35,7 +35,7 @@ app.controller('pluginCompatibilityIssuesController', function($scope, listUtils
                         } else {
                             note.resolved = true;
                         }
-                    } else {
+                    } else if (note.compatibility_mod_option) {
                         // unresolved if compatibility option is not
                         // present or mods are not loaded
                         var modOptionMod = $scope.findMod(note.compatibility_mod_option.mod_id);
