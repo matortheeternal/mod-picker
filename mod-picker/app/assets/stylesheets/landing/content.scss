@@ -18,7 +18,8 @@ h1 {
 
 h2 {
   font-weight: normal;
-  padding: 0 25%;
+  max-width: 900px;
+  margin: 20px auto;
 }
 
 section {
@@ -44,12 +45,14 @@ section {
   .overlay {
     background: none repeat scroll 0 0 rgba($inverse_text_color,0.25);
     height: 100%;
-    width: 60%;
+    width: 1000px;
+    max-width: 90%;
     margin: 0 auto;
     padding: 24px 0;
 
     h2 {
-      margin: 16px 0 24px;
+      margin: 16px auto 24px;
+      max-width: 600px;
     }
   }
 
@@ -97,7 +100,7 @@ section.games-section {
   min-height: 72vh;
 
   h2 {
-    margin-bottom: 40px;
+    margin: 20px auto 40px;
   }
 
   img {

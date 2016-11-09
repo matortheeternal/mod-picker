@@ -21,6 +21,7 @@ nav {
   white-space: nowrap;
   height: 64px;
   width: $max-width-container;
+  max-width: 100%;
   margin: 0 auto;
   position: relative;
 
@@ -38,7 +39,7 @@ nav {
 
   .primary-nav {
     display: inline-block;
-    margin-top: 2px;
+    margin: 2px 8px;
 
     > a {
       display: inline-block;
@@ -86,7 +87,7 @@ nav {
     display: inline-block;
     position: absolute;
     top: 17px;
-    right: 0;
+    right: 8px;
 
     .games {
       display: inline-block;
