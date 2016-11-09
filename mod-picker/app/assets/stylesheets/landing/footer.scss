@@ -11,5 +11,12 @@ footer {
 
   div {
     margin-top: 12px;
+    white-space: nowrap;
+  }
+}
+
+@media screen and (max-device-width: 480px) {
+  footer {
+    font-size: 26px;
   }
 }

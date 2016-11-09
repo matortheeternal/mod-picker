@@ -23,7 +23,6 @@ h2 {
 }
 
 section {
-  min-height: 80vh;
   padding: 60px;
   text-align: center;
 
@@ -31,11 +30,13 @@ section {
     max-height: 50vh;
     margin-top: 20px;
     box-shadow: 2px 2px 5px 2px $text_color;
+    max-width: 95%;
   }
 }
 
 .intro-section {
-  min-height: 100vh;
+  height: 100vh;
+  max-height: 100vw;
   position: relative;
   padding-top: 15%;
   background-image: url($banner_image);
@@ -44,7 +45,6 @@ section {
 
   .overlay {
     background: none repeat scroll 0 0 rgba($inverse_text_color,0.25);
-    height: 100%;
     width: 1000px;
     max-width: 90%;
     margin: 0 auto;
@@ -97,7 +97,6 @@ section {
 
 section.games-section {
   background-color: $secondary_background;
-  min-height: 72vh;
 
   h2 {
     margin: 20px auto 40px;
@@ -109,8 +108,6 @@ section.games-section {
 }
 
 section.sources-section {
-  min-height: 65vh;
-
   img {
     box-shadow: none;
   }
@@ -157,8 +154,7 @@ section.base {
 section.under {
   background-color: $background_under;
   color: $inverse_text_color;
-  min-height: 60vh;
-  padding-top: 100px;
+  padding: 100px 0;
 }
 
 a.btn {
@@ -166,5 +162,44 @@ a.btn {
 
   &:hover {
     color: $inverse_text_color;
+  }
+}
+
+@media screen and (max-device-width: 480px) {
+  body {
+    font-size: 10px;
+  }
+
+  nav .secondary-nav a {
+    font-size: 18px;
+  }
+
+  h1 {
+    font-size: 1.8em;
+  }
+
+  h2 {
+    font-size: 1.4em;
+  }
+
+  .intro-section {
+    font-size: 28px;
+
+    p {
+      font-size: 32px;
+    }
+  }
+
+  .game-item {
+    h2 {
+      font-size: 4em;
+    }
+    span {
+      font-size: 2em;
+    }
+  }
+
+  .big-btn {
+    font-size: 42px;
   }
 }
