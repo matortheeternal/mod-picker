@@ -1,88 +1,106 @@
-<div class="nav-header" sticky>
-    <div class="left">
-        <a class="logo" href="#">
-            <i class="icom-mod_picker"></i>
-            <h1>Mod Picker</h1>
-        </a>
+<header>
+    <div class="nav-container" sticky>
+        <nav>
+            <div class="primary-nav">
+                <a class="logo" href="#">
+                    <i class="icom-mod_picker"></i>
+                    <h1>Mod Picker</h1>
+                </a>
+            </div>
+            <div class="secondary-nav">
+                <div class="games">
+                    <a ng-repeat="game in games | filter:{available: true}" ng-href="/{{game.name}}#" title="{{game.display_name}}">
+                        <img ng-src="/images/{{game.name}}.png"/>
+                    </a>
+                    <span ng-repeat="game in games | filter:{available: false}" class="coming-soon" title="Coming Soon: {{game.display_name}}">
+                        <img ng-src="/images/{{game.name}}.png"/>
+                    </span>
+                </div>
+                <div class="user-nav">
+                    <a class="btn" href="/users/sign_in">Log In</a>
+                    <a class="btn" href="/users/sign_up">Sign Up</a>
+                </div>
+            </div>
+        </nav>
     </div>
-    <div class="right">
-        <div class="games">
-            <a ng-repeat="game in games" ng-href="/{{game.name}}#">
-                <img ng-src="{{game.image}}"/>
-            </a>
-        </div>
-        <div class="user-nav">
-            <a class="btn" href="/users/sign_in">
-                Log In
-            </a>
-            <a class="btn" href="/users/sign_up">
-                Sign Up
-            </a>
-        </div>
-    </div>
-</div>
+</header>
 
 <section class="intro-section">
-    <h1>Make awesome mod lists faster and easier.</h1>
-    <h2>Mod Picker helps you find compatible mods to personalize your gaming experience.</h2>
+    <div class="overlay">
+        <h1>Make awesome mod lists faster and easier.</h1>
+        <h2>Mod Picker helps you find compatible mods to personalize your gaming experience.</h2>
 
-    <a class="btn" href="/users/sign_up">
-        Get Started
-    </a>
+        <a class="btn" href="/users/sign_up">
+            Get Started
+        </a>
 
-    <p>Already have an account?  <a href="/users/sign_in">Log in</a>.</p>
+        <p>Already have an account?  <a href="/users/sign_in">Log in</a>.</p>
+    </div>
+
+    <div id="artist-credit">
+        Credit: <a class="inverse-link" href="http://willroberts04.deviantart.com/art/Skyrim-447279521" target="_blank">willroberts04</a>
+    </div>
 </section>
 
-<section class="game-section">
+<section class="games-section">
     <h1>Games We Support</h1>
-    <h2>We plan to expand to support more games soon!</h2>
+    <h2>We will expand to support more games soon!</h2>
 
     <div class="game-item" ng-repeat="game in games">
         <a ng-if="game.available" ng-href="/{{game.name}}#">
-            <img ng-src="{{game.image}}"/>
+            <img ng-src="/images/{{game.name}}.png"/>
         </a>
-        <img ng-src="{{game.image}}"/>
+        <div ng-if="!game.available">
+            <img class="coming-soon" src="/images/coming-soon.png"/>
+            <img ng-src="/images/{{game.name}}.png"/>
+        </div>
         <h2>{{game.display_name}}</h2>
         <span>{{game.explanation}}</span>
     </div>
 </section>
 
-<section class="feature-section">
+<section class="medium">
     <h1>Build and Share Mod Lists</h1>
-    <h2>Create a list of tools, mods, plugins, and configuration files on the site and share the list with your friends.</h2>
+    <h2>Create a list of tools, mods, plugins, and configuration files on the site and share it with your friends and the community.</h2>
+    <img src="https://puu.sh/scaUr.png"/>
 </section>
 
-<section class="feature-section">
+<section class="high">
     <h1>Resolve Issues Quickly and Easily</h1>
-    <h2>We track Mod and Plugin Requirements, Compatibility, Install Order, and Load Order issues between mods.  Mod Picker Mod Lists display issues between mods and offer automatic resolution options.</h2>
+    <h2>We track requirements, compatibility, install order, and load order issues between mods.  Mod Lists display issues and offer automatic resolution options.</h2>
+    <img src="https://puu.sh/scb4o.png"/>
 </section>
 
-<section class="feature-section">
+<section class="low">
     <h1>Learn About Modding and Mod Picker</h1>
-    <h2>Our Help Center is constantly growing offers detailed articles about our platform and modding.</h2>
+    <h2>Our Help Center is constantly growing.  The Help Center currently offers detailed articles about our platform and modding Bethesda Games.</h2>
+    <img src="https://puu.sh/scasV.jpg"/>
 </section>
 
-<section class="feature-section">
+<section class="medium-high">
     <h1>Powered by the Community</h1>
-    <h2>Reviews, Compatibility Notes, Install Order Notes, and Load Order Notes are submitted by the community.  Contribute to our community to make modding easier and better for everyone.</h2>
+    <h2>Reviews, Compatibility, Install Order, and Load Order Notes are submitted by the community.  Anyone can contribute to make modding easier for everyone.</h2>
+    <img src="https://puu.sh/scbnd.png"/>
 </section>
 
-<section class="feature-section">
+<section class="base">
     <h1>Find the Mods You Want</h1>
     <h2>Mod categories, open tagging, user submitted reviews, and extensive search and filtering options allow you to find the mods you want easier than ever before.</h2>
+    <img src="https://puu.sh/scbkn.jpg"/>
 </section>
 
-<section class="feature-section">
+<section class="grand sources-section">
     <h1>Find Mods From Many Sources</h1>
-    <h2>Mod Picker does not host mods.  Instead, Mod Picker has pages about mods which link to places where you can download them.  Mod Picker lists mods hosted on Nexus Mods, Steam Workshop, Lover's Lab, and other sources.</h2>
+    <h2>Mod Picker does not host mods.  Instead, Mod Picker lists mods hosted on Nexus Mods, Steam Workshop, Lover's Lab, and other sources.</h2>
+    <img src="images/sources.png"/>
 </section>
 
-<section class="feature-section">
+<!--<section class="medium-low">
     <h1>Coming Soon: Mod List Setup</h1>
-    <h2>We're currently working on building a tool which will allow you to quickly download and setup a mod list from Mod Picker.  Once built, the tool will be available to premium members for $5/mo.</h2>
-</section>
+    <h2>Mod Picker will offer a tool which will allow you to quickly download and set up a mod list.</h2>
+</section>-->
 
-<section class="action-section">
+<section class="under">
     <h2>
         Are you ready to revolutionize your modding experience?<br/>
         Join our growing community and help us make modding easier for everyone.
