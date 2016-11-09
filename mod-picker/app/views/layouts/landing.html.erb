@@ -6,10 +6,9 @@
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,700,500' rel='stylesheet' type='text/css'>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <%= javascript_include_tag 'angular.min.1.5.1' %>
-    <%= stylesheet_link_tag 'landing' %>
+    <%= stylesheet_link_tag 'landing/High Hrothgar' %>
 </head>
-
-<body>
+<body ng-controller="landingController" ng-cloak>
 <%= yield %>
 
 <!-- defered load of scripts, which is way more performant for browsers -->
