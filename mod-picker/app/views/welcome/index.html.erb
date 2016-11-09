@@ -49,12 +49,13 @@
     <div class="game-item" ng-repeat="game in games">
         <a ng-if="game.available" ng-href="/{{game.name}}#">
             <img ng-src="/images/{{game.name}}.png"/>
+            <h2>{{game.display_name}}</h2>
         </a>
         <div ng-if="!game.available">
             <img class="coming-soon" src="/images/coming-soon.png"/>
             <img ng-src="/images/{{game.name}}.png"/>
+            <h2>{{game.display_name}}</h2>
         </div>
-        <h2>{{game.display_name}}</h2>
         <span>{{game.explanation}}</span>
     </div>
 </section>
