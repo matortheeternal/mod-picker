@@ -417,6 +417,11 @@ app.service("filtersFactory", function() {
                 label: "Date Released",
                 data: "released",
                 param: "dr"
+            }),
+            factory.modDateSlider({
+                label: "Date Submitted",
+                data: "submitted",
+                param: "ds"
             })
         ];
     };
