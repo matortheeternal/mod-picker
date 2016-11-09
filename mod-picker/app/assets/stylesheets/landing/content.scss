@@ -1,0 +1,166 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  color: $text_color;
+  margin: 0;
+  background-color: $primary_background;
+  min-height: 100vh;
+  position: relative;
+}
+
+h1 {
+  font-size: 2em;
+  margin: 0;
+}
+
+h2 {
+  font-weight: normal;
+  padding: 0 25%;
+}
+
+section {
+  min-height: 80vh;
+  padding: 60px;
+  text-align: center;
+
+  img {
+    max-height: 50vh;
+    margin-top: 20px;
+    box-shadow: 2px 2px 5px 2px $text_color;
+  }
+}
+
+.intro-section {
+  min-height: 100vh;
+  position: relative;
+  padding-top: 15%;
+  background-image: url($banner_image);
+  background-size: cover;
+  background-repeat: no-repeat;
+
+  .overlay {
+    background: none repeat scroll 0 0 rgba($inverse_text_color,0.25);
+    height: 100%;
+    width: 60%;
+    margin: 0 auto;
+    padding: 24px 0;
+
+    h2 {
+      margin: 16px 0 32px;
+    }
+  }
+
+  p {
+    font-size: 17px;
+  }
+
+  #artist-credit {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    padding: 5px;
+    background: $secondary_background;
+    font-size: 11px;
+    font-family: 'Roboto', sans-serif;
+    color: $text_color;
+    cursor: default;
+  }
+}
+
+.game-item {
+  display: inline-block;
+  margin: 20px 4px;
+
+  div {
+    position: relative;
+
+    .coming-soon {
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0.92;
+    }
+  }
+
+  h2 {
+    padding: 0;
+    margin: 4px 0 !important;
+  }
+}
+
+section.games-section {
+  background-color: $secondary_background;
+  min-height: 72vh;
+
+  h2 {
+    margin-bottom: 40px;
+  }
+
+  img {
+    box-shadow: none;
+  }
+}
+
+section.sources-section {
+  min-height: 65vh;
+
+  img {
+    box-shadow: none;
+  }
+}
+
+section.grand {
+  background-color: $background_grand;
+}
+
+section.high {
+  background-color: $background_high;
+}
+
+section.medium-high {
+  background-color: $background_medium_high;
+}
+
+section.medium {
+  background-color: $background_medium;
+  color: $inverse_text_color;
+}
+
+section.medium-low {
+  background-color: $background_medium_low;
+  color: $inverse_text_color;
+}
+
+section.low {
+  background-color: $background_low;
+  color: $inverse_text_color;
+}
+
+section.base {
+  background-color: $background_base;
+  color: $inverse_text_color;
+}
+
+.low, .base {
+  img {
+    box-shadow: 2px 2px 5px 2px darken($text_color, 14%);
+  }
+}
+
+section.under {
+  background-color: $background_under;
+  color: $inverse_text_color;
+  min-height: 60vh;
+  padding-top: 100px;
+}
+
+a.btn {
+  @include transition(background-color 0.2s ease-in-out);
+
+  &:hover {
+    color: $inverse_text_color;
+  }
+}

@@ -8,9 +8,9 @@
 //= link main/Blackreach.css
 //= link "main/High Hrothgar.css"
 //= link "help/High Hrothgar.css"
+//= link "landing/High Hrothgar.css"
 //= link legal.css
 // landing page
-//= link landing.css
 // VENDOR ASSETS
 //= link rzslider.min.css
 //= link simplemde.min.css
