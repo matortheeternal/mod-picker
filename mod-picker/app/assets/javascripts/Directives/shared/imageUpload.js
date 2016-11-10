@@ -10,6 +10,7 @@ app.directive('imageUpload', function() {
             imageClass: '@',
             maxWidth: '@',
             maxHeight: '@',
+            showExplanation: '=?',
             maxFileSize: '=?'
         },
         controller: 'imageUploadController'
@@ -19,6 +20,7 @@ app.directive('imageUpload', function() {
 app.controller('imageUploadController', function($scope, $element, $filter, fileUtils) {
     // set default value
     angular.default($scope, 'maxFileSize', 262144);
+    angular.default($scope, 'showExplanation', true);
 
     $scope.browseImage = function() {
         var fileInput = $element[0].children[1].children[0];
