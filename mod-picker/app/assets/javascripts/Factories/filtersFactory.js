@@ -2,6 +2,11 @@ app.service("filtersFactory", function() {
     var factory = this;
 
     /* shared filter prototypes */
+    this.pageFilter = {
+        data: "pages.current",
+        param: "pg",
+        default: 1
+    };
     this.searchFilter = {
         data: "search",
         param: "q"
@@ -119,6 +124,7 @@ app.service("filtersFactory", function() {
     this.modGeneralFilters = function() {
         return [
             factory.searchFilter,
+            factory.pageFilter,
             {
                 data: "author",
                 param: "a"
@@ -434,6 +440,7 @@ app.service("filtersFactory", function() {
     this.userGeneralFilters = function() {
         return [
             factory.searchFilter,
+            factory.pageFilter,
             {
                 data: "linked",
                 param: "l"
@@ -589,6 +596,7 @@ app.service("filtersFactory", function() {
     this.contributionGeneralFilters = function() {
         return [
             factory.searchFilter,
+            factory.pageFilter,
             factory.submitterFilter,
             //factory.editorFilter,
             factory.showAdultFilter,
@@ -599,7 +607,7 @@ app.service("filtersFactory", function() {
             factory.unapprovedFilter
         ]
     };
-    
+
     this.contributionDateFilters = function() {
         return [
             factory.userDateSlider({
@@ -642,6 +650,7 @@ app.service("filtersFactory", function() {
     this.commentGeneralFilters = function() {
         return [
             factory.searchFilter,
+            factory.pageFilter,
             factory.submitterFilter,
             factory.showAdultFilter,
             factory.showNonAdultFilter,
@@ -813,6 +822,7 @@ app.service("filtersFactory", function() {
     this.loadOrderNoteGeneralFilters = function() {
         return [
             factory.searchFilter,
+            factory.pageFilter,
             factory.submitterFilter,
             //factory.editorFilter,
             {
@@ -841,6 +851,7 @@ app.service("filtersFactory", function() {
     this.correctionGeneralFilters = function() {
         return [
             factory.searchFilter,
+            factory.pageFilter,
             factory.submitterFilter,
             //factory.editorFilter,
             factory.showAdultFilter,
@@ -981,6 +992,7 @@ app.service("filtersFactory", function() {
     this.articleSearchFilters = function() {
         return [
             factory.searchFilter,
+            factory.pageFilter,
             {
                 data: "text",
                 param: "t"
@@ -1010,6 +1022,7 @@ app.service("filtersFactory", function() {
     this.modListGeneralFilters = function() {
         return [
             factory.searchFilter,
+            factory.pageFilter,
             {
                 data: "description",
                 param: "t"
@@ -1245,6 +1258,7 @@ app.service("filtersFactory", function() {
     this.pluginGeneralFilters = function() {
         return [
             factory.searchFilter,
+            factory.pageFilter,
             {
                 data: "author",
                 param: "a"
@@ -1325,7 +1339,8 @@ app.service("filtersFactory", function() {
 
     this.reportSearchFilters = function() {
         return [
-            factory.submitterFilter
+            factory.submitterFilter,
+            factory.pageFilter
         ];
     };
 
@@ -1483,6 +1498,7 @@ app.service("filtersFactory", function() {
     this.curatorRequestSearchFilters = function() {
         return [
             factory.searchFilter,
+            factory.pageFilter,
             factory.submitterFilter,
             {
                 label: "Mod Name",

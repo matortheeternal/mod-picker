@@ -68,7 +68,7 @@ app.service('indexService', function(objectUtils) {
 
     this.setDefaultParamsFromFilters = function(params, filterPrototypes) {
         filterPrototypes.forEach(function(filter) {
-            if (filter.type === 'Boolean') {
+            if (filter.default) {
                 params[filter.param] = filter.default;
             } else {
                 params[filter.param] = '';
