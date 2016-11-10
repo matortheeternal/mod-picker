@@ -163,8 +163,9 @@ class ModsController < ApplicationController
 
   # POST /mods/1/image
   def image
-    submission_image = (@mod.submitted < 5.minutes.ago) && (current_user.id == @mod.submitted_by)
-    authorize! :update, @mod unless submission_image
+    unless (@mod.submitted > 5.minutes.ago) && (current_user.id == @mod.submitted_by)
+      authorize! :update, @mod
+    end
 
     if @mod.update(image_params)
       render json: {status: :ok}
