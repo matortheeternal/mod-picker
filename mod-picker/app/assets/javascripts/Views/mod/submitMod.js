@@ -42,6 +42,7 @@ app.controller('submitModController', function($scope, $rootScope, backend, modS
         custom_sources: [],
         requirements: []
     };
+    $scope.defaultImageSrc = '/images/mods/Default.png';
 
     // set page title
     $scope.$emit('setPageTitle', 'Submit Mod');
@@ -73,6 +74,31 @@ app.controller('submitModController', function($scope, $rootScope, backend, modS
         return $scope.sourcesValid && $scope.categoriesValid && $scope.analysisValid;
     };
 
+    $scope.submitImage = function(modId) {
+        var successLinks = [
+            {
+                link: "#/mod/" + modId,
+                linkLabel: "view the new mod."
+            },
+            {
+                link: "#/mods",
+                linkLabel: "return to the mods index page."
+            }
+        ];
+
+        if ($scope.image.file) {
+            $scope.startSubmission("Submitting Mod Image...");
+            modService.submitImage(modId, $scope.image.file).then(function() {
+                $scope.submissionSuccess("Mod submitted successfully!", successLinks);
+            }, function(response) {
+                console.log('Image failed to submit: '+response);
+                $scope.submissionSuccess("Mod submitted successfully, but image failed to submit.", successLinks);
+            });
+        } else {
+            $scope.submissionSuccess("Mod submitted successfully!", successLinks);
+        }
+    };
+
     $scope.submit = function() {
         // return if mod is invalid
         if (!$scope.modValid()) {
@@ -81,16 +107,7 @@ app.controller('submitModController', function($scope, $rootScope, backend, modS
 
         $scope.startSubmission("Submitting Mod...");
         modService.submitMod($scope.mod).then(function(data) {
-            $scope.submissionSuccess("Mod submitted successfully!", [
-                { 
-                    link: "#/mod/" + data.id, 
-                    linkLabel: "view the new mod."
-                },
-                {
-                    link: "#/mods", 
-                    linkLabel: "return to the mods index page." 
-                }
-            ]);
+            modService.submitImage(data.id);
         }, function(response) {
             $scope.submissionError("There were errors submitting your mod.", response);
         });
