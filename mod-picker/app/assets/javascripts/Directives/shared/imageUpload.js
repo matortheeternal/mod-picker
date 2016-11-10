@@ -34,37 +34,47 @@ app.controller('imageUploadController', function($scope, $element, $filter, file
         $scope.$applyAsync();
     };
 
+    $scope.checkImageFileType = function(imageFile) {
+        var ext = fileUtils.getFileExtension(imageFile.name);
+        if ((ext !== 'png') && (ext !== 'jpg')) {
+            var capLabel = $scope.label.capitalize();
+            var errorObj = {
+                type: "error",
+                text: "Unsupported file type.  "+capLabel+" must be a PNG or JPG file."
+            };
+            $scope.$emit("customMessage", errorObj);
+            $scope.resetImage();
+            return false;
+        }
+
+        return true;
+    };
+
+    $scope.checkImageFileSize = function(imageFile) {
+        if (imageFile.size > $scope.maxFileSize) {
+            var capLabel = $scope.label.capitalize();
+            var maxFileSizeStr = $filter('bytes')($scope.maxFileSize);
+            var errorObj = {
+                type: "error",
+                text: capLabel+" file is too big.  Maximum file size "+maxFileSizeStr+"."
+            };
+            $scope.$emit("customMessage", errorObj);
+            $scope.resetImage();
+            return false;
+        }
+
+        return true;
+    };
+
     $scope.changeImage = function(event) {
         var errorObj;
         var capLabel = $scope.label.capitalize();
         if (event.target.files && event.target.files[0]) {
             var imageFile = event.target.files[0];
+            if (!$scope.checkImageFileType(imageFile)) return;
+            if (!$scope.checkImageFileSize(imageFile)) return;
 
-            // check file type
-            var ext = fileUtils.getFileExtension(imageFile.name);
-            if ((ext !== 'png') && (ext !== 'jpg')) {
-                errorObj = {
-                    type: "error",
-                    text: "Unsupported file type.  "+capLabel+" must be a PNG or JPG file."
-                };
-                $scope.$emit("customMessage", errorObj);
-                $scope.resetImage();
-                return;
-            }
-
-            // check filesize
-            if (imageFile.size > $scope.maxFileSize) {
-                var maxFileSizeStr = $filter('bytes')($scope.maxFileSize);
-                errorObj = {
-                    type: "error",
-                    text: capLabel+" file is too big.  Maximum file size "+maxFileSizeStr+"."
-                };
-                $scope.$emit("customMessage", errorObj);
-                $scope.resetImage();
-                return;
-            }
-
-            // check dimensions
+            // build and load image blob
             var img = new Image();
             img.onload = function() {
                 var imageTooBig = (img.width > $scope.maxWidth) || (img.height > $scope.maxHeight);
