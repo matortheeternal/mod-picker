@@ -47,7 +47,20 @@ app.service('imageUtils', function() {
             canvas = service.scaleCanvasWithAlgorithm(canvas, heightScale);
         }
 
-        canvas.toBlob(callback, 'image/jpeg', 0.9);
+        // return jpg at 90% quality unless the canvas has transparent pixels
+        if (service.hasTransparentPixels(canvas)) {
+            canvas.toBlob(callback);
+        } else {
+            canvas.toBlob(callback, 'image/jpeg', 0.9);
+        }
+    };
+
+    // returns true if the canvas has transparent pixels
+    this.hasTransparentPixels = function(canvas) {
+        var imgData = canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height).data;
+        for (var i = 0, n = imgData.length; i < n; i+= 4) {
+            if (imgData[i + 3] < 255) return true;
+        }
     };
 
     // scales the canvas by .5
