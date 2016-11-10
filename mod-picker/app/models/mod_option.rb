@@ -1,9 +1,14 @@
 class ModOption < ActiveRecord::Base
-  include BetterJson
+  include BetterJson, ScopeHelpers, Filterable
 
+  # ATTRIBUTES
   attr_accessor :asset_paths, :plugin_dumps
 
   # SCOPES
+  search_scope :display_name, alias: 'search'
+  ids_scope :mod_id
+
+  # UNIQUE SCOPES
   scope :default, -> { where(default: true) }
 
   # ASSOCIATIONS

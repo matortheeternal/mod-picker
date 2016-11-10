@@ -6,7 +6,14 @@ app.service('contributionFactory', function() {
         label: "Appeals",
         route: "corrections",
         template: "## Description\r\n*Why should the mod have this new status?  What has changed from the past, if anything?  If suggesting the mod be marked as unstable, explain what aspects of the mod are unstable and the severity of the issues.  If suggesting the mod be marked as outdated note the issues with this mod and the available alternatives.*\r\n\r\n"
-    }, {
+    },
+    {
+        name: "CuratorRequest",
+        label: "Curator Request",
+        route: "curator_requests",
+        template: "## Description\r\n*Why do you want to become a curator for this mod?  How much do you use this mod?  How much do you know about how this mod works?  How important is this mod to you?  Do you have the time and energy to curate this mod?  Is there anything specific you'd like to improve on this mod page immediately upon becoming a curator for it?*"
+    },
+    {
         name: "Review",
         label: "Review",
         route: "reviews",

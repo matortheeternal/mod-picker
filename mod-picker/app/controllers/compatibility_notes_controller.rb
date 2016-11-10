@@ -4,7 +4,7 @@ class CompatibilityNotesController < ContributionsController
   # GET /compatibility_notes
   def index
     # prepare compatibility notes
-    @compatibility_notes = CompatibilityNote.preload(:editor, :editors, :first_mod, :second_mod).eager_load(submitter: :reputation).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(page: params[:page])
+    @compatibility_notes = CompatibilityNote.preload(:editor, :editors, :first_mod, :second_mod, :compatibility_mod, :compatibility_plugin, :compatibility_mod_option).eager_load(submitter: :reputation).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(page: params[:page])
     count = CompatibilityNote.eager_load(submitter: :reputation).accessible_by(current_ability).filter(filtering_params).count
 
     # prepare helpful marks
@@ -45,11 +45,11 @@ class CompatibilityNotesController < ContributionsController
 
     # Params allowed during creation
     def contribution_params
-      params.require(:compatibility_note).permit(:game_id, :status, :first_mod_id, :second_mod_id, :text_body, (:moderator_message if current_user.can_moderate?), :compatibility_plugin_id, :compatibility_mod_id)
+      params.require(:compatibility_note).permit(:game_id, :status, :first_mod_id, :second_mod_id, :text_body, (:moderator_message if current_user.can_moderate?), :compatibility_plugin_id, :compatibility_mod_id, :compatibility_mod_option_id)
     end
 
     # Params that can be updated
     def contribution_update_params
-      params.require(:compatibility_note).permit(:status, :text_body, :edit_summary, (:moderator_message if current_user.can_moderate?), :compatibility_plugin_id, :compatibility_mod_id)
+      params.require(:compatibility_note).permit(:status, :text_body, :edit_summary, (:moderator_message if current_user.can_moderate?), :compatibility_plugin_id, :compatibility_mod_id, :compatibility_mod_option_id)
     end
 end

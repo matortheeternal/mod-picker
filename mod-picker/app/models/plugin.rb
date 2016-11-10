@@ -20,7 +20,7 @@ class Plugin < ActiveRecord::Base
 
   # UNIQUE SCOPES
   scope :visible, -> { eager_load(:mod).where(:mods => {hidden: false}) }
-  scope :mods, -> (mod_ids) { includes(:mod_option).references(:mod_option).where(:mod_options => { :mod_id => mod_ids }) }
+  scope :mods, -> (mod_ids) { eager_load(:mod_option).where(:mod_options => { :mod_id => mod_ids }) }
   scope :esm, -> { where("filename like '%.esm'") }
   scope :categories, -> (categories) { joins(:mod).where("mods.primary_category_id IN (:ids) OR mods.secondary_category_id IN (:ids)", ids: categories) }
 

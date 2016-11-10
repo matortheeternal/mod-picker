@@ -19,6 +19,11 @@ app.controller('appealsModalController', function($scope, contributionService, c
         return (appeal.agree_count / ((appeal.agree_count + appeal.disagree_count) || 1)) * 100;
     };
 
+    // update the markdown editor
+    $scope.updateEditor = function() {
+        $scope.updateMDE = ($scope.updateMDE || 0) + 1;
+    };
+
     // start a new appeal
     $scope.startNewAppeal = function() {
         var statuses = ["good", "outdated", "unstable"];
@@ -83,7 +88,8 @@ app.controller('appealsModalController', function($scope, contributionService, c
     };
 
     $scope.validateAppeal = function() {
-        $scope.activeAppeal.valid = $scope.activeAppeal.text_body.length > 256;
+        var sanitized_text = contributionService.removePrompts($scope.activeAppeal.text_body);
+        $scope.activeAppeal.valid = sanitized_text.length > 256;
     };
 
     // discard a new appeal object or stop editing an existing one
@@ -113,12 +119,13 @@ app.controller('appealsModalController', function($scope, contributionService, c
         }
 
         // submit the appeal
+        var sanitized_text = contributionService.removePrompts($scope.activeAppeal.text_body);
         var appealObj = {
             correction: {
                 game_id: $scope.mod.game_id,
                 correctable_id: $scope.mod.id,
                 correctable_type: "Mod",
-                text_body: $scope.activeAppeal.text_body,
+                text_body: sanitized_text,
                 mod_status: $scope.activeAppeal.mod_status
             }
         };

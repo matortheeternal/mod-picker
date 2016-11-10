@@ -8,6 +8,9 @@
     "compatibility_plugin": {
       "format": "simple"
     },
+    "compatibility_mod_option": {
+      "format": "compatibility_note"
+    },
     "editor": {},
     "editors": {},
     "first_mod": {},

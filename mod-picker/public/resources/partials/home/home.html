@@ -45,8 +45,8 @@
                     <article data="article" ng-repeat="article in articles"></article>
                     <div class="load-older-posts">
                         <a href="#/articles/">Browse All Articles</a>
-                        <span class="divider" ng-if="permissions.canSubmitArticles">|</span>
-                        <a href="#/articles/submit" ng-if="permissions.canSubmitArticles">
+                        <span class="divider" ng-if="permissions.canManageArticles">|</span>
+                        <a href="#/articles/submit" ng-if="permissions.canManageArticles">
                             Submit Article
                         </a>
                     </div>

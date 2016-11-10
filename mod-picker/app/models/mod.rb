@@ -4,7 +4,7 @@ class Mod < ActiveRecord::Base
   # ATTRIBUTES
   enum status: [ :good, :outdated, :unstable ]
   attr_accessor :updated_by, :mark_updated
-  self.per_page = 100
+  self.per_page = 60
   self.approval_method = :has_mod_auto_approval?
 
   # DATE COLUMNS
@@ -122,6 +122,9 @@ class Mod < ActiveRecord::Base
   # users who can edit the mod
   has_many :mod_authors, :inverse_of => 'mod', :dependent => :destroy
   has_many :author_users, :class_name => 'User', :through => 'mod_authors', :source => 'user', :inverse_of => 'mods'
+
+  # curator requests on the mod
+  has_many :curator_requests, :inverse_of => 'mod', :dependent => :destroy
 
   # community feedback on the mod
   has_many :corrections, :as => 'correctable', :dependent => :destroy

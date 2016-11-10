@@ -7,6 +7,7 @@ app.directive('searchInput', function() {
             resultId: '=',
             searchFunction: '=',
             searchText: '=?',
+            searchArg: '=?',
             onChange: '=?',
             excludedId: '=?',
             disabled: '=?',
@@ -35,7 +36,7 @@ app.controller('searchInputController', function($scope, $timeout) {
         // Begin the search
         str = str.toLowerCase();
         if (str.length >= $scope.minLength) {
-            $scope.searchFunction(str).then(function(data) {
+            $scope.searchFunction(str, $scope.searchArg).then(function(data) {
                 $scope.searching = false;
                 if ($scope.excludedId) {
                     data = data.filter(function(item) {

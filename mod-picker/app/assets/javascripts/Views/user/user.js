@@ -70,6 +70,7 @@ app.controller('userController', function($scope, $rootScope, $stateParams, user
     $scope.roleTexts = {
         admin: "Administrator",
         moderator: "Moderator",
+        writer: "News Writer",
         author: "Mod Author",
         restricted: "Restricted",
         banned: "Banned",

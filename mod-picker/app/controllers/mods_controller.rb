@@ -1,7 +1,7 @@
 class ModsController < ApplicationController
   before_action :set_mod, only: [:edit, :update, :hide, :approve, :update_tags, :image, :corrections, :reviews, :compatibility_notes, :install_order_notes, :load_order_notes, :analysis, :destroy]
 
-  # POST /mods
+  # POST /mods/index
   def index
     @mods = Mod.eager_load(:author_users, :nexus_infos, :lover_infos, :workshop_infos).accessible_by(current_ability).filter(filtering_params).sort(sorting_params).paginate(page: params[:page])
     count =  Mod.eager_load(:author_users, :nexus_infos, :lover_infos, :workshop_infos).accessible_by(current_ability).filter(filtering_params).count
@@ -52,7 +52,7 @@ class ModsController < ApplicationController
     render json: {status: :ok}
   end
 
-  # POST /mods/submit
+  # POST /mods
   def create
     authorize! :create, Mod
     authorize! :assign_custom_sources, Mod if params[:mod].has_key?(:custom_sources_attributes)
@@ -80,6 +80,7 @@ class ModsController < ApplicationController
     authorize! :hide, @mod, :message => "You are not allowed to hide/unhide this mod." if params[:mod].has_key?(:hidden)
     authorize! :approve, @mod, :message => "You are not allowed to approve/unapprove this mod." if params[:mod].has_key?(:approved)
     authorize! :update_authors, @mod, :message => "You are not allowed to update this mod's authors." if params[:mod].has_key?(:mod_authors_attributes)
+    authorize! :change_status, @mod, :message => "You are not allowed to change this mod's status." if params[:mod].has_key?(:status)
     authorize! :update_options, @mod, :message => "You are not allowed to update this mod's advanced options." if options_params.any?
     authorize! :assign_custom_sources, @mod, :message => "You are not allowed to assign custom sources." if params[:mod].has_key?(:custom_sources_attributes)
 
@@ -251,8 +252,8 @@ class ModsController < ApplicationController
     authorize! :read, @mod
 
     # prepare compatibility notes
-    compatibility_notes = @mod.compatibility_notes.includes(submitter: :reputation).references(submitter: :reputation).accessible_by(current_ability).sort(params[:sort]).paginate(page: params[:page], per_page: 10)
-    count =  @mod.compatibility_notes.includes(submitter: :reputation).references(submitter: :reputation).accessible_by(current_ability).count
+    compatibility_notes = @mod.compatibility_notes.preload(:first_mod, :second_mod, :editor, :editors, :compatibility_mod, :compatibility_plugin, :compatibility_mod_option).eager_load(:submitter => :reputation).accessible_by(current_ability).sort(params[:sort]).paginate(page: params[:page], per_page: 10)
+    count =  @mod.compatibility_notes.eager_load(:submitter => :reputation).accessible_by(current_ability).count
 
     # prepare helpful marks
     helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("CompatibilityNote", compatibility_notes.ids)
@@ -404,7 +405,7 @@ class ModsController < ApplicationController
     end
 
     def mod_update_params
-      p = params.require(:mod).permit(:name, :authors, :aliases, :is_utility, :has_adult_content, :primary_category_id, :secondary_category_id, :released, :updated, :mark_updated, :nexus_info_id, :lover_info_id, :workshop_info_id, :disallow_contributors, :disable_reviews, :lock_tags, :hidden, :approved,
+      p = params.require(:mod).permit(:name, :authors, :aliases, :is_utility, :has_adult_content, :status, :primary_category_id, :secondary_category_id, :released, :updated, :mark_updated, :nexus_info_id, :lover_info_id, :workshop_info_id, :disallow_contributors, :disable_reviews, :lock_tags, :hidden, :approved,
          required_mods_attributes: [:id, :required_id, :_destroy],
          mod_authors_attributes: [:id, :role, :user_id, :_destroy],
           custom_sources_attributes: [:id, :label, :url, :_destroy],

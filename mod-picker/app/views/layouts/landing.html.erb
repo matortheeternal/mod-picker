@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="landing">
+<head>
+    <meta charset="UTF-8">
+    <title>Mod Picker</title>
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,700,500' rel='stylesheet' type='text/css'>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <%= javascript_include_tag 'angular.min.1.5.1' %>
+    <%= stylesheet_link_tag 'landing/High Hrothgar' %>
+</head>
+<body ng-controller="landingController" ng-cloak>
+<%= yield %>
+
+<!-- defered load of scripts, which is way more performant for browsers -->
+<%= javascript_include_tag 'angular-ui-router.min' %>
+<%= javascript_include_tag 'ct-ui-router-extras.min' %>
+<%= javascript_include_tag 'angular-smooth-scroll.min' %>
+<%= javascript_include_tag 'heartcode-canvasloader-min' %>
+<%= javascript_include_tag 'angular-animate.min' %>
+<%= javascript_include_tag 'landing' %>
+
+</body>
+</html>
