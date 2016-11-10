@@ -1,0 +1,53 @@
+<ul class="pages-list">
+    <% @help_pages.each do |page| %>
+    <li>
+        <% if page.display_image %>
+        <%= link_to "/help/#{page.url}", method: :get do %>
+            <%= image_tag "#{@help_page.display_image}", class: "header-image" %>
+        <% end %>
+        <% end %>
+
+        <div class="meta-container">
+            <%= link_to "/help/#{page.url}", method: :get do %>
+                <h4 class="item-header">
+                    <span class="item-title">
+                        <%= page.title %>
+                    </span>
+                    <% if page.submitted.between?((DateTime.now - 2.weeks), DateTime.now) %>
+                    <span class="new-label">NEW</span>
+                    <% end %>
+                    <% unless page.approved %>
+                    <span class="unapproved-label">UNAPPROVED</span>
+                    <% end %>
+                </h4>
+            <% end %>
+
+
+            <span class="meta author">
+                <i class="fa fa-user" aria-hidden="true" title="Author"></i>
+                <%= link_to page.submitter.username, "/skyrim#/user/#{page.submitter.id}", class: "medium-link" %>
+            </span>
+
+            <div class="date">
+                <span class="meta submit-date" title="<%= page.submitted.strftime("%m/%d/%Y %I:%M:%S %z") %>">
+                    <i class="fa fa-clock-o" aria-hidden="true" title="Created"></i>
+                    <%= time_ago_in_words(page.submitted).capitalize %> ago
+                </span>
+            </div>
+
+            <span class="meta">
+                <% if page.game.present? %>
+                <span>
+                    <i class="fa fa-gamepad" aria-hidden="true" title="Game"></i>
+                    <%= link_to page.game.display_name, "/help/game/#{page.game.display_name}", class: "medium-link" %>
+                </span>
+                <% end %>
+                <span>
+                    <i class="fa fa-folder" aria-hidden="true" title="Category"></i>
+                    <%= link_to page.category.humanize, "/help/category/#{page.category}", class: "medium-link capitalize" %>
+                </span>
+            </span>
+        </div>
+    </li>
+    <% end %>
+</ul>

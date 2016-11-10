@@ -2,46 +2,30 @@ class PluginsController < ApplicationController
   before_action :set_plugin, only: [:show, :destroy]
 
   # GET /plugins
-  # GET /plugins.json
   def index
-    @plugins = Plugin.all
+    @plugins = Plugin.eager_load(:mod).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(page: params[:page])
+    count =  Plugin.eager_load(:mod).accessible_by(current_ability).filter(filtering_params).count
 
-    render :json => @plugins
+    render json: {
+        plugins: json_format(@plugins),
+        max_entries: count,
+        entries_per_page: Plugin.per_page
+    }
+  end
+
+  # POST /plugins/search
+  def search
+    @plugins = Plugin.visible.filter(search_params).order("CHAR_LENGTH(filename)").limit(10)
+    respond_with_json(@plugins, :base)
   end
 
   # GET /plugins/1
-  # GET /plugins/1.json
   def show
     authorize! :read, @plugin
-    render :json => @plugin
-  end
-
-  # POST /plugins
-  def create
-    authorize! :submit, :mod
-    response = 'Invalid submission'
-    if params[:plugin].present?
-      file = params[:plugin]
-      if File.exists?(Rails.root.join('app','assets', 'plugins', file.original_filename))
-        response = 'File exists'
-      else
-        begin
-          File.open(Rails.root.join('app','assets', 'plugins', file.original_filename), 'wb') do |f|
-            f.write(file.read)
-          end
-          response = 'Success'
-        rescue
-          response = 'Unknown failure'
-        end
-      end
-    end
-
-    # render json response
-    render json: {status: response}
+    respond_with_json(@plugin)
   end
 
   # DELETE /plugins/1
-  # DELETE /plugins/1.json
   def destroy
     authorize! :destroy, @plugin
     if @plugin.destroy
@@ -55,6 +39,16 @@ class PluginsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_plugin
       @plugin = Plugin.find(params[:id])
+    end
+
+    # Params we allow filtering on
+    def filtering_params
+      params[:filters].slice(:adult, :hidden, :approved, :game, :search, :author, :description, :categories, :file_size, :records, :overrides, :errors, :mod_lists, :load_order_notes)
+    end
+
+    # Params we allow searching on
+    def search_params
+      params[:filters].slice(:search, :game, :mods)
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

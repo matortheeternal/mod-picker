@@ -1,36 +1,50 @@
 <div class="box-heading">
-  Register
+    Register
 </div>
 
 <div class="box-content">
-  <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-    <%= devise_error_messages! %>
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+        <%= devise_error_messages! %>
 
-    <div class="padded-field">
-      <%= f.label :email %><br />
-      <%= f.email_field :email, autofocus: true %>
-    </div>
+        <div class="padded-field">
+            <%= f.label :email %><br/>
+            <%= f.email_field :email, autofocus: true %>
+        </div>
 
-    <div class="padded-field">
-      <%= f.label :username %><br />
-      <%= f.text_field :username %>
-    </div>
+        <div class="padded-field">
+            <%= f.label :username %><br/>
+            <%= f.text_field :username %>
+        </div>
 
-    <div class="padded-field">
-      <%= f.label :password %>
-      <% if @minimum_password_length %>
-      <em>(<%= @minimum_password_length %> characters minimum)</em>
-      <% end %><br />
-      <%= f.password_field :password, autocomplete: "off" %>
-    </div>
+        <div class="padded-field">
+            <%= f.label :password %>
+            <em>(8 characters minimum)</em><br/>
+            <%= f.password_field :password, autocomplete: "off" %>
+        </div>
 
-    <div class="padded-field">
-      <%= f.label :password_confirmation %><br />
-      <%= f.password_field :password_confirmation, autocomplete: "off" %>
-    </div>
+        <div class="padded-field">
+            <%= f.label :password_confirmation %><br/>
+            <%= f.password_field :password_confirmation, autocomplete: "off" %>
+        </div>
 
-    <div class="padded-field text-center big-margin">
-      <%= f.submit "Register" %>
-    </div>
-  <% end %>
+        <div class="padded-field">
+            <label class="terms">
+                <input type="checkbox" onclick="toggleAgree(this)"/>
+                I agree to the <a href="/legal/tos" target="_blank">Terms of Service</a>
+            </label>
+        </div>
+
+        <div class="padded-field text-center big-margin">
+            <%= f.submit "Register" %>
+        </div>
+    <% end %>
 </div>
+
+<script>
+    var submitButton = document.getElementsByName("commit")[0];
+    submitButton.disabled = true;
+
+    function toggleAgree(checkbox) {
+        submitButton.disabled = !checkbox.checked;
+    }
+</script>

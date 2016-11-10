@@ -57,8 +57,6 @@ __history/
 *.stat
 
 # Repository ignore
-*.json
-*.ini
 *.zip
 *.txaPackage
 *.txvpck
@@ -86,3 +84,14 @@ mod-picker/public/assets/*
 !mod-picker/public/assets/zip
 mod-picker/.byebug_history
 mod-picker/app/assets/plugins/
+mod-picker/public/avatars/3.png
+mod-picker/public/mods/*.png
+.vagrant
+vagrant.yml
+ubuntu-xenial-16.04-cloudimg-console.log
+database.yml
+mod-picker/node_modules/
+spikes/PyEmailHandler/*.txt
+dumps/
+*.7z
+mod-picker/public/mods/

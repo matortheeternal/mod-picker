@@ -4,8 +4,7 @@ class TagsController < ApplicationController
   # GET /tags
   def index
     @tags = Tag.filter(filtering_params)
-
-    render :json => @tags
+    render json: @tags
   end
 
   # DELETE /mods/1

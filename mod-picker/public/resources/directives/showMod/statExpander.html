@@ -1,0 +1,9 @@
+<div class="stat-block" ng-if="info && info.has_stats">
+    <div class="stat-block-title" ng-click="expanded = !expanded">
+        <h3 class="section-title">{{label}} Stats</h3>
+        <i class="fa fa-plus stat-expander" aria-hidden="true" ng-hide="expanded"></i>
+        <i class="fa fa-minus stat-expander" aria-hidden="true" ng-show="expanded"></i>
+    </div>
+    <section ng-show="expanded" ng-transclude>
+    </section>
+</div>

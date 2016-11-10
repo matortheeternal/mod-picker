@@ -1,0 +1,23 @@
+{
+  "except": ["game_id", "submitted_by", "edited_by", "disallow_contributions", "disable_reviews", "lock_tags"],
+  "include": {
+    "author_users": {}
+  },
+  "methods": ["image"],
+  "conditional_include": [{
+    "include": {
+      "nexus_infos": {}
+    },
+    "if": "association(:nexus_infos).loaded?"
+  }, {
+    "include": {
+      "lover_infos": {}
+    },
+    "if": "association(:lover_infos).loaded?"
+  }, {
+    "include": {
+      "workshop_infos": {}
+    },
+    "if": "association(:workshop_infos).loaded?"
+  }]
+}

@@ -1,0 +1,94 @@
+<span ng-if="!username">
+    <h4 class="input-label subtitle">{{siteLabel}}</h4>
+    <input type="button" class="btn" value="link" ng-click="toggleModal(true)">
+</span>
+
+<div ng-if="username">
+    <h4 class="subtitle">{{siteLabel}}</h4>
+
+    <section>
+        <div class="stat-item">
+            <dt class="stat-title">Username:</dt>
+            <dd class="stat-data">{{username}}</dd>
+        </div>
+        
+        <!-- Steam Workshop Stats -->
+        <div ng-if="siteLabel == 'Steam Workshop'">
+          <div class="stat-item">
+            <dt class="stat-title">Submissions Count:</dt>
+            <dd class="stat-data">{{submissions_count | number}}</dd>
+          </div>
+
+          <div class="stat-item">
+              <dt class="stat-title">Followers Count:</dt>
+              <dd class="stat-data">{{followers_count | number}}</dd>
+          </div>
+        </div>
+        
+        <!-- LL/Nexus Stats -->
+        <div ng-if="siteLabel != 'Steam Workshop'">
+          <div class="stat-item">
+              <dt class="stat-title">Date Joined:</dt>
+              <dd class="stat-data">{{date_joined | date}}</dd>
+          </div>
+
+          <div class="stat-item">
+              <dt class="stat-title">Posts Count:</dt>
+              <dd class="stat-data">{{posts_count | number}}</dd>
+          </div>
+        </div>
+    </section>
+</div>
+
+<div class="modal-container" ng-if="showModal">
+    <messages event="modalMessage"></messages>
+
+    <div class="modal big-modal">
+        <form>
+            <h3 class="section-title">Link {{siteLabel}} Account</h3>
+
+            <section>
+                <p>Linking your {{siteLabel}} account will give you reputation for
+                    your {{siteLabel}} community participation and mods.  Linking
+                    your account will also give you authorship over any mods you
+                    have submitted to {{siteLabel}} which are listed on Mod Picker.</p>
+            </section>
+
+            <loader data="!bio.verifying" spinner-class="big-spinner">
+                <section>
+                    <h4>Directions to link your account</h4>
+
+                    <!-- TODO: Add screenshots -->
+                    <ol>
+                        <li>Login to <a ng-href="{{site.loginUrl}}" target="_blank">{{siteLabel}}</a>.</li>
+                        <li ng-repeat="step in linkSteps">{{step}}</li>
+                    </ol>
+                </section>
+
+                <section>
+                    <label>
+                        <span class="input-label">Your Verification Key</span>
+                        <input type="text" class="verification-key-input" ng-model="verification_token" ng-click="focusText($event)" spellcheck="false" readonly>
+                    </label>
+                </section>
+
+                <section>
+                    <label>
+                        <div>Profile URL</div>
+                        <input type="text" class="long-input" ng-model="bio[userUrlKey]" ng-change="validateUrl()" ng-disabled="bio[verifiedKey]">
+                    </label>
+
+                    <input type="button" class="btn verify-button" value="Verify" ng-click="verifyUser()" ng-disabled="!urlValid || bio.waiting || bio[verifiedKey]">
+                </section>
+
+                <div class="action-button-container">
+                    <input type="submit" class="btn action-btn" value="Close" ng-click="toggleModal()">
+                </div>
+            </loader>
+
+            <div class="content-message" ng-if="bio.verifying">
+                Verifying your account...
+            </div>
+        </form>
+    </div>
+</div>

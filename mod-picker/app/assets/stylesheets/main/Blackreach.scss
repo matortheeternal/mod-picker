@@ -1,0 +1,72 @@
+/* BLACKREACH THEME */
+
+$banner_image: image_path("blackreach.jpg");
+$banner_artist: "Amanieu Rebu";
+$banner_credit_link: "https://www.artstation.com/artwork/EYGAA";
+
+$helper_image: image_path("lexicon.png");
+$helper_head_offset: 89px;
+$helper_height: 185px;
+
+$text_color: #aaa;
+$inverse_text_color: #111;
+$soft_text_color: #555;
+$medium_text_color: #777;
+
+$primary_background: #171718;
+$secondary_background: #1d1d20;
+$background_highlight: #1e2028;
+$input_background: #333;
+
+$shadow_color: #000;
+$border_color: #333d40;
+$soft_border_color: #22262f;
+$hard_border_color: #2e414d;
+
+$h1_color: #bbb;
+$h2_color: #ccc;
+$h3_color: #718d99;
+$h4_color: #768299;
+
+$action_color: #2b7377;
+$action_text_color: #bbb;
+$bright_action_color: #2979a8; // #267fc9
+
+$bar_color: #0a2030;
+$bar_dark_color: #11334B;
+$bar_highlight_color: #263e4d;
+$bar_text_color: #aaa;
+$bar_highlight_text_color: #7eaac7;
+
+$link_color: #2b8387;
+$link_hover_color_primary: #21a6c9;
+$link_hover_color_secondary: #21a6c9;
+
+$slider_bg_color: #aaa;
+$slider_range_color: #21a6c9;
+$slider_circle_color_after: #0a2439;
+
+$success_primary: #415741;
+$success_secondary: #4d994d;
+$error_primary: #5A1A23;
+$error_secondary: #994d4d;
+$warning_primary: #5A5A1A;
+$warning_secondary: #998e4d;
+
+$admin_color: #900000;
+$moderator_color: #8000b0;
+$news_writer_color: #0080b0;
+$mod_author_color: #008000;
+
+$red_color: #401717;
+$orange_color: #402017;
+$yellow_color: #303017;
+$green_color: #172617;
+$blue_color: #171733;
+$purple_color: #241324;
+$white_color: #444;
+$gray_color: #222;
+$brown_color: #1C1200;
+$black_color: #000;
+
+@import 'main';

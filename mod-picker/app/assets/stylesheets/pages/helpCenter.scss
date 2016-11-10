@@ -1,0 +1,99 @@
+.landing-page-container {
+  padding-bottom: 90px;
+}
+
+.landing-header {
+  margin: 80px auto;
+  font-size: 24px;
+  text-align: center;
+}
+
+// generic stlying for both primary categories and game categories
+.category-container {
+  max-width: $max-width-container;
+  margin: 0 auto 80px;
+
+  > ul {
+    list-style: none;
+    text-align: center;
+    padding-left: 0;
+
+    // container for images + text
+    .page-content {
+      display: block;
+      margin: 0 auto;
+
+      h3 {
+        margin: 10px 0;
+      }
+    }
+
+    .page {
+      text-align: center;
+      display: inline-block;
+      width: 30%;
+      margin: 0 18px;
+    }
+
+    // images
+    .page a img {
+      max-width: 100%;
+      border: 1px solid $border_color;
+    }
+  }
+}
+
+// games section
+.games-category-container {
+  > div {
+    font-size: 24px;
+    text-align: center;
+    margin: 48px 0;
+  }
+
+  // games list
+  > ul {
+    // 24% per page, margin-left of 1.33 * 3(first page has no margin-left)
+    .page {
+      width: 24%;
+      margin: 0;
+      margin-left: 1.333333333%;
+    }
+
+    .game-page:nth-child(4n + 1) {
+      margin-left: 0;
+    }
+
+    .game-details {
+      height: 48px;
+    }
+  }
+}
+
+// search page input
+.search-page-container {
+  .search-form {
+    margin-top: 2rem;
+    font-size: 1em;
+
+    // flex used so text input takes up remaining width next to button
+    display: flex;
+  }
+
+  .search-form input {
+    flex: 1;
+    padding: 1rem;
+    font-size: inherit;
+    height: auto;
+  }
+
+  .search-form input[type="text"] {
+    margin-right: 1rem;
+    flex: 8;
+  }
+
+  .search-form .btn {
+    flex: 1;
+  }
+
+}

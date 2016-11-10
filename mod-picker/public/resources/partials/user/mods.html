@@ -1,0 +1,21 @@
+<loader data="authored_mods" spinner-class="big-spinner" ng-if="!errors.mods">
+    <div class="content-block">
+        <div class="content-title">
+            Authored Mods
+        </div>
+        <div class="content-container table-container">
+            <table-results data="authored_mods" message="No authored mods found."></table-results>
+        </div>
+    </div>
+
+    <div class="content-block">
+        <div class="content-title">
+            Favorite Mods
+        </div>
+        <div class="content-container table-container">
+            <table-results data="favorite_mods" message="No favorite mods found."></table-results>
+        </div>
+    </div>
+</loader>
+
+<error-display content-class="content-message content-error" errors="errors.mods" label="this user's mods"></error-display>

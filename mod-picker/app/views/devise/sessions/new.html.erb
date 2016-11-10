@@ -1,35 +1,40 @@
 <div class="box-heading">
-  Sign in to Mod Picker
+    Sign in to Mod Picker
 </div>
 
+<% if notice %>
+    <div class="notice"><%= notice %></div>
+<% end %>
+<% if alert %>
+    <div class="alert"><%= alert %></div>
+<% end %>
+
 <div class="box-content">
-  <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-    <div class="padded-field">
-      <p><%= f.label :username %><br />
-      <%= f.text_field :login, tabindex: 1 %></p>
-    </div>
+    <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+        <div class="padded-field">
+            <p><%= f.label :username %><br/>
+                <%= f.text_field :login, tabindex: 1 %></p>
+        </div>
 
-    <div class="padded-field">
-      <%= f.label :password %> <span class="right-span" tabindex=3><%= link_to "Don't remember?", new_password_path(resource_name) %></span>
-      <%= f.password_field :password, autocomplete: "off", tabindex: 2  %>
-    </div>
+        <div class="padded-field">
+            <%= f.label :password %>
+            <span class="right-span" tabindex=3><%= link_to "Don't remember?", new_password_path(resource_name) %></span>
+            <%= f.password_field :password, autocomplete: "off", tabindex: 2 %>
+        </div>
 
-    <p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
+        <% if devise_mapping.rememberable? -%>
+            <div class="padded-field text-center">
+                <%= f.check_box :remember_me, tabindex: 4 %>
+                <%= f.label :remember_me %>
+            </div>
+        <% end -%>
 
-    <% if devise_mapping.rememberable? -%>
-      <div class="padded-field text-center">
-        <%= f.check_box :remember_me, tabindex: 4 %>
-        <%= f.label :remember_me %>
-      </div>
-    <% end -%>
+        <div class="padded-field text-center big-margin">
+            <%= f.submit "Log in", tabindex: 5 %>
+        </div>
+    <% end %>
 
     <div class="padded-field text-center big-margin">
-      <%= f.submit "Log in", tabindex: 5 %>
+        New here?  <%= link_to 'Register', new_registration_path(resource_name), tabindex: 6 %> an account!
     </div>
-  <% end %>
-
-  <div class="padded-field text-center big-margin">
-    New here?  <%= link_to 'Register', new_registration_path(resource_name), tabindex: 6 %> an account!
-  </div>
 </div>

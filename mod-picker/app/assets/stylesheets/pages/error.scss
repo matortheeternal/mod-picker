@@ -1,0 +1,49 @@
+.error-page {
+  padding: 60px 300px 70px 100px;
+  margin-top: 10px;
+  background-position: top right;
+  background-repeat: no-repeat;
+  min-height: calc(100vh - 438px);
+
+  .big-quote {
+    font-style: italic;
+    font-size: 26px;
+    font-family: Georgia, serif;
+  }
+
+  .explanation {
+    color: $h4_color;
+    font-size: 18px;
+  }
+
+  h3 {
+    margin-top: 40px;
+    font-size: 20px;
+  }
+
+  p {
+    margin-top: 5px;
+    margin-bottom: 0;
+    font-size: 18px;
+  }
+}
+
+.guard-quote {
+  background-image: image_url("guard.png");
+}
+
+.sheogorath-quote {
+  background-image: image_url("sheogorath.png");
+}
+
+.sheogorath-cheese-quote {
+  background-image: image_url("sheogorath-cheese.png");
+}
+
+.penitus-quote {
+  background-image: image_url("penitus.png");
+}
+
+.lydia-quote {
+  background-image: image_url("lydia.png");
+}

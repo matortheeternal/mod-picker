@@ -1,0 +1,12 @@
+{
+  "only": ["id", "username", "role", "title", "sign_in_count"],
+  "include": {
+    "reputation": {
+      "only": ["overall", "rep_to_count"]
+    },
+    "settings": {
+      "only": ["theme", "enable_spellcheck", "show_notifications", "allow_adult_content", "disable_helper"]
+    }
+  },
+  "methods": ["avatar", "recent_notifications"]
+}

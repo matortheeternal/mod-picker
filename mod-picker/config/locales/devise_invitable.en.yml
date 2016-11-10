@@ -15,14 +15,17 @@ en:
       edit:
         header: "Create your account"
         submit_button: "Create account"
+      new_batch:
+        header: "Send invitations"
+        submit_button: "Send invitations"
     mailer:
       invitation_instructions:
         subject: "Mod Picker - Beta Invitation"
         hello: "Hello %{email}"
         someone_invited_you: "You have been invited to participate in the Mod Picker beta!  You can accept the invitation and create an account by clicking the link below:"
         accept: "Accept invitation"
-        accept_until: "The beta will last from May 1, <a class='time-helper' href='google.com/search?q=12:01AM+UTC'>12:01AM UTC</a> to May 16, <a class='time-helper' href='google.com/search?q=12:01PM+UTC'>12:01PM UTC</a>.  You can accept this invitation any time before %{due_date}."
-        ignore: "If you do not want to participate in the beta, disregard this email.  You will be able to freely register on the site when we officially launch June 1, 2016."
+        accept_until: 'The beta will last from October 1, <a class="time-helper" href="http://www.google.com/search?q=12:01+AM+UTC">12:01 AM UTC</a> to November11, <a class="time-helper" href="http://www.google.com/search?q=12:01+PM+UTC">12:01 PM UTC</a>.'
+        ignore: "If you do not want to participate in the beta, disregard this email.  You will be able to freely register on the site when we officially launch November 11, 2016."
   time:
     formats:
       devise:

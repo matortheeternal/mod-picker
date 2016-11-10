@@ -1,0 +1,131 @@
+<messages></messages>
+
+<two-columns>
+    <loader data="user" spinner-class="big-spinner">
+        <div class="page-container">
+            <div class="left-column left-user-column medium-column">
+                <img class="avatar avatar-full" ng-src="{{user.avatar == null ? '/users/' + user.title + '.png' : user.avatar}}"/>
+
+                <h3 class="big-username">{{user.username}}</h3>
+                <section>
+                    <div class="user-title">{{user.title}}</div>
+                    <div class="user-role {{roleClass}} no-text-dec">
+                        {{roleTexts[user.role]}}
+                    </div>
+                </section>
+
+                <h3 ng-if="!isCurrentUser && permissions.canReport || permissions.canModerate" class="section-title">Actions</h3>
+                <section ng-if="!isCurrentUser && permissions.canReport">
+                    <div class="action-box" ng-click="toggleReportModal(true)">
+                        <i class="fa fa-flag-o" aria-hidden="true"></i> Report
+                    </div>
+                </section>
+
+                <section ng-if="permissions.canModerate">
+                    <div class="action-item">
+                        <span ng-click="addRep()">
+                            <i class="fa fa-plus"></i> Rep
+                        </span>
+                        <span ng-click="subtractRep()">
+                            <i class="fa fa-minus"></i> Rep
+                        </span>
+                    </div>
+                    <div class="action-item">
+                        <span ng-click="toggleRestrictUser()">
+                            <i class="fa {{ userRestricted() ? 'fa-unlock' : 'fa-lock' }}"></i>
+                            {{ userRestricted() ? 'Unrestrict' : 'Restrict' }}
+                        </span>
+                        <span ng-click="toggleBanUser()">
+                            <i class="fa {{ userBanned() ? 'fa-life-ring' : 'fa-gavel' }}"></i>
+                            {{ userBanned() ? 'Unban' : 'Ban' }}
+                        </span>
+                    </div>
+                </section>
+
+                <h3 class="section-title">Reputation</h3>
+                <section>
+                    <div class="stat-item reputation">
+                        {{user.reputation.overall | number:0}}
+                        <div class="action-box" ng-click="endorse()" ng-if="!isCurrentUser && permissions.canEndorse || user.endorsed">
+                            <i class="fa {{user.endorsed ? 'fa-heart' : 'fa-heart-o'}}" aria-hidden="true"></i>
+                            {{user.endorsed ? 'Unendorse' : 'Endorse' }}
+                        </div>
+                    </div>
+                </section>
+
+                <h3 class="section-title">Contributions</h3>
+                <section>
+                    <a ng-href="#/reviews?scol=submitted&s={{user.username}}">
+                        <div class="stat-item">{{user.reviews_count | number}} Reviews</div>
+                    </a>
+                    <a ng-href="#/compatibility-notes?scol=submitted&s={{user.username}}">
+                        <div class="stat-item">{{user.compatibility_notes_count | number}} Compatibility Notes</div>
+                    </a>
+                    <a ng-href="#/install-order-notes?scol=submitted&s={{user.username}}">
+                        <div class="stat-item">{{user.install_order_notes_count| number}} Install Order Notes</div>
+                    </a>
+                    <a ng-href="#/load-order-notes?scol=submitted&s={{user.username}}">
+                        <div class="stat-item">{{user.load_order_notes_count | number}} Load Order Notes</div>
+                    </a>
+                    <a ng-href="#/corrections?scol=submitted&s={{user.username}}">
+                        <div class="stat-item">{{user.corrections_count | number}} Corrections</div>
+                    </a>
+                    <a ng-href="#/comments?scol=submitted&s={{user.username}}">
+                        <div class="stat-item">{{user.submitted_comments_count | number}} Comments</div>
+                    </a>
+                </section>
+
+                <h3 class="section-title">Activity</h3>
+                <section>
+                    <div class="stat-item">Joined: {{user.joined | date}}</div>
+                    <div class="stat-item">Last Seen: {{user.last_sign_in_at | date}}</div>
+                </section>
+
+                <h3 class="section-title" ng-if="contactInfoPresent">Contact</h3>
+                <section ng-if="contactInfoPresent">
+                    <div ng-if="user.email" class="stat-item">
+                        Email: <a href="mailto:{{user.email}}">{{user.email}}</a>
+                    </div>
+                    <div ng-if="user.bio.nexus_username">
+                        <a ng-href="https://forums.nexusmods.com/index.php?showuser={{user.bio.nexus_user_path}}">
+                            <div class="action-box source-box">
+                                <img src="/images/nexus_logo.png" class="source-image"/>
+                                <span class="source-label">
+                                    Nexus
+                                </span>
+                            </div>
+                        </a>
+                    </div>
+                    <div ng-if="user.bio.workshop_username">
+                        <a ng-href="https://steamcommunity.com/id/{{user.bio.workshop_username}}">
+                            <div class="action-box source-box">
+                                <img src="/images/workshop_logo.png" class="source-image" />
+                                <span class="source-label">
+                                    Steam
+                                </span>
+                            </div>
+                        </a>
+                    </div>
+                    <div ng-if="user.bio.lover_username">
+                        <a ng-href="https://www.loverslab.com/user/{{user.bio.lover_user_path}}">
+                            <div class="action-box source-box">
+                                <img src="/images/lab_logo.png" class="source-image" />
+                                <span class="source-label">
+                                    Lover's Lab
+                                </span>
+                            </div>
+                        </a>
+                    </div>
+                </section>
+            </div>
+            <div class="right-column tabs-column right-user-column">
+                <tabs tabs="tabs"></tabs>
+                <div class="tab">
+                    <tab-views></tab-views>
+                </div>
+            </div>
+        </div>
+    </loader>
+</two-columns>
+
+<report-modal ng-if="showReportModal"></report-modal>

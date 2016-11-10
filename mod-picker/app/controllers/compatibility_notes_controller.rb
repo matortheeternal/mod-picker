@@ -1,47 +1,32 @@
-class CompatibilityNotesController < HelpfulableController
-  before_action :set_compatibility_note, only: [:show, :update, :destroy]
+class CompatibilityNotesController < ContributionsController
+  before_action :set_compatibility_note, only: [:show, :update, :destroy, :corrections, :history, :approve, :hide]
 
   # GET /compatibility_notes
-  # GET /compatibility_notes.json
   def index
-    @compatibility_notes = CompatibilityNote.filter(filtering_params)
+    # prepare compatibility notes
+    @compatibility_notes = CompatibilityNote.preload(:editor, :editors, :first_mod, :second_mod, :compatibility_mod, :compatibility_plugin, :compatibility_mod_option).eager_load(submitter: :reputation).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(page: params[:page])
+    count = CompatibilityNote.eager_load(submitter: :reputation).accessible_by(current_ability).filter(filtering_params).count
 
-    render :json => @compatibility_notes
-  end
+    # prepare helpful marks
+    helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("CompatibilityNote", @compatibility_notes.ids)
 
-  # GET /compatibility_notes/1
-  # GET /compatibility_notes/1.json
-  def show
-    render :json => @compatibility_note
+    # render response
+    render json: {
+        compatibility_notes: @compatibility_notes,
+        helpful_marks: helpful_marks,
+        max_entries: count,
+        entries_per_page: CompatibilityNote.per_page
+    }
   end
 
   # POST /compatibility_notes
-  # POST /compatibility_notes.json
   def create
-    @compatibility_note = CompatibilityNote.new(compatibility_note_params)
+    @compatibility_note = CompatibilityNote.new(contribution_params)
+    @compatibility_note.submitted_by = current_user.id
+    authorize! :create, @compatibility_note
 
     if @compatibility_note.save
-      render json: {status: :ok}
-    else
-      render json: @compatibility_note.errors, status: :unprocessable_entity
-    end
-  end
-
-  # PATCH/PUT /compatibility_notes/1
-  # PATCH/PUT /compatibility_notes/1.json
-  def update
-    if @compatibility_note.update(compatibility_note_params)
-      render json: {status: :ok}
-    else
-      render json: @compatibility_note.errors, status: :unprocessable_entity
-    end
-  end
-
-  # DELETE /compatibility_notes/1
-  # DELETE /compatibility_notes/1.json
-  def destroy
-    if @compatibility_note.destroy
-      render json: {status: :ok}
+      render json: @compatibility_note.reload
     else
       render json: @compatibility_note.errors, status: :unprocessable_entity
     end
@@ -50,16 +35,21 @@ class CompatibilityNotesController < HelpfulableController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_compatibility_note
-      @compatibility_note = CompatibilityNote.find(params[:id])
+      @contribution = CompatibilityNote.find(params[:id])
     end
 
     # Params we allow filtering on
     def filtering_params
-      params.slice(:by, :mod, :mv);
+      params[:filters].slice(:adult, :hidden, :approved, :game, :search, :status, :submitter, :editor, :helpfulness, :reputation, :helpful_count, :not_helpful_count, :standing, :corrections_count, :history_entries_count, :submitted, :edited);
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def compatibility_note_params
-      params.require(:compatibility_note).permit(:submitted_by, :mod_mode, :compatibility_patch, :compatibility_status)
+    # Params allowed during creation
+    def contribution_params
+      params.require(:compatibility_note).permit(:game_id, :status, :first_mod_id, :second_mod_id, :text_body, (:moderator_message if current_user.can_moderate?), :compatibility_plugin_id, :compatibility_mod_id, :compatibility_mod_option_id)
+    end
+
+    # Params that can be updated
+    def contribution_update_params
+      params.require(:compatibility_note).permit(:status, :text_body, :edit_summary, (:moderator_message if current_user.can_moderate?), :compatibility_plugin_id, :compatibility_mod_id, :compatibility_mod_option_id)
     end
 end

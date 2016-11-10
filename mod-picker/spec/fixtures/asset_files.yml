@@ -1,14 +1,16 @@
-#  create_table "asset_files", force: :cascade do |t|
-#    t.string "filepath", limit: 128, null: false
-#  end
-
-#  add_index "asset_files", ["filepath"], name: "filepath", unique: true, using: :btree
-
-AssetTreeTexture:
+# create_table "asset_files", force: :cascade do |t|
+#   t.integer "game_id",               limit: 4,               null: false
+#   t.string  "filepath",              limit: 255,             null: false
+#   t.integer "mod_asset_files_count", limit: 4,   default: 0, null: false
+# end
+assetTreeTexture:
   filepath: "data/textures/tree"
+  game_id: skyrim
 
-AssetRockTexture:
+assetRockTexture:
   filepath: "data/textures/rock"
-
-AssetPlantTexture:
+  game_id: skyrim 
+  
+assetPlantTexture:
   filepath: "data/textures/plant"
+  game_id: skyrim

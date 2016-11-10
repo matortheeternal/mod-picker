@@ -1,0 +1,23 @@
+<div class="box-heading">
+    <%= t "devise.invitations.new_batch.header" %>
+</div>
+
+<% if flash[:notice] %>
+    <div class="notice"><%= flash[:notice] %></div>
+<% end %>
+<% if flash[:error] %>
+    <div class="alert"><%= flash[:error] %></div>
+<% end %>
+
+<div class="box-content">
+    <%= form_for resource, :as => resource_name, :url => "/users/invitation/batch", :html => { :method => :post } do |f| %>
+        <div class="padded-field">
+            <%= f.label "Emails", title: "Enter a comma-separated list of emails to send invitations to." %><br/>
+            <%= f.text_area :email, class: "big-text-area" %>
+        </div>
+
+        <div class="padded-field text-center big-margin">
+            <%= f.submit t("devise.invitations.new_batch.submit_button") %>
+        </div>
+    <% end %>
+</div>

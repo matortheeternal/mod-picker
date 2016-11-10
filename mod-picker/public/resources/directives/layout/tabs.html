@@ -1,0 +1,5 @@
+<div class="tabs">
+	<a ng-repeat="tab in tabs" class="unselected-tab" ui-sref-active="{ 'selected-tab':  ('**.' + tab.name) }" ui-state="'^.' + tab.name" ui-state-params="tab.params">
+		{{tab.name}} <span ng-if="tab.hasOwnProperty('count')">({{tab.count}})</span>
+	</a>
+</div>

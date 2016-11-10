@@ -20,15 +20,29 @@ module ModPicker
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
 
+    # AUTOLOAD PATCHER
+    config.autoload_paths += %W(#{config.root}/lib #{config.root}/app/builders)
+
+    # SET THE USER AGENT FOR SCRAPING
+    config.user_agent = "Mod Picker Scraper"
+
     # DO NOT SCRAPE NEXUS STATISTICS UNLESS ROBIN CHANGES HIS MIND
     config.scrape_nexus_statistics = false
-    # DO NOT SCRAPE WORKSHOP STATISTICS UNTIL WE HAVE PERMISSION
-    config.scrape_workshop_statistics = false
-    # DO NOT SCRAPE LAB STATISTICS UNTIL WE HAVE PERMISSION
-    config.scrape_lab_statistics = false
+    config.scrape_workshop_statistics = true
 
+    # date config
+    config.submitted_columns = [:submitted, :created]
+    config.edited_columns = [:edited, :updated]
+
+    # tracking config
+    config.added_owner_attributes = [:submitted_by]
+    config.updated_owner_attributes = [:updated_by, :edited_by]
+    config.removed_owner_attributes = [:removed_by]
+
+    # rack attack config
     config.middleware.use Rack::Attack
 
+    # test generators
     config.generators do |g|
       g.test_framework :rspec,
         fixtures: true,
@@ -40,6 +54,10 @@ module ModPicker
       g.fixture_replacement :factory_girl, dir: "spec/factories"
     end
 
+    # make devise response to json
+    config.to_prepare do
+      DeviseController.respond_to :html, :json
+    end
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true

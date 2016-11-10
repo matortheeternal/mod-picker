@@ -1,0 +1,176 @@
+.export-dropdown {
+  right: 10px;
+  top: 33px;
+  left: initial;
+  cursor: default;
+  width: auto;
+
+  a {
+    color: $text_color !important;
+    display: block;
+
+    &:hover {
+      color: $link_hover_color_primary !important;
+    }
+  }
+}
+
+ul.required-list {
+  .text-tooltip {
+    margin-left: 0;
+  }
+}
+
+.tab-bar-item {
+  .issue-item {
+    margin: 0 12px;
+  }
+}
+
+.tabs-column {
+  .action-button-container {
+    padding: 10px 0 6px;
+    margin-top: 0;
+
+    &.sticky {
+      position: fixed;
+      z-index: 100;
+      bottom: 0;
+      left: 0;
+      display: block;
+      background-color: $primary_background;
+      width: 100%;
+      padding: 0;
+
+      .page-container {
+        border-top: 1px solid $border-color;
+        padding: 10px 0 6px
+      }
+    }
+  }
+}
+
+.winning-asset {
+  color: $success_secondary;
+  font-weight: bold;
+}
+
+.statistics-grid {
+  text-align: center;
+  margin: 5px !important;
+
+  > div {
+    display: inline-block;
+    width: 300px;
+    padding: 10px;
+    margin: 10px 20px;
+    text-align: left;
+
+    .title {
+      font-size: 20px;
+    }
+
+    .number {
+      font-weight: 600;
+    }
+
+    i {
+      font-size: 54px;
+    }
+
+    .left-column {
+      background-color: inherit;
+      border: none;
+      padding: 20px 10px 20px 0;
+    }
+
+    .right-column {
+      padding: 20px 0;
+
+      .stat-column {
+        display: inline-flex;
+        flex-direction: column;
+      }
+
+      .count-column {
+        align-items: flex-end;
+      }
+
+      .label-column {
+        align-items: flex-start;
+      }
+    }
+  }
+}
+
+.analysis-container {
+  .show-more, .show-less {
+    font-size: 16px;
+    margin: 4px;
+    display: inline-block;
+    cursor: pointer;
+    color: $link_hover_color_primary;
+    @include transition(color 0.2s ease);
+
+    &:hover {
+      color: $text_color;
+    }
+  }
+}
+
+.modal {
+  .manage-item {
+    padding-left: 20px;
+    display: block;
+  }
+
+  .short-column {
+    min-width: 70px;
+    width: 70px;
+  }
+}
+
+.config-block {
+  .content-title {
+    padding-bottom: 3px !important;
+    div {
+      padding-bottom: 8px;
+    }
+  }
+
+  .config-editor {
+    width: 100%;
+    max-width: 100%;
+    height: 400px;
+  }
+
+  .config-tab {
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: normal;
+    margin: 0 4px;
+    padding: 4px 14px;
+    background-color: $action_color;
+    @include transition(all 0.2s ease-in-out);
+
+    &:hover {
+      background-color: $bar_highlight_color;
+    }
+
+    .action-items {
+      margin-left: 4px;
+      margin-right: -8px;
+      cursor: pointer;
+    }
+  }
+
+  .config-tab.active {
+    cursor: default;
+    color: $text_color;
+    background-color: $primary_background;
+
+    &:hover {
+      background-color: $primary_background;
+    }
+  }
+}

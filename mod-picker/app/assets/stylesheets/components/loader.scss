@@ -1,0 +1,22 @@
+/* css for spinners */
+.huge-spinner {
+  height: 400px;
+}
+
+.big-spinner {
+  height: 200px;
+}
+
+.medium-spinner {
+  height: 150px;
+}
+
+.small-spinner {
+  height: 60px;
+}
+
+.spinner {
+  div {
+    background-color: $text_color !important;
+  }
+}

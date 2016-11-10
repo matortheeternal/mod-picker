@@ -1,0 +1,370 @@
+.overflow-hack {
+  margin-bottom: -80px !important;
+
+  table-items {
+    padding-bottom: 100px;
+  }
+}
+
+table-items, grid-items {
+  .action-items {
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    right: 0;
+
+    span {
+      font-size: 20px;
+      cursor: pointer;
+      color: $soft_text_color;
+      @include transition(all 0.2s ease-in-out);
+
+      &.fa-cog {
+        padding-top: 3px;
+        font-size: 16px;
+        vertical-align: top;
+      }
+
+      &:hover {
+        color: $text_color;
+      }
+    }
+
+    span:last-child {
+      padding-right: 3px;
+    }
+  }
+
+  *[dnd-list] {
+    .group {
+      font-family: 'Roboto', sans-serif;
+
+      .group-name {
+        position: absolute;
+        top: 10px;
+        left: 20px;
+        z-index: 2;
+        font-weight: 500;
+        font-size: 16px;
+      }
+
+      .group-color {
+        position: absolute;
+        top: 10px;
+        right: 40px;
+        z-index: 2;
+
+        strong {
+          margin-right: 2px;
+          font-weight: 500;
+          font-size: 14px;
+        }
+
+        select {
+          padding: 0;
+          min-width: 55px;
+          background: $input_background;
+
+          option {
+            font-size: 13px;
+          }
+        }
+      }
+    }
+  }
+}
+
+grid-items {
+  display: block;
+  position: relative;
+
+  .content-message {
+    position: absolute;
+    top: 30px;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+  }
+
+  ul[dnd-list].dragging-group {
+    .dndPlaceholder {
+      width: 1090px;
+      min-height: 140px;
+    }
+  }
+
+  ul[dnd-list] {
+    min-height: 120px;
+    padding-left: 0;
+    padding-bottom: 10px;
+    position: relative;
+
+    .dndDraggingSource {
+      display: none;
+    }
+
+    .dndPlaceholder {
+      min-height: 122px;
+      background-color: $border_color;
+    }
+
+    li.group {
+      width: 1090px;
+      padding: 10px;
+
+      ul[dnd-list] {
+        padding-top: 30px;
+
+        > li {
+          width: 340px;
+          margin: 8px;
+        }
+      }
+
+      .content-message {
+        top: 30px;
+      }
+    }
+  }
+
+  ul[dnd-list] > li {
+    width: 350px;
+    display: inline-block;
+    margin: 10px;
+    padding: 12px;
+    background-color: $secondary_background;
+    border: 1px solid $border_color;
+    position: relative;
+    vertical-align: bottom;
+
+    > div {
+      display: inline;
+    }
+
+    .item-index {
+      position: absolute;
+      left: -1px;
+      top: -1px;
+      padding: 0 2px;
+      background-color: $primary_background;
+      border: 1px solid $border_color;
+      min-width: 16px;
+      font-size: 13px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .image-container {
+      height: 96px;
+      float: left;
+      margin-right: 14px;
+
+      .helper {
+        display: inline-block;
+        height: 100%;
+        vertical-align: middle;
+      }
+
+      img {
+        vertical-align: middle;
+        width: 96px;
+        max-height: 96px;
+      }
+    }
+
+    ul.mod-rows {
+      list-style: none;
+      padding-left: 0;
+      margin: 12px 0 0;
+      font-size: 13px;
+
+      li.mod-name {
+        font-size: 14px;
+        font-weight: 500;
+      }
+
+      li.mod-name, li.mod-author {
+        @include wordbreak;
+      }
+    }
+  }
+}
+
+table-items {
+  display: block;
+  overflow-x: auto;
+
+  tbody[dnd-list].dragging-group {
+    .dndPlaceholder {
+      height: 120px !important;
+    }
+  }
+
+  tbody[dnd-list] {
+    .dndDraggingSource {
+      display: none;
+    }
+
+    .dndPlaceholder {
+      height: 33px;
+      background-color: $background_highlight !important;
+    }
+
+    tr.content-message {
+      background-color: transparent !important;
+      border-bottom: 0;
+    }
+
+    td.group-cell {
+      position: relative;
+      padding: 10px 0;
+
+      table {
+        border-left: 0;
+        border-right: 0;
+        margin: 30px 0;
+        width: 100%;
+      }
+
+      table.no-border {
+        border: 0;
+      }
+    }
+  }
+
+  table {
+    thead, tbody {
+      .text-cell {
+        min-width: 240px !important;
+        width: 240px;
+      }
+
+      .number-cell, .bytes-cell, .date-cell {
+        min-width: 100px;
+        width: 100px;
+      }
+
+      .actions-cell {
+        min-width: 100px;
+        width: 100px;
+      }
+
+      .actions-header {
+        min-width: 100px !important;
+        width: 100px !important;
+      }
+
+      .crc-column {
+        min-width: 80px !important;
+        width: 80px !important;
+      }
+
+      .author-column {
+        min-width: 180px !important;
+        width: 180px !important;
+      }
+
+      .category-column {
+        min-width: 240px !important;
+        width: 240px !important;
+      }
+
+      .aliases-column {
+        min-width: 100px !important;
+        width: 100px !important;
+      }
+
+      .status-column {
+        text-transform: capitalize;
+        min-width: 80px !important;
+        width: 80px !important;
+      }
+
+      .index-column {
+        min-width: 55px !important;
+        width: 55px !important;
+      }
+
+      .load-order-column {
+        min-width: 75px !important;
+        width: 75px !important;
+      }
+
+      .primary-column {
+        min-width: 300px !important;
+        width: auto !important;
+
+        a {
+          color: $link_color;
+          font-weight: 600;
+
+          &:hover {
+            color: $link_hover_color_secondary;
+          }
+        }
+      }
+    }
+
+    td a {
+      display: inline-block !important;
+    }
+
+    td .note {
+      font-style: italic;
+    }
+
+    tr.merged  {
+      td.index-column .note, td.load-order-column .note {
+        font-style: normal;
+        font-size: 11px;
+        color: $success_secondary;
+        font-weight: 700;
+        padding: 4px;
+        text-transform: capitalize;
+        margin: -2px;
+      }
+    }
+  }
+}
+
+// GROUP COLORS
+.bg-red {
+  background-color: $red_color !important;
+}
+
+.bg-orange {
+  background-color: $orange_color !important;
+}
+
+.bg-yellow {
+  background-color: $yellow_color !important;
+}
+
+.bg-green {
+  background-color: $green_color !important;
+}
+
+.bg-blue {
+  background-color: $blue_color !important;
+}
+
+.bg-purple {
+  background-color: $purple_color !important;
+}
+
+.bg-white {
+  background-color: $white_color !important;
+}
+
+.bg-gray {
+  background-color: $gray_color !important;
+}
+
+.bg-brown {
+  background-color: $brown_color !important;
+}
+
+.bg-black {
+  background-color: $black_color !important;
+}

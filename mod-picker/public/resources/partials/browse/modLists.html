@@ -1,0 +1,126 @@
+<two-columns>
+    <div class="page-container">
+        <div class="column-wrapper">
+            <div class="left-column left-browse-column" style="width:250px; padding: 40px 48px 40px 0;">
+                <h2>Filters</h2>
+
+                <div class="filter-section">
+                    <h3>Search</h3>
+                    <h4>Name</h4>
+                    <input type="text" ng-model="filters.search">
+
+                    <h4>Description</h4>
+                    <input type="text" ng-model="filters.description">
+
+                    <h4>Submitter</h4>
+                    <input type="text" ng-model="filters.submitter">
+                </div>
+
+                <div class="filter-section" ng-if="permissions.canModerate || allowAdult">
+                    <h3>Content Filters</h3>
+                    <div class="sidebar-box box-shadow">
+                        <ul class="checkbox-list" ng-if="allowAdult">
+                            <li>
+                                <label><input type="checkbox" ng-model="filters.adult['1']">
+                                    Show Adult Content</label>
+                            </li>
+                            <li>
+                                <label><input type="checkbox" ng-model="filters.adult['0']">
+                                    Show Non-Adult Content</label>
+                            </li>
+                        </ul>
+                        <ul class="checkbox-list" ng-if="permissions.canModerate">
+                            <li>
+                                <label><input type="checkbox" ng-model="filters.hidden['1']">
+                                    Hidden</label>
+                            </li>
+                            <li>
+                                <label><input type="checkbox" ng-model="filters.hidden['0']">
+                                    Unhidden</label>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="filter-section">
+                    <h3>Statuses</h3>
+                    <div class="sidebar-box box-shadow">
+                        <ul class="checkbox-list">
+                            <li>
+                                <label><input type="checkbox" ng-model="filters.status.complete">
+                                    Completed</label>
+                            </li>
+                            <li>
+                                <label><input type="checkbox" ng-model="filters.status.testing">
+                                    Testing</label>
+                            </li>
+                            <li>
+                                <label><input type="checkbox" ng-model="filters.status.under_construction">
+                                    Under Construction</label>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="filter-section">
+                    <h3>Types</h3>
+                    <div class="sidebar-box box-shadow">
+                        <ul class="checkbox-list">
+                            <li>
+                                <label><input type="checkbox" ng-model="filters.kind.normal">
+                                    Normal Mod Lists</label>
+                            </li>
+                            <li>
+                                <label><input type="checkbox" ng-model="filters.kind.collection">
+                                    Collections</label>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="filter-section">
+                    <h3>Tags</h3>
+                    <tag-selector active-tags="[]" new-tags="filters.tags" show-mod-lists-count="true" can-create="false" show-add="true" max-tags="10"></tag-selector>
+                </div>
+
+                <div class="filter-section">
+                    <h3>Date Filters</h3>
+                    <div ng-repeat="filter in dateFilters">
+                        <h4>{{filter.label}}
+                            <!--<span class="filter-controls">
+                                <span class="fa fa-calendar" ng-click="" title="Custom Date"></span>
+                            </span>-->
+                        </h4>
+                        <slider filter-data="filters" filter="filter"></slider>
+                    </div>
+                </div>
+
+                <div class="filter-sections" ng-if="statFilters.length">
+                    <h3>Statistic Filters</h3>
+                    <div class="filter-section">
+                        <div ng-repeat="filter in statFilters" ng-show="filter.common || expanded.stat">
+                            <h4>{{filter.label}}
+                                <!--<span class="filter-controls" ng-if="filter.max > 500">
+                                    <span class="fa fa-wrench" ng-click="" title="Custom Value"></span>
+                                </span>-->
+                            </h4>
+                            <slider filter-data="filters" filter="filter"></slider>
+                        </div>
+                    </div>
+
+                    <expander expanded="expanded" key="stat"></expander>
+                </div>
+            </div>
+
+            <div class="right-column right-browse-column">
+                <h2>Mod Lists</h2>
+                <loader data="mod_lists" content-class="table-container" spinner-class="big-spinner" ng-if="!error">
+                    <table-results label="mod lists" data="mod_lists"></table-results>
+                    <page-results pages="pages" data="mod_lists" callback="getData"></page-results>
+                </loader>
+
+                <error-display content-class="content-message content-error" errors="error" label="Mod Lists"></error-display>
+            </div>
+        </div>
+    </div>
+</two-columns>

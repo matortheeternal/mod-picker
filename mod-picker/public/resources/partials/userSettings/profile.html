@@ -1,34 +1,30 @@
 <h3 class="section-title">Avatar</h3>
 <section>
-    <img class="avatar avatar-medium" ng-src="{{avatar.src}}" ng-class="{ 'avatar-pending': avatar.small }">
-    <image-uploader ng-if="canChangeAvatar" image-src="avatar.src" image-small="avatar.small" image-medium="avatar.medium" image-big="avatar.big"></image-uploader>
-    <span class="explanation" ng-if="!canChangeAvatar">
-        You need more reputation to change your avatar.
-    </span>
-    <span class="explanation" ng-if="avatar.small">
-        New avatar pending, click save changes to save it.
+    <image-upload image="avatar" can-change="permissions.canChangeAvatar" default-src="defaultSrc" label="avatar" image-class="avatar avatar-medium" max-width="250" max-height="250"></image-upload>
+    <span class="explanation" ng-if="!permissions.canChangeAvatar">
+        You need <a href="/help/reputation">{{20 - user.reputation.overall | number}} more reputation</a> to change your avatar.
     </span>
 </section>
 
-<span >
-    <h3 class="section-title">Title</h3>
-    <section>
-        <span class="explanation" ng-if="!canChangeTitle">
-            You need more reputation to change your title
-        </span>
-        <input type="text" ng-model="user.title" ng-disabled="!canChangeTitle"/>
-        <span class="quote">{{titleQuote.text}}</span>
-    </section>
-</span>
+<h3 class="section-title">Title</h3>
+<section>
+    <span class="explanation" ng-if="!permissions.canChangeTitle">
+        You need more reputation to change your title
+    </span>
+    <input type="text" ng-model="user.title" ng-disabled="!permissions.canChangeTitle"/>
+    <span class="quote">{{titleQuote.text}}</span>
+</section>
 
 <h3 class="section-title">Social</h3>
 <section>
     <label>
-        <input type="checkbox" ng-model="userSettings.allow_comments">
+        <input type="checkbox" ng-model="settings.allow_comments">
         Allow comments to be posted on your profile
     </label>
     <h3 class="subtitle">About me</h3>
     <text-area data="user.about_me" ng-refresh="refresh"></text-area>
 </section>
 
-<input class="btn" type="submit" value="Save Changes" ng-click="submit()"/>
+<div class="action-button-container">
+    <input class="btn action-btn" type="submit" value="Save Changes" ng-click="saveChanges()"/>
+</div>

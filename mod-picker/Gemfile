@@ -6,19 +6,19 @@ gem 'rails', '4.2.5'
 # Using mysql database for active record
 gem 'mysql2', '~> 0.3.20'
 # Use SCSS for stylesheets
-gem 'sass-rails', '~> 5.0'
+gem 'sass-rails', '>= 5.0.0.beta1'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
+# Use ng-annotate to minify AngularJS assets correctly
+gem 'ngannotate-rails'
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-script-source', '1.8.0'
 # See https://github.com/rails/execjs#readme for more supported runtimes
-# gem 'therubyracer', platforms: :ruby
+gem 'therubyracer', platforms: :ruby
 
 # Rack-attack middleware for throttles and restrictions
 gem 'rack-attack'
 
-# Use jquery as the JavaScript library
-gem 'jquery-rails'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks'
 # bundle exec rake doc:rails generates the API under doc/api.
@@ -26,9 +26,17 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 # use nokogiri for parsing html
 gem 'nokogiri'
+# use rest-client for rest actions
+gem 'rest-client'
+# use sidekiq for background tasks
+gem 'sidekiq'
+# use sidekiq scheduler for scheduling background tasks
+gem 'sidekiq-scheduler', '~> 2.0'
 
-# Use ActiveModel has_secure_password
-# gem 'bcrypt', '~> 3.1.7'
+# Use redcarpet for rendering markdown in the help center
+gem 'redcarpet'
+# Use bcrypt
+gem 'bcrypt-ruby', '3.0.0', :require => 'bcrypt'
 
 # Use will_paginate for pagination
 gem 'will_paginate'
@@ -40,20 +48,14 @@ gem 'simple_form'
 # use cancancan for authorization
 gem 'cancancan', '~> 1.10'
 
-# Use Unicorn as the app server
-# gem 'unicorn'
-
 # using devise for authentication
-gem 'devise'
+gem 'devise', '~> 3.5.10'
 # using devise_invitable for inviting users to the platform for the beta
 # may also be used later for users to invite their friends
 gem 'devise_invitable'
 
 # use mailcatcher for development
 gem 'mailcatcher'
-
-# allows for native mysql enums in rails
-gem 'native_enum'
 
 # allow for composite primary keys in rails
 gem 'composite_primary_keys', '~> 8.1'

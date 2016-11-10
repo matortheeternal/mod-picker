@@ -1,0 +1,14 @@
+<div class="modal-container" ng-click="unfocusShareModal($event)">
+    <div class="modal skinny-modal">
+        <form>
+            <div class="close-modal">
+                <span class="fa fa-times" ng-click="toggleShareModal(false)"></span>
+            </div>
+
+            <h3 class="section-title">
+                Share {{target.submitter.username}}'s {{model.label}}
+            </h3>
+            <input type="text" class="max-input" ng-model="shareLink" title="Link" spellcheck="false">
+        </form>
+    </div>
+</div>

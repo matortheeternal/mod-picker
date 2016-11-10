@@ -7,9 +7,9 @@
 #   add_index "categories", ["parent_id"], name: "fk_rails_82f48f7407", using: :btree
 
 FactoryGirl.define do
-  factory :category do
+  factory :category, aliases: [:primary_category_id, :secondary_category_id]do
     name { Faker::Company.buzzword }
     description { Faker::Lorem.sentence(3) }
   end
-
+  
 end

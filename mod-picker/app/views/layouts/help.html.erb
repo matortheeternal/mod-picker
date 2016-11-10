@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="helpCenter">
+<head>
+    <meta charset="UTF-8">
+    <%= yield :head %>
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,700,500' rel='stylesheet' type='text/css'>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <%= stylesheet_link_tag 'simplemde.min' %>
+    <%= javascript_include_tag 'angular.min.1.5.1' %>
+    <!-- TODO: Support themes here -->
+    <script>
+        window._token = '<%= form_authenticity_token %>';
+        // TODO: temporarily hardcoded
+        window._current_game_id = <%= Game.find_by(display_name: "Skyrim").id %>;
+    </script>
+    <%= stylesheet_link_tag 'help/High Hrothgar' %>
+</head>
+<body>
+<header class="help-header">
+    <nav>
+        <div class="primary-nav">
+            <a class="logo" href="/skyrim">
+                <i class="icom-mod_picker"></i>
+                <h1>Mod Picker</h1>
+            </a>
+            <div class="primary-nav-links">
+                <%= link_to "Help Center", help_pages_path, class: active_url(help_pages_path) %>
+                <%= link_to "Mod Picker", "/help/category/mod_picker", class: active_url("/help/category/mod_picker") %>
+                <%= link_to "Modding", "/help/category/modding", class: active_url("/help/category/modding") %>
+                <%= link_to "Guides", "/help/category/guides", class: active_url("/help/category/guides") %>
+                <% if can? :create, HelpPage %>
+                    <%= link_to "New Help Page", "/help/new", class: active_url("/help/new") %>
+                <% end %>
+            </div>
+        </div>
+        <div class="secondary-nav">
+            <%= form_tag({ controller: "help_pages", action: "search" }, method: "get", class: "search-form") do %>
+                <%= text_field_tag :search, params[:search], placeholder: "Search Help Center...", autocomplete: "off" %>
+                <%= submit_tag "Search", :name => nil, class: "btn" %>
+            <% end %>
+            <div class="user-nav">
+                <% if current_user %>
+                    <a href="/skyrim#/user/<%= current_user.id %>">Profile</a>
+                    <a href="/users/sign_out">Log Out</a>
+                <% else %>
+                    <a href="/users/sign_in">Log In</a>
+                    <a href="/users/sign_up">Sign Up</a>
+                <% end %>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<%= yield %>
+
+<footer class="footer">
+    <div class="footer-container">
+            <span class="footer-logo">
+              <h1>Mod Picker</h1><br>
+              <span class="footer-text">Copyright © 2016 Mod Picker, LLC. All rights reserved.</span>
+            </span>
+        <ul class="footer-nav">
+            <li><a href="/help/about_us">About Us</a></li>
+            <li><a href="/legal/tos">Terms of Service</a></li>
+            <li><a href="/legal/privacy">Privacy Policy</a></li>
+            <li><a href="/skyrim#/donate">Donate</a></li>
+            <li><a href="/help/contact">Contact</a></li>
+        </ul>
+    </div>
+</footer>
+
+<!-- defered load of scripts, which is way more performant for browsers -->
+<%= javascript_include_tag 'marked.min' %>
+<%= javascript_include_tag 'angular-marked.min' %>
+<%= javascript_include_tag 'angular-relative-date.min' %>
+<%= javascript_include_tag 'angular-animate.min' %>
+<%= javascript_include_tag 'simplemde.min' %>
+<%= javascript_include_tag 'spin.min' %>
+<%= javascript_include_tag 'helpcenter' %>
+</body>
+</html>

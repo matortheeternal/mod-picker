@@ -24,9 +24,10 @@ require 'rails_helper'
 #   add_index "mod_lists", ["created_by"], name: "created_by", using: :btree
 #   add_index "mod_lists", ["game_id"], name: "fk_rails_f25cbc0432", using: :btree
 
-RSpec.describe ModList, :model, :wip do
+RSpec.describe ModList, :model do
 
-  fixtures :mod_lists, :users, :mod_versions, :games, :categories, :mods
+  fixtures :mod_lists, :users, :mod_versions, :games, :categories, :mods,
+    :plugins
 
   it "should have a valid factory" do
     expect( create(:mod_list) ).to be_valid
@@ -205,32 +206,45 @@ RSpec.describe ModList, :model, :wip do
       end
     end
 
+    # TODO: refactor tests in mod_list_Spec to use the other method below
     describe "plugins_count" do
       let!(:list) {mod_lists(:plannedVanilla)}
 
       it "should increment plugin counter by 1 when new plugin is made" do
         expect(list.plugins_count).to eq(0)
 
-        # Attributes for mod version are provided because associations aren't done
-        # when using FactoryGirl's attributes_for
-        expect { 
-          list.plugins.create(
-            attributes_for(:plugin, 
-              mod_version_id: mod_versions(:SkyUI_1_0).id))
+        expect{
+          plugin = create(:plugin,
+            mod_version_id: mod_versions(:SkyUI_1_0).id)
 
-          list.reload
+          expect(plugin).to be_valid
+
+          list.mod_list_plugins.create(
+            mod_list_id: list.id,
+            plugin_id: plugin.id,
+            index: 1)
+
+
           expect(list.plugins_count).to eq(1)
-        }.to change { list.plugins_count }.by(1)
+        }.to change { list.plugins_count}.by(1)
       end
 
       it "should decrement the plugin counter by 1 if a plugin is deleted" do
-        plugin = list.plugins.create(attributes_for(:plugin,
-          mod_version_id: mod_versions(:SkyUI_1_0).id))
+        plugin = create(:plugin,
+            mod_version_id: mod_versions(:SkyUI_1_0).id)
 
-        expect {
+        plugin_list = list.mod_list_plugins.create(
+            mod_list_id: list.id,
+            plugin_id: plugin.id,
+            index: 1)
+
+        expect(list.plugins_count).to eq(1)
+
+        expect{
           list.plugins.destroy(plugin.id)
-          list.reload
-        }.to change { list.plugins_count }.by(-1)
+
+          expect(list.plugins_count).to eq(0)
+        }.to change { list.plugins_count}.by(-1)
       end
     end
 
@@ -238,25 +252,51 @@ RSpec.describe ModList, :model, :wip do
       let!(:list) {mod_lists(:plannedVanilla)}
 
       it "should increment mods counter by 1 when new mod is made" do
+        # expect(list.mods_count).to eq(0)
+
+        # expect { 
+        #   list.mods.create(attributes_for(:mod, 
+        #       game_id: games(:skyrim).id, primary_category_id: categories(:catGameplay).id))
+
+        #   list.reload
+        #   expect(list.mods_count).to eq(1)
+        # }.to change { list.mods_count }.by(1)
+
         expect(list.mods_count).to eq(0)
 
-        expect { 
-          list.mods.create(attributes_for(:mod, 
-              game_id: games(:skyrim).id, primary_category_id: categories(:catGameplay).id))
+        expect{
+          mod = create(:mod,
+          game_id: games(:skyrim).id, 
+          primary_category_id: categories(:catGameplay).id)
 
-          list.reload
+          mod_list = list.mod_list_mods.create(
+            mod_list_id: list.id,
+            mod_id: mod.id,
+            index: 1)
+
           expect(list.mods_count).to eq(1)
-        }.to change { list.mods_count }.by(1)
+        }.to change { list.mods_count}.by(1)
+
+
       end
 
       it "should decrement the mods counter by 1 if a mod is deleted" do
-        mod = list.mods.create(attributes_for(:mod, 
-          game_id: games(:skyrim).id, primary_category_id: categories(:catGameplay).id))
+        mod = create(:mod,
+          game_id: games(:skyrim).id, 
+          primary_category_id: categories(:catGameplay).id)
 
-        expect {
+        mod_list = list.mod_list_mods.create(
+            mod_list_id: list.id,
+            mod_id: mod.id,
+            index: 1)
+
+        expect(list.mods_count).to eq(1)
+
+        expect{
           list.mods.destroy(mod.id)
-          list.reload
-        }.to change { list.mods_count }.by(-1)
+
+          expect(list.mods_count).to eq(0)
+        }.to change { list.mods_count}.by(-1)
       end
     end
 
@@ -330,7 +370,6 @@ RSpec.describe ModList, :model, :wip do
         expect{
           list.compatibility_notes.destroy(note.id)
 
-          list.reload
           expect(list.compatibility_notes_count).to eq(0)
         }.to change { list.compatibility_notes_count}.by(-1)
       end
@@ -373,9 +412,85 @@ RSpec.describe ModList, :model, :wip do
         expect{
           list.install_order_notes.destroy(note.id)
 
-          list.reload
           expect(list.install_order_notes_count).to eq(0)
         }.to change { list.install_order_notes_count}.by(-1)
+      end
+    end
+
+    describe "user_stars_count" do
+      let!(:list) {mod_lists(:plannedVanilla)}
+
+      it "should increment user_stars counter by 1 when new user star is made" do
+        expect(list.user_stars_count).to eq(0)
+
+        expect{
+          user = users(:homura)
+
+          mod_star =list.mod_list_stars.create(
+            mod_list_id: list.id,
+            user_id: user.id)
+
+          expect(mod_star).to be_valid
+
+          expect(list.user_stars_count).to eq(1)
+        }.to change { list.user_stars_count}.by(1)
+      end
+
+      it "should decrement the user_stars counter by 1 if a user star is deleted" do
+        user = users(:homura)
+
+        mod_star =list.mod_list_stars.create(
+          mod_list_id: list.id,
+          user_id: user.id)
+          
+        expect(mod_star).to be_valid
+        expect(list.user_stars_count).to eq(1)
+
+        expect{
+          list.mod_list_stars.destroy(mod_star.id)
+
+          expect(list.user_stars_count).to eq(0)
+        }.to change { list.user_stars_count}.by(-1)
+      end
+    end
+
+    describe "load_order_notes_count" do
+      let!(:list) {mod_lists(:plannedVanilla)}
+
+      it "should increment load_order_notes counter by 1 when new load order note is made" do
+        expect(list.load_order_notes_count).to eq(0)
+
+        expect{
+          note = create(:load_order_note,
+            load_first: plugins(:Apocalypse_esp).id,
+            load_second: plugins(:SkyRE_esp).id,
+            submitted_by: users(:homura).id)
+
+          mod_list_note = list.mod_list_load_order_notes.create(
+            mod_list_id: list.id,
+            load_order_note_id: note.id)
+
+          expect(list.load_order_notes_count).to eq(1)
+        }.to change { list.load_order_notes_count}.by(1)
+      end
+
+      it "should decrement the load_order_notes counter by 1 if a load order note is deleted" do
+        note = create(:load_order_note, 
+          submitted_by: users(:homura).id,
+          load_first: plugins(:Apocalypse_esp).id,
+          load_second: plugins(:SkyRE_esp).id)
+
+        install_note = list.mod_list_load_order_notes.create(
+          mod_list_id: list.id, 
+          load_order_note_id: note.id)
+
+        expect(list.load_order_notes_count).to eq(1)
+
+        expect{
+          list.load_order_notes.destroy(note.id)
+
+          expect(list.load_order_notes_count).to eq(0)
+        }.to change { list.load_order_notes_count}.by(-1)
       end
     end
   end

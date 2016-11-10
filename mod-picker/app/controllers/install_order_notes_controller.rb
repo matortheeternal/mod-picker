@@ -1,47 +1,32 @@
-class InstallOrderNotesController < HelpfulableController
-  before_action :set_install_order_note, only: [:show, :update, :destroy]
+class InstallOrderNotesController < ContributionsController
+  before_action :set_install_order_note, only: [:show, :update, :corrections, :history, :approve, :hide, :destroy]
 
   # GET /install_order_notes
-  # GET /install_order_notes.json
   def index
-    @install_order_notes = InstallOrderNote.filter(filtering_params)
+    # prepare install order notes
+    @install_order_notes = InstallOrderNote.preload(:editor, :editors).includes(submitter: :reputation).references(submitter: :reputation).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(page: params[:page])
+    count = InstallOrderNote.accessible_by(current_ability).filter(filtering_params).count
 
-    render :json => @install_order_notes
-  end
+    # prepare helpful marks
+    helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("InstallOrderNote", @install_order_notes.ids)
 
-  # GET /install_order_notes/1
-  # GET /install_order_notes/1.json
-  def show
-    render :json => @install_order_note
+    # render response
+    render json: {
+        install_order_notes: @install_order_notes,
+        helpful_marks: helpful_marks,
+        max_entries: count,
+        entries_per_page: InstallOrderNote.per_page
+    }
   end
 
   # POST /install_order_notes
-  # POST /install_order_notes.json
   def create
-    @install_order_note = InstallOrderNote.new(install_order_note_params)
+    @install_order_note = InstallOrderNote.new(contribution_params)
+    @install_order_note.submitted_by = current_user.id
+    authorize! :create, @install_order_note
 
-    if install_order_note.save
-      render json: {status: :ok}
-    else
-      render json: @install_order_note.errors, status: :unprocessable_entity
-    end
-  end
-
-  # PATCH/PUT /install_order_notes/1
-  # PATCH/PUT /install_order_notes/1.json
-  def update
-    if @install_order_note.update(install_order_note_params)
-      render :show, status: :ok, location: install_order_note
-    else
-      render json: @install_order_note.errors, status: :unprocessable_entity
-    end
-  end
-
-  # DELETE /install_order_notes/1
-  # DELETE /install_order_notes/1.json
-  def destroy
-    if @install_order_note.destroy
-      render json: {status: :ok}
+    if @install_order_note.save
+      render json: @install_order_note.reload
     else
       render json: @install_order_note.errors, status: :unprocessable_entity
     end
@@ -50,16 +35,22 @@ class InstallOrderNotesController < HelpfulableController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_install_order_note
-      @install_order_note = InstallOrderNote.find(params[:id])
+      @contribution = InstallOrderNote.find(params[:id])
     end
 
     # Params we allow filtering on
     def filtering_params
-      params.slice(:by, :mod, :mv);
+      params[:filters].slice(:adult, :hidden, :approved, :game, :search, :submitter, :editor, :helpfulness, :reputation, :helpful_count, :not_helpful_count, :standing, :corrections_count, :history_entries_count, :submitted, :edited);
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def install_order_note_params
-      params.require(:install_order_note).permit(:install_first, :install_second, :text_body)
+    # Params allowed during creation
+    def contribution_params
+      params.require(:install_order_note).permit(:game_id, :first_mod_id, :second_mod_id, :text_body, (:moderator_message if current_user.can_moderate?))
+    end
+
+    # Params that can be updated
+    def contribution_update_params
+      # TODO: only allow swapping the first and second mod ids
+      params.require(:install_order_note).permit(:first_mod_id, :second_mod_id, :text_body, :edit_summary, (:moderator_message if current_user.can_moderate?))
     end
 end

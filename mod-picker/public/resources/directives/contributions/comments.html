@@ -1,0 +1,16 @@
+<div class="new-comment-container" ng-if="activeComment">
+    <text-area data="activeComment.text_body" on-change="validateComment" ng-refresh="updateMDE"></text-area>
+
+    <div class="action-button-container">
+        <input class="btn action-btn" type="submit" value="Submit" ng-click="saveNewComment()" ng-disabled="!activeComment.valid" title="{{activeComment.valid ? 'Submit your comment' : 'Your comment is too short.'}}"/>
+        <input class="btn action-btn" type="button" value="Discard" ng-click="discardNewComment()">
+    </div>
+</div>
+
+<div class="comment-container" ng-repeat="comment in comments">
+    <comment comment="comment" index="100 + $index" save-callback="saveComment" event-prefix="eventPrefix" show-context="showContext"></comment>
+</div>
+
+<div class="content-message" ng-hide="comments.length">
+    There aren't any comments here yet.
+</div>

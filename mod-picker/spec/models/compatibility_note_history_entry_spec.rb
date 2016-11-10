@@ -18,127 +18,21 @@ require 'rails_helper'
 #   add_index "compatibility_note_history_entries", ["submitted_by"], name: "fk_rails_7e4343a2d1", using: :btree
 
 RSpec.describe CompatibilityNoteHistoryEntry, :model do
-  fixtures :compatibility_note_history_entries
+  fixtures :compatibility_note_history_entries, :users
 
   it "should have a valid fixture" do
     expect(compatibility_note_history_entries(:history_note_apocalypse)).to be_valid
   end
 
-  it "should have a valid factory" do
-    expect(create(:compatibility_note_history_entry)).to be_valid
+  it "should have valid factory parameters" do
+    note = build(:compatibility_note_history_entry)
+
+    note.valid?
+    expect(note).to be_valid
+    expect(build(:compatibility_note_history_entry)).to be_valid
   end
 
-  context "validations" do
-    describe "compatibility_note_id" do
-      it "should be invalid if empty" do
-        note = build(:compatibility_note_history_entry,
-                compatibility_note_id: nil)
-        
-        note.valid?
-        expect(note.errors[:compatibility_note_id]).to include("can't be blank") 
-      end
-    end
-
-    describe "edit_summary" do
-      it "should be invalid if an empty string" do
-        note = build(:compatibility_note_history_entry)
-
-        invalidShortLengths = [("b" * 0), nil]
-
-        invalidShortLengths.each do |text|
-          note.edit_summary = text
-          expect(note).to be_invalid
-          expect(note.errors[:edit_summary]).to include("can't be blank")
-        end
-      end
-
-      it "should be invalid length > 255" do
-        note = build(:compatibility_note_history_entry)
-
-        invalidShortLengths = [("b" * 256), ("f" * 300)]
-
-        invalidShortLengths.each do |text|
-          note.edit_summary = text
-          expect(note).to be_invalid
-          expect(note.errors[:edit_summary]).to include("is too long (maximum is 255 characters)")
-        end
-      end
-
-    end
-
-    describe "submitted_by" do
-      it "should be invalid if empty" do
-        note = build(:compatibility_note_history_entry,
-                submitted_by: nil)
-        
-        note.valid?
-        expect(note.errors[:submitted_by]).to include("can't be blank") 
-      end
-    end
-
-    describe "compatibility_type" do
-      let(:valid_list){ [:incompatible, :"partially incompatible", :"compatibility mod", :"compatibility option", :"make custom patch"] }
-      it "should be valid if using valid compatibility_type enum" do
-        valid_list.each_with_index do |item, index|
-          expect(create(:compatibility_note_history_entry, compatibility_type: index)).to be_valid
-        end
-      end
-
-      # error message is in sql and only partial checking is done
-      # Non integer values will also give the same error message
-      it "should be invalid if nil" do
-        expect{ create(:compatibility_note_history_entry, compatibility_type: nil) }
-          .to raise_error(ActiveRecord::StatementInvalid)
-          .with_message(/Column 'compatibility_type' cannot be null/)
-      end
-    end
-
-    describe "submitted" do
-      it "should be invalid if empty" do
-        note = build(:compatibility_note_history_entry,
-                submitted: nil)
-        
-        note.valid?
-        expect(note.errors[:submitted]).to include("can't be blank") 
-      end
-
-      it "should default to Datetime.now" do
-        expect(create(:compatibility_note_history_entry).submitted)
-          .to be_within(1.minute).of DateTime.now
-      end
-    end
-
-    describe "text_body" do
-      it "should be valid if 64 < Length < 16384" do
-        note = build(:compatibility_note_history_entry)
-
-        validLengths = [("a" * 64), ("b" * 16384), ("c" * 10123), ("d" * 3400)]
-
-        validLengths.each do |text|
-          note.text_body = text
-          expect(note).to be_valid
-        end
-      end
-
-      # testing short/nil/blank lengths separate from longer ones to test for individual error messages
-      it "should be invalid if length < 64" do
-        note = build(:compatibility_note_history_entry)
-
-        invalidShortLengths = [("a" * 63), ("b" * 0), nil]
-
-        invalidShortLengths.each do |text|
-          note.text_body = text
-          expect(note).to be_invalid
-          expect(note.errors[:text_body]).to include("is too short (minimum is 64 characters)")
-        end
-      end
-
-      it "should be invalid if length > 16384" do
-        note = build(:compatibility_note_history_entry,
-                     text_body: ("a" * 16385))
-        expect(note).to be_invalid
-        expect(note.errors[:text_body]).to include("is too long (maximum is 16384 characters)")
-      end
-    end
+  it "should have a valid factory" do
+    expect(create(:compatibility_note_history_entry)).to be_valid
   end
 end

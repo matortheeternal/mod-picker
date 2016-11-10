@@ -1,12 +1,21 @@
 .header-tabs {
   background-color: $secondary_background;
   border-bottom: 1px solid $border_color;
+
   h1 {
     font-weight: 500;
     color: $text_color;
     font-size: 36px;
     padding-top: 18px;//half of font size
     padding-bottom: 18px;
+  }
+
+  a.selected-tab {
+    background-color: $primary_background;
+
+    &:hover {
+      background-color: $primary_background;
+    }
   }
 }
 
@@ -26,10 +35,6 @@
   padding: 10px;
   margin-left: 10px;
   display: inline-block;
-}
-
-#avatar-input {
-  display: none;
 }
 
 .quote {
@@ -61,65 +66,6 @@
   font-style: italic;
 }
 
-.listing-table {
-  border: 2px solid $border_color;
-  border-collapse: collapse;
-  text-align: center;
-
-  thead {
-    border: 2px solid $border_color;
-    background-color: $secondary_background;
-    font-size: 16px;
-  }
-
-  th {
-    border: 2px solid $border_color;
-    padding: 5px 10px 5px 10px;
-  }
-
-  .name-column {
-    padding-left: 20px;
-    padding-right: 50px;
-    text-align: left;
-    font-weight: 500;
-    font-size: 18px;
-    width: 400px;
-  }
-
-  .table-buttons {
-    display: flex;
-    vertical-align: middle;
-    font-size: 14px;
-  }
-
-  tbody {
-    border: 0;
-    font-size: 14px;
-  }
-
-  tr {
-    border: 1px solid $border_color;
-  }
-
-  td {
-    border: 0;
-    padding: 10px 20px 10px 20px;
-  }
-}
-
-//error/success messages
-.success-message {
-  background-color: $success_primary;
-  padding: 14px;
-  font-weight: 500;
-  font-size: 20px;
-  text-align: center;
-}
-
-.error-message {
-  background-color: $error_primary;
-  padding: 14px;
-  font-weight: 500;
-  font-size: 20px;
-  text-align: center;
+input[type="text"].verification-key-input {
+  width: 215px;
 }

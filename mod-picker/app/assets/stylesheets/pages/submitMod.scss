@@ -15,7 +15,7 @@ form {
     margin-bottom: 10px;
   }
 
-  #check-categories-btn {
+  .category-buttons {
     display: block;
     margin-top: 6px;
   }
@@ -40,7 +40,7 @@ form {
       width: 100%;
       white-space: pre-line;
     }
-    .priority-message {
+    .cat-warning-message {
       background-color: $warning_primary;
     }
     .cat-error-message {
@@ -55,15 +55,60 @@ form {
     display: none;
   }
 
-  .analysis-container {
-    max-height: 400px;
-    max-width: 700px;
-    overflow-y: auto;
-    .plugin-analysis-item {
-      margin-bottom: 8px;
-      .stat-item {
-        padding-left: 30px;
-        margin-bottom: 4px;
+  mod-option {
+    .subtitle {
+      margin-bottom: 15px;
+
+      .remove-item {
+        color: $text_color;
+        margin-left: 16px;
+        cursor: pointer;
+      }
+    }
+
+    label {
+      display: block;
+      margin-left: 10px;
+      text-transform: none;
+      margin-bottom: 10px;
+
+      span {
+        color: $text_color;
+        font-weight: bold;
+        margin-right: 16px;
+      }
+    }
+
+    strong {
+      margin-left: 10px;
+    }
+
+    .analysis-container {
+      max-height: 400px;
+      max-width: 750px;
+      overflow-y: auto;
+
+      .plugin-analysis-item {
+        margin-bottom: 8px;
+
+        label {
+          margin-left: 30px;
+          font-size: 14px;
+
+          span {
+            display: inline-block;
+            width: 120px;
+            margin-right: 40px;
+            color: $h4_color;
+            font-weight: 500;
+          }
+        }
+
+        .stat-item {
+          padding-left: 30px;
+          margin-bottom: 4px;
+          max-width: 730px;
+        }
       }
     }
   }
@@ -73,10 +118,66 @@ form {
     margin-bottom: 20px;
   }
 
-  .sources-container {
-    margin-bottom: 6px;
-    .remove-source {
+  .dynamic-item {
+    margin-bottom: 8px;
+    display: block;
+    line-height: 32px;
+
+    search-input {
+      input {
+        margin-top: 0;
+      }
+    }
+
+    .source-label {
+      font-size: 13px;
+      border: 1px solid rgb(230, 230, 230);
+      padding: 0.5em;
+      min-width: 200px;
+      margin-right: 4px;
+    }
+
+    .remove-item {
       cursor: pointer;
+    }
+
+    input {
+      vertical-align: top;
+    }
+  }
+
+  .dynamic-block {
+    position: relative;
+    background-color: $secondary_background;
+    padding: 16px;
+    border: 1px solid $border_color;
+    margin: 20px 0;
+
+    .subsection {
+      strong {
+        display: inline-block;
+        text-align: center;
+        min-width: 150px;
+      }
+    }
+
+    .remove-item {
+      position: absolute;
+      top: 0;
+      right: 8px;
+    }
+
+    .subsection:first-of-type {
+      margin-top: 4px;
+    }
+
+    .subsection:last-of-type {
+      margin-bottom: 0;
+    }
+
+    .config-editor {
+      width: 100%;
+      height: 300px;
     }
   }
 }

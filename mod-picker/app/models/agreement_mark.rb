@@ -1,9 +1,22 @@
 class AgreementMark < ActiveRecord::Base
-  self.primary_keys = :incorrect_note_id, :submitted_by
+  include ScopeHelpers, BetterJson, CounterCache
 
-  belongs_to :user, :foreign_key => 'submitted_by', :inverse_of => 'agreement_marks'
-  belongs_to :incorrect_note, :inverse_of => 'agreement_marks'
+  # ATTRIBUTES
+  self.primary_keys = :correction_id, :submitted_by
 
-  validates :incorrect_note_id, :submitted_by, presence: true
+  # SCOPES
+  ids_scope :correction_id
+  value_scope :submitted_by, :alias => 'submitter'
+
+  # ASSOCIATIONS
+  belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'agreement_marks'
+  belongs_to :correction, :inverse_of => 'agreement_marks'
+
+  # COUNTER CACHE
+  counter_cache_on :submitter
+  bool_counter_cache_on :correction, :agree, { true => :agree, false => :disagree }
+
+  # VALIDATIONS
+  validates :correction_id, :submitted_by, presence: true
   validates :agree, inclusion: [true, false]
 end

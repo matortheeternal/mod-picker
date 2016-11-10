@@ -2,7 +2,7 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-@import url(http://fonts.googleapis.com/css?family=Raleway:300,400,600,700,800,900);
+@import url(https://fonts.googleapis.com/css?family=Raleway:300,400,600,700,800,900);
 
 /* Reset
 =====================================================================*/
@@ -161,7 +161,20 @@ ul,ol         { list-style:none; }
 .navbar-default .navbar-nav > li > a, .navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
   color: #fff;
 }
-.site_title{}
+.site_title{
+  a {
+    color: #ebcf94;
+
+    -webkit-transition: color 0.2s ease-in-out;
+    -moz-transition: color 0.2s ease-in-out;
+    -o-transition: color 0.2s ease-in-out;
+    transition: color 0.2s ease-in-out;
+
+    &:hover {
+      color: #c29d57;
+    }
+  }
+}
 .site_title h1{
   color: #fff;
   font-size: 50px;
@@ -358,4 +371,33 @@ ul,ol         { list-style:none; }
 .contact_button:focus, .contact_button:active:focus, .contact_button.active:focus {
   outline: medium none;
   outline-offset: -2px;
+}
+
+/* CUSTOM CSS */
+#artist-credit {
+  position: absolute;
+  bottom: 60px;
+  right: 10px;
+  padding: 5px;
+  background: rgba(238, 238, 238, 0.7);
+  font-size: 11px;
+  font-family: 'Roboto', sans-serif;
+  color: #000;
+  cursor: default;
+
+  a {
+    color: #000;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+
+    -webkit-transition: color 0.2s ease-in-out;
+    -moz-transition: color 0.2s ease-in-out;
+    -o-transition: color 0.2s ease-in-out;
+    transition: color 0.2s ease-in-out;
+
+    &:hover {
+      color: #3678BF;
+    }
+  }
 }

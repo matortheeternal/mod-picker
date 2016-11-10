@@ -1,0 +1,57 @@
+<loader data="configReady" spinner-class="big-spinner">
+    <div class="tab-bar-items" ng-if="editing">
+        <div class="tab-bar-item primary-item">
+            <strong>Add a config file:</strong>
+            <search-input search-function="searchConfigStore" result-id="add.config.id" search-text="add.config.name" on-change="addConfig(add.config.id)" label="config" key="filename"></search-input>
+        </div>
+
+        <div class="tab-bar-item">
+            <span class="action-box green-box" ng-click="toggleManageConfigsModal(true)">
+                Manage Config Files
+            </span>
+        </div>
+
+        <div class="tab-bar-item">
+            <span class="action-box" ng-click="addCustomConfig()">
+                <i class="fa fa-plus"></i> Add Custom Config File
+            </span>
+        </div>
+    </div>
+
+    <manage-configs-modal ng-if="showManageConfigsModal"></manage-configs-modal>
+
+    <div class="content-block config-block" ng-repeat="group in model.config_files" ng-hide="group._destroy">
+        <div class="content-title">
+            <div>
+                <a ng-href="#/mod/{{group.id}}" ng-if="group.id">{{group.name}}</a>
+                <span ng-if="!group.id">{{group.name}}</span>
+                Config Files
+            </div>
+            <span class="config-tab" ng-repeat="config in group.children" ng-click="selectConfig(group, config)" ng-class="{ 'active' : config.active }" ng-hide="config._destroy">
+                {{config.config_file.filename || config.filename}}
+                <span class="action-items" ng-click="removeConfig(group, $index)" ng-if="editing">
+                    <span class="fa fa-times"></span>
+                </span>
+            </span>
+        </div>
+        <div class="content-container">
+            <div class="content-options" ng-if="!group.activeConfig.config_file">
+                <label>
+                    <strong>Filename</strong>
+                    <input type="text" class="elastic-input" ng-model="group.activeConfig.filename" ng-disabled="!editing" spellcheck="false" pu-elastic-input>
+                </label>
+            </div>
+            <div class="content-options" ng-if="!group.activeConfig.config_file">
+                <label>
+                    <strong>Install Path</strong>
+                    <input type="text" class="elastic-input" ng-model="group.activeConfig.install_path" ng-disabled="!editing" spellcheck="false" pu-elastic-input>
+                </label>
+            </div>
+            <textarea class="config-editor" ng-model="group.activeConfig.text_body" ng-disabled="!editing" spellcheck="false"></textarea>
+        </div>
+    </div>
+
+    <div class="content-message" ng-if="noConfigFiles()">
+        No config files to display.
+    </div>
+</loader>

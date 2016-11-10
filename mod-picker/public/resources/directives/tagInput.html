@@ -1,8 +1,0 @@
-<input type="text" ng-model="tag.text" ng-keydown="handleTagKey($event)" ng-click="focusText($event)" ng-blur="blurTag($event)" auto-select="last" pu-elastic-input/>
-<div class="autocomplete-results" ng-show="showDropdown">
-    <span ng-show="searching">Searching...</span>
-    <span ng-show="!searching && (!results || results.length == 0)">No results found</span>
-    <div class="autocomplete-row" ng-repeat="result in results" ng-click="selectResult(result)" ng-mouseover="hoverRow()" ng-class="{ 'autocomplete-selected-row': $index == currentIndex}">
-        <div>{{result.text}}</div>
-    </div>
-</div>

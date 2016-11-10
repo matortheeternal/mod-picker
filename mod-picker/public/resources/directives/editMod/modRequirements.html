@@ -1,0 +1,17 @@
+<h3 class="section-title">Requirements
+    <span class="help-tooltip" ng-hide="hideTooltips" title="Mods that are required for this mod to function, including official DLC.&#13;Note: The mod must be on Mod Picker for you to add it as a requirement.">
+        <i class="fa fa-question-circle"></i>
+    </span>
+    <span ng-hide="requirementsValid" class="error-tooltip" title="One or more requirements is invalid.">
+        <i class="fa fa-exclamation-circle"></i>
+    </span>
+</h3>
+<section>
+    <div class="dynamic-item" ng-repeat="requirement in mod.requirements" ng-hide="requirement._destroy">
+        <search-input search-function="searchMods" result-id="requirement.required_id" search-text="requirement.name"  error="requirement.error" label="mod" key="name" class="long-input" disabled="!!requirement.id"></search-input>
+        <span class="remove-item" ng-click="removeRequirement(requirement)" title="Remove requirement">
+            <i class="fa fa-times"></i>
+        </span>
+    </div>
+    <input type="button" class="btn" value="Add Requirement" ng-click="addRequirement()">
+</section>

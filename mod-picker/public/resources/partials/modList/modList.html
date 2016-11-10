@@ -1,0 +1,78 @@
+<div class="page-header-container">
+    <div class="page-container page-header">
+        <section>
+            <div class="header-info">
+                <span class="header-name">{{mod_list.name}}</span>
+                <adult-marker target="mod_list"></adult-marker>
+                <br>
+                <span class="header-authors-container">
+                    by
+                    <a ng-href="#/user/{{mod_list.submitter.id}}">{{mod_list.submitter.username}}</a>
+                </span>
+                <span class="divider" ng-if="mod_list.submitted">|</span>
+                <span>Created {{mod_list.submitted | date}}</span>
+                <span class="divider" ng-if="mod_list.updated">|</span>
+                <span ng-if="mod_list.updated">Updated {{mod_list.updated | date}}</span>
+            </div>
+        </section>
+
+        <section>
+            <div class="header-box">
+                ACTIONS
+                <div class="action-box" ng-if="permissions.canReport && !permissions.canManage" ng-click="toggleReportModal(true)">
+                    <i class="fa fa-flag-o" aria-hidden="true"></i> Report
+                </div>
+                <div ng-if="permissions.canManage" class="action-box" ng-click="toggleEditing()">
+                    <i class="fa {{editing ? 'fa-eye' : 'fa-edit' }}" aria-hidden="true"></i>
+                    {{editing ? 'View' : 'Edit' }}
+                </div>
+                <div class="action-box" ng-click="starModList()" title="{{mod_list.stars_count}} stars">
+                    <i class="fa {{mod_list.star ? 'fa-star' : 'fa-star-o'}}" aria-hidden="true"></i>
+                    {{mod_list.star ? 'Unfavorite' : 'Favorite'}}
+                </div>
+                <div class="action-box" ng-click="cloneModList()" title="Make a copy of this mod list.">
+                    <i class="fa fa-copy" aria-hidden="true"></i>
+                    Clone
+                </div>
+                <div class="action-box green-box" ng-if="mod_list.is_collection" ng-click="addModCollection()" title="Add this mod collection to your active mod list.">
+                    <i class="fa fa-plus" aria-hidden="true"></i>
+                    Add
+                </div>
+            </div>
+            <div class="header-box">
+                STATUS
+                <div class="action-box no-action {{statusClasses[mod_list.status]}} capitalize" title="{{statusHints[mod_list.status]}}">
+                     <i class="fa {{statusIcons[mod_list.status]}}" aria-hidden="true"></i>
+                    {{mod_list.status.replace("_", " ")}}
+                </div>
+                <div class="action-box no-action {{visibilityClasses[mod_list.visibility]}} capitalize" title="{{visibilityHints[mod_list.visibility]}}">
+                    <i class="fa {{visibilityIcons[mod_list.visibility]}}" aria-hidden="true"></i>
+                    {{mod_list.visibility.replace("visibility_", "")}}
+                </div>
+                <div ng-if="isActive" class="action-box green-box no-action" title="This is your active mod list - added mods will end up here.">
+                    <i class="fa fa-chevron-circle-down"></i>
+                    Active
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+
+<messages></messages>
+
+<div class="page-container tabs-column mod-list-tabs-column">
+    <tabs tabs="tabs" class="secondary-tabs"></tabs>
+    <div class="tab mod-list-tab box-shadow">
+        <tab-views></tab-views>
+    </div>
+
+    <div class="action-button-container" ng-if="editing && tabEditable" sticky sticky-type="bottom">
+        <div class="page-container">
+            <input class="btn action-btn" type="submit" value="Save" ng-click="saveChanges()"/>
+            <input class="btn action-btn" type="button" value="Reset" ng-click="discardChanges()"/>
+        </div>
+    </div>
+</div>
+
+<activity-modal></activity-modal>
+<report-modal ng-if="showReportModal"></report-modal>

@@ -75,9 +75,33 @@
     border-radius: 0;
     background-color: $action_color;
     cursor: pointer;
+
+    &:hover {
+      background-color: $bright_action_color;
+    }
+
+    &:disabled {
+      background-color: $hard_border_color;
+    }
   }
 
-  input[type=submit]:hover {
-    background-color: $bright_action_color;
+  .terms {
+    display: block;
+    margin-top: 10px;
+  }
+
+  .alert, .notice {
+    padding: 5px 0 5px 0;
+    margin: 0;
+    font-size: 16px;
+    color: $inverse_text_color;
+  }
+
+  .notice {
+    background-color: $success_secondary;
+  }
+
+  .alert {
+    background-color: $error_secondary;
   }
 }

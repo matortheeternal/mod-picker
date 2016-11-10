@@ -1,113 +1,188 @@
 class User < ActiveRecord::Base
-  include Filterable
+  include Filterable, Sortable, RecordEnhancements, CounterCache, Imageable, Reportable, ScopeHelpers, Trackable, BetterJson
 
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable and :omniauthable
+  # Include devise modules
   devise :invitable, :database_authenticatable, :registerable, :confirmable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  scope :search, -> (search) { joins(:bio).where("username like ? OR nexus_username like ? OR lover_username like ? OR steam_username like ?", "#{search}%", "#{search}%", "#{search}%", "#{search}%") }
-  scope :joined, -> (low, high) { where(joined: (low..high)) }
-  scope :last_seen, -> (low, high) { where(last_sign_in_at: (low..high)) }
-  scope :level, -> (hash) { where(user_level: hash) }
-  scope :rep, -> (low, high) { where(:reputation => {overall: (low..high)}) }
-  scope :mods, -> (low, high) { where(mods_count: (low..high)) }
-  scope :cnotes, -> (low, high) { where(compatibility_notes_count: (low..high)) }
-  scope :inotes, -> (low, high) { where(installation_notes_count: (low..high)) }
-  scope :reviews, -> (low, high) { where(reviews_count: (low..high)) }
-  scope :nnotes, -> (low, high) { where(incorrect_notes_count: (low..high)) }
-  scope :comments, -> (low, high) { where(comments_count: (low..high)) }
-  scope :mod_lists, -> (low, high) { where(mod_lists_count: (low..high)) }
-
+  # ATTRIBUTES
   attr_accessor :login
+  self.per_page = 50
 
+  # EVENT TRACKING
+  track :status, :column => 'role'
+
+  # NOTIFICATION SUBSCRIPTIONS
+  subscribe :user, to: [:message, :status]
+
+  # SCOPES
+  search_scope :username, :alias => 'search'
+  hash_scope :role
+  counter_scope :authored_mods_count, :mod_lists_count, :submitted_comments_count, :comments_count, :reviews_count, :compatibility_notes_count, :install_order_notes_count, :load_order_notes_count, :corrections_count
+  range_scope :overall, :association => 'reputation', :table => 'user_reputations', :alias => 'reputation'
+  date_scope :joined
+  date_scope :last_sign_in_at, :alias => 'last_seen'
+
+  # UNIQUE SCOPES
+  scope :include_blank, -> (bool) { where.not(username: nil) if !bool }
+  scope :contributors, -> (mod) {
+    # TODO: Handle appeals too
+    includes(:reviews => :mod, :compatibility_notes => [:first_mod, :second_mod], :install_order_notes => [:first_mod, :second_mod], :load_order_notes => [:first_mod, :second_mod]).where(:mods => {id: mod.id})
+  }
+  scope :linked, -> (search) { joins(:bio).where("nexus_username like :search OR lover_username like :search OR workshop_username like :search", search: "#{search}%") }
+
+  # ASSOCIATIONS
   has_one :settings, :class_name => 'UserSetting', :dependent => :destroy
   has_one :bio, :class_name => 'UserBio', :dependent => :destroy
   has_one :reputation, :class_name => 'UserReputation', :dependent => :destroy
 
-  has_many :help_pages, :foreign_key => 'submitted_by', :inverse_of => 'user'
-  has_many :comments, :foreign_key => 'submitted_by', :inverse_of => 'user'
-  has_many :install_order_notes, :foreign_key => 'submitted_by', :inverse_of => 'user'
-  has_many :load_order_notes, :foreign_key => 'submitted_by', :inverse_of => 'user'
-  has_many :compatibility_notes, :foreign_key => 'submitted_by', :inverse_of => 'user'
-  has_many :reviews, :foreign_key => 'submitted_by', :inverse_of => 'user'
-  has_many :incorrect_notes, :foreign_key => 'submitted_by', :inverse_of => 'user'
-  has_many :agreement_marks, :foreign_key => 'submitted_by', :inverse_of => 'user'
-  has_many :helpful_marks, :foreign_key => 'submitted_by', :inverse_of => 'user'
-  has_many :compatibility_note_history_entries, :foreign_key => 'submitted_by', :inverse_of => 'user'
+  has_many :articles, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
+  has_many :help_pages, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
+  has_many :comments, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
+  has_many :install_order_notes, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
+  has_many :load_order_notes, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
+  has_many :compatibility_notes, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
+  has_many :reviews, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
+  has_many :corrections, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
+  has_many :agreement_marks, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
+  has_many :helpful_marks, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
 
-  has_many :mod_tags, :foreign_key => 'submitted_by', :inverse_of => 'user'
-  has_many :mod_list_tags, :foreign_key => 'submitted_by', :inverse_of => 'user'
+  has_many :compatibility_note_history_entries, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
+  has_many :install_order_note_history_entries, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
+  has_many :load_order_note_history_entries, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
 
-  has_many :submitted_mods, :class_name => 'Mod', :foreign_key => 'submitted_by', :inverse_of => 'user'
+  has_many :tags, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
+  has_many :mod_tags, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
+  has_many :mod_list_tags, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
+
+  has_many :submitted_mods, :class_name => 'Mod', :foreign_key => 'submitted_by', :inverse_of => 'submitter'
+
+  has_many :curator_requests, :inverse_of => 'submitter'
 
   has_many :mod_authors, :inverse_of => 'user'
-  has_many :mods, :through => 'mod_authors', :inverse_of => 'authors'
-  has_many :mod_lists, :foreign_key => 'created_by', :inverse_of => 'user'
+  has_many :mods, :through => 'mod_authors', :inverse_of => 'author_users'
+  has_many :mod_lists, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
 
   belongs_to :active_mod_list, :class_name => 'ModList', :foreign_key => 'active_mod_list_id'
 
   has_many :mod_stars, :inverse_of => 'user'
-  has_many :starred_mods, :through => 'mod_stars', :inverse_of => 'user_stars'
+  has_many :starred_mods, :class_name => 'Mod', :through => 'mod_stars', :source => 'mod', :inverse_of => 'user_stars'
 
-  has_many :mod_list_stars, :inverse_of => 'user_star'
-  has_many :starred_mod_lists, :through => 'mod_list_stars', :inverse_of => 'user_stars'
+  has_many :mod_list_stars, :inverse_of => 'user'
+  has_many :starred_mod_lists, :class_name => 'ModList', :through => 'mod_list_stars', :source => 'mod_list', :inverse_of => 'user_stars'
 
-  has_many :profile_comments, :class_name => 'Comment', :as => 'commentable'
-  has_many :reports, :inverse_of => 'user'
-  has_one :base_report, :as => 'reportable'
+  has_many :profile_comments, -> { where(parent_id: nil) }, :class_name => 'Comment', :as => 'commentable'
+  has_many :reports, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
 
-  accepts_nested_attributes_for :settings
-  accepts_nested_attributes_for :bio
+  has_many :notifications, -> { includes(:event).order("events.created DESC") }, :inverse_of => 'user'
+  has_many :messages, :inverse_of => 'recipient', :foreign_key => 'sent_to'
+  has_many :sent_messages, :class_name => 'Message', :inverse_of => 'submitter', :foreign_key => 'submitter_by'
 
+  accepts_nested_attributes_for :settings, reject_if: :new_record?
+
+  # COUNTER CACHE
+  counter_cache :profile_comments, column: 'comments_count', conditional: { hidden: false }
+  counter_cache :comments, column: 'submitted_comments_count', conditional: { hidden: false }
+  counter_cache :starred_mods, :starred_mod_lists, :mod_tags, :mod_list_tags, :helpful_marks, :agreement_marks
+  counter_cache :mod_authors, column: 'authored_mods_count'
+  counter_cache :submitted_mods, :reviews, :compatibility_notes, :install_order_notes, :load_order_notes, conditional: { hidden: false, approved: true }
+  counter_cache  :corrections, :tags, conditional: { hidden: false }
+  bool_counter_cache :mod_lists, :is_collection, { true => :mod_collections, false => :mod_lists }
+
+  # VALIDATIONS
+  validates :username, :email, :role, presence: true
+  validates :username, uniqueness: { case_sensitive: false }, length: {in: 4..32 }
+  validates :email, uniqueness: { case_sensitive: false }, length: {in: 7..255}
+  validates_format_of :email, :with => /\A\S+@.+\.\S+\z/
+  validates :about_me, length: {maximum: 16384}
+
+  # CALLBACKS
   after_create :create_associations
   after_initialize :init
 
-  validates :username,
-  presence: true,
-  uniqueness: {
-    case_sensitive: false
-  },
-  length: 4..20
+  def user
+    User.find(id)
+  end
 
-  # TODO: add email regex
-  # basic one, minimize false negatives and confirm users via email confirmation regardless
-  validates :email,
-  presence: true,
-  uniqueness: {
-    case_sensitive: false
-  },
-  length: 7..100
-  # format: {
-  # with: VALID_EMAIL_REGEX,
-  # message: must be a valid email address format
-  # }
-  
-  validate :validate_username
+  # returns nil if the user doesn't have a custom title or a custom avatar
+  def avatar
+    avatar_path = image
+    self.title.nil? && avatar_path == "/users/Default.png" ? nil : avatar_path
+  end
 
-  def validate_username
-    if User.where(email: username).exists?
-      errors.add(:username, :invalid)
+  def recent_notifications
+    notifications.unread.limit(10)
+  end
+
+  def admin?
+    role.to_sym == :admin
+  end
+
+  def moderator?
+    role.to_sym == :moderator
+  end
+
+  def can_moderate?
+    admin? || moderator?
+  end
+
+  def news_writer?
+    role.to_sym == :writer
+  end
+
+  def restricted?
+    role.to_sym == :restricted
+  end
+
+  def banned?
+    role.to_sym == :banned
+  end
+
+  def inactive?
+    last_sign_in_at.nil? || last_sign_in_at < 28.days.ago
+  end
+
+  def email_public?
+    settings.email_public
+  end
+
+  def comments_disabled?
+    !settings.allow_comments
+  end
+
+  def has_auto_approval?
+    reputation.overall > 20
+  end
+
+  def has_mod_auto_approval?
+    reputation.overall > 80
+  end
+
+  def subscribed_to?(event)
+    if respond_to?(:notification_settings)
+      key = "#{event.content_type.underscore}_#{event.event_type}"
+      notification_settings.public_send(key.to_sym)
+    else
+      true
     end
   end
 
-  def avatar
-    png_path = File.join(Rails.public_path, "avatars/#{id}.png")
-    jpg_path = File.join(Rails.public_path, "avatars/#{id}.jpg")
-    if File.exists?(png_path)
-      "/avatars/#{id}.png"
-    elsif File.exists?(jpg_path)
-      "/avatars/#{id}.jpg"
-    elsif self.title.nil?
-      nil
-    else
-      '/avatars/Default.png'
+  def update_mod_author_role
+    if ["user", "mod_author"].include?(role)
+      is_author = mod_authors.where("role != 2").exists?
+      new_role = is_author ? "author" : "user"
+      update_column(:role, new_role) if role != new_role
     end
+  end
+
+  def init
+    self.joined ||= DateTime.current
+    self.role   ||= :user
   end
 
   def self.find_first_by_auth_conditions(warden_conditions)
     conditions = warden_conditions.dup
-    if login = conditions.delete(:login)
+    if (login = conditions.delete(:login))
       where(conditions).where(["lower(username) = :value OR lower(email) = :value", { :value => login.downcase }]).first
     else
       if conditions[:username].nil?
@@ -118,78 +193,25 @@ class User < ActiveRecord::Base
     end
   end
 
-  def admin?
-    self.role.to_sym == :admin
+  def self.failed_emails
+    @failed_emails ||= []
   end
 
-  def moderator?
-    self.role.to_sym == :moderator
-  end
+  def self.batch_invite!(emails, current_inviter)
+    emails.each do |email|
+      if /\A\S+@.+\.\S+\z/.match(email)
+        User.invite!({:email => email}, current_inviter)
+      else
+        failed_emails.push(email)
+      end
+    end
 
-  def banned?
-    self.role.to_sym == :banned
-  end
-
-  def inactive?
-    self.last_sign_in_at < 28.days.ago
-  end
-
-  def email_public?
-    self.settings.email_public
-  end
-
-  def init
-    self.joined ||= DateTime.current
-    self.role   ||= :user
+    failed_emails.empty?
   end
 
   def create_associations
-    self.create_reputation({ user_id: self.id })
-    self.create_settings({ user_id: self.id })
-    self.create_bio({ user_id: self.id })
-  end
-
-  def show_json(current_user)
-    # email handling
-    methods = [:avatar, :last_sign_in_at, :current_sign_in_at, :email_public?]
-    if self.email_public? || current_user.id == self.id
-      methods.push(:email)
-    end
-
-    self.as_json({
-        :include => {
-            :mods => {
-                :only => [:id, :name, :game_id, :mod_stars_count]
-            },
-            :mod_lists => {
-                :only => [:id, :name, :is_collection, :is_public, :status, :mods_count, :created]
-            },
-            :bio => {
-                :except => [:user_id]
-            },
-            :reputation => {
-                :only => [:overall]
-            }
-        },
-        :methods => methods
-    })
-  end
-
-  def as_json(options={})
-    default_options = {
-        :except => [:active_mod_list_id, :invitation_token, :invitation_created_at, :invitation_sent_at, :invitation_accepted_at, :invitation_limit, :invited_by_id, :invited_by_type, :invitations_count],
-        :methods => [:avatar, :last_sign_in_at, :current_sign_in_at],
-        :include => {
-            :bio => {
-                :only => [:nexus_username, :lover_username, :steam_username]
-            },
-            :reputation => {
-                :only => [:overall]
-            }
-        }
-    }
-
-    options = default_options.merge(options)
-    super(options)
+    create_reputation(user_id: id)
+    create_settings(user_id: id)
+    create_bio(user_id: id)
   end
 end

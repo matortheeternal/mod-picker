@@ -1,0 +1,60 @@
+﻿<div class="tab-bar-items">
+    <div class="tab-bar-item primary-item">
+        <sort-control sort="sort.install_order_notes" sort-options="sortOptions.install_order_notes"></sort-control>
+    </div>
+    <div class="tab-bar-item">
+        <input class="btn" type="submit" value="Add Install Order Note" ng-click="startNewInstallOrderNote()" ng-disabled="activeInstallOrderNote || !permissions.canContribute"/>
+    </div>
+</div>
+
+<div class="content-block add-note-box" ng-show="activeInstallOrderNote">
+    <div class="content-title">
+        <span ng-if="activeInstallOrderNote.original">Edit</span>
+        <span ng-if="!activeInstallOrderNote.original">Add</span>
+        Install Order Note
+    </div>
+    <div class="content-options">
+        <span class="select order-dropdown">
+            <select ng-model="activeInstallOrderNote.order">
+                <option value="before">Install Before</option>
+                <option value="after">Install After</option>
+            </select>
+        </span>
+        <search-input search-function="searchMods" result-id="activeInstallOrderNote.mod_id" excluded-id="mod.id" on-change="validateInstallOrderNote" label="mod" key="name" search-text="activeInstallOrderNote.mod_name" disabled="activeInstallOrderNote.editing"></search-input>
+    </div>
+    <div class="content-container">
+        <text-area data="activeInstallOrderNote.text_body" ng-refresh="updateMDE" class="note-text-area" on-change="validateInstallOrderNote"></text-area>
+
+        <div class="message-input" ng-if="activeInstallOrderNote.editing && activeInstallOrderNote.original.submitted_by != currentUser.id">
+            <label>
+                <div>Edit Summary</div>
+                <input type="text" ng-model="activeInstallOrderNote.edit_summary" maxlength="255">
+            </label>
+        </div>
+
+        <div class="action-button-container">
+            <input class="btn action-btn" type="submit" value="Submit" ng-click="saveInstallOrderNote()" ng-disabled="!activeInstallOrderNote.valid" title="{{activeInstallOrderNote.valid ? 'Submit your install order note' : 'Your install order note is either too short or incomplete.'}}"/>
+            <input class="btn action-btn" type="button" value="Discard" ng-click="discardInstallOrderNote()">
+        </div>
+    </div>
+</div>
+
+<loader data="mod.install_order_notes" spinner-class="big-spinner" ng-if="!errors.install_order_notes">
+    <!-- note specified in the url -->
+    <div class="content-block current-contribution" ng-if="currentInstallOrderNote && !currentInstallOrderNote.editing">
+        <install-order-note note="currentInstallOrderNote" mod-id="mod.id" index="99" edit="editInstallOrderNote"></install-order-note>
+    </div>
+
+    <!-- the rest of the notes -->
+    <div ng-repeat="note in mod.install_order_notes" class="content-block" ng-hide="note.editing">
+        <install-order-note note="note" mod-id="mod.id" index="100 + $index" edit="editInstallOrderNote"></install-order-note>
+    </div>
+
+    <div class="content-message" ng-hide="mod.install_order_notes.length || currentInstallOrderNote">
+        There are no Install Order Notes for this mod yet.
+    </div>
+
+    <page-results pages="pages.install_order_notes" data="mod.install_order_notes" callback="retrieveInstallOrderNotes"></page-results>
+</loader>
+
+<error-display content-class="content-message content-error" errors="errors.install_order_notes" label="install order notes for this mod"></error-display>

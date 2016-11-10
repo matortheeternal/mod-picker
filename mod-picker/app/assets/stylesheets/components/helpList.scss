@@ -1,0 +1,92 @@
+.help-list-page {
+  padding-bottom: 150px;
+
+  // title
+  .page-title {
+    font-size: 48px;
+    text-align: center;
+  }
+}
+
+.pages-list {
+  padding-left: 0;
+  list-style: none;
+  overflow: hidden;
+
+  // header image for each help page
+  .header-img {
+    max-width: 100%;
+    background-size: cover;
+  }
+
+  // meta data
+  .meta {
+    font-size: 0.8em;
+    color: $medium_text_color;
+  }
+
+  li {
+    padding: 0;
+    background-color: #EEE;
+    margin-bottom: 1rem;
+
+    // grid styling
+    width: 32.33%;
+    margin-left: 1.5%;
+    float: left;
+
+    &:nth-child(3n + 1) {
+      clear: both;
+      margin-left: 0;
+    }
+
+    // meta info
+    .meta-container {
+      padding: 0 1rem 1rem;
+    }
+
+    .meta {
+      display: block;
+
+      span {
+        display: inline-block;
+        margin-right: 16px;
+      }
+
+      .fa {
+        width: 14px;
+      }
+    }
+
+    .item-header {
+      margin: 8px 0;
+      color: $text_color;
+      @include transition(color 0.2s ease-in-out);
+
+      .item-title {
+        margin-right: 0.5rem;
+      }
+
+      &:hover {
+        color: $link_hover_color_primary;
+      }
+
+      .new-label, .unapproved-label {
+        font-weight: normal;
+        font-size: 12px;
+        padding: 0 0.5rem;
+        text-transform: uppercase;
+      }
+
+      .unapproved-label {
+        color: $error_secondary;
+        border: 1px solid $error_secondary;
+      }
+
+      .new-label {
+        color: $success_secondary;
+        border: 1px solid $success_secondary;
+      }
+    }
+  }
+}

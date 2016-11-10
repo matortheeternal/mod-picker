@@ -1,45 +1,61 @@
 class CommentsController < ApplicationController
-  before_action :set_comment, only: [:show, :update, :destroy]
+  before_action :set_comment, only: [:show, :update, :hide, :destroy]
 
   # GET /comments
-  # GET /comments.json
   def index
-    @comments = Comment.filter(filtering_params)
+    @comments = Comment.eager_load(:submitter => :reputation).preload(:commentable).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(page: params[:page])
+    count = Comment.eager_load(:submitter => :reputation).accessible_by(current_ability).filter(filtering_params).count
 
-    render :json => @comments
+    render json: {
+        comments: json_format(@comments),
+        max_entries: count,
+        entries_per_page: Comment.per_page
+    }
   end
 
   # GET /comments/1
-  # GET /comments/1.json
   def show
-    render :json => @comment
+    authorize! :read, @comment
+    respond_with_json(@comment)
   end
 
   # POST /comments
-  # POST /comments.json
   def create
     @comment = Comment.new(comment_params)
+    @comment.submitted_by = current_user.id
+    authorize! :create, @comment
 
     if @comment.save
-      render :show, status: :created, location: @comment
+      render json: json_format(@comment.reload, :show)
     else
       render json: @comment.errors, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /comments/1
-  # PATCH/PUT /comments/1.json
   def update
+    authorize! :update, @comment
     if @comment.update(comment_params)
-      render :show, status: :ok, location: @comment
+      render json: {status: :ok}
+    else
+      render json: @comment.errors, status: :unprocessable_entity
+    end
+  end
+
+  # POST /comments/1/hide
+  def hide
+    authorize! :hide, @comment
+    @comment.hidden = params[:hidden]
+    if @comment.save
+      render json: {status: :ok}
     else
       render json: @comment.errors, status: :unprocessable_entity
     end
   end
 
   # DELETE /comments/1
-  # DELETE /comments/1.json
   def destroy
+    authorize! :destroy, @comment
     if @comment.destroy
       render json: {status: :ok}
     else
@@ -55,11 +71,11 @@ class CommentsController < ApplicationController
 
     # Params we allow filtering on
     def filtering_params
-      params.slice(:type, :target, :by);
+      params[:filters].slice(:adult, :hidden, :search, :submitter, :include_replies, :commentable, :replies, :submitted, :edited)
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def comment_params
-      params.require(:comment).permit(:parent_comment, :submitted_by, :hidden, :submitted, :edited, :text_body)
+      params.require(:comment).permit(:commentable_id, :commentable_type, :parent_id, :text_body)
     end
 end

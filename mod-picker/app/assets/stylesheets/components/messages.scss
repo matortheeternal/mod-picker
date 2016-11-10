@@ -1,0 +1,72 @@
+.messages {
+  max-height: 400px;
+  background-color: inherit;
+  overflow: hidden;
+
+  .message {
+    overflow-y: hidden;
+    padding: 14px;
+    font-weight: 500;
+    font-size: 20px;
+    text-align: center;
+    @include transition(0.5s all ease-in-out);
+
+    .fa {
+      padding: 4px;
+
+      &:hover {
+        color: $action_text_color;
+        background-color: $text_color;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .ng-enter {
+    padding: 0;
+    max-height: 0;
+  }
+
+  .ng-enter-active {
+    padding: 14px;
+    max-height: 52px;
+  }
+
+  .ng-leave {
+    padding: 14px;
+    max-height: 52px;
+  }
+
+  .ng-leave-active {
+    padding: 0;
+    max-height: 0;
+  }
+
+  .success-message {
+    background-color: $success_primary;
+  }
+
+  .error-message {
+    background-color: $error_primary;
+
+    a {
+      color: $error_secondary;
+
+      &:hover {
+        color: $text_color;
+      }
+    }
+  }
+
+  .warning-message {
+    background-color: $warning_primary;
+  }
+
+  &.sticky {
+    position: fixed;
+    z-index: 3000;
+    width: 100%;
+    top: 0;
+    left: 0;
+  }
+}

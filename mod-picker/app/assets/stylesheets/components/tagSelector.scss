@@ -21,29 +21,26 @@
     .tag-text, .tag-count, .remove-tag, .add-tag {
       line-height: 14px;
       float: left;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
+      @include user-select(none);
     }
 
     .tag-text {
       cursor: default;
     }
 
-    input {
-      border: 0;
-      padding: 0;
-      max-width: 300px;
-      height: auto;
-      font-size: 11px;
-      line-height: 14px;
-      color: $action_text_color;
-      background-color: inherit;
+    tag-input {
+      position: relative;
 
-      &:hover, &:focus {
+      input {
         border: 0;
-        background-color: $dark_action_color;
+        padding: 0;
+        min-width: 10px;
+        max-width: 300px;
+        height: auto;
+        font-size: 11px;
+        line-height: 14px;
+        color: $action_text_color;
+        background-color: inherit;
       }
     }
 
@@ -63,37 +60,23 @@
   }
 
   .add-tag-box {
-    background-color: $dark_action_color;
+    background-color: $bar_highlight_color;
     cursor: pointer;
-    -webkit-transition: all 0.2s ease-in-out;
-    -moz-transition: all 0.2s ease-in-out;
-    -o-transition: all 0.2s ease-in-out;
-    transition: all 0.2s ease-in-out;
+    @include transition(all 0.2s ease-in-out);
 
     &:hover {
-      background-color: $bar_color;
+      background-color: $action_color;
     }
   }
+}
 
-  .autocomplete-results {
-    color: black;
-    background-color: $primary_background;
-    position: absolute;
-    margin-left: -4px;
-    margin-top: 6px;
-    width: 120px;
-    border: 1px solid #888;
-    padding: 6px;
-    cursor: pointer;
-  }
+.tag-actions-container {
+  margin: 6px;
+  text-align: center;
+}
 
-  .autocomplete-row {
-    padding: 5px;
-    margin-bottom: 4px;
-  }
-
-  .autocomplete-selected-row, .autocomplete-row:hover {
-    background-color: $action_color;
-    color: $action_text_color;
+.wide-tag-selector {
+  .tags-container {
+    max-width: 100%;
   }
 }

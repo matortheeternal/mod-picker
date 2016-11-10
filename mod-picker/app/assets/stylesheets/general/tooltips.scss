@@ -1,0 +1,33 @@
+.help-tooltip, .error-tooltip {
+  margin-left: 10px;
+  margin-right: -10px;
+  cursor: default;
+  display: inline-flex;
+
+  &.small {
+    font-size: 18px;
+  }
+}
+
+a .help-tooltip, a .error-tooltip {
+  cursor: pointer;
+}
+
+.help-tooltip {
+  color: $warning_secondary;
+}
+
+.error-tooltip {
+  color: $error_secondary;
+}
+
+.text-tooltip {
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  cursor: default;
+  display: inline-block;
+  margin-left: 8px;
+  border-bottom: dotted 1px $text_color;
+  line-height: 15px;
+}

@@ -1,0 +1,44 @@
+<h3 id="categories-section-title" class="section-title">Categories
+    <span class="filter-controls">
+        <span class="fa fa-eraser" ng-click="clearSelection()" title="Clear Selection"></span>
+        <span class="fa fa-adjust" ng-click="invertSelection()" title="Invert Selection"></span>
+    </span>
+    <span ng-transclude></span>
+</h3>
+
+<div class="sidebar-box box-shadow">
+    <div class="category-tree">
+        <div ng-repeat="superCategory in nestedCategories">
+            <div ng-if="superCategory.childs.length">
+                <span ng-show="superCategory.expanded" ng-click="superCategory.expanded = !superCategory.expanded" class="expanded-icon">
+                    <i class="fa fa-chevron-down"></i>
+                </span>
+                <span ng-hide="superCategory.expanded" ng-click="superCategory.expanded = !superCategory.expanded" class="collapsed-icon">
+                    <i class="fa fa-chevron-right"></i>
+                </span>
+
+                <label class="supercategory">
+                    <input type="checkbox" ng-model="superCategory.value" ng-indeterminate="superCategory.indeterminate" ng-change="updateSelection($index)"/>
+                    <span title="{{superCategory.description.wordwrap()}}">{{superCategory.name}}</span>
+                </label>
+                <div class="sub-category" ng-repeat="secondaryCategory in superCategory.childs" ng-show="superCategory.expanded">
+                    <label>
+                        <input type="checkbox" ng-model="superCategory.childs[$index].value" ng-change="updateSelection($parent.$index, $index)"/>
+                        <span title="{{secondaryCategory.description.wordwrap()}}">{{secondaryCategory.name}}</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- TODO: kill duplication-->
+            <div ng-if="!superCategory.childs.length">
+                <div class="expandable-title-container">
+                    <span class="no-icon"></span>
+                    <label class="supercategory">
+                        <input type="checkbox" ng-model="superCategory.value" ng-indeterminate="superCategory.indeterminate" ng-change="updateSelection($index)"/>
+                        <span>{{superCategory.name}}</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

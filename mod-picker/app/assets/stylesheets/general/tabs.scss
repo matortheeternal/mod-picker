@@ -1,0 +1,126 @@
+/* tab styling */
+.tabs {
+  a {
+    @include transition(background-color 0.2s ease-in-out);
+    display: inline-block;
+    cursor: pointer;
+    color: $action_text_color;
+    padding: 9px 16px 9px 16px;//half of font size high
+    border: 1px solid $border_color;
+    border-bottom: 0;
+    background-color: $action_color;
+    margin-right: 2px;
+
+    &:hover {
+      background-color: $bar_highlight_color;
+    }
+  }
+
+  a.selected-tab {
+    background-color: $secondary_background;
+    cursor: default;
+    color: $text_color;
+  }
+}
+
+.secondary-tabs {
+  a.selected-tab {
+    background-color: $secondary_background;
+
+    &:hover {
+      background-color: $secondary_background;
+    }
+  }
+}
+
+.tab {
+  padding: 20px;
+  border: 1px solid $border_color;
+  background-color: $secondary_background;
+
+  > div:first-child {
+    margin-top: 0;
+  }
+
+  > div:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.tab-bar-items {
+  display: flex;
+
+  .tab-bar-item {
+    text-align: center;
+    vertical-align: middle;
+    align-items: center;
+    min-height: 40px;
+    padding: 5px 16px 5px 16px;
+    border: 1px solid $border_color;
+    background-color: $primary_background;
+    display: flex;
+    color: $h4_color;
+    font-size: 14px;
+
+    strong {
+      margin-right: 6px;
+    }
+
+    .sort-direction {
+      cursor: pointer;
+      font-size: 20px;
+    }
+  }
+
+  .quality-item {
+    height: auto;
+    padding: 5px 16px 5px 16px;
+    border: 1px solid $border_color;
+    background-color: $primary_background;
+    color: $h4_color;
+    text-align: center;
+
+    &:hover {
+      background-color: $primary_background;
+    }
+  }
+
+  .primary-item {
+    flex-grow: 1;
+
+    select {
+      margin-left: 10px;
+      margin-right: 10px;
+      min-width: 190px;
+      display: inline-block;
+    }
+  }
+
+  search-input {
+    input[type="text"] {
+      background-color: $input_background;
+      border: 1px solid $border_color;
+      border-radius: 4%;
+      color: $h4_color;
+      font: inherit;
+      padding: 0.5em;
+      margin: 0;
+      box-shadow: none;
+      min-width: 250px;
+      max-width: 250px;
+    }
+
+    .dropdown {
+      left: 0;
+      top: 30px;
+    }
+  }
+}
+
+.tabs-column {
+  .selected-tab {
+    background-color: $secondary_background;
+    border-bottom: 1px solid $secondary_background;
+    margin-bottom: -1px;
+  }
+}

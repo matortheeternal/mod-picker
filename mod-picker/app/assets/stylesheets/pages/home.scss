@@ -1,0 +1,106 @@
+.home-left-column {
+  padding: 20px 20px 0 0;
+}
+
+.home-right-column {
+  padding: 20px 0 0 20px;
+}
+
+//left column's recent mods and modlists
+.recent-box {
+  border: 1px solid $border_color;
+  margin: 10px;
+  margin-bottom: 30px;
+
+  .section-title {
+    font-size: 26px;
+    margin-left: 10px;
+    font-weight: 500;
+  }
+
+  .recent-thing {
+    border: 1px solid transparent;
+    display: flex;
+    color: $text_color;
+    align-items: center;
+    font-size: 12px;
+    padding: 10px;
+
+    img {
+      width: 100px;
+      height: 100px;
+      min-width: 100px;
+      min-height: 100px;
+      margin-right: 10px;
+    }
+
+    img.smaller-image {
+      width: 64px;
+      height: 64px;
+      min-width: 64px;
+      min-height: 64px;
+    }
+
+    .recent-title {
+      font-weight: 600;
+    }
+
+    &:hover {
+      background-color: $background_highlight;
+      border-top: 1px solid $border_color;
+      border-bottom: 1px solid $border_color;
+      cursor: pointer;
+      box-shadow: 0 0 60px -30px $shadow_color;
+    }
+  }
+
+  .explanation {
+    margin-left: 15px;
+  }
+}
+
+//articles
+.articles {
+  width: 840px;
+  margin: 10px;
+  margin-bottom: 20px;
+  border: 1px solid $border_color;
+  background-color: $secondary_background;
+}
+
+.load-older-posts {
+    text-align: center;
+    padding   : 10px;
+}
+
+.recent-notes-tabs {
+  margin: 10px;
+  width: 840px;
+
+  .section-title {
+    font-size: 26px;
+    margin-left: 10px;
+    font-weight: 500;
+  }
+
+  .selected-tab {
+    background-color: $secondary_background;
+    border-bottom: 1px solid $secondary_background;
+    margin-bottom: -1px;
+  }
+
+  .recent-contributions-tab {
+    border: 1px solid $border_color;
+    padding: 20px;
+    background-color: $secondary_background;
+    margin-bottom: 30px;
+
+    .content-block:first-child {
+      margin-top: 5px;
+    }
+
+    .content-block:last-child {
+      margin-bottom: 5px;
+    }
+  }
+}

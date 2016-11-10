@@ -1,0 +1,9 @@
+<img class="{{imageClass}}" ng-src="{{image.src}}" ng-class="{ 'image-pending': image.changed }">
+<label ng-if="canChange">
+    <input type="file" accept=".jpg,.png" file-change="changeImage" />
+    <input type="button" class="btn" value="Browse" ng-click="browseImage()"/>
+    <input type="button" ng-if="image.file" class="btn" value="Reset" ng-click="resetImage()"/>
+</label>
+<span class="explanation" ng-if="image.changed && showExplanation">
+    New {{label}} pending, click save changes to save it.
+</span>

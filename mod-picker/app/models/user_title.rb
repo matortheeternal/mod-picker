@@ -1,7 +1,11 @@
 class UserTitle < ActiveRecord::Base
-  include Filterable
+  include Filterable, ScopeHelpers
 
-  scope :game, -> (game) { where(game_id: game) }
+  game_scope
 
   belongs_to :game
+
+  # VALIDATIONS
+  validates :game_id, :title, :rep_required, presence: true
+  validates :title, length: {maximum: 32}
 end

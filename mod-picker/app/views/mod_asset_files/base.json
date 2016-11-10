@@ -1,0 +1,8 @@
+{
+  "except": ["id"],
+  "include": {
+    "asset_file": {
+      "only": ["path"]
+    }
+  }
+}

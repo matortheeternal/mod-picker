@@ -1,0 +1,51 @@
+<loader data="mod_list.mods && modsReady" spinner-class="big-spinner">
+    <div class="tab-bar-items">
+        <div class="tab-bar-item primary-item">
+            <span class="issue-item">
+                <strong>{{notes.unresolved_compatibility.length + notes.unresolved_install_order.length}}</strong> Unresolved Issues
+            </span>
+            <span class="issue-item">
+                <strong>{{notes.ignored_compatibility.length + notes.ignored_install_order.length}}</strong> Ignored Issues
+            </span>
+            <span class="issue-item">
+                <strong>{{required.missing_mods.length}}</strong> Missing Requirements
+            </span>
+        </div>
+
+        <div class="tab-bar-item" ng-if="editing">
+            <strong>Add a mod:</strong>
+            <search-input search-function="searchMods" result-id="add.mod.id" search-text="add.mod.name" on-change="addMod(add.mod.id)" label="mod" key="name"></search-input>
+        </div>
+    </div>
+
+    <div class="content-block">
+        <div class="content-title">Mods
+            <span class="right-item action-box" ng-if="editing" ng-click="addCustomMod()">
+                <i class="fa fa-plus"></i> Add Custom Mod
+            </span>
+            <span class="right-item action-box" ng-if="editing" ng-click="addGroup('mods')">
+                <i class="fa fa-plus"></i> Add Group
+            </span>
+            <span class="right-item action-box" ng-if="editing" ng-click="startSortInstallOrder()">
+                <i class="fa fa-sort-amount-desc"></i> Sort Install Order
+            </span>
+            <span class="right-item action-box" ng-click="modsTable = !modsTable">
+                <i class="fa {{ modsTable ? 'fa-th-large' : 'fa-list-ul' }}" ng-class=""></i> {{ modsTable ? 'Grid View' : 'List View' }}
+            </span>
+        </div>
+        <div class="content-container" ng-if="!modsTable">
+            <grid-items type="mod" label="mods" model="model.mods" editing="editing"></grid-items>
+        </div>
+        <div class="content-container" ng-if="modsTable">
+            <table-items type="mod" label="mods" columns="columns" column-groups="columnGroups" actions="actions" model="model.mods" editing="editing"></table-items>
+        </div>
+    </div>
+
+    <mod-details-modal ng-if="showDetailsModal"></mod-details-modal>
+</loader>
+
+<required-mods></required-mods>
+
+<mod-compatibility-issues></mod-compatibility-issues>
+
+<mod-install-order-issues></mod-install-order-issues>

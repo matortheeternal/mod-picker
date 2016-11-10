@@ -1,0 +1,22 @@
+<% content_for :head do %>
+    <title>Mod Picker: Help Center - <%= @page_title %></title>
+<% end %>
+    <div class="page-container help-list-page search-page-container">
+        <% if @help_pages.length > 0 %>
+            <h1 class="page-title"><%= @help_pages.length %> Results for '<%= @page_title.humanize %>'</h1>
+        <% else %>
+            <div class="content-message">
+                <h1 class="page-title">No results found for '<%= params[:search] %>'</h1>
+            </div>
+        <% end %>
+
+        <%= form_tag({controller: "help_pages", action: "search"}, method: "get", class: "search-form" ) do %>
+            <%= text_field_tag :search, params[:search], placeholder: "Search Help Center...",  autocomplete: "off"  %>
+            <%= submit_tag "Search", :name => nil, class: "btn" %>
+        <% end %>
+
+        <% if @help_pages.length > 0 %>
+            <%= render "list" %>
+        <% end %>
+    </div>
+

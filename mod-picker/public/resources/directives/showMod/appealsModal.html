@@ -1,0 +1,143 @@
+<div class="modal-container" ng-if="showStatusModal" ng-click="unfocusAppealsModal($event)">
+    <messages event="modalMessage"></messages>
+
+    <div class="modal huge-modal" ng-hide="appeal || activeAppeal">
+        <div class="close-modal">
+            <span class="fa fa-times" ng-click="toggleStatusModal(false)"></span>
+        </div>
+
+        <h2>
+            {{mod.name}}
+            <span class="static-box {{statusClass}} capitalize">
+                {{mod.status}}
+            </span>
+        </h2>
+        <p ng-show="permissions.canAppeal">
+            If you'd like to contest this mod's status you can submit an appeal to change it
+            which will then be reviewed by the community over one week.  If enough users agree
+            with your appeal, the mod's status will be changed.  You can vote on and participate
+            in discussion on any currently open appeals.
+        </p>
+        <p ng-hide="permissions.canAppeal">
+            You don't have enough reputation to submit an appeal to change this mod's status.
+            You can view past appeals and discussions, but will not be able to vote on them or
+            participate in discussion until you have gained more reputation.
+        </p>
+        <p>
+            <a href="/help/Appeals_Process">Click here</a> for more information.
+        </p>
+
+        <h3 class="section-title">Appeals</h3>
+        <loader data="mod.corrections" content-class="corrections-container" spinner-class="big-spinner" ng-if="!errors.appeals">
+            <table ng-if="mod.corrections.length > 0">
+                <thead>
+                <tr>
+                    <th>Proposed Status</th>
+                    <th>Date Submitted</th>
+                    <th>Submitted by</th>
+                    <th>Comments</th>
+                    <th>Status</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="appeal in mod.corrections" ng-class="{ 'appeal-hidden' : appeal.hidden }">
+                    <td>
+                        <a ng-click="showAppeal(appeal)" class="strong capitalize">
+                            {{appeal.mod_status}}
+                        </a>
+                    </td>
+                    <td>{{appeal.submitted | date}}</td>
+                    <td>
+                        <a ng-href="#/profile/{{appeal.submitted_by}}" class="strong">
+                            {{appeal.submitter.username}}
+                        </a>
+                    </td>
+                    <td>{{appeal.comments_count}}</td>
+                    <td>
+                        <div class="action-box no-action" ng-if="appeal.status === 'open'" title="{{appeal.agree_count}} agree, {{appeal.disagree_count}} disagree">
+                            Open ({{computeAgreePercentage(appeal) | number:0}}%)
+                        </div>
+                        <div class="action-box green-box no-action" ng-if="appeal.status === 'passed'" title="{{appeal.agree_count}} agreed, {{appeal.disagree_count}} disagreed">
+                            Passed ({{computeAgreePercentage(appeal) | number:0}}%)
+                        </div>
+                        <div class="action-box red-box no-action" ng-if="appeal.status === 'failed'" title="{{appeal.agree_count}} agreed, {{appeal.disagree_count}} disagreed">
+                            Failed ({{computeAgreePercentage(appeal) | number:0}}%)
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <span ng-if="mod.corrections.length == 0">
+                There have been no appeals on this mod's status.
+            </span>
+        </loader>
+
+        <error-display content-class="content-message content-error" errors="errors.appeals" label="appeals for this mod"></error-display>
+
+        <div class="action-button-container" ng-if="appealStatus && !errors.appeals">
+            <input class="btn action-btn" type="submit" ng-click="startNewAppeal()" value="New Appeal">
+        </div>
+    </div>
+
+    <div class="modal huge-modal" ng-if="appeal && !activeAppeal">
+        <div class="close-modal">
+            <span class="fa fa-times" ng-click="toggleStatusModal(false)"></span>
+        </div>
+
+        <h2>{{mod.name}} - Viewing Appeal</h2>
+
+        <div class="content-block">
+            <correction correction="appeal" index="100" edit="editAppeal" show-user-column="true" event-prefix="'modal'"></correction>
+        </div>
+
+        <h3 class="section-title">Comments
+            <span class="action-box" ng-click="startNewComment()">
+                <i class="fa fa-plus"></i> New Comment
+            </span>
+        </h3>
+        <loader data="appeal.comments" spinner-class="big-spinner" content-class="content-container" ng-if="!errors.comments">
+            <comments comments="appeal.comments" model-name="'Correction'" target="appeal" event-prefix="'modal'"></comments>
+
+            <page-results pages="pages" data="appeal.comments" callback="retrieveAppealComments"></page-results>
+        </loader>
+        <error-display content-class="content-container" errors="errors.appeal_comments" label="appeal comments"></error-display>
+
+        <!-- TODO: May need to move this before comments or make it a sticky footer? -->
+        <div class="action-button-container">
+            <input class="btn action-btn" type="submit" ng-click="showIndex()" value="Back">
+        </div>
+    </div>
+
+    <div class="modal huge-modal" ng-if="activeAppeal">
+        <div class="close-modal">
+            <span class="fa fa-times" ng-click="toggleStatusModal(false)"></span>
+        </div>
+
+        <h2>{{mod.name}} - New Appeal</h2>
+
+        <div class="content-block">
+            <div class="content-title">
+                Change Status to <span class="capitalize">{{activeAppeal.mod_status}}</span>
+            </div>
+            <!-- Users cannot change the mod status of an appeal that has already been submitted -->
+            <div class="content-options" ng-if="!activeAppeal.editing" title="Select the status you feel this mod should have.">
+                <strong>New Status:</strong>
+                <span class="select">
+                    <select ng-model="activeAppeal.mod_status">
+                        <option value="good" ng-if="mod.status !== 'good'">Good</option>
+                        <option value="outdated" ng-if="mod.status !== 'outdated'">Outdated</option>
+                        <option value="unstable" ng-if="mod.status !== 'unstable'">Unstable</option>
+                    </select>
+                </span>
+            </div>
+            <div class="content-container">
+                <text-area data="activeAppeal.text_body" ng-refresh="updateMDE" on-change="validateAppeal"></text-area>
+
+                <div class="action-button-container">
+                    <input class="btn action-btn" type="submit" value="Submit" ng-click="saveAppeal()" ng-disabled="!activeAppeal.valid" title="{{activeAppeal.valid ? 'Submit your Appeal' : 'Your appeal is too short.'}}"/>
+                    <input class="btn action-btn" type="button" value="Discard" ng-click="discardAppeal()">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

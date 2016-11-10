@@ -1,16 +1,17 @@
 class UserSetting < ActiveRecord::Base
-  include Filterable
-
-  before_create :init
+  include Filterable, BetterJson
 
   belongs_to :user
 
-  scope :user, -> (id) { where(user_id: id) }
+  # VALIDATIONS
+  validates :user_id, presence: true
+  validates :theme, length: {maximum: 64}
+  validates :allow_comments, :show_notifications, :email_notifications, :email_public, :allow_adult_content, :allow_nexus_mods, :allow_lovers_lab, :allow_steam_workshop, inclusion: [true, false]
+
+  # CALLBACKS
+  before_create :init
 
   def init
-    self.timezone ||= "Pacific Time (US & Canada)"
-    self.udate_format ||= "%F"
-    self.utime_format ||= "%I:%M%p"
     self.theme ||= "Whiterun"
   end
 end

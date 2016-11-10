@@ -1,0 +1,100 @@
+/* utility classes */
+.no-scroll {
+  overflow-y: hidden;
+  padding-right: 17px;
+}
+
+.hidden {
+  display: none;
+}
+
+.no-select {
+  @include user-select(none);
+}
+
+.inline-flex {
+  display: inline-flex;
+}
+
+.center {
+  text-align: center !important;
+}
+
+.no-text-dec {
+  text-decoration: none !important;
+}
+
+.capitalize {
+  text-transform: capitalize !important;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.no-border {
+  border: none !important;
+}
+
+.no-bg {
+  background-color: inherit !important;
+}
+
+.no-margin {
+  margin: 0 !important;
+}
+
+.no-action {
+  cursor: default !important;
+}
+
+.half-opacity {
+  opacity: 0.50;
+}
+
+.right-item {
+  float: right;
+}
+
+.divider {
+  margin: 0 8px;
+}
+
+.strong {
+  font-weight: 600;
+}
+
+.medium {
+  font-weight: 500;
+}
+
+.thin {
+  font-weight: 100;
+}
+
+//box shadow for containers
+.box-shadow {
+  box-shadow: 0 0 37px -30px $shadow_color;
+}
+
+// box shadow spread fix for webkit
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  .box-shadow {
+    box-shadow: 0 0 60px -30px $shadow_color;
+  }
+}
+
+/* clearfix */
+.clearfix:before,
+.clearfix:after {
+  content: " ";
+  display: table;
+}
+
+.clearfix:after {
+  clear: both;
+}
+
+.clearfix {
+  *zoom: 1;  // For IE 6/7 only
+}

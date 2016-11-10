@@ -1,59 +1,5 @@
-@mixin flexbox() {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
-}
-
-@mixin flex($values) {
-  -webkit-box-flex: $values;
-  -moz-box-flex:  $values;
-  -webkit-flex:  $values;
-  -ms-flex:  $values;
-  flex:  $values;
-}
-
-@mixin order($val) {
-  -webkit-box-ordinal-group: $val;  
-  -moz-box-ordinal-group: $val;     
-  -ms-flex-order: $val;     
-  -webkit-order: $val;  
-  order: $val;
-}
-
-
-.note-container {
-  background-color: $primary_background;
-  border: 1px solid $border_color;
-
-  .note-title {
-    background-color: $bar_color;
-    color: $bar_text_color;
-    //border-bottom: 1px solid $bar_dark_color;
-    width: 100%;
-    padding: 10px;
-    font-size: 16px;
-    font-weight: 500;
-
-    .right-item {
-      float: right;
-      .standing {
-        font-size: 14px;
-        font-weight: 100;
-        font-style: italic;
-        vertical-align: top;
-      }
-    }
-    a {
-      color: $bright_action_color;
-      &:hover {
-        color: $bar_text_color;
-      }
-    }
-  }
-
-  .author-column {
+.contribution-container {
+  .user-column {
     //background-color: $secondary_background;
     border-right: 1px solid $border_color;
     display: table-cell;
@@ -78,6 +24,7 @@
 
       .user-avatar {
         margin: 4px;
+        position: relative;
       }
 
       .user-role {
@@ -96,21 +43,63 @@
           text-transform: uppercase;
         }
       }
+
+      .editors {
+        font-size: 12px;
+        margin-top: 20px;
+
+        b {
+          font-weight: 500;
+        }
+      }
+    }
+  }
+
+  .resolution-column {
+    display: table-cell;
+    vertical-align: top;
+    border-left: 1px solid $border_color;
+    background-color: $bar_highlight_color;
+    min-width: 200px;
+    max-width: 200px;
+    padding: 14px;
+    text-align: center;
+
+    .resolution-status {
+      font-size: 20px;
+      font-weight: 500;
+      margin: 8px 0 16px;
+      color: $bar_text_color;
+    }
+
+    .resolution-options {
+      .action-box {
+        margin: 2px 0;
+        @include wordbreak;
+      }
+
+      .action-box.single {
+        margin: 14px 0;
+      }
     }
   }
 
   .content-column {
-    display:table-cell;
+    display: table-cell;
     vertical-align: top;
     position: relative;
+    padding-bottom: 35px;
+    width: 100%;
+
+    .compatibility-container, .ratings-container {
+      padding: 6px 20px;
+      font-size: 20px;
+    }
 
     .ratings-container {
-      padding: 6px;
-      font-size: 20px;
       .rating-item {
         padding-top: 3px;
         padding-bottom: 3px;
-
         .rating-value {
           color: $bar_text_color;
         }
@@ -171,9 +160,55 @@
       }
     }
 
+    .submitted-line {
+      background-color: $secondary_background;
+      color: $h4_color;
+      font-size: 11px;
+      padding: 4px 6px;
+    }
+
     .text-container {
-      width: 100%;
-      padding: 0 20px 35px 20px;
+      padding: 0 20px;
+    }
+
+    .edit-summary {
+      font-size: 12px;
+      padding: 0 20px;
+      margin: 10px 0;
+      @include wordbreak;
+    }
+
+    .moderator-message {
+      border: 1px solid $error_secondary;
+      margin: 10px 30px;
+      background-color: $secondary_background;
+
+      .message-title {
+        background-color: $error_primary;
+        font-weight: 500;
+        padding: 5px;
+
+        .remove-item {
+          cursor:pointer;
+        }
+      }
+
+      .text-container {
+        padding: 10px;
+        margin: 0;
+        p {
+          margin: 0 2px;
+        }
+      }
+
+      textarea {
+        width: 100%;
+        resize: vertical;
+        border: 0;
+        background-color: transparent;
+        padding: 10px;
+        font: inherit;
+      }
     }
 
     .actions-container {
@@ -183,12 +218,19 @@
       bottom: 0;
       cursor: default;
 
-      .action-link {
-        padding-right: 16px;
+      .action-box {
+        display: inline-block;
+        margin: 2px 0;
       }
 
-      .helpfulness {
-        float: right;
+      .actions-dropdown-container {
+        position: relative;
+        outline: none;
+
+        .dropdown {
+          top: 25px;
+          left: -69px;
+        }
       }
     }
   }

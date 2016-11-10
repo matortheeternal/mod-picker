@@ -1,0 +1,38 @@
+<loader data="mod_list.tools && toolsReady" spinner-class="big-spinner">
+    <div class="tab-bar-items">
+        <div class="tab-bar-item primary-item">
+            <span class="issue-item">
+                <strong>{{required.missing_tools.length}}</strong> Missing Requirements
+            </span>
+        </div>
+
+        <div class="tab-bar-item" ng-if="editing">
+            <strong>Add a tool:</strong>
+            <search-input search-function="searchTools" result-id="add.tool.id" search-text="add.tool.name" on-change="addTool(add.tool.id)" label="tool" key="name"></search-input>
+        </div>
+    </div>
+
+    <div class="content-block">
+        <div class="content-title">Tools
+            <span class="right-item action-box" ng-if="editing" ng-click="addCustomTool()">
+                <i class="fa fa-plus"></i> Add Custom Tool
+            </span>
+            <span class="right-item action-box" ng-if="editing" ng-click="addGroup('tools')">
+                <i class="fa fa-plus"></i> Add Group
+            </span>
+            <span class="right-item action-box" ng-click="toolsTable = !toolsTable">
+                <i class="fa {{ toolsTable ? 'fa-th-large' : 'fa-list-ul' }}" ng-class=""></i> {{ toolsTable ? 'Grid View' : 'List View' }}
+            </span>
+        </div>
+        <div class="content-container" ng-if="!toolsTable">
+            <grid-items type="mod" label="tools" model="model.tools" editing="editing"></grid-items>
+        </div>
+        <div class="content-container" ng-if="toolsTable">
+            <table-items type="mod" label="tools" columns="columns" column-groups="columnGroups" actions="actions" model="model.tools" editing="editing"></table-items>
+        </div>
+    </div>
+
+    <mod-details-modal ng-if="showDetailsModal"></mod-details-modal>
+</loader>
+
+<required-tools></required-tools>

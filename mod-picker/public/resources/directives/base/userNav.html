@@ -1,0 +1,36 @@
+<!-- User signed in navigation -->
+<ul class="user-nav" ng-if="currentUser">
+    <li>
+        Welcome <a class="inverse-link" ng-href="#/user/{{currentUser.id}}">{{currentUser.username}}</a>
+    </li>
+    <li>
+        <user-notifications notifications="currentUser.recent_notifications"></user-notifications>
+    </li>
+    <li>
+        <contribution-select></contribution-select>
+    </li>
+    <li ng-if="currentUser.permissions.canModerate">
+        <a class="inverse-link" href="#/moderator-cp">Moderator CP</a>
+    </li>
+    <li>
+        <a class="inverse-link" href="#/settings">Settings</a>
+    </li>
+    <li>
+        <a class="inverse-link" href="/users/sign_out">Log Out</a>
+    </li>
+    <li>
+        <game-select games="games" selected-game="currentGame"></game-select>
+    </li>
+</ul>
+<!-- User signed out navigation -->
+<ul class="user-nav" ng-if="!currentUser">
+    <li>
+        <a class="inverse-link" href="/users/sign_in">Log In</a>
+    </li>
+    <li>
+        <a class="inverse-link" href="/users/sign_up">Register</a>
+    </li>
+    <li>
+        <game-select games="games" selected-game="currentGame"></game-select>
+    </li>
+</ul>

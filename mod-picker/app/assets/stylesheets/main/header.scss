@@ -1,0 +1,261 @@
+/* header */
+header {
+  background-color: $bar_color;
+  background-image: url($banner_image);
+  background-repeat: no-repeat;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  position: relative;
+  height: 192px;
+  z-index: 100;
+
+  #artist-credit {
+    position: absolute;
+    bottom: 6px;
+    right: 6px;
+    padding: 5px;
+    background: rgba($inverse_text_color, 0.7);
+    font-size: 11px;
+    cursor: default;
+
+    a:before {
+      content: $banner_artist;
+    }
+
+    &.credit-link:before {
+      content: $banner_credit_link;
+    }
+  }
+}
+
+.header {
+  max-width: 1220px;
+  width: 100%;
+  margin: 0 auto;
+  height: 50px;
+  display: table;
+  font-size: 12px;
+  padding: 40px 0;
+  position: relative;
+}
+
+.nav-controls {
+  width: 75%;
+  display: table-cell;
+  vertical-align: middle;
+  height: 44px;
+  margin: 0;
+  padding: 0;
+}
+
+.user-nav {
+  background: rgba($inverse_text_color, 0.7);
+  text-align: right;
+  float: right;
+  margin: 0 0 20px;
+  padding: 0 10px;
+
+  li {
+    display: inline;
+    padding: 0 0.5em;
+    border-right: 1px solid $hard_border_color;
+    list-style: outside none none;
+  }
+
+  a {
+    font-weight: 700;
+  }
+}
+
+/* css for navbar */
+nav {
+  display: block;
+  background-color: $bar_color;
+  white-space: nowrap;
+
+  .primary-nav {
+    .nav-item {
+      border-left: 1px solid $bar_highlight_color;
+      height: 60px;
+      padding: 12px 12px 16px;
+      color: $bar_text_color;
+      background-color: $bar_color;
+      display: block;
+      float: left;
+      position: relative;
+      z-index: 99;
+      @include transition(background-color 0.2s ease-in-out);
+
+      &:hover, &:focus {
+        outline: none;
+        color: $bar_text_color;
+        background-color: $bar_highlight_color;
+      }
+
+      &:last-child {
+        border-right: 1px solid $bar_highlight_color;
+      }
+    }
+
+    .nav-dropdown {
+      display: block;
+      white-space: normal;
+      position: absolute;
+      text-align: center;
+      z-index: 2;
+      top: 60px;
+      padding: 10px;
+      background-color: $bar_highlight_color;
+      box-shadow: 0 0 10px 2px $shadow_color;
+
+      .nav-category {
+        display: inline-block;
+        vertical-align: middle;
+        text-align: center;
+        margin: 14px 4px;
+        font-size: 13px;
+        width: 85px;
+        color: $bar_text_color;
+
+        i {
+          font-size: 48px;
+          color: $bright_action_color;
+          text-shadow: 0 0 1px $bright_action_color;
+          display: block;
+          @include transition(all 0.3s ease)
+        }
+
+        /* tweaks for icons which don't have enough margin below them */
+        .fa-cubes, .fa-building-o {
+          margin-bottom: 2px;
+        }
+
+        &:hover {
+          i {
+            color: $action_color;
+            text-shadow: 0 0 2px $action_color;
+          }
+        }
+      }
+    }
+
+    #mod-lists-dropdown {
+      left: 270px;
+    }
+
+    #mods-dropdown {
+      left: 338px;
+      width: 502px;
+    }
+
+    #contributions-dropdown {
+      left: 157px;
+      width: 180px;
+
+      a {
+        display: block;
+        color: $bar_text_color;
+        padding: 2px;
+
+        &:hover {
+          color: $action_color;
+        }
+      }
+    }
+
+    b {
+      text-transform: uppercase;
+      color: $bar_highlight_text_color;
+      font-weight: 700;
+      font-size: 10px;
+      display: block;
+    }
+
+    .nav-icon {
+      display: inline-block;
+      font-size: 24px;
+      margin-right: 6px;
+      vertical-align: top;
+      margin-top: 2px;
+    }
+
+    .dropdown-icon {
+      display: inline-block;
+      font-size: 16px;
+      margin-left: 6px;
+      vertical-align: top;
+      margin-top: 6px;
+    }
+
+    .nav-text {
+      display: inline-block;
+    }
+  }
+}
+
+.nav-wrapper {
+  position: relative;
+}
+
+.primary-nav {
+  float: left;
+}
+
+.secondary-nav {
+  float: right;
+  height: 60px;
+
+  a.mini {
+    font-size: 12px;
+    margin: 20px 10px;
+    display: inline-block;
+    color: $bar_text_color;
+
+    &:hover {
+      color: $bright_action_color;
+    }
+  }
+}
+
+.search {
+  float: right;
+
+  .search-field {
+    width: 200px;
+    height: 35px;
+    font-size: 13px;
+    margin: 10px 0 0;
+    padding: 0 8px;
+    border: 0 none;
+    -moz-appearance: none;
+    border-radius: 0;
+    float: left;
+  }
+
+  .search-container {
+    float: left;
+    width: 74px;
+
+    #search-btn {
+      padding: 8px;
+      height: 35px;
+    }
+  }
+
+  #loader {
+    margin-top: 10px;
+    margin-left: 20px;
+  }
+
+  input[type="submit"] {
+    height: 35px;
+    font-size: 13px;
+    margin: 10px 0 0;
+    padding: 0 8px;
+    -moz-appearance: none;
+    display: block;
+    float: left;
+  }
+}

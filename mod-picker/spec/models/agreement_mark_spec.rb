@@ -1,19 +1,19 @@
 require 'rails_helper'
 
 RSpec.describe AgreementMark, :model do
-  it "should be valid with incorrect_note_id, submitted_by, and agree present" do
+  it "should be valid with factory parameters" do
     agree = build(:agreement_mark)
-
+    
     expect(agree).to be_valid
   end
 
-  describe "incorrect_note_id" do
-    it "should be invalid without a blank incorrect_note_id field" do
+  describe "correction_id" do
+    it "should be invalid without a blank correction_id field" do
       agree = build(:agreement_mark,
-        incorrect_note_id: nil)
+        correction_id: nil)
 
       agree.valid?
-      expect(agree.errors[:incorrect_note_id]).to include("can't be blank")
+      expect(agree.errors[:correction_id]).to include("can't be blank")
     end
   end
 

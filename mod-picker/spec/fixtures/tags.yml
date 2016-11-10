@@ -1,0 +1,32 @@
+# create_table "tags", force: :cascade do |t|
+#   t.string  "text",            limit: 255,                 null: false
+#   t.integer "game_id",         limit: 4,                   null: false
+#   t.integer "submitted_by",    limit: 4,                   null: false
+#   t.integer "mods_count",      limit: 4
+#   t.integer "mod_lists_count", limit: 4
+#   t.boolean "hidden",                      default: false, null: false
+# end
+
+# validates :text, :game_id, :submitted_by, presence: true
+# validates :text, length: {in: 2..32}
+# validates :hidden, inclusion: [true, false]
+
+tag_quest:
+  text: "quest"
+  game_id: skyrim
+  submitted_by: homura
+
+tag_gameplay:
+  text: "gameplay"
+  game_id: skyrim
+  submitted_by: homura
+
+tag_immersion:
+  text: "immersion"
+  game_id: skyrim
+  submitted_by: homura
+
+tag_magic:
+  text: "magic"
+  game_id: skyrim
+  submitted_by: homura

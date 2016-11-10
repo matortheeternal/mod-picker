@@ -1,0 +1,19 @@
+{
+  "except": ["submitted_by"],
+  "include": {
+    "submitter": {
+      "format": "card"
+    },
+    "compatibility_mod": {},
+    "compatibility_plugin": {
+      "format": "simple"
+    },
+    "compatibility_mod_option": {
+      "format": "compatibility_note"
+    },
+    "editor": {},
+    "editors": {},
+    "first_mod": {},
+    "second_mod": {}
+  }
+}

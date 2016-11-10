@@ -1,0 +1,11 @@
+{
+  "only": ["id", "index", "group_id", "cleaned", "merged"],
+  "include": {
+    "plugin": {
+      "format": "mod_list_plugin"
+    },
+    "mod": {
+      "format": "mod_list_plugin"
+    }
+  }
+}

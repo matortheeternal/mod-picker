@@ -1,0 +1,87 @@
+﻿<div class="tab-bar-items">
+    <!--<div class="centered-mod-tab-action">
+        <strong>Compatible</strong>
+        <br>
+        with modlist
+    </div>
+    <div class="tab-bar-item filter-checkbox">
+        <label class="checkbox">
+            <input type="checkbox" checked>
+            <strong>Mod List Filter</strong>
+        </label>
+    </div>-->
+    <div class="tab-bar-item primary-item">
+        <sort-control sort="sort.compatibility_notes" sort-options="sortOptions.compatibility_notes"></sort-control>
+    </div>
+    <div class="tab-bar-item">
+        <input class="btn" type="button" value="Add Compatibility Note" ng-click="startNewCompatibilityNote()" ng-disabled="activeCompatibilityNote || !permissions.canContribute"/>
+    </div>
+</div>
+
+<div class="content-block add-note-box" ng-show="activeCompatibilityNote">
+    <div class="content-title">
+        <span ng-if="activeCompatibilityNote.original">Edit</span>
+        <span ng-if="!activeCompatibilityNote.original">Add</span>
+        Compatibility Note
+    </div>
+    <div class="content-options">
+        <span class="select compatibility-dropdown">
+            <select ng-model="activeCompatibilityNote.status">
+                <option value="incompatible">Incompatible with</option>
+                <option value="partially_incompatible">Partially Incompatible with</option>
+                <option value="compatibility_mod">Compatibility Mod for</option>
+                <option value="compatibility_option">Compatibility Option for</option>
+                <option value="make_custom_patch">Make Custom Patch for</option>
+            </select>
+        </span>
+        <search-input search-function="searchMods" result-id="activeCompatibilityNote.mod_id" search-text="activeCompatibilityNote.mod_name" excluded-id="mod.id" on-change="validateCompatibilityNote" disabled="activeCompatibilityNote.original" label="mod" key="name"></search-input>
+    </div>
+    <div class="content-options" ng-show="['compatibility_mod', 'compatibility_option'].indexOf(activeCompatibilityNote.status) > -1">
+        <span ng-if="activeCompatibilityNote.status === 'compatibility_mod'">
+            <strong>Compatibility Mod</strong>
+            <search-input search-function="searchMods" search-text="activeCompatibilityNote.compatibility_mod_name" result-id="activeCompatibilityNote.compatibility_mod_id" excluded-id="mod.id" on-change="validateCompatibilityNote" label="mod" key="name"></search-input>
+        </span>
+        <span ng-if="activeCompatibilityNote.status === 'compatibility_option'">
+            <strong>Compatibility Mod Option</strong>
+            <search-input search-function="searchModOptions" search-arg="activeCompatibilityNote.mods" search-text="activeCompatibilityNote.compatibility_mod_option_name" result-id="activeCompatibilityNote.compatibility_mod_option_id" on-change="validateCompatibilityNote" placeholder="Enter mod option name" label="mod option" key="display_name"></search-input><br/>
+
+            <strong>Compatibility Plugin</strong>
+            <search-input search-function="searchPlugins"  search-arg="activeCompatibilityNote.mods" search-text="activeCompatibilityNote.compatibility_plugin_filename" result-id="activeCompatibilityNote.compatibility_plugin_id" on-change="validateCompatibilityNote" label="plugin" key="filename"></search-input>
+        </span>
+    </div>
+    <div class="content-container">
+        <text-area data="activeCompatibilityNote.text_body" ng-refresh="updateMDE" class="note-text-area" on-change="validateCompatibilityNote"></text-area>
+
+        <div class="message-input" ng-if="activeCompatibilityNote.editing && activeCompatibilityNote.original.submitted_by != currentUser.id">
+            <label>
+                <div>Edit Summary</div>
+                <input type="text" ng-model="activeCompatibilityNote.edit_summary" maxlength="255">
+            </label>
+        </div>
+
+        <div class="action-button-container">
+            <input class="btn action-btn" type="submit" value="Submit" ng-click="saveCompatibilityNote()" ng-disabled="!activeCompatibilityNote.valid" title="{{activeCompatibilityNote.valid ? 'Submit your compatibility note' : 'Your compatibility note is either too short or incomplete.'}}"/>
+            <input class="btn action-btn" type="button" value="Discard" ng-click="discardCompatibilityNote()">
+        </div>
+    </div>
+</div>
+
+<loader data="mod.compatibility_notes" spinner-class="big-spinner" ng-if="!errors.compatibility_notes">
+    <!-- note specified in the url -->
+     <div class="content-block current-contribution" ng-if="currentCompatibilityNote && !currentCompatibilityNote.editing">
+         <compatibility-note note="currentCompatibilityNote" index="99" edit="editCompatibilityNote"></compatibility-note>
+     </div>
+
+     <!-- the rest of the notes -->
+    <div ng-repeat="note in mod.compatibility_notes" class="content-block" ng-hide="note.editing">
+        <compatibility-note note="note" mod-id="mod.id" index="100 + $index" edit="editCompatibilityNote"></compatibility-note>
+    </div>
+
+    <div class="content-message" ng-hide="mod.compatibility_notes.length || currentCompatibilityNote">
+        There are no Compatibility Notes for this mod yet.
+    </div>
+
+    <page-results pages="pages.compatibility_notes" data="mod.compatibility_notes" callback="retrieveCompatibilityNotes"></page-results>
+</loader>
+
+<error-display content-class="content-message content-error" errors="errors.compatibility_notes" label="compatibility notes for this mod"></error-display>

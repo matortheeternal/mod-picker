@@ -1,0 +1,15 @@
+<div class="content-block">
+    <div class="content-title">Comments
+        <span class="right-item action-box" ng-click="startNewComment()">
+            <i class="fa fa-plus"></i> New Comment
+        </span>
+    </div>
+    <div class="content-container">
+        <loader data="commentsReady" spinner-class="big-spinner" ng-if="!errors.comments">
+            <comments comments="comments" model-name="'HelpPage'" target="helpPage"></comments>
+
+            <page-results pages="pages.comments" data="mod_list.comments" callback="retrieveComments"></page-results>
+        </loader>
+        <error-display content-class="content-container" label="help page comments" errors="errors.comments"></error-display>
+    </div>
+</div>

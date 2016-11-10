@@ -1,0 +1,11 @@
+{
+  "only": ["id", "name", "display_name", "default", "size", "asset_files_count", "plugins_count"],
+  "include": {
+    "plugins": {
+      "only": ["id", "filename"],
+      "include": {
+        "mod": {}
+      }
+    }
+  }
+}

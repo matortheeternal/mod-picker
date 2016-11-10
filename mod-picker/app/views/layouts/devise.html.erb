@@ -8,7 +8,7 @@
   <% else %>
     <% current_theme = current_user.settings.theme %>
   <% end %>
-  <%= stylesheet_link_tag current_theme %>
+  <%= stylesheet_link_tag "main/#{current_theme}" %>
 </head>
 <body>
 

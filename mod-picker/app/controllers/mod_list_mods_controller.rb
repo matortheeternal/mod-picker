@@ -1,35 +1,56 @@
 class ModListModsController < ApplicationController
-  before_action :set_mod_list_mod, only: [:update, :destroy]
-
   # POST /mod_list_mods
-  # POST /mod_list_mods.json
   def create
     @mod_list_mod = ModListMod.new(mod_list_mod_params)
-    authorize! :create, @mod_list_mod
+    authorize! :read, @mod_list_mod.mod
+    authorize! :update, @mod_list_mod.mod_list
 
     if @mod_list_mod.save
-      render json: {status: :ok}
+      @mod_list_mod.add_default_mod_options
+      
+      if params[:no_response]
+        render json: {status: :ok}
+      else
+        # prepare notes
+        mod_compatibility_notes = @mod_list_mod.mod_compatibility_notes
+        plugin_compatibility_notes = @mod_list_mod.plugin_compatibility_notes
+        install_order_notes = @mod_list_mod.install_order_notes
+        load_order_notes = @mod_list_mod.load_order_notes
+
+        # prepare helpful marks
+        c_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("CompatibilityNote", mod_compatibility_notes.ids + plugin_compatibility_notes.ids)
+        i_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("InstallOrderNote", install_order_notes.ids)
+        l_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("LoadOrderNote", load_order_notes.ids)
+
+        # render response
+        # TODO: Don't render current plugins if the plugins tab isn't loaded
+        render json: {
+            mod_list_mod: @mod_list_mod,
+            mod_list_plugins: @mod_list_mod.current_plugins,
+            required_tools: @mod_list_mod.required_tools,
+            required_mods: @mod_list_mod.required_mods,
+            mod_compatibility_notes: mod_compatibility_notes,
+            plugin_compatibility_notes: plugin_compatibility_notes,
+            install_order_notes: install_order_notes,
+            load_order_notes: load_order_notes,
+            c_helpful_marks: c_helpful_marks,
+            i_helpful_marks: i_helpful_marks,
+            l_helpful_marks: l_helpful_marks
+        }
+      end
     else
       render json: @mod_list_mod.errors, status: :unprocessable_entity
     end
   end
 
-  # PATCH/PUT /mod_list_mods/1
-  # PATCH/PUT /mod_list_mods/1.json
-  def update
-    authorize! :update, @mod_list_mod
-    if @mod_list_mod.update(mod_list_mod_params)
-      render json: {status: :ok}
-    else
-      render json: @mod_list_mod.errors, status: :unprocessable_entity
-    end
-  end
-
-  # DELETE /mod_list_mods/1
-  # DELETE /mod_list_mods/1.json
+  # DELETE /mod_list_mods
   def destroy
-    authorize! :destroy, @mod_list_mod
+    @mod_list_mod = ModListMod.find_by(mod_list_id: params[:mod_list_id], mod_id: params[:mod_id])
+    authorize! :update, @mod_list_mod.mod_list
+
     if @mod_list_mod.destroy
+      mod_list = ModList.find(params[:mod_list_id])
+      mod_list.compact_plugins
       render json: {status: :ok}
     else
       render json: @mod_list_mod.errors, status: :unprocessable_entity
@@ -37,13 +58,7 @@ class ModListModsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_mod_list_mod
-      @mod_list_mod = ModListMod.find_by(mod_list_id: params[:mod_list_id], mod_id: params[:mod_id])
-    end
-
-    # Never trust parameters from the scary internet, only allow the white list through.
     def mod_list_mod_params
-      params.require(:mod_list_mod).permit(:mod_list_id, :mod_id, :active, :install_order)
+      params.require(:mod_list_mod).permit(:mod_list_id, :mod_id, :index)
     end
 end

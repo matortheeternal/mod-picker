@@ -1,0 +1,39 @@
+<div class="contribution-container box-shadow">
+	<div class="content-title">
+		<span ng-if="modId" class="root">
+            Install
+            <span ng-if="note.first_mod.id == modId">
+                Before
+                <a ng-href="#/mod/{{note.second_mod.id}}">{{note.second_mod.name}}</a>
+            </span>
+            <span ng-if="note.second_mod.id == modId">
+                After
+                <a ng-href="#/mod/{{note.first_mod.id}}">{{note.first_mod.name}}</a>
+            </span>
+        </span>
+        <span ng-if="!modId" class="root">
+            Install
+            <a ng-href="#/mod/{{note.first_mod.id}}">{{note.first_mod.name}}</a>
+            Before
+            <a ng-href="#/mod/{{note.second_mod.id}}">{{note.second_mod.name}}</a>
+        </span>
+        <span class="standing-item" title="This contribution is in {{note.standing}} standing">
+            <i class="fa {{standingClasses[note.standing]}}"></i>
+        </span>
+	</div>
+    <user-column ng-if="showUserColumn" user="note.submitter" editors="note.editors" class="user-column" index="index"></user-column>
+    <div class="content-column">
+        <contribution-text target="note"></contribution-text>
+        <contribution-actions target="note" model-name="InstallOrderNote" index="index" edit="edit" has-history="true"></contribution-actions>
+    </div>
+    <div ng-if="showResolutionOptions" class="resolution-column">
+        <div class="resolution-status">
+            {{note.ignored ? "Ignored" : note.resolved ? "Resolved" : "Unresolved"}}
+        </div>
+        <div class="resolution-options order-options">
+            <div class="action-box green-box" ng-click="resolve('move', 0)" ng-class="{ 'disabled' : note.resolved || note.ignored }">Move {{note.first_mod.name}}</div>
+            <div class="action-box green-box" ng-click="resolve('move', 1)" ng-class="{ 'disabled' : note.resolved || note.ignored }">Move {{note.second_mod.name}}</div>
+            <div class="action-box yellow-box single" ng-click="resolve('ignore')" ng-class="{ 'disabled' : note.resolved }">{{note.ignored ? 'Unignore' : 'Ignore'}} Issue</div>
+        </div>
+    </div>
+</div>

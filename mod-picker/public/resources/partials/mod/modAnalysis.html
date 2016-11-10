@@ -1,0 +1,116 @@
+<loader data="mod.analysis" spinner-class="big-spinner" ng-if="!errors.analysis">
+    <div class="mod-options-selection">
+        <strong>Mod Options</strong>
+
+        <label ng-repeat="option in mod.options" title="{{option.name}}">
+            <input type="checkbox" ng-model="option.active" ng-disabled="option.default" ng-change="toggleOption(option)" /> {{option.display_name}}
+        </label>
+    </div>
+
+    <div class="tab-bar-items" ng-show="availablePlugins.length > 0">
+        <div class="tab-bar-item primary-item">
+            <strong>Select Plugin:</strong>
+            <select ng-options="plugin as plugin.filename for plugin in availablePlugins" ng-model="mod.currentPlugin" ng-change="updateParams()"></select>
+        </div>
+    </div>
+
+    <div class="content-block" ng-if="mod.currentPlugin">
+        <div class="content-title">
+            Plugin Metadata
+        </div>
+
+        <div class="content-container">
+            <plugin-metadata plugin="mod.currentPlugin"></plugin-metadata>
+        </div>
+    </div>
+
+    <div class="content-block" ng-if="mod.currentPlugin && mod.currentPlugin.plugin_record_groups.length > 0">
+        <div class="content-title">
+            Plugin Composition
+        </div>
+
+        <div class="content-container analysis-container">
+            <table class="analysis-table">
+                <thead>
+                <tr>
+                    <th>Group</th>
+                    <th>Record Count</th>
+                    <th>Override Count</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="group in mod.currentPlugin.plugin_record_groups">
+                    <td>{{group.sig}} - {{group.name}}</td>
+                    <td>{{group.record_count}}</td>
+                    <td>{{group.override_count}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="content-block" ng-if="mod.currentPlugin && mod.currentPlugin.plugin_errors.length > 0">
+        <div class="content-title">
+            Plugin Errors
+            <span class="action-box right-item" ng-click="toggleShowBenignErrors()">
+                {{showBenignErrors ? 'Hide' : 'Show'}} Benign Errors
+            </span>
+        </div>
+
+        <div class="content-container analysis-container">
+            <div ng-repeat="errorType in mod.currentPlugin.plugin_errors" ng-if="errorType.errors.length && (!errorType.benign || showBenignErrors)">
+                <h3 class="section-title">
+                    {{errorType.errors.length}} {{errorType.name}} ({{errorType.acronym}}s)
+                    <a ng-href="/help/plugin_errors#{{errorType.acronym}}s" target="_blank">
+                        <span class="help-tooltip" title="{{(errorType.caption + '  Click for more information.').wordwrap()}}">
+                            <i class="fa fa-question-circle"></i>
+                        </span>
+                    </a>
+                </h3>
+                <span class="error-explanation">{{errorType.caption}}</span>
+                <ul class="errors-list">
+                    <li ng-repeat="error in errorType.errors">
+                        <plugin-error error="error"></plugin-error>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="content-message content-error" ng-if="noCriticalErrors && !showBenignErrors">
+                The plugin has no critical errors known to cause problems.
+            </div>
+        </div>
+    </div>
+
+    <div class="content-block" ng-if="mod.currentPlugin && mod.currentPlugin.has_overrides">
+        <div class="content-title">
+            Plugin Override Records
+        </div>
+
+        <div class="content-container analysis-container">
+            <div ng-repeat="master in mod.currentPlugin.masters" ng-if="master.overrides.length > 0">
+                <h3 class="section-title">{{master.master_plugin.filename}}</h3>
+                <ul class="overrides-list">
+                    <li ng-repeat="override in master.overrides | limitTo: master.max_overrides" bindonce bo-text="'[' + override.sig + ':'  + (override.fid | hex:8) + ']'"></li>
+                    <li class="show-more" ng-if="master.max_overrides < master.overrides.length" ng-click="showMore(master)">Show More</li>
+                    <li class="show-less" ng-if="master.max_overrides > 1000" ng-click="showLess(master)">Show Less</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="content-block" ng-if="mod.assets.length > 0">
+        <div class="content-title">
+            Assets
+        </div>
+
+        <div class="content-container analysis-container">
+            <asset-tree assets="mod.nestedAssets"></asset-tree>
+        </div>
+    </div>
+
+    <div class="content-message" ng-if="mod.assets.length == 0 && mod.plugins.length == 0">
+        There is no analysis available for this mod.
+    </div>
+</loader>
+
+<error-display content-class="content-message" errors="errors.analysis" label="the analysis for this mod"></error-display>

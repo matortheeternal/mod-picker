@@ -1,7 +1,0 @@
-<div class="page-results-container" ng-show="data" ng-init="range = pageRange()">
-    <span ng-repeat="page in range"><!--
-        --><span class="page-ellipsis" ng-if="page - range[$index - 1] > 1">...</span><!--
-        --><a class="page-item" ng-click="getMods(page)" ng-if="page != pages.current">{{page}}</a><!--
-        --><span class="page-item" ng-if="page == pages.current">{{page}}</span><!--
-    --></span>
-</div>

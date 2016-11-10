@@ -70,9 +70,9 @@ class Rack::Attack
     end
   end
 
-  # Throttle POST requests to make new incorrect notes by IP
+  # Throttle POST requests to make new corrections by IP
   throttle("new_tags", :limit => 12, :period => 60.minutes) do |req|
-    if req.post? && req.path == '/incorrect_notes'
+    if req.post? && req.path == '/corrections'
       req.ip
     end
   end
@@ -98,8 +98,8 @@ class Rack::Attack
   #   end
   # end
 
-  # Throttle all requests by IP (60rpm) excluding assets
-  throttle('req/ip', :limit => 300, :period => 5.minutes) do |req|
+  # Throttle all requests by IP (180rpm) excluding assets
+  throttle('req/ip', :limit => 900, :period => 5.minutes) do |req|
     req.ip unless req.path.start_with?('/assets')
   end
 

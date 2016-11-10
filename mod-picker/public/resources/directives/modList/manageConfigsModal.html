@@ -1,0 +1,17 @@
+<div class="modal-container" ng-click="unfocusManageConfigsModal($event)">
+    <div class="modal huge-modal">
+        <div class="close-modal">
+            <span class="fa fa-times" ng-click="toggleManageConfigsModal()"></span>
+        </div>
+
+        <h2>Manage Config Files</h2>
+
+        <label class="manage-item" ng-repeat="config in configs_store">
+            <input type="checkbox" ng-click="toggleConfig(config)" ng-model="config.active"/> {{config.filename}}
+        </label>
+
+        <div class="content-message" ng-if="!configs_store.length">
+            No available config files to manage.  Try adding some mods to your mod list.
+        </div>
+    </div>
+</div>

@@ -1,0 +1,61 @@
+<div class="comment-user-column">
+    <span class="user-avatar">
+        <img class="avatar avatar-small" ng-src="{{getSubmitterAvatar()}}"/>
+    </span>
+</div>
+
+<div class="comment-content-column">
+    <div class="comment-header">
+        <span class="user-name">
+            <a class="strong user-role-{{comment.submitter.role}}" ng-href="/{{currentGame.nexus_name}}#/user/{{comment.submitter.id}}" target="_blank" tabindex="{{index}}">{{comment.submitter.username}}</a>
+        </span>
+        <span class="user-title">
+            {{comment.submitter.title}}
+        </span>
+        <!-- TODO: Use a relative date -->
+        <!-- TODO: Show date edited in title as well -->
+        <span class="date-submitted" title="{{getDateString()}}">
+            {{comment.submitted | relativeDate}}
+        </span>
+    </div>
+
+    <div class="comment-text-container" ng-class="{ 'half-opacity' : comment.hidden }" marked="comment.text_body" ng-if="!comment.editing"></div>
+    <div class="edit-container" ng-if="comment.editing">
+        <text-area data="activeComment.text_body" on-change="validateComment" ng-refresh="updateMDE"></text-area>
+
+        <div class="action-button-container">
+            <input class="btn action-btn" type="submit" value="Submit" ng-click="saveComment()" ng-disabled="!activeComment.valid" title="{{activeComment.valid ? 'Submit your comment' : 'Your comment is too short.'}}"/>
+            <input class="btn action-btn" type="button" value="Discard" ng-click="discardComment()">
+        </div>
+    </div>
+
+    <div class="comment-actions-container" ng-if="!comment.editing">
+        <a class="action-item" ng-if="canReply" tabindex="{{index}}" ng-click="reply()">reply</a>
+        <a class="action-item" ng-if="canReport && !isSubmitter" tabindex="{{index}}" ng-click="toggleReportModal(true)">report</a>
+        <a class="action-item" ng-if="showContext" tabindex="{{index}}" ng-href="{{comment.context_link}}">context</a>
+        <a class="action-item" ng-if="canEdit" tabindex="{{index}}" ng-click="edit()">edit</a>
+        <a class="action-item" ng-if="canHide && !comment.hidden" tabindex="{{index}}" ng-click="hide(true)">hide</a>
+        <a class="action-item" ng-if="canHide && comment.hidden" tabindex="{{index}}" ng-click="hide(false)">unhide</a>
+        <!-- Hidden box -->
+        <span class="action-box yellow-box no-action" ng-if="comment.hidden">Hidden</span>
+    </div>
+
+    <report-modal ng-if="showReportModal"></report-modal>
+
+    <div class="reply-container" ng-if="comment.replying">
+        <text-area data="activeComment.text_body" on-change="validateComment" ng-refresh="updateMDE"></text-area>
+
+        <div class="action-button-container">
+            <input class="btn action-btn" type="submit" value="Submit" ng-click="saveComment()" ng-disabled="!activeComment.valid" title="{{activeComment.valid ? 'Submit your comment' : 'Your comment is too short.'}}"/>
+            <input class="btn action-btn" type="button" value="Discard" ng-click="discardComment()">
+        </div>
+    </div>
+
+    <!-- TODO: Hide children past the third child by default -->
+    <!-- TODO: Create link to show all children -->
+    <div class="child-comments" ng-if="comment.children.length">
+        <div class="comment-container" ng-repeat="child in comment.children">
+            <comment comment="child" index="index" save-callback="saveCallback"  is-child="true"></comment>
+        </div>
+    </div>
+</div>

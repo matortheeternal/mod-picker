@@ -1,0 +1,111 @@
+.help-header {
+  background-color: $bar_color;
+}
+
+nav {
+  white-space: nowrap;
+  height: 64px;
+  width: $max-width-container;
+  margin: 0 auto;
+  position: relative;
+
+  a {
+    text-decoration: none;
+
+    &:link, &:visited {
+      color: $bar_text_color;
+    }
+
+    &:hover {
+      color: $bar_highlight_text_color;
+    }
+  }
+
+  .primary-nav {
+    display: inline-block;
+    background-color: $bar_color;
+    margin-top: 2px;
+
+    > a {
+      display: inline-block;
+    }
+
+    .logo {
+      width: 240px;
+      display: inline-block;
+      text-decoration: none;
+      margin-bottom: 0;
+
+      h1 {
+        margin: 0;
+        top: 14px;
+        font-size: 30px !important;
+      }
+
+      i {
+        font-size: 58px !important;
+      }
+
+      &:hover {
+        color: $bar_text_color;
+      }
+    }
+  }
+
+  .primary-nav-links {
+    display: inline-block;
+    vertical-align: top;
+    padding-top: 25px;
+
+    a {
+      margin-right: 1rem;
+    }
+
+    a.active{
+      border-bottom: 3px solid $link_hover_color_primary;
+      padding-bottom: 2px;
+      @include link_style($link_hover_color_primary, $link_hover_color_primary);
+    }
+  }
+
+  .secondary-nav {
+    display: inline-block;
+    position: absolute;
+    top: 17px;
+    right: 0;
+
+    .search-form {
+      display: inline-block;
+      margin-right: 4px;
+
+      input {
+        float: left;
+        height: 35px;
+        vertical-align: top;
+        padding: 8px;
+      }
+
+      input[type="text"] {
+        width: 200px;
+        font-size: 13px;
+        margin: 0 auto;
+        padding: 0 8px;
+        border: 0 none;
+        -moz-appearance: none;
+        border-radius: 0;
+      }
+    }
+  }
+
+  // Search bar user nav links
+  .user-nav {
+    display: inline-block;
+    margin: 0 auto;
+    vertical-align: top;
+    padding-top: 8px;
+
+    a {
+      margin: 8px;
+    }
+  }
+}

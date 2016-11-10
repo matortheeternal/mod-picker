@@ -1,0 +1,20 @@
+{
+  "except": ["disallow_contributors", "hidden"],
+  "include": {
+    "submitter": {
+      "only": ["username"]
+    },
+    "nexus_infos": {},
+    "workshop_infos": {},
+    "lover_infos": {},
+    "custom_sources": {},
+    "mod_authors": {},
+    "primary_category": {
+      "only": ["name"]
+    },
+    "secondary_category": {
+      "only": ["name"]
+    }
+  },
+  "methods": "image"
+}

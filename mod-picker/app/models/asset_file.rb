@@ -1,6 +1,11 @@
 class AssetFile < ActiveRecord::Base
-  has_many :mod_asset_files, :inverse_of => 'asset_file'
-  has_many :mods, :through => 'mod_asset_files', :inverse_of => 'asset_files'
+  include RecordEnhancements, BetterJson, CounterCache
 
-  validates :filepath, presence: true
+  belongs_to :game, :inverse_of => 'asset_files'
+
+  has_many :mod_asset_files, :inverse_of => 'asset_file', :dependent => :destroy
+  has_many :mod_options, :through => 'mod_asset_files', :inverse_of => 'asset_files'
+
+  # VALIDATIONS
+  validates :game_id, :path, presence: true
 end

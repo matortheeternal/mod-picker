@@ -1,0 +1,20 @@
+<div class="fullscreen-modal-container" ng-if="submitting">
+    <div class="modal">
+        <loader data="success || errors" spinner-class="big-spinner">
+        </loader>
+        <h2>{{submittingStatus}}</h2>
+        <div ng-show="success">
+            <div ng-repeat="line in linksList" class="success-line">
+                <a ng-href="{{line.link}}">Click here</a> to {{line.linkLabel}}
+            </div>
+        </div>
+        <div ng-show="errors">
+            <div ng-repeat="error in errors">
+                {{error}}
+            </div>
+            <div class="submission-actions">
+                <a ng-click="closeModal()">Click here</a> to return to the submission form
+            </div>
+        </div>
+    </div>
+</div>

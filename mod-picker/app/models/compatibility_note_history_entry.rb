@@ -1,17 +1,16 @@
 class CompatibilityNoteHistoryEntry < ActiveRecord::Base
-  after_initialize :init
+  include BetterJson, CounterCache
 
-  belongs_to :compatibility_note, :inverse_of => 'compatibility_note_history_entries'
-  belongs_to :user, :foreign_key => 'submitted_by', :inverse_of => 'compatibility_note_history_entries'
+  # ATTRIBUTES
+  enum status: [:incompatible, :partially_incompatible, :compatibility_mod, :compatibility_option, :make_custom_patch]
 
-  enum status: [ :incompatible, :"partially incompatible", :"compatibility mod", :"compatibility option", :"make custom patch" ]
+  # ASSOCIATIONS
+  belongs_to :compatibility_note, :inverse_of => 'history_entries', :foreign_key => 'compatibility_note_id'
+  belongs_to :editor, :class_name => 'User', :foreign_key => 'edited_by', :inverse_of => 'compatibility_note_history_entries'
 
-  # validations
-  validates :compatibility_note_id, :edit_summary, :submitted_by, :submitted, presence: true
-  validates :edit_summary, length: {in: 0..255}
-  validates :text_body, length: {in: 64..16384}
+  # COUNTER CACHE
+  counter_cache_on :compatibility_note, column: 'history_entries_count'
 
-  def init
-    self.submitted  ||= DateTime.now
-  end
+  # VALIDATIONS
+  validates :compatibility_note_id, :edited_by, :status, :text_body, presence: true
 end

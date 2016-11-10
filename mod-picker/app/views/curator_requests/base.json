@@ -1,0 +1,9 @@
+{
+  "except": ["user_id", "mod_id"],
+  "include": {
+    "mod": {},
+    "submitter": {
+      "format": "card"
+    }
+  }
+}

@@ -1,0 +1,90 @@
+<div class="moderator-message" ng-if="target.hasOwnProperty('newModeratorNote')">
+    <div class="message-title">
+        {{target.moderator_message ? 'Edit' : 'New'}} Moderator Message
+    </div>
+
+    <textarea ng-model="target.newModeratorNote"></textarea>
+    <div class="action-button-container">
+        <input class="btn" type="submit" value="Save" ng-click="saveNote()"/>
+        <input class="btn" type="button" value="Cancel" ng-click="discardNote()">
+    </div>
+</div>
+
+<div class="moderator-message" ng-if="target.moderator_message && !target.hasOwnProperty('newModeratorNote')">
+    <div class="message-title">
+        Moderator Message
+        <span class="right-item remove-item" ng-if="canRemoveNote" ng-click="removeModeratorMessage()">
+            <i class="fa fa-times" aria-hidden="true"></i>
+        </span>
+    </div>
+    <div class="text-container" marked="target.moderator_message"></div>
+</div>
+
+<div class="actions-container">
+    <div class="action-box" ng-if="correctable" tabindex="{{index}}" ng-click="toggleCorrectionsModal(true)">View Corrections</div>
+    <div class="action-box" ng-focus="showDropdown = true" ng-blur="blurDropdown()" tabindex="{{index}}">
+        Actions <i class="fa fa-caret-down"></i>
+    </div>
+    <span class="actions-dropdown-container">
+        <div class="dropdown" ng-show="showDropdown">
+            <div class="dropdown-item" ng-if="hasHistory" ng-click="toggleHistoryModal(true)">View History</div>
+            <div class="dropdown-item" ng-click="toggleShareModal(true)" ng-if="!agreeable">Get Link</div>
+            <div class="dropdown-item" ng-if="canReport" ng-click="toggleReportModal(true)">Report</div>
+            <div class="dropdown-separator" ng-if="(hasHistory || !agreeable || canReport) && (canEdit || canApprove || canHide)"></div>
+            <div class="dropdown-item" ng-if="canEdit" ng-click="edit(target)">Edit</div>
+            <div class="dropdown-item" ng-if="canEditNote" ng-click="editNote()">
+                {{target.moderator_message? "Edit" : "Add"}} Mod Note
+            </div>
+            <div class="dropdown-item" ng-if="canApprove && !target.approved" ng-click="approve(true)">Approve</div>
+            <div class="dropdown-item" ng-if="canApprove && target.approved" ng-click="approve(false)">Unapprove</div>
+            <div class="dropdown-item" ng-if="canHide && !target.hidden" ng-click="hide(true)">Hide</div>
+            <div class="dropdown-item" ng-if="canHide && target.hidden" ng-click="hide(false)">Unhide</div>
+        </div>
+    </span>
+    <span class="right-item" ng-if="!target.hidden">
+        <!-- Helpful marks -->
+        <span ng-if="!agreeable && target.approved && showMarks">
+            <div class="action-box" ng-class="{ 'green-box' : target.helpful }" ng-click="helpfulMark(true)" tabindex="{{index}}">
+                Helpful
+                <span ng-show="target.helpful_count > 0">({{target.helpful_count}})</span>
+            </div>
+            <div class="action-box" ng-class="{ 'red-box' : target.helpful !== undefined && !target.helpful }" ng-click="helpfulMark(false)" tabindex="{{index}}">
+                Not Helpful
+                <span ng-show="target.not_helpful_count > 0">({{target.not_helpful_count}})</span>
+            </div>
+        </span>
+        <!-- Agreement marks -->
+        <span ng-if="canAgree && showMarks">
+            <div class="action-box" ng-class="{ 'green-box' : target.agree }" ng-click="agreementMark(true)" tabindex="{{index}}">
+                Agree
+                <span ng-show="target.agree_count > 0">({{target.agree_count}})</span>
+            </div>
+            <div class="action-box" ng-class="{ 'red-box' : target.agree !== undefined && !target.agree }" ng-click="agreementMark(false)" tabindex="{{index}}">
+                Disagree
+                <span ng-show="target.disagree_count > 0">({{target.disagree_count}})</span>
+            </div>
+        </span>
+        <!-- Agreement overview -->
+        <span ng-if="agreeable && !canAgree">
+            <div class="action-box no-action" ng-if="target.status === 'open'" title="{{target.agree_count}} agree, {{target.disagree_count}} disagree">
+                Open ({{computeAgreePercentage(target) | number:0}}%)
+            </div>
+            <div class="action-box green-box no-action" ng-if="target.status === 'passed'" title="{{target.agree_count}} agreed, {{target.disagree_count}} disagreed">
+                Passed ({{computeAgreePercentage(target) | number:0}}%)
+            </div>
+            <div class="action-box red-box no-action" ng-if="target.status === 'failed'" title="{{target.agree_count}} agreed, {{target.disagree_count}} disagreed">
+                Failed ({{computeAgreePercentage(target) | number:0}}%)
+            </div>
+        </span>
+    </span>
+    <!-- Hidden / Not Approved boxes -->
+    <span class="right-item" ng-if="target.hidden || (approveable && !target.approved)">
+        <div class="action-box yellow-box no-action" ng-if="target.hidden">Hidden</div>
+        <div class="action-box red-box no-action" ng-if="!(target.hidden || target.approved)">Not Approved</div>
+    </span>
+</div>
+
+<share-modal ng-if="showShareModal"></share-modal>
+<report-modal ng-if="showReportModal"></report-modal>
+<corrections-modal ng-if="showCorrectionsModal"></corrections-modal>
+<history-modal ng-if="showHistoryModal"></history-modal>

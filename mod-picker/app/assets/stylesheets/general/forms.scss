@@ -1,0 +1,270 @@
+/* css for forms, inputs, and labels */
+select {
+  background-color: $input_background;
+  border: 1px solid $border_color;
+  border-radius: 4%;
+  color: $h4_color;
+  font: inherit;
+  padding: 0.5em 2.5em 0.5em 0.5em;
+
+  // reset browser style
+  margin: 0;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  // background
+  background-image:
+          linear-gradient(45deg, transparent 49%, $input_background 50%),
+          linear-gradient(135deg, $input_background 50%, transparent 51%),
+          linear-gradient(to right, $action_color, $action_color);
+  background-position:
+          calc(100% - 1em) 50%,
+          calc(100% - .5em) 50%,
+          100% 0;
+  background-size:
+          //these are slightly wider than their actual size to stop rounding
+          //from leaving a space in between the two triangles
+          .54em .5em,
+          .54em .5em,
+          2em 100%;
+  background-repeat: no-repeat;
+}
+
+.big-text-area, .medium-text-area, .small-text-area {
+  width: 100%;
+  max-width: 100%;
+  overflow-y: auto;
+  padding: 4px;
+  font-size: 16px;
+  font-family: inherit;
+}
+
+.big-text-area {
+  height: 300px;
+}
+
+.medium-text-area {
+  width: 500px;
+  height: 150px;
+}
+
+.small-text-area {
+  height: 60px;
+}
+
+input, textarea {
+  background-color: $input_background;
+  color: $text_color;
+  border: 1px solid $hard_border_color;
+}
+
+input[type="text"], input[type="email"], input[type="password"] {
+  &:disabled {
+    border: 2px inset;
+  }
+}
+
+input[type="file"] {
+  display: none;
+}
+
+.CodeMirror {
+  background-color: $input_background;
+  color: $text_color;
+  border-radius: 0;
+
+  div.CodeMirror-cursor {
+    border-left: 1px solid $text_color;
+  }
+
+  .CodeMirror-line {
+    @include wordbreak;
+  }
+
+  span.cm-invalidchar[title="\\ufeff"] {
+    display: none;
+  }
+}
+
+.text-container {
+  width: 100%;
+  margin: 10px 0;
+}
+
+.text-container, .comment-text-container {
+  @include wordbreak;
+
+  h1 {
+    color: $text_color;
+  }
+}
+
+.editor-toolbar {
+  cursor: default;
+  border-radius: 0;
+}
+
+input[type="checkbox"] {
+  margin: 0;
+  padding: 0;
+}
+
+.max-input {
+  width: 100% !important;
+  font-size: 13px !important;
+  padding: 6px !important;
+  height: 32px !important;
+}
+
+.checkbox-list {
+  padding: 0;
+  margin: 0;
+  font-size: 12px;
+
+  li {
+    list-style: outside none none;
+    padding: 0;
+    margin-bottom: 2px;
+  }
+}
+
+label {
+  @include user-select(none);
+}
+
+label .sublabel {
+  padding-left: 5px;
+}
+
+form {
+  .section-title {
+    display: block;
+    vertical-align: top;
+    font-size: 22px;
+    font-weight: 500;
+    color: $text_color;
+  }
+
+  .line-label {
+    margin-bottom: 4px;
+  }
+
+  section {
+    display: block;
+    margin-top: 15px;
+    margin-left: 30px;
+    margin-bottom: 30px;
+
+    .subtitle {
+      font-size: 16px;
+      margin-top: 25px;
+      margin-left: 0;
+      margin-bottom: 0;
+    }
+
+    .subsection {
+      display: block;
+      margin-bottom: 15px;
+      margin-top: 15px;
+    }
+
+    section {
+      margin-bottom: 15px;
+      margin-top: 15px;
+    }
+
+    select {
+      font-size: 13px;
+      line-height: normal;
+      height: 32px;
+      min-width: 200px;
+      margin-right: 4px;
+    }
+
+    input[type="text"], input[type="password"], input[type="email"] {
+      vertical-align: top;
+      min-width: 350px;
+      font-size: 20px;
+      height: 32px;
+      padding: 4px;
+    }
+
+    input[type="text"].fuzzy-input {
+      vertical-align: initial;
+      min-width: 100px;
+      font-size: inherit;
+      height: initial;
+      padding: initial;
+    }
+
+    input[type="date"] {
+      width: 150px;
+      font-family: inherit;
+      font-size: 13px;
+      height: 32px;
+    }
+
+    .checkbox-option {
+      display: inline-block;
+      margin-top: 4px;
+    }
+
+    input.long-input {
+      width: 400px;
+      font-size: 13px;
+      padding: 6px;
+      height: 32px;
+    }
+
+    input.medium-text {
+      font-size: 16px;
+    }
+
+    input.short-input {
+      width: 150px;
+    }
+
+    input.elastic-input {
+      min-width: 150px;
+      max-width: 600px;
+      font-size: 16px;
+      padding: 4px;
+    }
+  }
+
+  .input-label {
+    display: inline-block;
+    min-width: 180px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+  }
+
+  .input-block {
+    display: inline-block;
+  }
+}
+
+input.fuzzy-input {
+  background: none;
+  border: none;
+  font: inherit;
+  margin-top: -2px;
+  padding: 0 4px;
+  max-width: 850px;
+  @include transition(box-shadow 0.2s ease-in-out);
+
+  &:hover {
+    box-shadow: 0 0 3px 1px $action_color;
+  }
+
+  &:focus {
+    background-color: $input_background;
+    box-shadow: 0 0 3px 1px $action_color;
+    outline: none;
+  }
+
+  &:disabled {
+    box-shadow: none !important;
+    border: none;
+  }
+}

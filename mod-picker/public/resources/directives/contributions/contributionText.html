@@ -1,0 +1,9 @@
+<div class="submitted-line">Submitted {{target.submitted | date : 'longDate'}} - {{target.submitted | date : 'shortTime'}}</div>
+<div class="text-container" ng-class="{ 'half-opacity' : target.hidden }">
+    <read-more text="target.text_body" words="75"></read-more>
+</div>
+<div class="edit-summary" ng-if="target.edited">
+    Edited {{target.edited | date : 'longDate'}} - {{target.edited | date : 'shortTime'}}
+    <span ng-show="target.editor">by <a href="#/profile/{{target.editor.id}}">{{target.editor.username}}</a></span><br>
+    <span ng-show="target.edit_summary">{{target.edit_summary}}</span>
+</div>

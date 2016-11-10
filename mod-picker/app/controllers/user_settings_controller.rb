@@ -1,39 +1,65 @@
 class UserSettingsController < ApplicationController
-  before_action :set_user_setting, only: [:update]
+  before_action :check_sign_in
+  before_action :set_user, only: [:show, :update]
+  before_action :set_current_user, only: [:link_account, :avatar]
 
-  # GET /user_settings
-  # GET /user_settings.json
-  # returns the current user's settings
-  def index
-    @user_setting = current_user.settings
-
-    render :json => @user_setting
+  # GET /settings/:id
+  def show
+    authorize! :update, @user
+    respond_with_json(@user, :settings, :user)
   end
 
-  # PATCH/PUT /user_settings/1
-  # PATCH/PUT /user_settings/1.json
+  # PATCH/PUT /settings/:id
   def update
-    authorize! :update, @user_settings
-    if @user_setting.update(user_setting_params)
+    authorize! :update, @user
+    authorize! :set_custom_title, @user if params[:user].has_key?(:title)
+    authorize! :assign_roles, @user if params[:user].has_key?(:role)
+
+    if @user.update(user_params)
       render json: {status: :ok}
     else
-      render json: @user_setting.errors, status: :unprocessable_entity
+      render json: @user.errors, status: :unprocessable_entity
+    end
+  end
+
+  # GET /settings/link_account
+  def link_account
+    bio = @user.bio
+
+    if bio.verify_account(params[:site], params[:user_path])
+      render json: {status: :ok, verified: true, bio: bio}
+    else
+      render json: {status: :ok, verified: false}
+    end
+  end
+
+  # POST /settings/avatar
+  def avatar
+    authorize! :set_avatar, @user
+
+    if @user.update(avatar_params)
+      render json: {status: :ok}
+    else
+      render json: @user.errors, status: :unprocessable_entity
     end
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
-    def set_user_setting
-      @user_setting = UserSetting.find(params[:id])
+    def set_user
+      @user = User.find(params[:id])
     end
 
-    # Params we allow filtering on
-    def filtering_params
-      params.slice(:user);
+    def set_current_user
+      @user = current_user
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
-    def user_setting_params
-      params.require(:user_setting).permit(:id, :show_notifications, :show_tooltips, :email_notifications, :email_public, :allow_adult_content, :allow_nexus_mods, :allow_lovers_lab, :allow_steam_workshop, :timezone, :udate_format, :utime_format, :allow_comments, :theme)
+    def user_params
+      params.require(:user).permit(:username, :role, :title, :joined, :about_me, :settings_attributes => [:id, :theme, :allow_comments, :show_notifications, :email_notifications, :email_public, :allow_adult_content, :enable_spellcheck, :disable_helper, :allow_nexus_mods, :allow_lovers_lab, :allow_steam_workshop])
+    end
+
+    def avatar_params
+      {image_file: params[:avatar]}
     end
 end

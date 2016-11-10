@@ -1,0 +1,27 @@
+<h3 class="section-title">Config Files
+    <span class="help-tooltip" ng-hide="hideTooltips" title="Plaintext files that can be edited by users to customize how this mod/tool functions.">
+        <i class="fa fa-question-circle"></i>
+    </span>
+    <span ng-hide="configsValid" class="error-tooltip" title="One or more config files is invalid.">
+        <i class="fa fa-exclamation-circle"></i>
+    </span>
+</h3>
+<section>
+    <div class="dynamic-item dynamic-block" ng-repeat="configFile in mod.config_files" ng-hide="configFile._destroy">
+        <span class="remove-item" ng-click="removeConfigFile(configFile)" title="Remove config file">
+            <i class="fa fa-times"></i>
+        </span>
+        <label class="subsection">
+            <strong>Filename</strong>
+            <input type="text" class="elastic-input" ng-model="configFile.filename" spellcheck="false" pu-elastic-input>
+        </label>
+        <label class="subsection">
+            <strong>Install Path</strong>
+            <input type="text" class="elastic-input" ng-model="configFile.install_path" spellcheck="false" pu-elastic-input>
+        </label>
+        <label class="subsection">
+            <textarea class="config-editor" ng-model="configFile.text_body" spellcheck="false" placeholder="Enter default text body here"></textarea>
+        </label>
+    </div>
+    <input type="button" class="btn" value="Add Config File" ng-click="addConfigFile()">
+</section>

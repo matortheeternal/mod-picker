@@ -1,1 +1,1 @@
-call rake db:drop db:create db:schema:load
+call rake db:drop db:create db:schema:load RAILS_ENV=development

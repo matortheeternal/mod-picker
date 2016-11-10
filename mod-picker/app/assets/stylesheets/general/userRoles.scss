@@ -1,0 +1,25 @@
+/* user roles */
+.user-role-admin {
+  color: $admin_color !important;
+}
+
+.user-role-moderator {
+  color: $moderator_color !important;
+}
+
+.user-role-writer {
+  color: $news_writer_color !important;
+}
+
+.user-role-author {
+  color: $mod_author_color !important;
+}
+
+.user-role-restricted {
+  color: $medium_text_color !important;
+}
+
+.user-role-banned {
+  color: $soft_text_color !important;
+  text-decoration: line-through;
+}

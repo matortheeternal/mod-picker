@@ -1,0 +1,31 @@
+/* css for dropdowns */
+.dropdown {
+  color: $text_color;
+  background-color: $primary_background;
+  opacity: 1.0;
+  position: absolute;
+  top: 20px;
+  left: -4px;
+  z-index: 3;
+  min-width: 120px;
+  padding: 6px;
+  font-size: 12px;
+  border: 1px solid $hard_border_color;
+  cursor: pointer;
+
+  .dropdown-item {
+    padding: 4px;
+    margin-bottom: 2px;
+    text-align: left;
+  }
+
+  .dropdown-separator {
+    border-bottom: 1px solid $hard_border_color;
+    margin: 8px 4px;
+  }
+
+  .dropdown-selected-item, .dropdown-item:hover {
+    background-color: $action_color;
+    color: $action_text_color;
+  }
+}

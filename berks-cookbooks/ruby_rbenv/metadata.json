@@ -1,0 +1,58 @@
+{
+  "name": "ruby_rbenv",
+  "description": "Manages rbenv and its installed rubies. Several LWRPs are also defined.",
+  "long_description": "Please refer to README.md (it's long).",
+  "maintainer": "Fletcher Nichol",
+  "maintainer_email": "fnichol@nichol.ca",
+  "license": "Apache 2.0",
+  "platforms": {
+    "ubuntu": ">= 0.0.0",
+    "linuxmint": ">= 0.0.0",
+    "debian": ">= 0.0.0",
+    "freebsd": ">= 0.0.0",
+    "redhat": ">= 0.0.0",
+    "centos": ">= 0.0.0",
+    "fedora": ">= 0.0.0",
+    "amazon": ">= 0.0.0",
+    "scientific": ">= 0.0.0",
+    "suse": ">= 0.0.0",
+    "mac_os_x": ">= 0.0.0",
+    "gentoo": ">= 0.0.0",
+    "arch": ">= 0.0.0"
+  },
+  "dependencies": {
+    "ruby_build": ">= 0.0.0"
+  },
+  "recommendations": {
+    "java": "> 1.4.0"
+  },
+  "suggestions": {
+  },
+  "conflicting": {
+  },
+  "providing": {
+  },
+  "replacing": {
+  },
+  "attributes": {
+  },
+  "groupings": {
+  },
+  "recipes": {
+  },
+  "version": "1.1.0",
+  "source_url": "https://github.com/chef-rbenv/ruby_rbenv",
+  "issues_url": "https://github.com/chef-rbenv/ruby_rbenv/issues",
+  "privacy": false,
+  "chef_versions": [
+    [
+      ">= 12.0"
+    ]
+  ],
+  "ohai_versions": [
+
+  ],
+  "gems": [
+
+  ]
+}

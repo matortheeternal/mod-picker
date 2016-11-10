@@ -1,0 +1,54 @@
+<% content_for :head do %>
+    <title>Mod Picker: Help Center</title>
+<% end %>
+
+<div class="landing-page-container">
+    <div class="landing-header">
+        <h1 class="no-margin">Explore our Help Center</h1>
+        <h3 class="no-margin thin">All the resources you need to get a Mod List up and running</h3>
+    </div>
+
+    <div class="category-container clearfix">
+        <ul>
+            <% @categories.each do |category| %>
+            <li class="page">
+                <div class="page-content">
+                    <%= link_to "/help/category/#{category}" do %>
+                        <%= image_tag(category_image_path(category)) %>
+                    <% end %>
+                    <h3 class="capitalize">
+                        <%= link_to "#{category.humanize}", "/help/category/#{category}" %>
+                    </h3>
+                </div>
+            </li>
+            <% end %>
+        </ul>
+    </div>
+
+    <hr style="max-width: 1220px;">
+
+    <div class="games-category-container category-container clearfix">
+        <div>
+            <h3 class="no-margin strong">Games</h3>
+            <h4 class="no-margin thin">Articles specific to the games you're interested in modding</h4>
+        </div>
+
+        <ul>
+            <% @games.each do |game| %>
+            <% if game.help_pages_count > 0 %>
+            <% game_link = game.url %>
+            <li class="page">
+                <div class="page-content">
+                    <%= link_to "/help/game/#{game_link}" do %>
+                    <%= image_tag "#{game.display_image}", alt: "#{game.display_name} image" %>
+                    <% end %>
+                    <h3 class="capitalize">
+                        <%= link_to "#{game.display_name}", "help/game/#{game_link}" %>
+                    </h3>
+                </div>
+            </li>
+            <% end %>
+            <% end %>
+        </ul>
+    </div>
+</div>

@@ -1,0 +1,29 @@
+/* css for pagination */
+.page-results-container {
+  margin: auto;
+  padding: 14px;
+  text-align: center;
+
+  .page-item {
+    border: 1px solid $border_color;
+    background-color: $background-highlight;
+    padding: 4px;
+    font: inherit;
+    cursor: pointer;
+    color: $link_color;
+
+    &:hover {
+      color: $link_hover_color_primary;
+    }
+
+    &:disabled {
+      color: inherit;
+      cursor: auto;
+    }
+  }
+
+  .page-ellipsis {
+    margin-left: 3px;
+    margin-right: 3px;
+  }
+}
