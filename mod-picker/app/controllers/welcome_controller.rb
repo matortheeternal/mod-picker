@@ -1,5 +1,6 @@
 class WelcomeController < ApplicationController
   def index
-    render layout: "under_construction"
+    return redirect_to "/skyrim" if current_user.present?
+    render layout: "landing"
   end
 end

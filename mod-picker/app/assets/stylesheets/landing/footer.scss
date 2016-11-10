@@ -1,0 +1,22 @@
+footer {
+  text-align: center;
+  background-color: $background_under;
+  color: $inverse_text_color;
+  padding-bottom: 60px;
+
+  a {
+    padding: 2px;
+    margin: 8px;
+  }
+
+  div {
+    margin-top: 12px;
+    white-space: nowrap;
+  }
+}
+
+@media screen and (max-device-width: 480px) {
+  footer {
+    font-size: 26px;
+  }
+}

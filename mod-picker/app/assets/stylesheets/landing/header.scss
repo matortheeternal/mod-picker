@@ -1,0 +1,116 @@
+header {
+  background: transparent;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 2;
+
+  .nav-container {
+    background: transparent;
+    @include transition(background-color 0.5s ease-in-out);
+
+    &.sticky {
+      position: fixed;
+      background-color: $bar_color;
+      width: 100%;
+    }
+  }
+}
+
+nav {
+  white-space: nowrap;
+  height: 64px;
+  width: $max-width-container;
+  max-width: 100%;
+  margin: 0 auto;
+  position: relative;
+
+  a {
+    text-decoration: none;
+
+    &:link, &:visited {
+      color: $bar_text_color;
+    }
+
+    &:hover {
+      color: $bar_highlight_text_color;
+    }
+  }
+
+  .primary-nav {
+    display: inline-block;
+    margin: 2px 8px;
+
+    > a {
+      display: inline-block;
+    }
+
+    .logo {
+      width: 240px;
+      display: inline-block;
+      text-decoration: none;
+      margin-bottom: 0;
+
+      h1 {
+        margin: 0;
+        top: 14px;
+        font-size: 30px !important;
+      }
+
+      i {
+        font-size: 58px !important;
+      }
+
+      &:hover {
+        color: $bar_text_color;
+      }
+    }
+  }
+
+  .primary-nav-links {
+    display: inline-block;
+    vertical-align: top;
+    padding-top: 25px;
+
+    a {
+      margin-right: 1rem;
+    }
+
+    a.active{
+      border-bottom: 3px solid $link_hover_color_primary;
+      padding-bottom: 2px;
+      @include link_style($link_hover_color_primary, $link_hover_color_primary);
+    }
+  }
+
+  .secondary-nav {
+    display: inline-block;
+    position: absolute;
+    top: 17px;
+    right: 8px;
+
+    .games {
+      display: inline-block;
+      margin-right: 16px;
+
+      .coming-soon {
+        opacity: 0.4;
+      }
+
+      img {
+        height: 50px;
+        margin-top: -9px;
+      }
+    }
+
+    .user-nav {
+      display: inline-flex;
+      margin: 0 auto;
+      vertical-align: top;
+
+      a {
+        margin: 0 4px;
+      }
+    }
+  }
+}
