@@ -1,12 +1,21 @@
 app.service('imageUtils', function() {
     var service = this;
 
-    this.makeImageSize = function(img, size, imageObj) {
+    this.makeImageSize = function(imageFile, size, imageObj, apply) {
         var maxWidth = size.width || size.size;
         var maxHeight = size.height || size.size;
-        service.scaleImage(img, maxWidth, maxHeight, function(blob) {
-            imageObj.files[size.label] = blob;
-        });
+        var img = new Image();
+        img.src = URL.createObjectURL(imageFile);
+        img.onload = function() {
+            service.scaleImage(img, maxWidth, maxHeight, function(blob) {
+                imageObj.sizes.push({
+                    label: size.label,
+                    file: blob,
+                    src: URL.createObjectURL(blob)
+                });
+                apply();
+            });
+        };
     };
 
     // returns a blob of the scaled img through callback
@@ -38,7 +47,7 @@ app.service('imageUtils', function() {
             canvas = service.scaleCanvasWithAlgorithm(canvas, heightScale);
         }
 
-        canvas.toBlob(callback);
+        canvas.toBlob(callback, 'image/jpeg', 0.9);
     };
 
     // scales the canvas by .5
