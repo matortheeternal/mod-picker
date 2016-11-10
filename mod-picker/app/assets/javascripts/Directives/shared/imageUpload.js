@@ -5,6 +5,7 @@ app.directive('imageUpload', function() {
         scope: {
             image: '=',
             canChange: '=',
+            defaultSize: '@',
             defaultSrc: '=',
             sizes: '=',
             label: '@',
@@ -17,7 +18,7 @@ app.directive('imageUpload', function() {
 
 app.controller('imageUploadController', function($scope, $element, $filter, $timeout, fileUtils, imageUtils) {
     // set default value
-    angular.default($scope, 'maxFileSize', 262144);
+    angular.default($scope, 'defaultSize', 'medium');
     angular.default($scope, 'showExplanation', true);
 
     $scope.browseImage = function() {
@@ -26,33 +27,20 @@ app.controller('imageUploadController', function($scope, $element, $filter, $tim
     };
 
     $scope.resetImage = function() {
-        $scope.image.file = null;
-        $scope.image.files = {};
+        $scope.image.sizes = [{
+            label: $scope.defaultSize,
+            src: $scope.defaultSrc
+        }];
         $scope.image.changed = false;
-        $scope.image.src = $scope.defaultSrc;
         $scope.$applyAsync();
     };
 
-    $scope.makeImageSizes = function(img, imageFile) {
-        $scope.image.files = {};
-        $scope.sizes.forEach(function(size) {
-            imageUtils.makeImageSize(imageFile, size, $scope.image);
-        });
-    };
-
-    $scope.applyBaseImage = function() {
-        var baseImageFile = $scope.image.files[$scope.sizes[0]];
-        $scope.image.file = baseImageFile;
+    $scope.makeImageSizes = function(imageFile) {
+        $scope.image.sizes = [];
         $scope.image.changed = true;
-        $scope.image.src = URL.createObjectURL(baseImageFile);
-        $scope.$applyAsync();
-    };
-
-    $scope.loadImage = function(img, imageFile) {
-        img.onload = function() {
-            $scope.makeImageSizes(img, imageFile);
-            $timeout($scope.applyBaseImage);
-        };
+        $scope.sizes.forEach(function(size) {
+            imageUtils.makeImageSize(imageFile, size, $scope.image, $scope.$applyAsync);
+        });
     };
 
     $scope.checkImageFileType = function(imageFile) {
@@ -71,31 +59,11 @@ app.controller('imageUploadController', function($scope, $element, $filter, $tim
         return true;
     };
 
-    $scope.checkImageFileSize = function(imageFile) {
-        if (imageFile.size > $scope.maxFileSize) {
-            var capLabel = $scope.label.capitalize();
-            var maxFileSizeStr = $filter('bytes')($scope.maxFileSize);
-            var errorObj = {
-                type: "error",
-                text: capLabel+" file is too big.  Maximum file size "+maxFileSizeStr+"."
-            };
-            $scope.$emit("customMessage", errorObj);
-            $scope.resetImage();
-            return false;
-        }
-
-        return true;
-    };
-
     $scope.changeImage = function(event) {
         if (event.target.files && event.target.files[0]) {
             var imageFile = event.target.files[0];
             if (!$scope.checkImageFileType(imageFile)) return;
-            if (!$scope.checkImageFileSize(imageFile)) return;
-
-            // build and load image blob
-            var img = new Image();
-            $scope.loadImage(img, imageFile);
+            $scope.makeImageSizes(imageFile);
         }
     };
 });
