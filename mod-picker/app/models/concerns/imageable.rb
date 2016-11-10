@@ -2,54 +2,52 @@ module Imageable
   extend ActiveSupport::Concern
 
   included do
-    attr_writer :image_file
-
-    after_save :save_image
+    attr_writer :image_sizes
+    after_save :save_images
   end
 
-  def delete_old_images
-    png_path = Rails.root.join('public', self.class.table_name, self.id.to_s + '.png')
-    jpg_path = Rails.root.join('public', self.class.table_name, self.id.to_s + '.jpg')
-
-    if File.exist?(png_path)
-      File.delete(png_path)
-    end
-    if File.exist?(jpg_path)
-      File.delete(jpg_path)
-    end
+  def get_image_path(prefix, ext)
+    Rails.root.join('public', self.class.table_name, "#{id.to_s}-#{prefix}#{ext}")
   end
 
-  def save_image
-    if @image_file
-      ext = File.extname(@image_file.original_filename)
-      local_filename = Rails.root.join('public', self.class.table_name, self.id.to_s + ext)
-      if ext != '.png' && ext != '.jpg' # image must be png or jpg
-        self.errors.add(:image, 'Invalid image type, must be PNG or JPG')
-      elsif @image_file.size > 1048576
-        self.errors.add(:image, 'Image is too big')
-      else
-        begin
-          self.delete_old_images
-          File.open(local_filename, 'wb') do |f|
-            f.write(@image_file.read)
-          end
-        rescue
-          self.errors.add(:image, 'Unknown failure')
-        end
-      end
+  def delete_old_images(prefix)
+    png_path = get_image_path(prefix, 'png')
+    jpg_path = get_image_path(prefix, 'jpg')
+    File.delete(png_path) if File.exist?(png_path)
+    File.delete(jpg_path) if File.exist?(jpg_path)
+  end
+
+  # image must be png or jpg and below 1MB in file size
+  def image_valid(image, ext)
+    if ext != '.png' && ext != '.jpg'
+      errors.add(:image, 'Invalid image type, must be PNG or JPG')
+    elsif image.size > 1048576
+      errors.add(:image, 'Image is too big, maximum file size 1MB')
     end
+    errors.empty?
+  end
+
+  def save_image(image, prefix)
+    ext = File.extname(image.original_filename)
+    local_filename = get_image_path(prefix, ext)
+    if image_valid(image, ext)
+      delete_old_images(prefix)
+      File.open(local_filename, 'wb') { |f| f.write(image.read) }
+    end
+  rescue
+    errors.add(:image, 'Unknown failure')
+  end
+
+  def save_images
+    return unless @image_sizes.present?
+    @image_sizes.each_key { |size_key| save_image(@image_sizes[size_key], size_key) }
   end
 
   def image
-    table_name = self.class.table_name
-    png_path = File.join(Rails.public_path, "#{table_name}/#{id}.png")
-    jpg_path = File.join(Rails.public_path, "#{table_name}/#{id}.jpg")
-    if File.exists?(png_path)
-      "/#{table_name}/#{id}.png"
-    elsif File.exists?(jpg_path)
-      "/#{table_name}/#{id}.jpg"
-    else
-      "/#{table_name}/Default.png"
-    end
+    png_path = get_image_path('big', 'png')
+    jpg_path = get_image_path('big', 'jpg')
+    return png_path if File.exists?(png_path)
+    return jpg_path if File.exists?(jpg_path)
+    "/#{self.class.table_name}/Default.png"
   end
 end
