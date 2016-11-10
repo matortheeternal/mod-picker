@@ -5,6 +5,7 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
         var action = $q.defer();
         backend.post('/mods/index', options).then(function(data) {
             pageUtils.getPageInformation(data, pageInformation, options.page);
+            service.associateModImages(data.mods);
             action.resolve(data);
         }, function(response) {
             action.reject(response);
@@ -57,7 +58,14 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
     };
     
     this.retrieveMod = function(modId) {
-        return backend.retrieve('/mods/' + modId);
+        var action = $q.defer();
+        backend.retrieve('/mods/' + modId).then(function(data) {
+            service.associateModImage(data.mod);
+            action.resolve(data);
+        }, function(response) {
+            action.reject(response);
+        });
+        return action.promise;
     };
 
     this.retrieveModContributions = function(modId, route, options, pageInformation) {
@@ -431,5 +439,20 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
         items.forEach(function(item) {
             item.mod = angular.copy(service.getInstallOrderMod(installOrder, item.mod_option_id));
         });
+    };
+
+    this.associateModImage = function(mod) {
+        var imageBase = mod.image_type ? mod.id : 'Default';
+        var imageExt = mod.image_type || 'png';
+        mod.images = {
+            big: '/mods/' + imageBase + '-big.' + imageExt,
+            medium: '/mods/' + imageBase + '-medium.' + imageExt,
+            small: '/mods/' + imageBase + '-small.' + imageExt
+        };
+    };
+
+    this.associateModImages = function(mods) {
+        if (!mods) return;
+        mods.forEach(service.associateModImage);
     };
 });
