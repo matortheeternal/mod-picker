@@ -3,12 +3,7 @@ app.service('userSettingsService', function(backend, $q, objectUtils, userTitleS
         var action = $q.defer();
         backend.retrieve('/settings/' + userId).then(function(data) {
             var user = data.user;
-            //get user title if it's not custom
-            if (!user.title) {
-                userTitleService.getUserTitle(user.reputation.overall).then(function(title) {
-                    user.title = title;
-                });
-            }
+            userTitleService.associateUserTitle(user);
             action.resolve(data);
         }, function(response) {
             action.reject(response);

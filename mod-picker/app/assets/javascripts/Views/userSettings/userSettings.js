@@ -74,7 +74,7 @@ app.controller('userSettingsController', function($scope, $rootScope, $q, userOb
     $scope.settings = $scope.user.settings;
     $scope.errors = {};
     $scope.tabs = tabsFactory.buildUserSettingsTabs();
-    $scope.defaultSrc = $scope.user.avatar || '/users/' + $scope.user.title + '-medium.png';
+    $scope.defaultSrc = $scope.user.avatars.medium;
     $scope.avatar = {
         sizes: [
             { label: "medium", src: $scope.defaultSrc }
