@@ -42,9 +42,11 @@ app.controller('submitModController', function($scope, $rootScope, backend, modS
         custom_sources: [],
         requirements: []
     };
-    $scope.defaultImageSrc = '/mods/Default.png';
+    $scope.defaultSrc = '/mods/Default-big.png';
     $scope.image = {
-        src: $scope.defaultImageSrc
+        sizes: [
+            { label: "big", src: '/mods/Default-big.png' }
+        ]
     };
 
     // set page title
@@ -89,9 +91,9 @@ app.controller('submitModController', function($scope, $rootScope, backend, modS
             }
         ];
 
-        if ($scope.image.file) {
+        if ($scope.image.changed) {
             $scope.submittingStatus = "Submitting Mod Image...";
-            modService.submitImage(modId, $scope.image.file).then(function() {
+            modService.submitImage(modId, $scope.image.sizes).then(function() {
                 $scope.submissionSuccess("Mod submitted successfully!", successLinks);
             }, function(response) {
                 console.log('Image failed to submit: '+response);
