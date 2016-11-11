@@ -7,13 +7,16 @@ app.service('imageUtils', function() {
         var img = new Image();
         img.src = URL.createObjectURL(imageFile);
         img.onload = function() {
-            service.scaleImage(img, maxWidth, maxHeight, function(blob) {
-                imageObj.sizes.push({
-                    label: size.label,
-                    file: blob,
-                    src: URL.createObjectURL(blob)
-                });
-                apply();
+            service.scaleImage(img, maxWidth, maxHeight, function(ext) {
+                return function(blob) {
+                    var filename = size.label + '.' + ext;
+                    imageObj.sizes.push({
+                        label: size.label,
+                        file: new File([blob], filename),
+                        src: URL.createObjectURL(blob)
+                    });
+                    apply();
+                };
             });
         };
     };
@@ -49,9 +52,9 @@ app.service('imageUtils', function() {
 
         // return jpg at 90% quality unless the canvas has transparent pixels
         if (service.hasTransparentPixels(canvas)) {
-            canvas.toBlob(callback);
+            canvas.toBlob(callback('png'));
         } else {
-            canvas.toBlob(callback, 'image/jpeg', 0.9);
+            canvas.toBlob(callback('jpg'), 'image/jpeg', 0.9);
         }
     };
 
