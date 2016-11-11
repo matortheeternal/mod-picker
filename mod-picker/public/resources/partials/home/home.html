@@ -26,7 +26,7 @@
                     <section ng-repeat="mod in recent.mods">
                         <a ng-href="#/mod/{{mod.id}}">
                             <div class="recent-thing">
-                                <img ng-src="{{mod.image}}">
+                                <img ng-src="{{mod.images.small}}">
                                 <div>
                                     <div class="recent-title">{{mod.name}}</div>
                                     <div>by <span class="author">{{mod.authors}}</span></div>
