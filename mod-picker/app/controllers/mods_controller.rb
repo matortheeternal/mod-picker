@@ -436,6 +436,12 @@ class ModsController < ApplicationController
     end
 
     def image_params
-      {image_file: params[:image]}
+      {
+          images: {
+              big: params.require(:big),
+              medium: params.require(:medium),
+              small: params.require(:small)
+          }
+      }
     end
 end

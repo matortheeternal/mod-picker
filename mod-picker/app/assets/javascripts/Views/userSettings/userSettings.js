@@ -76,7 +76,9 @@ app.controller('userSettingsController', function($scope, $rootScope, $q, userOb
     $scope.tabs = tabsFactory.buildUserSettingsTabs();
     $scope.defaultSrc = $scope.user.avatar || '/users/' + $scope.user.title + '.png';
     $scope.avatar = {
-        src: $scope.defaultSrc
+        sizes: [
+            { label: "medium", src: $scope.defaultSrc }
+        ]
     };
 
     // set page title
@@ -100,8 +102,9 @@ app.controller('userSettingsController', function($scope, $rootScope, $q, userOb
     };
 
     $scope.updateAvatar = function() {
-        userSettingsService.submitAvatar($scope.avatar.file).then(function() {
-            $scope.$emit('successMessage', 'Avatar updated successfully.')
+        userSettingsService.submitAvatar($scope.avatar.sizes).then(function() {
+            $scope.$emit('successMessage', 'Avatar updated successfully.');
+            $scope.avatar.changed = false;
         }, function(response) {
             var params = {
                 label: 'Error updating avatar',
@@ -157,7 +160,7 @@ app.controller('userSettingsController', function($scope, $rootScope, $q, userOb
 
         // if no fields were changed, inform the user and return
         if (objectUtils.isEmptyObject(userDiff)) {
-            if (!$scope.avatar || !$scope.avatar.file) {
+            if (!$scope.avatar.changed) {
                 var message = {type: 'warning', text: 'There are no changes to save.'};
                 $scope.$broadcast('message', message);
                 return;
@@ -169,7 +172,7 @@ app.controller('userSettingsController', function($scope, $rootScope, $q, userOb
         }
 
         // submit avatar if changed
-        if ($scope.avatar && $scope.avatar.file) {
+        if ($scope.avatar.changed) {
             $scope.updateAvatar();
         }
     };

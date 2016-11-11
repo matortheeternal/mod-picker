@@ -1,11 +1,13 @@
 app.service('userTitleService', function(backend, $q) {
     var service = this;
+    var allTitles, gameTitles;
 
     this.retrieveUserTitles = function() {
         var userTitles = $q.defer();
-
         backend.retrieve('/user_titles').then(function(titles) {
             userTitles.resolve(titles);
+            allTitles = titles;
+            gameTitles = service.getSortedGameTitles(titles);
         });
         return userTitles.promise;
     };
@@ -20,37 +22,38 @@ app.service('userTitleService', function(backend, $q) {
         return gameTitles;
     };
 
-    //initialize title variables
-    var allTitles = this.retrieveUserTitles();
-
-    var gameTitles = allTitles.then(function(titles) {
-        return service.getSortedGameTitles(titles);
-    });
-
 
     this.getUserTitle = function(reputation) {
-        var output = $q.defer();
-        gameTitles.then(function(titles) {
-            var prevTitle = titles[0];
-            for (var i = 0; i < titles.length; i++) {
-                var title = titles[i];
-                if (reputation < title.rep_required) {
-                    output.resolve(prevTitle.title);
-                    return;
-                }
-                prevTitle = title;
+        var prevTitle = gameTitles[0];
+        for (var i = 0; i < gameTitles.length; i++) {
+            var title = gameTitles[i];
+            if (reputation < title.rep_required) {
+                return prevTitle.title;
             }
-            output.resolve(prevTitle.title);
-        });
-        return output.promise;
+            prevTitle = title;
+        }
+        return prevTitle.title;
+    };
+
+    this.associateUserAvatar = function(user, title) {
+        var avatarBase = user.image_type ? user.id : title || 'Default';
+        var avatarExt = user.image_type || 'png';
+        user.avatars = {
+            big: '/users/' + avatarBase + '-big.' + avatarExt,
+            medium: '/users/' + avatarBase + '-medium.' + avatarExt,
+            small: '/users/' + avatarBase + '-small.' + avatarExt
+        };
     };
 
     this.associateUserTitle = function(user) {
-        if (user && !user.title && user.reputation) {
+        if (!user) return;
+        if (!user.title && user.reputation) {
             // get their default title
-            service.getUserTitle(user.reputation.overall).then(function(title) {
-                user.title = title;
-            });
+            var title = service.getUserTitle(user.reputation.overall);
+            user.title = title;
+            service.associateUserAvatar(user, title);
+        } else {
+            service.associateUserAvatar(user);
         }
     };
 

@@ -5,6 +5,9 @@ app.config(['$stateProvider', function($stateProvider) {
         templateUrl: '/resources/partials/base/base.html',
         controller: 'baseController',
         resolve: {
+            userTitles: function(errorService, userTitleService) {
+                return errorService.criticalRequest(userTitleService.retrieveUserTitles);
+            },
             currentUser: function(errorService, userService) {
                 return errorService.criticalRequest(userService.retrieveCurrentUser);
             },

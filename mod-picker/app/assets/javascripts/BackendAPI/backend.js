@@ -1,6 +1,7 @@
 app.service('backend', function($q, $http, objectUtils) {
     //Constant to be flexible in the future. Us as prefix for ALL requests
     var BASE_LOCATION = '';
+    var service = this;
 
     this.retrieve = function(context, params) {
         var promise = $q.defer();
@@ -33,13 +34,8 @@ app.service('backend', function($q, $http, objectUtils) {
         return promise.promise;
     };
 
-    this.postFile = function(context, key, file) {
+    this.postFormData = function(context, data) {
         var promise = $q.defer();
-
-        var data = new FormData();
-        data.append(key, file);
-        data.append('authenticity_token', window._token);
-
         $http.post(BASE_LOCATION + context, data, {
             transformRequest: angular.identity,
             headers: {
@@ -50,7 +46,23 @@ app.service('backend', function($q, $http, objectUtils) {
         }, function(response) {
             promise.reject(response);
         });
-        return promise.promise;
+        return promise.promise
+    };
+
+    this.postFile = function(context, key, file) {
+        var data = new FormData();
+        data.append(key, file);
+        data.append('authenticity_token', window._token);
+        return service.postFormData(context, data);
+    };
+
+    this.postImages = function(context, images) {
+        var data = new FormData();
+        images.forEach(function(image) {
+            data.append(image.label, image.file);
+        });
+        data.append('authenticity_token', window._token);
+        return service.postFormData(context, data);
     };
 
     this.update = function(context, data) {

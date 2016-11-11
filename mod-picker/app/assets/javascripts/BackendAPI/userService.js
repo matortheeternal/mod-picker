@@ -4,16 +4,7 @@ app.service('userService', function(backend, $q, userSettingsService, userTitleS
     this.retrieveUsers = function(options, pageInformation) {
         var action = $q.defer();
         backend.post('/users/index', options).then(function(data) {
-            // associate user titles
-            data.users.forEach(function(user) {
-                if (!user.title) {
-                    userTitleService.getUserTitle(user.reputation.overall).then(function(title) {
-                        user.title = title;
-                    });
-                }
-            });
-
-            // resolve page information and data
+            data.users.forEach(userTitleService.associateUserTitle);
             pageUtils.getPageInformation(data, pageInformation, options.page);
             action.resolve(data);
         }, function(response) {
@@ -26,12 +17,7 @@ app.service('userService', function(backend, $q, userSettingsService, userTitleS
         var action = $q.defer();
         backend.retrieve('/users/' + userId).then(function(userData) {
             var user = userData.user;
-            //get user title if it's not custom
-            if (!user.title) {
-                userTitleService.getUserTitle(user.reputation.overall).then(function(title) {
-                    user.title = title;
-                });
-            }
+            userTitleService.associateUserTitle(user);
             action.resolve(userData);
         });
         return action.promise;

@@ -26,7 +26,14 @@ app.config(['$stateProvider', function($stateProvider) {
 app.controller('createArticleController', function($scope, $rootScope, $state, $stateParams, article, articleService, helpFactory, eventHandlerFactory) {
     // set up local variables
     $scope.article = article;
-    $scope.image = {};
+    $scope.defaultSrc = '/articles/Default-big.png';
+    $scope.image = {
+        sizes: [
+            { label: 'big', size: 300 },
+            { label: 'medium', size: 210 },
+            { label: 'small', size: 100 }
+        ]
+    };
 
     // set page title
     $scope.$emit('setPageTitle', 'Create Article');
@@ -52,7 +59,7 @@ app.controller('createArticleController', function($scope, $rootScope, $state, $
         // set up success handler to reduce repetition
         $scope.startSubmission("Submitting article...");
         articleService.submitArticle($scope.article).then(function(data) {
-            if ($scope.image.file) {
+            if ($scope.image.changed) {
                 $scope.submitImage(data.id);
             } else {
                 $scope.submissionSuccess("Article submitted successfully.", [

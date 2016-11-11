@@ -1,6 +1,6 @@
 <h3 class="section-title">Avatar</h3>
 <section>
-    <image-upload image="avatar" can-change="permissions.canChangeAvatar" default-src="defaultSrc" label="avatar" image-class="avatar avatar-medium" max-width="250" max-height="250"></image-upload>
+    <image-upload image="avatar" can-change="permissions.canChangeAvatar" default-src="defaultSrc" default-size="medium" label="avatar" image-class="avatar" sizes="avatarSizes"></image-upload>
     <span class="explanation" ng-if="!permissions.canChangeAvatar">
         You need <a href="/help/reputation">{{20 - user.reputation.overall | number}} more reputation</a> to change your avatar.
     </span>

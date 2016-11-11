@@ -1,17 +1,14 @@
-app.service('reportService', function($q, backend, pageUtils, userTitleService, reviewSectionService) {
+app.service('reportService', function($q, backend, pageUtils, userTitleService, reviewSectionService, modService) {
+    var service = this;
+
     this.retrieveReports = function(options, pageInformation) {
         var action = $q.defer();
         backend.post('/reports/index', options).then(function(data) {
-            // resolve page information and data
             pageUtils.getPageInformation(data, pageInformation, options.page);
-
-            // associate titles to reportable submitter or User
             userTitleService.associateReportableTitles(data.reports);
-            var reportableArray = data.reports.map(function(obj) {
-                return obj.reportable;
-            });
-            reviewSectionService.associateReviewSections(reportableArray);
-
+            service.associateModImages(data.reports);
+            var reportables = service.getReportables(data.reports);
+            reviewSectionService.associateReviewSections(reportables);
             action.resolve(data);
         }, function(response) {
             action.reject(response);
@@ -47,5 +44,18 @@ app.service('reportService', function($q, backend, pageUtils, userTitleService, 
         });
 
         return action.promise;
+    };
+
+    this.getReportables = function(reports) {
+        return reports.map(function(obj) {
+            return obj.reportable;
+        });
+    };
+
+    this.associateModImages = function(reports) {
+        reports.forEach(function(report) {
+            if (report.reportable_type !== 'Mod') return;
+            modService.associateModImage(report.reportable);
+        });
     };
 });

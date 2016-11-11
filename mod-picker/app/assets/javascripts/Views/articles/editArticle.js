@@ -27,6 +27,13 @@ app.controller('editArticleController', function($scope, $stateParams, article, 
     // get parent variables
     $scope.article = angular.copy(article);
     $scope.originalArticle = article;
+    $scope.image = {
+        sizes: [
+            { label: 'big', size: 300 },
+            { label: 'medium', size: 210 },
+            { label: 'small', size: 100 }
+        ]
+    };
 
     // initialize local variables
     $scope.image = {

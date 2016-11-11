@@ -5,5 +5,5 @@
       "only": ["name"]
     }
   },
-  "methods": "image"
+  "methods": "image_type"
 }
