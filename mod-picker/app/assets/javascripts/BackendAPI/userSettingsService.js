@@ -5,9 +5,7 @@ app.service('userSettingsService', function(backend, $q, objectUtils, userTitleS
             var user = data.user;
             //get user title if it's not custom
             if (!user.title) {
-                userTitleService.getUserTitle(user.reputation.overall).then(function(title) {
-                    user.title = title;
-                });
+                user.title = userTitleService.getUserTitle(user.reputation.overall);
             }
             action.resolve(data);
         }, function(response) {
