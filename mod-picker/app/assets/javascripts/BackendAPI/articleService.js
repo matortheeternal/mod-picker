@@ -29,7 +29,14 @@ app.service('articleService', function($q, backend, userTitleService, pageUtils,
     };
 
     this.editArticle = function(articleId) {
-        return backend.retrieve('/articles/' + articleId + '/edit');
+        var output = $q.defer();
+        backend.retrieve('/articles/' + articleId + '/edit').then(function(articleData) {
+            service.associateArticleImage(articleData);
+            output.resolve(articleData);
+        }, function(response) {
+            output.reject(response);
+        });
+        return output.promise;
     };
 
     this.updateArticle = function(article) {
