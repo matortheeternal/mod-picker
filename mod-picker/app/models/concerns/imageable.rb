@@ -7,7 +7,8 @@ module Imageable
   end
 
   def get_image_path(prefix, ext)
-    Rails.root.join('public', self.class.table_name, "#{id.to_s}-#{prefix}.#{ext}")
+    ext.prepend('.') unless ext.start_with?('.')
+    Rails.root.join('public', self.class.table_name, "#{id.to_s}-#{prefix}#{ext}")
   end
 
   def delete_old_images(prefix)
