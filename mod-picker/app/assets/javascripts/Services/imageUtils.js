@@ -43,7 +43,7 @@ app.service('imageUtils', function() {
 
         //scales the img to maxHeight
         if (canvas.height > maxHeight) {
-            var heightScale = maxheight / canvas.height;
+            var heightScale = maxHeight / canvas.height;
             canvas = service.scaleCanvasWithAlgorithm(canvas, heightScale);
         }
 
