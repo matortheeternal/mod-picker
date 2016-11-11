@@ -21,17 +21,14 @@
   max-height: 250px;
 }
 
-form .mod-image {
-  margin: 0 0 10px;
-}
-
 .image-pending {
-  border: none;
+  border: none !important;
   box-shadow: 0 0 0 2px #9c9;
 }
 
 image-upload {
   img {
-    margin: 0 6px 6px 2px;
+    display: inline-block !important;
+    margin: 0 6px 6px 2px !important;
   }
 }
