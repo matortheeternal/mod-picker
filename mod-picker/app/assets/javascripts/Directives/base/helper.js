@@ -8,7 +8,10 @@ app.directive('helper', function() {
     }
 });
 
-app.controller('helperController', function($scope, $rootScope, $sce) {
+app.controller('helperController', function($scope, $rootScope, $sce, helpFactory) {
+    // initialize variables
+    $scope.helpContexts = [helpFactory.error];
+
     $scope.trustContexts = function() {
         $scope.helpContexts = $scope.helpContexts.map(function(context) {
             return $sce.trustAsHtml(context);
