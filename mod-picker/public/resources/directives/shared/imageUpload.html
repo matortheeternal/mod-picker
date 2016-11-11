@@ -2,7 +2,7 @@
     <img ng-repeat="imageSize in image.sizes" class="{{::imageClass}} {{::imageClass}}-{{::imageSize.label}}" ng-src="{{imageSize.src}}" ng-class="{ 'image-pending': image.changed }">
 </div>
 <label ng-if="canChange">
-    <input type="file" accept=".jpg,.png" file-change="changeImage" />
+    <input type="file" accept=".jpg,.png,.bmp,.gif" file-change="changeImage" />
     <input type="button" class="btn" value="Browse" ng-click="browseImage()"/>
     <input type="button" ng-if="image.changed" class="btn" value="Reset" ng-click="resetImage()"/>
 </label>

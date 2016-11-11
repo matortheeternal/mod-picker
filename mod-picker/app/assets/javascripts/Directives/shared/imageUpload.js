@@ -43,13 +43,14 @@ app.controller('imageUploadController', function($scope, $element, $filter, $tim
         });
     };
 
+    var acceptedImageTypes = ["png", "jpg", "bmp", "gif"];
     $scope.checkImageFileType = function(imageFile) {
         var ext = fileUtils.getFileExtension(imageFile.name);
-        if ((ext !== 'png') && (ext !== 'jpg')) {
+        if (acceptedImageTypes.indexOf(ext) == -1) {
             var capLabel = $scope.label.capitalize();
             var errorObj = {
                 type: "error",
-                text: "Unsupported file type.  "+capLabel+" must be a PNG or JPG file."
+                text: "Unsupported file type.  "+capLabel+" must be an image file."
             };
             $scope.$emit("customMessage", errorObj);
             $scope.resetImage();
