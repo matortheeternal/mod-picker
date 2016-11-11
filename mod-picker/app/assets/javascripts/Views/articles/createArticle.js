@@ -27,11 +27,14 @@ app.controller('createArticleController', function($scope, $rootScope, $state, $
     // set up local variables
     $scope.article = article;
     $scope.defaultSrc = '/articles/Default-big.png';
+    $scope.imageSizes = [
+        { label: 'big', size: 300 },
+        { label: 'medium', size: 210 },
+        { label: 'small', size: 100 }
+    ];
     $scope.image = {
         sizes: [
-            { label: 'big', size: 300 },
-            { label: 'medium', size: 210 },
-            { label: 'small', size: 100 }
+            { label: 'big', src: $scope.defaultSrc }
         ]
     };
 
@@ -79,7 +82,7 @@ app.controller('createArticleController', function($scope, $rootScope, $state, $
     };
 
     $scope.submitImage = function(articleId) {
-        articleService.submitImage(articleId, $scope.image.file).then(function() {
+        articleService.submitImage(articleId, $scope.image.sizes).then(function() {
             $scope.submissionSuccess("Article submitted successfully.", [
                 { 
                     link: "#/article/" + articleId,
