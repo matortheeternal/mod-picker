@@ -46,11 +46,6 @@ app.controller('commentController', function($scope, $rootScope, $filter, $timeo
         $scope.showReportModal = visible;
     };
 
-    $scope.getSubmitterAvatar = function() {
-        var submitter = $scope.comment.submitter;
-        return submitter.avatar || ('/users/' + submitter.title + '.png');
-    };
-
     $scope.reply = function() {
         $scope.activeComment = {
             parent_id: $scope.comment.id,
