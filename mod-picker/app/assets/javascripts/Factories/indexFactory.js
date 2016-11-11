@@ -4,7 +4,6 @@ app.service('indexFactory', function(indexService, objectUtils) {
         $scope.availableColumnData = [];
         $scope.actions = [];
         $scope.expanded = {};
-        $scope.pages = {};
         $scope.dataRetrieved = false;
 
         // load sort values from url parameters
@@ -13,15 +12,20 @@ app.service('indexFactory', function(indexService, objectUtils) {
 
         //  load filter values from url parameters
         angular.default($scope, 'filters', {});
+        angular.default($scope, 'filters.pages', {});
         indexService.setFiltersFromParams($scope.filters, $scope.filterPrototypes, $stateParams);
 
+        $scope.pageCallback = function(page) {
+            $scope.filters.pages.current = page;
+        };
+
         /* data fetching functions */
-        $scope.getData = function(page) {
+        $scope.getData = function() {
             delete $scope[$scope.route];
             var options = {
                 filters: angular.copy($scope.filters),
                 sort: $scope.sort,
-                page: page || 1
+                page: $scope.filters.pages.current
             };
             objectUtils.deleteEmptyProperties(options.filters, 0, true);
             var dataCallback = function(data) {
@@ -35,17 +39,22 @@ app.service('indexFactory', function(indexService, objectUtils) {
                 $scope.error = response;
             };
             if ($scope.contributions) {
-                $scope.retrieve($scope.route, options, $scope.pages).then(dataCallback, errorCallback);
+                $scope.retrieve($scope.route, options, $scope.filters.pages).then(dataCallback, errorCallback);
             } else {
-                $scope.retrieve(options, $scope.pages).then(dataCallback, errorCallback);
+                $scope.retrieve(options, $scope.filters.pages).then(dataCallback, errorCallback);
             }
         };
 
-        $scope.$watch('[filters, sort]', function() {
+        $scope.$watch('[filters, sort]', function(oldValue, newValue) {
             // fetch data again when filters or sort changes
             var dataWait = $scope.dataRetrieved ? 1000 : 0;
             clearTimeout($scope.getDataTimeout);
-            $scope.pages.current = 1;
+
+            //reset page param if the page wasn't what was changed
+            if(oldValue[0].pages.current === newValue[0].pages.current) {
+                $scope.filters.pages.current = 1;
+            }
+
             $scope.getDataTimeout = setTimeout($scope.getData, dataWait);
 
             // set url parameters

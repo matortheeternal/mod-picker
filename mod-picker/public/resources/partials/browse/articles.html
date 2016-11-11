@@ -54,7 +54,7 @@
                         No articles were found matching your search criteria.
                     </div>
 
-                    <page-results pages="pages" data="articles" callback="getData"></page-results>
+                    <page-results pages="filters.pages" data="articles" callback="pageCallback"></page-results>
                 </loader>
 
                 <error-display content-class="content-message content-error" errors="error" label="Articles"></error-display>

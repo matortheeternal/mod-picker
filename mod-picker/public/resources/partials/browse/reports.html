@@ -150,7 +150,7 @@
                         No reports were found matching your search criteria.
                     </div>
 
-                    <page-results pages="pages" data="reports" callback="getData"></page-results>
+                    <page-results pages="filters.pages" data="reports" callback="pageCallback"></page-results>
                 </loader>
 
                 <error-display content-class="content-message content-error" errors="error" label="Reports"></error-display>

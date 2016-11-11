@@ -28,6 +28,10 @@ app.controller('pageResultsController', function($scope, smoothScroll) {
         smoothScroll({duration: 300});
     };
 
-    $scope.$watch('pages.max', $scope.pageRange, true);
-    $scope.$watch('pages.current', $scope.pageRange, true);
+    $scope.$watch('pages', function(oldValue, newValue) {
+        //only update the buttons if everything has been retrieved
+        if(newValue.max && newValue.current) {
+            $scope.pageRange();
+        }
+    }, true);
 });

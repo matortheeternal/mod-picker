@@ -71,7 +71,7 @@
                 <h2>Plugins</h2>
                 <loader data="plugins" content-class="table-container" spinner-class="big-spinner" ng-if="!error">
                     <table-results label="plugins" data="plugins"></table-results>
-                    <page-results pages="pages" data="plugins" callback="getData"></page-results>
+                    <page-results pages="filters.pages" data="plugins" callback="pageCallback"></page-results>
                 </loader>
 
                 <error-display content-class="content-message content-error" errors="error" label="Plugins"></error-display>
