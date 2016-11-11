@@ -52,6 +52,6 @@ app.service('helpFactory', function($timeout) {
     this.setHelpContexts = function($scope, contexts) {
         $timeout(function() {
             $scope.$emit('setHelpContexts', contexts);
-        }, 100);
+        }, 200);
     };
 });
