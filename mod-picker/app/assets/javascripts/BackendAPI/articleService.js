@@ -62,7 +62,8 @@ app.service('articleService', function($q, backend, userTitleService, pageUtils,
         return backend.delete('/articles/' + articleId);
     };
 
-    this.submitImage = function(articleId, image) {
-        return backend.postFile('/articles/' + articleId + '/image', 'image', image);
+    this.submitImage = function(articleId, images) {
+        return backend.postImages('/articles/' + articleId + '/image', images);
+    };
     };
 });

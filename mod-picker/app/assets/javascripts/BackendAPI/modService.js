@@ -423,8 +423,8 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
         return backend.update('/mods/' + modId, modData);
     };
 
-    this.submitImage = function(modId, image) {
-        return backend.postFile('/mods/' + modId + '/image', 'image', image);
+    this.submitImage = function(modId, images) {
+        return backend.postImages('/mods/' + modId + '/image', images);
     };
 
     this.getInstallOrderMod = function(installOrder, modOptionId) {

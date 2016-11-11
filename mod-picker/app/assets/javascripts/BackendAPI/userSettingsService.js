@@ -44,7 +44,7 @@ app.service('userSettingsService', function(backend, $q, objectUtils, userTitleS
     };
 
     this.submitAvatar = function(avatars) {
-        return backend.postImages('/settings/avatar', 'avatar', avatars);
+        return backend.postImages('/settings/avatar', avatars);
     };
 
     this.verifyAccount = function(site, user_path) {
