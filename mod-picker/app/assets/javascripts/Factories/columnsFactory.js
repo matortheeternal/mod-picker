@@ -288,7 +288,7 @@ app.service('columnsFactory', function() {
                 label: "Username",
                 data: "username",
                 image: function(user) {
-                    return user.avatar || ('/users/' + user.title + '.png');
+                    return user.avatars && user.avatars.small
                 },
                 imageClass: "avatar-small",
                 link: function(user) {
