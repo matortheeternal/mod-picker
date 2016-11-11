@@ -125,6 +125,11 @@ class ModsController < ApplicationController
     # perform tag deletions
     existing_mod_tags = @mod.mod_tags
     existing_tags_text = @mod.tags.pluck(:text)
+
+    # empty arrays are converted to nil in params, default to empty array here.
+    # TODO: find a more generic solution(possibly disable deep_munge which is causing this in the first place due to security concerns)
+    params[:tags] ||= []
+    
     @mod.mod_tags.each_with_index do |mod_tag, index|
       if params[:tags].exclude?(existing_tags_text[index])
         authorize! :destroy, mod_tag
