@@ -12,6 +12,6 @@ class UserSetting < ActiveRecord::Base
   before_create :init
 
   def init
-    self.theme ||= "Whiterun"
+    self.theme ||= "High Hrothgar"
   end
 end
