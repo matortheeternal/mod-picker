@@ -104,12 +104,6 @@ class User < ActiveRecord::Base
     User.find(id)
   end
 
-  # returns nil if the user doesn't have a custom title or a custom avatar
-  def avatar
-    avatar_path = image
-    self.title.nil? && avatar_path == "/users/Default.png" ? nil : avatar_path
-  end
-
   def recent_notifications
     notifications.unread.limit(10)
   end
