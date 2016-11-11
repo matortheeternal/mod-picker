@@ -56,11 +56,10 @@ app.service('backend', function($q, $http, objectUtils) {
         return service.postFormData(context, data);
     };
 
-    this.postImages = function(context, key, images) {
+    this.postImages = function(context, images) {
         var data = new FormData();
         images.forEach(function(image) {
-            var imageKey = key + '_' + image.label;
-            data.append(imageKey, image.file);
+            data.append(image.label, image.file);
         });
         data.append('authenticity_token', window._token);
         return service.postFormData(context, data);
