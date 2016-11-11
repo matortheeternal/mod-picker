@@ -2,12 +2,12 @@ module Imageable
   extend ActiveSupport::Concern
 
   included do
-    attr_writer :image_sizes
+    attr_writer :images
     after_save :save_images
   end
 
   def get_image_path(prefix, ext)
-    Rails.root.join('public', self.class.table_name, "#{id.to_s}-#{prefix}#{ext}")
+    Rails.root.join('public', self.class.table_name, "#{id.to_s}-#{prefix}.#{ext}")
   end
 
   def delete_old_images(prefix)
@@ -39,15 +39,20 @@ module Imageable
   end
 
   def save_images
-    return unless @image_sizes.present?
-    @image_sizes.each_key { |size_key| save_image(@image_sizes[size_key], size_key) }
+    return unless @images.present?
+    @images.each_key { |size| save_image(@images[size], size) }
   end
 
-  def image
-    png_path = get_image_path('big', 'png')
-    jpg_path = get_image_path('big', 'jpg')
-    return png_path if File.exists?(png_path)
-    return jpg_path if File.exists?(jpg_path)
-    "/#{self.class.table_name}/Default.png"
+  def image_exists(prefix, ext)
+    File.exists?(get_image_path(prefix, ext))
+  end
+
+  def image_type
+    return "png" if image_exists('big', 'png')
+    "jpg" if image_exists('big', 'jpg')
+  end
+
+  def has_custom_image
+    image_exists('big', 'png') || image_exists('big', 'jpg')
   end
 end
