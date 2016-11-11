@@ -31,9 +31,8 @@ app.controller('helperController', function($scope, $rootScope, $sce) {
         $scope.helpContexts = helpContexts;
         $scope.trustContexts();
         $scope.hideHelper = ($scope.helpContexts.length == 0);
-        if ($scope.hideHelper) $scope.showHelper = false;
+        if (!$scope.hideHelper && !$scope.helperDisabled()) {
+            $scope.showHelper = true;
+        }
     });
-
-    // initially enable the helper unless it is disabled
-    $scope.showHelper = !$scope.helperDisabled();
 });
