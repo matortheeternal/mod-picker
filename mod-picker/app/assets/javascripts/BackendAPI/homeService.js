@@ -1,4 +1,4 @@
-app.service('homeService', function(backend, $q, reviewSectionService, userTitleService, contributionService) {
+app.service('homeService', function(backend, $q, reviewSectionService, userTitleService, contributionService, modService, articleService) {
     this.retrieveHome = function() {
         var landingData = $q.defer();
         var associateTitlesAndMarks = function(contributions, marks, agreementMarks) {
@@ -11,6 +11,8 @@ app.service('homeService', function(backend, $q, reviewSectionService, userTitle
         };
         backend.retrieve('/home', { game: window._current_game_id }).then(function(data) {
             var recent = data.recent;
+            articleService.associateArticleImages(data.articles);
+            modService.associateModImages(recent.mods);
             userTitleService.associateTitles(recent.mod_lists);
             reviewSectionService.associateReviewSections(recent.reviews);
             associateTitlesAndMarks(recent.reviews, recent.r_helpful_marks);

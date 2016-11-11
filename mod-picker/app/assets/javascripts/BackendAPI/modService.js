@@ -137,7 +137,14 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
     };
 
     this.editMod = function(modId) {
-        return backend.retrieve('/mods/' + modId + '/edit');
+        var action = $q.defer();
+        backend.retrieve('/mods/' + modId + '/edit').then(function(data) {
+            service.associateModImage(data);
+            action.resolve(data);
+        }, function(response) {
+            action.reject(response);
+        });
+        return action.promise;
     };
 
     this.starMod = function(modId, starred) {
