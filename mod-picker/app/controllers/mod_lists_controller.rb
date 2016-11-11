@@ -274,6 +274,8 @@ class ModListsController < ApplicationController
     errors = ActiveModel::Errors.new(self)
     current_user_id = current_user.id
 
+    params[:tags] ||= []
+
     # perform tag deletions
     existing_mod_list_tags = @mod_list.mod_list_tags
     existing_tags_text = @mod_list.tags.pluck(:text)
