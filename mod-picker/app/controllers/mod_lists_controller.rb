@@ -1,6 +1,6 @@
 class ModListsController < ApplicationController
   before_action :check_sign_in, only: [:create, :set_active, :update, :update_tags, :create_star, :destroy_star]
-  before_action :set_mod_list, only: [:show, :hide, :update, :update_tags, :tools, :mods, :plugins, :export_modlist, :export_plugins, :export_links, :config_files, :analysis, :comments]
+  before_action :set_mod_list, only: [:show, :hide, :clone, :add, :update, :update_tags, :tools, :mods, :plugins, :export_modlist, :export_plugins, :export_links, :config_files, :analysis, :comments]
 
   # GET /mod_lists
   def index
@@ -64,7 +64,7 @@ class ModListsController < ApplicationController
     required_mods = @mod_list.required_mods
 
     # prepare notes
-    compatibility_notes = @mod_list.mod_compatibility_notes.preload(:submitter, :compatibility_mod, :compatibility_plugin, :editor, :editors, :first_mod, :second_mod)
+    compatibility_notes = @mod_list.mod_compatibility_notes.preload(:submitter, :compatibility_mod, :editor, :editors, :first_mod, :second_mod)
     install_order_notes = @mod_list.install_order_notes.preload(:submitter, :editor, :editors, :first_mod, :second_mod)
 
     # prepare helpful marks
@@ -96,7 +96,7 @@ class ModListsController < ApplicationController
     groups = @mod_list.mod_list_groups.where(tab: 2).order(:index)
 
     # prepare notes
-    compatibility_notes = @mod_list.plugin_compatibility_notes.preload(:submitter, :compatibility_mod, :compatibility_plugin, :editor, :editors, :first_mod, :second_mod)
+    compatibility_notes = @mod_list.plugin_compatibility_notes.preload(:submitter, :compatibility_mod, :compatibility_plugin, :compatibility_mod_option, :editor, :editors, :first_mod, :second_mod)
     load_order_notes = @mod_list.load_order_notes.preload(:submitter, :editor, :editors, :first_mod, :second_mod, :first_plugin, :second_plugin)
 
     # prepare helpful marks
@@ -199,15 +199,32 @@ class ModListsController < ApplicationController
 
     if @mod_list.save
       @mod_list.add_official_content
-      if params.has_key?(:active) && params[:active]
-        @mod_list.set_active
-        respond_with_json(@mod_list, :tracking, :mod_list)
-      else
-        respond_with_json(@mod_list, :base, :mod_list)
-      end
+      new_mod_list_response(@mod_list)
     else
       render json: @mod_list.errors, status: :unprocessable_entity
     end
+  end
+
+  # POST /mod_lists/1/clone
+  def clone
+    authorize! :read, @mod_list
+    @new_mod_list = ModList.new(submitted_by: current_user.id)
+    builder = ModListBuilder.new(@mod_list, @new_mod_list)
+    builder.clone!
+
+    # make the new mod list active and respond with it
+    @new_mod_list.reload
+    @new_mod_list.set_active
+    respond_with_json(@new_mod_list, :tracking, :mod_list)
+  end
+
+  # POST /mod_lists/1/add
+  def add
+    authorize! :read, @mod_list
+    @target_mod_list = current_user.active_mod_list
+    builder = ModListBuilder.new(@mod_list, @target_mod_list)
+    builder.copy!
+    respond_with_json(@target_mod_list, :tracking, :mod_list)
   end
 
   # POST /mod_lists/active
@@ -244,7 +261,8 @@ class ModListsController < ApplicationController
 
     @mod_list.updated_by = current_user.id
     if @mod_list.update(mod_list_params) && @mod_list.update_lazy_counters!
-      render json: {status: :ok}
+      @mod_list.compact_plugins
+      respond_with_json(@mod_list, :tracking, :mod_list)
     else
       render json: @mod_list.errors, status: :unprocessable_entity
     end
@@ -255,6 +273,8 @@ class ModListsController < ApplicationController
     # errors array to return to user
     errors = ActiveModel::Errors.new(self)
     current_user_id = current_user.id
+
+    params[:tags] ||= []
 
     # perform tag deletions
     existing_mod_list_tags = @mod_list.mod_list_tags
@@ -331,8 +351,18 @@ class ModListsController < ApplicationController
       response.headers["Content-Disposition"] = "attachment; filename=#{filename}"
     end
 
+    def new_mod_list_response(mod_list)
+      mod_list.reload
+      if params.has_key?(:active) && params[:active]
+        mod_list.set_active
+        respond_with_json(mod_list, :tracking, :mod_list)
+      else
+        respond_with_json(mod_list, :base, :mod_list)
+      end
+    end
+
     def filtering_params
-      params[:filters].slice(:search, :description, :submitter, :status, :kind, :submitted, :updated, :completed, :tools, :mods, :plugins, :config_files, :ignored_notes, :stars, :custom_tools, :custom_mods, :master_plugins, :available_plugins, :custom_plugins, :custom_config_files, :compatibility_notes, :install_order_notes, :load_order_notes, :bsa_files, :asset_files, :records, :override_records, :plugin_errors, :tags, :comments)
+      params[:filters].slice(:adult, :hidden, :search, :description, :submitter, :status, :kind, :submitted, :updated, :completed, :tools, :mods, :plugins, :config_files, :ignored_notes, :stars, :custom_tools, :custom_mods, :master_plugins, :available_plugins, :custom_plugins, :custom_config_files, :compatibility_notes, :install_order_notes, :load_order_notes, :bsa_files, :asset_files, :records, :override_records, :plugin_errors, :tags, :comments)
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

@@ -183,6 +183,10 @@ grid-items {
         font-size: 14px;
         font-weight: 500;
       }
+
+      li.mod-name, li.mod-author {
+        @include wordbreak;
+      }
     }
   }
 }

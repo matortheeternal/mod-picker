@@ -11,7 +11,7 @@ app.config(['$stateProvider', function($stateProvider) {
     })
 }]);
 
-app.controller('errorController', function($scope, $state, errorObj, quoteService) {
+app.controller('errorController', function($scope, $state, helpFactory, errorObj, quoteService) {
     // set error values to scope
     if (errorObj) {
         $scope.message = errorObj.text;
@@ -41,12 +41,13 @@ app.controller('errorController', function($scope, $state, errorObj, quoteServic
 
     // set page title
     $scope.$emit('setPageTitle', 'Error '+$scope.status);
+    helpFactory.setHelpContexts($scope, []);
 
     // get a quote for the error
     $scope.quote = quoteService.getErrorQuote($scope.status);
     $scope.defaultExplanations = {
-        unauthorized: "You aren't authorized to access this resource.",
-        not_found: "Unfortunately, we weren't able to display the page you were looking for.",
+        unauthorized: "You are not authorized to access this resource.",
+        not_found: "We were unable to display the page you were looking for.",
         unavailable: "The resource is unavailable.  The server is either down or overburdened."
     };
 

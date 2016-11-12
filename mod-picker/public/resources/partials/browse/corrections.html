@@ -16,6 +16,32 @@
                     <!--<input type="text" ng-model="filters.editor">-->
                 </div>
 
+                <div class="filter-section" ng-if="permissions.canModerate || allowAdult">
+                    <h3>Content Filters</h3>
+                    <div class="sidebar-box box-shadow">
+                        <ul class="checkbox-list" ng-if="allowAdult">
+                            <li>
+                                <label><input type="checkbox" ng-model="filters.adult['1']">
+                                    Show Adult Content</label>
+                            </li>
+                            <li>
+                                <label><input type="checkbox" ng-model="filters.adult['0']">
+                                    Show Non-Adult Content</label>
+                            </li>
+                        </ul>
+                        <ul class="checkbox-list" ng-if="permissions.canModerate">
+                            <li>
+                                <label><input type="checkbox" ng-model="filters.hidden['1']">
+                                    Hidden</label>
+                            </li>
+                            <li>
+                                <label><input type="checkbox" ng-model="filters.hidden['0']">
+                                    Unhidden</label>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
                 <div class="filter-section">
                     <h3>Types</h3>
                     <div class="sidebar-box box-shadow">
@@ -128,7 +154,7 @@
                         No Corrections were found matching your search criteria.
                     </div>
 
-                    <page-results pages="pages" data="corrections" callback="getData"></page-results>
+                    <page-results pages="filters.pages" data="corrections" callback="pageCallback"></page-results>
                 </loader>
 
                 <error-display content-class="content-message content-error" errors="error" label="Corrections"></error-display>

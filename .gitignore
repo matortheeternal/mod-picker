@@ -93,3 +93,7 @@ database.yml
 mod-picker/node_modules/
 spikes/PyEmailHandler/*.txt
 dumps/
+*.7z
+mod-picker/public/mods/
+mod-picker/public/users/
+mod-picker/public/articles/

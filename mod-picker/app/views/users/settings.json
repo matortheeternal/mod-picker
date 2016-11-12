@@ -11,5 +11,5 @@
       "except": ["user_id"]
     }
   },
-  "methods": "avatar"
+  "methods": "image_type"
 }

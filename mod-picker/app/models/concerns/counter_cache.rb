@@ -54,7 +54,7 @@ module CounterCache
       reset_counter(name, column)
       column_values[column] = self[column]
     end
-    update_columns(column_values)
+    update_columns(column_values) unless column_values.empty?
   end
 
   def reset_all_counters!
@@ -64,7 +64,7 @@ module CounterCache
       reset_counter(name, column)
       column_values[column] = self[column]
     end
-    update_columns(column_values)
+    update_columns(column_values) unless column_values.empty?
   end
 
   def get_counter_change(name, options)
@@ -136,12 +136,13 @@ module CounterCache
     end
 
     def reset_counter!(name, column=nil)
-      update_all(reset_counter_query(name, column))
+      query = reset_counter_query(name, column)
+      update_all(query) if query.present?
     end
 
     def reset_counters!(*names)
       query = names.map { |name| reset_counter_query(name) }
-      update_all(query.join(', '))
+      update_all(query.join(', ')) if query.present?
     end
 
     def reset_all_counters!
@@ -168,7 +169,7 @@ module CounterCache
         after_update :change_counters
         def change_counters
           self.class._counter_cache_on.each do |name, options|
-            change = get_counter_change(options[:method] || name, options)
+            change = get_counter_change(name, options)
             next unless change != 0
             update_association_counter(options[:method] || name, options[:column], change)
           end

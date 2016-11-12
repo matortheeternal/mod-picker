@@ -39,11 +39,14 @@
     <div class="content-options" ng-show="['compatibility_mod', 'compatibility_option'].indexOf(activeCompatibilityNote.status) > -1">
         <span ng-if="activeCompatibilityNote.status === 'compatibility_mod'">
             <strong>Compatibility Mod</strong>
-            <search-input search-function="searchMods" result-id="activeCompatibilityNote.compatibility_mod_id" excluded-id="mod.id" on-change="validateCompatibilityNote" label="mod" key="name"></search-input>
+            <search-input search-function="searchMods" search-text="activeCompatibilityNote.compatibility_mod_name" result-id="activeCompatibilityNote.compatibility_mod_id" excluded-id="mod.id" on-change="validateCompatibilityNote" label="mod" key="name"></search-input>
         </span>
         <span ng-if="activeCompatibilityNote.status === 'compatibility_option'">
+            <strong>Compatibility Mod Option</strong>
+            <search-input search-function="searchModOptions" search-arg="activeCompatibilityNote.mods" search-text="activeCompatibilityNote.compatibility_mod_option_name" result-id="activeCompatibilityNote.compatibility_mod_option_id" on-change="validateCompatibilityNote" placeholder="Enter mod option name" label="mod option" key="display_name"></search-input><br/>
+
             <strong>Compatibility Plugin</strong>
-            <search-input search-function="searchPlugins" result-id="activeCompatibilityNote.compatibility_plugin_id" on-change="validateCompatibilityNote" label="plugin" key="filename"></search-input>
+            <search-input search-function="searchPlugins"  search-arg="activeCompatibilityNote.mods" search-text="activeCompatibilityNote.compatibility_plugin_filename" result-id="activeCompatibilityNote.compatibility_plugin_id" on-change="validateCompatibilityNote" label="plugin" key="filename"></search-input>
         </span>
     </div>
     <div class="content-container">

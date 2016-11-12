@@ -7,6 +7,9 @@ class Plugin < ActiveRecord::Base
 
   # SCOPES
   game_scope
+  hash_scope :approved, alias: 'approved', table: 'mods'
+  hash_scope :hidden, alias: 'hidden', table: 'mods'
+  hash_scope :adult, alias: 'adult', column: 'has_adult_content'
   ids_scope :mod_option_id
   search_scope :filename, :alias => :search
   search_scope :author, :description
@@ -17,7 +20,7 @@ class Plugin < ActiveRecord::Base
 
   # UNIQUE SCOPES
   scope :visible, -> { eager_load(:mod).where(:mods => {hidden: false}) }
-  scope :mods, -> (mod_ids) { includes(:mod_option).references(:mod_option).where(:mod_options => { :mod_id => mod_ids }) }
+  scope :mods, -> (mod_ids) { eager_load(:mod_option).where(:mod_options => { :mod_id => mod_ids }) }
   scope :esm, -> { where("filename like '%.esm'") }
   scope :categories, -> (categories) { joins(:mod).where("mods.primary_category_id IN (:ids) OR mods.secondary_category_id IN (:ids)", ids: categories) }
 
@@ -62,6 +65,7 @@ class Plugin < ActiveRecord::Base
   validates_associated :plugin_record_groups, :plugin_errors, :overrides
 
   # callbacks
+  before_save :set_adult
   after_create :convert_dummy_masters
   after_save :create_associations, :update_lazy_counters
   before_update :clear_associations
@@ -151,4 +155,10 @@ class Plugin < ActiveRecord::Base
     end
     output
   end
+
+  private
+    def set_adult
+      self.has_adult_content = mod.has_adult_content
+      true
+    end
 end

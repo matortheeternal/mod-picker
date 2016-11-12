@@ -75,7 +75,7 @@
         <error-display content-class="content-message content-error" errors="errors.corrections" label="corrections for this contribution"></error-display>
 
         <div class="action-button-container" ng-if="canCorrect && !errors.corrections">
-            <input class="btn action-btn" type="submit" ng-click="startNewCorrection()" value="New Correction">
+            <input class="btn action-btn" type="submit" ng-click="startNewCorrection()" value="New Correction" ng-disabled="isSubmitter" title="{{ isSubmitter ? 'You cannot submit a correction on your own contribution, just edit it instead!' : '' }}">
         </div>
     </div>
 

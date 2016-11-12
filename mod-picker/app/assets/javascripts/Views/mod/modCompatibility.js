@@ -8,6 +8,7 @@ app.controller('modCompatibilityController', function($scope, $stateParams, $sta
 
     // inherited functions
     $scope.searchMods = modService.searchMods;
+    $scope.searchModOptions = modService.searchModOptions;
     $scope.searchPlugins = pluginService.searchPlugins;
 
     // functions
@@ -80,12 +81,19 @@ app.controller('modCompatibilityController', function($scope, $stateParams, $sta
         } else {
             secondMod = compatibility_note.second_mod;
         }
+        var compatibility_mod = compatibility_note.compatibility_mod;
+        var compatibility_mod_option = compatibility_note.compatibility_mod_option;
+        var compatibility_plugin = compatibility_note.compatibility_plugin;
         $scope.activeCompatibilityNote = {
             status: compatibility_note.status,
             mod_id: secondMod.id,
             mod_name: secondMod.name,
             compatibility_mod_id: compatibility_note.compatibility_mod_id,
+            compatibility_mod_name: compatibility_mod && compatibility_mod.name,
+            compatibility_mod_option_id: compatibility_note.compatibility_mod_option_id,
+            compatibility_mod_option_name: compatibility_mod_option && compatibility_mod_option.display_name,
             compatibility_plugin_id: compatibility_note.compatibility_plugin_id,
+            compatibility_plugin_filename: compatibility_plugin && compatibility_plugin.filename,
             text_body: compatibility_note.text_body.slice(0),
             moderator_message: compatibility_note.moderator_message && compatibility_note.moderator_message.slice(0),
             original: compatibility_note,
@@ -98,18 +106,25 @@ app.controller('modCompatibilityController', function($scope, $stateParams, $sta
     };
 
     $scope.validateCompatibilityNote = function() {
-        var compatibilityNote = $scope.activeCompatibilityNote;
-        if (!compatibilityNote) return;
+        var note = $scope.activeCompatibilityNote;
+        if (!note) return;
 
-        var sanitized_text = contributionService.removePrompts(compatibilityNote.text_body);
+        // set mods array
+        note.mods = [note.mod_id, $scope.mod.id];
+
+        // validation helpers
+        var sanitized_text = contributionService.removePrompts(note.text_body);
         var textValid = sanitized_text.length > 512;
-        var modsValid = compatibilityNote.mod_id !== undefined;
+        var modsValid = note.mod_id !== undefined;
         var statusValid = true;
-        if (compatibilityNote.status === "compatibility_mod") {
-            statusValid = !!compatibilityNote.compatibility_mod_id;
+        if (note.status === "compatibility_mod") {
+            statusValid = !!note.compatibility_mod_id;
+        } else if (note.status === "compatibility_option") {
+            statusValid = note.compatibility_option_id || note.compatibility_plugin_id;
         }
 
-        compatibilityNote.valid = textValid && modsValid && statusValid;
+        // compatibility note is valid if all parts valid
+        note.valid = textValid && modsValid && statusValid;
     };
 
     // discard the compatibility note object
@@ -148,7 +163,8 @@ app.controller('modCompatibilityController', function($scope, $stateParams, $sta
                 edit_summary: compatibilityNote.edit_summary,
                 moderator_message: compatibilityNote.moderator_message,
                 compatibility_plugin_id: compatibilityNote.compatibility_plugin_id,
-                compatibility_mod_id: compatibilityNote.compatibility_mod_id
+                compatibility_mod_id: compatibilityNote.compatibility_mod_id,
+                compatibility_mod_option_id: compatibilityNote.compatibility_mod_option_id
             }
         };
         compatibilityNote.submitting = true;

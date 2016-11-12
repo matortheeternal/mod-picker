@@ -8,5 +8,5 @@
       "only": ["theme", "enable_spellcheck", "show_notifications", "allow_adult_content", "disable_helper"]
     }
   },
-  "methods": ["avatar", "recent_notifications"]
+  "methods": ["image_type", "recent_notifications"]
 }

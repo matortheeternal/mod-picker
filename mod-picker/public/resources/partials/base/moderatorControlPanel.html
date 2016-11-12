@@ -1,0 +1,148 @@
+<div class="page-container">
+    <div class="narrow-page">
+        <h2>Moderator Control Panel</h2>
+
+        <p>Please refer to the <a href="/help/moderation_guide">Moderation Guide</a> for moderation policies and guidelines.</p>
+
+        <section>
+            <h3>Manage Users</h3>
+            <ul>
+                <li>
+                    <a href="#/users?adm=0&mod=0&ma=0&usr=0&bnd=1">Banned Users</a>
+                </li>
+                <li>
+                    <a href="#/users?adm=0&mod=0&ma=0&usr=0&rsr=1">Restricted Users</a>
+                </li>
+                <li>
+                    <a href="#/reports?rr=0&rcn=0&rin=0&rln=0&rco=0&rcr=0&rm=0&rml=0&rt=0">Reported Users</a>
+                </li>
+                <li>
+                    <a href="#/invitations?acc=0&exp=0">Pending Invitations</a>
+                </li>
+                <li>
+                    <a href="#/invitations?acc=0&pen=0">Expired Invitations</a>
+                </li>
+                <li>
+                    <a href="#/invitations?exp=0&pen=0">Accepted Invitations</a>
+                </li>
+                <li>
+                    <a href="/users/invitation/new">Invite User</a>
+                </li>
+                <li ng-if="permissions.isAdmin">
+                    <a href="/users/invitation/batch/new">Batch Invite Users</a>
+                </li>
+            </ul>
+
+            <h3>News and Announcements</h3>
+            <ul>
+                <li>
+                    <a href="#/articles/submit">Create News Article</a>
+                </li>
+                <li ng-if="permissions.isAdmin">
+                    <a href="#/broadcast">Platform Broadcast</a>
+                </li>
+                <li ng-if="permissions.isAdmin">
+                    <a href="#/email-blast">Email Blast</a>
+                </li>
+            </ul>
+
+            <h3>Approval</h3>
+            <ul>
+                <li>
+                    <a href="#/curator-requests">Curator Requests</a>
+                </li>
+                <li>
+                    <a href="#/mods?apr=0">Unapproved Mods</a>
+                </li>
+                <li>
+                    <a href="#/reviews?apr=0">Unapproved Reviews</a>
+                </li>
+                <li>
+                    <a href="#/compatibility-notes?apr=0">Unapproved Compatibility Notes</a>
+                </li>
+                <li>
+                    <a href="#/install-order-notes?apr=0">Unapproved Install Order Notes</a>
+                </li>
+                <li>
+                    <a href="#/load-order-notes?apr=0">Unapproved Load Order Notes</a>
+                </li>
+                <li>
+                    <a href="#/help-pages?apr=0">Unapproved Help Pages</a>
+                </li>
+            </ul>
+        </section>
+
+        <section>
+            <h3>Reporting</h3>
+            <ul>
+                <li>
+                    <a href="#/reports">All Unresolved Reports</a>
+                </li>
+                <li>
+                    <a href="#/reports?rr=0&rcn=0&rin=0&rln=0&rco=0&rcr=0&rml=0&rt=0&ru=0">Reported Mods</a>
+                </li>
+                <li>
+                    <a href="#/reports?rr=0&rcn=0&rin=0&rln=0&rco=0&rcr=0&rm=0&rt=0&ru=0">Reported Mod Lists</a>
+                </li>
+                <li>
+                    <a href="#/reports?rr=0&rcn=0&rin=0&rln=0&rco=0&rcr=0&rm=0&rml=0&ru=0">Reported Tags</a>
+                </li>
+                <li>
+                    <a href="#/reports?rr=0&rcn=0&rin=0&rln=0&rco=0&rcr=0&rm=0&rml=0&rt=0">Reported Users</a>
+                </li>
+                <li>
+                    <a href="#/reports?rr=0&rcn=0&rin=0&rln=0&rcr=0&rm=0&rml=0&rt=0&ru=0">Reported Comments</a>
+                </li>
+                <li>
+                    <a href="#/reports?rcn=0&rin=0&rln=0&rco=0&rcr=0&rm=0&rml=0&rt=0&ru=0">Reported Reviews</a>
+                </li>
+                <li>
+                    <a href="#/reports?rr=0&rin=0&rln=0&rco=0&rcr=0&rm=0&rml=0&rt=0&ru=0">Reported Compatibility Notes</a>
+                </li>
+                <li>
+                    <a href="#/reports?rr=0&rcn=0&rln=0&rco=0&rcr=0&rm=0&rml=0&rt=0&ru=0">Reported Install Order Notes</a>
+                </li>
+                <li>
+                    <a href="#/reports?rr=0&rcn=0&rin=0&rco=0&rcr=0&rm=0&rml=0&rt=0&ru=0">Reported Load Order Notes</a>
+                </li>
+                <li>
+                    <a href="#/reports?rr=0&rcn=0&rin=0&rln=0&rco=0&rm=0&rml=0&rt=0&ru=0">Reported Corrections</a>
+                </li>
+            </ul>
+
+            <h3>Hidden Content</h3>
+            <ul>
+                <li>
+                    <a href="#/mods?unh=0">Hidden Mods</a>
+                </li>
+                <li>
+                    <a href="#/plugins?unh=0">Hidden Plugins</a>
+                </li>
+                <li>
+                    <a href="#/mod-lists?unh=0&ste=1&sun=1&clc=1">Hidden Mod Lists</a>
+                </li>
+                <li>
+                    <a href="#/tags?unh=0">Hidden Tags</a>
+                </li>
+                <li>
+                    <a href="#/comments?unh=0">Hidden Comments</a>
+                </li>
+                <li>
+                    <a href="#/reviews?unh=0">Hidden Reviews</a>
+                </li>
+                <li>
+                    <a href="#/compatibility-notes?unh=0">Hidden Compatibility Notes</a>
+                </li>
+                <li>
+                    <a href="#/install-order-notes?unh=0">Hidden Install Order Notes</a>
+                </li>
+                <li>
+                    <a href="#/load-order-notes?unh=0">Hidden Load Order Notes</a>
+                </li>
+                <li>
+                    <a href="#/corrections?unh=0">Hidden Corrections</a>
+                </li>
+            </ul>
+        </section>
+    </div>
+</div>

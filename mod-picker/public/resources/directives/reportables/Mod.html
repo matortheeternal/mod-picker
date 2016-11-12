@@ -2,6 +2,9 @@
     <span class="capitalize">
         <span ng-bind-html="reportableUrl"></span>
     </span>
+    <span class="action-box right-item {{ report.resolved ? 'green-box' : 'red-box' }}" ng-click="toggleResolved()" title="Click here to mark this report as {{ report.resolved ? 'un' : ''}}resolved.">
+        {{ report.resolved ? 'R' : 'Unr' }}esolved
+    </span>
 </div>
 
 <div class="content-container">
@@ -9,14 +12,14 @@
         <div class="contribution-container box-shadow">
             <div class="content-title">
                 <span>
-                <a ng-href="#/{{report.reportable_type.underscore()}}/{{report.reportable.id}}" target="_blank">{{report.reportable.name}}</a>
-            </span>
+                    <a ng-href="#/{{report.reportable_type.underscore()}}/{{report.reportable.id}}" target="_blank">{{report.reportable.name}}</a>
+                </span>
             </div>
 
             <div class="user-column">
                 <ul>
                     <li class="user-avatar">
-                        <img class="avatar avatar-medium" ng-src="{{report.reportable.image}}" />
+                        <img class="avatar avatar-medium" ng-src="{{report.reportable.images.small}}" />
                     </li>
                     <li class="user-name">
                         by {{report.reportable.authors}}

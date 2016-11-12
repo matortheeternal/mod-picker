@@ -74,7 +74,7 @@ app.controller('tableItemsController', function($scope, $timeout, colorsFactory,
     $scope.buildItemData = function() {
         $scope.builtItemData = true;
         listUtils.forEachItem($scope.model, function(item) {
-            tableUtils.buildItemData(item, $scope.columns, $scope.resolve);
+            tableUtils.buildItemData(item, $scope.columns, $scope.resolve, 'columnData');
         });
     };
 

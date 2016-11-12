@@ -1,33 +1,24 @@
-app.service('reportService', function($q, backend, pageUtils, userTitleService, reviewSectionService) {
-    this.retrieveReport = function(reportId) {
-        var output = $q.defer();
-        backend.retrieve('/reports/' + reportId).then(function(reportData) {
-            output.resolve(reportData);
-        }, function(response) {
-            output.reject(response);
-        });
-        return output.promise;
-    };
+app.service('reportService', function($q, backend, pageUtils, userTitleService, reviewSectionService, modService) {
+    var service = this;
 
     this.retrieveReports = function(options, pageInformation) {
         var action = $q.defer();
         backend.post('/reports/index', options).then(function(data) {
-            // resolve page information and data
             pageUtils.getPageInformation(data, pageInformation, options.page);
-
-            // associate titles to reportable submitter or User
             userTitleService.associateReportableTitles(data.reports);
-            var reportableArray = data.reports.map(function(obj) {
-                return obj.reportable;
-            });
-            reviewSectionService.associateReviewSections(reportableArray);
-
+            service.associateModImages(data.reports);
+            var reportables = service.getReportables(data.reports);
+            reviewSectionService.associateReviewSections(reportables);
             action.resolve(data);
         }, function(response) {
             action.reject(response);
         });
 
         return action.promise;
+    };
+
+    this.resolveReport = function(reportId, resolved) {
+        return backend.post('/reports/' + reportId + '/resolve', {resolved: resolved});
     };
 
     this.submitReport = function(report) {
@@ -53,5 +44,18 @@ app.service('reportService', function($q, backend, pageUtils, userTitleService, 
         });
 
         return action.promise;
+    };
+
+    this.getReportables = function(reports) {
+        return reports.map(function(obj) {
+            return obj.reportable;
+        });
+    };
+
+    this.associateModImages = function(reports) {
+        reports.forEach(function(report) {
+            if (report.reportable_type !== 'Mod') return;
+            modService.associateModImage(report.reportable);
+        });
     };
 });

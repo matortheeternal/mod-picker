@@ -3,6 +3,7 @@
   "include": {
     "author_users": {}
   },
+  "methods": "image_type",
   "conditional_include": [{
     "include": {
       "nexus_infos": {}

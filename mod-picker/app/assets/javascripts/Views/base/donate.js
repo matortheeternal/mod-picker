@@ -6,6 +6,7 @@ app.config(['$stateProvider', function($stateProvider) {
     });
 }]);
 
-app.controller('donateController', function($scope) {
+app.controller('donateController', function($scope, helpFactory) {
     $scope.$emit('setPageTitle', 'Donate');
+    helpFactory.setHelpContexts($scope, []);
 });

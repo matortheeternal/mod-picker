@@ -113,6 +113,28 @@ namespace :reset do
     end
   end
 
+  task mod_approval: :environment do
+    puts "\nApproving all mods"
+    unapproved_mods_count = Mod.where(approved: false).count
+    Mod.update_all(approved: true)
+    puts "#{unapproved_mods_count} mods approved"
+  end
+
+  task help_page_approval: :environment do
+    puts "\nApproving all help pages"
+    unapproved_help_pages_count = HelpPage.where(approved: false).count
+    HelpPage.update_all(approved: true)
+    puts "#{unapproved_help_pages_count} help pages approved"
+  end
+
+  namespace :adult do
+    task plugins: :environment do
+      puts "\nResetting plugins has_adult_content values"
+      Plugin.joins(:mod).update_all("plugins.has_adult_content = mods.has_adult_content")
+      puts "#{Plugin.where(has_adult_content: true).count} plugins marked as having adult content"
+    end
+  end
+
   namespace :counters do
     task all: :environment do
       puts "\nResetting all counter cache columns"
@@ -120,8 +142,8 @@ namespace :reset do
     end
 
     task stars: :environment do
-      ModStar.update_all_counters(Mod, :stars_count, :mod_id)
-      ModListStar.update_all_counters(ModList, :stars_count, :mod_list_id)
+      Mod.reset_counter!(:mod_stars)
+      ModList.reset_counter!(:mod_list_stars)
     end
   end
 end

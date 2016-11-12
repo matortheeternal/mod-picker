@@ -54,7 +54,11 @@ Rails.application.routes.draw do
     match '/mods/index', to: 'mods#index', via: [:get, :post]
     match '/mods/search', to: 'mods#search', via: [:post]
     match '/mods/:id/hide', to: 'mods#hide', via: [:post]
+    match '/mods/:id/approve', to: 'mods#approve', via: [:post]
     resources :mods, only: [:show, :new, :create, :edit, :update]
+
+    # mod options
+    match '/mod_options/search', to: 'mod_options#search', via: [:post]
 
     # plugins
     match '/plugins', to: 'plugins#index', via: [:get, :post]
@@ -69,6 +73,10 @@ Rails.application.routes.draw do
     match '/mods/:id/load_order_notes', to: 'mods#load_order_notes', via: [:get, :post]
     match '/mods/:id/analysis', to: 'mods#analysis', via: [:get, :post]
     match '/mods/:id/image', to: 'mods#image', via: [:post]
+
+    # curator requests
+    match '/curator_requests/index', to: 'curator_requests#index', via: [:get, :post]
+    resources :curator_requests, only: [:create, :update]
 
     # reviews
     match '/reviews/index', to: 'reviews#index', via: [:get, :post]
@@ -129,6 +137,8 @@ Rails.application.routes.draw do
     match '/mod_lists/:id/analysis', to: 'mod_lists#analysis', via: [:get, :post]
     match '/mod_lists/:id/comments', to: 'mod_lists#comments', via: [:get, :post]
     match '/mod_lists/:id/hide', to: 'mod_lists#hide', via: [:post]
+    match '/mod_lists/:id/clone', to: 'mod_lists#clone', via: [:post]
+    match '/mod_lists/:id/add', to: 'mod_lists#add', via: [:post]
     match '/mod_list_groups', to: 'mod_list_groups#create', via: [:post]
     match '/mod_list_mods', to: 'mod_list_mods#create', via: [:post]
     match '/mod_list_mods', to: 'mod_list_mods#destroy', via: [:delete]
@@ -182,6 +192,7 @@ Rails.application.routes.draw do
     # reports
     match '/reports/index', to: 'reports#index', via: [:get, :post]
     match '/reports', to: 'reports#create', via: [:post]
+    match '/reports/:id/resolve', to: 'reports#resolve', via: [:post]
   end
 
   # welcome page

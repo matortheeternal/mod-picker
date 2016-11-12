@@ -20,7 +20,8 @@ class ModList < ActiveRecord::Base
   subscribe :user_stars, to: [:status]
 
   # SCOPES
-  include_scope :has_adult_content, :alias => 'include_adult'
+  hash_scope :hidden, alias: 'hidden'
+  hash_scope :adult, alias: 'adult', column: 'has_adult_content'
   game_scope
   search_scope :name, :alias => 'search'
   search_scope :description
@@ -100,8 +101,9 @@ class ModList < ActiveRecord::Base
   counter_cache_on :submitter
   bool_counter_cache :mod_list_mods, :is_utility, { true => :tools, false => :mods }
   bool_counter_cache :custom_mods, :is_utility, { true => :custom_tools, false => :custom_mods }
-  counter_cache :custom_plugins, :config_files, :custom_config_files, :ignored_notes, :stars, :comments
+  counter_cache :custom_plugins, :config_files, :custom_config_files, :ignored_notes, :stars
   counter_cache :mod_list_tags, column: 'tags_count'
+  counter_cache :comments, conditional: { commentable_type: 'ModList' }
   counter_cache :plugins, custom_reflection: { klass: Plugin, query_method: 'mod_list_count_subquery' }
 
   # VALIDATIONS
@@ -158,22 +160,11 @@ class ModList < ActiveRecord::Base
   end
 
   def add_official_content
-    # official mods
     official_content = Mod.game(game_id).where(is_official: true)
     official_content.each_with_index do |m, index|
-      mod_list_mods.create({
-          mod_id: m.id,
-          index: index
-      })
-    end
-
-    # official plugins
-    official_plugins = Plugin.mods(official_content)
-    official_plugins.each_with_index do |p, index|
-      mod_list_plugins.create({
-          plugin_id: p.id,
-          index: index
-      })
+      mod_list_mod = ModListMod.new(mod_list_id: id, mod_id: m.id, index: index + 1)
+      mod_list_mod.save!
+      mod_list_mod.add_default_mod_options
     end
   end
 
@@ -325,6 +316,15 @@ class ModList < ActiveRecord::Base
 
   def set_completed?
     status == "complete" && completed.nil?
+  end
+
+  def compact_plugins
+    mod_list_plugins.order(:index).each_with_index do |p, i|
+      if p.index != i
+        p.index = i
+        p.save!
+      end
+    end
   end
 
   private

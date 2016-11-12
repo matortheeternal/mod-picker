@@ -6,6 +6,8 @@ class ModListModsController < ApplicationController
     authorize! :update, @mod_list_mod.mod_list
 
     if @mod_list_mod.save
+      @mod_list_mod.add_default_mod_options
+      
       if params[:no_response]
         render json: {status: :ok}
       else
@@ -47,6 +49,8 @@ class ModListModsController < ApplicationController
     authorize! :update, @mod_list_mod.mod_list
 
     if @mod_list_mod.destroy
+      mod_list = ModList.find(params[:mod_list_id])
+      mod_list.compact_plugins
       render json: {status: :ok}
     else
       render json: @mod_list_mod.errors, status: :unprocessable_entity

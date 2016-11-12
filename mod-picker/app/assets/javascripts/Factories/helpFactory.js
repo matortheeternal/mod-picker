@@ -1,6 +1,10 @@
 app.service('helpFactory', function($timeout) {
     var factory = this;
 
+    this.introduction = 'Hi, I am the Mod Picker helper.  I provide information about the page you\'re currently viewing with links to the <a href="/help" target="_blank">Mod Picker Help Center</a> to learn more.  You can disable me by default from your <a href="#/settings">user settings</a>.';
+
+    this.error = 'Sorry, an error happened when loading help messages for this page.  Please try <a href="javascript:location.reload();">reloading the page</a>!';
+
     this.welcome = 'Welcome to the Mod Picker Beta!  Check out the <a href="#/article/1">Welcome Article</a> for help getting started using the site.';
 
     this.home = 'This is the Mod Picker home page.  You can view site news and recent contributions here.  <a href="/help/home_page" target="_blank">Click here</a> for more information.';
@@ -52,6 +56,6 @@ app.service('helpFactory', function($timeout) {
     this.setHelpContexts = function($scope, contexts) {
         $timeout(function() {
             $scope.$emit('setHelpContexts', contexts);
-        }, 100);
+        }, 200);
     };
 });

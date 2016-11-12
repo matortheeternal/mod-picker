@@ -20,3 +20,15 @@
   max-width: 250px;
   max-height: 250px;
 }
+
+.image-pending {
+  border: none !important;
+  box-shadow: 0 0 0 2px #9c9;
+}
+
+image-upload {
+  img {
+    display: inline-block !important;
+    margin: 0 6px 6px 2px !important;
+  }
+}

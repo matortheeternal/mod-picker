@@ -13,6 +13,32 @@
                     <input type="text" ng-model="filters.submitter">
                 </div>
 
+                <div class="filter-section" ng-if="permissions.canModerate || allowAdult">
+                    <h3>Content Filters</h3>
+                    <div class="sidebar-box box-shadow">
+                        <ul class="checkbox-list" ng-if="allowAdult">
+                            <li>
+                                <label><input type="checkbox" ng-model="filters.adult['1']">
+                                    Show Adult Content</label>
+                            </li>
+                            <li>
+                                <label><input type="checkbox" ng-model="filters.adult['0']">
+                                    Show Non-Adult Content</label>
+                            </li>
+                        </ul>
+                        <ul class="checkbox-list" ng-if="permissions.canModerate">
+                            <li>
+                                <label><input type="checkbox" ng-model="filters.hidden['1']">
+                                    Hidden</label>
+                            </li>
+                            <li>
+                                <label><input type="checkbox" ng-model="filters.hidden['0']">
+                                    Unhidden</label>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
                 <div class="filter-section">
                     <h3>Types</h3>
                     <div class="sidebar-box box-shadow">
@@ -36,6 +62,10 @@
                             <li>
                                 <label><input type="checkbox" ng-model="filters.commentable.Article">
                                     Article Comments</label>
+                            </li>
+                            <li>
+                                <label><input type="checkbox" ng-model="filters.commentable.HelpPage">
+                                    Help Page Comments</label>
                             </li>
                         </ul>
                     </div>
@@ -75,7 +105,7 @@
                 <loader data="comments" content-class="grid-results" spinner-class="big-spinner" ng-if="!error">
                     <comments comments="comments" show-context="true"></comments>
 
-                    <page-results pages="pages" data="comments" callback="getData"></page-results>
+                    <page-results pages="filters.pages" data="comments" callback="pageCallback"></page-results>
                 </loader>
                 <error-display content-class="content-message content-error" errors="error" label="comments"></error-display>
             </div>

@@ -26,6 +26,15 @@ input[type="button"], input[type="submit"] {
   }
 }
 
+.big-btn {
+  font-size: 28px;
+  text-transform: none;
+  padding: 10px 18px;
+  margin: 6px 0;
+  display: inline-block;
+  height: auto;
+}
+
 .btn-round {
   padding: 8px;
   color: $action_text_color;

@@ -3,5 +3,5 @@
   "include": {
     "reputation": {}
   },
-  "methods": "avatar"
+  "methods": "image_type"
 }

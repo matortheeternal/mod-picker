@@ -1,11 +1,14 @@
 <div class="content-title">
-  <span class="capitalize">
-    <span ng-bind-html="reportableUrl"></span>
-  </span>
+    <span class="capitalize">
+        <span ng-bind-html="reportableUrl"></span>
+    </span>
+    <span class="action-box right-item {{ report.resolved ? 'green-box' : 'red-box' }}" ng-click="toggleResolved()" title="Click here to mark this report as {{ report.resolved ? 'un' : ''}}resolved.">
+        {{ report.resolved ? 'R' : 'Unr' }}esolved
+    </span>
 </div>
 
 <div class="content-container">
-  <div class="content-block">
-    <load-order-note note="report.reportable" show-marks="false" show-user-column="true" index="0"></load-order-note>
-  </div>
+    <div class="content-block">
+        <load-order-note note="report.reportable" show-marks="false" show-user-column="true" index="0"></load-order-note>
+    </div>
 </div>

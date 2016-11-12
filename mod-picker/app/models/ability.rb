@@ -19,13 +19,13 @@ class Ability
       can :set_custom_title, User, id: user.id
 
       # can create and update help pages
-      can [:create, :update], HelpPage
+      can [:approve, :create, :update], HelpPage
 
       # can hide mod lists
       can :hide, ModList
 
       # can update or hide any mod
-      can [:update, :hide, :assign_custom_sources, :update_authors, :update_options], Mod
+      can [:update, :hide, :approve, :assign_custom_sources, :update_authors, :update_options], Mod
       can :destroy, ModRequirement
 
       # can update, approve, or hide any contribution
@@ -37,13 +37,15 @@ class Ability
       can [:update, :approve, :hide], Review
       can [:update, :hide], Tag
 
+      # can approve/deny curator requests
+      can :update, CuratorRequest
+
       # can delete tags
       can :destroy, ModTag
       can :destroy, ModListTag
 
-      # can read reports
-      can :read, Report
-      can :read, BaseReport
+      # can resolve/unresolve reports
+      can :resolve, BaseReport
     else
       # users that are not admins or moderators
       # cannot read private mod lists unless they submitted them
@@ -55,12 +57,16 @@ class Ability
       cannot :read, InstallOrderNote, approved: false
       cannot :read, LoadOrderNote, approved: false
       cannot :read, Review, approved: false
+      cannot :read, Mod, approved: false
+      cannot :read, HelpPage, approved: false
 
       # can read unapproved content they submitted
       can :read, CompatibilityNote, approved: false, submitted_by: user.id
       can :read, InstallOrderNote, approved: false, submitted_by: user.id
       can :read, LoadOrderNote, approved: false, submitted_by: user.id
       can :read, Review, approved: false, submitted_by: user.id
+      can :read, Mod, approved: false, submitted_by: user.id
+      can :read, HelpPage, approved: false, submitted_by: user.id
 
         # cannot read hidden content
       cannot :read, Comment, hidden: true
@@ -72,9 +78,18 @@ class Ability
       cannot :read, Mod, hidden: true
       cannot :read, ModList, hidden: true
 
+      # cannot read curator requests they didn't make
+      cannot :read, CuratorRequest
+      can :read, CuratorRequest, user_id: user.id
+
       # cannot read reports
       cannot :read, Report
       cannot :read, BaseReport
+    end
+
+    # news writers and admins can create and update articles
+    if user.news_writer? || user.admin?
+      can [:create, :update], Article
     end
 
     # signed in users who aren't restricted or banned
@@ -102,6 +117,7 @@ class Ability
       can :update, LoadOrderNote, submitted_by: user.id, hidden: false
       can :update, InstallOrderNote, submitted_by: user.id, hidden: false
       can :update, Review, submitted_by: user.id, hidden: false
+      can :update, HelpPage, submitted_by: user.id
 
       # can update contributions they have a passed correction for
       can :update, CompatibilityNote, corrector_id: user.id, hidden: false
@@ -123,24 +139,37 @@ class Ability
       # authors
       can :update_authors, Mod, { mod_authors: { user_id: user.id, role: 0 } }
       can :update_options, Mod, { mod_authors: { user_id: user.id, role: 0 } }
+      can :change_status, Mod, { status: 0, mod_authors: { user_id: user.id, role: 0 } }
+      can [:read, :update], CuratorRequest, { mod: { mod_authors: { user_id: user.id, role: 0 } } }
       # contributors
       cannot [:update, :hide], Mod, { disallow_contributors: true, mod_authors: { user_id: user.id, role: 1 } }
 
       # abilities tied to reputation
       if user.reputation.overall >= 5
+        # TODO: Remove this after beta
         can :create, Tag # can create new tags
       end
-      if user.reputation.overall >= 40
-        can :create, Correction  # can report something as incorrect
-        can :create, AgreementMark  # can agree/disagree with corrections
-        can :create, ReputationLink # can give reputation other users
+      if user.reputation.overall >= 20
+        # TODO: Uncomment this after beta
+        #can :create, Tag # can create new tags
+        can :create, CuratorRequest
       end
-      if user.reputation.overall >= 160
-        # TODO: mod submission here after the beta
+      if user.reputation.overall >= 40
+        # can report something as incorrect unless they submitted it and
+        # it is not a mod
+        can :create, Correction
+        cannot :create, Correction, { correctable: { submitted_by: user.id } }
+        can :create, Correction, { correctable_type: "Mod" }
+
+        # can agree/disagree with corrections, give reputation other users, and
+        # can create new help pages
+        can :create, AgreementMark
+        can :create, ReputationLink # can
+        can :create, HelpPage
       end
       if user.reputation.overall >= 320
         # can update compatibility notes, install order notes, and
-        # load order notes  when the user who created them is inactive
+        # load order notes when the user who created them is inactive
         can :update, CompatibilityNote, { submitter: { inactive?: true } }
         can :update, InstallOrderNote, { submitter: { inactive?: true } }
         can :update, LoadOrderNote, { submitter: { inactive?: true } }

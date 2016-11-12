@@ -17,8 +17,10 @@ class CompatibilityNote < ActiveRecord::Base
   subscribe :submitter, to: [:message, :approved, :unapproved, :hidden, :unhidden]
 
   # SCOPES
+  hash_scope :approved, alias: 'approved'
+  hash_scope :hidden, alias: 'hidden'
+  hash_scope :adult, alias: 'adult', column: 'has_adult_content'
   include_scope :hidden
-  include_scope :has_adult_content, :alias => 'include_adult'
   visible_scope :approvable => true
   game_scope
   search_scope :text_body, :alias => 'search'
@@ -42,6 +44,7 @@ class CompatibilityNote < ActiveRecord::Base
   # associated compatibility plugin/compatibilty mod for automatic resolution purposes
   belongs_to :compatibility_plugin, :class_name => 'Plugin', :foreign_key => 'compatibility_plugin_id', :inverse_of => 'compatibility_notes'
   belongs_to :compatibility_mod, :class_name => 'Mod', :foreign_key => 'compatibility_mod_id'
+  belongs_to :compatibility_mod_option, :class_name => 'ModOption', :foreign_key => 'compatibility_mod_option_id'
 
   # mod lists this compatibility note is ignored on
   has_many :mod_list_ignored_notes, :as => 'note'

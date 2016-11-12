@@ -1,18 +1,10 @@
 app.service('articleService', function($q, backend, userTitleService, pageUtils, objectUtils) {
-    this.retrieveArticle = function(articleId) {
-        var output = $q.defer();
-        backend.retrieve('/articles/' + articleId).then(function(articleData) {
-            output.resolve(articleData);
-        }, function(response) {
-            output.reject(response);
-        });
-        return output.promise;
-    };
+    var service = this;
 
     this.retrieveArticles = function(options, pageInformation) {
         var action = $q.defer();
         backend.post('/articles/index', options).then(function(data) {
-            // resolve page information and data
+            service.associateArticleImages(data.articles);
             pageUtils.getPageInformation(data, pageInformation, options.page);
             action.resolve(data);
         }, function(response) {
@@ -21,12 +13,30 @@ app.service('articleService', function($q, backend, userTitleService, pageUtils,
         return action.promise;
     };
 
+    this.retrieveArticle = function(articleId) {
+        var output = $q.defer();
+        backend.retrieve('/articles/' + articleId).then(function(articleData) {
+            service.associateArticleImage(articleData);
+            output.resolve(articleData);
+        }, function(response) {
+            output.reject(response);
+        });
+        return output.promise;
+    };
+
     this.newArticle = function() {
         return backend.retrieve('/articles/new');
     };
 
     this.editArticle = function(articleId) {
-        return backend.retrieve('/articles/' + articleId + '/edit');
+        var output = $q.defer();
+        backend.retrieve('/articles/' + articleId + '/edit').then(function(articleData) {
+            service.associateArticleImage(articleData);
+            output.resolve(articleData);
+        }, function(response) {
+            output.reject(response);
+        });
+        return output.promise;
     };
 
     this.updateArticle = function(article) {
@@ -62,7 +72,22 @@ app.service('articleService', function($q, backend, userTitleService, pageUtils,
         return backend.delete('/articles/' + articleId);
     };
 
-    this.submitImage = function(articleId, image) {
-        return backend.postFile('/articles/' + articleId + '/image', 'image', image);
+    this.submitImage = function(articleId, images) {
+        return backend.postImages('/articles/' + articleId + '/image', images);
+    };
+
+    this.associateArticleImage = function(article) {
+        var imageBase = article.image_type ? article.id : 'Default';
+        var imageExt = article.image_type || 'png';
+        article.images = {
+            big: '/articles/' + imageBase + '-big.' + imageExt,
+            medium: '/articles/' + imageBase + '-medium.' + imageExt,
+            small: '/articles/' + imageBase + '-small.' + imageExt
+        };
+    };
+
+    this.associateArticleImages = function(articles) {
+        if (!articles) return;
+        articles.forEach(service.associateArticleImage);
     };
 });

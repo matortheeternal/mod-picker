@@ -217,6 +217,30 @@ app.controller('modListController', function($scope, $rootScope, $q, $state, $st
         });
     };
 
+    $scope.cloneModList = function() {
+        modListService.cloneModList($scope.mod_list.id).then(function(data) {
+            $rootScope.activeModList = data.mod_list;
+            var params = {
+                type: "success",
+                text: "Cloned mod list successfully.  Click here to view it.",
+                url: "#/mod-list/"+data.mod_list.id
+            };
+            $scope.$emit('customMessage', params);
+        }, function(response) {
+            var params = {label: 'Error cloning mod list', response: response};
+            $scope.$emit('errorMessage', params);
+        });
+    };
+
+    $scope.addModCollection = function() {
+        modListService.addModCollection($scope.mod_list.id).then(function() {
+            $scope.$emit('successMessage', "Added " + $scope.mod_list.name + " to your active mod list.");
+        }, function(response) {
+            var params = { label: 'Error adding mod collection to your active mod list', response: response };
+            $scope.$emit('errorMessage', params);
+        });
+    };
+
     $scope.toggleEditing = function() {
         $scope.editing = !$scope.editing;
         if (!$scope.editing) {
@@ -432,6 +456,14 @@ app.controller('modListController', function($scope, $rootScope, $q, $state, $st
         }
     };
 
+    $scope.updateCounters = function(updatedModList) {
+        var counts = ["tools_count", "mods_count", "plugins_count", "config_files_count"];
+        counts.forEach(function(count) {
+            $scope.mod_list[count] = updatedModList[count];
+        });
+        $scope.updateTabs();
+    };
+
     $scope.saveChanges = function(skipFlatten) {
         var action = $q.defer();
         // get changed mod fields
@@ -446,10 +478,10 @@ app.controller('modListController', function($scope, $rootScope, $q, $state, $st
         }
 
         // else submit changes to the backend
-        modListService.updateModList(modListDiff).then(function() {
-            // update modules
+        modListService.updateModList(modListDiff).then(function(data) {
+            $rootScope.activeModList = data.mod_list;
+            $scope.updateCounters(data.mod_list);
             $scope.$broadcast('saveChanges');
-            // success message
             $scope.$emit('successMessage', 'Mod list saved successfully.');
             action.resolve(true);
         }, function(response) {

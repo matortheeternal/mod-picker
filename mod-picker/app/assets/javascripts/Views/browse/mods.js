@@ -1,17 +1,18 @@
 app.run(function($futureState, indexFactory, filtersFactory) {
     // dynamically construct and apply state
     var filterPrototypes = filtersFactory.modFilters();
-    var state = indexFactory.buildState('id', 'DESC', 'mods', filterPrototypes);
+    var state = indexFactory.buildState('submitted', 'DESC', 'mods', filterPrototypes);
     $futureState.futureState(state);
 });
 
-app.controller('modsController', function($scope, $rootScope, $q, $stateParams, $state, modService, categoryService, modListService, indexService, helpFactory, sliderFactory, columnsFactory, filtersFactory, actionsFactory, indexFactory, eventHandlerFactory) {
+app.controller('modsController', function($scope, $rootScope, $q, $stateParams, $state, modService, categoryService, modListService, indexService, helpFactory, sliderFactory, columnsFactory, detailsFactory, sortFactory, filtersFactory, actionsFactory, indexFactory, eventHandlerFactory) {
     // inherited variables
     $scope.currentUser = $rootScope.currentUser;
     $scope.currentGame = $rootScope.currentGame;
     $scope.categories = $rootScope.categories;
     $scope.activeModList = $rootScope.activeModList;
     $scope.permissions = angular.copy($rootScope.permissions);
+    $scope.allowAdult = $scope.currentUser && $scope.currentUser.settings.allow_adult_content;
 
     // set page title
     $scope.$emit('setPageTitle', 'Browse Mods');
@@ -19,6 +20,13 @@ app.controller('modsController', function($scope, $rootScope, $q, $stateParams, 
     // columns for view
     $scope.columns = columnsFactory.modColumns();
     $scope.columnGroups = columnsFactory.modColumnGroups();
+
+    // details for view
+    $scope.details = detailsFactory.modDetails();
+    $scope.detailGroups = detailsFactory.modDetailGroups();
+
+    // sort options for view
+    $scope.sortOptions = sortFactory.modSortOptions();
 
     // set help context
     helpFactory.setHelpContexts($scope, [helpFactory.modsIndex]);
@@ -45,6 +53,10 @@ app.controller('modsController', function($scope, $rootScope, $q, $stateParams, 
                 $scope.filters.compatibility = $scope.activeModList.id;
             }
         }
+    };
+
+    $scope.showDetailsModal = function() {
+        $scope.$broadcast('configureDetails');
     };
 
     // returns a new subset of the input filters with the unavailable filters removed

@@ -57,6 +57,8 @@ class User < ActiveRecord::Base
 
   has_many :submitted_mods, :class_name => 'Mod', :foreign_key => 'submitted_by', :inverse_of => 'submitter'
 
+  has_many :curator_requests, :inverse_of => 'submitter'
+
   has_many :mod_authors, :inverse_of => 'user'
   has_many :mods, :through => 'mod_authors', :inverse_of => 'author_users'
   has_many :mod_lists, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
@@ -83,7 +85,8 @@ class User < ActiveRecord::Base
   counter_cache :comments, column: 'submitted_comments_count', conditional: { hidden: false }
   counter_cache :starred_mods, :starred_mod_lists, :mod_tags, :mod_list_tags, :helpful_marks, :agreement_marks
   counter_cache :mod_authors, column: 'authored_mods_count'
-  counter_cache :submitted_mods, :reviews, :compatibility_notes, :install_order_notes, :load_order_notes, :corrections, :tags, conditional: { hidden: false }
+  counter_cache :submitted_mods, :reviews, :compatibility_notes, :install_order_notes, :load_order_notes, conditional: { hidden: false, approved: true }
+  counter_cache  :corrections, :tags, conditional: { hidden: false }
   bool_counter_cache :mod_lists, :is_collection, { true => :mod_collections, false => :mod_lists }
 
   # VALIDATIONS
@@ -101,12 +104,6 @@ class User < ActiveRecord::Base
     User.find(id)
   end
 
-  # returns nil if the user doesn't have a custom title or a custom avatar
-  def avatar
-    avatar_path = image
-    self.title.nil? && avatar_path == "/users/Default.png" ? nil : avatar_path
-  end
-
   def recent_notifications
     notifications.unread.limit(10)
   end
@@ -121,6 +118,10 @@ class User < ActiveRecord::Base
 
   def can_moderate?
     admin? || moderator?
+  end
+
+  def news_writer?
+    role.to_sym == :writer
   end
 
   def restricted?
@@ -145,6 +146,10 @@ class User < ActiveRecord::Base
 
   def has_auto_approval?
     reputation.overall > 20
+  end
+
+  def has_mod_auto_approval?
+    reputation.overall > 80
   end
 
   def subscribed_to?(event)

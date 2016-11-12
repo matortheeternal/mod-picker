@@ -29,8 +29,16 @@ app.controller('editArticleController', function($scope, $stateParams, article, 
     $scope.originalArticle = article;
 
     // initialize local variables
+    $scope.imageSizes = [
+        { label: 'big', size: 300 },
+        { label: 'medium', size: 210 },
+        { label: 'small', size: 100 }
+    ];
+    $scope.defaultSrc = $scope.article.images.big;
     $scope.image = {
-        src: $scope.article.image
+        sizes: [
+            { label: 'big', src: $scope.defaultSrc }
+        ]
     };
 
     // set page title
@@ -64,40 +72,32 @@ app.controller('editArticleController', function($scope, $stateParams, article, 
         // get changed article fields
         var articleId = $scope.article.id;
         var articleDiff = objectUtils.getDifferentObjectValues($scope.originalArticle, $scope.article);
+        var articleLinks = [
+            {
+                link: "#/article/" + articleId,
+                linkLabel: "view the updated article."
+            },
+            {
+                link: "#/articles",
+                linkLabel: "return to the articles index."
+            }
+        ];
         articleDiff.id = articleId;
 
         // send the updated article fields to the backend
         $scope.startSubmission("Updating article...");
         articleService.updateArticle(articleDiff).then(function() {
-            if (!$scope.image.file) {
-                $scope.submissionSuccess("Article updated successfully", [
-                    { 
-                        link: "#/article/" + articleId,
-                        linkLabel: "view the updated article."
-                    },
-                    {
-                        link: "#/articles",
-                        linkLabel: "return to the articles index."
-                    }
-                ]);
+            if (!$scope.image.changed) {
+                $scope.submissionSuccess("Article updated successfully", articleLinks);
             }
         }, function(response) {
             $scope.submissionError("There were errors updating the article.", response);
         });
 
         // if we have a new article image, send it as well
-        if ($scope.image.file) {
-            articleService.submitImage(articleId, $scope.image.file).then(function() {
-                $scope.submissionSuccess("Article updated successfully", [
-                    { 
-                        link: "#/article/" + articleId,
-                        linkLabel: "view the updated article."
-                    },
-                    {
-                        link: "#/articles",
-                        linkLabel: "return to the articles index."
-                    }
-                ]);
+        if ($scope.image.changed) {
+            articleService.submitImage(articleId, $scope.image.sizes).then(function() {
+                $scope.submissionSuccess("Article updated successfully", articleLinks);
             }, function(response) {
                 $scope.submissionError("There were errors updating the article image.", response);
             });

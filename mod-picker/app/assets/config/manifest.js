@@ -1,15 +1,16 @@
 // angular apps
 //= link modpicker.js
 //= link helpcenter.js
+//= link landing.js
 // themes
 //= link main/Whiterun.css
 //= link main/Darkwater.css
 //= link main/Blackreach.css
 //= link "main/High Hrothgar.css"
 //= link "help/High Hrothgar.css"
+//= link "landing/High Hrothgar.css"
 //= link legal.css
-// temporary welcome page assets
-//= link temp/welcome.css
+// landing page
 // VENDOR ASSETS
 //= link rzslider.min.css
 //= link simplemde.min.css

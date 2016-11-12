@@ -1,5 +1,8 @@
 class ModListConfigFile < ActiveRecord::Base
-  include BetterJson, CounterCache
+  include BetterJson, CounterCache, ScopeHelpers
+
+  # SCOPES
+  ids_scope :config_file_id
 
   # ASSOCIATIONS
   belongs_to :mod_list, :inverse_of => 'mod_list_config_files'
@@ -18,8 +21,18 @@ class ModListConfigFile < ActiveRecord::Base
   # CALLBACKS
   before_create :set_default_text_body
 
+  def copy_attributes(mod_list_id)
+    attributes.except("id").merge({ mod_list_id: mod_list_id })
+  end
+
+  def copy_to(other_mod_list)
+    unless other_mod_list.mod_list_config_files.config_files(config_file_id).exists?
+      ModListConfigFile.create(copy_attributes(other_mod_list.id))
+    end
+  end
+
   private
     def set_default_text_body
-      self.text_body ||= self.config_file.text_body
+      self.text_body ||= config_file.text_body
     end
 end

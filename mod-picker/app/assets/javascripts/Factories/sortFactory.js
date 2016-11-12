@@ -1,12 +1,21 @@
 app.service("sortFactory", function() {
     var factory = this;
 
+    // helper function to convert a label to a value data string
+    this.labelToValue = function(label) {
+        return label.toLowerCase().replace(/ /g, "_");
+    };
+
     // helper function to build a sort option prototype from a label
-    this.buildSortOption = function(label) {
-        return {
-            label: label,
-            value: label.toLowerCase().replace(/ /g, "_")
-        };
+    this.buildSortOption = function(label, value) {
+        if (!value) value = factory.labelToValue(label);
+        return { label: label, value: value };
+    };
+
+    // helper function to build a sort option prototype from a count label
+    this.buildCountSortOption = function(label) {
+        var value = factory.labelToValue(label) + "_count";
+        return { label: label, value: value };
     };
 
     /* shared sort option prototypes */
@@ -47,6 +56,79 @@ app.service("sortFactory", function() {
     this.modAverageRatingSort = {
         label: "Mod Average Rating",
         value: "mods.average_rating"
+    };
+
+    /* mods index sort options (for grid view */
+    this.modSortOptions = function() {
+        return [
+            factory.buildSortOption("Mod ID", "id"),
+            factory.buildSortOption("Mod Name", "name"),
+            factory.buildSortOption("Authors"),
+            factory.buildSortOption("Primary Category", "primary_category.name"),
+            factory.buildSortOption("Secondary Category", "secondary_category.name"),
+            factory.buildSortOption("Submitted"),
+            factory.buildSortOption("Released"),
+            factory.buildSortOption("Updated"),
+            factory.buildCountSortOption("Stars"),
+            factory.buildSortOption("Reputation"),
+            factory.buildSortOption("Avg Rating", "average_rating"),
+            factory.buildSortOption("Plugins", "plugins_count"),
+            factory.buildCountSortOption("Plugins"),
+            factory.buildCountSortOption("Mod Lists"),
+            factory.buildCountSortOption("Required Mods"),
+            factory.buildCountSortOption("Required By"),
+            factory.buildCountSortOption("Tags"),
+            factory.buildCountSortOption("Compatibility Notes"),
+            factory.buildCountSortOption("Install Order Notes"),
+            factory.buildCountSortOption("Load Order Notes"),
+            factory.buildSortOption("Endorsements", {
+                nexus: "nexus_infos.endorsements"
+            }),
+            factory.buildSortOption("Subscribers", {
+                workshop: "workshop_infos.subscribers"
+            }),
+            factory.buildSortOption("Unique DLs", {
+                nexus: "nexus_infos.unique_downloads"
+            }),
+            factory.buildSortOption("Favorites", {
+                lab: "lover_infos.followers_count",
+                workshop: "workshop_infos.favorites"
+            }),
+            factory.buildSortOption("Downloads", {
+                nexus: "nexus_infos.downloads",
+                lab: "lover_infos.downloads"
+            }),
+            factory.buildSortOption("Views", {
+                nexus: "nexus_infos.views",
+                lab: "lover_infos.views",
+                workshop: "workshop_infos.views"
+            }),
+            factory.buildSortOption("Posts", {
+                nexus: "nexus_infos.posts_count",
+                workshop: "workshop_infos.comments_count"
+            }),
+            factory.buildSortOption("Images", {
+                nexus: "nexus_infos.images_count",
+                workshop: "workshop_infos.images_count"
+            }),
+            factory.buildSortOption("Videos", {
+                nexus: "nexus_infos.videos_count",
+                workshop: "workshop_infos.videos_count"
+            }),
+            factory.buildSortOption("Files", {
+                nexus: "nexus_infos.files_count"
+            }),
+            factory.buildSortOption("Bugs", {
+                nexus: "nexus_infos.bugs_count"
+            }),
+            factory.buildSortOption("Discussions", {
+                nexus: "nexus_infos.discussions_count",
+                workshop: "workshop_infos.discussions_count"
+            }),
+            factory.buildSortOption("Articles", {
+                nexus: "nexus_infos.articles_count"
+            })
+        ];
     };
 
     /* comments index sort options */
@@ -160,6 +242,18 @@ app.service("sortFactory", function() {
                 value: "reports_count"
             }
         ];
+    };
+
+    /* curator request sort options */
+    this.curatorRequestSortOptions = function() {
+        return [
+            factory.submittedSort,
+            factory.buildSortOption("Date Updated", "updated"),
+            factory.buildSortOption("Mod Released", "mods.released"),
+            factory.buildSortOption("Mod Updated", "mods.updated"),
+            factory.buildSortOption("State"),
+            factory.buildSortOption("User Reputation", "user_reputations.overall")
+        ]
     };
 
     return factory;

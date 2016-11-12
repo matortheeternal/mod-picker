@@ -1,6 +1,6 @@
 {
   "except": ["active_mod_list_id", "invitation_token", "invitation_created_at", "invitation_sent_at", "invitation_accepted_at", "invitation_limit", "invited_by_id", "invited_by_type", "invitations_count"],
-  "methods": ["avatar", "last_sign_in_at", "current_sign_in_at"],
+  "methods": ["image_type", "last_sign_in_at", "current_sign_in_at"],
   "include": {
     "reputation": {}
   }

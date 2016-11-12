@@ -60,6 +60,12 @@ class UserSettingsController < ApplicationController
     end
 
     def avatar_params
-      {image_file: params[:avatar]}
+      {
+          images: {
+              big: params.require(:big),
+              medium: params.require(:medium),
+              small: params.require(:small)
+          }
+      }
     end
 end

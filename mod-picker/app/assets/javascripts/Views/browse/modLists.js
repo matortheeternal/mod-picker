@@ -10,6 +10,7 @@ app.controller('modListsController', function($scope, $rootScope, $stateParams, 
     $scope.currentUser = $rootScope.currentUser;
     $scope.currentGame = $rootScope.currentGame;
     $scope.permissions = angular.copy($rootScope.permissions);
+    $scope.allowAdult = $scope.currentUser && $scope.currentUser.settings.allow_adult_content;
 
     // set page title
     $scope.$emit('setPageTitle', 'Browse Mod Lists');
@@ -25,8 +26,7 @@ app.controller('modListsController', function($scope, $rootScope, $stateParams, 
     $scope.dateFilters = filtersFactory.modListDateFilters();
     $scope.statFilters = filtersFactory.modListStatisticFilters();
     $scope.filters = {
-        game: $scope.currentGame.id,
-        include_adult: $scope.currentUser && $scope.currentUser.settings.allow_adult_content
+        game: $scope.currentGame.id
     };
 
     // build generic controller stuff

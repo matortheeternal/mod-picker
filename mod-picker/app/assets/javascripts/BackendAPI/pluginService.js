@@ -29,13 +29,16 @@ app.service('pluginService', function(backend, $q, $timeout, recordGroupService,
         return output.promise;
     };
 
-    this.searchPlugins = function(filename) {
+    this.searchPlugins = function(filename, modIds) {
         var plugins = $q.defer();
         var postData =  {
             filters: {
                 search: filename
             }
         };
+        if (angular.isDefined(modIds)) {
+            postData.filters.mods = modIds;
+        }
         backend.post('/plugins/search', postData).then(function(data) {
             plugins.resolve(data);
         });

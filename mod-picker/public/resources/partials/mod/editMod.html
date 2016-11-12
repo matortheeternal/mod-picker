@@ -19,7 +19,7 @@
                 </span>
             </h3>
             <section>
-                <image-upload image="image" can-change="true" default-src="mod.image" label="mod image" image-class="mod-image" max-width="300" max-height="300"></image-upload>
+                <image-upload image="image" can-change="true" default-src="mod.images.big" default-size="big" label="mod image" image-class="mod-image" sizes="imageSizes"></image-upload>
             </section>
 
             <mod-sources></mod-sources>
@@ -45,8 +45,24 @@
                 <tag-selector active-tags="mod.tags" new-tags="mod.newTags" show-mods-count="true" show-add="true" show-remove="true" max-tags="10" can-create="true"></tag-selector>
             </section>
 
-            <h3 ng-if="permissions.canManageOptions" class="section-title">Other Options</h3>
-            <section ng-if="permissions.canManageOptions">
+            <h3 ng-if="canChangeStatus" class="section-title">Change Status</h3>
+            <section ng-if="canChangeStatus">
+                <label class="subsection">
+                    <span class="input-label">Status
+                        <span class="help-tooltip small" ng-hide="hideTooltips" title="You can change the status of the mod from good to outdated &#13;or dangerous without submitting an appeal if you are an &#13;Author for the mod.">
+                            <i class="fa fa-question-circle"></i>
+                        </span>
+                    </span>
+                    <select ng-model="mod.status">
+                        <option value="good">Good</option>
+                        <option value="outdated">Outdated</option>
+                        <option value="dangerous">Dangerous</option>
+                    </select>
+                </label>
+            </section>
+
+            <h3 ng-if="canManageOptions" class="section-title">Other Options</h3>
+            <section ng-if="canManageOptions">
                 <label class="checkbox-option">
                     <input type="checkbox" ng-model="mod.is_utility">
                     External Utility
@@ -90,6 +106,11 @@
                 <label class="checkbox-option" ng-if="permissions.canModerate">
                     <input type="checkbox" ng-model="mod.hidden">
                     Hidden
+                </label><br/>
+
+                <label class="checkbox-option" ng-if="permissions.canModerate">
+                    <input type="checkbox" ng-model="mod.approved">
+                    Approved
                 </label>
             </section>
 

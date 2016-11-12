@@ -1,3 +1,5 @@
+<messages></messages>
+
 <two-columns>
     <div class="page-container">
         <div class="column-wrapper">
@@ -8,6 +10,22 @@
                     <h3>Search</h3>
                     <h4>Submitter</h4>
                     <input type="text" ng-model="filters.submitter">
+                </div>
+
+                <div class="filter-section">
+                    <h3>Content Filters</h3>
+                    <div class="sidebar-box box-shadow">
+                        <ul class="checkbox-list">
+                            <li>
+                                <label><input type="checkbox" ng-model="filters.resolved['1']">
+                                    Resolved</label>
+                            </li>
+                            <li>
+                                <label><input type="checkbox" ng-model="filters.resolved['0']">
+                                    Unresolved</label>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
 
                 <div class="filter-section">
@@ -132,7 +150,7 @@
                         No reports were found matching your search criteria.
                     </div>
 
-                    <page-results pages="pages" data="reports" callback="getData"></page-results>
+                    <page-results pages="filters.pages" data="reports" callback="pageCallback"></page-results>
                 </loader>
 
                 <error-display content-class="content-message content-error" errors="error" label="Reports"></error-display>

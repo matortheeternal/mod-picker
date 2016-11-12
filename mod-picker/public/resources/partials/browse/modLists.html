@@ -16,6 +16,32 @@
                     <input type="text" ng-model="filters.submitter">
                 </div>
 
+                <div class="filter-section" ng-if="permissions.canModerate || allowAdult">
+                    <h3>Content Filters</h3>
+                    <div class="sidebar-box box-shadow">
+                        <ul class="checkbox-list" ng-if="allowAdult">
+                            <li>
+                                <label><input type="checkbox" ng-model="filters.adult['1']">
+                                    Show Adult Content</label>
+                            </li>
+                            <li>
+                                <label><input type="checkbox" ng-model="filters.adult['0']">
+                                    Show Non-Adult Content</label>
+                            </li>
+                        </ul>
+                        <ul class="checkbox-list" ng-if="permissions.canModerate">
+                            <li>
+                                <label><input type="checkbox" ng-model="filters.hidden['1']">
+                                    Hidden</label>
+                            </li>
+                            <li>
+                                <label><input type="checkbox" ng-model="filters.hidden['0']">
+                                    Unhidden</label>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
                 <div class="filter-section">
                     <h3>Statuses</h3>
                     <div class="sidebar-box box-shadow">
@@ -90,7 +116,7 @@
                 <h2>Mod Lists</h2>
                 <loader data="mod_lists" content-class="table-container" spinner-class="big-spinner" ng-if="!error">
                     <table-results label="mod lists" data="mod_lists"></table-results>
-                    <page-results pages="pages" data="mod_lists" callback="getData"></page-results>
+                    <page-results pages="filters.pages" data="mod_lists" callback="pageCallback"></page-results>
                 </loader>
 
                 <error-display content-class="content-message content-error" errors="error" label="Mod Lists"></error-display>

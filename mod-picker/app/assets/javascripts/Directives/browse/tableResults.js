@@ -120,7 +120,7 @@ app.controller('tableResultsController', function($scope, $rootScope, tableUtils
     $scope.buildItemData = function() {
         $scope.builtItemData = true;
         $scope.data.forEach(function(item) {
-            tableUtils.buildItemData(item, $scope.columns, $scope.resolve);
+            tableUtils.buildItemData(item, $scope.columns, $scope.resolve, 'columnData');
         });
     };
 

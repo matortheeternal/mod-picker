@@ -16,6 +16,40 @@
                     <!--<input type="text" ng-model="filters.editor">-->
                 </div>
 
+                <div class="filter-section" ng-if="permissions.canModerate || allowAdult">
+                    <h3>Content Filters</h3>
+                    <div class="sidebar-box box-shadow">
+                        <ul class="checkbox-list" ng-if="allowAdult">
+                            <li>
+                                <label><input type="checkbox" ng-model="filters.adult['1']">
+                                    Show Adult Content</label>
+                            </li>
+                            <li>
+                                <label><input type="checkbox" ng-model="filters.adult['0']">
+                                    Show Non-Adult Content</label>
+                            </li>
+                        </ul>
+                        <ul class="checkbox-list" ng-if="permissions.canModerate">
+                            <li>
+                                <label><input type="checkbox" ng-model="filters.hidden['1']">
+                                    Hidden</label>
+                            </li>
+                            <li>
+                                <label><input type="checkbox" ng-model="filters.hidden['0']">
+                                    Unhidden</label>
+                            </li>
+                            <li>
+                                <label><input type="checkbox" ng-model="filters.approved['1']">
+                                    Approved</label>
+                            </li>
+                            <li>
+                                <label><input type="checkbox" ng-model="filters.approved['0']">
+                                    Unapproved</label>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
                 <div class="filter-section">
                     <h3>Standing</h3>
                     <div class="sidebar-box box-shadow">
@@ -78,7 +112,7 @@
                         No Install Order Notes were found matching your search criteria.
                     </div>
 
-                    <page-results pages="pages" data="install_order_notes" callback="getData"></page-results>
+                    <page-results pages="filters.pages" data="install_order_notes" callback="pageCallback"></page-results>
                 </loader>
 
                 <error-display content-class="content-message content-error" errors="error" label="Install Order Notes"></error-display>

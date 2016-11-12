@@ -16,6 +16,40 @@
                     <input type="text" ng-model="filters.description">
                 </div>
 
+                <div class="filter-section" ng-if="permissions.canModerate || allowAdult">
+                    <h3>Content Filters</h3>
+                    <div class="sidebar-box box-shadow">
+                        <ul class="checkbox-list" ng-if="allowAdult">
+                            <li>
+                                <label><input type="checkbox" ng-model="filters.adult['1']">
+                                    Show Adult Content</label>
+                            </li>
+                            <li>
+                                <label><input type="checkbox" ng-model="filters.adult['0']">
+                                    Show Non-Adult Content</label>
+                            </li>
+                        </ul>
+                        <ul class="checkbox-list" ng-if="permissions.canModerate">
+                            <li>
+                                <label><input type="checkbox" ng-model="filters.hidden['1']">
+                                    Hidden</label>
+                            </li>
+                            <li>
+                                <label><input type="checkbox" ng-model="filters.hidden['0']">
+                                    Unhidden</label>
+                            </li>
+                            <li>
+                                <label><input type="checkbox" ng-model="filters.approved['1']">
+                                    Approved</label>
+                            </li>
+                            <li>
+                                <label><input type="checkbox" ng-model="filters.approved['0']">
+                                    Unapproved</label>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
                 <category-tree class="filter-section" categories="categories" selection="filters.categories" toggle-all="true"></category-tree>
 
                 <div class="filter-sections" ng-if="statFilters.length">
@@ -37,7 +71,7 @@
                 <h2>Plugins</h2>
                 <loader data="plugins" content-class="table-container" spinner-class="big-spinner" ng-if="!error">
                     <table-results label="plugins" data="plugins"></table-results>
-                    <page-results pages="pages" data="plugins" callback="getData"></page-results>
+                    <page-results pages="filters.pages" data="plugins" callback="pageCallback"></page-results>
                 </loader>
 
                 <error-display content-class="content-message content-error" errors="error" label="Plugins"></error-display>

@@ -10,8 +10,4 @@ class ModListIgnoredNote < ActiveRecord::Base
 
   # VALIDATIONS
   validates :mod_list_id, :note_id, :note_type, presence: true
-
-  def self.base_json_format
-    { :except => [:mod_list_id] }
-  end
 end

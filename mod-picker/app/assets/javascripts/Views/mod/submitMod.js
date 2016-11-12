@@ -42,6 +42,17 @@ app.controller('submitModController', function($scope, $rootScope, backend, modS
         custom_sources: [],
         requirements: []
     };
+    $scope.defaultSrc = '/mods/Default-big.png';
+    $scope.imageSizes = [
+        { label: "big", size: 300 },
+        { label: "medium", size: 210 },
+        { label: "small", size: 100 }
+    ];
+    $scope.image = {
+        sizes: [
+            { label: "big", src: '/mods/Default-big.png' }
+        ]
+    };
 
     // set page title
     $scope.$emit('setPageTitle', 'Submit Mod');
@@ -73,6 +84,31 @@ app.controller('submitModController', function($scope, $rootScope, backend, modS
         return $scope.sourcesValid && $scope.categoriesValid && $scope.analysisValid;
     };
 
+    $scope.submitImage = function(modId) {
+        var successLinks = [
+            {
+                link: "#/mod/" + modId,
+                linkLabel: "view the new mod."
+            },
+            {
+                link: "#/mods",
+                linkLabel: "return to the mods index page."
+            }
+        ];
+
+        if ($scope.image.changed) {
+            $scope.submittingStatus = "Submitting Mod Image...";
+            modService.submitImage(modId, $scope.image.sizes).then(function() {
+                $scope.submissionSuccess("Mod submitted successfully!", successLinks);
+            }, function(response) {
+                console.log('Image failed to submit: '+response);
+                $scope.submissionSuccess("Mod submitted successfully, but image failed to submit.", successLinks);
+            });
+        } else {
+            $scope.submissionSuccess("Mod submitted successfully!", successLinks);
+        }
+    };
+
     $scope.submit = function() {
         // return if mod is invalid
         if (!$scope.modValid()) {
@@ -81,16 +117,7 @@ app.controller('submitModController', function($scope, $rootScope, backend, modS
 
         $scope.startSubmission("Submitting Mod...");
         modService.submitMod($scope.mod).then(function(data) {
-            $scope.submissionSuccess("Mod submitted successfully!", [
-                { 
-                    link: "#/mod/" + data.id, 
-                    linkLabel: "view the new mod."
-                },
-                {
-                    link: "#/mods", 
-                    linkLabel: "return to the mods index page." 
-                }
-            ]);
+            $scope.submitImage(data.id);
         }, function(response) {
             $scope.submissionError("There were errors submitting your mod.", response);
         });

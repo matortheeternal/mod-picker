@@ -4,16 +4,7 @@ app.service('userService', function(backend, $q, userSettingsService, userTitleS
     this.retrieveUsers = function(options, pageInformation) {
         var action = $q.defer();
         backend.post('/users/index', options).then(function(data) {
-            // associate user titles
-            data.users.forEach(function(user) {
-                if (!user.title) {
-                    userTitleService.getUserTitle(user.reputation.overall).then(function(title) {
-                        user.title = title;
-                    });
-                }
-            });
-
-            // resolve page information and data
+            data.users.forEach(userTitleService.associateUserTitle);
             pageUtils.getPageInformation(data, pageInformation, options.page);
             action.resolve(data);
         }, function(response) {
@@ -26,12 +17,7 @@ app.service('userService', function(backend, $q, userSettingsService, userTitleS
         var action = $q.defer();
         backend.retrieve('/users/' + userId).then(function(userData) {
             var user = userData.user;
-            //get user title if it's not custom
-            if (!user.title) {
-                userTitleService.getUserTitle(user.reputation.overall).then(function(title) {
-                    user.title = title;
-                });
-            }
+            userTitleService.associateUserTitle(user);
             action.resolve(userData);
         });
         return action.promise;
@@ -60,10 +46,11 @@ app.service('userService', function(backend, $q, userSettingsService, userTitleS
         var rep = user.reputation.overall;
         permissions.isAdmin = user.role === 'admin';
         permissions.isModerator = user.role === 'moderator';
+        permissions.isNewsWriter = user.role === 'writer';
         permissions.isRestricted = user.role === 'restricted';
         permissions.isBanned = user.role === 'banned';
         permissions.canModerate = permissions.isAdmin || permissions.isModerator;
-        permissions.canSubmitArticles = permissions.canModerate;
+        permissions.canManageArticles = permissions.isAdmin || permissions.isNewsWriter;
         // TODO: Switch this when beta is over
         permissions.canSubmitMods = true;
         //permissions.canSubmitMods = (rep > 160) || permissions.canModerate;
@@ -84,8 +71,6 @@ app.service('userService', function(backend, $q, userSettingsService, userTitleS
             var numEndorsed = user.reputation.rep_to_count;
             permissions.canEndorse = (rep >= 40 && numEndorsed < 5) || (rep >= 160 && numEndorsed < 10) || (rep >= 640 && numEndorsed < 15);
         }
-
-        
 
         return permissions;
     };

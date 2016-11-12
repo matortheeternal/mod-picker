@@ -1,4 +1,6 @@
 class ReportsController < ApplicationController
+  before_action :set_base_report, only: [:resolve]
+
   # POST /reports/index
   def index
     @reports = BaseReport.includes(reports: :submitter).references(reports: :submitter).preload(:reportable).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(page: params[:page])
@@ -43,10 +45,11 @@ class ReportsController < ApplicationController
     end
   end
 
-  # DELETE /reports/1
-  # DELETE /reports/1.json
-  def destroy
-    if @report.destroy
+  # POST /reports/1/resolve
+  def resolve
+    authorize! :resolve, @report
+    @report.resolved = params[:resolved]
+    if @report.save
       render json: {status: :ok}
     else
       render json: @report.errors, status: :unprocessable_entity
@@ -61,7 +64,7 @@ class ReportsController < ApplicationController
 
     # Params we allow filtering on
     def filtering_params
-      params[:filters].slice(:submitter, :reportable, :reason, :submitted, :reports_count);
+      params[:filters].slice(:resolved, :unresolved, :submitter, :reportable, :reason, :submitted, :reports_count);
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

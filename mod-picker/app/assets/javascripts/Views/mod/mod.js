@@ -261,6 +261,16 @@ app.controller('modController', function($scope, $rootScope, $q, $stateParams, $
     };
 
     // HEADER
+    $scope.approveMod = function() {
+        modService.approveMod($scope.mod.id, true).then(function() {
+            $scope.mod.approved = true;
+            $scope.$emit('successMessage', 'Mod approved successfully');
+        }, function(response) {
+            var params = { label: 'Error approving mod', response: response };
+            $scope.$emit('errorMessage', params);
+        });
+    };
+
     $scope.toggleAuthorsModal = function(visible) {
         $scope.$emit('toggleModal', visible);
         $scope.showAuthorsModal = visible;

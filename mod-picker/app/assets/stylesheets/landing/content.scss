@@ -1,0 +1,205 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  color: $text_color;
+  margin: 0;
+  background-color: $primary_background;
+  min-height: 100vh;
+  position: relative;
+}
+
+h1 {
+  font-size: 2em;
+  margin: 0;
+}
+
+h2 {
+  font-weight: normal;
+  max-width: 900px;
+  margin: 20px auto;
+}
+
+section {
+  padding: 60px;
+  text-align: center;
+
+  img {
+    max-height: 50vh;
+    margin-top: 20px;
+    box-shadow: 2px 2px 5px 2px $text_color;
+    max-width: 95%;
+  }
+}
+
+.intro-section {
+  height: 100vh;
+  max-height: 100vw;
+  position: relative;
+  padding-top: 15%;
+  background-image: url($banner_image);
+  background-size: cover;
+  background-repeat: no-repeat;
+
+  .overlay {
+    background: none repeat scroll 0 0 rgba($inverse_text_color,0.25);
+    width: 1000px;
+    max-width: 90%;
+    margin: 0 auto;
+    padding: 24px 0;
+
+    h2 {
+      margin: 16px auto 24px;
+      max-width: 600px;
+    }
+  }
+
+  p {
+    font-size: 17px;
+    margin-top: 24px;
+  }
+
+  #artist-credit {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    padding: 5px;
+    background: $secondary_background;
+    font-size: 11px;
+    font-family: 'Roboto', sans-serif;
+    color: $text_color;
+    cursor: default;
+  }
+}
+
+.game-item {
+  display: inline-block;
+  margin: 20px 4px;
+
+  div {
+    position: relative;
+
+    .coming-soon {
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0.92;
+    }
+  }
+
+  h2 {
+    padding: 0;
+    margin: 4px 0 !important;
+  }
+}
+
+section.games-section {
+  background-color: $secondary_background;
+
+  h2 {
+    margin: 20px auto 40px;
+  }
+
+  img {
+    box-shadow: none;
+  }
+}
+
+section.sources-section {
+  img {
+    box-shadow: none;
+  }
+}
+
+section.grand {
+  background-color: $background_grand;
+}
+
+section.high {
+  background-color: $background_high;
+}
+
+section.medium-high {
+  background-color: $background_medium_high;
+}
+
+section.medium {
+  background-color: $background_medium;
+  color: $inverse_text_color;
+}
+
+section.medium-low {
+  background-color: $background_medium_low;
+  color: $inverse_text_color;
+}
+
+section.low {
+  background-color: $background_low;
+  color: $inverse_text_color;
+}
+
+section.base {
+  background-color: $background_base;
+  color: $inverse_text_color;
+}
+
+.low, .base {
+  img {
+    box-shadow: 2px 2px 5px 2px darken($text_color, 14%);
+  }
+}
+
+section.under {
+  background-color: $background_under;
+  color: $inverse_text_color;
+  padding: 100px 0;
+}
+
+a.btn {
+  @include transition(background-color 0.2s ease-in-out);
+
+  &:hover {
+    color: $inverse_text_color;
+  }
+}
+
+@media screen and (max-device-width: 480px) {
+  body {
+    font-size: 10px;
+  }
+
+  nav .secondary-nav a {
+    font-size: 18px;
+  }
+
+  h1 {
+    font-size: 1.8em;
+  }
+
+  h2 {
+    font-size: 1.4em;
+  }
+
+  .intro-section {
+    font-size: 28px;
+
+    p {
+      font-size: 32px;
+    }
+  }
+
+  .game-item {
+    h2 {
+      font-size: 4em;
+    }
+    span {
+      font-size: 2em;
+    }
+  }
+
+  .big-btn {
+    font-size: 42px;
+  }
+}

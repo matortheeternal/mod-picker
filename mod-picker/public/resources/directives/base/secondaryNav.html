@@ -1,0 +1,11 @@
+<div class="secondary-nav">
+    <div class="search">
+        <form>
+            <input class="search-field" type="text" autocomplete="off" ng-model="search" placeholder="Search mods...">
+            <div class="search-container">
+                <input id="search-btn" class="btn" type="submit" value="Search" ng-click="processSearch()" ng-hide="loading"/>
+                <loader data="!loading" spinner-class="small-spinner"></loader>
+            </div>
+        </form>
+    </div>
+</div>

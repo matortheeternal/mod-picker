@@ -4,7 +4,7 @@
             <a class="inverse-link user-role-{{user.role}}" ng-href="#/user/{{user.id}}">{{user.username}}</a>
         </li>
         <li class="user-avatar">
-            <img class="avatar avatar-medium" ng-src="{{user.avatar == null ? '/users/' + user.title + '.png' : user.avatar}}"/>
+            <img class="avatar avatar-medium" ng-src="{{user.avatars.medium}}"/>
         </li>
         <li ng-if="permissions.canModerate">
             <span ng-click="addRep()">

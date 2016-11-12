@@ -40,8 +40,15 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
     $scope.originalMod = angular.copy($scope.mod);
     $scope.sites = sitesFactory.sites();
     $scope.image = {
-        src: $scope.mod.image
+        sizes: [
+            { label: "big", src: $scope.mod.images.big }
+        ]
     };
+    $scope.imageSizes = [
+        { label: "big",     size: 300 },
+        { label: 'medium',  size: 210 },
+        { label: 'small',   size: 100 }
+    ];
     $scope.analysisValid = true;
 
     // set page title
@@ -58,7 +65,8 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
         return author.user_id == $scope.currentUser.id;
     });
     var isAuthor = author && author.role == 'author';
-    $scope.permissions.canManageOptions = $scope.permissions.canModerate || isAuthor;
+    $scope.canManageOptions = $scope.permissions.canModerate || isAuthor;
+    $scope.canChangeStatus = (isAuthor && $scope.mod.status == "good") || $scope.permissions.isAdmin;
 
     $scope.$watch('mod.categories', function() {
         // clear messages when user changes the category
@@ -109,7 +117,7 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
         $scope.buildSources();
         var modDiff = modService.getDifferentModValues($scope.originalMod, $scope.mod);
         var modUnchanged = objectUtils.isEmptyObject(modDiff.mod);
-        var imageUnchanged = !$scope.image.file;
+        var imageUnchanged = !$scope.image.changed;
 
         // return if there is nothing to change
         if (modUnchanged && imageUnchanged) {
@@ -133,7 +141,7 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
     };
 
     $scope.submitImage = function() {
-        modService.submitImage($scope.mod.id, $scope.image.file).then(function() {
+        modService.submitImage($scope.mod.id, $scope.image.sizes).then(function() {
             $scope.imageSuccess = true;
             $scope.displaySuccess();
         }, function(response) {

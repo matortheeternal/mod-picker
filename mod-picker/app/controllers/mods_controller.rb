@@ -1,7 +1,7 @@
 class ModsController < ApplicationController
-  before_action :set_mod, only: [:edit, :update, :hide, :update_tags, :image, :corrections, :reviews, :compatibility_notes, :install_order_notes, :load_order_notes, :analysis, :destroy]
+  before_action :set_mod, only: [:edit, :update, :hide, :approve, :update_tags, :image, :corrections, :reviews, :compatibility_notes, :install_order_notes, :load_order_notes, :analysis, :destroy]
 
-  # POST /mods
+  # POST /mods/index
   def index
     @mods = Mod.eager_load(:author_users, :nexus_infos, :lover_infos, :workshop_infos).accessible_by(current_ability).filter(filtering_params).sort(sorting_params).paginate(page: params[:page])
     count =  Mod.eager_load(:author_users, :nexus_infos, :lover_infos, :workshop_infos).accessible_by(current_ability).filter(filtering_params).count
@@ -15,7 +15,7 @@ class ModsController < ApplicationController
 
   # POST /mods/search
   def search
-    @mods = Mod.visible.filter(search_params).sort({ column: "name", direction: "ASC" }).limit(10)
+    @mods = Mod.visible.filter(search_params).order("CHAR_LENGTH(name)").limit(10)
     render json: @mods
   end
 
@@ -52,7 +52,7 @@ class ModsController < ApplicationController
     render json: {status: :ok}
   end
 
-  # POST /mods/submit
+  # POST /mods
   def create
     authorize! :create, Mod
     authorize! :assign_custom_sources, Mod if params[:mod].has_key?(:custom_sources_attributes)
@@ -78,7 +78,9 @@ class ModsController < ApplicationController
   def update
     authorize! :update, @mod
     authorize! :hide, @mod, :message => "You are not allowed to hide/unhide this mod." if params[:mod].has_key?(:hidden)
+    authorize! :approve, @mod, :message => "You are not allowed to approve/unapprove this mod." if params[:mod].has_key?(:approved)
     authorize! :update_authors, @mod, :message => "You are not allowed to update this mod's authors." if params[:mod].has_key?(:mod_authors_attributes)
+    authorize! :change_status, @mod, :message => "You are not allowed to change this mod's status." if params[:mod].has_key?(:status)
     authorize! :update_options, @mod, :message => "You are not allowed to update this mod's advanced options." if options_params.any?
     authorize! :assign_custom_sources, @mod, :message => "You are not allowed to assign custom sources." if params[:mod].has_key?(:custom_sources_attributes)
 
@@ -102,6 +104,17 @@ class ModsController < ApplicationController
     end
   end
 
+  # POST /mods/1/approve
+  def approve
+    authorize! :approve, @mod
+    @mod.approved = params[:approved]
+    if @mod.save
+      render json: {status: :ok}
+    else
+      render json: @mod.errors, status: :unprocessable_entity
+    end
+  end
+
   # PATCH/PUT /mods/1/tags
   def update_tags
     # TODO: Move this into the model
@@ -112,6 +125,11 @@ class ModsController < ApplicationController
     # perform tag deletions
     existing_mod_tags = @mod.mod_tags
     existing_tags_text = @mod.tags.pluck(:text)
+
+    # empty arrays are converted to nil in params, default to empty array here.
+    # TODO: find a more generic solution(possibly disable deep_munge which is causing this in the first place due to security concerns)
+    params[:tags] ||= []
+    
     @mod.mod_tags.each_with_index do |mod_tag, index|
       if params[:tags].exclude?(existing_tags_text[index])
         authorize! :destroy, mod_tag
@@ -150,7 +168,9 @@ class ModsController < ApplicationController
 
   # POST /mods/1/image
   def image
-    authorize! :update, @mod
+    unless (@mod.submitted > 5.minutes.ago) && (current_user.id == @mod.submitted_by)
+      authorize! :update, @mod
+    end
 
     if @mod.update(image_params)
       render json: {status: :ok}
@@ -239,8 +259,8 @@ class ModsController < ApplicationController
     authorize! :read, @mod
 
     # prepare compatibility notes
-    compatibility_notes = @mod.compatibility_notes.includes(submitter: :reputation).references(submitter: :reputation).accessible_by(current_ability).sort(params[:sort]).paginate(page: params[:page], per_page: 10)
-    count =  @mod.compatibility_notes.includes(submitter: :reputation).references(submitter: :reputation).accessible_by(current_ability).count
+    compatibility_notes = @mod.compatibility_notes.preload(:first_mod, :second_mod, :editor, :editors, :compatibility_mod, :compatibility_plugin, :compatibility_mod_option).eager_load(:submitter => :reputation).accessible_by(current_ability).sort(params[:sort]).paginate(page: params[:page], per_page: 10)
+    count =  @mod.compatibility_notes.eager_load(:submitter => :reputation).accessible_by(current_ability).count
 
     # prepare helpful marks
     helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("CompatibilityNote", compatibility_notes.ids)
@@ -342,7 +362,7 @@ class ModsController < ApplicationController
     # Params we allow filtering on
     def filtering_params
       # construct valid filters array
-      valid_filters = [:include_adult, :include_utilities, :compatibility, :sources, :search, :author, :mp_author, :game, :released, :updated, :utility, :categories, :tags, :stars, :reviews, :rating, :reputation, :compatibility_notes, :install_order_notes, :load_order_notes, :asset_files, :plugins, :required_mods, :required_by, :tags_count, :mod_lists]
+      valid_filters = [:adult, :hidden, :approved, :include_utilities, :compatibility, :sources, :search, :author, :mp_author, :game, :released, :updated, :utility, :categories, :tags, :stars, :reviews, :rating, :reputation, :compatibility_notes, :install_order_notes, :load_order_notes, :asset_files, :plugins, :required_mods, :required_by, :tags_count, :mod_lists, :submitted]
       source_filters = [:views, :author, :posts, :videos, :images, :discussions, :downloads, :favorites, :subscribers, :endorsements, :unique_downloads, :files, :bugs, :articles]
       sources = params[:filters][:sources]
 
@@ -392,7 +412,7 @@ class ModsController < ApplicationController
     end
 
     def mod_update_params
-      p = params.require(:mod).permit(:name, :authors, :aliases, :is_utility, :has_adult_content, :primary_category_id, :secondary_category_id, :released, :updated, :mark_updated, :nexus_info_id, :lover_info_id, :workshop_info_id, :disallow_contributors, :disable_reviews, :lock_tags, :hidden,
+      p = params.require(:mod).permit(:name, :authors, :aliases, :is_utility, :has_adult_content, :status, :primary_category_id, :secondary_category_id, :released, :updated, :mark_updated, :nexus_info_id, :lover_info_id, :workshop_info_id, :disallow_contributors, :disable_reviews, :lock_tags, :hidden, :approved,
          required_mods_attributes: [:id, :required_id, :_destroy],
          mod_authors_attributes: [:id, :role, :user_id, :_destroy],
           custom_sources_attributes: [:id, :label, :url, :_destroy],
@@ -416,6 +436,12 @@ class ModsController < ApplicationController
     end
 
     def image_params
-      {image_file: params[:image]}
+      {
+          images: {
+              big: params.require(:big),
+              medium: params.require(:medium),
+              small: params.require(:small)
+          }
+      }
     end
 end

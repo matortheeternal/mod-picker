@@ -10,6 +10,14 @@
         </h2>
 
         <form id="submitModForm" name="submitModForm" spellcheck="false">
+            <h3 class="section-title">Image
+                <span class="help-tooltip" ng-hide="hideTooltips" title="The image that will be shown on the mod page.">
+                    <i class="fa fa-question-circle"></i>
+                </span>
+            </h3>
+            <section>
+                <image-upload image="image" can-change="true" default-src="defaultSrc" default-size="big" label="mod image" image-class="mod-image" show-explanation="false" sizes="imageSizes"></image-upload>
+            </section>
 
             <mod-sources></mod-sources>
 

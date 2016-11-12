@@ -11,6 +11,7 @@ app.controller('pluginsController', function($scope, $rootScope, $stateParams, $
     $scope.currentGame = $rootScope.currentGame;
     $scope.categories = $rootScope.categories;
     $scope.permissions = angular.copy($rootScope.permissions);
+    $scope.allowAdult = $scope.currentUser && $scope.currentUser.settings.allow_adult_content;
 
     // set page title
     $scope.$emit('setPageTitle', 'Browse Plugins');

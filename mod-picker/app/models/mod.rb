@@ -1,10 +1,11 @@
 class Mod < ActiveRecord::Base
-  include Filterable, Sortable, Reportable, Imageable, RecordEnhancements, CounterCache, SourceHelpers, ScopeHelpers, Trackable, BetterJson, Dateable
+  include Filterable, Sortable, Reportable, Imageable, RecordEnhancements, CounterCache, SourceHelpers, ScopeHelpers, Trackable, BetterJson, Dateable, Approveable
 
   # ATTRIBUTES
   enum status: [ :good, :outdated, :unstable ]
   attr_accessor :updated_by, :mark_updated
-  self.per_page = 100
+  self.per_page = 60
+  self.approval_method = :has_mod_auto_approval?
 
   # DATE COLUMNS
   date_column :submitted
@@ -20,7 +21,9 @@ class Mod < ActiveRecord::Base
   # subscribe :user_stars, to: [:analysis_updated]
 
   # SCOPES
-  include_scope :has_adult_content, :alias => 'include_adult'
+  hash_scope :approved, alias: 'approved'
+  hash_scope :hidden, alias: 'hidden'
+  hash_scope :adult, alias: 'adult', column: 'has_adult_content'
   include_scope :is_official, :alias => 'include_official'
   include_scope :is_utility, :alias => 'include_utilities'
   value_scope :is_utility
@@ -28,7 +31,7 @@ class Mod < ActiveRecord::Base
   search_scope :name, :aliases, :combine => true
   user_scope :author_users, :alias => 'mp_author'
   enum_scope :status
-  date_scope :released, :updated
+  date_scope :released, :updated, :submitted
   range_scope :reputation, :tags_count
   range_scope :average_rating, :alias => 'rating'
   counter_scope :plugins_count, :asset_files_count, :required_mods_count, :required_by_count, :stars_count, :mod_lists_count, :reviews_count, :compatibility_notes_count, :install_order_notes_count, :load_order_notes_count, :corrections_count
@@ -52,7 +55,7 @@ class Mod < ActiveRecord::Base
   ]
 
   # UNIQUE SCOPES
-  scope :visible, -> { where(hidden: false) }
+  scope :visible, -> { where(hidden: false, approved: true) }
   scope :include_games, -> (bool) { where.not(primary_category_id: nil) if !bool }
   scope :compatibility, -> (mod_list_id) {
     mod_list = ModList.find(mod_list_id)
@@ -120,6 +123,9 @@ class Mod < ActiveRecord::Base
   has_many :mod_authors, :inverse_of => 'mod', :dependent => :destroy
   has_many :author_users, :class_name => 'User', :through => 'mod_authors', :source => 'user', :inverse_of => 'mods'
 
+  # curator requests on the mod
+  has_many :curator_requests, :inverse_of => 'mod', :dependent => :destroy
+
   # community feedback on the mod
   has_many :corrections, :as => 'correctable', :dependent => :destroy
   has_many :reviews, :inverse_of => 'mod', :dependent => :destroy
@@ -159,7 +165,7 @@ class Mod < ActiveRecord::Base
   counter_cache :corrections, conditional: { hidden: false, correctable_type: 'Mod' }
   counter_cache :mod_tags, column: 'tags_count'
   counter_cache :mod_list_mods, column: 'mod_lists_count'
-  counter_cache_on :submitter, column: 'submitted_mods_count', conditional: { hidden: false }
+  counter_cache_on :submitter, column: 'submitted_mods_count', conditional: { hidden: false, approved: true }
 
   # VALIDATIONS
   validates :game_id, :submitted_by, :name, :authors, :released, presence: true

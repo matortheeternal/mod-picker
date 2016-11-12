@@ -4,6 +4,11 @@
     "submitter": {
       "format": "card"
     },
+    "compatibility_mod": {},
+    "compatibility_plugin": {},
+    "compatibility_mod_option": {
+      "format": "compatibility_note"
+    },
     "editor": {},
     "editors": {},
     "first_mod": {},

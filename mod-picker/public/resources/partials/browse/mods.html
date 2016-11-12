@@ -50,6 +50,40 @@
                     </div>
                 </div>
 
+                <div class="filter-section" ng-if="permissions.canModerate || allowAdult">
+                    <h3>Content Filters</h3>
+                    <div class="sidebar-box box-shadow">
+                        <ul class="checkbox-list" ng-if="allowAdult">
+                            <li>
+                                <label><input type="checkbox" ng-model="filters.adult['1']">
+                                    Show Adult Content</label>
+                            </li>
+                            <li>
+                                <label><input type="checkbox" ng-model="filters.adult['0']">
+                                    Show Non-Adult Content</label>
+                            </li>
+                        </ul>
+                        <ul class="checkbox-list" ng-if="permissions.canModerate">
+                            <li>
+                                <label><input type="checkbox" ng-model="filters.hidden['1']">
+                                    Hidden</label>
+                            </li>
+                            <li>
+                                <label><input type="checkbox" ng-model="filters.hidden['0']">
+                                    Unhidden</label>
+                            </li>
+                            <li>
+                                <label><input type="checkbox" ng-model="filters.approved['1']">
+                                    Approved</label>
+                            </li>
+                            <li>
+                                <label><input type="checkbox" ng-model="filters.approved['0']">
+                                    Unapproved</label>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
                 <div class="filter-section">
                     <h3>Sources</h3>
                     <div class="sidebar-box box-shadow">
@@ -125,10 +159,24 @@
             </div>
 
             <div class="right-column right-browse-column">
-                <h2>Mods</h2>
+                <h2>
+                    Mods
+                    <span class="right-item view-mode-item">
+                        <span class="right-item" ng-if="!tableView">
+                            <sort-control></sort-control>
+                        </span>
+                        <span class="right-item action-box" ng-click="showDetailsModal()" ng-if="!tableView">
+                            <i class="fa fa-gear"></i> Configure Details
+                        </span>
+                        <span class="right-item action-box" ng-click="tableView = !tableView">
+                            <i class="fa {{ tableView ? 'fa-th-large' : 'fa-list-ul' }}"></i> {{ tableView ? 'Grid View' : 'List View' }}
+                        </span>
+                    </span>
+                </h2>
                 <loader data="mods" content-class="table-container" spinner-class="big-spinner" ng-if="!error">
-                    <table-results label="mods" data="mods"></table-results>
-                    <page-results pages="pages" data="mods" callback="getData"></page-results>
+                    <table-results label="mods" data="mods" ng-if="tableView"></table-results>
+                    <grid-results label="mods" data="mods" ng-if="!tableView"></grid-results>
+                    <page-results pages="filters.pages" data="mods" callback="pageCallback"></page-results>
                 </loader>
 
                 <error-display content-class="content-message content-error" errors="error" label="Mods"></error-display>
