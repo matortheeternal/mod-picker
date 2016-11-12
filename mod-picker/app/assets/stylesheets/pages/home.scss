@@ -26,18 +26,15 @@
     font-size: 12px;
     padding: 10px;
 
-    .image-container {
+    img {
       width: 100px;
       height: 100px;
       min-width: 100px;
       min-height: 100px;
       margin-right: 10px;
-      background-position: center;
-      background-size: contain;
-      background-repeat: no-repeat;
     }
 
-    .smaller-image {
+    img.smaller-image {
       width: 64px;
       height: 64px;
       min-width: 64px;
