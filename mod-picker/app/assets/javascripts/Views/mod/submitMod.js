@@ -43,6 +43,11 @@ app.controller('submitModController', function($scope, $rootScope, backend, modS
         requirements: []
     };
     $scope.defaultSrc = '/mods/Default-big.png';
+    $scope.imageSizes = [
+        { label: "big", size: 300 },
+        { label: "medium", size: 210 },
+        { label: "small", size: 100 }
+    ];
     $scope.image = {
         sizes: [
             { label: "big", src: '/mods/Default-big.png' }
