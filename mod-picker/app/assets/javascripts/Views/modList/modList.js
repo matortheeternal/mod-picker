@@ -126,6 +126,9 @@ app.controller('modListController', function($scope, $rootScope, $q, $state, $st
     $scope.originalModList = angular.copy($scope.mod_list);
     $scope.removedModIds = [];
 
+    // default to editing modlist if it's the current user's active modlist
+    $scope.editing = $scope.activeModList;
+
 	// initialize local variables
     $scope.tabs = tabsFactory.buildModListTabs($scope.mod_list);
     $scope.pages = {
