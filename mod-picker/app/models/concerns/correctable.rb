@@ -21,4 +21,11 @@ module Correctable
       self.standing = :good
     end
   end
+
+  def correction_passed(correction)
+    update_columns({
+        standing: self.class.standing[:bad],
+        corrector_id: correction.submitted_by
+    })
+  end
 end

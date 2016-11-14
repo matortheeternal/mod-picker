@@ -61,28 +61,33 @@ class Correction < ActiveRecord::Base
   after_save :recompute_correctable_standing
   after_destroy :recompute_correctable_standing
 
+  # CONSTANTS
+  MINIMUM_VOTES = 4
+
+  # METHODS
   def self.close(id)
     correction = Correction.find(id)
     if correction.status == :open
-      if correction.agree_count > @correction.disagree_count
-        correction.status = :passed
-        # if we're dealing with a mod, update the mod's status
-        if correction.correctable_type == 'Mod'
-          mod = correction.correctable
-          mod.update_columns(status: Mod.statuses[correction.mod_status])
-        else
-          # if we're dealing with a contribution, update its standing and open for editing
-          contribution = correction.correctable
-          contribution.update_columns({
-              standing: contribution.class.standing[:bad],
-              corrector_id: correction.submitted_by
-          })
-        end
-      else
-        correction.status = :failed
-      end
+      correction.passed? ? correction.pass : correction.fail
       correction.save
     end
+  end
+
+  def pass
+    self.status = :passed
+    correctable.correction_passed(self)
+  end
+
+  def fail
+    self.status = :failed
+  end
+
+  def has_minimum_votes?
+    agree_count + disagree_count >= MINIMUM_VOTES
+  end
+
+  def passed?
+    has_minimum_votes? && agree_count > disagree_count
   end
 
   def mod_author_users
