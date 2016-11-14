@@ -1,7 +1,13 @@
+//= require angular.min.1.5.1.js
+//= require angular-animate.min.js
 //= require_self
 //= require ./polyfills.js
 //= require Directives/shared/sticky.js
 //= require Services/ObjectUtils.js
+/*
+ Mod Picker Landing Page v1.0
+ (c) 2016 Mod Picker, LLC. https://www.modpicker.com
+*/
 
 var app = angular.module('landing', [
     'ngAnimate'
