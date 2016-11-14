@@ -1,3 +1,17 @@
+//= require angular.min.1.5.1.js
+//= require marked.min.js
+//= require bindonce.min.js
+//= require angular-marked.min.js
+//= require angular-drag-and-drop-lists.min.js
+//= require angular-ui-router.min.js
+//= require ct-ui-router-extras.min.js
+//= require angular-smooth-scroll.min.js
+//= require angular-relative-date.min.js
+//= require rzslider.min.js
+//= require angular-animate.min.js
+//= require angular-elastic-input.min.js
+//= require simplemde.min.js
+//= require spin.min.js
 //= require_self
 //= require ./polyfills.js
 //= require_tree ./BackendAPI
@@ -7,6 +21,10 @@
 //= require_tree ./Services
 //= require_tree ./Views
 //= stub_tree Directives/help
+/*
+ Mod Picker v1.0
+ (c) 2016 Mod Picker, LLC. https://www.modpicker.com
+*/
 
 var app = angular.module('modPicker', [
     'ui.router', 'rzModule', 'ngAnimate', 'puElasticInput', 'hc.marked', 'smoothScroll', 'relativeDate', 'ct.ui.router.extras', 'dndLists', 'pasvaz.bindonce'

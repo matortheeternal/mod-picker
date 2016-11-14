@@ -5,9 +5,8 @@
     <title ng-bind="pageTitle" ng-init="pageTitle = 'Mod Picker: <%= @current_game.display_name %>'"></title>
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,700,500' rel='stylesheet' type='text/css'>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <%= stylesheet_link_tag 'rzslider.min' %>
-    <%= stylesheet_link_tag 'simplemde.min' %>
-    <%= javascript_include_tag 'angular.min.1.5.1' %>
+    <%= javascript_include_tag 'modpicker' %>
+    <link ng-controller="themesController" rel="stylesheet" ng-href="{{currentTheme}}" ng-init="currentTheme = '<%= stylesheet_path "main/#{@current_theme}" %>'" />
     <script>
         window._token = '<%= form_authenticity_token %>';
         window._current_game_id = <%= @current_game.id %>;
@@ -18,27 +17,9 @@
             'High Hrothgar': "<%= stylesheet_path 'main/High Hrothgar' %>"
         }
     </script>
-    <link ng-controller="themesController" rel="stylesheet" ng-href="{{currentTheme}}" ng-init="currentTheme = '<%= stylesheet_path "main/#{@current_theme}" %>'" />
 </head>
 
 <body ng-cloak ng-controller="bodyController" ng-class="{ 'no-scroll' : modalVisible }">
     <%= yield %>
-
-    <!-- defered load of scripts, which is way more performant for browsers -->
-    <%= javascript_include_tag 'marked.min' %>
-    <%= javascript_include_tag 'bindonce' %>
-    <%= javascript_include_tag 'angular-marked.min' %>
-    <%= javascript_include_tag 'angular-drag-and-drop-lists.min' %>
-    <%= javascript_include_tag 'angular-ui-router.min' %>
-    <%= javascript_include_tag 'ct-ui-router-extras.min' %>
-    <%= javascript_include_tag 'angular-smooth-scroll.min' %>
-    <%= javascript_include_tag 'heartcode-canvasloader-min' %>
-    <%= javascript_include_tag 'angular-relative-date.min' %>
-    <%= javascript_include_tag 'rzslider.min' %>
-    <%= javascript_include_tag 'angular-animate.min' %>
-    <%= javascript_include_tag 'angular-elastic-input.min' %>
-    <%= javascript_include_tag 'simplemde.min' %>
-    <%= javascript_include_tag 'spin.min' %>
-    <%= javascript_include_tag 'modpicker' %>
 </body>
 </html>
