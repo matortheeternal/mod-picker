@@ -546,12 +546,12 @@ def seed_categories
   CategoryPriority.create(
       dominant_id: catQuests.id,
       recessive_id: catNewChars.id,
-      description: 'New or alterred quests often involve new characters.'
+      description: 'New or altered quests often involve new characters.'
   )
   CategoryPriority.create(
       dominant_id: catQuests.id,
       recessive_id: catImmersionAndRolePlaying.id,
-      description: 'New or alterred quests often increase gameplay immersion and offer new role-playing experiences.'
+      description: 'New or altered quests often increase gameplay immersion and offer new role-playing experiences.'
   )
   CategoryPriority.create(
       dominant_id: catNewLands.id,
