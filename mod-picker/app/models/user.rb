@@ -145,11 +145,11 @@ class User < ActiveRecord::Base
   end
 
   def has_auto_approval?
-    reputation.overall > 20
+    reputation.overall > 40
   end
 
   def has_mod_auto_approval?
-    reputation.overall > 80
+    reputation.overall > 160
   end
 
   def subscribed_to?(event)

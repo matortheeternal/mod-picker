@@ -145,13 +145,13 @@ class Ability
       cannot [:update, :hide], Mod, { disallow_contributors: true, mod_authors: { user_id: user.id, role: 1 } }
 
       # abilities tied to reputation
-      if user.reputation.overall >= 5
-        # TODO: Remove this after beta
-        can :create, Tag # can create new tags
+      if user.reputation.overall >= 10
+        # can create new help pages
+        can :create, HelpPage
       end
       if user.reputation.overall >= 20
-        # TODO: Uncomment this after beta
-        #can :create, Tag # can create new tags
+        # can create new tags and curator requests
+        can :create, Tag
         can :create, CuratorRequest
       end
       if user.reputation.overall >= 40
@@ -161,11 +161,16 @@ class Ability
         cannot :create, Correction, { correctable: { submitted_by: user.id } }
         can :create, Correction, { correctable_type: "Mod" }
 
-        # can agree/disagree with corrections, give reputation other users, and
-        # can create new help pages
+        # can agree/disagree with corrections
         can :create, AgreementMark
-        can :create, ReputationLink # can
-        can :create, HelpPage
+      end
+      if user.reputation.overall >= 80
+        # can give reputation other users
+        can :create, ReputationLink
+      end
+      if user.reputation.overall >= 160
+        # can add images to mods that have none
+        can :add_image, Mod
       end
       if user.reputation.overall >= 320
         # can update compatibility notes, install order notes, and
@@ -198,7 +203,7 @@ class Ability
       can :update, UserBio, { user_id: user.id }
 
       # abilities tied to reputation
-      if user.reputation.overall >= 20
+      if user.reputation.overall >= 10
         can :set_avatar, User, id: user.id  # custom avatar
       end
       if user.reputation.overall >= 1280
@@ -210,6 +215,7 @@ class Ability
     settings = user.settings
     unless settings.present? && settings.allow_adult_content
       cannot :read, Mod, { has_adult_content: true }
+      cannot :read, Plugin, { has_adult_content: true }
       cannot :read, ModList, { has_adult_content: true }
       cannot :read, Review, { has_adult_content: true }
       cannot :read, CompatibilityNote, { has_adult_content: true }
