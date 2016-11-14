@@ -68,14 +68,14 @@ app.service('notificationsFactory', function() {
     };
 
     this.permissions = [
-        "",
-        "You can now use a custom avatar and create new tags.",
-        "You can now submit, discuss, and vote on corrections.",
-        "You can now endorse up to 5 other users.",
-        "You can now submit mods to the platform.",
-        "You can now endorse up to 10 other users.",
-        "You can now endorse up to 15 other users.",
-        "You can now set your own user title."
+        /*10*/ "You can now use a custom avatar and create help pages.",
+        /*20*/ "You can create new tags and make curator requests.",
+        /*40*/ "You can now submit, discuss, and vote on corrections.",
+        /*80*/ "You can now endorse up to 5 other users.  Reviews and Notes you submit are now automatically approved.",
+        /*160*/ "Mods you submit are now automatically approved.  You can now upload images for mods that have none.",
+        /*320*/ "You can now endorse up to 10 other users.  You can now update notes made by inactive users.",
+        /*640*/ "You can now endorse up to 15 other users.",
+        /*1280*/ "You can now use a custom user title."
     ];
 
     var noteContentLink =
