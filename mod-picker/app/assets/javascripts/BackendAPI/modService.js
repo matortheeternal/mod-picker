@@ -240,10 +240,7 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
     };
 
     this.sanitizePlugins = function(plugins) {
-        var sanitizedPlugins = [];
-        plugins.forEach(function(plugin) {
-            sanitizedPlugins.push(service.sanitizePlugin(plugin));
-        });
+        var sanitizedPlugins = plugins.map(service.sanitizePlugin);
         objectUtils.deleteEmptyProperties(sanitizedPlugins, 1);
         return sanitizedPlugins;
     };
@@ -256,6 +253,7 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
             name: option.name,
             display_name: option.display_name,
             size: option.size,
+            md5_hash: option.md5_hash,
             default: option.default,
             is_fomod_option: option.is_fomod_option,
             plugin_dumps: sanitizedPlugins,
