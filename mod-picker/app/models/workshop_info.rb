@@ -31,9 +31,7 @@ class WorkshopInfo < ActiveRecord::Base
 
   def link_uploader
     bio = UserBio.find_by(workshop_username: uploaded_by)
-    if bio.present? && mod_id.present?
-      ModAuthor.find_or_create_by(mod_id: mod_id, user_id: bio.user_id)
-    end
+    ModAuthor.add_author(mod_id, bio.user_id) if bio.present? && mod_id.present?
   end
 
   def self.can_scrape_statistics?
