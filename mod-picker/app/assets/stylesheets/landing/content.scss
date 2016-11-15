@@ -17,19 +17,21 @@ h1 {
 }
 
 h2 {
+  font-size: 1.5em;
   font-weight: normal;
   max-width: 900px;
   margin: 20px auto;
 }
 
 section {
-  padding: 60px;
+  padding-top: 60px;
+  padding-bottom: 120px;
   text-align: center;
 
   img {
     max-height: 50vh;
     margin-top: 20px;
-    box-shadow: 2px 2px 5px 2px $text_color;
+    box-shadow: 3px 3px 16px 1px $text_color;
     max-width: 95%;
   }
 }
@@ -147,7 +149,7 @@ section.base {
 
 .low, .base {
   img {
-    box-shadow: 2px 2px 5px 2px darken($text_color, 14%);
+    box-shadow: 3px 3px 16px 1px darken($text_color, 14%);
   }
 }
 
