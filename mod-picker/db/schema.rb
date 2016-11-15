@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161114054608) do
+ActiveRecord::Schema.define(version: 20161115064748) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -742,6 +742,7 @@ ActiveRecord::Schema.define(version: 20161114054608) do
     t.integer "mod_lists_count",        limit: 4,   default: 0,     null: false
     t.integer "load_order_notes_count", limit: 4,   default: 0,     null: false
     t.boolean "has_adult_content",                  default: false, null: false
+    t.boolean "is_esm",                             default: false
   end
 
   add_index "plugins", ["game_id"], name: "fk_rails_5a7ba47709", using: :btree
