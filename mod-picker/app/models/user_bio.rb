@@ -11,6 +11,13 @@ class UserBio < ActiveRecord::Base
   # CALLBACKS
   after_create :generate_verification_tokens
 
+  # CONSTANTS
+  SITE_CODES = {
+      "Nexus Mods" => "nexus",
+      "Lover's Lab" => "lover",
+      "Steam Workshop" => "workshop"
+  }
+
   def get_token
     "ModPicker:#{SecureRandom.hex(4).to_s.upcase}"
   end
@@ -22,20 +29,12 @@ class UserBio < ActiveRecord::Base
     self.save
   end
 
-  def verify_account(site, user_path)
+  def verify_account(site_label, user_path)
     begin
-      case site
-        when "Nexus Mods"
-          verify_nexus_account(user_path)
-        when "Lover's Lab"
-          verify_lover_account(user_path)
-        when "Steam Workshop"
-          verify_workshop_account(user_path)
-        else
-          false
-      end
+      method_name = "verify_#{SITE_CODES[site_label]}_account"
+      public_send(method_name, user_path) if respond_to?(method_name)
     rescue RestClient::NotFound => e
-      raise " we couldn't find a #{site} user at that URL"
+      raise " we couldn't find a #{site_label} user at that URL"
     end
   end
 
