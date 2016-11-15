@@ -226,6 +226,7 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
             _destroy: plugin._destroy,
             author: plugin.author,
             filename: plugin.filename,
+            is_esm: plugin.is_esm,
             crc_hash: plugin.crc_hash,
             description: plugin.description,
             file_size: plugin.file_size,
