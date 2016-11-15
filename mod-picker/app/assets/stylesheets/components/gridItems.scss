@@ -191,6 +191,10 @@ grid-items {
   }
 }
 
+grid-item, table-item {
+  @include user-select(none);
+}
+
 table-items {
   display: block;
   overflow-x: auto;
