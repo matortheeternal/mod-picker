@@ -1,4 +1,3 @@
-/* css for plugin-metadata  */
 plugin-metadata {
   .stat-data {
     width: calc(100% - 170px);
@@ -8,5 +7,19 @@ plugin-metadata {
   .plugin-description {
     white-space: pre-line;
     word-wrap: break-word;
+  }
+
+  .flag {
+    margin-left: 4px;
+    font-weight: normal;
+    font-size: 12px;
+    padding: 0 0.5rem;
+    text-transform: uppercase;
+    cursor: default;
+  }
+
+  .esm-flag {
+    color: $success_secondary;
+    border: 1px solid $success_secondary;
   }
 }
