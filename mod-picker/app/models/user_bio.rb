@@ -41,9 +41,7 @@ class UserBio < ActiveRecord::Base
 
   def verify_nexus_account(user_path)
     # exit if we don't have a nexus_user_path
-    if user_path.nil?
-      return false
-    end
+    return false if user_path.nil?
 
     # scrape using the Nexus Helper
     user_data = NexusHelper.scrape_user(user_path)
@@ -75,9 +73,7 @@ class UserBio < ActiveRecord::Base
 
   def verify_lover_account(user_path)
     # exit if we don't have an account_path
-    if user_path.nil?
-      return false
-    end
+    return false if user_path.nil?
 
     # scrape using the Lover Helper
     user_data = LoverHelper.scrape_user(user_path)
@@ -109,9 +105,7 @@ class UserBio < ActiveRecord::Base
 
   def verify_workshop_account(user_path)
     # exit if we don't have a steam_username
-    if user_path.nil?
-      return
-    end
+    return false if user_path.nil?
 
     # scrape using the workshop helper
     user_data = WorkshopHelper.scrape_user(user_path)
