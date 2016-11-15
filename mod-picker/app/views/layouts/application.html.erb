@@ -6,7 +6,7 @@
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,700,500' rel='stylesheet' type='text/css'>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <%= javascript_include_tag 'modpicker' %>
-    <link ng-controller="themesController" rel="stylesheet" ng-href="{{currentTheme}}" ng-init="currentTheme = '<%= stylesheet_path "main/#{@current_theme}" %>'" />
+    <link ng-controller="themesController" rel="stylesheet" href="<%= stylesheet_path "main/#{@current_theme}" %>" ng-href="{{currentTheme}}" />
     <script>
         window._token = '<%= form_authenticity_token %>';
         window._current_game_id = <%= @current_game.id %>;
