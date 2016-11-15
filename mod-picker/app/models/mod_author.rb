@@ -26,11 +26,16 @@ class ModAuthor < ActiveRecord::Base
   after_save :update_user_role, :hide_reviews
   before_destroy :update_user_role, :unhide_reviews
 
+  def self.add_author(mod_id, user_id)
+    existing_author = ModAuthor.find_by(mod_id: mod_id, user_id: user_id)
+    existing_author.update(role: 0) if existing_author.present?
+    ModAuthor.create(mod_id: mod_id, user_id: user_id, role: 0)
+  end
+
   def self.link_author(model, user_id, username)
     infos = model.where(uploaded_by: username)
-
     infos.each do |info|
-      ModAuthor.find_or_create_by(mod_id: info.mod_id, user_id: user_id) if info.mod_id.present?
+      add_author(info.mod_id, user_id) if info.mod_id.present?
     end
   end
 
