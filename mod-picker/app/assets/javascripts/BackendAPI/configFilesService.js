@@ -69,6 +69,9 @@ app.service('configFilesService', function() {
             service.addCustomConfigFile(model, customConfigFile);
         });
         model.forEach(function(group) {
+            group.children.sort(function(a, b) {
+                return a.filename - b.filename;
+            });
             group.activeConfig = group.children[0];
             group.activeConfig.active = true;
         });
