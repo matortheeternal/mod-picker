@@ -56,8 +56,17 @@ app.controller('modAnalysisController', function($scope, $stateParams, $state, m
     };
 
     $scope.setCurrentSelection = function() {
-        // set active options
-        var optionIds = $stateParams.options ? $stateParams.options.split(',') : [];
+        var optionIds = [];
+        if ($stateParams.plugin) {
+            var foundPlugin = $scope.mod.plugins.find(function(plugin) {
+                return plugin.id == $stateParams.plugin;
+            });
+            if (foundPlugin) optionIds.push(foundPlugin.mod_option_id);
+        } else {
+            optionIds = $stateParams.options ? $stateParams.options.split(',') : [];
+        }
+
+        // enable mod options
         $scope.mod.options.forEach(function(option) {
             option.active = option.default || optionIds.indexOf(option.id) > -1;
         });
