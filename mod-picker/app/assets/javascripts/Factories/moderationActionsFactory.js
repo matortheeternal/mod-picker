@@ -1,9 +1,11 @@
 app.service('moderationActionsFactory', function(userService) {
     this.buildActions = function($scope) {
+        $scope.repCounter = 0;
+
         // functions
         $scope.addRep = function() {
-            if ($scope.added && !$scope.subtracted) return;
-            $scope.added = true;
+            if ($scope.repCounter > 0) return;
+            $scope.repCounter += 1;
             userService.addRep($scope.user.id).then(function() {
                 $scope.$emit("successMessage", "Increased "+$scope.user.username+"'s reputation by 5");
                 $scope.user.reputation.overall += 5;
@@ -17,8 +19,8 @@ app.service('moderationActionsFactory', function(userService) {
         };
 
         $scope.subtractRep = function() {
-            if ($scope.subtracted && !$scope.added) return;
-            $scope.subtracted = true;
+            if ($scope.repCounter < 0) return;
+            $scope.repCounter -= 1;
             userService.subtractRep($scope.user.id).then(function() {
                 $scope.$emit("successMessage", "Reduced "+$scope.user.username+"'s reputation by 5");
                 $scope.user.reputation.overall -= 5;

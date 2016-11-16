@@ -119,8 +119,6 @@ app.controller('modCompatibilityController', function($scope, $stateParams, $sta
         var statusValid = true;
         if (note.status === "compatibility_mod") {
             statusValid = !!note.compatibility_mod_id;
-        } else if (note.status === "compatibility_option") {
-            statusValid = note.compatibility_option_id || note.compatibility_plugin_id;
         }
 
         // compatibility note is valid if all parts valid

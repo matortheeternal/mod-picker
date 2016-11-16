@@ -226,6 +226,7 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
             _destroy: plugin._destroy,
             author: plugin.author,
             filename: plugin.filename,
+            is_esm: plugin.is_esm,
             crc_hash: plugin.crc_hash,
             description: plugin.description,
             file_size: plugin.file_size,
@@ -240,10 +241,7 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
     };
 
     this.sanitizePlugins = function(plugins) {
-        var sanitizedPlugins = [];
-        plugins.forEach(function(plugin) {
-            sanitizedPlugins.push(service.sanitizePlugin(plugin));
-        });
+        var sanitizedPlugins = plugins.map(service.sanitizePlugin);
         objectUtils.deleteEmptyProperties(sanitizedPlugins, 1);
         return sanitizedPlugins;
     };
@@ -256,8 +254,9 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
             name: option.name,
             display_name: option.display_name,
             size: option.size,
+            md5_hash: option.md5_hash,
             default: option.default,
-            is_fomod_option: option.is_fomod_option,
+            is_installer_option: option.is_fomod_option || option.is_installer_option,
             plugin_dumps: sanitizedPlugins,
             asset_paths: option.assets
         };

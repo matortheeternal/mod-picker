@@ -84,6 +84,15 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, catego
         customPlugin.compatibility_note_id = compatibilityNoteId;
     };
 
+    $scope.forModOptionPlugins = function(modOptionId, callback) {
+        listUtils.forEachItem($scope.model.plugins, function(modListPlugin) {
+            if (!modListPlugin.plugin) return;
+            if (modListPlugin.plugin.mod_option_id == modOptionId) {
+                callback(modListPlugin);
+            }
+        });
+    };
+
     // CUSTOM CALLBACKS
     $scope.addCustomPluginCallback = function(options) {
         if (options.noteId) {
@@ -132,14 +141,12 @@ app.controller('modListPluginsController', function($scope, $q, $timeout, catego
         data.mod_list_plugins.forEach($scope.addNewPluginItem);
     });
     $scope.$on('modOptionRemoved', function(event, modOptionId) {
-        var model = $scope.model.plugins;
-        listUtils.forMatchingItems(model, 'mod_option_id', modOptionId, $scope.removePlugin);
+        $scope.forModOptionPlugins(modOptionId, $scope.removePlugin);
         listUtils.forMatching($scope.plugins_store, 'mod_option_id', modOptionId, listUtils.destroyItem);
     });
     $scope.$on('modOptionAdded', function(event, modOption) {
         var modOptionId = modOption.id;
-        var model = $scope.model.plugins;
-        listUtils.forMatchingItems(model, 'mod_option_id', modOptionId, $scope.recoverPlugin);
+        $scope.forModOptionPlugins(modOptionId, $scope.recoverPlugin);
         listUtils.forMatching($scope.plugins_store, 'mod_option_id', modOptionId, listUtils.recoverItem);
         $scope.addModOptionPluginsToStore(modOption);
     });

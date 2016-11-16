@@ -5,11 +5,11 @@
     display: inline-block;
     cursor: pointer;
     color: $action_text_color;
-    padding: 9px 16px 9px 16px;//half of font size high
+    padding: 9px 16px;
     border: 1px solid $border_color;
     border-bottom: 0;
     background-color: $action_color;
-    margin-right: 2px;
+    margin-right: 3px;
 
     &:hover {
       background-color: $bar_highlight_color;
@@ -20,6 +20,14 @@
     background-color: $secondary_background;
     cursor: default;
     color: $text_color;
+  }
+}
+
+two-columns {
+  .smaller-tabs {
+    a {
+      padding: 9px 11px;
+    }
   }
 }
 

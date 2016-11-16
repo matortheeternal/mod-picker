@@ -99,18 +99,29 @@ app.controller('modAnalysisManagerController', function($scope, $rootScope, plug
         option.base_name = option.name.replace(regex, '');
     };
 
-    $scope.optionMatches = function(option, oldOption) {
-        var namesMatch = option.base_name === oldOption.base_name;
-        var fileSizesMatch = option.size == oldOption.size;
-        return namesMatch || fileSizesMatch;
+    $scope.optionNamesMatch = function(option, oldOption) {
+        return option.name === oldOption.name;
+    };
+
+    $scope.optionSizesMatch = function(option, oldOption) {
+        return option.size == oldOption.size;
+    };
+
+    $scope.findOldOption = function(oldOptions, option) {
+        return oldOptions.find(function(oldOption) {
+            return $scope.optionNamesMatch(option, oldOption) &&
+                $scope.optionSizesMatch(option, oldOption);
+        }) || oldOptions.find(function(oldOption) {
+            return $scope.optionNamesMatch(option, oldOption);
+        }) || oldOptions.find(function(oldOption) {
+            return $scope.optionSizesMatch(option, oldOption);
+        });
     };
 
     $scope.loadExistingOption = function(option) {
         var oldOptions = $scope.mod.mod_options;
         if (!oldOptions) return;
-        var oldOption = oldOptions.find(function(oldOption) {
-            return $scope.optionMatches(option, oldOption);
-        });
+        var oldOption = $scope.findOldOption(oldOptions, option);
         if (oldOption) {
             option.id = oldOption.id;
             option.display_name = angular.copy(oldOption.display_name);
@@ -120,7 +131,9 @@ app.controller('modAnalysisManagerController', function($scope, $rootScope, plug
     $scope.prepareModOption = function(option) {
         $scope.getBaseName(option);
         option.display_name = angular.copy(option.base_name);
-        option.nestedAssets = assetUtils.getNestedAssets(option.assets);
+        if (option.assets && option.assets.length) {
+            option.nestedAssets = assetUtils.getNestedAssets(option.assets);
+        }
         $scope.loadExistingOption(option);
     };
 

@@ -102,7 +102,7 @@ app.service('baseFactory', function() {
                     name: "",
                     size: 0,
                     default: false,
-                    is_fomod_option: false
+                    is_installer_option: false
                 }
             },
             mod_list_mod_options: {

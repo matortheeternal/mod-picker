@@ -1,6 +1,8 @@
 <div class="stat-item">
     <dt class="stat-title">Filename</dt>
-    <dd class="stat-data">{{plugin.filename}}</dd>
+    <dd class="stat-data">{{plugin.filename}}
+        <span ng-if="plugin.is_esm" class="flag esm-flag">ESM</span>
+    </dd>
 </div>
 
 <div class="stat-item">

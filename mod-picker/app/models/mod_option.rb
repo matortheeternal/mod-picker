@@ -39,7 +39,7 @@ class ModOption < ActiveRecord::Base
 
   # INSTANCE METHODS
   def get_base_paths
-    if !is_fomod_option
+    if !is_installer_option
       basepaths = DataPathUtils.get_base_paths(@asset_paths)
     else
       basepaths = [""]
@@ -49,7 +49,7 @@ class ModOption < ActiveRecord::Base
   def create_asset_file(basepaths, path)
     basepath = basepaths.find { |basepath| path.start_with?(basepath) }
     if basepath.nil?
-      mod_asset_files.create(subpath: path)
+      mod_asset_files.create(subpath: path) unless path.blank?
     else
       asset_file = AssetFile.find_or_create_by(game_id: mod.game_id, path: path.sub(basepath, ''))
       mod_asset_files.create(asset_file_id: asset_file.id, subpath: basepath)

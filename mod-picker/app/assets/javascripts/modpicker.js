@@ -7,6 +7,10 @@
 //= require_tree ./Services
 //= require_tree ./Views
 //= stub_tree Directives/help
+/*
+ Mod Picker v1.0
+ (c) 2016 Mod Picker, LLC. https://www.modpicker.com
+*/
 
 var app = angular.module('modPicker', [
     'ui.router', 'rzModule', 'ngAnimate', 'puElasticInput', 'hc.marked', 'smoothScroll', 'relativeDate', 'ct.ui.router.extras', 'dndLists', 'pasvaz.bindonce'

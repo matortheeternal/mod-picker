@@ -101,10 +101,11 @@ class ModList < ActiveRecord::Base
   counter_cache_on :submitter
   bool_counter_cache :mod_list_mods, :is_utility, { true => :tools, false => :mods }
   bool_counter_cache :custom_mods, :is_utility, { true => :custom_tools, false => :custom_mods }
-  counter_cache :custom_plugins, :config_files, :custom_config_files, :ignored_notes, :stars
+  counter_cache :mod_list_config_files, column: 'config_files_count'
+  counter_cache :mod_list_plugins, column: 'plugins_count'
+  counter_cache :custom_plugins, :custom_config_files, :ignored_notes, :stars
   counter_cache :mod_list_tags, column: 'tags_count'
   counter_cache :comments, conditional: { commentable_type: 'ModList' }
-  counter_cache :plugins, custom_reflection: { klass: Plugin, query_method: 'mod_list_count_subquery' }
 
   # VALIDATIONS
   validates :game_id, :submitted_by, :name, presence: true
@@ -257,7 +258,7 @@ class ModList < ActiveRecord::Base
     return [] if mod_ids.empty?
 
     # get incompatible mod ids
-    incompatible_ids = CompatibilityNote.status([0, 1]).mod(mod_ids).pluck(:first_mod_id, :second_mod_id)
+    incompatible_ids = CompatibilityNote.visible.status([0, 1]).mod(mod_ids).pluck(:first_mod_id, :second_mod_id)
     # return array of unique mod ids from the notes, excluding mod list mod ids
     incompatible_ids.flatten(1).uniq - mod_ids
   end

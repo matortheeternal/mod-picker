@@ -100,8 +100,7 @@ app.service('sortUtils', function($q, categoryService, colorsFactory, modListSer
             groups[0].children.push(item);
         }
         // non-official ESMs go into the ESMs group
-        else if (handlingPlugins && plugin.filename.endsWith('.esm')) {
-            // TODO: Check ESM flag instead once we have it
+        else if (handlingPlugins && plugin.is_esm) {
             groups[1].children.push(item);
         }
         // for everything else we create groups based on the primary category of the mod

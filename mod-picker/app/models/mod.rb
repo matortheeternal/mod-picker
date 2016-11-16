@@ -174,6 +174,10 @@ class Mod < ActiveRecord::Base
   # CALLBACKS
   before_save :touch_updated
 
+  def correction_passed(correction)
+    update_columns(status: Mod.statuses[correction.mod_status])
+  end
+
   def asset_file_paths
     mod_asset_files.eager_load(:asset_file).pluck(:subpath, :path).map { |item| item.join('') }
   end

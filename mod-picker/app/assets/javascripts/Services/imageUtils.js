@@ -15,6 +15,9 @@ app.service('imageUtils', function() {
                         file: new File([blob], filename),
                         src: URL.createObjectURL(blob)
                     });
+                    imageObj.sizes.sort(function(a, b) {
+                        return (a.height || a.size) - (b.height || b.size);
+                    });
                     apply();
                 };
             });

@@ -11,6 +11,13 @@ class UserBio < ActiveRecord::Base
   # CALLBACKS
   after_create :generate_verification_tokens
 
+  # CONSTANTS
+  SITE_CODES = {
+      "Nexus Mods" => "nexus",
+      "Lover's Lab" => "lover",
+      "Steam Workshop" => "workshop"
+  }
+
   def get_token
     "ModPicker:#{SecureRandom.hex(4).to_s.upcase}"
   end
@@ -22,125 +29,90 @@ class UserBio < ActiveRecord::Base
     self.save
   end
 
-  def verify_account(site, user_path)
+  def verify_account(site_label, user_path)
     begin
-      case site
-        when "Nexus Mods"
-          verify_nexus_account(user_path)
-        when "Lover's Lab"
-          verify_lover_account(user_path)
-        when "Steam Workshop"
-          verify_workshop_account(user_path)
-        else
-          false
-      end
+      method_name = "verify_#{SITE_CODES[site_label]}_account"
+      public_send(method_name, user_path) if respond_to?(method_name)
     rescue RestClient::NotFound => e
-      raise " we couldn't find a #{site} user at that URL"
+      raise " we couldn't find a #{site_label} user at that URL"
     end
+  end
+
+  def reset_account(site)
+    public_send("#{site}_verification_token=", get_token)
+    public_send("#{site}_user_path=", nil)
+    public_send("#{site}_username=", nil)
+    public_send("#{site}_date_joined=", nil) if respond_to?("#{site}_date_joined=")
+    public_send("#{site}_posts_count=", 0) if respond_to?("#{site}_posts_count=")
+    public_send("#{site}_submissions_count=", 0) if respond_to?("#{site}_submissions_count=")
+    public_send("#{site}_followers_count=", 0) if respond_to?("#{site}_followers_count=")
+    save
+  end
+
+  def write_user_data(site, user_path, user_data, stat_data=nil)
+    public_send("#{site}_user_path=", user_path)
+    public_send("#{site}_username=", user_data[:username])
+    public_send("#{site}_date_joined=", user_data[:date_joined]) if user_data.has_key?(:date_joined)
+    public_send("#{site}_posts_count=", user_data[:posts_count]) if user_data.has_key?(:posts_count)
+    public_send("#{site}_submissions_count=", stat_data[:submissions_count]) if stat_data.present?
+    public_send("#{site}_followers_count=", stat_data[:followers_count]) if stat_data.present?
   end
 
   def verify_nexus_account(user_path)
     # exit if we don't have a nexus_user_path
-    if user_path.nil?
-      return false
-    end
+    return false if user_path.nil?
 
     # scrape using the Nexus Helper
     user_data = NexusHelper.scrape_user(user_path)
 
-    # verify the token
+    # verify the token, write data, populate mod author records, and save
     if user_data[:last_status] == nexus_verification_token
-      # write fields to bio
-      self.nexus_user_path = user_path
-      self.nexus_username = user_data[:username]
-      self.nexus_date_joined = user_data[:date_joined]
-      self.nexus_posts_count = user_data[:posts_count]
-
-      # populate mod author records
+      write_user_data(:nexus, user_path, user_data)
       ModAuthor.link_author(NexusInfo, user_id, nexus_username)
-
-      # save bio
-      save!
+      save
     end
   end
 
   def reset_nexus_account
-    self.nexus_verification_token = get_token
-    self.nexus_user_path = nil
-    self.nexus_username = nil
-    self.nexus_date_joined = nil
-    self.nexus_posts_count = 0
-    save
+    reset_account(:nexus)
   end
 
   def verify_lover_account(user_path)
     # exit if we don't have an account_path
-    if user_path.nil?
-      return false
-    end
+    return false if user_path.nil?
 
     # scrape using the Lover Helper
     user_data = LoverHelper.scrape_user(user_path)
 
-    # verify the token
+    # verify the token, write data, populate mod author records, and save
     if user_data[:last_status] == lover_verification_token
-      # write fields to bio
-      self.lover_user_path = user_path
-      self.lover_username = user_data[:username]
-      self.lover_date_joined = user_data[:date_joined]
-      self.lover_posts_count = user_data[:posts_count]
-
-      # populate mod author records
+      write_user_data(:lover, user_path, user_data)
       ModAuthor.link_author(LoverInfo, user_id, lover_username)
-
-      # save bio
-      save!
+      save
     end
   end
 
   def reset_lover_account
-    self.lover_verification_token = get_token
-    self.lover_user_path = nil
-    self.lover_username = nil
-    self.lover_date_joined = nil
-    self.lover_posts_count = 0
-    save
+    reset_account(:lover)
   end
 
   def verify_workshop_account(user_path)
     # exit if we don't have a steam_username
-    if user_path.nil?
-      return
-    end
+    return false if user_path.nil?
 
     # scrape using the workshop helper
     user_data = WorkshopHelper.scrape_user(user_path)
 
-    # verify the token
+    # verify the token, scrape workshop stats, write data, populate mod author records, and save
     if user_data[:matched_comment] == workshop_verification_token
-      # scrape user's workshop stats
       workshop_stats = WorkshopHelper.scrape_workshop_stats(user_path)
-
-      # write fields to bio
-      self.workshop_user_path = user_path
-      self.workshop_username = user_data[:username]
-      self.workshop_submissions_count = workshop_stats[:submissions_count]
-      self.workshop_followers_count = workshop_stats[:followers_count]
-
-      # populate mod author records
+      write_user_data(:workshop, user_path, user_data, workshop_stats)
       ModAuthor.link_author(WorkshopInfo, user_id, workshop_username)
-
-      # save bio
-      save!
+      save
     end
   end
 
   def reset_workshop_account
-    self.workshop_verification_token = get_token
-    self.workshop_user_path = nil
-    self.workshop_username = nil
-    self.workshop_submissions_count = 0
-    self.workshop_followers_count = 0
-    save
+    reset_account(:workshop)
   end
 end

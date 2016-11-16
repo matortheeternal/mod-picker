@@ -1,3 +1,10 @@
+//= require angular.min.1.5.1.js
+//= require marked.min.js
+//= require angular-marked.min.js
+//= require angular-relative-date.min.js
+//= require angular-animate.min.js
+//= require simplemde.min.js
+//= require spin.min.js
 //= require_self
 //= require ./polyfills.js
 //= require BackendAPI/backend.js
@@ -15,6 +22,10 @@
 //= require Services/pageUtils.js
 //= require Services/ObjectUtils.js
 //= require_tree ./Directives/help
+/*
+ Mod Picker Help Center v1.0
+ (c) 2016 Mod Picker, LLC. https://www.modpicker.com
+*/
 
 var app = angular.module('helpCenter', [
     'ngAnimate', 'hc.marked', 'relativeDate'

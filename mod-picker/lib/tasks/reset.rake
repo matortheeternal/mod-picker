@@ -113,6 +113,14 @@ namespace :reset do
     end
   end
 
+  task empty_mod_asset_files: :environment do
+    puts "\nDestroying empty mod asset files"
+    empty_mod_asset_files = ModAssetFile.where(subpath: "", asset_file_id: nil)
+    count = empty_mod_asset_files.length
+    empty_mod_asset_files.destroy_all
+    puts "#{count} empty mod asset files destroyed"
+  end
+
   task mod_approval: :environment do
     puts "\nApproving all mods"
     unapproved_mods_count = Mod.where(approved: false).count

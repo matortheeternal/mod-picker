@@ -28,7 +28,7 @@ app.controller('modAnalysisController', function($scope, $stateParams, $state, m
         var errorTypes = $scope.mod.currentPlugin.plugin_errors;
         errorTypes.forEach(function(errorType) {
             if (errorType.benign) return;
-            $scope.noCriticalErrors = $scope.noCriticalErrors && !errorType.length;
+            $scope.noCriticalErrors = $scope.noCriticalErrors && !errorType.errors.length;
         });
     };
 
@@ -55,9 +55,33 @@ app.controller('modAnalysisController', function($scope, $stateParams, $state, m
         $scope.showBenignErrors = !$scope.showBenignErrors;
     };
 
+    $scope.getStatePluginOptionId = function(optionIds) {
+        if ($stateParams.plugin) {
+            var foundPlugin = $scope.mod.plugins.find(function(plugin) {
+                return plugin.id == $stateParams.plugin;
+            });
+            if (foundPlugin) optionIds.push(foundPlugin.mod_option_id);
+        }
+    };
+
+    $scope.getStateParamOptionIds = function(optionIds) {
+        if ($stateParams.options) {
+            $stateParams.options.split(',').forEach(function(optionId) {
+                if (optionIds.indexOf(optionId) == -1) optionIds.push(optionId);
+            });
+        }
+    };
+
+    $scope.getStateOptionIds = function() {
+        var optionIds = [];
+        $scope.getStatePluginOptionId(optionIds);
+        $scope.getStateParamOptionIds(optionIds);
+        return optionIds;
+    };
+
     $scope.setCurrentSelection = function() {
-        // set active options
-        var optionIds = $stateParams.options ? $stateParams.options.split(',') : [];
+        // enable mod options
+        var optionIds = $scope.getStateOptionIds();
         $scope.mod.options.forEach(function(option) {
             option.active = option.default || optionIds.indexOf(option.id) > -1;
         });
