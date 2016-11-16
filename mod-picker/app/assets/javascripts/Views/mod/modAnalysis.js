@@ -28,7 +28,7 @@ app.controller('modAnalysisController', function($scope, $stateParams, $state, m
         var errorTypes = $scope.mod.currentPlugin.plugin_errors;
         errorTypes.forEach(function(errorType) {
             if (errorType.benign) return;
-            $scope.noCriticalErrors = $scope.noCriticalErrors && !errorType.length;
+            $scope.noCriticalErrors = $scope.noCriticalErrors && !errorType.errors.length;
         });
     };
 
