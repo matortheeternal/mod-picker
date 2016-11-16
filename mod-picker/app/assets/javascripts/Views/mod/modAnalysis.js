@@ -55,28 +55,33 @@ app.controller('modAnalysisController', function($scope, $stateParams, $state, m
         $scope.showBenignErrors = !$scope.showBenignErrors;
     };
 
-    $scope.getStateOptionIds = function() {
-        var optionIds = [];
+    $scope.getStatePluginOptionId = function(optionIds) {
         if ($stateParams.plugin) {
             var foundPlugin = $scope.mod.plugins.find(function(plugin) {
                 return plugin.id == $stateParams.plugin;
             });
             if (foundPlugin) optionIds.push(foundPlugin.mod_option_id);
         }
+    };
 
+    $scope.getStateParamOptionIds = function(optionIds) {
         if ($stateParams.options) {
             $stateParams.options.split(',').forEach(function(optionId) {
-                optionIds.push(optionId);
+                if (optionIds.indexOf(optionId) == -1) optionIds.push(optionId);
             });
         }
+    };
 
+    $scope.getStateOptionIds = function() {
+        var optionIds = [];
+        $scope.getStatePluginOptionId(optionIds);
+        $scope.getStateParamOptionIds(optionIds);
         return optionIds;
     };
 
     $scope.setCurrentSelection = function() {
-        var optionIds = $scope.getStateOptionIds();
-
         // enable mod options
+        var optionIds = $scope.getStateOptionIds();
         $scope.mod.options.forEach(function(option) {
             option.active = option.default || optionIds.indexOf(option.id) > -1;
         });
