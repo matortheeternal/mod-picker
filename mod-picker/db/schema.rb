@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161115064748) do
+ActiveRecord::Schema.define(version: 20161116000543) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -574,15 +574,15 @@ ActiveRecord::Schema.define(version: 20161115064748) do
   add_index "mod_lists", ["submitted_by"], name: "created_by", using: :btree
 
   create_table "mod_options", force: :cascade do |t|
-    t.integer "mod_id",            limit: 4,                   null: false
-    t.string  "name",              limit: 128,                 null: false
-    t.string  "display_name",      limit: 128,                 null: false
-    t.integer "size",              limit: 8,   default: 0,     null: false
-    t.string  "md5_hash",          limit: 32
-    t.boolean "default",                       default: false, null: false
-    t.boolean "is_fomod_option",               default: false, null: false
-    t.integer "asset_files_count", limit: 4,   default: 0,     null: false
-    t.integer "plugins_count",     limit: 4,   default: 0,     null: false
+    t.integer "mod_id",              limit: 4,                   null: false
+    t.string  "name",                limit: 128,                 null: false
+    t.string  "display_name",        limit: 128,                 null: false
+    t.integer "size",                limit: 8,   default: 0,     null: false
+    t.string  "md5_hash",            limit: 32
+    t.boolean "default",                         default: false, null: false
+    t.boolean "is_installer_option",             default: false, null: false
+    t.integer "asset_files_count",   limit: 4,   default: 0,     null: false
+    t.integer "plugins_count",       limit: 4,   default: 0,     null: false
   end
 
   add_index "mod_options", ["mod_id"], name: "fk_rails_e37829130d", using: :btree
