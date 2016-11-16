@@ -39,7 +39,7 @@ class ModOption < ActiveRecord::Base
 
   # INSTANCE METHODS
   def get_base_paths
-    if !is_fomod_option
+    if !is_installer_option
       basepaths = DataPathUtils.get_base_paths(@asset_paths)
     else
       basepaths = [""]
