@@ -16,6 +16,12 @@
                 <input type="text" ng-model="detailsItem.name" ng-click="focusText($event)" spellcheck="false" ng-disabled="!editing">
             </section>
 
+            <h3 class="section-title">URL</h3>
+            <section>
+                <input type="text" ng-model="detailsItem.url" ng-click="focusText($event)" spellcheck="false" ng-if="editing">
+                <a ng-href="{{::detailsItem.url}}" ng-if="!editing">{{::detailsItem.url}}</a>
+            </section>
+
             <h3 class="section-title">Description</h3>
             <section>
                 <textarea class="medium-text-area" ng-model="detailsItem.description" ng-disabled="!editing"></textarea>
