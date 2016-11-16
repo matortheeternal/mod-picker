@@ -176,7 +176,7 @@
                 <loader data="mods" content-class="table-container" spinner-class="big-spinner" ng-if="!error">
                     <table-results label="mods" data="mods" ng-if="tableView"></table-results>
                     <grid-results label="mods" data="mods" ng-if="!tableView"></grid-results>
-                    <page-results pages="filters.pages" data="mods" callback="pageCallback"></page-results>
+                    <page-results pages="pages" data="mods" callback="getData"></page-results>
                 </loader>
 
                 <error-display content-class="content-message content-error" errors="error" label="Mods"></error-display>

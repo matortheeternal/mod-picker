@@ -4,9 +4,8 @@ app.config(['$stateProvider', function($stateProvider) {
         controller: 'moderatorController',
         url: '/moderator-cp',
         resolve: {
-            permissions: function($q, $rootScope, errorService) {
+            permissions: function($q, currentUser, errorService) {
                 var permissions = $q.defer();
-                var currentUser = $rootScope.currentUser;
                 if (currentUser.permissions.canModerate) {
                     permissions.resolve(currentUser.permissions);
                 } else {

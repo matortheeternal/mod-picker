@@ -35,7 +35,9 @@ app.controller('helperController', function($scope, $rootScope, $sce, helpFactor
         $scope.trustContexts();
         $scope.hideHelper = ($scope.helpContexts.length == 0);
         if (!$scope.hideHelper && !$scope.helperDisabled()) {
-            $scope.showHelper = true;
+            if (angular.isUndefined($scope.showHelper)) {
+                $scope.showHelper = true;
+            }
         }
     });
 });
