@@ -64,17 +64,25 @@ app.controller('modListModsController', function($scope, $rootScope, $timeout, $
         modListMod.mod.mod_options.forEach(function(option) {
             if (option.default) {
                 option.active = true;
-                modListMod.mod_list_mod_options.push({
-                    mod_option_id: option.id
+                var options = modListMod.mod_list_mod_options;
+                var existingModOption = options.find(function(mlOption) {
+                    return mlOption.mod_option_id == option.id;
                 });
-                $rootScope.$broadcast('modOptionAdded', option);
+                if (!existingModOption) {
+                    options.push({ mod_option_id: option.id });
+                    $rootScope.$broadcast('modOptionAdded', option);
+                }
             }
         });
     };
 
     $scope.removeActiveModOptions = function(modListMod) {
+        modListMod.mod_list_mod_options.forEach(function(option) {
+            $rootScope.$broadcast('modOptionRemoved', option.mod_option_id);
+        });
+        modListMod.mod_list_mod_options = [];
         modListMod.mod && modListMod.mod.mod_options.forEach(function(option) {
-            if (option.active) $rootScope.$broadcast('modOptionRemoved', option.id);
+            option.active = false;
         });
     };
 
