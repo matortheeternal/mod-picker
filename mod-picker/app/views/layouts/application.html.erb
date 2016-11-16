@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title ng-bind="pageTitle" ng-init="pageTitle = 'Mod Picker: <%= @current_game.display_name %>'"></title>
-    <%= javascript_include_tag 'modpicker-vendor' %>
     <link ng-controller="themesController" rel="stylesheet" href="<%= stylesheet_path "main/#{@current_theme}" %>" ng-href="{{currentTheme}}" />
     <script>
         window._token = '<%= form_authenticity_token %>';
@@ -20,6 +19,7 @@
 <body ng-cloak ng-controller="bodyController" ng-class="{ 'no-scroll' : modalVisible }">
     <%= yield %>
 
+    <%= javascript_include_tag 'modpicker-vendor' %>
     <%= javascript_include_tag 'modpicker' %>
 </body>
 </html>
