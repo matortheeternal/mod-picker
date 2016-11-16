@@ -460,7 +460,7 @@ app.controller('modListController', function($scope, $rootScope, $q, $state, $st
     };
 
     $scope.updateCounters = function(updatedModList) {
-        var counts = ["tools_count", "mods_count", "plugins_count", "config_files_count"];
+        var counts = ["tools_count", "mods_count", "plugins_count"];
         counts.forEach(function(count) {
             $scope.mod_list[count] = updatedModList[count];
         });
