@@ -21,8 +21,8 @@
     </select>
 </label>
 
-<strong ng-if="option.assets.length && option.nestedAssets">Asset File Tree</strong>
-<div class="subsection analysis-container" ng-if="option.assets.length && option.nestedAssets">
+<strong ng-if="option.nestedAssets">Asset File Tree</strong>
+<div class="subsection analysis-container" ng-if="option.nestedAssets">
     <asset-tree assets="option.nestedAssets"></asset-tree>
 </div>
 
