@@ -488,11 +488,11 @@ app.service('columnsFactory', function() {
                 link: function(item) {
                     if (item.mod) {
                         return "#/mod/" + item.mod.id;
+                    } else if (item.url) {
+                        return item.url;
                     }
                 },
                 class: "primary-column",
-                sortData: "mods.name",
-                invertSort: true,
                 dynamic: true
             },
             {
@@ -500,32 +500,28 @@ app.service('columnsFactory', function() {
                 visibility: false,
                 label: "Aliases",
                 data: "mod.aliases",
-                class: "aliases-column",
-                invertSort: true
+                class: "aliases-column"
             },
             {
                 group: "General",
                 visibility: true,
                 label: "Authors",
                 data: "mod.authors",
-                class: "author-column",
-                invertSort: true
+                class: "author-column"
             },
             {
                 group: "General",
                 visibility: true,
                 label: "Primary Category",
                 data: "mod.primary_category.name",
-                class: "category-column",
-                unsortable: true
+                class: "category-column"
             },
             {
                 group: "General",
                 visibility: false,
                 label: "Secondary Category",
                 data: "mod.secondary_category.name",
-                class: "category-column",
-                unsortable: true
+                class: "category-column"
             },
             {
                 group: "General",
