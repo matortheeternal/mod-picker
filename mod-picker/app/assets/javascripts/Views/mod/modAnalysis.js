@@ -55,16 +55,26 @@ app.controller('modAnalysisController', function($scope, $stateParams, $state, m
         $scope.showBenignErrors = !$scope.showBenignErrors;
     };
 
-    $scope.setCurrentSelection = function() {
+    $scope.getStateOptionIds = function() {
         var optionIds = [];
         if ($stateParams.plugin) {
             var foundPlugin = $scope.mod.plugins.find(function(plugin) {
                 return plugin.id == $stateParams.plugin;
             });
             if (foundPlugin) optionIds.push(foundPlugin.mod_option_id);
-        } else {
-            optionIds = $stateParams.options ? $stateParams.options.split(',') : [];
         }
+
+        if ($stateParams.options) {
+            $stateParams.options.split(',').forEach(function(optionId) {
+                optionIds.push(optionId);
+            });
+        }
+
+        return optionIds;
+    };
+
+    $scope.setCurrentSelection = function() {
+        var optionIds = $scope.getStateOptionIds();
 
         // enable mod options
         $scope.mod.options.forEach(function(option) {
