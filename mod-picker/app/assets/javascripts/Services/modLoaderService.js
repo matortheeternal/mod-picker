@@ -57,7 +57,7 @@ app.service('modLoaderService', function(sitesFactory, assetUtils) {
 
     this.loadAssets = function(mod) {
         mod.mod_options.forEach(function(option) {
-            if (!option.asset_file_paths) return;
+            if (!option.asset_file_paths || !option.asset_file_paths.length) return;
             option.nestedAssets = assetUtils.getNestedAssets(option.asset_file_paths);
         });
     };
