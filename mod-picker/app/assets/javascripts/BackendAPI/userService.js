@@ -35,7 +35,11 @@ app.service('userService', function(backend, $q, userSettingsService, userTitleS
     this.retrieveCurrentUser = function() {
         var output = $q.defer();
         backend.retrieve('/current_user').then(function(userData) {
-            userData.permissions = service.getPermissions(userData);
+            if (userData) {
+                userData.permissions = service.getPermissions(userData);
+            } else {
+                userData = { permissions: {} };
+            }
             output.resolve(userData);
         });
         return output.promise;
