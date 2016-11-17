@@ -73,6 +73,7 @@ Rails.application.routes.draw do
   resources :comments, only: [:show]
 
   # mod lists
+  match '/mod_lists/active', to: 'mod_lists#active', via: [:get]
   match '/mod_lists/index', to: 'mod_lists#index', via: [:get, :post]
   match '/mod_lists/:id/mods', to: 'mod_lists#mods', via: [:get, :post]
   match '/mod_lists/:id/tools', to: 'mod_lists#tools', via: [:get, :post]
@@ -187,7 +188,6 @@ Rails.application.routes.draw do
     match '/load_order_notes/:id/helpful', to: 'load_order_notes#helpful', via: [:post]
 
     # mod lists
-    match '/mod_lists/active', to: 'mod_lists#active', via: [:get]
     match '/mod_lists/active', to: 'mod_lists#set_active', via: [:post]
     match '/mod_lists/:id/hide', to: 'mod_lists#hide', via: [:post]
     match '/mod_lists/:id/clone', to: 'mod_lists#clone', via: [:post]
