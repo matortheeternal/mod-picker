@@ -1,5 +1,5 @@
 <!-- User signed in navigation -->
-<ul class="user-nav" ng-if="currentUser">
+<ul class="user-nav" ng-if="currentUser.signed_in">
     <li>
         Welcome <a class="inverse-link" ng-href="#/user/{{currentUser.id}}">{{currentUser.username}}</a>
     </li>
@@ -23,7 +23,7 @@
     </li>
 </ul>
 <!-- User signed out navigation -->
-<ul class="user-nav" ng-if="!currentUser">
+<ul class="user-nav" ng-if="!currentUser.signed_in">
     <li>
         <a class="inverse-link" href="/users/sign_in">Log In</a>
     </li>

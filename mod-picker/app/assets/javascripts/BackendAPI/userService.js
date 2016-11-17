@@ -36,6 +36,7 @@ app.service('userService', function(backend, $q, userSettingsService, userTitleS
         var output = $q.defer();
         backend.retrieve('/current_user').then(function(userData) {
             if (userData) {
+                userData.signed_in = true;
                 userData.permissions = service.getPermissions(userData);
             } else {
                 userData = { permissions: {} };
