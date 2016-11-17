@@ -72,10 +72,11 @@ header {
 /* css for navbar */
 nav {
   display: block;
-  background-color: $bar_color;
   white-space: nowrap;
+  position: relative;
+  z-index: 100;
 
-  .primary-nav {
+  primary-nav {
     .nav-item {
       border-left: 1px solid $bar_highlight_color;
       background-color: $bar_color;
@@ -90,8 +91,6 @@ nav {
 
       .nav-link {
         display: block;
-        position: relative;
-        z-index: 99;
         height: 60px;
         padding: 12px 12px 16px;
         color: $bar_text_color;
@@ -108,7 +107,7 @@ nav {
       position: absolute;
       left: 0;
       text-align: center;
-      z-index: 2;
+      z-index: -1;
       top: 60px;
       padding: 10px;
       background-color: $bar_highlight_color;
@@ -200,10 +199,12 @@ nav {
 }
 
 .nav-wrapper {
-  position: relative;
+  background-color: $bar_color;
+  z-index: 5;
+  height: 60px;
 }
 
-.primary-nav {
+primary-nav {
   float: left;
 }
 
