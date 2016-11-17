@@ -120,6 +120,7 @@ app.service('baseFactory', function() {
             index: 0,
             group_id: 0,
             name: "",
+            url: "",
             description: "",
             is_utility: false
         }

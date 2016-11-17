@@ -84,6 +84,7 @@ class ModBuilder
     link_sources
     create_tags
     create_curator
+    manage_custom_mods
   end
 
   def set_config_file_game_ids
@@ -226,6 +227,25 @@ class ModBuilder
       mods_operator = mod.is_utility ? "-" : "+"
       mod_list_ids = mod.mod_lists.ids
       ModList.where(id: mod_list_ids).update_all("tools_count = tools_count #{tools_operator} 1, mods_count = mods_count #{mods_operator} 1")
+    end
+  end
+
+  def substitute_custom_mods
+    mod.sources_array.each do |source|
+      ModListCustomMod.substitue_for_url(source.url, mod)
+    end
+  end
+
+  def make_custom_mods
+    mod.mod_list_mods.find_each do |mod_list_mod|
+      ModListCustomMod.create_from_mod_list_mod(mod_list_mod)
+      mod_list_mod.destroy
+    end
+  end
+
+  def manage_custom_mods
+    if mod.was_visible != mod.visible
+      mod.visible ? substitute_custom_mods : make_custom_mods
     end
   end
 
