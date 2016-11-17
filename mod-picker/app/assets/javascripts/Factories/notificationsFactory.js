@@ -131,7 +131,7 @@ app.service('notificationsFactory', function() {
         return 'Your correction on <a href="#/user/{{content.correctable.submitter.id}}">{{content.correctable.submitter.username}}\'s</a> <a href="#/mod/{{content.correctable.first_mod.id}}/'+noteTypeDashed+'/{{content.correctable_id}}">'+noteType+' note</a>';
     };
     this.correctionDescriptions = {
-        Mod: 'Your appeal to mark <a href=""></a> as ',
+        Mod: 'Your appeal to mark <a href="#/mod/{{content.correctable.id}}">{{content.correctable.name}}</a> as {{content.mod_status}}',
         CompatibilityNote: noteCorrectionDescription('compatibility'),
         InstallOrderNote: noteCorrectionDescription('install order'),
         LoadOrderNote: noteCorrectionDescription('load order')
@@ -140,10 +140,10 @@ app.service('notificationsFactory', function() {
     this.statusChanges = {
         Correction: {
             key: "status",
-            open: "has been re-opened",
-            passed: "has passed",
-            failed: "has failed",
-            closed: "has been closed"
+            open: "been re-opened",
+            passed: "passed",
+            failed: "failed",
+            closed: "been closed"
         },
         User: {
             key: "role",
