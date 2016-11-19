@@ -1,0 +1,23 @@
+<div class="modal-container" ng-if="showTagModal" ng-click="unfocusTagModal($event)">
+    <messages event="modalMessage"></messages>
+
+    <div class="modal huge-modal">
+        <form>
+            <div class="close-modal">
+                <span class="fa fa-times" ng-click="toggleTagModal(false)"></span>
+            </div>
+
+            <h2>Edit Tag</h2>
+
+            <h3 class="section-title">Text</h3>
+            <section>
+                <input type="text" class="elastic-input" ng-model="activeTag.text" spellcheck="false" pu-elastic-input/>
+            </section>
+
+            <div class="action-button-container">
+                <input class="btn" type="button" ng-click="saveTag()" ng-disabled="activeTag.text === originalTag.text" value="Save"/>
+                <input class="btn" type="button" ng-click="toggleTagModal(false)" value="Close"/>
+            </div>
+        </form>
+    </div>
+</div>
