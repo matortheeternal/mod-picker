@@ -1,5 +1,5 @@
 class TagsController < ApplicationController
-  before_action :set_tag, only: [:hide]
+  before_action :set_tag, only: [:update, :hide]
 
   # GET /all_tags
   def all
@@ -19,6 +19,16 @@ class TagsController < ApplicationController
     }
   end
 
+  # PATCH/PUT /tags/:id
+  def update
+    authorize! :update, @tag
+    if @tag.update(tag_update_params)
+      render json: {status: :ok}
+    else
+      render json: @tag.errors, status: :unprocessable_entity
+    end
+  end
+
   # POST /tags/:id/hide
   def hide
     authorize! :hide, @tag
@@ -34,6 +44,10 @@ class TagsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_tag
       @tag = Tag.find(params[:id])
+    end
+
+    def tag_update_params
+      params.require(:tag).permit(:text)
     end
 
     # Params we allow filtering on
