@@ -1556,5 +1556,42 @@ app.service("filtersFactory", function() {
         );
     };
 
+    this.tagGeneralFilters = function() {
+        return [
+            factory.searchFilter,
+            factory.submitterFilter,
+            factory.hiddenFilter,
+            factory.unhiddenFilter
+        ]
+    };
+
+    this.tagStatisticFilters = function() {
+        return [
+            {
+                label: "Mods Count",
+                common: true,
+                data: "mods_count",
+                type: "Range",
+                max: 100,
+                param: "mc"
+            },
+            {
+                label: "Mod Lists Count",
+                common: true,
+                data: "mod_lists_count",
+                type: "Range",
+                max: 100,
+                param: "mlc"
+            }
+        ]
+    };
+
+    this.tagFilters = function() {
+        return Array.prototype.concat(
+            factory.tagGeneralFilters(),
+            factory.tagStatisticFilters()
+        );
+    };
+
     return factory;
 });
