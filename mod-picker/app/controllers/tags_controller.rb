@@ -1,9 +1,9 @@
 class TagsController < ApplicationController
   before_action :set_tag, only: [:destroy]
 
-  # GET /tags
-  def index
-    @tags = Tag.filter(filtering_params)
+  # GET /all_tags
+  def all
+    @tags = Tag.game(params[:game])
     render json: @tags
   end
 

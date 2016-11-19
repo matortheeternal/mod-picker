@@ -1,13 +1,19 @@
-app.service('tagService', function(backend, $q) {
-    this.retrieveTags = function() {
-        var tags = $q.defer();
-        var postData =  {
-            filters: {}
-        };
-        backend.post('/tags', postData).then(function(data) {
-            tags.resolve(data);
+app.service('tagService', function(backend, $q, pageUtils) {
+    this.retrieveAllTags = function() {
+        var params = { game: window._current_game_id };
+        return backend.retrieve('/all_tags', params);
+    };
+
+    this.retrieveTags = function(options, pageInformation) {
+        var action = $q.defer();
+        backend.post('/tags', options).then(function(data) {
+            // resolve page information and data
+            pageUtils.getPageInformation(data, pageInformation, options.page);
+            action.resolve(data);
+        }, function(response) {
+            action.reject(response);
         });
-        return tags.promise;
+        return action.promise;
     };
 
     this.updateModTags = function(mod, tags) {

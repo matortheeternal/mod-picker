@@ -22,7 +22,7 @@ app.controller('tagSelectorController', function($scope, tagService) {
     $scope.rawNewTags = [];
     $scope.removedTags = [];
 
-    tagService.retrieveTags().then(function(data) {
+    tagService.retrieveAllTags().then(function(data) {
         $scope.tags = data;
     });
 
