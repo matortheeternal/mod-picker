@@ -1,8 +1,15 @@
 class Tag < ActiveRecord::Base
-  include Filterable, RecordEnhancements, CounterCache, Reportable, ScopeHelpers, BetterJson
+  include Filterable, Sortable, RecordEnhancements, CounterCache, Reportable, ScopeHelpers, BetterJson
+
+  # ATTRIBUTES
+  self.per_page = 100
 
   # SCOPES
+  hash_scope :hidden, alias: 'hidden'
   game_scope
+  search_scope :text, alias: 'search'
+  user_scope :submitter
+  range_scope :mods_count, :mod_lists_count
 
   # ASSOCIATIONS
   belongs_to :submitter, :class_name => 'User', :foreign_key => :submitted_by, :inverse_of => 'tags'
