@@ -16,6 +16,10 @@ app.service('tagService', function(backend, $q, pageUtils) {
         return action.promise;
     };
 
+    this.hideTag = function(tagId, hidden) {
+        return backend.post('/tags/' + tagId + '/hide', {hidden: hidden});
+    };
+
     this.updateModTags = function(mod, tags) {
         var putData = {
             game_id: mod.game_id,
