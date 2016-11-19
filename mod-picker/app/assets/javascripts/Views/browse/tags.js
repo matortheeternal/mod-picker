@@ -34,6 +34,8 @@ app.controller('tagsIndexController', function($scope, $rootScope, $stateParams,
     $scope.$on('hideTag', function(event, tag) {
         tagService.hideTag(tag.id, true).then(function() {
             tag.hidden = true;
+            tag.mods_count = 0;
+            tag.mod_lists_count = 0;
             $scope.$emit('successMessage', tag.text + ' has been hidden.');
         }, function(response) {
             var params = {
