@@ -1088,4 +1088,45 @@ app.service('columnsFactory', function() {
         ];
     };
 
+    this.tagColumns = function() {
+        return [
+            {
+                group: "General",
+                visibility: true,
+                required: true,
+                label: "Text",
+                data: "text",
+                invertSort: true,
+                dynamic: true
+            },
+            {
+                group: "General",
+                visibility: true,
+                label: "Submitter",
+                data: "submitter.username",
+                link: function(item) {
+                    return "#/user/" + item.submitter.id;
+                },
+                invertSort: true
+            },
+            {
+                group: "General",
+                visibility: true,
+                label: "Mods Count",
+                data: "mods_count",
+                filter: "number"
+            },
+            {
+                group: "General",
+                visibility: true,
+                label: "Mod Lists Count",
+                data: "mod_lists_count",
+                filter: "number"
+            }
+        ]
+    };
+
+    this.tagColumnGroups = function() {
+        return ["General"];
+    };
 });
