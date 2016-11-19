@@ -46,6 +46,7 @@ Rails.application.routes.draw do
 
     # tags
     match '/all_tags', to: 'tags#all', via: [:get]
+    match '/tags', to: 'tags#index', via: [:get, :post]
     match '/tags/:id/hide', to: 'tags#hide', via: [:post]
     match '/mods/:id/tags', to: 'mods#update_tags', via: [:patch, :put]
     match '/mod_lists/:id/tags', to: 'mod_lists#update_tags', via: [:patch, :put]
