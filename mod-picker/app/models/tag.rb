@@ -29,4 +29,14 @@ class Tag < ActiveRecord::Base
   validates :game_id, :submitted_by, :text, presence: true
   validates :text, length: {in: 2..32}
   validates :hidden, inclusion: [true, false]
+
+  # CALLBACKS
+  before_save :destroy_mod_and_mod_list_tags
+
+  private
+    def destroy_mod_and_mod_list_tags
+      return unless hidden
+      mod_list_tags.destroy_all
+      mod_tags.destroy_all
+    end
 end
