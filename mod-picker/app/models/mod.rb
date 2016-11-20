@@ -172,6 +172,7 @@ class Mod < ActiveRecord::Base
   validates :name, :aliases, length: {maximum: 128}
 
   # CALLBACKS
+  before_create :set_id
   before_save :touch_updated
 
   def visible
@@ -273,5 +274,9 @@ class Mod < ActiveRecord::Base
         self.updated ||= DateTime.now
         self.updated += 1.second
       end
+    end
+
+    def set_id
+      self.id = next_id
     end
 end
