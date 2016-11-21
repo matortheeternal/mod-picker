@@ -388,4 +388,68 @@ app.service('licensesFactory', function() {
         }
         return licenses;
     };
+
+    this.responsesToLicenseParams = function(content, responses) {
+        var contentResponses = responses[content];
+        return {
+            code: content === 'materials' || content === 'code',
+            assets: content === 'materials' || content === 'assets',
+            terms: {
+                credit: contentResponses.requireCredit,
+                commercial: contentResponses.allowCommercialUse,
+                redistribution: contentResponses.redistribution,
+                modification: contentResponses.modification,
+                private_use: factory.yes,
+                include: contentResponses.include
+            }
+        };
+    };
+
+    this.hasUniqueCircumstances = function(content, responses) {
+        return responses[content].uniqueCircumstances || 0 > 0;
+    };
+
+    this.termMatches = function(licenseTerm, paramTerm) {
+        return licenseTerm == paramTerm || licenseTerm == 2;
+    };
+
+    var terms = ["credit", "commercial", "redistribution", "modification", "private_use", "include"];
+
+    this.contentMatches = function(license, params) {
+        return (license.code == params.code) && (license.assets == params.assets);
+    };
+
+    this.licenseMatches = function(license, params) {
+        var termsMatch = terms.reduce(function(match, term) {
+            return match && license.terms[term] == params.terms[term];
+        }, true);
+        return factory.contentMatches(license, params) && termsMatch;
+    };
+
+    this.licenseSimilar = function(license, params) {
+        var termsSimilar = Math.abs(terms.reduce(function(match, term) {
+            return match + license.terms[term] - params.terms[term];
+        }, 0)) < 2;
+        return factory.contentMatches(license, params) && termsSimilar;
+    };
+
+    this.getMatchingLicenses = function(content, responses) {
+        if (factory.hasUniqueCircumstances(content, responses)) {
+            return [factory.licenses.custom];
+        }
+        var params = factory.responsesToLicenseParams(content, responses);
+        return factory.getLicenses.filter(function(license) {
+            return factory.licenseMatches(license, params);
+        });
+    };
+
+    this.getSimilarLicenses = function(content, responses) {
+        if (factory.hasUniqueCircumstances(content, responses)) {
+            return [];
+        }
+        var params = factory.responsesToLicenseParams(content, responses);
+        return factory.getLicenses.filter(function(license) {
+            return factory.licenseSimilar(license, params);
+        });
+    };
 });
