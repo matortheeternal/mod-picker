@@ -19,27 +19,27 @@ app.service("questionsFactory", function() {
         options: factory.optionsYNMB
     };
     this.allowCommercialUse = {
-        key: "allowCommercialUse",
+        key: "commercial",
         text: "Do you want to allow other people to use your {{target}} commercially?",
         options: factory.optionsYNDC
     };
     this.requireCredit = {
-        key: "requireCredit",
+        key: "credit",
         text: "Should users credit you if they use your {{target}}?",
         options: factory.optionsYNDC
     };
     this.redistributeWithoutPermission = {
-        key: "redistributeWithoutPermission",
+        key: "redistribution",
         text: "Do you want to allow users to redistribute your {{target}} without asking for permission?",
         options: factory.optionsYN
     };
     this.modifyWithoutPermission = {
-        key: "modifyWithoutPermission",
+        key: "modification",
         text: "Do you want to allow users to modify your {{target}} or use it in their own projects without asking for permission?",
         options: factory.optionsYN
     };
     this.useSamePermissions = {
-        key: "useSamePermissions",
+        key: "include",
         text: "Do you want to require people who use your {{target}} to use the same permissions/license as your {{target}}?",
         options: factory.optionsYNDC
     };
