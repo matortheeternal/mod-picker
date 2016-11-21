@@ -203,6 +203,7 @@ Rails.application.routes.draw do
   match '/legal/tos', to: 'legal_pages#tos', via: [:get]
   match '/legal/privacy', to: 'legal_pages#privacy', via: [:get]
   match '/legal/copyright', to: 'legal_pages#copyright', via: [:get]
+  match '/legal/wizard', to: 'legal_pages#wizard', via: [:get]
 
   # contact us and subscribe
   match '/contacts', to: 'contacts#new', via: [:get]
