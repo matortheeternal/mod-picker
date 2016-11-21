@@ -205,7 +205,7 @@ app.service('licensesFactory', function() {
             terms: {
                 credit: factory.yes,
                 commercial: factory.yes,
-                distribution: factory.yes,
+                redistribution: factory.yes,
                 modification: factory.yes,
                 private_use: factory.yes,
                 include: factory.yes
@@ -236,7 +236,7 @@ app.service('licensesFactory', function() {
             terms: {
                 credit: factory.yes,
                 commercial: factory.yes,
-                distribution: factory.yes,
+                redistribution: factory.yes,
                 modification: factory.yes,
                 private_use: factory.yes,
                 include: factory.yes
@@ -256,7 +256,7 @@ app.service('licensesFactory', function() {
             terms: {
                 credit: factory.yes,
                 commercial: factory.yes,
-                distribution: factory.yes,
+                redistribution: factory.yes,
                 modification: factory.yes,
                 private_use: factory.yes,
                 include: factory.no
@@ -276,7 +276,7 @@ app.service('licensesFactory', function() {
             terms: {
                 credit: factory.yes,
                 commercial: factory.no,
-                distribution: factory.yes,
+                redistribution: factory.yes,
                 modification: factory.yes,
                 private_use: factory.yes,
                 include: factory.no
@@ -296,7 +296,7 @@ app.service('licensesFactory', function() {
             terms: {
                 credit: factory.yes,
                 commercial: factory.yes,
-                distribution: factory.yes,
+                redistribution: factory.yes,
                 modification: factory.yes,
                 private_use: factory.yes,
                 include: factory.yes
@@ -316,7 +316,7 @@ app.service('licensesFactory', function() {
             terms: {
                 credit: factory.yes,
                 commercial: factory.no,
-                distribution: factory.yes,
+                redistribution: factory.yes,
                 modification: factory.yes,
                 private_use: factory.yes,
                 include: factory.yes
@@ -336,7 +336,7 @@ app.service('licensesFactory', function() {
             terms: {
                 credit: factory.yes,
                 commercial: factory.yes,
-                distribution: factory.yes,
+                redistribution: factory.yes,
                 modification: factory.no,
                 private_use: factory.yes,
                 include: factory.no
@@ -356,7 +356,7 @@ app.service('licensesFactory', function() {
             terms: {
                 credit: factory.yes,
                 commercial: factory.no,
-                distribution: factory.yes,
+                redistribution: factory.yes,
                 modification: factory.no,
                 private_use: factory.yes,
                 include: factory.no
@@ -370,7 +370,7 @@ app.service('licensesFactory', function() {
             terms: {
                 credit: factory.unknown,
                 commercial: factory.unknown,
-                distribution: factory.unknown,
+                redistribution: factory.unknown,
                 modification: factory.unknown,
                 private_use: factory.unknown,
                 include: factory.unknown
