@@ -1,0 +1,43 @@
+<div class="wizard-tabs">
+    <div class="tab" ng-click="switchTab(0)" ng-class="{ 'active' : currentTab == 0 }">
+        Wizard
+    </div>
+    <div class="tab" ng-click="switchTab(1)" ng-class="{ 'active' : currentTab == 1 }">
+        View Licenses
+    </div>
+</div>
+<div class="tab-content" ng-if="currentTab == 0">
+    <div class="question-column" ng-if="showQuestionColumn">
+        <div class="question-section" ng-repeat="section in sections">
+            <h2>{{section.name}}</h2>
+            <div class="question-item" ng-repeat="question in section.questions" ng-hide="question.conditional && !question.active && !question.answered" ng-click="gotoQuestion(section, $index)" ng-class="{ 'active' : question.active, 'skipped' : question.skipped, 'answered' : question.answered }">
+                {{question.label}}
+            </div>
+        </div>
+    </div>
+    <div class="question-area" ng-repeat="question in questions" ng-show="question.active && !showResults">
+        <h1>{{question.text}}</h1>
+        <div class="question-options">
+            <div ng-repeat="option in question.options" ng-click="selectOption(question, option)" ng-class="{ 'selected' : option.selected }">
+                {{$index + 1}}) {{option.text}}
+            </div>
+        </div>
+
+        <span class="action-box previous-box" ng-hide="$index == 0" ng-click="previousQuestion(true)">
+            <i class="fa fa-chevron-left"></i> Previous
+        </span>
+        <span class="action-box next-box" ng-hide="$last" ng-click="nextQuestion(true)">
+            <i class="fa fa-chevron-right"></i> Next
+        </span>
+    </div>
+    <div class="results" ng-if="showResults">
+        <h2>Matching Licenses</h2>
+        <license ng-repeat="license in matchingLicenses"></license>
+
+        <h2>Similar Licenses</h2>
+        <license ng-repeat="license in similarLicenses"></license>
+    </div>
+</div>
+<div class="tab-content results-tab" ng-if="currentTab == 1">
+    <license ng-repeat="license in licenses"></license>
+</div>
