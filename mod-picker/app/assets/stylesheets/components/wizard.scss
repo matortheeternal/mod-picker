@@ -38,6 +38,7 @@ wizard {
 
 .results-tab {
   display: block;
+  height: 600px;
 }
 
 .question-column {
@@ -93,6 +94,7 @@ wizard {
     position: absolute;
     top: 130px;
     left: 50px;
+    min-width: 100px;
 
     > div {
       padding: 2px 6px;
@@ -119,9 +121,17 @@ wizard {
 
 .results {
   padding: 30px;
+  padding-right: 0;
 
   h2 {
     margin-top: 0;
+  }
+
+  .show-more {
+    cursor: pointer;
+    display: block;
+    margin-bottom: 30px;
+    text-align: center;
   }
 }
 
@@ -152,7 +162,7 @@ span.previous-box {
 
 license {
   display: flex;
-  margin: 12px 0;
+  margin: 24px 6px;
 
   .left-column {
     min-width: 100px;
@@ -186,14 +196,20 @@ license {
     max-width: 100px;
     text-align: center;
 
-    .fa-ban {
-      color: #f00;
-      opacity: 0.5;
-    }
+    .license-terms {
+      .fa-stack {
+        margin-bottom: -1px;
+      }
 
-    .fa-question {
-      color: #ec5;
-      opacity: 0.7;
+      .fa-ban {
+        color: #f00;
+        opacity: 0.5;
+      }
+
+      .fa-question {
+        color: #ec5;
+        opacity: 0.7;
+      }
     }
   }
 
