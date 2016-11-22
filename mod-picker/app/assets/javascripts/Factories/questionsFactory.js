@@ -77,11 +77,11 @@ app.service("questionsFactory", function() {
         return angular.copy([{
             key: "contains",
             label: "Select mod content",
-            text: "Does your mod contain asset/data files (such as plugins, textures, models, scripts, and sounds), code (such as utilities and DLLs), or both?",
+            text: "Does your mod contain asset/data files (plugins, meshes, textures, scripts, sounds, etc.), external code (tools, DLLs, etc.), or both?",
             options: [
                 { id: 0, text: "Just asset/data files" },
-                { id: 1, text: "Just code" },
-                { id: 2, text: "Code and asset/data files" }
+                { id: 1, text: "Just external code" },
+                { id: 2, text: "External code and asset/data files" }
             ],
             executeAfter: function($scope) {
                 if ($scope.responses.contains == 2) return;
