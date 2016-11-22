@@ -18,9 +18,9 @@
     <span class="license-description">{{::license.description}}</span>
     <ul ng-if="license.options">
         <li ng-repeat="option in license.options">
-            <a ng-href="{{option.link}}">{{::option.name}}</a>
+            <a ng-href="{{option.link}}" target="_blank">{{::option.name}}</a>
             <span ng-if="option.tldr">
-                [<a ng-href="https://tldrlegal.com/license/{{option.tldr}}">tl;dr</a>]
+                [<a ng-href="https://tldrlegal.com/license/{{option.tldr}}" target="_blank">tl;dr</a>]
             </span>
         </li>
     </ul>
