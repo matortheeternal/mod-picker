@@ -53,13 +53,16 @@ app.service('licensesFactory', function() {
             description: "Releasing something into the public domain involves relinquishing all ownership/copyright over it.  If your materials are in the public domain that means anyone can use them for any purpose whatsoever, including commercial use."
         },
         wtfpl: {
-            name: "Do What The F*ck You Want To Public License v2",
-            acronym: "WTFPL-2.0",
+            name: "Do What The F*ck You Want To Public License",
+            acronym: "WTFPL",
             type: "permissive",
             wikipedia: "WTFPL",
-            tldr: "do-wtf-you-want-to-public-license-v2-(wtfpl-2.0)",
-            link: "http://www.wtfpl.net/about/",
-            clauses: 0,
+            options: [{
+                name: "Do What the F*ck You Want To Public License v2",
+                tldr: "do-wtf-you-want-to-public-license-v2-(wtfpl-2.0)",
+                link: "http://www.wtfpl.net/about/"
+            }],
+            clauses: 1,
             code: true,
             assets: true,
             terms: {
@@ -79,12 +82,12 @@ app.service('licensesFactory', function() {
                 name: "GNU General Public License, version 1",
                 acronym: "GPLv1",
                 link: "https://www.gnu.org/licenses/old-licenses/gpl-1.0.en.html"
-            },{
+            }, {
                 name: "GNU General Public License, version 2",
                 acronym: "GPLv2",
-                tldr: "https://tldrlegal.com/license/gnu-general-public-license-v2",
+                tldr: "gnu-general-public-license-v2",
                 link: "https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html"
-            },{
+            }, {
                 name: "GNU General Public License, version 3",
                 acronym: "GPLv3",
                 tldr: "gnu-general-public-license-v3-(gpl-3)",
@@ -110,7 +113,17 @@ app.service('licensesFactory', function() {
             acronym: "LGPL",
             type: "mostly copyleft",
             wikipedia: "GNU_Lesser_General_Public_License",
-            tldr: "gnu-lesser-general-public-license-v3-(lgpl-3)",
+            options: [{
+                name: "GNU Lesser General Public License, version 2.1",
+                acronym: "LGPLv2",
+                tldr: "gnu-lesser-general-public-license-v2.1-(lgpl-2.1)",
+                link: "https://www.gnu.org/licenses/old-licenses/lgpl-2.1.en.html"
+            }, {
+                name: "GNU Lesser General Public License, version 3",
+                acronym: "LGPLv3",
+                tldr: "gnu-lesser-general-public-license-v3-(lgpl-3)",
+                link: "https://www.gnu.org/licenses/lgpl-3.0.en.html"
+            }],
             clauses: 16,
             code: true,
             assets: false,
@@ -128,8 +141,11 @@ app.service('licensesFactory', function() {
             name: "MIT License",
             acronym: "MIT",
             type: "permissive",
-            wikipedia: "MIT_License",
-            tldr: "mit-license",
+            options: [{
+                name: "MIT License",
+                tldr: "mit-license",
+                link: "https://en.wikipedia.org/wiki/MIT_License"
+            }],
             clauses: 2,
             code: true,
             assets: false,
@@ -147,8 +163,11 @@ app.service('licensesFactory', function() {
             name: "BSD License",
             acronym: "BSD",
             type: "permissive",
-            wikipedia: "BSD_License",
-            tldr: "bsd-2-clause-license-(freebsd)",
+            options: [{
+                name: "BSD License",
+                tldr: "bsd-2-clause-license-(freebsd)",
+                link: "https://www.freebsd.org/copyright/freebsd-license.html"
+            }],
             clauses: 2,
             code: true,
             assets: false,
@@ -168,15 +187,18 @@ app.service('licensesFactory', function() {
             options: [{
                 name: "Apache License 1.0",
                 acronym: "Apache-1.0",
-                tldr: "apache-license-1.0-(apache-1.0)"
+                tldr: "apache-license-1.0-(apache-1.0)",
+                link: "https://www.apache.org/licenses/LICENSE-1.0"
             }, {
                 name: "Apache License 1.1",
                 acronym: "Apache-1.1",
-                tldr: "apache-license-1.1"
+                tldr: "apache-license-1.1",
+                link: "https://www.apache.org/licenses/LICENSE-1.1"
             }, {
                 name: "Apache License 2.0",
                 acronym: "Apache-2.0",
-                tldr: "apache-license-2.0-(apache-2.0)"
+                tldr: "apache-license-2.0-(apache-2.0)",
+                link: "https://www.apache.org/licenses/LICENSE-2.0"
             }],
             type: "permissive",
             wikipedia: "Apache_License",
@@ -198,7 +220,11 @@ app.service('licensesFactory', function() {
             acronym: "EPL",
             type: "permissive",
             wikipedia: "Eclipse_Public_License",
-            tldr: "eclipse-public-license-1.0-(epl-1.0)",
+            options: [{
+                name: "Eclipse Public License 1.0",
+                tldr: "eclipse-public-license-1.0-(epl-1.0)",
+                link: "https://www.eclipse.org/legal/epl-v10.html"
+            }],
             clauses: 7,
             code: true,
             assets: false,
@@ -218,15 +244,18 @@ app.service('licensesFactory', function() {
             options: [{
                 name: "Mozilla Public License 1.0",
                 acronym: "MPL-1.0",
-                tldr: "mozilla-public-license-1.0-(mpl-1.0)"
+                tldr: "mozilla-public-license-1.0-(mpl-1.0)",
+                link: "https://www.mozilla.org/en-US/MPL/"
             }, {
                 name: "Mozilla Public License 1.1",
                 acronym: "MPL-1.1",
-                tldr: "mozilla-public-license-1.1-(mpl-1.1)"
+                tldr: "mozilla-public-license-1.1-(mpl-1.1)",
+                link: "https://www.mozilla.org/en-US/MPL/1.1/"
             }, {
                 name: "Mozilla Public License 2.0",
                 acronym: "MPL-2.0",
-                tldr: "mozilla-public-license-2.0-(mpl-2)"
+                tldr: "mozilla-public-license-2.0-(mpl-2)",
+                link: "https://www.mozilla.org/en-US/MPL/2.0/"
             }],
             type: "weak copyleft",
             wikipedia: "Mozilla_Public_License",
@@ -247,9 +276,11 @@ app.service('licensesFactory', function() {
             name: "Creative Commons Attribution",
             acronym: "CC BY",
             type: "copyright",
-            wikipedia: "Creative_Commons_license",
-            tldr: "creative-commons-attribution-4.0-international-(cc-by-4)",
-            link: "https://creativecommons.org/licenses/by/4.0/",
+            options: [{
+                name: "Creative Commons BY 4.0",
+                tldr: "creative-commons-attribution-4.0-international-(cc-by-4)",
+                link: "https://creativecommons.org/licenses/by/4.0/"
+            }],
             clauses: 8,
             code: true,
             assets: true,
@@ -267,9 +298,11 @@ app.service('licensesFactory', function() {
             name: "Creative Commons Attribution-NonCommercial",
             acronym: "CC BY-NC",
             type: "copyright",
-            wikipedia: "Creative_Commons_license",
-            tldr: "creative-commons-attribution-noncommercial-4.0-international-(cc-by-nc-4.0)",
-            link: "https://creativecommons.org/licenses/by-nc/4.0/",
+            options: [{
+                name: "Creative Commons BY-NC 4.0",
+                tldr: "creative-commons-attribution-noncommercial-4.0-international-(cc-by-nc-4.0)",
+                link: "https://creativecommons.org/licenses/by-nc/4.0/"
+            }],
             clauses: 8,
             code: true,
             assets: true,
@@ -287,9 +320,11 @@ app.service('licensesFactory', function() {
             name: "Creative Commons Attribution-ShareAlike",
             acronym: "CC BY-SA",
             type: "copyright",
-            wikipedia: "Creative_Commons_license",
-            tldr: "creative-commons-attribution-sharealike-4.0-international-(cc-by-sa-4.0)",
-            link: "https://creativecommons.org/licenses/by-sa/4.0/",
+            options: [{
+                name: "Creative Commons BY-SA 4.0",
+                tldr: "creative-commons-attribution-sharealike-4.0-international-(cc-by-sa-4.0)",
+                link: "https://creativecommons.org/licenses/by-sa/4.0/"
+            }],
             clauses: 8,
             code: true,
             assets: true,
@@ -307,9 +342,11 @@ app.service('licensesFactory', function() {
             name: "Creative Commons Attribution-NonCommercial-ShareAlike",
             acronym: "CC BY-NC-SA",
             type: "copyright",
-            wikipedia: "Creative_Commons_license",
-            tldr: "creative-commons-attribution-noncommercial-sharealike-4.0-international-(cc-by-nc-sa-4.0)",
-            link: "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+            options: [{
+                name: "Creative Commons BY-NC-SA 4.0",
+                tldr: "creative-commons-attribution-noncommercial-sharealike-4.0-international-(cc-by-nc-sa-4.0)",
+                link: "https://creativecommons.org/licenses/by-nc-sa/4.0/"
+            }],
             clauses: 8,
             code: true,
             assets: true,
@@ -327,9 +364,11 @@ app.service('licensesFactory', function() {
             name: "Creative Commons Attribution-NoDerivatives",
             acronym: "CC BY-ND",
             type: "copyright",
-            wikipedia: "Creative_Commons_license",
-            tldr: "creative-commons-attribution-noderivatives-4.0-international-(cc-by-nd-4.0)",
-            link: "https://creativecommons.org/licenses/by-nd/4.0/",
+            options: [{
+                name: "Creative Commons BY-ND 4.0",
+                tldr: "creative-commons-attribution-noderivatives-4.0-international-(cc-by-nd-4.0)",
+                link: "https://creativecommons.org/licenses/by-nd/4.0/",
+            }],
             clauses: 8,
             code: true,
             assets: true,
@@ -347,9 +386,11 @@ app.service('licensesFactory', function() {
             name: "Creative Commons Attribution-NonCommercial-NoDerivatives",
             acronym: "CC BY-NC-ND",
             type: "copyright",
-            wikipedia: "Creative_Commons_license",
-            tldr: "creative-commons-attribution-noncommercial-noderivs-(cc-nc-nd)",
-            link: "https://creativecommons.org/licenses/by-nc-nd/4.0/",
+            options: [{
+                name: "Creative Commons BY-NC-ND 4.0",
+                tldr: "creative-commons-attribution-noncommercial-noderivs-(cc-nc-nd)",
+                link: "https://creativecommons.org/licenses/by-nc-nd/4.0/"
+            }],
             clauses: 8,
             code: true,
             assets: true,
@@ -366,6 +407,10 @@ app.service('licensesFactory', function() {
         custom: {
             name: "Custom License",
             type: "custom",
+            options: [{
+                name: "Binpress",
+                link: "http://www.binpress.com/license/generator"
+            }],
             code: true,
             assets: true,
             terms: {
@@ -376,7 +421,7 @@ app.service('licensesFactory', function() {
                 private_use: factory.unknown,
                 include: factory.unknown
             },
-            description: "Make your own license.  The advantage of making your own license is you can define the terms yourself.  The disadvantage is it becomes a harder for users to determine your permissions at a glance, and creating a strong, legally binding license can be time-consuming or difficult."
+            description: "Make your own license.  The advantage of making your own license is you can define the terms yourself.  The disadvantage is it becomes a harder for users to determine your permissions at a glance, and creating a strong, legally binding license can be time-consuming or difficult.  It is very important to include a statement releasing liability if you make a custom license!"
         }
     };
 
@@ -387,6 +432,12 @@ app.service('licensesFactory', function() {
                 licenses.push(factory.licenses[license]);
             }
         }
+        var getClauses = function(license) {
+            return license.hasOwnProperty('clauses') ? license.clauses : 99;
+        };
+        licenses.sort(function(a, b) {
+            return getClauses(a) - getClauses(b);
+        });
         return licenses;
     };
 
@@ -396,8 +447,8 @@ app.service('licensesFactory', function() {
             code: content === 'materials' || content === 'code',
             assets: content === 'materials' || content === 'assets',
             terms: {
-                credit: contentResponses.requireCredit,
-                commercial: contentResponses.allowCommercialUse,
+                credit: contentResponses.credit,
+                commercial: contentResponses.commercial,
                 redistribution: contentResponses.redistribution,
                 modification: contentResponses.modification,
                 private_use: factory.yes,
@@ -417,11 +468,16 @@ app.service('licensesFactory', function() {
     var terms = ["credit", "commercial", "redistribution", "modification", "private_use", "include"];
 
     this.contentMatches = function(license, params) {
-        return (license.code == params.code) && (license.assets == params.assets);
+        return !(params.code && !license.code) && !(params.assets && !license.assets);
+    };
+
+    this.userDoesntCare = function(params, term) {
+        return params.terms[term] == 2;
     };
 
     this.licenseMatches = function(license, params) {
         var termsMatch = terms.reduce(function(match, term) {
+            if (factory.userDoesntCare(params, term)) return match;
             return match && license.terms[term] == params.terms[term];
         }, true);
         return factory.contentMatches(license, params) && termsMatch;
@@ -429,8 +485,9 @@ app.service('licensesFactory', function() {
 
     this.licenseSimilar = function(license, params) {
         var termsSimilar = Math.abs(terms.reduce(function(match, term) {
-            return match + license.terms[term] - params.terms[term];
-        }, 0)) < 2;
+            if (factory.userDoesntCare(params, term)) return match;
+            return match + Math.abs(license.terms[term] - params.terms[term]);
+        }, 0)) == 1;
         return factory.contentMatches(license, params) && termsSimilar;
     };
 
@@ -439,9 +496,13 @@ app.service('licensesFactory', function() {
             return [factory.licenses.custom];
         }
         var params = factory.responsesToLicenseParams(content, responses);
-        return factory.getLicenses().filter(function(license) {
+        var licenses = factory.getLicenses().filter(function(license) {
             return factory.licenseMatches(license, params);
         });
+        if (licenses.length < 2) {
+            licenses.push(factory.licenses.custom);
+        }
+        return licenses;
     };
 
     this.getSimilarLicenses = function(content, responses) {
