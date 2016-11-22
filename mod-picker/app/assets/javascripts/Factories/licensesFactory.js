@@ -408,7 +408,7 @@ app.service('licensesFactory', function() {
             name: "Custom License",
             type: "custom",
             options: [{
-                name: "Binpress",
+                name: "Binpress License Generator",
                 link: "http://www.binpress.com/license/generator"
             }],
             code: true,

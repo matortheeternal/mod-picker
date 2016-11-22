@@ -55,7 +55,8 @@ app.service("questionsFactory", function() {
             { id: 0, text: "None." },
             { id: 1, text: "For translation" },
             { id: 2, text: "I would like to allow my work to be re-used by members of the community if I am no longer active in the community and can no longer be reached by any publicly available methods of contact." },
-            { id: 3, text: "Other" }
+            { id: 3, text: "For non-adult mods." },
+            { id: 4, text: "Other" }
         ]
     };
 
