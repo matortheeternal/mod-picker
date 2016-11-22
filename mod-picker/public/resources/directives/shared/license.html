@@ -1,0 +1,19 @@
+<div class="left-column">
+    <span class="fa {{::typeIcons[license.type]}}"></span>
+    <span class="license-type">{{::license.type}}</span>
+    <span class="license-clauses" ng-if="license.hasOwnProperty('clauses')">{{::license.clauses | number}} clauses</span>
+</div>
+<div class="second-left-column">
+    <span class="license-terms">
+        <span ng-repeat="(key, value) in license.terms" title="{{::termHints[key]}} is {{::termValueHints[termType[key]][value]}}" class="fa-stack fa-lg">
+            <i class="fa fa-stack-1x {{::termIcons[key]}}"></i>
+            <i class="fa fa-stack-2x {{::termOverlays[value]}}"></i>
+        </span>
+        <i ng-repeat="(key, value) in license.terms" title="{{::termHints[key][value]}}" class="fa {{::termIcons[key][value]}}"></i>
+    </span>
+</div>
+<div class="right-column">
+    <span class="license-title">{{::license.name}}</span>
+    <span class="license-acronym" ng-if="license.acronym">({{::license.acronym}})</span>
+    <span class="license-description">{{::license.description}}</span>
+</div>
