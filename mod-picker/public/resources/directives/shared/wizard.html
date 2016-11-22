@@ -32,10 +32,14 @@
     </div>
     <div class="results" ng-if="showResults">
         <h2>Matching Licenses</h2>
-        <license ng-repeat="license in matchingLicenses"></license>
+        <license ng-repeat="license in matchingLicenses | limitTo: matchingLicensesLimit"></license>
+        <span class="show-more" ng-click="toggleShowMatching()" ng-if="matchingLicenses.length > 2">{{ matchingLicensesLimit == 2 ? 'Show More' : 'Show Less'}}</span>
 
-        <h2>Similar Licenses</h2>
-        <license ng-repeat="license in similarLicenses"></license>
+        <div ng-if="similarLicenses.length">
+            <h2>Similar Licenses</h2>
+            <license ng-repeat="license in similarLicenses | limitTo: similarLicensesLimit"></license>
+            <span class="show-more" ng-click="toggleShowSimilar()" ng-if="similarLicenses.length > 2">{{ similarLicensesLimit == 2 ? 'Show More' : 'Show Less'}}</span>
+        </div>
     </div>
 </div>
 <div class="tab-content results-tab" ng-if="currentTab == 1">

@@ -95,12 +95,12 @@ app.directive('wizard', function() {
 app.controller('wizardController', function($scope, licensesFactory, questionsFactory) {
     $scope.licenses = licensesFactory.getLicenses();
     $scope.questions = questionsFactory.getGeneralQuestions();
-    $scope.sections = [
-        {
-            name: "General",
-            questions: $scope.questions
-        }
-    ];
+    $scope.similarLicensesLimit = 2;
+    $scope.matchingLicensesLimit = 2;
+    $scope.sections = [{
+        name: "General",
+        questions: $scope.questions
+    }];
     $scope.questions[0].active = true;
     $scope.currentQuestionIndex = 0;
     $scope.currentTab = 0;
@@ -266,5 +266,13 @@ app.controller('wizardController', function($scope, licensesFactory, questionsFa
         option.selected = true;
         $scope.setResponse(question.subkey, question.key, option.id);
         $scope.nextQuestion();
+    };
+
+    $scope.toggleShowSimilar = function() {
+        $scope.similarLicensesLimit = $scope.similarLicensesLimit == 2 ? 10 : 2;
+    };
+
+    $scope.toggleShowMatching = function() {
+        $scope.matchingLicensesLimit = $scope.matchingLicensesLimit == 2 ? 10 : 2;
     };
 });
