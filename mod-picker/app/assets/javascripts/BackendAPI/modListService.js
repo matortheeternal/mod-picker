@@ -180,6 +180,7 @@ app.service('modListService', function(backend, $q, userTitleService, contributi
     this.newModListMod = function(mod_list_mod) {
         var action = $q.defer();
         backend.post('/mod_list_mods', {mod_list_mod: mod_list_mod}).then(function(data) {
+            modService.associateModImage(data.mod_list_mod.mod);
             userTitleService.associateTitles(data.mod_compatibility_notes);
             userTitleService.associateTitles(data.plugin_compatibility_notes);
             userTitleService.associateTitles(data.install_order_notes);
