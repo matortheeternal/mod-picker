@@ -2,6 +2,10 @@ mod-option-tree {
   ul {
     list-style: none;
     padding-left: 10px;
+
+    li {
+      margin: 8px 0;
+    }
   }
 
   .mod-option {
@@ -23,6 +27,14 @@ mod-option-tree {
   }
 
   .children-container {
-    padding-left: 40px;
+    padding-left: 37px;
+
+    .children-note {
+      cursor: pointer;
+
+      .fa {
+        min-width: 16px;
+      }
+    }
   }
 }
