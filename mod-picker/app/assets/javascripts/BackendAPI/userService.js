@@ -51,25 +51,23 @@ app.service('userService', function(backend, $q, userSettingsService, userTitleS
         permissions.isBanned = user.role === 'banned';
         permissions.canModerate = permissions.isAdmin || permissions.isModerator;
         permissions.canManageArticles = permissions.isAdmin || permissions.isNewsWriter;
-        // TODO: Switch this when beta is over
         permissions.canSubmitMods = true;
-        //permissions.canSubmitMods = (rep > 160) || permissions.canModerate;
         permissions.canContribute = !permissions.isRestricted;
         permissions.canUseCustomSources = permissions.canModerate;
         permissions.canSetGeneralModInfo = permissions.canModerate;
-        permissions.canChangeAvatar = (rep >= 20) || permissions.canModerate;
+        permissions.canChangeAvatar = (rep >= 10) || permissions.canModerate;
         permissions.canChangeTitle = (rep >= 1280) || permissions.canModerate;
 
         // permissions block for actions users who are NOT restricted can do
         if(!permissions.isRestricted) {
-            permissions.canCreateTags = (rep >= 5) || permissions.canModerate;
+            permissions.canCreateTags = (rep >= 20) || permissions.canModerate;
             permissions.canAppeal = (rep >= 40) || permissions.canModerate;
             permissions.canCorrect = (rep >= 40) || permissions.canModerate;
             permissions.canAgree = (rep >= 40) || permissions.canModerate;
             permissions.canReport = true;
 
             var numEndorsed = user.reputation.rep_to_count;
-            permissions.canEndorse = (rep >= 40 && numEndorsed < 5) || (rep >= 160 && numEndorsed < 10) || (rep >= 640 && numEndorsed < 15);
+            permissions.canEndorse = (rep >= 80 && numEndorsed < 5) || (rep >= 160 && numEndorsed < 10) || (rep >= 640 && numEndorsed < 15);
         }
 
         return permissions;
