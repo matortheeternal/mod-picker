@@ -19,14 +19,15 @@ app.service('modOptionUtils', function() {
     };
 
     this.getNestedModOptions = function(modOptions) {
-        var archiveOptions = [], installerOptions = [];
+        var nestedModOptions = [], archiveOptions = [], installerOptions = [];
         modOptions.forEach(function(modOption) {
             if (modOption.is_installer_option) {
                 modOption.iconClass = 'fa-gear';
-                installerOptions.push(modOption)
+                installerOptions.push(modOption);
             } else {
                 modOption.iconClass = 'fa-file-archive-o';
-                archiveOptions.push(modOption)
+                archiveOptions.push(modOption);
+                nestedModOptions.push(modOption);
             }
         });
         installerOptions.forEach(function(modOption) {
@@ -34,11 +35,11 @@ app.service('modOptionUtils', function() {
             if (parentOption) {
                 service.addChildModOption(parentOption, modOption)
             } else {
-                archiveOptions.push(modOption);
+                nestedModOptions.push(modOption);
             }
         });
 
-        return archiveOptions;
+        return nestedModOptions;
     };
 
     this.activateDefaultModOptions = function(modOptions) {
