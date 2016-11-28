@@ -1,4 +1,4 @@
-app.service('modService', function(backend, $q, pageUtils, objectUtils, contributionService, userTitleService, reviewSectionService, recordGroupService, pluginService, assetUtils) {
+app.service('modService', function(backend, $q, pageUtils, objectUtils, contributionService, userTitleService, reviewSectionService, recordGroupService, pluginService, assetUtils, modOptionUtils) {
     var service = this;
 
     this.retrieveMods = function(options, pageInformation) {
@@ -120,10 +120,9 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
             pluginService.associateOverrides(analysis.plugins);
             pluginService.sortErrors(analysis.plugins);
 
-            // set default options to active
-            analysis.mod_options.forEach(function(option) {
-                option.active = option.default;
-            });
+            // create nested mod options tree
+            modOptionUtils.activateDefaultModOptions(analysis.mod_options);
+            analysis.nestedModOptions = modOptionUtils.getNestedModOptions(analysis.mod_options);
 
             output.resolve(analysis);
         }, function(response) {
