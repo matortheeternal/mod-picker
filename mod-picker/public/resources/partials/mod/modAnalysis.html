@@ -1,10 +1,7 @@
 <loader data="mod.analysis" spinner-class="big-spinner" ng-if="!errors.analysis">
     <div class="mod-options-selection">
         <strong>Mod Options</strong>
-
-        <label ng-repeat="option in mod.options" title="{{option.name}}">
-            <input type="checkbox" ng-model="option.active" ng-disabled="option.default" ng-change="toggleOption(option)" /> {{option.display_name}}
-        </label>
+        <mod-option-tree mod-options="mod.nestedModOptions"></mod-option-tree>
     </div>
 
     <div class="tab-bar-items" ng-show="availablePlugins.length > 0">

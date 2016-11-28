@@ -98,6 +98,7 @@ app.controller('modAnalysisController', function($scope, $stateParams, $state, m
             $scope.mod.plugins = analysis.plugins;
             $scope.mod.assets = analysis.assets;
             $scope.mod.nestedAssets = analysis.nestedAssets;
+            $scope.mod.nestedModOptions = analysis.nestedModOptions;
 
             // set current option and plugin
             $scope.setCurrentSelection();
@@ -116,4 +117,8 @@ app.controller('modAnalysisController', function($scope, $stateParams, $state, m
     $scope.showLess = function(master) {
         master.max_overrides -= 1000;
     };
+
+    $scope.$on('toggleModOption', function() {
+        $scope.toggleOption();
+    });
 });
