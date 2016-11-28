@@ -17,7 +17,7 @@ app.service('notificationsFactory', function() {
         ModTag: contributionAddedTemplate("tag"),
         ModListTag: contributionAddedTemplate("tag"),
         ModAuthor: "((authorUserClause)) been added as ((authorRole)) for ((contentLink))",
-        ReputationLink: "((endorser)) has endorsed you"
+        ReputationLink: "((endorser)) has endorsed ((endorsee))"
     };
 
     this.updated = {
@@ -26,10 +26,10 @@ app.service('notificationsFactory', function() {
     };
 
     this.removed = {
-        ModTag: "Your tag ((tagText)) was removed from ((contentLink))",
-        ModListTag: "Your tag ((tagText)) was removed from ((contentLink))",
+        ModTag: "((ownershipClause)) tag ((tagText)) was removed from ((contentLink))",
+        ModListTag: "((ownershipClause)) tag ((tagText)) was removed from ((contentLink))",
         ModAuthor: "((authorUserClause)) been removed as ((authorRole)) for ((contentLink))",
-        ReputationLink: "((endorser)) has unendorsed you"
+        ReputationLink: "((endorser)) has unendorsed ((endorsee))"
     };
 
     // Handles hidden, unhidden, approved, and unapproved events
@@ -258,6 +258,14 @@ app.service('notificationsFactory', function() {
 
     this.endorser = function(event) {
         return '<a href="#/user/{{content.source_user.id}}">{{content.source_user.username}}</a>';
+    };
+
+    this.endorsee = function(event) {
+        if (content.target_user.id == factory.currentUserID) {
+            return 'you';
+        } else {
+            return '<a href="#/user/{{content.target_user.id}}">{{content.target_user.username}}</a>'
+        }
     };
 
     this.changeVerb = function(event) {
