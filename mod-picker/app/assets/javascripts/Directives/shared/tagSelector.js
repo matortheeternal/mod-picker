@@ -18,9 +18,10 @@ app.directive('tagSelector', function() {
     }
 });
 
-app.controller('tagSelectorController', function($scope, tagService) {
+app.controller('tagSelectorController', function($scope, $element, $timeout, tagService) {
     $scope.rawNewTags = [];
     $scope.removedTags = [];
+    var addTagButton = $element[0].firstChild.lastElementChild;
 
     tagService.retrieveTags().then(function(data) {
         $scope.tags = data;
@@ -34,6 +35,12 @@ app.controller('tagSelectorController', function($scope, tagService) {
                 mod_lists_count: 0
             });
         }
+    };
+
+    $scope.focusAddTag = function() {
+        $timeout(function() {
+            addTagButton.focus();
+        }, 50);
     };
 
     $scope.removeTag = function($index) {

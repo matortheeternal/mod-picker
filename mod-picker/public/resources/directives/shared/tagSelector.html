@@ -16,7 +16,7 @@
     </span>
     <span ng-repeat="tag in rawNewTags" class="edit-tag-box">
         <span class="tag-text">
-            <tag-input tags="tags" tag="tag" can-create="canCreate" apply-tag="applyTag" remove-tag="removeTag" add-tag="addTag" last="$last" index="$index"></tag-input>
+            <tag-input tags="tags" tag="tag" can-create="canCreate" apply-tag="applyTag" remove-tag="removeTag" add-tag="focusAddTag" last="$last" index="$index"></tag-input>
         </span>
         <span ng-if="showModsCount" class="tag-count" title="The number of mods with this tag">
             {{tag.mods_count | number}}
