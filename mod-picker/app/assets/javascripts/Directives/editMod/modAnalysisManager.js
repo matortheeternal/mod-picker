@@ -23,6 +23,17 @@ app.controller('modAnalysisManagerController', function($scope, $rootScope, plug
         document.getElementById('analysis-input').click();
     };
 
+    $scope.clearAnalysis = function() {
+        var modOptions = $scope.mod.analysis ? $scope.mod.analysis.mod_options : $scope.mod.mod_options;
+        modOptions.forEach(function(modOption) {
+            if (modOption.id) {
+                modOption._destroy = true;
+            } else {
+                $scope.removeOption(modOption);
+            }
+        });
+    };
+
     $scope.removeOption = function(option) {
         var modOptions = $scope.mod.analysis.mod_options;
         var index = modOptions.indexOf(option);
