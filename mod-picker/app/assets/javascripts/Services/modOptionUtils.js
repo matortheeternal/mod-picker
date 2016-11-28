@@ -23,9 +23,11 @@ app.service('modOptionUtils', function() {
         modOptions.forEach(function(modOption) {
             if (modOption.is_installer_option) {
                 modOption.iconClass = 'fa-gear';
+                modOption.tooltip = 'Installer mod option';
                 installerOptions.push(modOption);
             } else {
                 modOption.iconClass = 'fa-file-archive-o';
+                modOption.tooltip = 'Archive mod option';
                 archiveOptions.push(modOption);
                 nestedModOptions.push(modOption);
             }
