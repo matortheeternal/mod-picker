@@ -9,9 +9,7 @@ app.config(['$stateProvider', function($stateProvider) {
 app.controller('notificationsController', function($scope, $rootScope, notificationService, helpFactory, notificationsFactory) {
     // initialize local variables
     $scope.errors = {};
-    $scope.pages = {
-        notifications: {}
-    };
+    $scope.pages = {};
 
     // set page title
     $scope.$emit('setPageTitle', 'Notifications');
@@ -26,7 +24,7 @@ app.controller('notificationsController', function($scope, $rootScope, notificat
         var options = {
             page: page || 1
         };
-        notificationService.retrieveNotifications(options, $scope.pages.notifications).then(function(data) {
+        notificationService.retrieveNotifications(options, $scope.pages).then(function(data) {
             $scope.notifications = data.notifications;
         }, function(response) {
             $scope.errors.notifications = response;

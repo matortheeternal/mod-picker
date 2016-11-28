@@ -21,9 +21,7 @@ app.config(['$stateProvider', function($stateProvider) {
 app.controller('activityController', function($scope, $rootScope, permissions, notificationService, helpFactory, notificationsFactory) {
     // initialize local variables
     $scope.errors = {};
-    $scope.pages = {
-        events: {}
-    };
+    $scope.pages = {};
 
     // set page title
     $scope.$emit('setPageTitle', 'Site Activity');
@@ -39,7 +37,7 @@ app.controller('activityController', function($scope, $rootScope, permissions, n
         var options = {
             page: page || 1
         };
-        notificationService.retrieveEvents(options, $scope.pages.events).then(function(data) {
+        notificationService.retrieveEvents(options, $scope.pages).then(function(data) {
             $scope.events = data.events;
         }, function(response) {
             $scope.errors.events = response;
