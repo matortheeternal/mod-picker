@@ -4,6 +4,7 @@ app.service('listMetaFactory', function($q, $timeout, modListService, categorySe
         var capDataKey = dataKey.capitalize();
         var pluralLabel = label + 's';
         var countKey = pluralLabel + '_count';
+        var customCountKey = 'custom_' + pluralLabel + '_count';
         var idKey = dataKey + '_id';
         var $rootScope = $scope.$root;
 
@@ -16,9 +17,35 @@ app.service('listMetaFactory', function($q, $timeout, modListService, categorySe
             $scope.updateTabs();
         };
 
+        var incrementCustomCounter = function() {
+            $scope.mod_list[customCountKey] += 1;
+            $scope.updateTabs();
+        };
+
+        var incrementAppropriateCounter = function(modListItem) {
+            if (modListItem.hasOwnProperty(dataKey)) {
+                incrementCounter();
+            } else {
+                incrementCustomCounter();
+            }
+        };
+
         var decrementCounter = function() {
             $scope.mod_list[countKey] -= 1;
             $scope.updateTabs();
+        };
+
+        var decrementCustomCounter = function() {
+            $scope.mod_list[customCountKey] -= 1;
+            $scope.updateTabs();
+        };
+
+        var decrementAppropriateCounter = function(modListItem) {
+            if (modListItem.hasOwnProperty(dataKey)) {
+                decrementCounter();
+            } else {
+                decrementCustomCounter();
+            }
         };
 
         var customCallback = function(functionLabel, arg) {
@@ -62,7 +89,7 @@ app.service('listMetaFactory', function($q, $timeout, modListService, categorySe
 
             // destroy the item
             delete modListItem._destroy;
-            incrementCounter();
+            incrementAppropriateCounter(modListItem);
             var itemId = modListItem[dataKey]&& modListItem[dataKey].id;
             $rootScope.$broadcast(recoverMessage, itemId);
             customCallback(recoverLabel, modListItem);
@@ -135,7 +162,7 @@ app.service('listMetaFactory', function($q, $timeout, modListService, categorySe
                 $scope.mod_list[customKey].push(modListCustomItem);
                 $scope.model[pluralLabel].push(modListCustomItem);
                 $scope.originalModList[customKey].push(angular.copy(modListCustomItem));
-                incrementCounter();
+                incrementCustomCounter();
 
                 // update modules
                 $scope.$broadcast(customItemAddedMessage);
@@ -180,7 +207,7 @@ app.service('listMetaFactory', function($q, $timeout, modListService, categorySe
 
         $scope[removeLabel] = function(modListItem) {
             modListItem._destroy = true;
-            decrementCounter();
+            decrementAppropriateCounter(modListItem);
 
             // update modules
             var itemId = modListItem[dataKey] && modListItem[dataKey].id;
