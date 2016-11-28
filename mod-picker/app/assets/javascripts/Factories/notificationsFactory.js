@@ -131,10 +131,10 @@ app.service('notificationsFactory', function() {
 
     var noteCorrectionDescription = function(noteType) {
         var noteTypeDashed = noteType.replace(' ', '-');
-        return 'Your correction on <a href="#/user/{{content.correctable.submitter.id}}">{{content.correctable.submitter.username}}\'s</a> <a href="#/mod/{{content.correctable.first_mod.id}}/'+noteTypeDashed+'/{{content.correctable_id}}">'+noteType+' note</a>';
+        return '((ownershipClause)) correction on <a href="#/user/{{content.correctable.submitter.id}}">{{content.correctable.submitter.username}}\'s</a> <a href="#/mod/{{content.correctable.first_mod.id}}/'+noteTypeDashed+'/{{content.correctable_id}}">'+noteType+' note</a>';
     };
     this.correctionDescriptions = {
-        Mod: 'Your appeal to mark <a href="#/mod/{{content.correctable.id}}">{{content.correctable.name}}</a> as {{content.mod_status}}',
+        Mod: '((ownershipClause)) appeal to mark <a href="#/mod/{{content.correctable.id}}">{{content.correctable.name}}</a> as {{content.mod_status}}',
         CompatibilityNote: noteCorrectionDescription('compatibility'),
         InstallOrderNote: noteCorrectionDescription('install order'),
         LoadOrderNote: noteCorrectionDescription('load order')
@@ -274,7 +274,10 @@ app.service('notificationsFactory', function() {
     };
 
     this.correctionDescription = function(event) {
-        return factory.correctionDescriptions[event.content.correctable_type];
+        var description = factory.correctionDescriptions[event.content.correctable_type];
+        var bIsOwner = event.content.submitted_by == factory.currentUserID;
+        var ownershipClause = bIsOwner ? 'Your' : 'The';
+        return description.replace('((ownershipClause))', ownershipClause);
     };
 
     this.statusChange = function(event) {
