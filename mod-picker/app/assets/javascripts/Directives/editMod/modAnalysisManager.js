@@ -111,11 +111,11 @@ app.controller('modAnalysisManagerController', function($scope, $rootScope, plug
     };
 
     $scope.optionNamesMatch = function(option, oldOption) {
-        return option.name === oldOption.name;
+        return option.name === oldOption.name && !oldOption._destroy;
     };
 
     $scope.optionSizesMatch = function(option, oldOption) {
-        return option.size == oldOption.size;
+        return option.size == oldOption.size && !oldOption._destroy;
     };
 
     $scope.findOldOption = function(oldOptions, option) {
