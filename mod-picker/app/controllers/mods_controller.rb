@@ -324,7 +324,7 @@ class ModsController < ApplicationController
   def analysis
     authorize! :read, @mod
     render json: {
-        mod_options: @mod.mod_options,
+        mod_options: json_format(@mod.mod_options, :show),
         plugins: json_format(@mod.plugins, :show),
         assets: @mod.asset_file_paths
     }
