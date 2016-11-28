@@ -6,6 +6,8 @@ app.service('notificationsFactory', function() {
         return "A new "+label+" has been added to ((contentLink))";
     };
     this.added = {
+        Mod: "A new mod, ((contentLink)), has been submitted",
+        ModList: "A new mod list, ((contentLink)), has been created",
         Review: contributionAddedTemplate("review"),
         CompatibilityNote: contributionAddedTemplate("compatibility note"),
         InstallOrderNote: contributionAddedTemplate("install order note"),
