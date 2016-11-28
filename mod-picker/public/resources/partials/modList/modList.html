@@ -34,7 +34,7 @@
                     <i class="fa fa-copy" aria-hidden="true"></i>
                     Clone
                 </div>
-                <div class="action-box green-box" ng-if="mod_list.is_collection" ng-click="addModCollection()" title="Add this mod collection to your active mod list.">
+                <div class="action-box green-box" ng-if="mod_list.is_collection && !isActive" ng-click="addModCollection()" title="Add this mod collection to your active mod list.">
                     <i class="fa fa-plus" aria-hidden="true"></i>
                     Add
                 </div>
