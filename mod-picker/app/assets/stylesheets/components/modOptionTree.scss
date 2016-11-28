@@ -1,0 +1,28 @@
+mod-option-tree {
+  ul {
+    list-style: none;
+    padding-left: 10px;
+  }
+
+  .mod-option {
+    display: flex;
+
+    .mod-option-icon {
+      font-size: 32px;
+      margin-right: 12px;
+    }
+
+    .mod-option-title {
+      display: block;
+      font-size: 20px;
+    }
+
+    .mod-option-stats {
+      padding-left: 18px;
+    }
+  }
+
+  .children-container {
+    padding-left: 40px;
+  }
+}
