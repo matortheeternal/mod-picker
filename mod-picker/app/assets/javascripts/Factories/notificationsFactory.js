@@ -66,7 +66,7 @@ app.service('notificationsFactory', function() {
     this.milestones = {
         Mod: "((contentLink)) has ((getMilestoneValue)) stars.",
         ModList: "((contentLink)) has ((getMilestoneValue)) stars.",
-        UserReputation: "You have ((getMilestoneValue)) reputation. ((getPermissions))"
+        UserReputation: "((userClause)) ((getMilestoneValue)) reputation. ((getPermissions))"
     };
 
     this.permissions = [
@@ -105,6 +105,7 @@ app.service('notificationsFactory', function() {
         ModAuthor: associatedModLink,
         Mod: '<a href="#/mod/{{event.content_id}}">{{content.name}}</a>',
         ModList: '<a href="#/mod-list/{{event.content_id}}">{{content.name}}</a>',
+        UserReputation: '<a href="#/user/{{event.content.user.id}}">{{content.user.username}}</a> has',
         Comment: {
             key: "commentable",
             Article: '<a href="#/article/{{content.commentable_id}}">{{content.commentable.title}}</a>',
@@ -309,6 +310,14 @@ app.service('notificationsFactory', function() {
             return "A";
         } else {
             return "Your"
+        }
+    };
+
+    this.userClause = function(event) {
+        if (factory.currentUserID == event.content.user.id) {
+            return 'You have';
+        } else {
+            return factory.contentLink(event);
         }
     };
 
