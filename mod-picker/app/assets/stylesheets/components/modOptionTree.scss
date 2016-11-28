@@ -37,4 +37,11 @@ mod-option-tree {
       }
     }
   }
+
+  mod-option-tree {
+    ul li {
+      display: inline-block;
+      min-width: 350px;
+    }
+  }
 }
