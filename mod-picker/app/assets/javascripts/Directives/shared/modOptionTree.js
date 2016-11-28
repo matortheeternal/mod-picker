@@ -20,4 +20,8 @@ app.controller('modOptionTreeController', function($scope) {
         // emit message
         $scope.$emit('toggleModOption', option);
     };
+
+    $scope.toggleExpansion = function(option) {
+        option.expanded = !option.expanded;
+    }
 });

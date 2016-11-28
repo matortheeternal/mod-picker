@@ -17,7 +17,7 @@
             </span>
         </div>
         <div class="children-container" ng-if="option.children">
-            <span class="children-note" ng-click="toggle(option)">
+            <span class="children-note" ng-click="toggleExpansion(option)">
                 <i class="fa fa-chevron-{{option.expanded ? 'down' : 'right'}}"></i>
                 {{option.children.length | number}} installer options
             </span>
