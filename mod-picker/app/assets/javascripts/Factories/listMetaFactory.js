@@ -1,9 +1,10 @@
 app.service('listMetaFactory', function($q, $timeout, modListService, categoryService, listUtils, sortUtils) {
     this.buildModelFunctions = function ($scope, label, dataKey, nameKey, customName) {
         var capLabel = label.capitalize();
+        var capDataKey = dataKey.capitalize();
         var pluralLabel = label + 's';
         var countKey = pluralLabel + '_count';
-        var idKey = label + '_id';
+        var idKey = dataKey + '_id';
         var $rootScope = $scope.$root;
 
         // ITEM RECOVERY
@@ -75,8 +76,8 @@ app.service('listMetaFactory', function($q, $timeout, modListService, categorySe
         // ADDING NEW ITEMS
         var addNewLabel = 'addNew' + capLabel;
         var addNewItemLabel = addNewLabel + 'Item';
-        var newModListItemKey = 'newModList' + capLabel;
-        var mod_list_item_key = 'mod_list_' + label;
+        var newModListItemKey = 'newModList' + capDataKey;
+        var mod_list_item_key = 'mod_list_' + dataKey;
         var itemAddedMessage = dataKey + 'Added';
 
         $scope[addNewItemLabel] = function(modListItem) {
@@ -116,10 +117,10 @@ app.service('listMetaFactory', function($q, $timeout, modListService, categorySe
 
         // ADD CUSTOM ITEM
         var addCustomLabel = 'addCustom' + capLabel;
-        var newModListCustomItemKey = 'newModListCustom' + dataKey.capitalize();
+        var newModListCustomItemKey = 'newModListCustom' + capDataKey;
         var mod_list_custom_item_key = 'mod_list_custom_' + dataKey;
         var customKey = 'custom_' + pluralLabel;
-        var customItemAddedMessage = 'custom' + dataKey.capitalize() + 'Added';
+        var customItemAddedMessage = 'custom' + capDataKey + 'Added';
 
         $scope[addCustomLabel] = function(noteId) {
             var custom_item = {};
