@@ -16,13 +16,17 @@ mod-option-tree {
       margin-right: 12px;
     }
 
-    .mod-option-title {
-      display: block;
-      font-size: 20px;
-    }
+    .mod-option-details {
+      padding-right: 10px;
 
-    .mod-option-stats {
-      padding-left: 18px;
+      .mod-option-title {
+        display: block;
+        font-size: 20px;
+      }
+
+      .mod-option-stats {
+        padding-left: 18px;
+      }
     }
   }
 
@@ -39,9 +43,12 @@ mod-option-tree {
   }
 
   mod-option-tree {
-    ul li {
-      display: inline-block;
-      min-width: 350px;
+    ul {
+      padding-right: 5px;
+      li {
+        display: inline-block;
+        min-width: 350px;
+      }
     }
   }
 }
