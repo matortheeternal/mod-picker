@@ -110,10 +110,6 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
     this.retrieveModAnalysis = function(modId) {
         var output = $q.defer();
         backend.retrieve('/mods/' + modId + '/' + 'analysis').then(function(analysis) {
-            // create nestedAssets tree
-            analysis.nestedAssets = assetUtils.getNestedAssets(analysis.assets);
-            assetUtils.sortNestedAssets(analysis.nestedAssets);
-
             // prepare plugin data for display
             recordGroupService.associateGroups(analysis.plugins);
             pluginService.combineAndSortMasters(analysis.plugins);
