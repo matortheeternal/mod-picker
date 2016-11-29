@@ -7,7 +7,7 @@
             <span class="mod-option-details">
                 <label class="mod-option-title" title="{{::option.name}}">
                     <input type="checkbox" ng-model="option.active" ng-change="toggleModOption(option)"/>
-                    {{::option.display_name}}
+                    <span>{{::option.display_name}}</span>
                 </label>
                 <span class="mod-option-stats">
                     {{::option.size | bytes}}
