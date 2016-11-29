@@ -1,3 +1,4 @@
 {
-  "except": ["mod_id"]
+  "except": ["mod_id"],
+  "methods": "asset_file_paths"
 }
