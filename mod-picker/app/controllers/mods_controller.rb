@@ -95,9 +95,9 @@ class ModsController < ApplicationController
 
   # POST /mods/1/hide
   def hide
-    authorize! :hide, @mod
-    @mod.hidden = params[:hidden]
-    if @mod.save
+    authorize! :hide, @mod, :message => "You are not allowed to hide/unhide this mod."
+    builder = ModBuilder.new(current_user, hide_params)
+    if builder.update
       render json: {status: :ok}
     else
       render json: @mod.errors, status: :unprocessable_entity
@@ -106,9 +106,9 @@ class ModsController < ApplicationController
 
   # POST /mods/1/approve
   def approve
-    authorize! :approve, @mod
-    @mod.approved = params[:approved]
-    if @mod.save
+    authorize! :approve, @mod, :message => "You are not allowed to approve/unapprove this mod."
+    builder = ModBuilder.new(current_user, approve_params)
+    if builder.update
       render json: {status: :ok}
     else
       render json: @mod.errors, status: :unprocessable_entity
@@ -324,9 +324,8 @@ class ModsController < ApplicationController
   def analysis
     authorize! :read, @mod
     render json: {
-        mod_options: @mod.mod_options,
-        plugins: json_format(@mod.plugins, :show),
-        assets: @mod.asset_file_paths
+        mod_options: json_format(@mod.mod_options, :show),
+        plugins: json_format(@mod.plugins, :show)
     }
   end
 
@@ -357,6 +356,20 @@ class ModsController < ApplicationController
     # Params we allow sorting on
     def sorting_params
       params.fetch(:sort, {}).permit(:column, :direction)
+    end
+
+    def approve_params
+      {
+          id: params[:id],
+          approved: params[:approved]
+      }
+    end
+
+    def hide_params
+      {
+          id: params[:id],
+          hidden: params[:hidden]
+      }
     end
 
     # Params we allow filtering on

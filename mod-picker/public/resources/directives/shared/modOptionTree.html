@@ -1,0 +1,31 @@
+<ul>
+    <li ng-repeat="option in modOptions">
+        <div class="mod-option">
+            <span class="mod-option-icon" title="{{::option.tooltip}}">
+                <i class="fa {{::option.iconClass}}"></i>
+            </span>
+            <span class="mod-option-details">
+                <label class="mod-option-title" title="{{::option.name}}">
+                    <input type="checkbox" ng-model="option.active" ng-change="toggleModOption(option)"/>
+                    <span>{{::option.display_name}}</span>
+                </label>
+                <span class="mod-option-stats">
+                    {{::option.size | bytes}}
+                    <span ng-show="option.plugins_count || option.asset_files_count">-
+                        {{::option.plugins_count || 0}} plugin{{:: option.plugins_count != 1 ? 's' : ''}},
+                        {{::option.asset_files_count || 0}} asset file{{:: option.asset_files_count != 1 ? 's' : ''}}
+                    </span>
+                </span>
+            </span>
+        </div>
+        <div class="children-container" ng-if="option.children">
+            <span class="children-note" ng-click="toggleExpansion(option)">
+                <i class="fa fa-chevron-{{option.expanded ? 'down' : 'right'}}"></i>
+                {{::option.children.length | number}} installer options
+            </span>
+            <div ng-if="option.expanded">
+                <mod-option-tree mod-options="option.children"></mod-option-tree>
+            </div>
+        </div>
+    </li>
+</ul>

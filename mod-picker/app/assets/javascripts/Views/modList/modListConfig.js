@@ -59,6 +59,7 @@ app.controller('modListConfigController', function($scope, $q, $timeout, modList
         if (modListConfig._destroy) {
             delete modListConfig._destroy;
             $scope.mod_list.config_files_count += 1;
+            configFilesService.recoverConfigFileGroups($scope.model.config_files);
             $scope.updateTabs();
 
             // success message
@@ -74,7 +75,9 @@ app.controller('modListConfigController', function($scope, $q, $timeout, modList
     $scope.removeConfig = function(group, index) {
         var configToRemove = group.children[index];
         if (configToRemove._destroy) return;
+        var wasActiveConfig = configToRemove.active;
         configToRemove._destroy = true;
+        configToRemove.active = false;
 
         // update counts
         if (configToRemove.config_file) {
@@ -88,7 +91,7 @@ app.controller('modListConfigController', function($scope, $q, $timeout, modList
         // switch to the first available config if the user destroyed the active config
         for (var i = 0; i < group.children.length; i++) {
             if (!group.children[i]._destroy) {
-                if (configToRemove.active) {
+                if (wasActiveConfig) {
                     $timeout(function() {
                         $scope.selectConfig(group, group.children[i]);
                     });
@@ -98,7 +101,7 @@ app.controller('modListConfigController', function($scope, $q, $timeout, modList
         }
 
         // no configs in the group to switch to, destroy the group!
-        configToRemove.active = false;
+        delete group.activeConfig;
         group._destroy = true;
     };
 

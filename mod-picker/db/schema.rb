@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161116000543) do
+ActiveRecord::Schema.define(version: 20161116190426) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -438,6 +438,7 @@ ActiveRecord::Schema.define(version: 20161116000543) do
     t.integer "index",       limit: 2,                     null: false
     t.boolean "is_utility",                default: false, null: false
     t.string  "name",        limit: 255,                   null: false
+    t.string  "url",         limit: 255
     t.text    "description", limit: 65535
   end
 

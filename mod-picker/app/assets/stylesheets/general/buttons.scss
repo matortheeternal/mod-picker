@@ -110,6 +110,11 @@ input[type="button"], input[type="submit"] {
     background-color: $bar_highlight_color;
   }
 
+  &.no-action:focus, &.no-action:hover {
+    color: $action_text_color;
+    background-color: $action_color;
+  }
+
   &.disabled {
     background-color: $hard_border_color;
     cursor: default;
@@ -149,6 +154,10 @@ div.action-box {
   &:hover {
     background-color: $action_color;
   }
+
+  &.no-action:hover {
+    background-color: $error_secondary;
+  }
 }
 
 .green-box {
@@ -161,6 +170,10 @@ div.action-box {
   &:hover {
     background-color: $action_color;
   }
+
+  &.no-action:hover {
+    background-color: $success_secondary;
+  }
 }
 
 .yellow-box {
@@ -172,5 +185,9 @@ div.action-box {
 
   &:hover {
     background-color: $action_color;
+  }
+
+  &.no-action:hover {
+    background-color: $warning_secondary;
   }
 }

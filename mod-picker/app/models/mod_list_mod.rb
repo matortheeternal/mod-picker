@@ -29,6 +29,16 @@ class ModListMod < ActiveRecord::Base
   before_create :set_index_and_is_utility
   before_destroy :destroy_mod_list_plugins
 
+  def self.create_from_custom_mod(custom_mod, mod)
+    create({
+        mod_list_id: custom_mod.mod_list_id,
+        group_id: custom_mod.group_id,
+        mod_id: mod.id,
+        index: custom_mod.index,
+        is_utility: custom_mod.is_utility
+    })
+  end
+
   def mod_compatibility_notes
     mod_ids = mod_list.mod_list_mod_ids
     return [] if mod_ids.empty?

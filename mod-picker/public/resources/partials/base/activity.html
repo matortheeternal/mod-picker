@@ -1,0 +1,9 @@
+<div class="page-container">
+    <div class="narrow-page">
+        <h2>Site Activity</h2>
+        <loader data="events" spinner-class="huge-spinner" ng-if="!errors.events">
+            <notification show-created="true" ng-repeat="notification in events"></notification>
+            <page-results pages="pages" data="events" callback="retrieveEvents"></page-results>
+        </loader>
+    </div>
+</div>

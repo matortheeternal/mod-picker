@@ -21,32 +21,42 @@ app.service('assetUtils', function(fileUtils) {
         }
     };
 
+    this.newLevel = function(currentLevel, levelName) {
+        var folderExt = fileUtils.getFileExtension(levelName).toLowerCase();
+        currentLevel.unshift({
+            name: levelName,
+            iconClass: service.getIconClass(folderExt),
+            children: []
+        });
+        return currentLevel[0].children;
+    };
+
+    this.generateLevels = function(splitPath, currentLevel) {
+        splitPath.forEach(function(levelName) {
+            var foundLevel = currentLevel.find(function(item) {
+                return item.name.toLowerCase() === levelName.toLowerCase();
+            });
+            if (foundLevel) {
+                if (!foundLevel.children) foundLevel.children = [];
+                currentLevel = foundLevel.children;
+            } else {
+                currentLevel = service.newLevel(currentLevel, levelName);
+            }
+        });
+
+        return currentLevel;
+    };
+
     this.getNestedAssets = function(assetPaths) {
         var nestedAssets = [];
         assetPaths.forEach(function(assetPath) {
-            var paths = assetPath.split('\\');
-            var fileName = paths.pop();
+            var splitPath = assetPath.split('\\');
+            var fileName = splitPath.pop();
             var fileExt = fileUtils.getFileExtension(fileName).toLowerCase();
             var currentLevel = nestedAssets;
 
             // traverse/generate levels as needed
-            paths.forEach(function(folderName) {
-                var folderExt = fileUtils.getFileExtension(folderName).toLowerCase();
-                var foundFolder = currentLevel.find(function(item) {
-                    return item.name.toLowerCase() === folderName.toLowerCase();
-                });
-                if (foundFolder) {
-                    if (!foundFolder.children) foundFolder.children = [];
-                    currentLevel = foundFolder.children;
-                } else {
-                    currentLevel.unshift({
-                        name: folderName,
-                        iconClass: service.getIconClass(folderExt),
-                        children: []
-                    });
-                    currentLevel = currentLevel[0].children;
-                }
-            });
+            currentLevel = service.generateLevels(splitPath, currentLevel);
 
             // push the file onto the current level if it isn't already present
             var foundFile = currentLevel.find(function(item) {
@@ -65,7 +75,7 @@ app.service('assetUtils', function(fileUtils) {
 
     this.sortNestedAssets = function(nestedAssets) {
         nestedAssets.sort(function(a, b) {
-            if (a.children || !b.children) {
+            if (!a.children == !b.children) {
                 if (a.name < b.name) return -1;
                 if (a.name > b.name) return 1;
                 return 0;

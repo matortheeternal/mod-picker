@@ -1,13 +1,30 @@
-app.service('tagService', function(backend, $q) {
-    this.retrieveTags = function() {
-        var tags = $q.defer();
-        var postData =  {
-            filters: {}
-        };
-        backend.post('/tags', postData).then(function(data) {
-            tags.resolve(data);
+app.service('tagService', function(backend, $q, pageUtils) {
+    this.retrieveAllTags = function() {
+        var params = { game: window._current_game_id };
+        return backend.retrieve('/all_tags', params);
+    };
+
+    this.retrieveTags = function(options, pageInformation) {
+        var action = $q.defer();
+        backend.post('/tags', options).then(function(data) {
+            // resolve page information and data
+            pageUtils.getPageInformation(data, pageInformation, options.page);
+            action.resolve(data);
+        }, function(response) {
+            action.reject(response);
         });
-        return tags.promise;
+        return action.promise;
+    };
+
+    this.hideTag = function(tagId, hidden) {
+        return backend.post('/tags/' + tagId + '/hide', {hidden: hidden});
+    };
+
+    this.updateTag = function(tag) {
+        var params = {
+            tag: { text: tag.text }
+        };
+        return backend.update('/tags/' + tag.id, params);
     };
 
     this.updateModTags = function(mod, tags) {

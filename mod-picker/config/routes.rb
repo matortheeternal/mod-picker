@@ -39,14 +39,19 @@ Rails.application.routes.draw do
     match '/notifications/read', to: 'notifications#read', via: [:post]
     match '/notifications', to: 'notifications#index', via: [:post, :get]
 
+    # events
+    match '/events', to: 'events#index', via: [:post, :get]
+
     # scraping
     match '/nexus_infos/:id', to: 'nexus_infos#show', via: [:get]
     match '/lover_infos/:id', to: 'lover_infos#show', via: [:get]
     match '/workshop_infos/:id', to: 'workshop_infos#show', via: [:get]
 
     # tags
-    match '/tags', to: 'tags#index', via: [:post]
-    match '/tags/:id', to: 'tags#destroy', via: [:delete]
+    match '/all_tags', to: 'tags#all', via: [:get]
+    match '/tags', to: 'tags#index', via: [:get, :post]
+    match '/tags/:id/hide', to: 'tags#hide', via: [:post]
+    match '/tags/:id', to: 'tags#update', via: [:patch, :put]
     match '/mods/:id/tags', to: 'mods#update_tags', via: [:patch, :put]
     match '/mod_lists/:id/tags', to: 'mod_lists#update_tags', via: [:patch, :put]
 

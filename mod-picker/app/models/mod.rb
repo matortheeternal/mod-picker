@@ -172,7 +172,24 @@ class Mod < ActiveRecord::Base
   validates :name, :aliases, length: {maximum: 128}
 
   # CALLBACKS
+  before_create :set_id
   before_save :touch_updated
+
+  def visible
+    approved && !hidden
+  end
+
+  def was_visible
+    attribute_was(:approved) && !attribute_was(:hidden)
+  end
+
+  def url
+    sources_array.first.url
+  end
+
+  def sources_array
+    [nexus_infos, workshop_infos, lover_infos, custom_sources].flatten.compact
+  end
 
   def correction_passed(correction)
     update_columns(status: Mod.statuses[correction.mod_status])
@@ -257,5 +274,9 @@ class Mod < ActiveRecord::Base
         self.updated ||= DateTime.now
         self.updated += 1.second
       end
+    end
+
+    def set_id
+      self.id = next_id
     end
 end

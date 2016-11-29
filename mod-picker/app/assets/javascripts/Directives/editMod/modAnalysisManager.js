@@ -23,6 +23,17 @@ app.controller('modAnalysisManagerController', function($scope, $rootScope, plug
         document.getElementById('analysis-input').click();
     };
 
+    $scope.clearAnalysis = function() {
+        var modOptions = $scope.mod.analysis ? $scope.mod.analysis.mod_options : $scope.mod.mod_options;
+        modOptions.forEach(function(modOption) {
+            if (modOption.id) {
+                modOption._destroy = true;
+            } else {
+                $scope.removeOption(modOption);
+            }
+        });
+    };
+
     $scope.removeOption = function(option) {
         var modOptions = $scope.mod.analysis.mod_options;
         var index = modOptions.indexOf(option);
@@ -100,11 +111,11 @@ app.controller('modAnalysisManagerController', function($scope, $rootScope, plug
     };
 
     $scope.optionNamesMatch = function(option, oldOption) {
-        return option.name === oldOption.name;
+        return option.name === oldOption.name && !oldOption._destroy;
     };
 
     $scope.optionSizesMatch = function(option, oldOption) {
-        return option.size == oldOption.size;
+        return option.size == oldOption.size && !oldOption._destroy;
     };
 
     $scope.findOldOption = function(oldOptions, option) {

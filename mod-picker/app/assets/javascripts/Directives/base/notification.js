@@ -12,7 +12,11 @@ app.directive('notification', function() {
 
 app.controller('notificationController', function($scope, $sce, $interpolate, notificationsFactory) {
     angular.inherit($scope, 'notification');
-    $scope.event = $scope.notification.event;
+    if ($scope.notification.hasOwnProperty('event')) {
+        $scope.event = $scope.notification.event;
+    } else {
+        $scope.event = $scope.notification;
+    }
     $scope.content = $scope.event.content;
 
     // get template based on event type

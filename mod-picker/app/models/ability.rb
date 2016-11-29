@@ -17,6 +17,7 @@ class Ability
       can [:assign_roles, :adjust_rep, :invite], User
       can :set_avatar, User, id: user.id
       can :set_custom_title, User, id: user.id
+      can :index, Event
 
       # can create and update help pages
       can [:approve, :create, :update], HelpPage

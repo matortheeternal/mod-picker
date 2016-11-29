@@ -6,6 +6,8 @@ app.service('notificationsFactory', function() {
         return "A new "+label+" has been added to ((contentLink))";
     };
     this.added = {
+        Mod: "A new mod, ((contentLink)), has been submitted",
+        ModList: "A new mod list, ((contentLink)), has been created",
         Review: contributionAddedTemplate("review"),
         CompatibilityNote: contributionAddedTemplate("compatibility note"),
         InstallOrderNote: contributionAddedTemplate("install order note"),
@@ -15,7 +17,7 @@ app.service('notificationsFactory', function() {
         ModTag: contributionAddedTemplate("tag"),
         ModListTag: contributionAddedTemplate("tag"),
         ModAuthor: "((authorUserClause)) been added as ((authorRole)) for ((contentLink))",
-        ReputationLink: "((endorser)) has endorsed you"
+        ReputationLink: "((endorser)) has endorsed ((endorsee))"
     };
 
     this.updated = {
@@ -24,10 +26,10 @@ app.service('notificationsFactory', function() {
     };
 
     this.removed = {
-        ModTag: "Your tag ((tagText)) was removed from ((contentLink))",
-        ModListTag: "Your tag ((tagText)) was removed from ((contentLink))",
+        ModTag: "((ownershipClause)) tag ((tagText)) was removed from ((contentLink))",
+        ModListTag: "((ownershipClause)) tag ((tagText)) was removed from ((contentLink))",
         ModAuthor: "((authorUserClause)) been removed as ((authorRole)) for ((contentLink))",
-        ReputationLink: "((endorser)) has unendorsed you"
+        ReputationLink: "((endorser)) has unendorsed ((endorsee))"
     };
 
     // Handles hidden, unhidden, approved, and unapproved events
@@ -64,7 +66,7 @@ app.service('notificationsFactory', function() {
     this.milestones = {
         Mod: "((contentLink)) has ((getMilestoneValue)) stars.",
         ModList: "((contentLink)) has ((getMilestoneValue)) stars.",
-        UserReputation: "You have ((getMilestoneValue)) reputation. ((getPermissions))"
+        UserReputation: "((userClause)) ((getMilestoneValue)) reputation. ((getPermissions))"
     };
 
     this.permissions = [
@@ -103,6 +105,7 @@ app.service('notificationsFactory', function() {
         ModAuthor: associatedModLink,
         Mod: '<a href="#/mod/{{event.content_id}}">{{content.name}}</a>',
         ModList: '<a href="#/mod-list/{{event.content_id}}">{{content.name}}</a>',
+        UserReputation: '<a href="#/user/{{event.content.user.id}}">{{content.user.username}}</a> has',
         Comment: {
             key: "commentable",
             Article: '<a href="#/article/{{content.commentable_id}}">{{content.commentable.title}}</a>',
@@ -128,10 +131,10 @@ app.service('notificationsFactory', function() {
 
     var noteCorrectionDescription = function(noteType) {
         var noteTypeDashed = noteType.replace(' ', '-');
-        return 'Your correction on <a href="#/user/{{content.correctable.submitter.id}}">{{content.correctable.submitter.username}}\'s</a> <a href="#/mod/{{content.correctable.first_mod.id}}/'+noteTypeDashed+'/{{content.correctable_id}}">'+noteType+' note</a>';
+        return '((ownershipClause)) correction on <a href="#/user/{{content.correctable.submitter.id}}">{{content.correctable.submitter.username}}\'s</a> <a href="#/mod/{{content.correctable.first_mod.id}}/'+noteTypeDashed+'/{{content.correctable_id}}">'+noteType+' note</a>';
     };
     this.correctionDescriptions = {
-        Mod: 'Your appeal to mark <a href="#/mod/{{content.correctable.id}}">{{content.correctable.name}}</a> as {{content.mod_status}}',
+        Mod: '((ownershipClause)) appeal to mark <a href="#/mod/{{content.correctable.id}}">{{content.correctable.name}}</a> as {{content.mod_status}}',
         CompatibilityNote: noteCorrectionDescription('compatibility'),
         InstallOrderNote: noteCorrectionDescription('install order'),
         LoadOrderNote: noteCorrectionDescription('load order')
@@ -258,12 +261,23 @@ app.service('notificationsFactory', function() {
         return '<a href="#/user/{{content.source_user.id}}">{{content.source_user.username}}</a>';
     };
 
+    this.endorsee = function(event) {
+        if (content.target_user.id == factory.currentUserID) {
+            return 'you';
+        } else {
+            return '<a href="#/user/{{content.target_user.id}}">{{content.target_user.username}}</a>'
+        }
+    };
+
     this.changeVerb = function(event) {
         return event.event_type;
     };
 
     this.correctionDescription = function(event) {
-        return factory.correctionDescriptions[event.content.correctable_type];
+        var description = factory.correctionDescriptions[event.content.correctable_type];
+        var bIsOwner = event.content.submitted_by == factory.currentUserID;
+        var ownershipClause = bIsOwner ? 'Your' : 'The';
+        return description.replace('((ownershipClause))', ownershipClause);
     };
 
     this.statusChange = function(event) {
@@ -299,6 +313,14 @@ app.service('notificationsFactory', function() {
             return "A";
         } else {
             return "Your"
+        }
+    };
+
+    this.userClause = function(event) {
+        if (factory.currentUserID == event.content.user.id) {
+            return 'You have';
+        } else {
+            return factory.contentLink(event);
         }
     };
 

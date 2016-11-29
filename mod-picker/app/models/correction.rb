@@ -67,19 +67,19 @@ class Correction < ActiveRecord::Base
   # METHODS
   def self.close(id)
     correction = Correction.find(id)
-    if correction.status == :open
+    if correction.status == "open"
       correction.passed? ? correction.pass : correction.fail
       correction.save
     end
   end
 
   def pass
-    self.status = :passed
+    self.status = "passed"
     correctable.correction_passed(self)
   end
 
   def fail
-    self.status = :failed
+    self.status = "failed"
   end
 
   def has_minimum_votes?
