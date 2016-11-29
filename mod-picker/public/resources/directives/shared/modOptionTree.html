@@ -10,9 +10,11 @@
                     {{::option.display_name}}
                 </label>
                 <span class="mod-option-stats">
-                    {{::option.size | bytes}} -
-                    {{::option.plugins_count || 0}} plugin{{:: option.plugins_count != 1 ? 's' : ''}},
-                    {{::option.asset_files_count || 0}} asset file{{:: option.asset_files_count != 1 ? 's' : ''}}
+                    {{::option.size | bytes}}
+                    <span ng-show="option.plugins_count || option.asset_files_count">-
+                        {{::option.plugins_count || 0}} plugin{{:: option.plugins_count != 1 ? 's' : ''}},
+                        {{::option.asset_files_count || 0}} asset file{{:: option.asset_files_count != 1 ? 's' : ''}}
+                    </span>
                 </span>
             </span>
         </div>
