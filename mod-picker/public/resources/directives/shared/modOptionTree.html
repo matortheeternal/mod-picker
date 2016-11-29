@@ -1,8 +1,8 @@
 <ul>
     <li ng-repeat="option in modOptions">
         <div class="mod-option">
-            <span class="mod-option-icon" title="{{option.tooltip}}">
-                <i class="fa {{option.iconClass}}"></i>
+            <span class="mod-option-icon" title="{{::option.tooltip}}">
+                <i class="fa {{::option.iconClass}}"></i>
             </span>
             <span class="mod-option-details">
                 <label class="mod-option-title">
