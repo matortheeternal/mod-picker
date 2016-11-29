@@ -5,9 +5,9 @@
                 <i class="fa {{::option.iconClass}}"></i>
             </span>
             <span class="mod-option-details">
-                <label class="mod-option-title">
+                <label class="mod-option-title" title="{{::option.name}}">
                     <input type="checkbox" ng-model="option.active" ng-change="toggleModOption(option)"/>
-                    {{::option.is_installer_option ? option.display_name : option.name}}
+                    {{::option.display_name}}
                 </label>
                 <span class="mod-option-stats">
                     {{::option.size | bytes}} -
