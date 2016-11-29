@@ -14,7 +14,7 @@ app.controller('modOptionTreeController', function($scope) {
         // recurse into children
         option.children && option.children.forEach(function(child) {
             if (child.active && !option.active) {
-                $scope.toggleModOption(child);
+                child.active = false;
             }
         });
         // emit message
