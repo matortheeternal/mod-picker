@@ -122,7 +122,7 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
 
             // create nested mod options tree
             modOptionUtils.activateDefaultModOptions(analysis.mod_options);
-            analysis.nestedModOptions = modOptionUtils.getNestedModOptions(analysis.mod_options);
+            analysis.nestedOptions = modOptionUtils.getNestedModOptions(analysis.mod_options);
 
             output.resolve(analysis);
         }, function(response) {

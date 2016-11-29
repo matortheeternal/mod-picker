@@ -95,10 +95,10 @@ app.controller('modAnalysisController', function($scope, $stateParams, $state, m
         modService.retrieveModAnalysis($stateParams.modId).then(function(analysis) {
             $scope.mod.analysis = analysis;
             $scope.mod.options = analysis.mod_options;
+            $scope.mod.nestedOptions = analysis.nestedOptions;
             $scope.mod.plugins = analysis.plugins;
             $scope.mod.assets = analysis.assets;
             $scope.mod.nestedAssets = analysis.nestedAssets;
-            $scope.mod.nestedModOptions = analysis.nestedModOptions;
 
             // set current option and plugin
             $scope.setCurrentSelection();
