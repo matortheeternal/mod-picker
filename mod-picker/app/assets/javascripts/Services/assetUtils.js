@@ -75,7 +75,7 @@ app.service('assetUtils', function(fileUtils) {
 
     this.sortNestedAssets = function(nestedAssets) {
         nestedAssets.sort(function(a, b) {
-            if (a.children || !b.children) {
+            if (!a.children == !b.children) {
                 if (a.name < b.name) return -1;
                 if (a.name > b.name) return 1;
                 return 0;
