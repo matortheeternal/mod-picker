@@ -23,7 +23,7 @@ app.controller('tagSelectorController', function($scope, $element, $timeout, tag
     $scope.removedTags = [];
     var addTagButton = $element[0].firstChild.lastElementChild;
 
-    tagService.retrieveTags().then(function(data) {
+    tagService.retrieveAllTags().then(function(data) {
         $scope.tags = data;
     });
 
