@@ -78,13 +78,13 @@ class ModBuilder
   def before_save
     set_config_file_game_ids
     validate_sources
+    manage_custom_mods
   end
 
   def after_save
     link_sources
     create_tags
     create_curator
-    manage_custom_mods
   end
 
   def set_config_file_game_ids
@@ -232,7 +232,7 @@ class ModBuilder
 
   def substitute_custom_mods
     mod.sources_array.each do |source|
-      ModListCustomMod.substitue_for_url(source.url, mod)
+      ModListCustomMod.substitute_for_url(source.url, mod)
     end
   end
 
