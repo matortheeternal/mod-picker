@@ -50,10 +50,21 @@ mod-option-tree {
   mod-option-tree {
     ul {
       padding-right: 5px;
+
       li {
         display: inline-block;
         min-width: 350px;
         max-width: 350px;
+      }
+    }
+
+    .mod-option .mod-option-details {
+      .mod-option-title {
+        font-size: 18px;
+      }
+
+      .mod-option-stats {
+        font-size: 14px;
       }
     }
   }
