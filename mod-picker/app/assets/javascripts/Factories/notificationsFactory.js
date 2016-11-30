@@ -49,7 +49,8 @@ app.service('notificationsFactory', function() {
 
     this.status = {
         Correction: "((correctionDescription)) has ((statusChange))",
-        User: "((statusChange))"
+        User: "((statusChange))",
+        ModList: "((contentLink)) has been marked ((statusChange))"
     };
 
     var contributionMessageTemplate = function(label) {
@@ -155,6 +156,12 @@ app.service('notificationsFactory', function() {
             user: "Your account has been returned to normal status.",
             moderator: "You are now a moderator on Mod Picker!",
             admin: "You are now a site admin.  Remember, with great power comes great responsibility."
+        },
+        ModList: {
+            key: "status",
+            under_construction: "under construction",
+            testing: "testing",
+            complete: "complete"
         }
     };
 
