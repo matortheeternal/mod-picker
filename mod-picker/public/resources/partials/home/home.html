@@ -4,15 +4,15 @@
             <div class="left-column wide-column home-left-column">
                 <div class="recent-box box-shadow">
                     <h3 class="section-title">Recent Mod Lists</h3>
-                    <section ng-repeat="modlist in recent.mod_lists">
-                        <a ng-href="#/mod-list/{{modlist.id}}">
-                            <div class="recent-thing" ng-init="user = modlist.submitter">
+                    <section ng-repeat="mod_list in recent.mod_lists">
+                        <a ng-href="#/mod-list/{{mod_list.id}}">
+                            <div class="recent-thing" ng-init="user = mod_list.submitter">
                                 <img class="smaller-image" ng-src="{{user.avatars.medium}}">
                                 <div>
-                                    <div class="recent-title">{{modlist.name}}</div>
-                                    <div> by {{modlist.submitter.username}}</div>
-                                    <div> {{modlist.mods_count | number}} mods, {{modlist.plugins_count | number}} plugins</div>
-                                    <div> Completed {{modlist.completed | relativeDate }}</div>
+                                    <div class="recent-title">{{mod_list.name}}</div>
+                                    <div> by {{mod_list.submitter.username}}</div>
+                                    <div> {{mod_list.mods_count + mod_list.custom_mods_count | number}} mods, {{mod_list.plugins_count + mod_list.custom_plugins_count | number}} plugins</div>
+                                    <div> Completed {{mod_list.completed | relativeDate }}</div>
                                 </div>
                             </div>
                         </a>

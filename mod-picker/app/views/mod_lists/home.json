@@ -1,5 +1,5 @@
 {
-  "only": ["id", "name", "completed", "mods_count", "plugins_count"],
+  "only": ["id", "name", "completed", "mods_count", "custom_mods_count", "plugins_count", "custom_plugins_count"],
   "include": {
     "submitter": {
       "format": "submitter"
