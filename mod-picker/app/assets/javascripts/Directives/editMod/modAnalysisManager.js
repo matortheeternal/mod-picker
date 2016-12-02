@@ -190,5 +190,7 @@ app.controller('modAnalysisManagerController', function($scope, $rootScope, plug
         $scope.destroyUnusedOldOptions();
     });
 
-    $scope.$on('removeModOption', $scope.removeOption);
+    $scope.$on('removeModOption', function(event, option) {
+        $scope.removeOption(option);
+    });
 });
