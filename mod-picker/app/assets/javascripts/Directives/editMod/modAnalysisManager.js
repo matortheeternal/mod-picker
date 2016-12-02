@@ -24,14 +24,13 @@ app.controller('modAnalysisManagerController', function($scope, $rootScope, plug
     };
 
     $scope.clearAnalysis = function() {
-        var modOptions = $scope.mod.analysis ? $scope.mod.analysis.mod_options : $scope.mod.mod_options;
-        modOptions.forEach(function(modOption) {
-            if (modOption.id) {
+        if ($scope.mod.analysis) {
+            delete $scope.mod.analysis;
+        } else {
+            $scope.mod.mod_options.forEach(function(modOption) {
                 modOption._destroy = true;
-            } else {
-                $scope.removeOption(modOption);
-            }
-        });
+            });
+        }
     };
 
     $scope.removeOption = function(option) {
