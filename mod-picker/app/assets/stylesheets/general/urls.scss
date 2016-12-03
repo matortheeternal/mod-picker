@@ -10,6 +10,16 @@ a {
   }
 }
 
+a.noStyle {
+    color: inherit;
+    text-decoration: inherit;
+    cursor: pointer;
+    transition: none;
+    &:hover {
+        color: inherit;
+    }
+}
+
 a.expand {
   display: block;
   padding-top: 16px;
