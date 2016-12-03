@@ -26,6 +26,8 @@ app.controller('userSettingsModListsController', function($scope, $rootScope, $t
                 var model = item.is_collection ? $scope.collections : $scope.mod_lists;
                 model.push(item);
             });
+
+            $scope.public_lists = $scope.all_mod_lists.filter(function(list) { return !list.hidden; });
         }, function(response) {
             $scope.errors.mod_lists = response;
         });
@@ -114,6 +116,9 @@ app.controller('userSettingsModListsController', function($scope, $rootScope, $t
             } else {
                 $scope.deleteModList(modList);
             }
+            $scope.public_lists = $scope.public_lists.filter(function(list) {
+                return list.id !== modList.id;
+            });
             $scope.$emit('successMessage', 'Mod list deleted successfully.');
         }, function(response) {
             var params = {
@@ -127,6 +132,7 @@ app.controller('userSettingsModListsController', function($scope, $rootScope, $t
     $scope.$on('recoverModList', function(event, modList) {
         modListService.hideModList(modList.id, false).then(function() {
             modList.hidden = false;
+            $scope.public_lists.push(modList);
             $scope.$emit('successMessage', 'Mod list recovered successfully.');
         }, function(response) {
             var params = {
