@@ -204,6 +204,7 @@ app.controller('modListController', function($scope, $rootScope, $q, $state, $st
         var tabName = toState.name.split(".").slice(-1)[0];
         var uneditableTabs = ["Comments", "Analysis"];
         $scope.tabEditable = uneditableTabs.indexOf(tabName) == -1;
+        $scope.$broadcast('resetSticky');
     });
 
     // set help context
