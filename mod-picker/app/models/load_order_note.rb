@@ -105,6 +105,7 @@ class LoadOrderNote < ActiveRecord::Base
 
   def self.update_adult(ids)
     LoadOrderNote.where(id: ids).joins(:first_mod, :second_mod).update_all("load_order_notes.has_adult_content = mods.has_adult_content OR second_mods_load_order_notes.has_adult_content")
+    Correction.update_adult(LoadOrderNote, ids)
   end
 
   def self.join_to_mod_options(query, source_column, plugins, options)

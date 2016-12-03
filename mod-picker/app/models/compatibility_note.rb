@@ -107,6 +107,7 @@ class CompatibilityNote < ActiveRecord::Base
 
   def self.update_adult(ids)
     CompatibilityNote.where(id: ids).joins(:first_mod, :second_mod).update_all("compatibility_notes.has_adult_content = mods.has_adult_content OR second_mods_compatibility_notes.has_adult_content")
+    Correction.update_adult(CompatibilityNote, ids)
   end
 
   def self.mod_count_subquery

@@ -98,6 +98,7 @@ class InstallOrderNote < ActiveRecord::Base
 
   def self.update_adult(ids)
     InstallOrderNote.where(id: ids).joins(:first_mod, :second_mod).update_all("install_order_notes.has_adult_content = mods.has_adult_content OR second_mods_install_order_notes.has_adult_content")
+    Correction.update_adult(InstallOrderNote, ids)
   end
 
   def self.mod_count_subquery

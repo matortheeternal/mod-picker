@@ -151,24 +151,13 @@ class ModBuilder
   end
 
   def update_adult
-    if mod.previous_changes.has_key?(:has_adult_content)
-      # prepare some helper variables
-      review_ids = mod.reviews.ids
-      cnote_ids = mod.compatibility_notes.ids
-      inote_ids = mod.install_order_notes.ids
-      lnote_ids = mod.load_order_notes.ids
-      mod_list_ids = mod.mod_lists.ids
-
-      # propagate has_adult_content to associations
-      mod.reviews.update_all(:has_adult_content => mod.has_adult_content)
-      mod.corrections.update_all(:has_adult_content => mod.has_adult_content)
-      ModList.update_adult(mod_list_ids)
-      CompatibilityNote.update_adult(cnote_ids)
-      InstallOrderNote.update_adult(inote_ids)
-      LoadOrderNote.update_adult(lnote_ids)
-      Correction.update_adult(CompatibilityNote, cnote_ids)
-      Correction.update_adult(InstallOrderNote, inote_ids)
-      Correction.update_adult(LoadOrderNote, lnote_ids)
+    if resource.previous_changes.has_key?(:has_adult_content)
+      resource.reviews.update_all(:has_adult_content => resource.has_adult_content)
+      resource.corrections.update_all(:has_adult_content => resource.has_adult_content)
+      ModList.update_adult(resource.mod_lists.ids)
+      CompatibilityNote.update_adult(resource.compatibility_notes.ids)
+      InstallOrderNote.update_adult(resource.install_order_notes.ids)
+      LoadOrderNote.update_adult(resource.load_order_notes.ids)
     end
   end
 
