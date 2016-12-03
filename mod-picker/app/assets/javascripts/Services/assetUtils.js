@@ -14,6 +14,7 @@ app.service('assetUtils', function(fileUtils) {
             case "txt": return "fa-file-text-o";
             case "xml": return "fa-file-text-o";
             case "fuz": return "fa-file-sound-o";
+            case "wav": return "fa-file-sound-o";
             case "tri": return "fa-location-arrow";
             case "nif": return "fa-cube";
             case "dds": return "fa-image";
