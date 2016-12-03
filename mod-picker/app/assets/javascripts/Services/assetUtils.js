@@ -116,11 +116,11 @@ app.service('assetUtils', function(fileUtils) {
     this.sortNestedAssets = function(nestedAssets) {
         nestedAssets.sort(function(a, b) {
             if (!a.children == !b.children) {
-                if (a.name < b.name) return -1;
-                if (a.name > b.name) return 1;
-                return 0;
+                var nameA = a.name.toUpperCase();
+                var nameB = b.name.toUpperCase();
+                return (nameA < nameB) ? -1 : (nameA > nameB) ? 1 : 0;
             } else {
-                return 1;
+                return !a.children ? 1 : -1;
             }
         });
         // recurse into children
