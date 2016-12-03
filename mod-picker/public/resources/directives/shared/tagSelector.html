@@ -1,15 +1,17 @@
 <div class="tags-container">
     <span ng-repeat="tag in activeTags" class="tag-box" title="Submitted by {{tag.submitter.username}}">
-        <span class="tag-text">
-            {{tag.text}}
-        </span>
-        <span ng-if="showModsCount" class="tag-count" ng-class="{ 'last-child' : !(showRemove || showModListsCount) }" title="The number of mods with this tag">
-            {{tag.mods_count | number}}
-        </span>
-        <span ng-if="showModListsCount" class="tag-count" ng-class="{ 'last-child' : !showRemove }"
-              title="The number of mod lists with this tag">
-            {{tag.mod_lists_count | number}}
-        </span>
+        <a ng-href="#/{{type}}s?t={{tag.text}}" class="noStyle">
+            <span class="tag-text">
+                {{tag.text}}
+            </span>
+            <span ng-if="showModsCount" class="tag-count" ng-class="{ 'last-child' : !(showRemove || showModListsCount) }" title="The number of mods with this tag">
+                {{tag.mods_count | number}}
+            </span>
+            <span ng-if="showModListsCount" class="tag-count" ng-class="{ 'last-child' : !showRemove }"
+                  title="The number of mod lists with this tag">
+                {{tag.mod_lists_count | number}}
+            </span>
+        </a>
         <span ng-if="showRemove" class="remove-tag" ng-click="removeActiveTag($index)" title="Click to remove this tag">
             <i class="fa fa-times"></i>
         </span>
