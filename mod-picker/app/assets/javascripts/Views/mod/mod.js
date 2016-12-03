@@ -302,6 +302,16 @@ app.controller('modController', function($scope, $rootScope, $q, $stateParams, $
         });
     };
 
+    $scope.unHideMod = function() {
+        modService.hideMod($scope.mod.id, false).then(function() {
+            $scope.mod.hidden = false;
+            $scope.$emit('successMessage', 'Mod un-hidden successfully.');
+        }, function(response) {
+            var params = { label: 'Error un-hiding mod', response: response };
+            $scope.$emit('errorMessage', params);
+        });
+    };
+
     $scope.toggleInModList = function() {
         if ($scope.mod.in_mod_list) {
             // remove from mod list
