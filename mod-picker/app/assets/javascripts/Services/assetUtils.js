@@ -11,6 +11,9 @@ app.service('assetUtils', function(fileUtils) {
         exts: ["dll", "lib"],
         iconClass: ["fa-file-o", "fa-gear"]
     }, {
+        exts: ["esm", "esp"],
+        iconClass: "fa-globe"
+    }, {
         exts: ["bsa", "ba2", "rar", "7z", "zip", "tar", "gz"],
         iconClass: "fa-file-archive-o"
     }, {
