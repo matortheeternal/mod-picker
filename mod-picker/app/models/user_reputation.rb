@@ -48,7 +48,7 @@ class UserReputation < ActiveRecord::Base
   SUBMITTED_MOD_REP = 1
   NEW_TAG_REP = 0.2
   MOD_TAG_REP = 0.1
-  MOD_LIST_TAG_REP = 0.05
+  MOD_LIST_TAG_REP = 0.1
 
   # author reputation
   AUTHOR_MAX = 1.0
