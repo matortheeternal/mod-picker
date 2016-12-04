@@ -6,15 +6,9 @@ class Builder
     resource_class.name
   end
 
-  def self.update(id, current_user, params)
+  def self.update(id, current_user, params={})
     params[:id] = id
-    builder = new(current_user, params)
-    builder.update
-  end
-
-  def self.create(current_user, params)
-    builder = new(current_user, params)
-    builder.save
+    new(current_user, params)
   end
 
   # core instance methods
