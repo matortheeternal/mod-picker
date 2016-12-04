@@ -56,7 +56,7 @@
 
 <loader data="mod.reviews" spinner-class="big-spinner" ng-if="!errors.reviews && !errors.reviewSections">
      <!-- current user's review -->
-    <div class="content-block user-review" ng-if="mod.user_review">
+    <div class="content-block user-review" ng-if="mod.user_review" ng-hide="mod.user_review.editing">
         <div class="content-title" ng-click="myReviewExpanded = !myReviewExpanded">
             Your Review ({{mod.user_review.overall_rating | number:0}}/100)
             <i class="fa fa-caret-down" aria-hidden="true" ng-hide="myReviewExpanded"></i>
