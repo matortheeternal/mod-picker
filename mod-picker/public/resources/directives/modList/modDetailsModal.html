@@ -14,7 +14,7 @@
             <h3 class="section-title">Name</h3>
             <section>
                 <input type="text" ng-model="detailsItem.name" ng-click="focusText($event)" spellcheck="false" ng-if="editing" pu-elastic-input>
-                <span class="custom-mod-name" ng-if="!editing">{{::detailsItem.name}}</span>
+                <span class="item-name" ng-if="!editing">{{::detailsItem.name}}</span>
             </section>
 
             <h3 class="section-title">URL</h3>
@@ -26,7 +26,7 @@
             <h3 class="section-title">Description</h3>
             <section>
                 <textarea class="medium-text-area" ng-model="detailsItem.description" ng-if="editing"></textarea>
-                <p class="custom-mod-description" ng-if="!editing">
+                <p class="item-description" ng-if="!editing">
                     {{::detailsItem.description}}
                 </p>
             </section>
@@ -37,17 +37,26 @@
         </form>
     </div>
 
-    <!-- Mod Options -->
+    <!-- Mod Details -->
     <div class="modal extra-wide-modal" ng-if="detailsItem.mod">
         <div class="close-modal">
             <span class="fa fa-times" ng-click="toggleDetailsModal()"></span>
         </div>
 
-        <h2 ng-show="editing">{{ detailsItem.is_utility ? 'Edit Tool Options' : 'Edit Mod Options' }}</h2>
-        <h2 ng-hide="editing">{{ detailsItem.is_utility ? 'View Tool Options' : 'View Mod Options' }}</h2>
+        <h2 ng-show="editing">{{ detailsItem.is_utility ? 'Edit Tool Details' : 'Edit Mod Details' }} - {{::detailsItem.mod.name}}</h2>
+        <h2 ng-hide="editing">{{ detailsItem.is_utility ? 'View Tool Details' : 'View Mod Details' }} - {{::detailsItem.mod.name}}</h2>
 
-        <div class="box-shadow">
-            <table ng-show="detailsItem.mod.mod_options.length" class="browse-table">
+        <h3 class="section-title">Description</h3>
+        <section>
+            <textarea class="medium-text-area" ng-model="detailsItem.description" ng-if="editing"></textarea>
+            <p class="item-description" ng-if="!editing">
+                {{::detailsItem.description}}
+            </p>
+        </section>
+
+        <h3 class="section-title" ng-show="detailsItem.mod.mod_options.length > 1">{{ detailsItem.is_utility ? 'Tool Options' : 'Mod Options' }}</h3>
+        <div class="box-shadow" ng-show="detailsItem.mod.mod_options.length > 1">
+            <table class="browse-table">
                 <thead>
                     <tr>
                         <th ng-repeat="column in columns" ng-click="sortColumn(column, sort, sortedColumn)" class="{{column.class}}" title="{{column.title}}">
