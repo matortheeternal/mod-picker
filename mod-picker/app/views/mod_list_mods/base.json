@@ -1,5 +1,5 @@
 {
-  "only": ["id", "group_id", "index", "active"],
+  "only": ["id", "group_id", "index", "active", "description"],
   "include": {
     "mod": {
       "format": "mod_list_mod"
