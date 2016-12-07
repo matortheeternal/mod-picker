@@ -2,7 +2,7 @@
     <messages event="modalMessage"></messages>
 
     <!-- Custom Plugin Details -->
-    <div class="modal huge-modal">
+    <div class="modal huge-modal" ng-if="!detailsItem.plugin">
         <form>
             <div class="close-modal">
                 <span class="fa fa-times" ng-click="toggleDetailsModal()"></span>
@@ -24,6 +24,29 @@
             <h3 class="section-title">Description</h3>
             <section>
                 <textarea class="medium-text-area" ng-model="detailsItem.description" ng-disabled="!editing"></textarea>
+            </section>
+
+            <div class="action-button-container">
+                <input type="submit" class="btn action-btn" value="Close" ng-click="toggleDetailsModal()">
+            </div>
+        </form>
+    </div>
+
+    <!-- Plugin Details -->
+    <div class="modal huge-modal" ng-if="detailsItem.plugin">
+        <form>
+            <div class="close-modal">
+                <span class="fa fa-times" ng-click="toggleDetailsModal()"></span>
+            </div>
+
+            <h2>{{ editing ? 'Edit Plugin Details' : 'Plugin Details' }} - {{::detailsItem.plugin.filename}}</h2>
+
+            <h3 class="section-title">Description</h3>
+            <section>
+                <textarea class="medium-text-area" ng-model="detailsItem.description" ng-if="editing"></textarea>
+                <p class="item-description" ng-if="!editing">
+                    {{::detailsItem.description}}
+                </p>
             </section>
 
             <div class="action-button-container">
