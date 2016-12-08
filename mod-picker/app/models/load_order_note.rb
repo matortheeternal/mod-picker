@@ -61,6 +61,7 @@ class LoadOrderNote < ActiveRecord::Base
 
   validates :text_body, length: {in: 256..16384}
   validate :validate_unique_plugins
+  validate :validate_no_master_dependency
 
   # CALLBACKS
   before_save :set_adult
@@ -87,6 +88,15 @@ class LoadOrderNote < ActiveRecord::Base
     return if duplicate_plugins_error
     existing_note = get_existing_note([first_plugin_id, second_plugin_id])
     note_exists_error(existing_note) if existing_note.present?
+  end
+
+  def plugin_is_master
+    second_plugin.masters.pluck(:master_plugin_id).include?(first_plugin_id) ||
+        first_plugin.masters.pluck(:master_plugin_id).include?(second_plugin_id)
+  end
+
+  def validate_no_master_dependency
+    errors.add(:plugins, "Load Order Notes for plugins with master dependencies are redundant.") if plugin_is_master
   end
 
   def mod_author_users
