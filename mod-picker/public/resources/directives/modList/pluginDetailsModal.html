@@ -15,16 +15,19 @@
                 <a ng-href="#/mod/{{detailsItem.compatibility_note.first_mod.id}}">{{detailsItem.compatibility_note.first_mod.name}}</a> and
                 <a ng-href="#/mod/{{detailsItem.compatibility_note.second_mod.id}}">{{detailsItem.compatibility_note.second_mod.name}}</a>
             </h3>
-
             <h3 class="section-title">Filename</h3>
             <section>
-                <input type="text" ng-model="detailsItem.filename" ng-click="focusText($event)" spellcheck="false" ng-disabled="!editing">
+                <input type="text" ng-model="detailsItem.filename" ng-click="focusText($event)" spellcheck="false" ng-if="editing">
+                <span class="item-name" ng-if="!editing">{{::detailsItem.filename}}</span>
             </section>
 
-            <h3 class="section-title">Description</h3>
-            <section>
-                <textarea class="medium-text-area" ng-model="detailsItem.description" ng-disabled="!editing"></textarea>
-            </section>
+            <div ng-show="editing || detailsItem.description">
+                <h3 class="section-title" >Description</h3>
+                <section>
+                    <textarea class="medium-text-area" ng-model="detailsItem.description" ng-if="editing"></textarea>
+                    <div marked="detailsItem.description" class="text-container" ng-if="!editing"></div>
+                </section>
+            </div>
 
             <div class="action-button-container">
                 <input type="submit" class="btn action-btn" value="Close" ng-click="toggleDetailsModal()">
@@ -44,9 +47,7 @@
             <h3 class="section-title">Description</h3>
             <section>
                 <textarea class="medium-text-area" ng-model="detailsItem.description" ng-if="editing"></textarea>
-                <p class="item-description" ng-if="!editing">
-                    {{::detailsItem.description}}
-                </p>
+                <div marked="detailsItem.description" class="text-container" ng-if="!editing"></div>
             </section>
 
             <div class="action-button-container">
