@@ -41,7 +41,8 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
         var postData =  {
             filters: {
                 search: name,
-                include_games: true
+                include_games: true,
+                utility: false
             }
         };
         return backend.post('/mods/search', postData);
