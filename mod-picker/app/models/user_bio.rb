@@ -10,6 +10,7 @@ class UserBio < ActiveRecord::Base
 
   # CALLBACKS
   after_create :generate_verification_tokens
+  after_update :update_user_reputation
 
   # CONSTANTS
   SITE_CODES = {
@@ -27,6 +28,10 @@ class UserBio < ActiveRecord::Base
     self.lover_verification_token = get_token
     self.workshop_verification_token = get_token
     self.save
+  end
+
+  def update_user_reputation
+    user.reputation.recompute(DateTime.now)
   end
 
   def verify_account(site_label, user_path)

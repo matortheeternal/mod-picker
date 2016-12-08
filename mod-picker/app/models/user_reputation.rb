@@ -173,18 +173,13 @@ class UserReputation < ActiveRecord::Base
     self.overall = offset + site_rep + contribution_rep + author_rep + given_rep
   end
 
-  def update_site_rep
-    starting_site_rep = site_rep
-    calculate_site_rep
-    site_rep_diff = starting_site_rep - site_rep
-    self.overall += site_rep_diff
-  end
-
-  def update_author_rep
-    starting_author_rep = author_rep
-    calculate_author_rep
-    author_rep_diff = starting_author_rep - author_rep
-    self.overall += author_rep_diff
+  def recompute(start_time)
+    self.last_computed = start_time
+    calculate_site_rep!
+    calculate_contribution_rep!
+    calculate_author_rep!
+    calculate_overall_rep!
+    save!
   end
 
   def add_offset
