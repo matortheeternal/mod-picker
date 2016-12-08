@@ -31,7 +31,7 @@ class UserBio < ActiveRecord::Base
   end
 
   def update_user_reputation
-    user.reputation.recompute(DateTime.now)
+    user.reputation.recompute!(DateTime.now)
   end
 
   def verify_account(site_label, user_path)

@@ -24,7 +24,7 @@ class ReputationWorker
       start_time = DateTime.now
       benchmark.report("B") {
         UserReputation.computable.find_each do |user_reputation|
-          user_reputation.recompute(start_time)
+          user_reputation.recompute!(start_time)
         end
       }
 
