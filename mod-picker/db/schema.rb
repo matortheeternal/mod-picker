@@ -768,32 +768,6 @@ ActiveRecord::Schema.define(version: 20161207205917) do
 
   add_index "record_groups", ["game_id", "signature"], name: "index_record_groups_on_game_id_and_signature", unique: true, using: :btree
 
-  create_table "related_mod_notes", force: :cascade do |t|
-    t.integer  "game_id",           limit: 4,                     null: false
-    t.integer  "submitted_by",      limit: 4,                     null: false
-    t.integer  "edited_by",         limit: 4,                     null: false
-    t.integer  "status",            limit: 1,     default: 0,     null: false
-    t.integer  "first_mod_id",      limit: 4,                     null: false
-    t.integer  "second_mod_id",     limit: 4,                     null: false
-    t.text     "text_body",         limit: 65535,                 null: false
-    t.string   "edit_summary",      limit: 255
-    t.string   "moderator_message", limit: 255
-    t.float    "reputation",        limit: 24,    default: 0.0,   null: false
-    t.integer  "helpful_count",     limit: 4,     default: 0,     null: false
-    t.integer  "not_helpful_count", limit: 4,     default: 0,     null: false
-    t.boolean  "approved",                        default: false, null: false
-    t.boolean  "hidden",                          default: false, null: false
-    t.boolean  "has_adult_content",               default: false, null: false
-    t.datetime "submitted",                                       null: false
-    t.datetime "edited"
-  end
-
-  add_index "related_mod_notes", ["edited_by"], name: "fk_rails_817132cd79", using: :btree
-  add_index "related_mod_notes", ["first_mod_id"], name: "fk_rails_74f1b44973", using: :btree
-  add_index "related_mod_notes", ["game_id"], name: "index_related_mod_notes_on_game_id", using: :btree
-  add_index "related_mod_notes", ["second_mod_id"], name: "fk_rails_2446267533", using: :btree
-  add_index "related_mod_notes", ["submitted_by"], name: "fk_rails_982f982522", using: :btree
-
   create_table "reports", force: :cascade do |t|
     t.integer  "base_report_id", limit: 4,   null: false
     t.integer  "submitted_by",   limit: 4,   null: false
@@ -1117,11 +1091,6 @@ ActiveRecord::Schema.define(version: 20161207205917) do
   add_foreign_key "plugins", "mod_options"
   add_foreign_key "quotes", "games"
   add_foreign_key "record_groups", "games"
-  add_foreign_key "related_mod_notes", "games"
-  add_foreign_key "related_mod_notes", "mods", column: "first_mod_id"
-  add_foreign_key "related_mod_notes", "mods", column: "second_mod_id"
-  add_foreign_key "related_mod_notes", "users", column: "edited_by"
-  add_foreign_key "related_mod_notes", "users", column: "submitted_by"
   add_foreign_key "reports", "base_reports"
   add_foreign_key "reports", "users", column: "submitted_by"
   add_foreign_key "reputation_links", "user_reputations", column: "from_rep_id", name: "reputation_links_ibfk_1"
