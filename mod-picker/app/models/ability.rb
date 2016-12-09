@@ -185,7 +185,7 @@ class Ability
     can :create, ModListTag
   end
 
-  def can_sumbit_reports
+  def can_submit_reports
     can :create, Report
     can :create, BaseReport
   end
@@ -290,7 +290,7 @@ class Ability
     user ||= User.new # guest user (not logged in)
     user_signed_in = User.exists?(user.id)
     can_contribute = user_signed_in && !user.banned? && !user.restricted?
-    can_use = user_signed_in && !banned?
+    can_use = user_signed_in && !user.banned?
 
     # general read permissions
     can :read, :all
