@@ -35,6 +35,7 @@ class Mod < ActiveRecord::Base
   range_scope :reputation, :tags_count
   range_scope :average_rating, :alias => 'rating'
   counter_scope :plugins_count, :asset_files_count, :required_mods_count, :required_by_count, :stars_count, :mod_lists_count, :reviews_count, :compatibility_notes_count, :install_order_notes_count, :load_order_notes_count, :corrections_count
+  source_search_scope :mod_name, :sites => [:nexus, :lab, :workshop]
   source_scope :views, :sites =>  [:nexus, :lab, :workshop]
   source_scope :downloads, :sites => [:nexus, :lab]
   source_scope :file_size, :sites => [:nexus, :lab]
@@ -178,12 +179,16 @@ class Mod < ActiveRecord::Base
   before_create :set_id
   before_save :touch_updated
 
+  def self.find_by_mod_name(mod_name)
+    Mod.visible.eager_load(:nexus_infos, :lover_infos, :workshop_infos).mod_name({sources: [:nexus, :lab, :workshop], value: mod_name}).first || Mod.visible.search(mod_name).first
+  end
+
   def self.find_batch(batch)
     batch.collect do |item|
       if item.has_key?(:nexus_info_id)
         Mod.visible.nexus_id(item[:nexus_info_id]).first
       else
-        Mod.visible.search(item[:mod_name]).first
+        Mod.find_by_mod_name(item[:mod_name])
       end
     end
   end
