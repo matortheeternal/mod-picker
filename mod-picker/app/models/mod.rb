@@ -88,6 +88,9 @@ class Mod < ActiveRecord::Base
 
     where(where_clause.join(" OR "), author: author)
   }
+  scope :nexus_id, -> (id) {
+    eager_load(:nexus_infos).where(nexus_infos: { id: id })
+  }
 
   belongs_to :game, :inverse_of => 'mods'
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'submitted_mods'
@@ -174,6 +177,16 @@ class Mod < ActiveRecord::Base
   # CALLBACKS
   before_create :set_id
   before_save :touch_updated
+
+  def self.find_batch(batch)
+    batch.collect do |item|
+      if item.has_key?(:nexus_info_id)
+        Mod.visible.nexus_id(item[:nexus_info_id]).first
+      else
+        Mod.visible.search(item[:mod_name]).first
+      end
+    end
+  end
 
   def visible
     approved && !hidden
