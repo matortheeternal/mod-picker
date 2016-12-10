@@ -104,6 +104,10 @@ input[type="file"] {
     margin-left: 10px;
     color: $medium_text_color;
   }
+
+  img {
+    vertical-align: bottom;
+  }
 }
 
 .editor-toolbar {
