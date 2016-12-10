@@ -97,6 +97,13 @@ input[type="file"] {
   h1 {
     color: $text_color;
   }
+
+  blockquote {
+    border-left: 3px solid $border_color;
+    padding-left: 14px;
+    margin-left: 10px;
+    color: $soft_text_color;
+  }
 }
 
 .editor-toolbar {
