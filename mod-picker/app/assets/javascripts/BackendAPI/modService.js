@@ -57,6 +57,10 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
         };
         return backend.post('/mods/search', postData);
     };
+
+    this.searchModsBatch = function(batch) {
+        return backend.post('/mods/search', { batch: batch });
+    };
     
     this.retrieveMod = function(modId) {
         var action = $q.defer();
