@@ -15,8 +15,13 @@ class ModsController < ApplicationController
 
   # POST /mods/search
   def search
+    if params.has_key?(:batch)
+      @mods = Mod.find_batch(params[:batch])
+      render json: @mods
+    else
       @mods = Mod.visible.filter(search_params).limit(10)
       render json: @mods
+    end
   end
 
   # GET /mods/1
