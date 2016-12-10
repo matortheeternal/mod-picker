@@ -15,8 +15,8 @@ class ModsController < ApplicationController
 
   # POST /mods/search
   def search
-    @mods = Mod.visible.filter(search_params).order("CHAR_LENGTH(name)").limit(10)
-    render json: @mods
+      @mods = Mod.visible.filter(search_params).limit(10)
+      render json: @mods
   end
 
   # GET /mods/1
