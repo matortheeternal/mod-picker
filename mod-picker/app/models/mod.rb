@@ -17,6 +17,7 @@ class Mod < ActiveRecord::Base
 
   # NOTIFICATION SUBSCRIPTIONS
   subscribe :author_users, to: [:updated, :hidden, :unhidden, *Event.milestones]
+  # TODO: Fix this.
   # subscribe :contribution_authors, to: [:analysis_updated]
   # subscribe :user_stars, to: [:analysis_updated]
 
@@ -170,16 +171,12 @@ class Mod < ActiveRecord::Base
   before_create :set_id
   before_save :touch_updated
 
-  def self.find_by_mod_name(mod_name)
-    Mod.visible.eager_load(:nexus_infos, :lover_infos, :workshop_infos).mod_name({sources: [:nexus, :lab, :workshop], value: mod_name}).first || Mod.visible.search(mod_name).first
-  end
-
   def self.find_batch(batch)
     batch.collect do |item|
       if item.has_key?(:nexus_info_id)
         Mod.visible.nexus_id(item[:nexus_info_id]).first
       else
-        Mod.find_by_mod_name(item[:mod_name])
+        Mod.visible.search(item[:mod_name]).first
       end
     end
   end
