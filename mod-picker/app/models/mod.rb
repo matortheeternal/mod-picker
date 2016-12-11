@@ -63,21 +63,12 @@ class Mod < ActiveRecord::Base
     where.not(id: mod_list.incompatible_mod_ids)
   }
   scope :sources, -> (sources) {
-    query = where(nil)
-    where_clause = []
-
-    sources.each_key do |key|
-      if sources[key]
-        table = get_source_table(key)
-        query = query.includes(table).references(table)
-        where_clause.push("#{table}.id IS NOT NULL")
-      end
-    end
-
-    query.where(where_clause.join(" OR "))
+    eager_load(sources.map {|key, value| get_source_class(key).table_name if value}.compact).
+        where(sources.map {|key, value| get_source_class(key).arel_table[:id].not_eq(nil) if value}.compact.inject(:or))
   }
   scope :categories, -> (ids) { where("primary_category_id in (:ids) OR secondary_category_id in (:ids)", ids: ids) }
   scope :author, -> (hash) {
+    # TODO: arel here
     author = hash[:value]
     sources = hash[:sources]
     where_clause = []
