@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161207205917) do
+ActiveRecord::Schema.define(version: 20161211031117) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -737,7 +737,7 @@ ActiveRecord::Schema.define(version: 20161207205917) do
     t.string  "filename",               limit: 64,                  null: false
     t.string  "crc_hash",               limit: 8,                   null: false
     t.integer "file_size",              limit: 4,                   null: false
-    t.string  "author",                 limit: 128
+    t.string  "author",                 limit: 512
     t.string  "description",            limit: 512
     t.integer "record_count",           limit: 4,   default: 0,     null: false
     t.integer "override_count",         limit: 4,   default: 0,     null: false
