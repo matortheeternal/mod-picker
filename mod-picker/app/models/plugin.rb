@@ -71,6 +71,12 @@ class Plugin < ActiveRecord::Base
   before_update :clear_associations
   before_destroy :prepare_to_destroy
 
+  def self.find_batch(batch)
+    batch.collect do |item|
+      Plugin.visible.where(filename: item[:plugin_filename]).first
+    end
+  end
+
   def update_lazy_counters
     self.errors_count = plugin_errors.count
     update_column(:errors_count, errors_count)
