@@ -77,6 +77,11 @@ class Plugin < ActiveRecord::Base
     end
   end
 
+  def self.find_master_plugin(master)
+    Plugin.where(filename: master[:filename], crc_hash: master[:crc_hash]).first ||
+        Plugin.where(filename: master[:filename]).first
+  end
+
   def update_lazy_counters
     self.errors_count = plugin_errors.count
     update_column(:errors_count, errors_count)
@@ -91,8 +96,7 @@ class Plugin < ActiveRecord::Base
   def create_associations
     if @master_plugins
       @master_plugins.each_with_index do |master, index|
-        master_plugin = Plugin.find_by(filename: master[:filename], crc_hash: master[:crc_hash])
-        master_plugin = Plugin.find_by(filename: master[:filename]) if master_plugin.nil?
+        master_plugin = Plugin.find_master_plugin(master)
         if master_plugin.nil?
           dummy_masters.create(filename: master[:filename], index: index)
         else
