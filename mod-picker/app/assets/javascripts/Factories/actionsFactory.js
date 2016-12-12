@@ -241,6 +241,16 @@ app.service('actionsFactory', function() {
         }];
     };
 
+    this.modListImportActions = function() {
+        return [{
+            caption: "Remove",
+            title: "Remove this item from the import list",
+            execute: function($scope, item) {
+                $scope.removeImportedItem(item);
+            }
+        }]
+    };
+
     /* tag actions */
     this.tagIndexActions = function() {
         return [{
