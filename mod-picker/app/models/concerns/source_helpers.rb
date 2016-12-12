@@ -8,7 +8,7 @@ module SourceHelpers
           lab: LoverInfo,
           workshop: WorkshopInfo,
           other: CustomSource
-      }[source_key]
+      }.with_indifferent_access[source_key]
     end
 
     def source_search_scope(attribute, options={})
