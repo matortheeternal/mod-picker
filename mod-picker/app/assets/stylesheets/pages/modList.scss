@@ -211,7 +211,11 @@ mod-list-import-modal {
   }
 
   table.browse-table {
-    td.source-data-column {
+    .actions-header {
+      min-width: 80px;
+    }
+
+    td.source-data-cell {
       max-width: 300px;
 
       a {
@@ -225,7 +229,7 @@ mod-list-import-modal {
       }
     }
 
-    td.mod-search-column {
+    td.mod-search-cell {
       padding: 8px;
       max-width: 250px;
 

@@ -16,12 +16,12 @@
                         </div>
                     </div>
                 </th>
-                <th>Actions</th>
+                <th class="actions-header">Actions</th>
             </tr>
             </thead>
             <tbody>
             <tr ng-repeat="item in importedMods | orderBy:sort.column:(sort.direction === 'DESC')">
-                <td bindonce class="source-data-column">
+                <td bindonce class="source-data-cell">
                     <div bo-if="!!item.sourceData.nexus_info_id">
                         <b>Nexus ID:</b>
                         <a ng-href="https://www.nexusmods.com/{{::gameName}}/mods/{{::item.sourceData.nexus_info_id}}" target="_blank">{{::item.sourceData.nexus_info_id}}</a>
@@ -33,7 +33,7 @@
                         <b>Plugin Filename:</b> {{::item.sourceData.plugin_filename}}
                     </div>
                 </td>
-                <td class="mod-search-column">
+                <td class="mod-search-cell">
                     <search-input search-function="searchMods" result-id="item.id" search-text="item.name" label="mod" key="name" ng-if="!item.custom"></search-input>
                     <input type="text" placeholder="Custom mod name" ng-model="item.name" ng-if="item.custom" pu-elastic-input/>
                 </td>
@@ -42,7 +42,7 @@
                         <input type="checkbox" ng-model="item.custom"/>
                     </label>
                 </td>
-                <td>
+                <td class="actions-cell">
                     <actions></actions>
                 </td>
             </tr>

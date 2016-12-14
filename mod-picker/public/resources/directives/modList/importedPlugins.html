@@ -16,15 +16,15 @@
                         </div>
                     </div>
                 </th>
-                <th>Actions</th>
+                <th class="actions-header">Actions</th>
             </tr>
             </thead>
             <tbody>
             <tr ng-repeat="item in importedPlugins | orderBy:sort.column:(sort.direction === 'DESC')">
-                <td bindonce class="mod-search-column">
+                <td bindonce class="mod-search-cell">
                     {{::item.filename}}
                 </td>
-                <td class="mod-search-column">
+                <td class="mod-search-cell">
                     <a ng-href="#/mods/{{::item.mod_id}}" ng-if="item.mod_id && !item.custom">{{::item.mod_name}}</a>
                     <span ng-show="!item.mod_id || item.custom">-</span>
                 </td>
@@ -33,7 +33,7 @@
                         <input type="checkbox" ng-model="item.custom" ng-disabled="!item.mod_id"/>
                     </label>
                 </td>
-                <td>
+                <td class="actions-cell">
                     <actions></actions>
                 </td>
             </tr>
