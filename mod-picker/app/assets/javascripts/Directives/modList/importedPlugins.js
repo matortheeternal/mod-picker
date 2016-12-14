@@ -44,7 +44,7 @@ app.controller('importedPluginsController', function($scope, pluginService, colu
             };
         });
         $scope.$applyAsync(function() {
-            $scope.loading.importedPlugins = false;
+            $scope.loading = false;
             $scope.importedPlugins = ($scope.importedPlugins || []).concat(importedPlugins);
         });
     };
