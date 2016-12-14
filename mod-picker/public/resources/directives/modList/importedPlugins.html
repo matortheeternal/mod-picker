@@ -1,0 +1,43 @@
+<loader data="!loading" spinner-class="big-spinner" ng-if="!error"></loader>
+<div ng-if="importedPlugins">
+    <h3 class="section-title">Imported Plugins</h3>
+    <section class="box-shadow">
+        <table class="browse-table">
+            <thead>
+            <tr>
+                <th ng-repeat="column in pluginColumns" ng-click="sortColumn(column, sort, sortedColumn)" class="{{column.class}}" title="{{column.title}}">
+                    {{::column.label}}
+                    <div class="sorting-options" ng-if="sort && !column.unsortable">
+                        <div class="sort-up" ng-class="{ 'active' : column.up }">
+                            <i class="fa fa-caret-up"></i>
+                        </div>
+                        <div class="sort-down" ng-class="{ 'active' : column.down }">
+                            <i class="fa fa-caret-down"></i>
+                        </div>
+                    </div>
+                </th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="item in importedPlugins | orderBy:sort.column:(sort.direction === 'DESC')">
+                <td bindonce class="mod-search-column">
+                    {{::item.filename}}
+                </td>
+                <td class="mod-search-column">
+                    <a ng-href="#/mods/{{::item.mod_id}}" ng-if="item.mod_id && !item.custom">{{::item.mod_name}}</a>
+                    <span ng-show="!item.mod_id || item.custom">-</span>
+                </td>
+                <td>
+                    <label class="manage-item">
+                        <input type="checkbox" ng-model="item.custom" ng-disabled="!item.mod_id"/>
+                    </label>
+                </td>
+                <td>
+                    <actions></actions>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</div>
