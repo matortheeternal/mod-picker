@@ -13,8 +13,6 @@ app.controller('modListImportModalController', function($scope, $rootScope, even
 
     // inherited functions
     $scope.unfocusImportModal = formUtils.unfocusModal($scope.toggleDetailsModal);
-    $scope.searchMods = modService.searchMods;
-    $scope.searchPlugins = pluginService.searchPlugins;
     eventHandlerFactory.buildModalMessageHandlers($scope);
 
     // initialize variables
