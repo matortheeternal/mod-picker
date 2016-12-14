@@ -27,6 +27,18 @@ app.service('tableUtils', function($filter, objectUtils, sortUtils) {
         });
     };
 
+    // this function resolves a variable as a function if it is one,
+    // else returns its value
+    this.resolve = function($scope) {
+        return function(attribute, item, context) {
+            if (typeof attribute === 'function') {
+                return attribute($scope, item, context);
+            } else {
+                return attribute;
+            }
+        };
+    };
+
     // this function uses objectUtils.deepValue to retrieve the value
     // of a data item based on the data path described in the column's
     // data property.  if the data property has multiple paths it will
