@@ -22,6 +22,7 @@ app.controller('importedModsController', function($scope, modService, columnsFac
     };
 
     // expose service functions
+    $scope.searchMods = modService.searchMods;
     $scope.sortColumn = tableUtils.sortColumn;
     $scope.resolve = tableUtils.resolve($scope);
 

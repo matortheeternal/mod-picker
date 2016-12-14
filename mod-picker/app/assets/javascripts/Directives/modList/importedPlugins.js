@@ -22,6 +22,7 @@ app.controller('importedPluginsController', function($scope, pluginService, colu
     };
 
     // expose service functions
+    $scope.searchPlugins = pluginService.searchPlugins;
     $scope.sortColumn = tableUtils.sortColumn;
     $scope.resolve = tableUtils.resolve($scope);
 
