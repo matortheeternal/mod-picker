@@ -29,8 +29,8 @@
                     <div bo-if="!!item.sourceData.mod_name">
                         <b>Mod Name:</b> {{::item.sourceData.mod_name}}
                     </div>
-                    <div bo-if="!!item.sourceData.plugin_filename">
-                        <b>Plugin Filename:</b> {{::item.sourceData.plugin_filename}}
+                    <div ng-if="item.sourceData.plugins.length">
+                        <b>Plugins:</b> <span ng-repeat="plugin in item.sourceData.plugins">{{::plugin}}{{$last ? '' : ','}}</span>
                     </div>
                 </td>
                 <td class="mod-search-cell">
