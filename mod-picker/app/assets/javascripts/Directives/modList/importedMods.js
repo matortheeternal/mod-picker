@@ -45,11 +45,14 @@ app.controller('importedModsController', function($scope, modService, columnsFac
     $scope.concatImportedMods = function(importedMods) {
         if (!$scope.importedMods) $scope.importedMods = [];
         importedMods.forEach(function(mod) {
-            if (!mod.id) return;
-            var foundMod = $scope.importedMods.find(function(existingMod) {
-                return existingMod.id == mod.id;
-            });
-            foundMod ? $scope.combineSourceData(foundMod, mod) : $scope.importedMods.push(mod);
+            if (!mod.id) {
+                $scope.importedMods.push(mod);
+            } else {
+                var foundMod = $scope.importedMods.find(function(existingMod) {
+                    return existingMod.id == mod.id;
+                });
+                foundMod ? $scope.combineSourceData(foundMod, mod) : $scope.importedMods.push(mod);
+            }
         });
     };
 
