@@ -27,15 +27,6 @@ app.controller('modListImportModalController', function($scope, $rootScope, even
         delete $scope.importedMods;
     };
 
-    $scope.removeImportedItem = function(collection, item) {
-        var index = collection.indexOf(item);
-        if (index > -1) collection.splice(index, 1);
-        if (!collection.length) {
-            var isPlugin = item.hasOwnProperty('filename');
-            isPlugin ? delete $scope.importedPlugins : delete $scope.importedMods;
-        }
-    };
-
     $scope.getFileText = function(event, callback) {
         var input = event.target;
         if (input.files && input.files[0]) {

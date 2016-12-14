@@ -26,6 +26,12 @@ app.controller('importedModsController', function($scope, modService, columnsFac
     $scope.resolve = tableUtils.resolve($scope);
 
     // local functions
+    $scope.remove = function(item) {
+        var index = $scope.importedMods.indexOf(item);
+        if (index > -1) $scope.importedMods.splice(index, 1);
+        if (!$scope.importedMods.length) delete $scope.importedMods;
+    };
+
     $scope.getSourceData = function(item) {
         return {
             nexus_info_id: item.nexus_info_id,

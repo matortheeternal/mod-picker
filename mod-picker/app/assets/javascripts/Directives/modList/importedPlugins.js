@@ -26,6 +26,12 @@ app.controller('importedPluginsController', function($scope, pluginService, colu
     $scope.resolve = tableUtils.resolve($scope);
 
     // local functions
+    $scope.remove = function(item) {
+        var index = $scope.importedPlugins.indexOf(item);
+        if (index > -1) $scope.importedPlugins.splice(index, 1);
+        if (!$scope.importedPlugins.length) delete $scope.importedPlugins;
+    };
+
     $scope.addMatchingPlugins = function(sourceData, matchData) {
         var importedPlugins = matchData.map(function(matchData, index) {
             return {

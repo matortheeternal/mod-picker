@@ -246,7 +246,7 @@ app.service('actionsFactory', function() {
             caption: "Remove",
             title: "Remove this item from the import list",
             execute: function($scope, item) {
-                $scope.removeImportedItem(item);
+                $scope.remove(item);
             }
         }]
     };
