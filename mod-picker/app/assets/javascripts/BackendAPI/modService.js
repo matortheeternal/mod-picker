@@ -41,7 +41,8 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
         var postData = {
             filters: {
                 search: name,
-                include_games: true
+                include_games: true,
+                utility: false
             }
         };
         return backend.post('/mods/search', postData);
@@ -57,6 +58,10 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
         return backend.post('/mods/search', postData);
     };
 
+    this.searchModsBatch = function(batch) {
+        return backend.post('/mods/search', { batch: batch });
+    };
+    
     this.retrieveMod = function(modId) {
         var action = $q.defer();
         backend.retrieve('/mods/' + modId).then(function(data) {

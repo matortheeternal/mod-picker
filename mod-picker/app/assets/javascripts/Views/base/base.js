@@ -28,7 +28,8 @@ app.config(['$stateProvider', function($stateProvider) {
             }
         },
         onEnter: function(themesService, currentUser) {
-            themesService.changeTheme(currentUser.settings.theme)
+            var userTheme = currentUser.settings && currentUser.settings.theme;
+            themesService.changeTheme(userTheme || 'High Hrothgar');
         }
     })
 }]);

@@ -35,7 +35,12 @@ app.service('userService', function(backend, $q, userSettingsService, userTitleS
     this.retrieveCurrentUser = function() {
         var output = $q.defer();
         backend.retrieve('/current_user').then(function(userData) {
-            userData.permissions = service.getPermissions(userData);
+            if (userData) {
+                userData.signed_in = true;
+                userData.permissions = service.getPermissions(userData);
+            } else {
+                userData = { permissions: {} };
+            }
             output.resolve(userData);
         });
         return output.promise;
@@ -47,12 +52,15 @@ app.service('userService', function(backend, $q, userSettingsService, userTitleS
         permissions.isAdmin = user.role === 'admin';
         permissions.isModerator = user.role === 'moderator';
         permissions.isNewsWriter = user.role === 'writer';
+        permissions.isHelper = user.role === 'helper';
         permissions.isRestricted = user.role === 'restricted';
         permissions.isBanned = user.role === 'banned';
+        permissions.isSignedIn = true;
         permissions.canModerate = permissions.isAdmin || permissions.isModerator;
         permissions.canManageArticles = permissions.isAdmin || permissions.isNewsWriter;
-        permissions.canSubmitMods = true;
+        permissions.canSubmitMods = !permissions.isRestricted;
         permissions.canContribute = !permissions.isRestricted;
+        permissions.canManageMods = permissions.canModerate || permissions.isHelper;
         permissions.canUseCustomSources = permissions.canModerate;
         permissions.canSetGeneralModInfo = permissions.canModerate;
         permissions.canChangeAvatar = (rep >= 10) || permissions.canModerate;
@@ -60,7 +68,10 @@ app.service('userService', function(backend, $q, userSettingsService, userTitleS
 
         // permissions block for actions users who are NOT restricted can do
         if(!permissions.isRestricted) {
+            permissions.canTag = true;
+            permissions.canComment = true;
             permissions.canCreateTags = (rep >= 20) || permissions.canModerate;
+            permissions.canCreateCuratorRequest = (rep >= 20) || permissions.canModerate;
             permissions.canAppeal = (rep >= 40) || permissions.canModerate;
             permissions.canCorrect = (rep >= 40) || permissions.canModerate;
             permissions.canAgree = (rep >= 40) || permissions.canModerate;

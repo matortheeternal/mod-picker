@@ -19,4 +19,9 @@ class ReputationLink < ActiveRecord::Base
 
   # VALIDATIONS
   validates :from_rep_id, :to_rep_id, presence: true
+
+  def self.exists_between(from_user, to_user)
+    return false unless from_user.present? && to_user.present?
+    ReputationLink.exists?(from_rep_id: from_user.reputation.id, to_rep_id: to_user.reputation.id)
+  end
 end
