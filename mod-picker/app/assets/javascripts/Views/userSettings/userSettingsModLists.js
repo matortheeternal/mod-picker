@@ -117,6 +117,7 @@ app.controller('userSettingsModListsController', function($scope, $rootScope, $t
                 $scope.deleteModList(modList);
             }
             $scope.available_lists.splice($scope.available_lists.indexOf(modList), 1);
+            $scope.model.activeModListId = "";
             $scope.$emit('successMessage', 'Mod list deleted successfully.');
         }, function(response) {
             var params = {
