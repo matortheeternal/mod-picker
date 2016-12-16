@@ -218,7 +218,7 @@ class ModsController < ApplicationController
     corrections = @mod.corrections.accessible_by(current_ability)
 
     # prepare agreement marks
-    agreement_marks = AgreementMark.submitter(current_user.id).corrections(corrections.ids)
+    agreement_marks = AgreementMark.for_user_content(current_user, corrections.ids)
 
     # render response
     render json: {
