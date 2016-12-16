@@ -15,15 +15,15 @@
                             <a ng-click="toggleAuthorsModal(true)">{{mod.authors}}</a>
                         </span>
 
-                        <!-- TODO: add this with css :after content -->
-                        <span class="divider" ng-if="mod.primary_category_id && mod.aliases">
+                        <span class="divider">
                             |
                         </span>
 
-                        <!--Included in <a ng-href="#/modlists/includingMod/{{mod.id}}">{{mod.mod_modlists_count}} modlists</a>
-                        <span class="divider">
+                        <span>in {{mod.mod_lists_count}} mod lists</span>
+
+                        <span class="divider" ng-if="mod.aliases">
                             |
-                        </span>-->
+                        </span>
 
                         <span ng-if="mod.aliases">
                             <strong>AKA: </strong>{{mod.aliases}}
