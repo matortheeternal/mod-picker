@@ -86,7 +86,7 @@ module Trackable
     return unless attribute_changed?(column)
     old_milestone = get_milestone(milestones, attribute_was(column))
     new_milestone = get_milestone(milestones, public_send(column))
-    create_event(:"milestone#{new_milestone}") if old_milestone < new_milestone
+    ((old_milestone + 1)..new_milestone).each { |n| create_event(:"milestone#{n}") }
   end
 
   def subscriptions

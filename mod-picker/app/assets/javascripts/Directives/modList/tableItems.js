@@ -32,6 +32,7 @@ app.controller('tableItemsController', function($scope, $timeout, colorsFactory,
     $scope.groupColumns = tableUtils.groupColumns;
     $scope.filterClass = tableUtils.filterClass;
     $scope.getNumCols = tableUtils.getNumCols;
+    $scope.resolve = tableUtils.resolve($scope);
 
     // toggles the visibility of the edit columns modal
     $scope.toggleModal = function(visible) {
@@ -43,16 +44,6 @@ app.controller('tableItemsController', function($scope, $timeout, colorsFactory,
     // controller to handle and respond to with an updateItems event when done
     $scope.removeItem = function(item) {
         $scope.$emit('removeItem', item);
-    };
-
-    // this function resolves a variable as a function if it is one,
-    // else returns its value
-    $scope.resolve = function(attribute, item, context) {
-        if (typeof attribute === 'function') {
-            return attribute($scope, item, context);
-        } else {
-            return attribute;
-        }
     };
 
     // when the user moves an item splice the original out of the array it was in,

@@ -43,7 +43,7 @@ class InstallOrderNote < ActiveRecord::Base
   has_many :mod_list_ignored_notes, :as => 'note'
 
   # old versions of this install order note
-  has_many :history_entries, :class_name => 'InstallOrderNoteHistoryEntry', :inverse_of => 'install_order_note', :foreign_key => 'install_order_note_id'
+  has_many :history_entries, :class_name => 'InstallOrderNoteHistoryEntry', :inverse_of => 'install_order_note', :foreign_key => 'install_order_note_id', :dependent => :destroy
   has_many :editors, -> { uniq }, :class_name => 'User', :through => 'history_entries'
 
   # COUNTER CACHE

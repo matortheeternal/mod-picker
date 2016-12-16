@@ -13,6 +13,7 @@ header {
       position: fixed;
       background-color: $bar_color;
       width: 100%;
+      max-width: 100vw;
     }
   }
 }
@@ -111,6 +112,26 @@ nav {
       a {
         margin: 0 4px;
       }
+    }
+  }
+}
+
+@media screen and (max-device-width: 480px) {
+  .secondary-nav {
+    .user-nav a {
+      font-size: 1.5em;
+    }
+
+    .games {
+      display: none !important;
+    }
+  }
+}
+
+@media screen and (max-device-width: 400px) {
+  .primary-nav {
+    h1 {
+      display: none !important;
     }
   }
 }

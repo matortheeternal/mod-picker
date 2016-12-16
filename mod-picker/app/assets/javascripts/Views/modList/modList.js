@@ -126,9 +126,6 @@ app.controller('modListController', function($scope, $rootScope, $q, $state, $st
     $scope.originalModList = angular.copy($scope.mod_list);
     $scope.removedModIds = [];
 
-    // default to editing modlist if it's the current user's active modlist
-    $scope.editing = $scope.activeModList;
-
 	// initialize local variables
     $scope.tabs = tabsFactory.buildModListTabs($scope.mod_list);
     $scope.pages = {
@@ -187,6 +184,9 @@ app.controller('modListController', function($scope, $rootScope, $q, $state, $st
     $scope.target = $scope.mod_list;
     $scope.isActive = $scope.activeModList && $scope.activeModList.id == $scope.mod_list.id;
 
+    // default to editing modlist if it's the current user's active modlist
+    $scope.editing = $scope.isActive;
+
     // set page title
     $scope.$emit('setPageTitle', 'View Mod List');
 
@@ -204,6 +204,7 @@ app.controller('modListController', function($scope, $rootScope, $q, $state, $st
         var tabName = toState.name.split(".").slice(-1)[0];
         var uneditableTabs = ["Comments", "Analysis"];
         $scope.tabEditable = uneditableTabs.indexOf(tabName) == -1;
+        $scope.$broadcast('resetSticky');
     });
 
     // set help context
@@ -506,6 +507,20 @@ app.controller('modListController', function($scope, $rootScope, $q, $state, $st
         }
     };
 
+    // returns true if the mod list has been changed
+    $scope.modListUnchanged = function() {
+        $scope.flattenModels();
+        var modListDiff = objectUtils.getDifferentObjectValues($scope.originalModList, $scope.mod_list);
+        return objectUtils.isEmptyObject(modListDiff);
+    };
+
+    // returns true if the url is to the same mod list
+    $scope.isLocalUrl = function(newUrl, oldUrl) {
+        var newUrlParts = newUrl.split('/').slice(0, -1);
+        var oldUrlParts = oldUrl.split('/').slice(0, -1);
+        return newUrlParts.join('/') === oldUrlParts.join('/');
+    };
+
     // event triggers
     $scope.$on('reloadModules', function() {
         // recover destroyed groups
@@ -521,5 +536,16 @@ app.controller('modListController', function($scope, $rootScope, $q, $state, $st
         // set originalModList to the current version of mod_list
         delete $scope.originalModList;
         $scope.originalModList = angular.copy($scope.mod_list);
-    })
+    });
+
+    // help the user to not leave the page with unsaved changes
+    $scope.$on("$locationChangeStart", function(event, newUrl, oldUrl) {
+        // don't prompt if user can't edit the mod list or no changes have been made
+        if (!$scope.permissions.canManage || $scope.modListUnchanged()) return;
+        if ($scope.isLocalUrl(newUrl, oldUrl)) return;
+
+        if (!confirm('Your mod list has unsaved changes, continue?')) {
+            event.preventDefault();
+        }
+    });
 });

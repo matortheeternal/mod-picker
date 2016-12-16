@@ -18,6 +18,7 @@ Rails.application.routes.draw do
   match '/users/:id/mod_lists', to: 'users#mod_lists', via: [:get]
 
   # tags
+  match '/all_tags', to: 'tags#all', via: [:get]
   match '/tags', to: 'tags#index', via: [:post]
 
   # mods
@@ -132,13 +133,17 @@ Rails.application.routes.draw do
     match '/notifications/read', to: 'notifications#read', via: [:post]
     match '/notifications', to: 'notifications#index', via: [:post, :get]
 
+    # events
+    match '/events', to: 'events#index', via: [:post, :get]
+
     # scraping
     match '/nexus_infos/:id', to: 'nexus_infos#show', via: [:get]
     match '/lover_infos/:id', to: 'lover_infos#show', via: [:get]
     match '/workshop_infos/:id', to: 'workshop_infos#show', via: [:get]
 
     # tags
-    match '/tags/:id', to: 'tags#destroy', via: [:delete]
+    match '/tags/:id/hide', to: 'tags#hide', via: [:post]
+    match '/tags/:id', to: 'tags#update', via: [:patch, :put]
     match '/mods/:id/tags', to: 'mods#update_tags', via: [:patch, :put]
     match '/mod_lists/:id/tags', to: 'mod_lists#update_tags', via: [:patch, :put]
 
@@ -189,6 +194,7 @@ Rails.application.routes.draw do
 
     # mod lists
     match '/mod_lists/active', to: 'mod_lists#set_active', via: [:post]
+    match '/mod_lists/:id/import', to: 'mod_lists#import', via: [:post]
     match '/mod_lists/:id/hide', to: 'mod_lists#hide', via: [:post]
     match '/mod_lists/:id/clone', to: 'mod_lists#clone', via: [:post]
     match '/mod_lists/:id/add', to: 'mod_lists#add', via: [:post]

@@ -1,9 +1,11 @@
 app.service('listMetaFactory', function($q, $timeout, modListService, categoryService, listUtils, sortUtils) {
     this.buildModelFunctions = function ($scope, label, dataKey, nameKey, customName) {
         var capLabel = label.capitalize();
+        var capDataKey = dataKey.capitalize();
         var pluralLabel = label + 's';
         var countKey = pluralLabel + '_count';
-        var idKey = label + '_id';
+        var customCountKey = 'custom_' + pluralLabel + '_count';
+        var idKey = dataKey + '_id';
         var $rootScope = $scope.$root;
 
         // ITEM RECOVERY
@@ -15,9 +17,35 @@ app.service('listMetaFactory', function($q, $timeout, modListService, categorySe
             $scope.updateTabs();
         };
 
+        var incrementCustomCounter = function() {
+            $scope.mod_list[customCountKey] += 1;
+            $scope.updateTabs();
+        };
+
+        var incrementAppropriateCounter = function(modListItem) {
+            if (modListItem.hasOwnProperty(dataKey)) {
+                incrementCounter();
+            } else {
+                incrementCustomCounter();
+            }
+        };
+
         var decrementCounter = function() {
             $scope.mod_list[countKey] -= 1;
             $scope.updateTabs();
+        };
+
+        var decrementCustomCounter = function() {
+            $scope.mod_list[customCountKey] -= 1;
+            $scope.updateTabs();
+        };
+
+        var decrementAppropriateCounter = function(modListItem) {
+            if (modListItem.hasOwnProperty(dataKey)) {
+                decrementCounter();
+            } else {
+                decrementCustomCounter();
+            }
         };
 
         var customCallback = function(functionLabel, arg) {
@@ -61,7 +89,7 @@ app.service('listMetaFactory', function($q, $timeout, modListService, categorySe
 
             // destroy the item
             delete modListItem._destroy;
-            incrementCounter();
+            incrementAppropriateCounter(modListItem);
             var itemId = modListItem[dataKey]&& modListItem[dataKey].id;
             $rootScope.$broadcast(recoverMessage, itemId);
             customCallback(recoverLabel, modListItem);
@@ -75,8 +103,8 @@ app.service('listMetaFactory', function($q, $timeout, modListService, categorySe
         // ADDING NEW ITEMS
         var addNewLabel = 'addNew' + capLabel;
         var addNewItemLabel = addNewLabel + 'Item';
-        var newModListItemKey = 'newModList' + capLabel;
-        var mod_list_item_key = 'mod_list_' + label;
+        var newModListItemKey = 'newModList' + capDataKey;
+        var mod_list_item_key = 'mod_list_' + dataKey;
         var itemAddedMessage = dataKey + 'Added';
 
         $scope[addNewItemLabel] = function(modListItem) {
@@ -116,10 +144,10 @@ app.service('listMetaFactory', function($q, $timeout, modListService, categorySe
 
         // ADD CUSTOM ITEM
         var addCustomLabel = 'addCustom' + capLabel;
-        var newModListCustomItemKey = 'newModListCustom' + dataKey.capitalize();
+        var newModListCustomItemKey = 'newModListCustom' + capDataKey;
         var mod_list_custom_item_key = 'mod_list_custom_' + dataKey;
         var customKey = 'custom_' + pluralLabel;
-        var customItemAddedMessage = 'custom' + dataKey.capitalize() + 'Added';
+        var customItemAddedMessage = 'custom' + capDataKey + 'Added';
 
         $scope[addCustomLabel] = function(noteId) {
             var custom_item = {};
@@ -134,7 +162,7 @@ app.service('listMetaFactory', function($q, $timeout, modListService, categorySe
                 $scope.mod_list[customKey].push(modListCustomItem);
                 $scope.model[pluralLabel].push(modListCustomItem);
                 $scope.originalModList[customKey].push(angular.copy(modListCustomItem));
-                incrementCounter();
+                incrementCustomCounter();
 
                 // update modules
                 $scope.$broadcast(customItemAddedMessage);
@@ -179,7 +207,7 @@ app.service('listMetaFactory', function($q, $timeout, modListService, categorySe
 
         $scope[removeLabel] = function(modListItem) {
             modListItem._destroy = true;
-            decrementCounter();
+            decrementAppropriateCounter(modListItem);
 
             // update modules
             var itemId = modListItem[dataKey] && modListItem[dataKey].id;

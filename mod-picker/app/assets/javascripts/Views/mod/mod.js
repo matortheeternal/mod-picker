@@ -197,7 +197,7 @@ app.controller('modController', function($scope, $rootScope, $q, $stateParams, $
     var isAuthor = angular.isDefined(author);
     var isCurator = isAuthor && (author.role === 'curator');
     $scope.permissions.isAuthor = isAuthor;
-    $scope.permissions.canManage = $scope.permissions.canModerate || isAuthor;
+    $scope.permissions.canManage = $scope.permissions.canManageMods || isAuthor;
     $scope.permissions.canReview = $scope.permissions.canContribute && (isCurator || !isAuthor);
 
     var redirectToFirstTab = function() {

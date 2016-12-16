@@ -180,6 +180,7 @@ app.service('modListService', function(backend, $q, userTitleService, contributi
     this.newModListMod = function(mod_list_mod) {
         var action = $q.defer();
         backend.post('/mod_list_mods', {mod_list_mod: mod_list_mod}).then(function(data) {
+            modService.associateModImage(data.mod_list_mod.mod);
             userTitleService.associateTitles(data.mod_compatibility_notes);
             userTitleService.associateTitles(data.plugin_compatibility_notes);
             userTitleService.associateTitles(data.install_order_notes);
@@ -235,6 +236,26 @@ app.service('modListService', function(backend, $q, userTitleService, contributi
             action.reject(response);
         });
         return action.promise;
+    };
+
+    this.sanitizeImportedMods = function(importedMods) {
+        return importedMods.map(function(mod) {
+            return mod.id ? { id: mod.id } : { name: mod.name, nexus_info_id: mod.sourceData.nexus_info_id };
+        });
+    };
+
+    this.sanitizeImportedPlugins = function(importedPlugins) {
+        return importedPlugins.map(function(plugin) {
+            return plugin.id ? { id: plugin.id } : { filename: plugin.filename };
+        });
+    };
+
+    this.import = function(modListId, importedMods, importedPlugins) {
+        var postData = {
+            mods: service.sanitizeImportedMods(importedMods),
+            plugins: service.sanitizeImportedPlugins(importedPlugins)
+        };
+        return backend.post('/mod_lists/' + modListId + '/import', postData);
     };
 
     this.newModListCustomMod = function(custom_mod) {

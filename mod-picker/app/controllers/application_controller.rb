@@ -5,12 +5,19 @@ class ApplicationController < ActionController::Base
   
   before_action :configure_permitted_parameters, if: :devise_controller?
 
-  # Render 401 or 403 as appropriate
-
-  rescue_from ::StandardError do |exception|
+  # Render errors as appropriate
+  def render_standard_error(exception, status)
     error_hash = { error: exception.message }
     error_hash[:backtrace] = exception.backtrace unless Rails.env.production?
-    render json: error_hash, status: 500
+    render json: error_hash, status: status
+  end
+
+  rescue_from ::StandardError do |exception|
+    render_standard_error(exception, 500)
+  end
+
+  rescue_from ActiveRecord::RecordNotFound do |exception|
+    render_standard_error(exception, 404)
   end
 
   rescue_from CanCan::AccessDenied do |exception|

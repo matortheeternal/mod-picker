@@ -1,6 +1,6 @@
 class ModListsController < ApplicationController
-  before_action :check_sign_in, only: [:create, :set_active, :update, :update_tags, :create_star, :destroy_star]
-  before_action :set_mod_list, only: [:show, :hide, :clone, :add, :update, :update_tags, :tools, :mods, :plugins, :export_modlist, :export_plugins, :export_links, :config_files, :analysis, :comments]
+  before_action :check_sign_in, only: [:create, :set_active, :update, :import, :update_tags, :create_star, :destroy_star]
+  before_action :set_mod_list, only: [:show, :hide, :clone, :add, :update, :import, :update_tags, :tools, :mods, :plugins, :export_modlist, :export_plugins, :export_links, :config_files, :analysis, :comments]
 
   # GET /mod_lists
   def index
@@ -268,6 +268,18 @@ class ModListsController < ApplicationController
     end
   end
 
+  # POST /mod_lists/1/import
+  def import
+    authorize! :update, @mod_list
+
+    @mod_list.updated_by = current_user.id
+    if @mod_list.import(mod_list_import_params) && @mod_list.update_all_counters!
+      render json: {status: :ok}
+    else
+      render json: @mod_list.errors, status: :unprocessable_entity
+    end
+  end
+
   # PATCH/PUT /mod_lists/1/tags
   def update_tags
     # errors array to return to user
@@ -368,9 +380,9 @@ class ModListsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def mod_list_params
       params.require(:mod_list).permit(:game_id, :name, :description, :status, :visibility, :is_collection, :disable_comments, :lock_tags, :hidden,
-          mod_list_mods_attributes: [:id, :group_id, :mod_id, :index, :_destroy, mod_list_mod_options_attributes: [:id, :mod_option_id, :_destroy]],
-          custom_mods_attributes: [:id, :group_id, :is_utility, :index, :name, :description, :_destroy],
-          mod_list_plugins_attributes: [:id, :group_id, :plugin_id, :index, :cleaned, :merged, :_destroy],
+          mod_list_mods_attributes: [:id, :group_id, :mod_id, :index, :description, :_destroy, mod_list_mod_options_attributes: [:id, :mod_option_id, :_destroy]],
+          custom_mods_attributes: [:id, :group_id, :is_utility, :index, :name, :url, :description, :_destroy],
+          mod_list_plugins_attributes: [:id, :group_id, :plugin_id, :index, :cleaned, :merged, :description, :_destroy],
           custom_plugins_attributes: [:id, :group_id, :index, :cleaned, :merged, :compatibility_note_id, :filename, :description, :_destroy],
           mod_list_groups_attributes: [:id, :index, :tab, :color, :name, :description, :_destroy,
               children: [:id]
@@ -380,4 +392,8 @@ class ModListsController < ApplicationController
           ignored_notes_attributes: [:id, :note_id, :note_type, :_destroy]
       )
     end
+
+  def mod_list_import_params
+    params.permit(mods: [:id, :name, :nexus_info_id], plugins: [:id, :filename])
+  end
 end

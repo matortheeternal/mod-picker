@@ -1,4 +1,4 @@
-app.service('modService', function(backend, $q, pageUtils, objectUtils, contributionService, userTitleService, reviewSectionService, recordGroupService, pluginService, assetUtils) {
+app.service('modService', function(backend, $q, pageUtils, objectUtils, contributionService, userTitleService, reviewSectionService, recordGroupService, pluginService, assetUtils, modOptionUtils) {
     var service = this;
 
     this.retrieveMods = function(options, pageInformation) {
@@ -41,7 +41,8 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
         var postData =  {
             filters: {
                 search: name,
-                include_games: true
+                include_games: true,
+                utility: false
             }
         };
         return backend.post('/mods/search', postData);
@@ -55,6 +56,10 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
             }
         };
         return backend.post('/mods/search', postData);
+    };
+
+    this.searchModsBatch = function(batch) {
+        return backend.post('/mods/search', { batch: batch });
     };
     
     this.retrieveMod = function(modId) {
@@ -110,20 +115,15 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
     this.retrieveModAnalysis = function(modId) {
         var output = $q.defer();
         backend.retrieve('/mods/' + modId + '/' + 'analysis').then(function(analysis) {
-            // create nestedAssets tree
-            analysis.nestedAssets = assetUtils.getNestedAssets(analysis.assets);
-            assetUtils.sortNestedAssets(analysis.nestedAssets);
-
             // prepare plugin data for display
             recordGroupService.associateGroups(analysis.plugins);
             pluginService.combineAndSortMasters(analysis.plugins);
             pluginService.associateOverrides(analysis.plugins);
             pluginService.sortErrors(analysis.plugins);
 
-            // set default options to active
-            analysis.mod_options.forEach(function(option) {
-                option.active = option.default;
-            });
+            // create nested mod options tree
+            modOptionUtils.activateDefaultModOptions(analysis.mod_options);
+            analysis.nestedOptions = modOptionUtils.getNestedModOptions(analysis.mod_options);
 
             output.resolve(analysis);
         }, function(response) {

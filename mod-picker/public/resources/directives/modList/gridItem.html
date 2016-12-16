@@ -1,5 +1,5 @@
 <div class="action-items">
-    <span class="fa fa-cog" ng-hide="item.mod && item.mod.mod_options.length < 2" ng-click="viewDetails(item)" title="View Details"></span>
+    <span class="fa fa-cog" ng-click="viewDetails(item)" title="View Details"  ng-show="editing || item.description || !item.mod || item.mod.mod_options.length > 1"></span>
     <span class="fa fa-times" ng-click="removeItem(item)" title="Remove" ng-if="editing"></span>
 </div>
 <div class="item-index">
@@ -9,13 +9,18 @@
     <div class="helper"></div>
     <img ng-src="{{item.mod.images.small || '/mods/Default-small.png'}}"/>
 </div>
-<ul class="mod-rows">
+<ul class="mod-rows" ng-if="item.mod">
     <li class="mod-name">
-        <a ng-show="item.mod" href="#/mod/{{item.mod.id}}">{{item.mod.name}}</a>
-        <span ng-show="!item.mod">{{item.name}}</span>
-        <span ng-if="item.mod.aliases">({{item.mod.aliases.split(',')[0]}})</span>
+        <a href="#/mod/{{::item.mod.id}}">{{::item.mod.name}}</a>
+        <span ng-if="item.mod.aliases">({{::item.mod.aliases.split(',')[0]}})</span>
     </li>
-    <li ng-show="item.mod" class="mod-authors">by {{item.mod.authors}}</li>
-    <li ng-show="item.mod">Released {{item.mod.released | date}}</li>
-    <li ng-if="item.mod.updated">Updated {{item.mod.updated | date}}</li>
+    <li class="mod-authors">by {{::item.mod.authors}}</li>
+    <li>Released {{::item.mod.released | date}}</li>
+    <li>Updated {{::item.mod.updated | date}}</li>
+</ul>
+<ul class="mod-rows" ng-if="!item.mod">
+    <li class="mod-name">
+        <a ng-if="item.url" ng-href="{{item.url}}">{{item.name}}</a>
+        <span ng-if="!item.url">{{item.name}}</span>
+    </li>
 </ul>

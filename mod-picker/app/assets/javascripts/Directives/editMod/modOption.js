@@ -10,7 +10,7 @@ app.directive('modOption', function() {
     }
 });
 
-app.controller('modOptionController', function($scope, formUtils, assetUtils) {
+app.controller('modOptionController', function($scope, formUtils) {
     $scope.focusText = formUtils.focusText;
 
     $scope.removeModOption = function() {

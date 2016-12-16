@@ -81,7 +81,8 @@ class ModOption < ActiveRecord::Base
     dump[:game_id] = mod.game_id
     plugin = Plugin.find_by(filename: dump[:filename], crc_hash: dump[:crc_hash])
     if plugin.nil?
-      plugin = plugins.create(dump)
+      dump[:mod_option_id] = id
+      Plugin.create!(dump)
     else
       plugin.mod_option_id = id
       plugin.save!

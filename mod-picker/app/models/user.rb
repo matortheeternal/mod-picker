@@ -124,6 +124,10 @@ class User < ActiveRecord::Base
     role.to_sym == :writer
   end
 
+  def helper?
+    role.to_sym == :helper
+  end
+
   def restricted?
     role.to_sym == :restricted
   end

@@ -49,28 +49,4 @@
     </form>
 </div>
 
-<div class="fullscreen-modal-container" ng-show="submitting">
-    <div class="modal">
-        <loader data="success || errors" spinner-class="big-spinner">
-        </loader>
-        <h2>{{submittingStatus}}</h2>
-        <div ng-show="success">
-            <div ng-hide="delete">
-                <a ng-href="#/article/{{article.id}}">Click here</a> to return to the article Page
-            </div>
-            <div ng-show="delete">
-                <a href="#/articles">Click here</a> to view all articles
-            </div>
-        </div>
-        <div ng-show="errors">
-            <div ng-repeat="error in errors">
-                {{error.message}}
-            </div>
-            <div>
-                <a ng-click="closeModal()">Click here</a> to return the update form
-            </div>
-        </div>
-    </div>
-</div>
-
 <submission-modal></submission-modal>

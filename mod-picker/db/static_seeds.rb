@@ -400,7 +400,7 @@ def seed_categories
   Category.create(
       name: "Items - Weapons",
       parent_id: catItems.id,
-      description: "Mods that that add sticks you can stab, squish, or shoot people with.",
+      description: "Mods that add sticks you can stab, squish, or shoot people with.",
       priority: 142
   )
 

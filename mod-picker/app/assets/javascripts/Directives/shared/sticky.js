@@ -73,6 +73,13 @@ app.directive('sticky', function($timeout) {
                 if (fixed) unstick();
                 window.removeEventListener('scroll', onScrollEvent);
             });
+
+            scope.$on('resetSticky', function() {
+                $timeout(function() {
+                    phBottom = $elem.offsetTop + $elem.offsetHeight;
+                    toggleSticky(window.scrollY);
+                });
+            });
         }
     }
 });

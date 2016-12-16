@@ -35,7 +35,7 @@ class HomeController < ApplicationController
 
     # get recent contributions
     mod_lists = ModList.accessible_by(current_ability).visible.game(params[:game]).where(status: 2).includes(submitter: :reputation).order(completed: :DESC).limit(5)
-    mods = Mod.accessible_by(current_ability).visible.game(params[:game]).order(id: :DESC).limit(5)
+    mods = Mod.accessible_by(current_ability).visible.adult(0 => true, 1 => false).game(params[:game]).order(submitted: :DESC).limit(5)
     reviews = Review.accessible_by(current_ability).visible.game(params[:game]).includes(:review_ratings, :mod, submitter: :reputation).order(submitted: :DESC).limit(4)
     corrections = Correction.accessible_by(current_ability).visible.game(params[:game]).includes(submitter: :reputation).order(submitted: :DESC).limit(4)
     compatibility_notes = CompatibilityNote.accessible_by(current_ability).visible.game(params[:game]).includes(:first_mod, :second_mod, submitter: :reputation).order(submitted: :DESC).limit(4)
