@@ -3,7 +3,7 @@
     <section>
         <select ng-model="model.activeModListId">
             <option value="">None</option>
-            <option ng-repeat="modList in public_lists" value="{{modList.id}}">
+            <option ng-repeat="modList in available_lists" value="{{modList.id}}">
                 {{modList.name}}
             </option>
         </select>
