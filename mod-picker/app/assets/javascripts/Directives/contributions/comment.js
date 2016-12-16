@@ -120,15 +120,14 @@ app.controller('commentController', function($scope, $rootScope, $filter, $timeo
     $scope.setPermissions = function() {
         // permissions helper variables
         var user = $scope.currentUser;
-        if (!user) return;
         var isAdmin = user && user.role === 'admin';
         var isModerator = user && user.role === 'moderator';
         var isSubmitter = user && user.id === $scope.comment.submitted_by;
         // set up permissions
         $scope.isSubmitter = isSubmitter;
-        $scope.canReply = !$scope.isChild && user;
-        $scope.canReport = user || false;
-        $scope.canEdit = isAdmin || isModerator || isSubmitter;
+        $scope.canReply = !$scope.isChild && user.canComment;
+        $scope.canReport = user.canReport;
+        $scope.canEdit = user.canComment && (isAdmin || isModerator || isSubmitter);
         $scope.canHide = isAdmin || isModerator;
     };
 
