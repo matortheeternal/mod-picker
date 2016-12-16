@@ -90,6 +90,6 @@
     </div>
 </div>
 
-<tag-selector active-tags="mod_list.tags" new-tags="newTags" max-tags="10" show-mod-lists-count="true" show-add="!mod_list.lock_tags || editing" can-create="permissions.canCreateTags" show-remove="permissions.canManage && (!mod_list.lock_tags || editing)" save-callback="saveTags" class="wide-tag-selector"></tag-selector>
+<tag-selector active-tags="mod_list.tags" new-tags="newTags" max-tags="10" show-mod-lists-count="true" show-add="(!mod_list.lock_tags && permissions.canTag) || editing" can-create="permissions.canCreateTags" show-remove="permissions.canManage && (!mod_list.lock_tags || editing)" save-callback="saveTags" class="wide-tag-selector"></tag-selector>
 
 <mod-list-import-modal ng-if="showImportModal"></mod-list-import-modal>

@@ -67,6 +67,7 @@ app.service('userService', function(backend, $q, userSettingsService, userTitleS
 
         // permissions block for actions users who are NOT restricted can do
         if(!permissions.isRestricted) {
+            permissions.canTag = true;
             permissions.canCreateTags = (rep >= 20) || permissions.canModerate;
             permissions.canAppeal = (rep >= 40) || permissions.canModerate;
             permissions.canCorrect = (rep >= 40) || permissions.canModerate;
