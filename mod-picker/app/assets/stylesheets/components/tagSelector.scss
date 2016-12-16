@@ -2,6 +2,18 @@
   max-width: 400px;
   display: inline-block;
 
+  .tag-box {
+    a {
+      color: inherit;
+      text-decoration: inherit;
+      cursor: pointer;
+      transition: none;
+      &:hover {
+        color: inherit;
+      }
+    }
+  }
+
   span {
     display: inline-block;
     padding: 4px;
