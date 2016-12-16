@@ -182,6 +182,12 @@ mod-details-modal {
 }
 
 mod-list-import-modal {
+  submission-modal {
+    .modal {
+      box-shadow: none !important;
+    }
+  }
+
   .import-type {
     display: inline-block;
     text-align: center;

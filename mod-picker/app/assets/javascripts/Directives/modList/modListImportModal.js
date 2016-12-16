@@ -7,7 +7,7 @@ app.directive('modListImportModal', function() {
     };
 });
 
-app.controller('modListImportModalController', function($scope, $rootScope, eventHandlerFactory, formUtils, importUtils) {
+app.controller('modListImportModalController', function($scope, $rootScope, $state, modListService, eventHandlerFactory, formUtils, importUtils) {
     // inherited variables
     $scope.gameName = $rootScope.currentGame.nexus_name;
 
@@ -76,6 +76,17 @@ app.controller('modListImportModalController', function($scope, $rootScope, even
             $scope.loadOrderTxt = text;
             var pluginData = importUtils.getLoadOrderPluginData($scope.loadOrderTxt);
             $scope.$broadcast('findMatchingPlugins', pluginData);
+        });
+    };
+
+    $scope.import = function() {
+        var modListId = $scope.mod_list.id, imported = $scope.imported;
+        $scope.startSubmission("Importing mod list...");
+        modListService.import(modListId, imported.mods || [], imported.plugins || []).then(function() {
+            $scope.submissionSuccess('Successfully imported mod list.  Reloading...', []);
+            $state.reload();
+        }, function(response) {
+            $scope.submissionError("There were errors importing the mod list.", response);
         });
     };
 });
