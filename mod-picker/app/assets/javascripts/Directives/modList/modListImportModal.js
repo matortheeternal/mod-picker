@@ -49,7 +49,7 @@ app.controller('modListImportModalController', function($scope, $rootScope, even
             $scope.modListXml = text;
             var xmlDoc = importUtils.getXmlDoc($scope.modListXml);
             var modData = importUtils.getXmlModData(xmlDoc);
-            $scope.findMatchingMods(modData);
+            $scope.$broadcast('findMatchingMods', modData);
         });
     };
 
