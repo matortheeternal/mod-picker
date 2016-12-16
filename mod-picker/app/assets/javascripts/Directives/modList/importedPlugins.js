@@ -63,4 +63,8 @@ app.controller('importedPluginsController', function($scope, pluginService, colu
     $scope.$on('findMatchingPlugins', function(e, sourceData) {
         $scope.findMatchingPlugins(sourceData);
     });
+
+    $scope.$on('clearImportedData', function(e) {
+        delete $scope.importedPlugins;
+    });
 });

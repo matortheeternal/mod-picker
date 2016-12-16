@@ -12,23 +12,31 @@ app.controller('modListImportModalController', function($scope, $rootScope, even
     $scope.gameName = $rootScope.currentGame.nexus_name;
 
     // inherited functions
-    $scope.unfocusImportModal = formUtils.unfocusModal($scope.toggleDetailsModal);
+    $scope.unfocusImportModal = formUtils.unfocusModal($scope.toggleImportModal);
     eventHandlerFactory.buildModalMessageHandlers($scope);
 
     // initialize variables
     $scope.importTypes = importUtils.importTypes;
     $scope.selectedImportType = $scope.importTypes[0];
+    var fileInputIds = ['mod-list-xml-input', 'mod-list-txt-input', 'load-order-txt-input'];
     $scope.imported = {
         mods: null,
         plugins: null
     };
 
     // local functions
+    $scope.clearImportedData = function() {
+        fileInputIds.forEach(function(id) {
+            document.getElementById(id).val('');
+        });
+        $scope.$broadcast('clearImportedData');
+    };
+
     $scope.selectImportType = function(importType) {
         $scope.selectedImportType.selected = false;
         $scope.selectedImportType = importType;
         importType.selected = true;
-        delete $scope.importedMods;
+        $scope.clearImportedData();
     };
 
     $scope.getFileText = function(event, callback) {

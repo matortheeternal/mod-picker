@@ -113,4 +113,8 @@ app.controller('importedModsController', function($scope, modService, columnsFac
     $scope.$on('findMatchingMods', function(e, sourceData) {
         $scope.findMatchingMods(sourceData);
     });
+
+    $scope.$on('clearImportedData', function(e) {
+        delete $scope.importedMods;
+    });
 });

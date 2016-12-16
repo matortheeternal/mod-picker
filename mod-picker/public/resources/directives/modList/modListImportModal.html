@@ -24,15 +24,15 @@
             <section>
                 <div ng-show="selectedImportType.modListXml">
                     <span class="input-label">modlist.xml</span>
-                    <input type="file" file-change="selectModListXml" accept=".xml"/>
+                    <input id="mod-list-xml-input" type="file" file-change="selectModListXml" accept=".xml"/>
                 </div>
                 <div ng-show="selectedImportType.modListTxt">
                     <span class="input-label">modlist.txt</span>
-                    <input type="file" file-change="selectModListTxt" accept=".txt"/>
+                    <input id="mod-list-txt-input" type="file" file-change="selectModListTxt" accept=".txt"/>
                 </div>
                 <div ng-show="selectedImportType.loadOrderTxt">
                     <span class="input-label">loadorder.txt</span>
-                    <input type="file" file-change="selectLoadOrderTxt" accept=".txt"/>
+                    <input id="load-order-txt-input" type="file" file-change="selectLoadOrderTxt" accept=".txt"/>
                 </div>
             </section>
 
