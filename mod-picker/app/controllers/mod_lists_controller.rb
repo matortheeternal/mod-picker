@@ -1,6 +1,6 @@
 class ModListsController < ApplicationController
-  before_action :check_sign_in, only: [:create, :set_active, :update, :update_tags, :create_star, :destroy_star]
-  before_action :set_mod_list, only: [:show, :hide, :clone, :add, :update, :update_tags, :tools, :mods, :plugins, :export_modlist, :export_plugins, :export_links, :config_files, :analysis, :comments]
+  before_action :check_sign_in, only: [:create, :set_active, :update, :import, :update_tags, :create_star, :destroy_star]
+  before_action :set_mod_list, only: [:show, :hide, :clone, :add, :update, :import, :update_tags, :tools, :mods, :plugins, :export_modlist, :export_plugins, :export_links, :config_files, :analysis, :comments]
 
   # GET /mod_lists
   def index
@@ -268,6 +268,18 @@ class ModListsController < ApplicationController
     end
   end
 
+  # POST /mod_lists/1/import
+  def import
+    authorize! :update, @mod_list
+
+    @mod_list.updated_by = current_user.id
+    if @mod_list.import(mod_list_import_params) && @mod_list.update_all_counters!
+      render json: {status: :ok}
+    else
+      render json: @mod_list.errors, status: :unprocessable_entity
+    end
+  end
+
   # PATCH/PUT /mod_lists/1/tags
   def update_tags
     # errors array to return to user
@@ -380,4 +392,8 @@ class ModListsController < ApplicationController
           ignored_notes_attributes: [:id, :note_id, :note_type, :_destroy]
       )
     end
+
+  def mod_list_import_params
+    params.permit(mods: [:id, :name, :nexus_info_id], plugins: [:id, :filename])
+  end
 end
