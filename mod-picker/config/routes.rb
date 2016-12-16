@@ -135,6 +135,7 @@ Rails.application.routes.draw do
     match '/mod_lists/active', to: 'mod_lists#active', via: [:get]
     match '/mod_lists/index', to: 'mod_lists#index', via: [:get, :post]
     match '/mod_lists/active', to: 'mod_lists#set_active', via: [:post]
+    match '/mod_lists/:id/import', to: 'mod_lists#import', via: [:post]
     match '/mod_lists/:id/mods', to: 'mod_lists#mods', via: [:get, :post]
     match '/mod_lists/:id/tools', to: 'mod_lists#tools', via: [:get, :post]
     match '/mod_lists/:id/plugins', to: 'mod_lists#plugins', via: [:get, :post]
