@@ -1088,6 +1088,40 @@ app.service('columnsFactory', function() {
         ];
     };
 
+    this.modImportColumns = function() {
+        return [
+            {
+                label: "Source Data",
+                data: "sourceData"
+            },
+            {
+                label: "Mod",
+                data: "name"
+            },
+            {
+                label: "Custom",
+                data: "custom"
+            }
+        ]
+    };
+
+    this.pluginImportColumns = function() {
+        return [
+            {
+                label: "Plugin Filename",
+                data: "filename"
+            },
+            {
+                label: "Mod",
+                data: "mod_name"
+            },
+            {
+                label: "Custom",
+                data: "custom"
+            }
+        ]
+    };
+
     this.tagColumns = function() {
         return [
             {

@@ -1,5 +1,5 @@
 {
-  "only": ["id", "index", "group_id", "cleaned", "merged"],
+  "only": ["id", "index", "group_id", "cleaned", "merged", "description"],
   "include": {
     "plugin": {
       "format": "mod_list_plugin"

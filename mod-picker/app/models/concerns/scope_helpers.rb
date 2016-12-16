@@ -143,7 +143,10 @@ module ScopeHelpers
             scope :search, -> (search) {
               where(attributes.map{ |attribute|
                 build_search(attribute, search)
-              }.inject(:or))
+              }.inject(:or)).
+              order(attributes.map { |attribute|
+                "CHAR_LENGTH(#{attribute})"
+              }.join(","))
             }
         end
       else
@@ -151,7 +154,7 @@ module ScopeHelpers
           scope_name = options[:alias] || attribute
           class_eval do
             scope scope_name.to_sym, -> (search) {
-              where(build_search(attribute, search))
+              where(build_search(attribute, search)).order("CHAR_LENGTH(#{attribute})")
             }
           end
         end

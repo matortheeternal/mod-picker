@@ -19,4 +19,9 @@ class AgreementMark < ActiveRecord::Base
   # VALIDATIONS
   validates :correction_id, :submitted_by, presence: true
   validates :agree, inclusion: [true, false]
+
+  def self.for_user_content(user, correction_ids)
+    return [] unless user.present?
+    AgreementMark.where(submitted_by: user.id, correction_id: correction_ids)
+  end
 end

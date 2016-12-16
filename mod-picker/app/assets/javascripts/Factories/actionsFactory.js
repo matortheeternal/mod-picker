@@ -171,8 +171,8 @@ app.service('actionsFactory', function() {
         }, {
             icon: "fa-gear",
             title: "View Details",
-            hidden: function($scope, item) {
-                return item.mod && item.mod.mod_options.length < 2
+            disabled: function($scope, item) {
+                return !$scope.editing && !item.description && (!item.mod || item.mod.mod_options.length <= 1);
             },
             execute: function($scope, item) {
                 $scope.$emit('toggleDetailsModal', {visible: true, item: item});
@@ -192,8 +192,8 @@ app.service('actionsFactory', function() {
         }, {
             icon: "fa-gear",
             title: "View Details",
-            hidden: function($scope, item) {
-                return item.mod && item.mod.mod_options.length < 2
+            disabled: function($scope, item) {
+                return !$scope.editing && !item.description && (!item.mod || item.mod.mod_options.length <= 1);
             },
             execute: function($scope, item) {
                 $scope.$emit('toggleDetailsModal', {visible: true, item: item});
@@ -214,10 +214,14 @@ app.service('actionsFactory', function() {
             key: "showOptions",
             icon: "fa-gear",
             title: "More Options",
-            disabled: function($scope, item) { return !$scope.editing && !!item.plugin },
+            disabled: function($scope, item) {
+                return !$scope.editing && !item.description && !!item.plugin;
+            },
             items: [{
                 text: "View details",
-                disabled: function($scope, item) { return !!item.plugin },
+                disabled: function($scope, item) {
+                    return !$scope.editing && !item.description && !!item.plugin;
+                },
                 execute: function($scope, item) {
                     $scope.$emit('toggleDetailsModal', {visible: true, item: item});
                 }
@@ -235,6 +239,16 @@ app.service('actionsFactory', function() {
                 execute: factory.toggleFunction('cleaned')
             }]
         }];
+    };
+
+    this.modListImportActions = function() {
+        return [{
+            caption: "Remove",
+            title: "Remove this item from the import list",
+            execute: function($scope, item) {
+                $scope.remove(item);
+            }
+        }]
     };
 
     /* tag actions */

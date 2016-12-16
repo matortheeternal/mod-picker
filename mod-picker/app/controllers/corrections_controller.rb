@@ -7,7 +7,7 @@ class CorrectionsController < ApplicationController
     count = Correction.eager_load(:submitter => :reputation).accessible_by(current_ability).filter(filtering_params).count
 
     # get helpful marks
-    agreement_marks = AgreementMark.where(submitted_by: current_user.id, correction_id: @corrections.ids)
+    agreement_marks = AgreementMark.for_user_content(current_user, @corrections.ids)
     render json: {
         corrections: json_format(@corrections),
         agreement_marks: agreement_marks,

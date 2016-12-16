@@ -91,7 +91,7 @@
         </div>
 
         <h3 class="section-title">Comments
-            <span class="action-box" ng-click="startNewComment()">
+            <span class="action-box" ng-click="startNewComment()" ng-if="permissions.canComment">
                 <i class="fa fa-plus"></i> New Comment
             </span>
         </h3>

@@ -12,11 +12,12 @@ app.controller('authorsModalController', function($scope, curatorRequestService,
     $scope.unfocusAuthorsModal = formUtils.unfocusModal($scope.toggleAuthorsModal);
 
     // initialize variables
-    $scope.canCreateCuratorRequest = $scope.currentUser.reputation.overall > 20;
-    if ($scope.canCreateCuratorRequest) {
+    if ($scope.permissions.canCreateCuratorRequest) {
         $scope.curatorRequestTitle = 'Click here if you would like to curate this mod.';
-    } else {
+    } else if ($scope.permissions.isSignedIn) {
         $scope.curatorRequestTitle = 'You do not have enough reputation to submit a curator request for \nthis mod.';
+    } else {
+        $scope.curatorRequestTitle = 'You must be logged in to create curator requests.';
     }
 
     // shared function setup
