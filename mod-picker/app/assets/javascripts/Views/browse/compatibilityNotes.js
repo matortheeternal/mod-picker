@@ -9,7 +9,7 @@ app.controller('compatibilityNotesController', function($scope, $rootScope, $sta
     // get parent variables
     $scope.currentUser = $rootScope.currentUser;
     $scope.permissions = angular.copy($rootScope.permissions);
-    $scope.allowAdult = $scope.currentUser && $scope.currentUser.settings.allow_adult_content;
+    $scope.allowAdult = $scope.currentUser.signed_in && $scope.currentUser.settings.allow_adult_content;
 
     // set page title
     $scope.$emit('setPageTitle', 'Browse Compatibility Notes');

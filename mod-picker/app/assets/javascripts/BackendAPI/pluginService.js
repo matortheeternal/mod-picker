@@ -56,6 +56,10 @@ app.service('pluginService', function(backend, $q, $timeout, recordGroupService,
         };
     };
 
+    this.searchPluginsBatch = function(batch) {
+        return backend.post('/plugins/search', { batch: batch });
+    };
+
     //combine dummy_masters array with masters array and sorts the masters array
     this.combineAndSortMasters = function(plugins) {
         // loop through plugins

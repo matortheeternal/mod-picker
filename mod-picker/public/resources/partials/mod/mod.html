@@ -15,15 +15,15 @@
                             <a ng-click="toggleAuthorsModal(true)">{{mod.authors}}</a>
                         </span>
 
-                        <!-- TODO: add this with css :after content -->
-                        <span class="divider" ng-if="mod.primary_category_id && mod.aliases">
+                        <span class="divider">
                             |
                         </span>
 
-                        <!--Included in <a ng-href="#/modlists/includingMod/{{mod.id}}">{{mod.mod_modlists_count}} modlists</a>
-                        <span class="divider">
+                        <span title="The number of mod lists this mod has been used in.">{{mod.mod_lists_count}} mod lists</span>
+
+                        <span class="divider" ng-if="mod.aliases">
                             |
-                        </span>-->
+                        </span>
 
                         <span ng-if="mod.aliases">
                             <strong>AKA: </strong>{{mod.aliases}}
@@ -46,7 +46,7 @@
                 </section>
 
                 <section ng-if="mod.approved">
-                    <div class="header-box">
+                    <div class="header-box" ng-if="permissions.isSignedIn">
                         <div>
                             ACTIONS
                         </div>
@@ -162,8 +162,9 @@
                         <!--Tags-->
                         <h3 class="section-title">Tags</h3>
                         <section>
-                            <tag-selector active-tags="mod.tags" new-tags="newTags" max-tags="10" type="mod" show-count="true" show-add="!mod.lock_tags" can-create="permissions.canCreateTags" show-remove="!mod.lock_tags && permissions.canManage" save-callback="saveTags"></tag-selector>
-                            <span class="stat-title" ng-show="(mod.lock_tags || !permissions.canCreateTags) && !mod.tags.length">Tags locked</span>
+                            <tag-selector active-tags="mod.tags" new-tags="newTags" max-tags="10" type="mod" show-count="true" show-add="!mod.lock_tags && permissions.canTag" can-create="permissions.canCreateTags" show-remove="!mod.lock_tags && permissions.canManage" save-callback="saveTags"></tag-selector>
+                            <span class="stat-title" ng-show="mod.lock_tags && !mod.tags.length">Tags locked</span>
+                            <span class="stat-title" ng-show="!permissions.canTag && !mod.tags.length">You must log in to add tags</span>
                         </section>
                     </div>
 

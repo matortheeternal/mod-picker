@@ -15,8 +15,13 @@ class ModsController < ApplicationController
 
   # POST /mods/search
   def search
-    @mods = Mod.visible.filter(search_params).order("CHAR_LENGTH(name)").limit(10)
-    render json: @mods
+    if params.has_key?(:batch)
+      @mods = Mod.find_batch(params[:batch])
+      render json: @mods
+    else
+      @mods = Mod.visible.filter(search_params).limit(10)
+      render json: @mods
+    end
   end
 
   # GET /mods/1
@@ -213,7 +218,7 @@ class ModsController < ApplicationController
     corrections = @mod.corrections.accessible_by(current_ability)
 
     # prepare agreement marks
-    agreement_marks = AgreementMark.submitter(current_user.id).corrections(corrections.ids)
+    agreement_marks = AgreementMark.for_user_content(current_user, corrections.ids)
 
     # render response
     render json: {
@@ -227,22 +232,17 @@ class ModsController < ApplicationController
     authorize! :read, @mod
 
     # prepare reviews
-    reviews = @mod.reviews.preload(:review_ratings).includes(submitter: :reputation).references(submitter: :reputation).accessible_by(current_ability).sort(params[:sort]).paginate(page: params[:page], per_page: 10).where("submitted_by != ? OR hidden = true", current_user.id)
+    reviews = @mod.reviews.preload(:review_ratings).includes(submitter: :reputation).references(submitter: :reputation).accessible_by(current_ability).sort(params[:sort]).paginate(page: params[:page], per_page: 10)
+    reviews = reviews.where("submitted_by != ? OR hidden = true", current_user.id) if current_user.present?
     count = @mod.reviews.includes(submitter: :reputation).references(submitter: :reputation).accessible_by(current_ability).count
     review_ids = reviews.ids
 
     # prepare user review
-    user_review = @mod.reviews.find_by(submitted_by: current_user.id)
-    if user_review.present?
-      if user_review.hidden
-        user_review = {}
-      else
-        review_ids.push(user_review.id) if user_review.present?
-      end
-    end
+    user_review = Review.user_review(@mod, current_user)
+    review_ids.push(user_review.id) if user_review.present?
 
     # prepare helpful marks
-    helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("Review", review_ids)
+    helpful_marks = HelpfulMark.for_user_content(current_user, "Review", review_ids)
 
     # render response
     render json: {
@@ -263,7 +263,7 @@ class ModsController < ApplicationController
     count =  @mod.compatibility_notes.eager_load(:submitter => :reputation).accessible_by(current_ability).count
 
     # prepare helpful marks
-    helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("CompatibilityNote", compatibility_notes.ids)
+    helpful_marks = HelpfulMark.for_user_content(current_user, "CompatibilityNote", compatibility_notes.ids)
 
     # render response
     render json: {
@@ -283,7 +283,7 @@ class ModsController < ApplicationController
     count =  @mod.install_order_notes.includes(submitter: :reputation).references(submitter: :reputation).accessible_by(current_ability).count
 
     # prepare helpful marks
-    helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("InstallOrderNote", install_order_notes.ids)
+    helpful_marks = HelpfulMark.for_user_content(current_user, "InstallOrderNote", install_order_notes.ids)
 
     # render response
     render json: {
@@ -309,7 +309,7 @@ class ModsController < ApplicationController
     count =  @mod.load_order_notes.includes(submitter: :reputation).references(submitter: :reputation).accessible_by(current_ability).count
 
     # prepare helpful marks
-    helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("LoadOrderNote", load_order_notes.ids)
+    helpful_marks = HelpfulMark.for_user_content(current_user, "LoadOrderNote", load_order_notes.ids)
 
     # render response
     render json: {

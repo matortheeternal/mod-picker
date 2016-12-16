@@ -1,0 +1,52 @@
+<loader data="!loading" spinner-class="big-spinner" ng-if="!error"></loader>
+<div ng-if="importedMods">
+    <h3 class="section-title">Imported Mods</h3>
+    <section class="box-shadow">
+        <table class="browse-table">
+            <thead>
+            <tr>
+                <th ng-repeat="column in columns" ng-click="sortColumn(column, sort, sortedColumn)" class="{{column.class}}" title="{{column.title}}">
+                    {{::column.label}}
+                    <div class="sorting-options" ng-if="sort && !column.unsortable">
+                        <div class="sort-up" ng-class="{ 'active' : column.up }">
+                            <i class="fa fa-caret-up"></i>
+                        </div>
+                        <div class="sort-down" ng-class="{ 'active' : column.down }">
+                            <i class="fa fa-caret-down"></i>
+                        </div>
+                    </div>
+                </th>
+                <th class="actions-header">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="item in importedMods | orderBy:sort.column:(sort.direction === 'DESC')">
+                <td class="source-data-cell">
+                    <div ng-if="item.sourceData.nexus_info_id">
+                        <b>Nexus ID:</b>
+                        <a ng-href="https://www.nexusmods.com/{{::gameName}}/mods/{{::item.sourceData.nexus_info_id}}" target="_blank">{{::item.sourceData.nexus_info_id}}</a>
+                    </div>
+                    <div ng-if="item.sourceData.mod_name">
+                        <b>Mod Name:</b> {{::item.sourceData.mod_name}}
+                    </div>
+                    <div ng-if="item.sourceData.plugins.length">
+                        <b>Plugins:</b> <span ng-repeat="plugin in item.sourceData.plugins">{{::plugin}}{{$last ? '' : ', '}}</span>
+                    </div>
+                </td>
+                <td class="mod-search-cell">
+                    <search-input search-function="searchMods" result-id="item.id" search-text="item.name" label="mod" key="name" ng-if="!item.custom"></search-input>
+                    <input type="text" placeholder="Custom mod name" ng-model="item.name" ng-if="item.custom" pu-elastic-input/>
+                </td>
+                <td>
+                    <label class="manage-item">
+                        <input type="checkbox" ng-model="item.custom"/>
+                    </label>
+                </td>
+                <td class="actions-cell">
+                    <actions></actions>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</div>

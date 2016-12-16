@@ -10,7 +10,7 @@ app.controller('modListsController', function($scope, $rootScope, $stateParams, 
     $scope.currentUser = $rootScope.currentUser;
     $scope.currentGame = $rootScope.currentGame;
     $scope.permissions = angular.copy($rootScope.permissions);
-    $scope.allowAdult = $scope.currentUser && $scope.currentUser.settings.allow_adult_content;
+    $scope.allowAdult = $scope.currentUser.signed_in && $scope.currentUser.settings.allow_adult_content;
 
     // set page title
     $scope.$emit('setPageTitle', 'Browse Mod Lists');
