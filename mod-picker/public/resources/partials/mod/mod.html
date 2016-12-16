@@ -46,7 +46,7 @@
                 </section>
 
                 <section ng-if="mod.approved">
-                    <div class="header-box">
+                    <div class="header-box" ng-if="permissions.isSignedIn">
                         <div>
                             ACTIONS
                         </div>
@@ -56,7 +56,7 @@
                         <div class="action-box" ng-if="permissions.canManage" ng-click="editMod()">
                             <i class="fa fa-edit" aria-hidden="true"></i> Edit
                         </div>
-                        <div class="action-box" ng-click="starMod()">
+                        <div class="action-box" ng-click="starMod()" ng-if="permissions.canStar">
                             <i class="fa {{mod.star ? 'fa-star' : 'fa-star-o'}}" aria-hidden="true"></i> {{mod.star ? 'Unfavorite' : 'Favorite'}}
                         </div>
                         <div class="action-box" ng-if="activeModList" ng-click="toggleInModList()" title="Click here to {{ mod.in_mod_list ? 'remove this mod from' : 'add this mod to'}} your active mod list.">

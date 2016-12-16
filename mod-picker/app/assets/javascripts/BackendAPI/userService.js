@@ -55,6 +55,7 @@ app.service('userService', function(backend, $q, userSettingsService, userTitleS
         permissions.isHelper = user.role === 'helper';
         permissions.isRestricted = user.role === 'restricted';
         permissions.isBanned = user.role === 'banned';
+        permissions.isSignedIn = true;
         permissions.canModerate = permissions.isAdmin || permissions.isModerator;
         permissions.canManageArticles = permissions.isAdmin || permissions.isNewsWriter;
         permissions.canSubmitMods = !permissions.isRestricted;

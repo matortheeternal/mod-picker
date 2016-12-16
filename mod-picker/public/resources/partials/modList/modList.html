@@ -17,16 +17,16 @@
         </section>
 
         <section>
-            <div class="header-box">
+            <div class="header-box" ng-if="permissions.isSignedIn">
                 ACTIONS
                 <div class="action-box" ng-if="permissions.canReport && !permissions.canManage" ng-click="toggleReportModal(true)">
                     <i class="fa fa-flag-o" aria-hidden="true"></i> Report
                 </div>
-                <div ng-if="permissions.canManage" class="action-box" ng-click="toggleEditing()">
+                <div class="action-box" ng-if="permissions.canManage" ng-click="toggleEditing()">
                     <i class="fa {{editing ? 'fa-eye' : 'fa-edit' }}" aria-hidden="true"></i>
                     {{editing ? 'View' : 'Edit' }}
                 </div>
-                <div class="action-box" ng-click="starModList()" title="{{mod_list.stars_count}} stars">
+                <div class="action-box" ng-click="starModList()" ng-if="permissions.canStar" title="{{mod_list.stars_count}} stars">
                     <i class="fa {{mod_list.star ? 'fa-star' : 'fa-star-o'}}" aria-hidden="true"></i>
                     {{mod_list.star ? 'Unfavorite' : 'Favorite'}}
                 </div>
