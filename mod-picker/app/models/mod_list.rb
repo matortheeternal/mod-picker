@@ -124,7 +124,7 @@ class ModList < ActiveRecord::Base
   before_destroy :unset_active
 
   def update_all_counters!
-    reset_counters(:tools, :mods, :custom_tools, :custom_mods, :plugins, :custom_plugins, :config_files, :custom_config_files, :ignored_notes, :tags, :stars, :comments)
+    reset_counters(:tools, :mods, :custom_tools, :custom_mods, :mod_list_plugins, :custom_plugins, :mod_list_config_files, :custom_config_files, :ignored_notes, :tags, :stars, :comments)
     update_lazy_counters
     save_columns!
   end
