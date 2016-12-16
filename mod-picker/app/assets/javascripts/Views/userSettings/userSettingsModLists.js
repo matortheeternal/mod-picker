@@ -116,9 +116,7 @@ app.controller('userSettingsModListsController', function($scope, $rootScope, $t
             } else {
                 $scope.deleteModList(modList);
             }
-            $scope.available_lists = $scope.available_lists.filter(function(list) {
-                return list.id !== modList.id;
-            });
+            $scope.available_lists.splice($scope.available_lists.indexOf(modList), 1);
             $scope.$emit('successMessage', 'Mod list deleted successfully.');
         }, function(response) {
             var params = {
