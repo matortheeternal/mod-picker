@@ -40,7 +40,7 @@
     <div class="content-container">
         <text-area class="note-text-area" data="activeReview.text_body" ng-refresh="updateMDE" on-change="validateReview"></text-area>
 
-        <div class="message-input" ng-if="activeReview.editing && activeReview.original.submitted_by != currentUser.id">
+        <div class="message-input" ng-if="activeReview.editing && activeReview.original.submitter.id != currentUser.id">
             <label>
                 <div>Edit Summary</div>
                 <input type="text" ng-model="activeReview.edit_summary" maxlength="255">

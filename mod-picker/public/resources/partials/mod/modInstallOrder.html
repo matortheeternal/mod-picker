@@ -25,7 +25,7 @@
     <div class="content-container">
         <text-area data="activeInstallOrderNote.text_body" ng-refresh="updateMDE" class="note-text-area" on-change="validateInstallOrderNote"></text-area>
 
-        <div class="message-input" ng-if="activeInstallOrderNote.editing && activeInstallOrderNote.original.submitted_by != currentUser.id">
+        <div class="message-input" ng-if="activeInstallOrderNote.editing && activeInstallOrderNote.original.submitter.id != currentUser.id">
             <label>
                 <div>Edit Summary</div>
                 <input type="text" ng-model="activeInstallOrderNote.edit_summary" maxlength="255">

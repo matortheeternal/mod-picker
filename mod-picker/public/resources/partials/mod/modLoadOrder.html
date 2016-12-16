@@ -33,7 +33,7 @@
     <div class="content-container">
         <text-area data="activeLoadOrderNote.text_body" ng-refresh="updateMDE" class="note-text-area" on-change="validateLoadOrderNote"></text-area>
 
-        <div class="message-input" ng-if="activeLoadOrderNote.editing && activeLoadOrderNote.original.submitted_by != currentUser.id">
+        <div class="message-input" ng-if="activeLoadOrderNote.editing && activeLoadOrderNote.original.submitter.id != currentUser.id">
             <label>
                 <div>Edit Summary</div>
                 <input type="text" ng-model="activeLoadOrderNote.edit_summary" maxlength="255">
