@@ -10,9 +10,6 @@ app.directive('importedPlugins', function() {
 });
 
 app.controller('importedPluginsController', function($scope, pluginService, columnsFactory, actionsFactory, tableUtils) {
-    // inherit scope attributes
-    angular.inherit($scope, 'importedPlugins');
-
     // initialize variables
     $scope.columns = columnsFactory.pluginImportColumns();
     $scope.actions = actionsFactory.modListImportActions();

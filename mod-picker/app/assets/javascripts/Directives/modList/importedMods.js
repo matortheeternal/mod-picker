@@ -10,9 +10,6 @@ app.directive('importedMods', function() {
 });
 
 app.controller('importedModsController', function($scope, modService, columnsFactory, actionsFactory, tableUtils) {
-    // inherit scope attributes
-    angular.inherit($scope, 'importedMods');
-
     // initialize variables
     $scope.columns = columnsFactory.modImportColumns();
     $scope.actions = actionsFactory.modListImportActions();

@@ -18,6 +18,10 @@ app.controller('modListImportModalController', function($scope, $rootScope, even
     // initialize variables
     $scope.importTypes = importUtils.importTypes;
     $scope.selectedImportType = $scope.importTypes[0];
+    $scope.imported = {
+        mods: null,
+        plugins: null
+    };
 
     // local functions
     $scope.selectImportType = function(importType) {
