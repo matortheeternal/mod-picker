@@ -39,11 +39,12 @@ app.controller('importedModsController', function($scope, modService, columnsFac
     };
 
     $scope.combineSourceData = function(targetMod, sourceMod) {
+        var targetModData = targetMod.sourceData;
+        var sourceModData = sourceMod.sourceData;
         ["nexus_info_id", "mod_name"].forEach(function(key) {
-            targetMod[key] = sourceMod[key] || targetMod[key];
+            targetModData[key] = sourceModData[key] || targetModData[key];
         });
-        var plugin = sourceMod.plugin_filename;
-        if (plugin) targetMod.plugins.push(plugin);
+        targetModData.plugins = targetModData.plugins.concat(sourceModData.plugins);
     };
 
     $scope.concatImportedMods = function(importedMods) {
@@ -88,7 +89,7 @@ app.controller('importedModsController', function($scope, modService, columnsFac
             });
         });
         $scope.$applyAsync(function() {
-            $scope.loading.importedMods = false;
+            $scope.loading = false;
             $scope.concatImportedMods(importedMods);
         });
     };
