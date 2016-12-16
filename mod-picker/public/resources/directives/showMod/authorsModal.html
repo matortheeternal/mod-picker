@@ -19,7 +19,7 @@
         </ul>
 
         <div class="action-button-container" ng-if="!permissions.isAuthor">
-            <input class="btn" type="button" ng-click="startNewCuratorRequest()" ng-disabled="!canCreateCuratorRequest" title="{{curatorRequestTitle}}" value="Create Curator Request">
+            <input class="btn" type="button" ng-click="startNewCuratorRequest()" ng-disabled="!permissions.canCreateCuratorRequest" title="{{curatorRequestTitle}}" value="Create Curator Request">
         </div>
     </div>
 

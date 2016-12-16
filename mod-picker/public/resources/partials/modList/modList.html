@@ -26,7 +26,7 @@
                     <i class="fa {{editing ? 'fa-eye' : 'fa-edit' }}" aria-hidden="true"></i>
                     {{editing ? 'View' : 'Edit' }}
                 </div>
-                <div class="action-box" ng-click="starModList()" ng-if="permissions.canStar" title="{{mod_list.stars_count}} stars">
+                <div class="action-box" ng-click="starModList()" title="{{mod_list.stars_count}} stars">
                     <i class="fa {{mod_list.star ? 'fa-star' : 'fa-star-o'}}" aria-hidden="true"></i>
                     {{mod_list.star ? 'Unfavorite' : 'Favorite'}}
                 </div>
