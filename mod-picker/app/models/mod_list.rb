@@ -152,6 +152,49 @@ class ModList < ActiveRecord::Base
     self.plugin_errors_count = PluginError.plugins(plugin_ids).count
   end
 
+  def custom_mod_params(mod, index)
+    params = { name: mod[:name], index: index }
+    params[:url] = NexusHelper.mod_url(game.nexus_name, mod[:nexus_info_id]) if mod.has_key?(:nexus_info_id)
+    params
+  end
+
+  def import_mod(mod, index)
+    if mod.has_key?(:id)
+      mod_list_mods.create(mod_id: mod[:id], index: index)
+    else
+      custom_mods.create(custom_mod_params(mod, index))
+    end
+  end
+
+  def import_mods(mods)
+    mods.each_with_index { |mod, index| import_mod(mod, index + 1) }
+  end
+
+  def import_plugin(plugin, index)
+    if plugin.has_key?(:id)
+      mod_list_plugins.create(plugin_id: plugin[:id], index: index)
+    else
+      custom_plugins.create(filename: plugin[:filename], index: index)
+    end
+  end
+
+  def import_plugins(plugins)
+    plugins.each_with_index { |plugin, index| import_plugin(plugin, index) }
+  end
+
+  def clear_items
+    mod_list_mods.destroy_all
+    custom_mods.destroy_all
+    mod_list_plugins.destroy_all
+    custom_plugins.destroy_all
+  end
+
+  def import(import_params)
+    clear_items
+    import_mods(import_params[:mods])
+    import_plugins(import_params[:plugins])
+  end
+
   def hide_comments
     if attribute_changed?(:hidden) && hidden
       comments.update_all(:hidden => true)
