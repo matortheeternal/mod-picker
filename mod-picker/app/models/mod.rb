@@ -67,6 +67,9 @@ class Mod < ActiveRecord::Base
     eager_load(sources.map {|key, value| get_source_class(key).table_name if value}.compact).
         where(sources.map {|key, value| get_source_class(key).arel_table[:id].not_eq(nil) if value}.compact.inject(:or))
   }
+  scope :source_mod_name, -> (mod_name, source_class) {
+    eager_load(source_class.table_name).where(source_class.arel_table[:mod_name].eq(mod_name))
+  }
   scope :categories, -> (ids) { where("primary_category_id in (:ids) OR secondary_category_id in (:ids)", ids: ids) }
   scope :author, -> (hash) {
     # TODO: arel here
@@ -171,12 +174,19 @@ class Mod < ActiveRecord::Base
   before_create :set_id
   before_save :touch_updated
 
+  def self.find_by_mod_name(mod_name)
+    Mod.visible.search(mod_name).first ||
+        Mod.visible.source_mod_name(mod_name, NexusInfo).first ||
+        Mod.visible.source_mod_name(mod_name, LoverInfo).first ||
+        Mod.visible.source_mod_name(mod_name, WorkshopInfo).first
+  end
+
   def self.find_batch(batch)
     batch.collect do |item|
       if item.has_key?(:nexus_info_id)
         Mod.visible.nexus_id(item[:nexus_info_id]).first
       else
-        Mod.visible.search(item[:mod_name]).first
+        Mod.find_by_mod_name(item[:mod_name])
       end
     end
   end
