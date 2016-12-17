@@ -2,17 +2,28 @@
   max-width: 400px;
   display: inline-block;
 
+  .tag-box {
+    a {
+      color: inherit;
+      text-decoration: inherit;
+      cursor: pointer;
+      transition: none;
+      &:hover {
+        color: inherit;
+      }
+    }
+  }
+
   span {
     display: inline-block;
     padding: 4px;
   }
 
+  .red {
+    background-color: $error_secondary;
+  }
+
   .tag-box, .edit-tag-box, .add-tag-box {
-    font-size: 12px;
-    color: $action_text_color;
-    background-color: $action_color;
-    border-radius: 2px;
-    margin: 2px;
     padding: 0;
     white-space: nowrap;
     display: block;
@@ -22,10 +33,6 @@
       line-height: 14px;
       float: left;
       @include user-select(none);
-    }
-
-    .tag-text {
-      cursor: default;
     }
 
     tag-input {
