@@ -1,108 +1,116 @@
-<style>
-  * {
-    font-family: Optima,Segoe,Segoe UI,Candara,Calibri,sans-serif;
-  }
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,width=device-width,height=device-height,target-densitydpi=device-dpi,user-scalable=no">
+    <title>Mod Picker - Invitation</title>
+    <style>
+        * {
+            font-family: Optima,Segoe,Segoe UI,Candara,Calibri,sans-serif;
+        }
 
-  body {
-    background-color: #f0f0f0;
-  }
+        body {
+            background-color: #f0f0f0;
+        }
 
-  .container {
-    max-width: 600px;
-    margin: auto;
-    margin-top: 60px;
-    margin-bottom: 60px;
-    background-color: #ffffff;
-    border: 2px solid #e0e0e0;
-    padding: 30px;
-  }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            margin-top: 60px;
+            margin-bottom: 60px;
+            background-color: #ffffff;
+            border: 2px solid #e0e0e0;
+            padding: 30px;
+        }
 
-  p {
-    font-size: 17px;
-  }
+        p {
+            font-size: 17px;
+        }
 
-  a {
-    color: #4599d7;
-    -webkit-transition: all 0.2s ease-in-out;
-    -moz-transition: all 0.2s ease-in-out;
-    -o-transition: all 0.2s ease-in-out;
-    transition: all 0.2s ease-in-out;
-  }
+        a {
+            color: #4599d7;
+            -webkit-transition: all 0.2s ease-in-out;
+            -moz-transition: all 0.2s ease-in-out;
+            -o-transition: all 0.2s ease-in-out;
+            transition: all 0.2s ease-in-out;
+        }
 
-  a:hover {
-    color: #2e679d;
-  }
+        a:hover {
+            color: #2e679d;
+        }
 
-  .time-helper {
-    cursor: pointer;
-    color: inherit;
-    text-decoration-line: underline;
-    text-decoration-style: dashed;
-    text-decoration-color: #888;
-  }
+        .time-helper {
+            cursor: pointer;
+            color: inherit;
+            text-decoration-line: underline;
+            text-decoration-style: dashed;
+            text-decoration-color: #888;
+        }
 
-  .greeting {
-    font-weight: 100;
-    font-size: 24px;
-    margin-bottom: 6px;
-    margin-top: 0;
-  }
+        .greeting {
+            font-weight: 100;
+            font-size: 24px;
+            margin-bottom: 6px;
+            margin-top: 0;
+        }
 
-  .button-container {
-    text-align: center;
-  }
+        .button-container {
+            text-align: center;
+        }
 
-  .button {
-    text-decoration: none;
-    padding: 14px;
-    display: inline-block;
-    margin: 22px;
-    margin-top: 12px;
-    font-size: 23px;
-    background: #4599d7;
-    background: -webkit-gradient(linear, left top, left bottom, from(#2e679d), to(#4599d7));
-    background: -webkit-linear-gradient(top, #2e679d, #4599d7);
-    background: -moz-linear-gradient(top, #2e679d, #4599d7);
-    background: -ms-linear-gradient(top, #2e679d, #4599d7);
-    background: -o-linear-gradient(top, #2e679d, #4599d7);
-    opacity: 0.8;
-    -webkit-box-shadow: rgba(0,0,0,1) 0px 1px 3px;
-    -moz-box-shadow: rgba(0,0,0,1) 0px 1px 3px;
-    box-shadow: rgba(0,0,0,1) 0px 1px 3px;
-    text-shadow: rgba(0,0,0,.4) 1px 1px 0;
-    color: white;
-    font-family: Georgia, serif;
-    vertical-align: middle;
-    -webkit-transition: all 0.4s ease-in-out;
-    -moz-transition: all 0.4s ease-in-out;
-    -o-transition: all 0.4s ease-in-out;
-    transition: all 0.4s ease-in-out;
-  }
+        .button {
+            text-decoration: none;
+            padding: 14px;
+            display: inline-block;
+            margin: 22px;
+            margin-top: 12px;
+            font-size: 23px;
+            background: #4599d7;
+            background: -webkit-gradient(linear, left top, left bottom, from(#2e679d), to(#4599d7));
+            background: -webkit-linear-gradient(top, #2e679d, #4599d7);
+            background: -moz-linear-gradient(top, #2e679d, #4599d7);
+            background: -ms-linear-gradient(top, #2e679d, #4599d7);
+            background: -o-linear-gradient(top, #2e679d, #4599d7);
+            opacity: 0.8;
+            -webkit-box-shadow: rgba(0,0,0,1) 0px 1px 3px;
+            -moz-box-shadow: rgba(0,0,0,1) 0px 1px 3px;
+            box-shadow: rgba(0,0,0,1) 0px 1px 3px;
+            text-shadow: rgba(0,0,0,.4) 1px 1px 0;
+            color: white;
+            font-family: Georgia, serif;
+            vertical-align: middle;
+            -webkit-transition: all 0.4s ease-in-out;
+            -moz-transition: all 0.4s ease-in-out;
+            -o-transition: all 0.4s ease-in-out;
+            transition: all 0.4s ease-in-out;
+        }
 
-  .button:hover {
-    color: white;
-    opacity: 1.0;
-  }
-</style>
+        .button:hover {
+            color: white;
+            opacity: 1.0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+      <p class="greeting"><%= t("devise.mailer.invitation_instructions.hello", email: @resource.email) %></p>
 
-<div class="container">
-  <p class="greeting"><%= t("devise.mailer.invitation_instructions.hello", email: @resource.email) %></p>
+      <p><%= t("devise.mailer.invitation_instructions.someone_invited_you") %></p>
 
-  <p><%= t("devise.mailer.invitation_instructions.someone_invited_you") %></p>
+      <div class="button-container">
+        <%= link_to t("devise.mailer.invitation_instructions.accept"), accept_invitation_url(@resource, :invitation_token => @token), :class => "button" %>
+      </div>
 
-  <div class="button-container">
-    <%= link_to t("devise.mailer.invitation_instructions.accept"), accept_invitation_url(@resource, :invitation_token => @token), :class => "button" %>
-  </div>
+      <% if @resource.invitation_due_at %>
+        <p><%= t("devise.mailer.invitation_instructions.accept_until").html_safe %></p>
+      <% end %>
 
-  <% if @resource.invitation_due_at %>
-    <p><%= t("devise.mailer.invitation_instructions.accept_until").html_safe %></p>
-  <% end %>
+      <p><%= t("devise.mailer.invitation_instructions.ignore").html_safe %></p>
 
-  <p><%= t("devise.mailer.invitation_instructions.ignore").html_safe %></p>
-
-  <br>
-  <p>Sincerely,<br>
-    The Mod Picker Team<br>
-    <a href="https://www.modpicker.com">www.modpicker.com</a>
-  </p>
-</div>
+      <br>
+      <p>Sincerely,<br>
+        The Mod Picker Team<br>
+        <a href="https://www.modpicker.com">www.modpicker.com</a>
+      </p>
+    </div>
+</body>
+</html>

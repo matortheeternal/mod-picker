@@ -8,8 +8,8 @@ app.directive('tagSelector', function() {
             newTags: '=',
             maxTags: '=',
             canCreate: '=',
-            showModsCount: '=?',
-            showModListsCount: '=?',
+            type: '@',
+            showCount: '=?',
             showAuthor: '=?',
             showRemove: '=?',
             showAdd: '=?',
@@ -21,6 +21,8 @@ app.directive('tagSelector', function() {
 app.controller('tagSelectorController', function($scope, $element, $timeout, tagService) {
     $scope.rawNewTags = [];
     $scope.removedTags = [];
+    $scope.showModsCount = $scope.type === "mod" && $scope.showCount;
+    $scope.showModListsCount = $scope.type === "mod-list" && $scope.showCount;
     var addTagButton = $element[0].firstChild.lastElementChild;
 
     tagService.retrieveAllTags().then(function(data) {

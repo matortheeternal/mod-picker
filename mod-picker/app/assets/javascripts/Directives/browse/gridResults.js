@@ -33,21 +33,12 @@ app.controller('gridResultsController', function($scope, $rootScope, tableUtils)
 
     // inherited functions
     $scope.groupDetails = tableUtils.groupColumns;
+    $scope.resolve = tableUtils.resolve($scope);
 
     // toggles the visibility of the configure details modal
     $scope.toggleModal = function(visible) {
         $scope.$emit('toggleModal', visible);
         $scope.showModal = visible;
-    };
-
-    // this function resolves a variable as a function if it is one,
-    // else returns its value
-    $scope.resolve = function(attribute, item, context) {
-        if (typeof attribute === 'function') {
-            return attribute($scope, item, context);
-        } else {
-            return attribute;
-        }
     };
 
     $scope.buildItemData = function() {

@@ -1,6 +1,5 @@
-<div class="primary-nav">
-    <a class="nav-item" ng-click="toggleDropdown($event, 'ManageLists')" tabindex="0"
-       ng-blur="blurDropdown('ManageLists')">
+<div class="nav-item" ng-if="currentUser.signed_in" ng-focus="toggleDropdown($event, 'ManageLists')" tabindex="0" ng-blur="blurDropdown('ManageLists')">
+    <a class="nav-link">
         <span class="nav-icon">
             <i class="fa fa-list-ol"></i>
         </span>
@@ -26,8 +25,9 @@
             View Your Mod Lists
         </a>
     </div>
-    <a class="nav-item" ng-click="toggleDropdown($event, 'Contributions')" tabindex="0"
-       ng-blur="blurDropdown('Contributions')">
+</div>
+<div class="nav-item" ng-focus="toggleDropdown($event, 'Contributions')" tabindex="0" ng-blur="blurDropdown('Contributions')">
+    <a class="nav-link">
         <span class="nav-icon">
             <i class="fa fa-comments"></i>
         </span>
@@ -46,7 +46,9 @@
         <a href="#/load-order-notes">Load Order Notes</a>
         <a href="#/corrections">Corrections</a>
     </div>
-    <a class="nav-item" ng-click="toggleDropdown($event, 'ModLists')" tabindex="0" ng-blur="blurDropdown('ModLists')">
+</div>
+<div class="nav-item" tabindex="0" ng-focus="toggleDropdown($event, 'ModLists')" ng-blur="blurDropdown('ModLists')">
+    <a class="nav-link">
         <span class="nav-icon">
             <i class="fa fa-list-ul"></i>
         </span>
@@ -72,7 +74,9 @@
             Completed Collections
         </a>
     </div>
-    <a class="nav-item" ng-click="toggleDropdown($event, 'Mods')" tabindex="0" ng-blur="blurDropdown('Mods')">
+</div>
+<div class="nav-item" ng-focus="toggleDropdown($event, 'Mods')" tabindex="0" ng-blur="blurDropdown('Mods')">
+    <a class="nav-link">
         <span class="nav-icon">
             <i class="fa fa-globe"></i>
         </span>
@@ -127,7 +131,9 @@
             Utilities
         </a>
     </div>
-    <a class="nav-item" href="#/mods/submit" ng-if="permissions.canSubmitMods">
+</div>
+<div class="nav-item" ng-if="permissions.canSubmitMods">
+    <a class="nav-link" href="#/mods/submit">
         <span class="nav-icon">
             <i class="fa fa-plus-square"></i>
         </span>

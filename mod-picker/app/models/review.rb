@@ -51,6 +51,7 @@ class Review < ActiveRecord::Base
   # only one review per mod per user
   validates :mod_id, uniqueness: { scope: :submitted_by, :message => "You've already submitted a review for this mod." }
   validate :not_mod_author
+  validate :number_of_ratings
   validates_associated :review_ratings
 
   # CALLBACKS
@@ -58,6 +59,22 @@ class Review < ActiveRecord::Base
   after_save :update_metrics
   before_destroy :clear_ratings
   after_destroy :update_mod_review_metrics
+
+  def self.user_review(mod, user)
+    return nil unless user.present?
+    user_review = mod.reviews.find_by(submitted_by: user.id)
+    return {} if user_review.present? && user_review.hidden
+    user_review
+  end
+
+  def number_of_ratings
+    num_ratings = review_ratings.length
+    if num_ratings == 0
+      errors.add(:review_ratings, "A review must have at least 1 rating section.")
+    elsif num_ratings > 5
+      errors.add(:review_ratings, "A review cannot have more than 5 rating sections.")
+    end
+  end
 
   def not_mod_author
     is_author = ModAuthor.where(mod_id: mod_id, role: [0, 1]).exists?

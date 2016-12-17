@@ -107,6 +107,6 @@ app.controller('modSourcesController', function($scope, sitesFactory, scrapeServ
     };
 
     $scope.validateCustomSource = function(source) {
-        source.valid = (source.label.length > 4) && (source.url.length > 12);
+        source.valid = (source.label.length > 3) && (source.url.length > 12);
     };
 });

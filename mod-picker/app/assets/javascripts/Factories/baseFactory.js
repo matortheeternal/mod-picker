@@ -40,6 +40,7 @@ app.service('baseFactory', function() {
             _destroy: false,
             index: 0,
             group_id: 0,
+            description: "",
             merged: false,
             cleaned: false,
             mod: {
@@ -81,6 +82,7 @@ app.service('baseFactory', function() {
             _destroy: false,
             index: 0,
             group_id: 0,
+            description: "",
             mod: {
                 id: 0,
                 is_official: false,

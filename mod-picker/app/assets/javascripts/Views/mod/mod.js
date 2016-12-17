@@ -197,7 +197,7 @@ app.controller('modController', function($scope, $rootScope, $q, $stateParams, $
     var isAuthor = angular.isDefined(author);
     var isCurator = isAuthor && (author.role === 'curator');
     $scope.permissions.isAuthor = isAuthor;
-    $scope.permissions.canManage = $scope.permissions.canModerate || isAuthor;
+    $scope.permissions.canManage = $scope.permissions.canManageMods || isAuthor;
     $scope.permissions.canReview = $scope.permissions.canContribute && (isCurator || !isAuthor);
 
     var redirectToFirstTab = function() {
@@ -298,6 +298,16 @@ app.controller('modController', function($scope, $rootScope, $q, $stateParams, $
             $scope.mod.star = !$scope.mod.star;
         }, function(response) {
             var params = { label: 'Error starring mod', response: response };
+            $scope.$emit('errorMessage', params);
+        });
+    };
+
+    $scope.unHideMod = function() {
+        modService.hideMod($scope.mod.id, false).then(function() {
+            $scope.mod.hidden = false;
+            $scope.$emit('successMessage', 'Mod unhidden successfully.');
+        }, function(response) {
+            var params = { label: 'Error unhiding mod', response: response };
             $scope.$emit('errorMessage', params);
         });
     };

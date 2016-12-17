@@ -488,11 +488,12 @@ ActiveRecord::Schema.define(version: 20161211031117) do
   add_index "mod_list_mod_options", ["mod_option_id"], name: "fk_rails_431e3255e3", using: :btree
 
   create_table "mod_list_mods", force: :cascade do |t|
-    t.integer "mod_list_id", limit: 4,                 null: false
+    t.integer "mod_list_id", limit: 4,                     null: false
     t.integer "group_id",    limit: 4
-    t.integer "mod_id",      limit: 4,                 null: false
-    t.integer "index",       limit: 2,                 null: false
-    t.boolean "is_utility",            default: false, null: false
+    t.integer "mod_id",      limit: 4,                     null: false
+    t.integer "index",       limit: 2,                     null: false
+    t.boolean "is_utility",                default: false, null: false
+    t.text    "description", limit: 65535
   end
 
   add_index "mod_list_mods", ["group_id"], name: "fk_rails_cb3cdf0fc4", using: :btree
@@ -500,12 +501,13 @@ ActiveRecord::Schema.define(version: 20161211031117) do
   add_index "mod_list_mods", ["mod_list_id"], name: "ml_id", using: :btree
 
   create_table "mod_list_plugins", force: :cascade do |t|
-    t.integer "mod_list_id", limit: 4,                 null: false
+    t.integer "mod_list_id", limit: 4,                     null: false
     t.integer "group_id",    limit: 4
-    t.integer "plugin_id",   limit: 4,                 null: false
-    t.integer "index",       limit: 2,                 null: false
-    t.boolean "cleaned",               default: false, null: false
-    t.boolean "merged",                default: false, null: false
+    t.integer "plugin_id",   limit: 4,                     null: false
+    t.integer "index",       limit: 2,                     null: false
+    t.boolean "cleaned",                   default: false, null: false
+    t.boolean "merged",                    default: false, null: false
+    t.text    "description", limit: 65535
   end
 
   add_index "mod_list_plugins", ["group_id"], name: "fk_rails_8fbf03f255", using: :btree
