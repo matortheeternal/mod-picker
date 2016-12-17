@@ -56,12 +56,16 @@
                         <div class="action-box" ng-if="permissions.canManage" ng-click="editMod()">
                             <i class="fa fa-edit" aria-hidden="true"></i> Edit
                         </div>
-                        <div class="action-box" ng-click="starMod()">
+                        <div class="action-box" ng-click="starMod()" ng-if="!mod.hidden">
                             <i class="fa {{mod.star ? 'fa-star' : 'fa-star-o'}}" aria-hidden="true"></i> {{mod.star ? 'Unfavorite' : 'Favorite'}}
                         </div>
-                        <div class="action-box" ng-if="activeModList" ng-click="toggleInModList()" title="Click here to {{ mod.in_mod_list ? 'remove this mod from' : 'add this mod to'}} your active mod list.">
+                        <div class="action-box" ng-if="activeModList && !mod.hidden" ng-click="toggleInModList()" title="Click here to {{ mod.in_mod_list ? 'remove this mod from' : 'add this mod to'}} your active mod list.">
                             <i class="fa {{ mod.in_mod_list ? 'fa-remove' : 'fa-plus' }}" aria-hidden="true"></i>
                             {{ mod.in_mod_list ? 'Remove' : 'Add' }}
+                        </div>
+                        <div class="action-box yellow-box" ng-if="mod.hidden" ng-click="unHideMod()" title="Click here to unhide this mod.">
+                            <i class="fa fa-eye" aria-hidden="true"></i>
+                            Hidden
                         </div>
                     </div>
 

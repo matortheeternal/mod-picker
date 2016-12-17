@@ -14,7 +14,7 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
     };
 
     this.searchMods = function(name, utility) {
-        var postData =  {
+        var postData = {
             filters: {
                 search: name
             }
@@ -38,7 +38,7 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
     };
 
     this.searchModListMods = function(name) {
-        var postData =  {
+        var postData = {
             filters: {
                 search: name,
                 include_games: true,
@@ -49,7 +49,7 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
     };
 
     this.searchModListTools = function(str) {
-        var postData =  {
+        var postData = {
             filters: {
                 search: str,
                 utility: true
@@ -156,11 +156,11 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
     };
 
     this.hideMod = function(modId, hidden) {
-        return backend.post('/mods/' + modId + '/hide', {hidden: hidden});
+        return backend.post('/mods/' + modId + '/hide', { hidden: hidden });
     };
 
     this.approveMod = function(modId, approved) {
-        return backend.post('/mods/' + modId + '/approve', {approved: approved});
+        return backend.post('/mods/' + modId + '/approve', { approved: approved });
     };
 
     this.prepareModAuthors = function(mod) {
@@ -317,7 +317,7 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
         objectUtils.deleteEmptyProperties(options, 1);
         return options;
     };
-    
+
     this.getDate = function(mod, dateKey, dateTest) {
         var date = mod[dateKey];
         var sourceKeys = ["nexus", "lab", "workshop"];
