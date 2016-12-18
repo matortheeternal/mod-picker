@@ -27,6 +27,7 @@ app.controller('tagSelectorController', function($scope, $element, $timeout, tag
 
     tagService.retrieveAllTags().then(function(data) {
         $scope.tags = data;
+        $scope.loadTags();
     });
 
     $scope.addTag = function() {
@@ -43,6 +44,14 @@ app.controller('tagSelectorController', function($scope, $element, $timeout, tag
         $timeout(function() {
             addTagButton.focus();
         }, 50);
+    };
+
+    $scope.enterRemove = function(tag) {
+        tag.tagBoxClass = 'red-box';
+    };
+
+    $scope.exitRemove = function(tag) {
+        tag.tagBoxClass = '';
     };
 
     $scope.removeTag = function($index) {
@@ -84,11 +93,28 @@ app.controller('tagSelectorController', function($scope, $element, $timeout, tag
         $scope.storeTags();
     };
 
-    $scope.storeTags = function() {
-        $scope.newTags = [];
-        for (var i = 0; i < $scope.rawNewTags.length; i++) {
-            rawTag = $scope.rawNewTags[i];
-            $scope.newTags.push(rawTag.text);
-        }
+    $scope.rawTagText = function() {
+        return $scope.rawNewTags.map(function(rawTag) {
+            return rawTag.text;
+        });
     };
+
+    $scope.storeTags = function() {
+        $scope.newTags = $scope.rawTagText();
+    };
+
+    $scope.findTag = function(tagText) {
+        return $scope.tags.find(function(tag) {
+            return tag.text === tagText
+        });
+    };
+
+    $scope.loadTags = function() {
+        if ($scope.newTags.equals($scope.rawTagText())) return;
+        $scope.rawNewTags = $scope.newTags.map(function(newTag) {
+            return $scope.findTag(newTag);
+        }).filter(angular.isDefined);
+    };
+
+    $scope.$on('reloadTags', $scope.loadTags);
 });
