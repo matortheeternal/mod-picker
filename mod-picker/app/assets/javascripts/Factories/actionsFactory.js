@@ -267,7 +267,7 @@ app.service('actionsFactory', function() {
             title: "This tag is hidden.  Click to recover it.",
             class: 'green-box',
             hidden: function($scope, item) {
-                return !item.hidden;
+                return !item.hidden || !$scope.permissions.canModerate;
             },
             execute: function($scope, item) {
                 $scope.$emit('recoverTag', item);
@@ -277,7 +277,7 @@ app.service('actionsFactory', function() {
             title: "This tag is publicly visible.  Click to hide it.",
             class: 'yellow-box',
             hidden: function($scope, item) {
-                return item.hidden;
+                return item.hidden || !$scope.permissions.canModerate;
             },
             execute: function($scope, item) {
                 $scope.$emit('hideTag', item);
