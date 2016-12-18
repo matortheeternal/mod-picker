@@ -178,11 +178,10 @@ app.controller('tagInputController', function($scope, $timeout, formUtils) {
 app.directive('autoSelect', function($timeout) {
     return function(scope, element, attrs) {
         scope.$watch(attrs.autoSelect, function(newval) {
-            if (newval) {
-                $timeout(function() {
-                    element[0].select();
-                }, 0, false);
-            }
+            if (!newval) return;
+            $timeout(function() {
+                element[0].select();
+            }, 0, false);
         });
     };
 });

@@ -148,6 +148,7 @@ app.controller('modsController', function($scope, $rootScope, $q, $stateParams, 
         // handle column availability
         $scope.buildAvailableColumnData();
         $scope.hideUnavailableColumns();
+        $scope.$broadcast('reloadTags');
 
         // hide statistic filters that no longer apply
         $scope.availableStatFilters = $scope.availableFilters($scope.statFilters);
