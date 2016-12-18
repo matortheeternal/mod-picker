@@ -138,6 +138,7 @@ if (!Object.prototype.keys) {
         }
         return a;
     };
+    Object.defineProperty(Object.prototype, "keys", {enumerable: false});
 }
 
 Object.prototype.equals = function(otherObject) {
@@ -152,6 +153,7 @@ Object.prototype.equals = function(otherObject) {
         return equal && (valueType === "object" ? value.equals(otherValue) : value === otherValue);
     }, true);
 };
+Object.defineProperty(Object.prototype, "equals", {enumerable: false});
 
 // angular polyfills
 angular.inherit = function(scope, attribute) {
