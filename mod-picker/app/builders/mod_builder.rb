@@ -119,9 +119,7 @@ class ModBuilder
   end
 
   def create_tags
-    if @tag_names
-      TagBuilder.create_tags(resource, @current_user, @tag_names)
-    end
+    TagBuilder.update_tags(resource, @current_user, @tag_names) if @tag_names
   end
 
   def create_curator

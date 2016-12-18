@@ -282,48 +282,11 @@ class ModListsController < ApplicationController
 
   # PATCH/PUT /mod_lists/1/tags
   def update_tags
-    # errors array to return to user
-    errors = ActiveModel::Errors.new(self)
-    current_user_id = current_user.id
-
-    params[:tags] ||= []
-
-    # perform tag deletions
-    existing_mod_list_tags = @mod_list.mod_list_tags
-    existing_tags_text = @mod_list.tags.pluck(:text)
-    @mod_list.mod_list_tags.each_with_index do |mod_list_tag, index|
-      if params[:tags].exclude?(existing_tags_text[index])
-        authorize! :destroy, mod_list_tag
-        mod_list_tag.destroy
-      end
-    end
-
-    # update tags
-    params[:tags].each do |tag_text|
-      if existing_tags_text.exclude?(tag_text)
-        # find or create tag
-        tag = Tag.where(game_id: params[:game_id], text: tag_text).first
-        if tag.nil?
-          tag = Tag.new(game_id: params[:game_id], text: tag_text, submitted_by: current_user_id)
-          authorize! :create, tag
-          if !tag.save
-            tag.errors.full_messages.each {|msg| errors[:base] << msg}
-            next
-          end
-        end
-
-        # create mod tag
-        mod_list_tag = @mod_list.mod_list_tags.new(tag_id: tag.id, submitted_by: current_user_id)
-        authorize! :create, mod_list_tag
-        next if mod_list_tag.save
-        mod_list_tag.errors.full_messages.each {|msg| errors[:base] << msg}
-      end
-    end
-
-    if errors.empty?
-      render json: {status: :ok, tags: @mod_list.tags}
+    builder = TagBuilder.new(@mod_list, current_user, params[:tags])
+    if builder.update_tags
+      respond_with_json(@mod_list.tags, :mod_list_tags, :tags)
     else
-      render json: {errors: errors, status: :unprocessable_entity, tags: @mod_list.tags}
+      render json: builder.errors, status: :unprocessable_entity
     end
   end
 
