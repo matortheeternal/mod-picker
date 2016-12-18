@@ -110,7 +110,7 @@ app.controller('tagSelectorController', function($scope, $element, $timeout, tag
     };
 
     $scope.loadTags = function() {
-        if ($scope.newTags.equals($scope.rawTagText())) return;
+        if (!$scope.newTags || $scope.newTags.equals($scope.rawTagText())) return;
         $scope.rawNewTags = $scope.newTags.map(function(newTag) {
             return $scope.findTag(newTag);
         }).filter(angular.isDefined);
