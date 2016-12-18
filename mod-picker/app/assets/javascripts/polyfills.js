@@ -120,6 +120,39 @@ Array.prototype.groupBy = function(propertyName) {
     return obj;
 };
 
+Array.prototype.equals = function(otherArray) {
+    if (!otherArray || this.length != otherArray.length) return false;
+    return this.reduce(function(equal, item, index) {
+        var otherItem = otherArray[index];
+        var itemType = typeof item, otherItemType = typeof otherItem;
+        if (itemType !== otherItemType) return false;
+        return equal && (itemType === "object" ? item.equals(otherItem) : item === otherItem);
+    }, true);
+};
+
+if (!Object.prototype.keys) {
+    Object.prototype.keys = function() {
+        var a = [];
+        for (var key in this) {
+            if (this.hasOwnProperty(key)) a.push(key);
+        }
+        return a;
+    };
+}
+
+Object.prototype.equals = function(otherObject) {
+    if (!otherObject) return false;
+    var object = this, objectKeys = Object.prototype.keys(object);
+    if (!objectKeys.equals(Object.prototype.keys(otherObject))) return false;
+    return objectKeys.reduce(function(equal, key) {
+        var value = object[key], otherValue = otherObject[key];
+        var valueType = typeof value, otherValueType = typeof otherValue;
+        if (valueType !== otherValueType) return false;
+        // this will call Array.prototype.equals for arrays and Object.prototype.equals for objects
+        return equal && (valueType === "object" ? value.equals(otherValue) : value === otherValue);
+    }, true);
+};
+
 // angular polyfills
 angular.inherit = function(scope, attribute) {
     if (angular.isUndefined(scope[attribute])) {
