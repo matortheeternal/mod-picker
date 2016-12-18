@@ -30,6 +30,10 @@
       @include user-select(none);
     }
 
+    span.tag-text {
+      cursor: default;
+    }
+
     tag-input {
       position: relative;
 
