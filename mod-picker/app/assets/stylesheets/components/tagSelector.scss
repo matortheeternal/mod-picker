@@ -2,32 +2,27 @@
   max-width: 400px;
   display: inline-block;
 
-  .tag-box {
-    a {
-      color: inherit;
-      text-decoration: inherit;
-      cursor: pointer;
-      transition: none;
-      &:hover {
-        color: inherit;
-      }
-    }
-  }
-
-  span {
+  span, a {
     display: inline-block;
     padding: 4px;
   }
 
-  .red {
-    background-color: $error_secondary;
-  }
-
   .tag-box, .edit-tag-box, .add-tag-box {
+    font-size: 12px;
+    color: $action_text_color;
+    background-color: $action_color;
+    border-radius: 2px;
+    margin: 2px;
     padding: 0;
     white-space: nowrap;
     display: block;
     float: left;
+    @include transition(background-color 0.2s ease-in-out);
+
+    &.red-box {
+      background-color: $error_secondary;
+    }
+
 
     .tag-text, .tag-count, .remove-tag, .add-tag {
       line-height: 14px;
@@ -52,8 +47,15 @@
     }
 
     .tag-count {
+      color: inherit;
+      text-decoration: inherit;
+      cursor: pointer;
+      transition: none;
       border-left: 1px solid $border_color;
-      cursor: default;
+
+      &:hover {
+        color: inherit;
+      }
     }
 
     .remove-tag {

@@ -45,6 +45,14 @@ app.controller('tagSelectorController', function($scope, $element, $timeout, tag
         }, 50);
     };
 
+    $scope.enterRemove = function(tag) {
+        tag.tagBoxClass = 'red-box';
+    };
+
+    $scope.exitRemove = function(tag) {
+        tag.tagBoxClass = '';
+    };
+
     $scope.removeTag = function($index) {
         $scope.rawNewTags.splice($index, 1);
         $scope.storeTags();

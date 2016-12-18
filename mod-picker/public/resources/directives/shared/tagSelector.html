@@ -1,33 +1,29 @@
 <div class="tags-container">
-    <span ng-repeat="tag in activeTags" ng-class="tag.tagBoxClass" class="tag-box action-box" title="Submitted by {{tag.submitter.username}}">
-        <a ng-href="#/{{type}}s?t={{tag.text}}">
-            <span class="tag-text">
-                {{tag.text}}
-            </span>
-            <span ng-if="showModsCount" class="tag-count" ng-class="{ 'last-child' : !(showRemove || showModListsCount) }" title="The number of mods with this tag">
-                {{tag.mods_count | number}}
-            </span>
-            <span ng-if="showModListsCount" class="tag-count" ng-class="{ 'last-child' : !showRemove }"
-                  title="The number of mod lists with this tag">
-                {{tag.mod_lists_count | number}}
-            </span>
+    <span ng-repeat="tag in activeTags" ng-class="tag.tagBoxClass" class="tag-box" title="Submitted by {{tag.submitter.username}}">
+        <span class="tag-text">
+            {{::tag.text}}
+        </span>
+        <a ng-href="#/mods?t={{tag.text}}" ng-if="showModsCount" class="tag-count" ng-class="{ 'last-child' : !(showRemove || showModListsCount) }" title="The number of mods with this tag.  &#13;Click to browse for mods with this tag.">
+            {{::tag.mods_count | number}}
         </a>
-        <span ng-if="showRemove" ng-mouseenter="tag.tagBoxClass = 'red'" ng-mouseleave="tag.tagBoxClass= ''" class="remove-tag" ng-click="removeActiveTag($index)" title="Click to remove this tag">
+        <a ng-href="#/mod-lists?t={{tag.text}}" ng-if="showModListsCount" class="tag-count" ng-class="{ 'last-child' : !showRemove }" title="The number of mod lists with this tag.  &#13;Click to browse for mod lists with this tag.">
+            {{::tag.mod_lists_count | number}}
+        </a>
+        <span ng-if="showRemove" ng-mouseenter="enterRemove(tag)" ng-mouseleave="exitRemove(tag)" class="remove-tag" ng-click="removeActiveTag($index)" title="Click to remove this tag">
             <i class="fa fa-times"></i>
         </span>
     </span>
-    <span ng-repeat="tag in rawNewTags" class="edit-tag-box action-box">
+    <span ng-repeat="tag in rawNewTags" ng-class="tag.tagBoxClass" class="edit-tag-box">
         <span class="tag-text">
             <tag-input tags="tags" tag="tag" can-create="canCreate" apply-tag="applyTag" remove-tag="removeTag" add-tag="focusAddTag" last="$last" index="$index"></tag-input>
         </span>
-        <span ng-if="showModsCount" class="tag-count" title="The number of mods with this tag">
-            {{tag.mods_count | number}}
-        </span>
-        <span ng-if="showModListsCount" class="tag-count"
-              title="The number of mod lists with this tag">
-            {{tag.mod_lists_count | number}}
-        </span>
-        <span class="remove-tag" ng-click="removeTag($index)">
+        <a ng-href="#/mods?t={{tag.text}}" ng-if="showModsCount" class="tag-count" title="The number of mods with this tag.  &#13;Click to browse for mods with this tag.">
+            {{::tag.mods_count | number}}
+        </a>
+        <a ng-href="#/mod-lists?t={{tag.text}}" ng-if="showModListsCount" class="tag-count" title="The number of mod lists with this tag.  &#13;Click to browse for mod lists with this tag.">
+            {{::tag.mod_lists_count | number}}
+        </a>
+        <span class="remove-tag" ng-click="removeTag($index)" ng-mouseenter="enterRemove(tag)" ng-mouseleave="exitRemove(tag)" title="Click to remove this tag">
             <i class="fa fa-times"></i>
         </span>
     </span>
