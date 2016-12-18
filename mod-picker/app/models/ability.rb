@@ -1,218 +1,277 @@
 class Ability
   include CanCan::Ability
 
-  def initialize(user)
-    user ||= User.new # guest user (not logged in)
+  def can_do_anything
+    can :manage, :all
+  end
 
-    # general read permissions
-    can :read, :all
+  def cannot_read_unapproved_content(user)
+    cannot :read, CompatibilityNote, approved: false
+    cannot :read, InstallOrderNote, approved: false
+    cannot :read, LoadOrderNote, approved: false
+    cannot :read, Review, approved: false
+    cannot :read, Mod, approved: false
+    cannot :read, HelpPage, approved: false
 
-    # admins can do whatever they want
-    if user.admin?
-      can :manage, :all
-    end
+    # can read unapproved content they submitted
+    can :read, CompatibilityNote, approved: false, submitted_by: user.id
+    can :read, InstallOrderNote, approved: false, submitted_by: user.id
+    can :read, LoadOrderNote, approved: false, submitted_by: user.id
+    can :read, Review, approved: false, submitted_by: user.id
+    can :read, Mod, approved: false, submitted_by: user.id
+    can :read, HelpPage, approved: false, submitted_by: user.id
+  end
 
-    if user.moderator? || user.admin?
-      # special moderator permissions
-      can [:assign_roles, :adjust_rep, :invite], User
-      can :set_avatar, User, id: user.id
-      can :set_custom_title, User, id: user.id
-      can :index, Event
+  def cannot_read_hidden_content
+    cannot :read, Comment, hidden: true
+    cannot :read, CompatibilityNote, hidden: true
+    cannot :read, InstallOrderNote, hidden: true
+    cannot :read, LoadOrderNote, hidden: true
+    cannot :read, Review, hidden: true
+    cannot :read, Tag, hidden: true
+    cannot :read, Mod, hidden: true
+    cannot :read, ModList, hidden: true
+  end
 
-      # can create and update help pages
-      can [:approve, :create, :update], HelpPage
+  def cannot_read_private_mod_lists(user)
+    # users that are not admins or moderators
+    # cannot read private mod lists unless they submitted them
+    cannot :read, ModList, visibility: "visibility_private"
+    can :read, ModList, submitted_by: user.id
+  end
 
-      # can hide mod lists
-      can :hide, ModList
+  def cannot_read_curator_requests(user)
+    # cannot read curator requests they didn't make
+    cannot :read, CuratorRequest
+    can :read, CuratorRequest, user_id: user.id
+  end
 
-      # can update or hide any mod
-      can [:update, :hide, :approve, :assign_custom_sources, :update_authors, :update_options], Mod
-      can :destroy, ModRequirement
+  def cannot_read_reports
+    cannot :read, Report
+    cannot :read, BaseReport
+  end
 
-      # can update, approve, or hide any contribution
-      can [:update, :hide], Comment
-      can [:update, :approve, :hide], CompatibilityNote
-      can [:update, :approve, :hide], Correction
-      can [:update, :approve, :hide], InstallOrderNote
-      can [:update, :approve, :hide], LoadOrderNote
-      can [:update, :approve, :hide], Review
-      can [:update, :hide], Tag
+  def rep_10_abilities(user, can_contribute)
+    can :set_avatar, User, id: user.id
+    can :create, HelpPage if can_contribute
+  end
 
-      # can approve/deny curator requests
-      can :update, CuratorRequest
+  def rep_20_abilities(user, can_contribute)
+    return unless can_contribute
+    can :create, Tag
+    can :create, CuratorRequest
+  end
 
-      # can delete tags
-      can :destroy, ModTag
-      can :destroy, ModListTag
+  def rep_40_abilities(user, can_contribute)
+    return unless can_contribute
+    can :create, Correction
+    cannot :create, Correction, { correctable: { submitted_by: user.id } }
+    can :create, Correction, { correctable_type: "Mod" }
+    can :create, AgreementMark
+  end
 
-      # can resolve/unresolve reports
-      can :resolve, BaseReport
-    else
-      # users that are not admins or moderators
-      # cannot read private mod lists unless they submitted them
-      cannot :read, ModList, visibility: "visibility_private"
-      can :read, ModList, submitted_by: user.id
+  def rep_80_abilities(user, can_contribute)
+    return unless can_contribute
+    can :create, ReputationLink
+  end
 
-      # cannot read unapproved content
-      cannot :read, CompatibilityNote, approved: false
-      cannot :read, InstallOrderNote, approved: false
-      cannot :read, LoadOrderNote, approved: false
-      cannot :read, Review, approved: false
-      cannot :read, Mod, approved: false
-      cannot :read, HelpPage, approved: false
+  def rep_160_abilities(user, can_contribute)
+    return unless can_contribute
+    can :add_image, Mod
+  end
 
-      # can read unapproved content they submitted
-      can :read, CompatibilityNote, approved: false, submitted_by: user.id
-      can :read, InstallOrderNote, approved: false, submitted_by: user.id
-      can :read, LoadOrderNote, approved: false, submitted_by: user.id
-      can :read, Review, approved: false, submitted_by: user.id
-      can :read, Mod, approved: false, submitted_by: user.id
-      can :read, HelpPage, approved: false, submitted_by: user.id
+  def rep_320_abilities(user, can_contribute)
+    return unless can_contribute
+    can :update, CompatibilityNote, { submitter: { inactive?: true } }
+    can :update, InstallOrderNote, { submitter: { inactive?: true } }
+    can :update, LoadOrderNote, { submitter: { inactive?: true } }
+  end
 
-        # cannot read hidden content
-      cannot :read, Comment, hidden: true
-      cannot :read, CompatibilityNote, hidden: true
-      cannot :read, InstallOrderNote, hidden: true
-      cannot :read, LoadOrderNote, hidden: true
-      cannot :read, Review, hidden: true
-      cannot :read, Tag, hidden: true
-      cannot :read, Mod, hidden: true
-      cannot :read, ModList, hidden: true
+  def rep_640_abilities(user, can_contribute)
+    can :set_custom_title, User, id: user.id
+  end
 
-      # cannot read curator requests they didn't make
-      cannot :read, CuratorRequest
-      can :read, CuratorRequest, user_id: user.id
+  def reputation_abilities(user, can_contribute)
+    rep = user.reputation.overall
+    rep_10_abilities(user, can_contribute) if rep >= 10
+    rep_20_abilities(user, can_contribute) if rep >= 20
+    rep_40_abilities(user, can_contribute) if rep >= 40
+    rep_80_abilities(user, can_contribute) if rep >= 80
+    rep_160_abilities(user, can_contribute) if rep >= 160
+    rep_320_abilities(user, can_contribute) if rep >= 320
+    rep_1280_abilities(user, can_contribute) if rep >= 1280
+  end
 
-      # cannot read reports
-      cannot :read, Report
-      cannot :read, BaseReport
-    end
+  def user_restrictions(user)
+    cannot_read_private_mod_lists(user)
+    cannot_read_unapproved_content(user)
+    cannot_read_hidden_content
+    cannot_read_curator_requests(user)
+    cannot_read_reports
+  end
 
-    # news writers and admins can create and update articles
-    if user.news_writer? || user.admin?
-      can [:create, :update], Article
-    end
+  def can_manage_users(user)
+    can [:assign_roles, :adjust_rep, :invite], User
+    can :set_avatar, User, id: user.id
+    can :set_custom_title, User, id: user.id
+  end
 
-    # signed in users who aren't restricted or banned
-    user_signed_in = User.exists?(user.id)
-    if user_signed_in && !user.banned? && !user.restricted?
-      # can create new contributions
-      can :create, HelpfulMark
-      can :create, CompatibilityNote
-      can :create, InstallOrderNote
-      can :create, LoadOrderNote
-      can :create, Review
-      can :create, ModTag
-      can :create, ModListTag
+  def can_monitor_site_activity
+    can :index, Event
+  end
 
-      #can sumbit reports
-      can :create, Report
-      can :create, BaseReport
+  def can_manage_mods
+    # can update or hide any mod
+    can [:update, :hide, :approve, :assign_custom_sources, :update_authors, :update_options], Mod
+    can :destroy, ModRequirement
+    # can approve curator requests
+    can :update, CuratorRequest
+  end
 
-      # can submit mods
-      can :create, Mod
+  def can_manage_help_pages
+    # can create, update, and approve help pages
+    can [:create, :update, :approve], HelpPage
+  end
 
-      # can update their contributions
-      can :update, CompatibilityNote, submitted_by: user.id, hidden: false
-      can :update, Correction, submitted_by: user.id, hidden: false
-      can :update, LoadOrderNote, submitted_by: user.id, hidden: false
-      can :update, InstallOrderNote, submitted_by: user.id, hidden: false
-      can :update, Review, submitted_by: user.id, hidden: false
-      can :update, HelpPage, submitted_by: user.id
+  def can_manage_mod_lists
+    # can hide mod lists
+    can :hide, ModList
+  end
 
-      # can update contributions they have a passed correction for
-      can :update, CompatibilityNote, corrector_id: user.id, hidden: false
-      can :update, LoadOrderNote, corrector_id: user.id, hidden: false
-      can :update, InstallOrderNote, corrector_id: user.id, hidden: false
+  def can_manage_contributions
+    # can update, approve, or hide any contribution
+    can [:update, :hide], Comment
+    can [:update, :approve, :hide], CompatibilityNote
+    can [:update, :approve, :hide], Correction
+    can [:update, :approve, :hide], InstallOrderNote
+    can [:update, :approve, :hide], LoadOrderNote
+    can [:update, :approve, :hide], Review
+    can [:update, :hide], Tag
+    # can delete tags
+    can :destroy, ModTag
+    can :destroy, ModListTag
+  end
 
-      # can update or remove their helpful/agreement marks
-      can [:update, :destroy], AgreementMark, submitted_by: user.id
-      can [:update, :destroy], HelpfulMark, submitted_by: user.id
+  def can_manage_reports
+    can :resolve, BaseReport
+  end
 
-      # can remove tags they created
-      can :destroy, ModTag, submitted_by: user.id
-      can :destroy, ModListTag, submitted_by: user.id
+  def moderation_abilities(user)
+    can_manage_users(user)
+    can_monitor_site_activity
+    can_manage_help_pages
+    can_manage_mod_lists
+    can_manage_mods
+    can_manage_contributions
+    can_manage_reports
+  end
 
-      # abilities for mod authors
-      can [:update, :hide], Mod, { mod_authors: { user_id: user.id } }
-      can :destroy, ModRequirement, {mod_version: {mod: {mod_authors: {user_id: user.id } } } }
-      can :destroy, ModTag, { mod: { mod_authors: { user_id: user.id } } }
-      # authors
-      can :update_authors, Mod, { mod_authors: { user_id: user.id, role: 0 } }
-      can :update_options, Mod, { mod_authors: { user_id: user.id, role: 0 } }
-      can :change_status, Mod, { status: 0, mod_authors: { user_id: user.id, role: 0 } }
-      can [:read, :update], CuratorRequest, { mod: { mod_authors: { user_id: user.id, role: 0 } } }
-      # contributors
-      cannot [:update, :hide], Mod, { disallow_contributors: true, mod_authors: { user_id: user.id, role: 1 } }
+  def can_manage_articles
+    can [:create, :update], Article
+  end
 
-      # abilities tied to reputation
-      if user.reputation.overall >= 10
-        # can create new help pages
-        can :create, HelpPage
-      end
-      if user.reputation.overall >= 20
-        # can create new tags and curator requests
-        can :create, Tag
-        can :create, CuratorRequest
-      end
-      if user.reputation.overall >= 40
-        # can report something as incorrect unless they submitted it and
-        # it is not a mod
-        can :create, Correction
-        cannot :create, Correction, { correctable: { submitted_by: user.id } }
-        can :create, Correction, { correctable_type: "Mod" }
+  def helper_abilities
+    can_manage_help_pages
+    can_manage_mods
+  end
 
-        # can agree/disagree with corrections
-        can :create, AgreementMark
-      end
-      if user.reputation.overall >= 80
-        # can give reputation other users
-        can :create, ReputationLink
-      end
-      if user.reputation.overall >= 160
-        # can add images to mods that have none
-        can :add_image, Mod
-      end
-      if user.reputation.overall >= 320
-        # can update compatibility notes, install order notes, and
-        # load order notes when the user who created them is inactive
-        can :update, CompatibilityNote, { submitter: { inactive?: true } }
-        can :update, InstallOrderNote, { submitter: { inactive?: true } }
-        can :update, LoadOrderNote, { submitter: { inactive?: true } }
-      end
-    end
+  def can_create_new_contributions
+    can :create, HelpfulMark
+    can :create, CompatibilityNote
+    can :create, InstallOrderNote
+    can :create, LoadOrderNote
+    can :create, Review
+    can :create, ModTag
+    can :create, ModListTag
+  end
 
-    # Users that are not banned
-    if user_signed_in && !user.banned?
-      # can comment on things and update their comments
-      can :create, Comment
-      can :update, Comment, submitted_by: user.id, hidden: false
+  def can_submit_reports
+    can :create, Report
+    can :create, BaseReport
+  end
 
-      # can star and unstar mods and mod lists
-      can :create, ModStar
-      can :create, ModListStar
-      can :destroy, ModStar, user_id: user.id
-      can :destroy, ModListStar, user_id: user.id
+  def can_submit_mods
+    can :create, Mod
+  end
 
-      # can create and update their mod lists
-      can :create, ModList
-      can [:update, :hide], ModList, submitted_by: user.id, hidden: false
+  def can_update_their_contributions(user)
+    can :update, CompatibilityNote, submitted_by: user.id, hidden: false
+    can :update, Correction, submitted_by: user.id, hidden: false
+    can :update, LoadOrderNote, submitted_by: user.id, hidden: false
+    can :update, InstallOrderNote, submitted_by: user.id, hidden: false
+    can :update, Review, submitted_by: user.id, hidden: false
+    can :update, HelpPage, submitted_by: user.id
 
-      # can update their settings or their account
-      can :update, User, { id: user.id }
-      can :update, UserSetting, { user_id: user.id }
-      can :update, UserBio, { user_id: user.id }
+    # can update contributions they have a passed correction for
+    can :update, CompatibilityNote, corrector_id: user.id, hidden: false
+    can :update, LoadOrderNote, corrector_id: user.id, hidden: false
+    can :update, InstallOrderNote, corrector_id: user.id, hidden: false
 
-      # abilities tied to reputation
-      if user.reputation.overall >= 10
-        can :set_avatar, User, id: user.id  # custom avatar
-      end
-      if user.reputation.overall >= 1280
-        can :set_custom_title, User, id: user.id # can set a custom user title
-      end
-    end
+    # can remove tags they created
+    can :destroy, ModTag, submitted_by: user.id
+    can :destroy, ModListTag, submitted_by: user.id
+  end
 
-    # Adult content filtering
+  def can_manage_their_marks(user)
+    can [:update, :destroy], AgreementMark, submitted_by: user.id
+    can [:update, :destroy], HelpfulMark, submitted_by: user.id
+  end
+
+  def mod_author_abilities(user)
+    can [:update, :hide], Mod, { mod_authors: { user_id: user.id } }
+    can :destroy, ModRequirement, {mod_version: {mod: {mod_authors: {user_id: user.id } } } }
+    can :destroy, ModTag, { mod: { mod_authors: { user_id: user.id } } }
+    # authors
+    can :update_authors, Mod, { mod_authors: { user_id: user.id, role: 0 } }
+    can :update_options, Mod, { mod_authors: { user_id: user.id, role: 0 } }
+    can :change_status, Mod, { status: 0, mod_authors: { user_id: user.id, role: 0 } }
+    can [:read, :update], CuratorRequest, { mod: { mod_authors: { user_id: user.id, role: 0 } } }
+    # contributors
+    cannot [:update, :hide], Mod, { disallow_contributors: true, mod_authors: { user_id: user.id, role: 1 } }
+  end
+
+  def contributor_abilities(user)
+    can_create_new_contributions
+    can_submit_reports
+    can_submit_mods
+    can_update_their_contributions(user)
+    can_manage_their_marks(user)
+    mod_author_abilities(user)
+    reputation_abilities(user, true)
+  end
+
+  def can_comment_on_things(user)
+    can :create, Comment
+    can :update, Comment, submitted_by: user.id, hidden: false
+  end
+
+  def can_star_things(user)
+    can :create, ModStar
+    can :create, ModListStar
+    can :destroy, ModStar, user_id: user.id
+    can :destroy, ModListStar, user_id: user.id
+  end
+
+  def can_manage_their_mod_lists(user)
+    can :create, ModList
+    can [:update, :hide], ModList, submitted_by: user.id, hidden: false
+  end
+
+  def can_update_their_settings(user)
+    can :update, User, { id: user.id }
+    can :update, UserSetting, { user_id: user.id }
+    can :update, UserBio, { user_id: user.id }
+  end
+
+  def user_abilities(user, can_contribute)
+    can_comment_on_things(user)
+    can_star_things(user)
+    can_manage_their_mod_lists(user)
+    can_update_their_settings(user)
+    reputation_abilities(user, can_contribute)
+  end
+
+  def adult_content_filtering(user)
     settings = user.settings
     unless settings.present? && settings.allow_adult_content
       cannot :read, Mod, { has_adult_content: true }
@@ -225,5 +284,27 @@ class Ability
       cannot :read, Comment, { has_adult_content: true }
       cannot :read, Correction, { has_adult_content: true }
     end
+  end
+
+  def initialize(user)
+    user ||= User.new # guest user (not logged in)
+    user_signed_in = User.exists?(user.id)
+    can_contribute = user_signed_in && !user.banned? && !user.restricted?
+    can_use = user_signed_in && !user.banned?
+
+    # general read permissions
+    can :read, :all
+
+    # staff permissions
+    can_do_anything if user.admin?
+    moderation_abilities(user) if user.can_moderate?
+    user_restrictions(user) unless user.can_moderate?
+    can_manage_articles if user.news_writer? || user.admin?
+    helper_abilities if user.helper?
+
+    # general permissions
+    contributor_abilities(user) if can_contribute
+    user_abilities(user, can_contribute) if can_use
+    adult_content_filtering(user)
   end
 end

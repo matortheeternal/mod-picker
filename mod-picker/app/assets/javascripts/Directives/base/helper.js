@@ -27,7 +27,8 @@ app.controller('helperController', function($scope, $rootScope, $sce, helpFactor
     };
 
     $scope.helperDisabled = function() {
-        return $rootScope.currentUser.settings.disable_helper;
+        var user = $rootScope.currentUser;
+        return user.settings && user.settings.disable_helper;
     };
 
     $scope.$on('setHelpContexts', function(event, helpContexts) {

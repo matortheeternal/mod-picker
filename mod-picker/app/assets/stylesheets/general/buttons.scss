@@ -51,6 +51,10 @@ input[type="button"], input[type="submit"] {
 .action-button-container {
   margin-top: 16px;
   text-align: center;
+
+  .action-btn {
+    margin: 4px 1px;
+  }
 }
 
 .action-btn {

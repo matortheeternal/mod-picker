@@ -40,7 +40,7 @@
     <div class="content-container">
         <text-area class="note-text-area" data="activeReview.text_body" ng-refresh="updateMDE" on-change="validateReview"></text-area>
 
-        <div class="message-input" ng-if="activeReview.editing && activeReview.original.submitted_by != currentUser.id">
+        <div class="message-input" ng-if="activeReview.editing && activeReview.original.submitter.id != currentUser.id">
             <label>
                 <div>Edit Summary</div>
                 <input type="text" ng-model="activeReview.edit_summary" maxlength="255">
@@ -56,7 +56,7 @@
 
 <loader data="mod.reviews" spinner-class="big-spinner" ng-if="!errors.reviews && !errors.reviewSections">
      <!-- current user's review -->
-    <div class="content-block user-review" ng-if="mod.user_review">
+    <div class="content-block user-review" ng-if="mod.user_review" ng-hide="mod.user_review.editing">
         <div class="content-title" ng-click="myReviewExpanded = !myReviewExpanded">
             Your Review ({{mod.user_review.overall_rating | number:0}}/100)
             <i class="fa fa-caret-down" aria-hidden="true" ng-hide="myReviewExpanded"></i>

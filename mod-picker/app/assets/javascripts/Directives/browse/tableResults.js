@@ -42,21 +42,12 @@ app.controller('tableResultsController', function($scope, $rootScope, tableUtils
     $scope.columnValue = tableUtils.columnValue;
     $scope.groupColumns = tableUtils.groupColumns;
     $scope.filterClass = tableUtils.filterClass;
+    $scope.resolve = tableUtils.resolve($scope);
 
     // toggles the visibility of the edit columns modal
     $scope.toggleModal = function(visible) {
         $scope.$emit('toggleModal', visible);
         $scope.showModal = visible;
-    };
-
-    // this function resolves a variable as a function if it is one,
-    // else returns its value
-    $scope.resolve = function(attribute, item, context) {
-        if (typeof attribute === 'function') {
-            return attribute($scope, item, context);
-        } else {
-            return attribute;
-        }
     };
 
     // load sort into view

@@ -1017,7 +1017,7 @@ app.service("filtersFactory", function() {
             factory.searchFilter,
             {
                 data: "description",
-                param: "t"
+                param: "d"
             },
             factory.submitterFilter,
             factory.showAdultFilter,

@@ -1,5 +1,5 @@
 {
-  "except": ["disallow_contributors", "hidden", "submitted_by"],
+  "except": ["disallow_contributors", "submitted_by"],
   "include": {
     "tags": {
       "format": "mod_tags"

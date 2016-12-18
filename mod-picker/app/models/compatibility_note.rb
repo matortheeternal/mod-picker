@@ -50,7 +50,7 @@ class CompatibilityNote < ActiveRecord::Base
   has_many :mod_list_ignored_notes, :as => 'note'
 
   # old versions of this compatibility note
-  has_many :history_entries, :class_name => 'CompatibilityNoteHistoryEntry', :inverse_of => 'compatibility_note', :foreign_key => 'compatibility_note_id'
+  has_many :history_entries, :class_name => 'CompatibilityNoteHistoryEntry', :inverse_of => 'compatibility_note', :foreign_key => 'compatibility_note_id', :dependent => :destroy
   has_many :editors, -> { uniq }, :class_name => 'User', :through => 'history_entries'
 
   # COUNTER CACHE

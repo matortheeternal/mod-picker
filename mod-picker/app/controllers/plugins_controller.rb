@@ -15,8 +15,13 @@ class PluginsController < ApplicationController
 
   # POST /plugins/search
   def search
-    @plugins = Plugin.visible.filter(search_params).order("CHAR_LENGTH(filename)").limit(10)
-    respond_with_json(@plugins, :base)
+    if params.has_key?(:batch)
+      @plugins = Plugin.find_batch(params[:batch])
+      respond_with_json(@plugins, :base)
+    else
+      @plugins = Plugin.visible.filter(search_params).limit(10)
+      respond_with_json(@plugins, :base)
+    end
   end
 
   # GET /plugins/1
