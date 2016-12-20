@@ -22,8 +22,8 @@
             </section>
 
             <div ng-show="editing || detailsItem.description">
-                <h3 class="section-title" >Description</h3>
-                <section>
+                <h3 class="section-title">Description</h3>
+                <section class="description-section">
                     <text-area ng-model="detailsItem.description" ng-if="editing"></text-area>
                     <div marked="detailsItem.description" class="text-container" ng-if="!editing"></div>
                 </section>
@@ -45,7 +45,7 @@
             <h2>{{ editing ? 'Edit Plugin Details' : 'Plugin Details' }} - {{::detailsItem.plugin.filename}}</h2>
 
             <h3 class="section-title">Description</h3>
-            <section>
+            <section class="description-section">
                 <text-area ng-model="detailsItem.description" ng-if="editing"></text-area>
                 <div marked="detailsItem.description" class="text-container" ng-if="!editing"></div>
             </section>

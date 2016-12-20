@@ -175,7 +175,15 @@ ul.required-list {
   }
 }
 
-mod-details-modal {
+mod-details-modal, plugin-details-modal {
+  .description-section {
+    margin-top: 0;
+
+    text-area {
+      display: block;
+    }
+  }
+
   .item-name {
     font-size: 20px;
   }
