@@ -24,7 +24,7 @@
             <div ng-show="editing || detailsItem.description">
                 <h3 class="section-title">Description</h3>
                 <section class="description-section">
-                    <text-area ng-model="detailsItem.description" ng-if="editing"></text-area>
+                    <text-area data="detailsItem.description" ng-if="editing"></text-area>
                     <div marked="detailsItem.description" class="text-container" ng-if="!editing"></div>
                 </section>
             </div>
@@ -46,7 +46,7 @@
 
             <h3 class="section-title">Description</h3>
             <section class="description-section">
-                <text-area ng-model="detailsItem.description" ng-if="editing"></text-area>
+                <text-area data="detailsItem.description" ng-if="editing"></text-area>
                 <div marked="detailsItem.description" class="text-container" ng-if="!editing"></div>
             </section>
 
