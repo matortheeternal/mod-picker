@@ -6,14 +6,14 @@
     </div>
     <div class="content-container">
         <a ng-href="#/article/{{article.id}}" ng-if="!showFull">
-            <h3>{{article.title}}</h3>
+            <h3 class="article-title">{{article.title}}</h3>
         </a>
-        <h3 ng-if="showFull">{{article.title}}</h3>
+        <h3 ng-if="showFull" class="article-title">{{article.title}}</h3>
         <span class="article-details">
             by <a ng-href="#/user/{{article.submitter.id}}">{{article.submitter.username}}</a>
             on {{article.submitted | date}}
         </span>
-        <div marked="article.text_body"></div>
+        <div class="text-container" marked="article.text_body"></div>
         <a ng-href="#/article/{{article.id}}" ng-if="truncated">
             Read More
         </a>
