@@ -26,15 +26,26 @@
     font-size: 12px;
     padding: 10px;
 
-    img {
+    .image-container {
       width: 100px;
-      min-width: 100px;
       margin-right: 10px;
+      text-align: center;
+
+      img {
+        max-height: 100px;
+        max-width: 100px;
+      }
     }
 
-    img.smaller-image {
+    .smaller-image-container {
       width: 64px;
-      min-width: 64px;
+      margin-right: 10px;
+      text-align: center;
+
+      img {
+        max-height: 64px;
+        max-width: 64px;
+      }
     }
 
     .recent-title {

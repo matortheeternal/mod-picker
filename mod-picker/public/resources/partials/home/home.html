@@ -7,7 +7,9 @@
                     <section ng-repeat="mod_list in recent.mod_lists">
                         <a ng-href="#/mod-list/{{mod_list.id}}">
                             <div class="recent-thing" ng-init="user = mod_list.submitter">
-                                <img class="smaller-image" ng-src="{{user.avatars.medium}}">
+                                <div class=" smaller-image-container">
+                                    <img ng-src="{{user.avatars.medium}}">
+                                </div>
                                 <div>
                                     <div class="recent-title">{{mod_list.name}}</div>
                                     <div> by {{mod_list.submitter.username}}</div>
@@ -26,7 +28,9 @@
                     <section ng-repeat="mod in recent.mods">
                         <a ng-href="#/mod/{{mod.id}}">
                             <div class="recent-thing">
-                                <img ng-src="{{mod.images.small}}">
+                                <div class="image-container">
+                                    <img ng-src="{{mod.images.small}}">
+                                </div>
                                 <div>
                                     <div class="recent-title">{{mod.name}}</div>
                                     <div>by <span class="author">{{mod.authors}}</span></div>
