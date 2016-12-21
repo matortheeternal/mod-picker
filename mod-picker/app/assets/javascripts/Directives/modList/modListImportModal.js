@@ -66,7 +66,7 @@ app.controller('modListImportModalController', function($scope, $rootScope, $sta
         $scope.getFileText(event, function(text) {
             $scope.modListTxt = text;
             var modData = importUtils.getTxtModData($scope.modListTxt);
-            $scope.$broadcast('findMatchingMods', modData);
+            $scope.$broadcast('findMatchingMods', modData.reverse());
         });
     };
 
