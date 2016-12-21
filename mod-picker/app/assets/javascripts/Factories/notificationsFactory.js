@@ -154,6 +154,7 @@ app.service('notificationsFactory', function() {
             banned: "You have been banned.",
             restricted: "Your account has been restricted.  You can no longer make public contributions.",
             user: "Your account has been returned to normal status.",
+            helper: "You are now a helper on Mod Picker.",
             moderator: "You are now a moderator on Mod Picker!",
             admin: "You are now a site admin.  Remember, with great power comes great responsibility."
         },
