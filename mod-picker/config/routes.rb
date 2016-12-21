@@ -6,111 +6,6 @@ Rails.application.routes.draw do
     post '/users/invitation/batch' => 'user_invitations#create_batch'
   end
 
-  # users
-  match '/current_user', to: 'users#current', via: [:get]
-  match '/users/index', to: 'users#index', via: [:get, :post]
-  match '/users/search', to: 'users#search', via: [:post]
-  match '/users/:id', to: 'users#show', via: [:get]
-
-  # user associations
-  match '/users/:id/comments', to: 'users#comments', via: [:get, :post]
-  match '/users/:id/mods', to: 'users#mods', via: [:get]
-  match '/users/:id/mod_lists', to: 'users#mod_lists', via: [:get]
-
-  # tags
-  match '/all_tags', to: 'tags#all', via: [:get]
-  match '/tags', to: 'tags#index', via: [:post]
-
-  # mods
-  match '/mods/index', to: 'mods#index', via: [:get, :post]
-  match '/mods/search', to: 'mods#search', via: [:post]
-  resources :mods, only: [:show]
-
-  # mod options
-  match '/mod_options/search', to: 'mod_options#search', via: [:post]
-
-  # plugins
-  match '/plugins', to: 'plugins#index', via: [:get, :post]
-  match '/plugins/search', to: 'plugins#search', via: [:post]
-  match '/plugins/:id', to: 'plugins#show', via: [:get]
-
-  # content associated with mods
-  match '/mods/:id/corrections', to: 'mods#corrections', via: [:get, :post]
-  match '/mods/:id/reviews', to: 'mods#reviews', via: [:get, :post]
-  match '/mods/:id/compatibility_notes', to: 'mods#compatibility_notes', via: [:get, :post]
-  match '/mods/:id/install_order_notes', to: 'mods#install_order_notes', via: [:get, :post]
-  match '/mods/:id/load_order_notes', to: 'mods#load_order_notes', via: [:get, :post]
-  match '/mods/:id/analysis', to: 'mods#analysis', via: [:get, :post]
-
-  # reviews
-  match '/reviews/index', to: 'reviews#index', via: [:get, :post]
-  resources :reviews, only: [:show]
-
-  # compatibility notes
-  match '/compatibility_notes/index', to: 'compatibility_notes#index', via: [:get, :post]
-  match '/compatibility_notes/:id/corrections', to: 'compatibility_notes#corrections', via: [:get]
-  match '/compatibility_notes/:id/history', to: 'compatibility_notes#history', via: [:get]
-  resources :compatibility_notes, only: [:show]
-
-  # install order notes
-  match '/install_order_notes/index', to: 'install_order_notes#index', via: [:get, :post]
-  match '/install_order_notes/:id/corrections', to: 'install_order_notes#corrections', via: [:get]
-  match '/install_order_notes/:id/history', to: 'install_order_notes#history', via: [:get]
-  resources :install_order_notes, only: [:show]
-
-  # load order notes
-  match '/load_order_notes/index', to: 'load_order_notes#index', via: [:get, :post]
-  match '/load_order_notes/:id/corrections', to: 'load_order_notes#corrections', via: [:get]
-  match '/load_order_notes/:id/history', to: 'load_order_notes#history', via: [:get]
-  resources :load_order_notes, only: [:show]
-
-  # corrections
-  match '/corrections/index', to: 'corrections#index', via: [:get, :post]
-  match '/corrections/:id/comments', to: 'corrections#comments', via: [:get, :post]
-  resources :corrections, only: [:show]
-
-  # comments
-  match '/comments/index', to: 'comments#index', via: [:get, :post]
-  resources :comments, only: [:show]
-
-  # mod lists
-  match '/mod_lists/active', to: 'mod_lists#active', via: [:get]
-  match '/mod_lists/index', to: 'mod_lists#index', via: [:get, :post]
-  match '/mod_lists/:id/mods', to: 'mod_lists#mods', via: [:get, :post]
-  match '/mod_lists/:id/tools', to: 'mod_lists#tools', via: [:get, :post]
-  match '/mod_lists/:id/plugins', to: 'mod_lists#plugins', via: [:get, :post]
-  match '/mod_lists/:id/config', to: 'mod_lists#config_files', via: [:get, :post]
-  match '/mod_lists/:id/analysis', to: 'mod_lists#analysis', via: [:get, :post]
-  match '/mod_lists/:id/comments', to: 'mod_lists#comments', via: [:get, :post]
-  resources :mod_lists, only: [:show]
-
-  # help pages
-  match '/help/category/:category', to: 'help_pages#category', via: [:get]
-  match '/help/game/:game', to: 'help_pages#game', via: [:get]
-  match '/help/:id/comments', to: 'help_pages#comments', via: [:get, :post]
-  match '/help/search', to:  'help_pages#search', via: [:get]
-  resources :help_pages, path: 'help', except: [:new, :create, :edit, :update, :destroy]
-  match '/help/*path', to: 'help_pages#record_not_found', via: :all
-
-  # static data
-  resources :categories, only: [:index]
-  resources :category_priorities, only: [:index]
-  resources :games, only: [:index]
-  resources :quotes, only: [:index]
-  resources :record_groups, only: [:index]
-  resources :review_sections, only: [:index]
-  resources :user_titles, only: [:index]
-
-  # home page
-  match '/skyrim', to: 'home#skyrim', via: [:get]
-  match '/fallout4', to: 'home#fallout4', via: [:get]
-  match '/home', to: 'home#index', via: [:get]
-
-  #articles
-  match '/articles/:id/comments', to: 'articles#comments', via: [:get, :post]
-  match '/articles/index', to: 'articles#index', via: [:get, :post]
-  resources :articles, only: [:show]
-
   # require authentication before allowing user to submit things
   authenticate :user do
     # user reputation_links
@@ -232,6 +127,111 @@ Rails.application.routes.draw do
     match '/reports', to: 'reports#create', via: [:post]
     match '/reports/:id/resolve', to: 'reports#resolve', via: [:post]
   end
+
+  # users
+  match '/current_user', to: 'users#current', via: [:get]
+  match '/users/index', to: 'users#index', via: [:get, :post]
+  match '/users/search', to: 'users#search', via: [:post]
+  match '/users/:id', to: 'users#show', via: [:get]
+
+  # user associations
+  match '/users/:id/comments', to: 'users#comments', via: [:get, :post]
+  match '/users/:id/mods', to: 'users#mods', via: [:get]
+  match '/users/:id/mod_lists', to: 'users#mod_lists', via: [:get]
+
+  # tags
+  match '/all_tags', to: 'tags#all', via: [:get]
+  match '/tags', to: 'tags#index', via: [:post]
+
+  # mods
+  match '/mods/index', to: 'mods#index', via: [:get, :post]
+  match '/mods/search', to: 'mods#search', via: [:post]
+  resources :mods, only: [:show]
+
+  # mod options
+  match '/mod_options/search', to: 'mod_options#search', via: [:post]
+
+  # plugins
+  match '/plugins', to: 'plugins#index', via: [:get, :post]
+  match '/plugins/search', to: 'plugins#search', via: [:post]
+  match '/plugins/:id', to: 'plugins#show', via: [:get]
+
+  # content associated with mods
+  match '/mods/:id/corrections', to: 'mods#corrections', via: [:get, :post]
+  match '/mods/:id/reviews', to: 'mods#reviews', via: [:get, :post]
+  match '/mods/:id/compatibility_notes', to: 'mods#compatibility_notes', via: [:get, :post]
+  match '/mods/:id/install_order_notes', to: 'mods#install_order_notes', via: [:get, :post]
+  match '/mods/:id/load_order_notes', to: 'mods#load_order_notes', via: [:get, :post]
+  match '/mods/:id/analysis', to: 'mods#analysis', via: [:get, :post]
+
+  # reviews
+  match '/reviews/index', to: 'reviews#index', via: [:get, :post]
+  resources :reviews, only: [:show]
+
+  # compatibility notes
+  match '/compatibility_notes/index', to: 'compatibility_notes#index', via: [:get, :post]
+  match '/compatibility_notes/:id/corrections', to: 'compatibility_notes#corrections', via: [:get]
+  match '/compatibility_notes/:id/history', to: 'compatibility_notes#history', via: [:get]
+  resources :compatibility_notes, only: [:show]
+
+  # install order notes
+  match '/install_order_notes/index', to: 'install_order_notes#index', via: [:get, :post]
+  match '/install_order_notes/:id/corrections', to: 'install_order_notes#corrections', via: [:get]
+  match '/install_order_notes/:id/history', to: 'install_order_notes#history', via: [:get]
+  resources :install_order_notes, only: [:show]
+
+  # load order notes
+  match '/load_order_notes/index', to: 'load_order_notes#index', via: [:get, :post]
+  match '/load_order_notes/:id/corrections', to: 'load_order_notes#corrections', via: [:get]
+  match '/load_order_notes/:id/history', to: 'load_order_notes#history', via: [:get]
+  resources :load_order_notes, only: [:show]
+
+  # corrections
+  match '/corrections/index', to: 'corrections#index', via: [:get, :post]
+  match '/corrections/:id/comments', to: 'corrections#comments', via: [:get, :post]
+  resources :corrections, only: [:show]
+
+  # comments
+  match '/comments/index', to: 'comments#index', via: [:get, :post]
+  resources :comments, only: [:show]
+
+  # mod lists
+  match '/mod_lists/active', to: 'mod_lists#active', via: [:get]
+  match '/mod_lists/index', to: 'mod_lists#index', via: [:get, :post]
+  match '/mod_lists/:id/mods', to: 'mod_lists#mods', via: [:get, :post]
+  match '/mod_lists/:id/tools', to: 'mod_lists#tools', via: [:get, :post]
+  match '/mod_lists/:id/plugins', to: 'mod_lists#plugins', via: [:get, :post]
+  match '/mod_lists/:id/config', to: 'mod_lists#config_files', via: [:get, :post]
+  match '/mod_lists/:id/analysis', to: 'mod_lists#analysis', via: [:get, :post]
+  match '/mod_lists/:id/comments', to: 'mod_lists#comments', via: [:get, :post]
+  resources :mod_lists, only: [:show]
+
+  # help pages
+  match '/help/category/:category', to: 'help_pages#category', via: [:get]
+  match '/help/game/:game', to: 'help_pages#game', via: [:get]
+  match '/help/:id/comments', to: 'help_pages#comments', via: [:get, :post]
+  match '/help/search', to:  'help_pages#search', via: [:get]
+  resources :help_pages, path: 'help', except: [:new, :create, :edit, :update, :destroy]
+  match '/help/*path', to: 'help_pages#record_not_found', via: :all
+
+  # static data
+  resources :categories, only: [:index]
+  resources :category_priorities, only: [:index]
+  resources :games, only: [:index]
+  resources :quotes, only: [:index]
+  resources :record_groups, only: [:index]
+  resources :review_sections, only: [:index]
+  resources :user_titles, only: [:index]
+
+  # home page
+  match '/skyrim', to: 'home#skyrim', via: [:get]
+  match '/fallout4', to: 'home#fallout4', via: [:get]
+  match '/home', to: 'home#index', via: [:get]
+
+  #articles
+  match '/articles/:id/comments', to: 'articles#comments', via: [:get, :post]
+  match '/articles/index', to: 'articles#index', via: [:get, :post]
+  resources :articles, only: [:show]
 
   # welcome page
   resources :welcome, only: [:index]
