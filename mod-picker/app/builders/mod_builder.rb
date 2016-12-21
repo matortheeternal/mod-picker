@@ -1,7 +1,11 @@
-class ModBuilder
+class ModBuilder < Builder
   attr_accessor :tag_names, :nexus_info_id, :lover_info_id, :workshop_info_id, :plugin_ids, :curate
 
   # core
+  def initialize(current_user, params={})
+    super(current_user, params)
+  end
+
   def builder_attributes
     [:tag_names, :nexus_info_id, :lover_info_id, :workshop_info_id, :curate]
   end
@@ -143,7 +147,7 @@ class ModBuilder
 
   def substitute_custom_mods
     resource.sources_array.each do |source|
-      ModListCustomMod.substitute_for_url(source.url, mod)
+      ModListCustomMod.substitute_for_url(source.url, resource)
     end
   end
 
