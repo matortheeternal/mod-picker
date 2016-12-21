@@ -18,6 +18,7 @@ app.controller('commentController', function($scope, $rootScope, $filter, $timeo
     // inherited variables
     $scope.currentUser = $rootScope.currentUser;
     $scope.currentGame = $rootScope.currentGame;
+    $scope.permissions = angular.copy($rootScope.permissions);
 
     // initialize local variables
     $scope.report = {
@@ -125,9 +126,9 @@ app.controller('commentController', function($scope, $rootScope, $filter, $timeo
         var isSubmitter = user && user.id === $scope.comment.submitter.id;
         // set up permissions
         $scope.isSubmitter = isSubmitter;
-        $scope.canReply = !$scope.isChild && user.canComment;
-        $scope.canReport = user.canReport;
-        $scope.canEdit = user.canComment && (isAdmin || isModerator || isSubmitter);
+        $scope.canReply = !$scope.isChild && $scope.permissions.canComment;
+        $scope.canReport = $scope.permissions.canReport;
+        $scope.canEdit = $scope.permissions.canComment && (isAdmin || isModerator || isSubmitter);
         $scope.canHide = isAdmin || isModerator;
     };
 
