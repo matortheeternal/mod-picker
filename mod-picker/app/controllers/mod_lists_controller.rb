@@ -68,8 +68,8 @@ class ModListsController < ApplicationController
     install_order_notes = @mod_list.install_order_notes.preload(:submitter, :editor, :editors, :first_mod, :second_mod)
 
     # prepare helpful marks
-    c_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("CompatibilityNote", compatibility_notes.ids)
-    i_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("InstallOrderNote", install_order_notes.ids)
+    c_helpful_marks = HelpfulMark.for_user_content(current_user, "CompatibilityNote", compatibility_notes.ids)
+    i_helpful_marks = HelpfulMark.for_user_content(current_user, "InstallOrderNote", install_order_notes.ids)
 
     # render response
     render json: {
@@ -100,8 +100,8 @@ class ModListsController < ApplicationController
     load_order_notes = @mod_list.load_order_notes.preload(:submitter, :editor, :editors, :first_mod, :second_mod, :first_plugin, :second_plugin)
 
     # prepare helpful marks
-    c_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("CompatibilityNote", compatibility_notes.ids)
-    l_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("LoadOrderNote", load_order_notes.ids)
+    c_helpful_marks = HelpfulMark.for_user_content(current_user, "CompatibilityNote", compatibility_notes.ids)
+    i_helpful_marks = HelpfulMark.for_user_content(current_user, "InstallOrderNote", install_order_notes.ids)
     
     # render response
     render json: {
