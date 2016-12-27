@@ -199,8 +199,10 @@ class WorkshopHelper
       mod_data[:favorites] = statsTableRows[2].css("td")[0].text.gsub(',', '').to_i
       # <#highlight_strip_scroll>
       highlightStrip = doc.at_css("#highlight_strip_scroll")
-      mod_data[:images_count] = highlightStrip.css(".highlight_strip_screenshot").length
-      mod_data[:videos_count] = highlightStrip.css(".highlight_strip_movie").length
+      if highlightStrip.present?
+        mod_data[:images_count] = highlightStrip.css(".highlight_strip_screenshot").length
+        mod_data[:videos_count] = highlightStrip.css(".highlight_strip_movie").length
+      end
     end
 
     # return the mod data
