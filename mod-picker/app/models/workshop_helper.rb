@@ -178,8 +178,10 @@ class WorkshopHelper
     stats = doc.at_css(".detailsStatsContainerRight").css(".detailsStatRight")
     date_submitted_str = stats[1].text.strip
     mod_data[:released] = DateTime.parse(date_submitted_str, workshop_date_format)
-    date_updated_str = stats[2].text.strip
-    mod_data[:updated] = DateTime.parse(date_updated_str, workshop_date_format)
+    if stats.length > 2
+      date_updated_str = stats[2].text.strip
+      mod_data[:updated] = DateTime.parse(date_updated_str, workshop_date_format)
+    end
 
     # scrape statistics
     mod_data[:has_stats] = Rails.application.config.scrape_workshop_statistics
