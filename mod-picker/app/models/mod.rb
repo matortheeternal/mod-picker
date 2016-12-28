@@ -191,6 +191,12 @@ class Mod < ActiveRecord::Base
     end
   end
 
+  def self.submission_history(time_zone)
+    pluck(:submitted).group_by { |d|
+      d.in_time_zone(time_zone).to_date.to_s(:db)
+    }.map { |k,v| [k, v.length] }.sort
+  end
+
   def visible
     approved && !hidden
   end

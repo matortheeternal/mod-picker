@@ -173,6 +173,10 @@ class User < ActiveRecord::Base
     end
   end
 
+  def mod_submission_history(time_zone)
+    submitted_mods.submission_history(time_zone)
+  end
+
   def init
     self.joined ||= DateTime.current
     self.role   ||= :user
