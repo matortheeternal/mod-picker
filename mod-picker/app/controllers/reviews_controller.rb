@@ -21,7 +21,7 @@ class ReviewsController < ContributionsController
 
   # PATCH/PUT /reviews/1
   def update
-    builder = ReviewBuilder.update(params[:id], @current_user, contribution_update_params)
+    builder = ReviewBuilder.update(params[:id], current_user, contribution_update_params)
     authorize! :update, builder.resource
     if builder.update
       render json: {status: :ok}
@@ -32,7 +32,7 @@ class ReviewsController < ContributionsController
 
   # POST /reviews
   def create
-    builder = ReviewBuilder.new(@current_user, contribution_params)
+    builder = ReviewBuilder.new(current_user, contribution_params)
     authorize! :create, builder.resource
     if builder.save
       render json: builder.resource.reload

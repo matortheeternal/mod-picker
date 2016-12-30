@@ -82,7 +82,7 @@ class Builder
     save!
     true
   rescue Exception => x
-    raise x unless mod.errors.present?
+    raise x unless resource.errors.present?
     false
   end
 
