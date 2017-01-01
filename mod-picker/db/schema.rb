@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161211031117) do
+ActiveRecord::Schema.define(version: 20170101070746) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -734,7 +734,7 @@ ActiveRecord::Schema.define(version: 20161211031117) do
   create_table "plugins", force: :cascade do |t|
     t.integer "game_id",                limit: 4,                   null: false
     t.integer "mod_option_id",          limit: 4
-    t.string  "filename",               limit: 64,                  null: false
+    t.string  "filename",               limit: 256,                 null: false
     t.string  "crc_hash",               limit: 8,                   null: false
     t.integer "file_size",              limit: 4,                   null: false
     t.string  "author",                 limit: 512

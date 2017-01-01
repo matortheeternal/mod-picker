@@ -57,7 +57,7 @@ class Plugin < ActiveRecord::Base
   # VALIDATIONS
   validates :game_id, :mod_option_id, :filename, :crc_hash, :file_size, presence: true
 
-  validates :filename, length: {maximum: 64}
+  validates :filename, length: {maximum: 256}
   validates :author, length: {maximum: 512}
   validates :description, length: {maximum: 512}
   validates :crc_hash, length: {is: 8}
