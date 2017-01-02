@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170101070746) do
+ActiveRecord::Schema.define(version: 20170102215516) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -578,8 +578,8 @@ ActiveRecord::Schema.define(version: 20170101070746) do
 
   create_table "mod_options", force: :cascade do |t|
     t.integer "mod_id",              limit: 4,                   null: false
-    t.string  "name",                limit: 128,                 null: false
-    t.string  "display_name",        limit: 128,                 null: false
+    t.string  "name",                limit: 255,                 null: false
+    t.string  "display_name",        limit: 255,                 null: false
     t.integer "size",                limit: 8,   default: 0,     null: false
     t.string  "md5_hash",            limit: 32
     t.boolean "default",                         default: false, null: false
