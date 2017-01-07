@@ -132,6 +132,9 @@ Rails.application.routes.draw do
     match '/reports/:id/resolve', to: 'reports#resolve', via: [:post]
   end
 
+  # api
+  match '/api/security_token', to: 'api#security_token', via: [:get]
+
   # users
   match '/current_user', to: 'users#current', via: [:get]
   match '/users/index', to: 'users#index', via: [:get, :post]
