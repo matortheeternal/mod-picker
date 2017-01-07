@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
   # disable registration
-  devise_for :users, :controllers => { :registrations => "registrations", :invitations => "user_invitations" }
+  devise_for :users, :controllers => {
+      sessions: 'sessions',
+      registrations: 'registrations',
+      invitations: 'user_invitations'
+  }
   devise_scope :user do
     get '/users/invitation/batch/new' => 'user_invitations#new_batch'
     post '/users/invitation/batch' => 'user_invitations#create_batch'
