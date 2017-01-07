@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170102215516) do
+ActiveRecord::Schema.define(version: 20170107210149) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -21,6 +21,18 @@ ActiveRecord::Schema.define(version: 20170102215516) do
 
   add_index "agreement_marks", ["correction_id"], name: "inc_id", using: :btree
   add_index "agreement_marks", ["submitted_by"], name: "submitted_by", using: :btree
+
+  create_table "api_tokens", force: :cascade do |t|
+    t.integer  "user_id",        limit: 4,                  null: false
+    t.string   "name",           limit: 64,                 null: false
+    t.string   "api_key",        limit: 24,                 null: false
+    t.integer  "requests_count", limit: 8,  default: 0,     null: false
+    t.boolean  "expired",                   default: false, null: false
+    t.datetime "created",                                   null: false
+    t.datetime "date_expired"
+  end
+
+  add_index "api_tokens", ["user_id"], name: "fk_rails_f16b5e0447", using: :btree
 
   create_table "articles", force: :cascade do |t|
     t.integer  "game_id",        limit: 4
@@ -985,6 +997,7 @@ ActiveRecord::Schema.define(version: 20170102215516) do
 
   add_foreign_key "agreement_marks", "corrections"
   add_foreign_key "agreement_marks", "users", column: "submitted_by", name: "agreement_marks_ibfk_2"
+  add_foreign_key "api_tokens", "users"
   add_foreign_key "articles", "users", column: "submitted_by"
   add_foreign_key "asset_files", "games"
   add_foreign_key "categories", "categories", column: "parent_id"
