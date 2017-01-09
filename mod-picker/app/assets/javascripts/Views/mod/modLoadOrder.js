@@ -112,7 +112,7 @@ app.controller('modLoadOrderController', function($scope, $state, $stateParams, 
         if (!loadOrderNote) return;
 
         var sanitized_text = contributionService.removePrompts(loadOrderNote.text_body);
-        var textValid = sanitized_text.length > 256;
+        var textValid = sanitized_text.length > 128;
         var pluginsValid = (loadOrderNote.first_plugin_id !== undefined) &&
             (loadOrderNote.second_plugin_id !== undefined);
 

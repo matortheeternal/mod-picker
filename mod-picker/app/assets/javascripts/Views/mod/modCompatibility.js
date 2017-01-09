@@ -114,7 +114,7 @@ app.controller('modCompatibilityController', function($scope, $stateParams, $sta
 
         // validation helpers
         var sanitized_text = contributionService.removePrompts(note.text_body);
-        var textValid = sanitized_text.length > 512;
+        var textValid = sanitized_text.length > 128;
         var modsValid = note.mod_id !== undefined;
         var statusValid = true;
         if (note.status === "compatibility_mod") {

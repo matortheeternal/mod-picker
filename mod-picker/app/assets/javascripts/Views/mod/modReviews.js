@@ -187,7 +187,7 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
     $scope.validateReview = function() {
         var review = $scope.activeReview;
         var sanitized_text = contributionService.removePrompts(review.text_body);
-        var textValid = sanitized_text.length > 512;
+        var textValid = sanitized_text.length > 384;
         var ratingsValid = review.ratings.reduce(function(valid, section) {
             return valid && section.rating;
         }, true);
