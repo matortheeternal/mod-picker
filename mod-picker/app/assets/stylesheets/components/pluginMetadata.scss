@@ -22,4 +22,9 @@ plugin-metadata {
     color: $success_secondary;
     border: 1px solid $success_secondary;
   }
+
+  .dummy-flag {
+    color: $error_secondary;
+    border: 1px solid $error_secondary;
+  }
 }
