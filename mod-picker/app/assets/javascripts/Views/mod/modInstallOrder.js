@@ -101,7 +101,7 @@ app.controller('modInstallOrderController', function($scope, $stateParams, $stat
         if (!installOrderNote) return;
 
         var sanitized_text = contributionService.removePrompts(installOrderNote.text_body);
-        var textValid = sanitized_text.length > 256;
+        var textValid = sanitized_text.length > 128;
         var modsValid = installOrderNote.mod_id !== undefined;
 
         installOrderNote.valid = textValid && modsValid;
