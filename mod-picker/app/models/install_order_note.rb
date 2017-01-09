@@ -52,7 +52,7 @@ class InstallOrderNote < ActiveRecord::Base
   # VALIDATIONS
   validates :game_id, :submitted_by, :first_mod_id, :second_mod_id, :text_body, presence: true
 
-  validates :text_body, length: { in: 256..16384 }
+  validates :text_body, length: { in: 128..16384 }
   validate :validate_unique_mods
 
   # CALLBACKS

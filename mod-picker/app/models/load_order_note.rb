@@ -59,7 +59,7 @@ class LoadOrderNote < ActiveRecord::Base
   # VALIDATIONS
   validates :game_id, :submitted_by, :first_plugin_id, :second_plugin_id, :text_body, presence: true
 
-  validates :text_body, length: {in: 256..16384}
+  validates :text_body, length: {in: 128..16384}
   validate :validate_unique_plugins
   validate :validate_no_master_dependency
 
