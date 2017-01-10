@@ -1,0 +1,23 @@
+<div class="modal-container" ng-if="showTokenModal" ng-click="unfocusTokenModal($event)">
+    <messages event="modalMessage"></messages>
+
+    <div class="modal huge-modal">
+        <form>
+            <div class="close-modal">
+                <span class="fa fa-times" ng-click="toggleTokenModal(false)"></span>
+            </div>
+
+            <h2>Edit API Token</h2>
+
+            <h3 class="section-title">Name</h3>
+            <section>
+                <input type="text" class="elastic-input" ng-model="activeToken.name" spellcheck="false" autofocus pu-elastic-input/>
+            </section>
+
+            <div class="action-button-container">
+                <input class="btn" type="button" ng-click="saveToken()" ng-disabled="activeToken.name === originalToken.name" value="Save"/>
+                <input class="btn" type="button" ng-click="toggleTokenModal(false)" value="Close"/>
+            </div>
+        </form>
+    </div>
+</div>
