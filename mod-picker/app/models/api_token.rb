@@ -12,10 +12,10 @@ class ApiToken < ActiveRecord::Base
   validates :name, length: { maximum: 64 }
 
   # CALLBACKS
-  after_initialize :generate_api_key
+  before_create :generate_api_key
 
   def generate_api_key
-    api_key = SecureRandom.urlsafe_base64
+    self.api_key = SecureRandom.urlsafe_base64
     generate_api_key if ApiToken.where(api_key: api_key).exists?
   end
 
