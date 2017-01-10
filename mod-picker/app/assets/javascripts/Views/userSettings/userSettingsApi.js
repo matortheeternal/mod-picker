@@ -49,7 +49,7 @@ app.controller('userSettingsApiController', function($scope, $rootScope, $timeou
             $timeout(function() {
                 $scope.$apply(function() {
                     token.expired = true;
-                    token.date_expired = Date.prototype.toISOString(new Date());
+                    token.date_expired = (new Date()).toISOString();
                 });
             });
             $scope.$emit('successMessage', 'API Token expired successfully.');
