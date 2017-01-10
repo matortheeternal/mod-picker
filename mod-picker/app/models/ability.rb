@@ -150,6 +150,8 @@ class Ability
     # can delete tags
     can :destroy, ModTag
     can :destroy, ModListTag
+    # can manage api tokens
+    can [:create, :update, :expire], ApiToken
   end
 
   def can_manage_reports
@@ -210,6 +212,9 @@ class Ability
     # can remove tags they created
     can :destroy, ModTag, submitted_by: user.id
     can :destroy, ModListTag, submitted_by: user.id
+
+    # can manage their api tokens
+    can [:create, :update, :expire], ApiToken, user_id: user.id
   end
 
   def can_manage_their_marks(user)
