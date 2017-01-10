@@ -1,4 +1,4 @@
-app.controller('userSettingsApiController', function($scope, $rootScope, columnsFactory, actionsFactory, apiTokenService) {
+app.controller('userSettingsApiController', function($scope, $rootScope, $timeout, columnsFactory, actionsFactory, apiTokenService) {
     // initialize variables
     $scope.currentUser = $rootScope.currentUser;
     $scope.actions = actionsFactory.apiTokenActions();
@@ -46,8 +46,12 @@ app.controller('userSettingsApiController', function($scope, $rootScope, columns
 
     $scope.$on('expireToken', function(event, token) {
         apiTokenService.expireToken(token.id).then(function() {
-            token.expired = true;
-            token.date_expired = new Date();
+            $timeout(function() {
+                $scope.$apply(function() {
+                    token.expired = true;
+                    token.date_expired = Date.prototype.toISOString(new Date());
+                });
+            });
             $scope.$emit('successMessage', 'API Token expired successfully.');
         }, function(response) {
             var params = {

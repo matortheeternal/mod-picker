@@ -1201,7 +1201,8 @@ app.service('columnsFactory', function() {
                 visibility: true,
                 label: "Expired",
                 data: "date_expired",
-                filter: "date"
+                filter: "date",
+                dynamic: true
             }
         ]
     };
