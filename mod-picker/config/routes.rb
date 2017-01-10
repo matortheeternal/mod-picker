@@ -142,78 +142,78 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       #users
-      match '/api/v1/users/index', to: 'users#index', via: [:get, :post]
-      match '/api/v1/users/search', to: 'users#search', via: [:post]
-      match '/api/v1/users/:id', to: 'users#show', via: [:get]
+      match '/users/index', to: 'users#index', via: [:get, :post]
+      match '/users/search', to: 'users#search', via: [:post]
+      match '/users/:id', to: 'users#show', via: [:get]
 
       # user associations
-      match '/api/v1/users/:id/comments', to: 'users#comments', via: [:get, :post]
-      match '/api/v1/users/:id/mods', to: 'users#mods', via: [:get]
-      match '/api/v1/users/:id/mod_lists', to: 'users#mod_lists', via: [:get]
+      match '/users/:id/comments', to: 'users#comments', via: [:get, :post]
+      match '/users/:id/mods', to: 'users#mods', via: [:get]
+      match '/users/:id/mod_lists', to: 'users#mod_lists', via: [:get]
 
       # tags
-      match '/api/v1/all_tags', to: 'tags#all', via: [:get]
-      match '/api/v1/tags', to: 'tags#index', via: [:post]
+      match '/all_tags', to: 'tags#all', via: [:get]
+      match '/tags', to: 'tags#index', via: [:post]
 
       # mods
-      match '/api/v1/mods/index', to: 'mods#index', via: [:get, :post]
-      match '/api/v1/mods/search', to: 'mods#search', via: [:post]
+      match '/mods/index', to: 'mods#index', via: [:get, :post]
+      match '/mods/search', to: 'mods#search', via: [:post]
       resources :mods, only: [:show]
 
       # mod options
-      match '/api/v1/mod_options/search', to: 'mod_options#search', via: [:post]
+      match '/mod_options/search', to: 'mod_options#search', via: [:post]
 
       # plugins
-      match '/api/v1/plugins', to: 'plugins#index', via: [:get, :post]
-      match '/api/v1/plugins/search', to: 'plugins#search', via: [:post]
-      match '/api/v1/plugins/:id', to: 'plugins#show', via: [:get]
+      match '/plugins', to: 'plugins#index', via: [:get, :post]
+      match '/plugins/search', to: 'plugins#search', via: [:post]
+      match '/plugins/:id', to: 'plugins#show', via: [:get]
 
       # content associated with mods
-      match '/api/v1/mods/:id/corrections', to: 'mods#corrections', via: [:get, :post]
-      match '/api/v1/mods/:id/reviews', to: 'mods#reviews', via: [:get, :post]
-      match '/api/v1/mods/:id/compatibility_notes', to: 'mods#compatibility_notes', via: [:get, :post]
-      match '/api/v1/mods/:id/install_order_notes', to: 'mods#install_order_notes', via: [:get, :post]
-      match '/api/v1/mods/:id/load_order_notes', to: 'mods#load_order_notes', via: [:get, :post]
-      match '/api/v1/mods/:id/analysis', to: 'mods#analysis', via: [:get, :post]
+      match '/mods/:id/corrections', to: 'mods#corrections', via: [:get, :post]
+      match '/mods/:id/reviews', to: 'mods#reviews', via: [:get, :post]
+      match '/mods/:id/compatibility_notes', to: 'mods#compatibility_notes', via: [:get, :post]
+      match '/mods/:id/install_order_notes', to: 'mods#install_order_notes', via: [:get, :post]
+      match '/mods/:id/load_order_notes', to: 'mods#load_order_notes', via: [:get, :post]
+      match '/mods/:id/analysis', to: 'mods#analysis', via: [:get, :post]
 
       # reviews
-      match '/api/v1/reviews/index', to: 'reviews#index', via: [:get, :post]
+      match '/reviews/index', to: 'reviews#index', via: [:get, :post]
       resources :reviews, only: [:show]
 
       # compatibility notes
-      match '/api/v1/compatibility_notes/index', to: 'compatibility_notes#index', via: [:get, :post]
-      match '/api/v1/compatibility_notes/:id/corrections', to: 'compatibility_notes#corrections', via: [:get]
-      match '/api/v1/compatibility_notes/:id/history', to: 'compatibility_notes#history', via: [:get]
+      match '/compatibility_notes/index', to: 'compatibility_notes#index', via: [:get, :post]
+      match '/compatibility_notes/:id/corrections', to: 'compatibility_notes#corrections', via: [:get]
+      match '/compatibility_notes/:id/history', to: 'compatibility_notes#history', via: [:get]
       resources :compatibility_notes, only: [:show]
 
       # install order notes
-      match '/api/v1/install_order_notes/index', to: 'install_order_notes#index', via: [:get, :post]
-      match '/api/v1/install_order_notes/:id/corrections', to: 'install_order_notes#corrections', via: [:get]
-      match '/api/v1/install_order_notes/:id/history', to: 'install_order_notes#history', via: [:get]
+      match '/install_order_notes/index', to: 'install_order_notes#index', via: [:get, :post]
+      match '/install_order_notes/:id/corrections', to: 'install_order_notes#corrections', via: [:get]
+      match '/install_order_notes/:id/history', to: 'install_order_notes#history', via: [:get]
       resources :install_order_notes, only: [:show]
 
       # load order notes
-      match '/api/v1/load_order_notes/index', to: 'load_order_notes#index', via: [:get, :post]
-      match '/api/v1/load_order_notes/:id/corrections', to: 'load_order_notes#corrections', via: [:get]
-      match '/api/v1/load_order_notes/:id/history', to: 'load_order_notes#history', via: [:get]
+      match '/load_order_notes/index', to: 'load_order_notes#index', via: [:get, :post]
+      match '/load_order_notes/:id/corrections', to: 'load_order_notes#corrections', via: [:get]
+      match '/load_order_notes/:id/history', to: 'load_order_notes#history', via: [:get]
       resources :load_order_notes, only: [:show]
 
       # corrections
-      match '/api/v1/corrections/index', to: 'corrections#index', via: [:get, :post]
-      match '/api/v1/corrections/:id/comments', to: 'corrections#comments', via: [:get, :post]
+      match '/corrections/index', to: 'corrections#index', via: [:get, :post]
+      match '/corrections/:id/comments', to: 'corrections#comments', via: [:get, :post]
       resources :corrections, only: [:show]
 
       # comments
-      match '/api/v1/comments/index', to: 'comments#index', via: [:get, :post]
+      match '/comments/index', to: 'comments#index', via: [:get, :post]
       resources :comments, only: [:show]
 
       # help pages
-      match '/api/v1/help/category/:category', to: 'help_pages#category', via: [:get]
-      match '/api/v1/help/game/:game', to: 'help_pages#game', via: [:get]
-      match '/api/v1/help/:id/comments', to: 'help_pages#comments', via: [:get, :post]
-      match '/api/v1/help/search', to:  'help_pages#search', via: [:get]
-      match '/api/v1/help/:id', to: 'help_pages#show', via: [:get]
-      match '/api/v1/help/*path', to: 'help_pages#record_not_found', via: :get
+      match '/help/category/:category', to: 'help_pages#category', via: [:get]
+      match '/help/game/:game', to: 'help_pages#game', via: [:get]
+      match '/help/:id/comments', to: 'help_pages#comments', via: [:get, :post]
+      match '/help/search', to:  'help_pages#search', via: [:get]
+      match '/help/:id', to: 'help_pages#show', via: [:get]
+      match '/help/*path', to: 'help_pages#record_not_found', via: :get
 
       # static data
       resources :categories, only: [:index]
