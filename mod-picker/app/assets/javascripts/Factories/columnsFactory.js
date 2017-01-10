@@ -1163,4 +1163,50 @@ app.service('columnsFactory', function() {
     this.tagColumnGroups = function() {
         return ["General"];
     };
+
+    this.apiTokenColumns = function() {
+        return [
+            {
+                group: "General",
+                visibility: true,
+                required: true,
+                label: "Name",
+                data: "name",
+                invertSort: true,
+                dynamic: true
+            },
+            {
+                group: "General",
+                visibility: true,
+                label: "API Key",
+                data: "api_key",
+                invertSort: true
+            },
+            {
+                group: "General",
+                visibility: true,
+                label: "Requests",
+                data: "requests_count",
+                filter: "number"
+            },
+            {
+                group: "General",
+                visibility: true,
+                label: "Created",
+                data: "created",
+                filter: "date"
+            },
+            {
+                group: "General",
+                visibility: true,
+                label: "Expired",
+                data: "date_expired",
+                filter: "date"
+            }
+        ]
+    };
+
+    this.apiTokenColumnGroups = function() {
+        return ["General"];
+    };
 });
