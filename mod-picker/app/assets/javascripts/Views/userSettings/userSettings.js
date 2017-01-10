@@ -59,6 +59,16 @@ app.config(['$stateProvider', function($stateProvider) {
             }
         },
         url: '/mods'
+    }).state('base.settings.API Access', {
+        sticky: true,
+        deepStateRedirect: true,
+        views: {
+            'API Access': {
+                templateUrl: '/resources/partials/userSettings/apiAccess.html',
+                controller: 'userSettingsApiController'
+            }
+        },
+        url: '/api-access'
     });
 }]);
 
