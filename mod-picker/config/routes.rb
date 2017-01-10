@@ -27,6 +27,12 @@ Rails.application.routes.draw do
     match '/settings/avatar', to: 'user_settings#avatar', via: [:post]
     match '/settings/link_account', to: 'user_settings#link_account', via: [:post]
 
+    # api tokens
+    match '/api_tokens', to: 'api_tokens#create', via: [:post]
+    match '/api_tokens/:id', to: 'api_tokens#update', via: [:patch, :put]
+    match '/api_tokens/:id', to: 'api_tokens#expire', via: [:delete]
+    match '/users/:id/api_tokens', to: 'users#api_tokens', via: [:get]
+
     # notifications
     match '/notifications/recent', to: 'notifications#recent', via: [:get]
     match '/notifications/read', to: 'notifications#read', via: [:post]
@@ -108,9 +114,9 @@ Rails.application.routes.draw do
     resources :mod_lists, only: [:create, :update]
 
     # mod list exporting
-    match 'mod_lists/:id/export_modlist', to: 'mod_lists#export_modlist', via: [:get]
-    match 'mod_lists/:id/export_plugins', to: 'mod_lists#export_plugins', via: [:get]
-    match 'mod_lists/:id/export_links', to: 'mod_lists#export_links', via: [:get]
+    match '/mod_lists/:id/export_modlist', to: 'mod_lists#export_modlist', via: [:get]
+    match '/mod_lists/:id/export_plugins', to: 'mod_lists#export_plugins', via: [:get]
+    match '/mod_lists/:id/export_links', to: 'mod_lists#export_links', via: [:get]
 
     # mod and mod list stars
     match '/mod_lists/:id/star', to: 'mod_lists#create_star', via: [:post]
