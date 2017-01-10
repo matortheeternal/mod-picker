@@ -1,0 +1,19 @@
+<loader data="api_tokens" spinner-class="big-spinner" ng-if="!errors.api_tokens">
+    <div class="content-block">
+        <div class="content-title">
+            API Tokens
+            <span class="right-item">
+                <span class="action-box green-box" ng-click="newApiToken()">
+                    <i class="fa fa-plus"></i> New API Token
+                </span>
+            </span>
+        </div>
+        <div class="content-container table-container">
+            <table-results data="api_tokens" message="No API tokens found."></table-results>
+        </div>
+    </div>
+</loader>
+
+<error-display content-class="content-message content-error" errors="errors.api_tokens" label="your API Tokens"></error-display>
+
+<edit-token-modal></edit-token-modal>
