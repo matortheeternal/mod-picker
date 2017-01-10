@@ -1,4 +1,4 @@
-class ModsController < ApplicationController
+class Api::V1::ModsController < Api::ApiController
   before_action :set_mod, only: [:corrections, :reviews, :compatibility_notes, :install_order_notes, :load_order_notes, :analysis]
 
   # POST /mods/index

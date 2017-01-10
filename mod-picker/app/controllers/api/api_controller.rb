@@ -13,4 +13,15 @@ class Api::ApiController < ActionController::Base
   def current_ability
     @current_ability ||= Ability.new(nil)
   end
+
+  def json_format(resource, format=nil)
+    format ||= action_name.to_sym
+    resource.as_json(format: format)
+  end
+
+  def respond_with_json(resource, format=nil, root=nil)
+    format ||= action_name.to_sym
+    resource_json = resource.as_json(format: format)
+    render json: root ? { root => resource_json } : resource_json
+  end
 end
