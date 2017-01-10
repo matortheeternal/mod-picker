@@ -20,13 +20,14 @@ class ApiToken < ActiveRecord::Base
   end
 
   def increment_requests!
-    requests_count += 1
+    self.requests_count += 1
     update_columns(requests_count: requests_count)
   end
 
-  def expire
+  def expire!
     return if expired
-    expired = true
-    date_expired = DateTime.now
+    self.expired = true
+    self.date_expired = DateTime.now
+    save
   end
 end

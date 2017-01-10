@@ -27,7 +27,7 @@ class ApiTokensController < ApplicationController
   # DELETE /api_tokens/1
   def expire
     authorize! :expire, @api_token
-    if @api_token.expire
+    if @api_token.expire!
       render json: {status: :ok}
     else
       render json: @api_token.errors, status: :unprocessable_entity
