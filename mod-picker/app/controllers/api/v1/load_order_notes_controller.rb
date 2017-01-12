@@ -7,13 +7,9 @@ class Api::V1::LoadOrderNotesController < Api::V1::ContributionsController
     @load_order_notes = LoadOrderNote.preload(:editor, :editors).includes(submitter: :reputation).references(submitter: :reputation).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(page: params[:page])
     count = LoadOrderNote.accessible_by(current_ability).filter(filtering_params).count
 
-    # prepare helpful marks
-    helpful_marks = HelpfulMark.for_user_content(current_user, "LoadOrderNote", @load_order_notes.ids)
-
     # render response
     render json: {
         load_order_notes: @load_order_notes,
-        helpful_marks: helpful_marks,
         max_entries: count,
         entries_per_page: LoadOrderNote.per_page
     }

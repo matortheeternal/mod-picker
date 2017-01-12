@@ -6,11 +6,8 @@ class Api::V1::CorrectionsController < Api::ApiController
     @corrections = Correction.preload(:editor).eager_load(:submitter => :reputation).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(page: params[:page])
     count = Correction.eager_load(:submitter => :reputation).accessible_by(current_ability).filter(filtering_params).count
 
-    # get helpful marks
-    agreement_marks = AgreementMark.for_user_content(current_user, @corrections.ids)
     render json: {
         corrections: json_format(@corrections),
-        agreement_marks: agreement_marks,
         max_entries: count,
         entries_per_page: Correction.per_page
     }

@@ -149,11 +149,10 @@ Rails.application.routes.draw do
       # user associations
       match '/users/:id/comments', to: 'users#comments', via: [:get, :post]
       match '/users/:id/mods', to: 'users#mods', via: [:get]
-      match '/users/:id/mod_lists', to: 'users#mod_lists', via: [:get]
 
       # tags
       match '/all_tags', to: 'tags#all', via: [:get]
-      match '/tags', to: 'tags#index', via: [:post]
+      match '/tags/index', to: 'tags#index', via: [:post]
 
       # mods
       match '/mods/index', to: 'mods#index', via: [:get, :post]
@@ -164,7 +163,7 @@ Rails.application.routes.draw do
       match '/mod_options/search', to: 'mod_options#search', via: [:post]
 
       # plugins
-      match '/plugins', to: 'plugins#index', via: [:get, :post]
+      match '/plugins/index', to: 'plugins#index', via: [:get, :post]
       match '/plugins/search', to: 'plugins#search', via: [:post]
       match '/plugins/:id', to: 'plugins#show', via: [:get]
 
@@ -183,19 +182,16 @@ Rails.application.routes.draw do
       # compatibility notes
       match '/compatibility_notes/index', to: 'compatibility_notes#index', via: [:get, :post]
       match '/compatibility_notes/:id/corrections', to: 'compatibility_notes#corrections', via: [:get]
-      match '/compatibility_notes/:id/history', to: 'compatibility_notes#history', via: [:get]
       resources :compatibility_notes, only: [:show]
 
       # install order notes
       match '/install_order_notes/index', to: 'install_order_notes#index', via: [:get, :post]
       match '/install_order_notes/:id/corrections', to: 'install_order_notes#corrections', via: [:get]
-      match '/install_order_notes/:id/history', to: 'install_order_notes#history', via: [:get]
       resources :install_order_notes, only: [:show]
 
       # load order notes
       match '/load_order_notes/index', to: 'load_order_notes#index', via: [:get, :post]
       match '/load_order_notes/:id/corrections', to: 'load_order_notes#corrections', via: [:get]
-      match '/load_order_notes/:id/history', to: 'load_order_notes#history', via: [:get]
       resources :load_order_notes, only: [:show]
 
       # corrections
@@ -206,14 +202,6 @@ Rails.application.routes.draw do
       # comments
       match '/comments/index', to: 'comments#index', via: [:get, :post]
       resources :comments, only: [:show]
-
-      # help pages
-      match '/help/category/:category', to: 'help_pages#category', via: [:get]
-      match '/help/game/:game', to: 'help_pages#game', via: [:get]
-      match '/help/:id/comments', to: 'help_pages#comments', via: [:get, :post]
-      match '/help/search', to:  'help_pages#search', via: [:get]
-      match '/help/:id', to: 'help_pages#show', via: [:get]
-      match '/help/*path', to: 'help_pages#record_not_found', via: :get
 
       # static data
       resources :categories, only: [:index]

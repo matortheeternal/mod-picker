@@ -22,11 +22,7 @@ class Api::V1::UsersController < Api::ApiController
   # GET /users/1
   def show
     authorize! :read, @user
-    endorsed = ReputationLink.exists_between(current_user, @user)
-    render json: {
-        user: json_format(@user),
-        endorsed: endorsed
-    }
+    response_with_json(@user, :show, :user)
   end
 
   # GET /users/1/comments
@@ -39,19 +35,6 @@ class Api::V1::UsersController < Api::ApiController
         comments: comments,
         max_entries: count,
         entries_per_page: 10
-    }
-  end
-
-  # GET /users/1/mod_lists
-  def mod_lists
-    authorize! :read, @user
-
-    favorite_mod_lists = @user.starred_mod_lists.accessible_by(current_ability)
-    authored_mod_lists = @user.mod_lists.accessible_by(current_ability)
-
-    render json: {
-      favorites: favorite_mod_lists,
-      authored: authored_mod_lists
     }
   end
 

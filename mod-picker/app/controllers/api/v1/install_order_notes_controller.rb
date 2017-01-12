@@ -7,13 +7,9 @@ class Api::V1::InstallOrderNotesController < Api::ApiController
     @install_order_notes = InstallOrderNote.preload(:editor, :editors).includes(submitter: :reputation).references(submitter: :reputation).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(page: params[:page])
     count = InstallOrderNote.accessible_by(current_ability).filter(filtering_params).count
 
-    # prepare helpful marks
-    helpful_marks = HelpfulMark.for_user_content(current_user, "InstallOrderNote", @install_order_notes.ids)
-
     # render response
     render json: {
         install_order_notes: @install_order_notes,
-        helpful_marks: helpful_marks,
         max_entries: count,
         entries_per_page: InstallOrderNote.per_page
     }

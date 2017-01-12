@@ -15,13 +15,8 @@ class Api::V1::ModsController < Api::ApiController
 
   # POST /mods/search
   def search
-    if params.has_key?(:batch)
-      @mods = Mod.find_batch(params[:batch])
-      render json: @mods
-    else
-      @mods = Mod.visible.filter(search_params).limit(10)
-      render json: @mods
-    end
+    @mods = Mod.visible.filter(search_params).limit(10)
+    render json: @mods
   end
 
   # GET /mods/1
@@ -29,43 +24,15 @@ class Api::V1::ModsController < Api::ApiController
     @mod = Mod.includes(:custom_sources, :plugins, {mod_authors: :user}, {tags: :submitter}, {required_mods: :required_mod}, {required_by: :mod}).find(params[:id])
     authorize! :read, @mod, message: "You are not allowed to view this mod."
 
-    # set up boolean variables
-    star = false
-    in_mod_list = false
-    incompatible = false
-    if current_user.present?
-      star = ModStar.exists?(mod_id: @mod.id, user_id: current_user.id)
-      if current_user.active_mod_list_id.present?
-        mod_list = current_user.active_mod_list
-        in_mod_list = mod_list.mod_list_mod_ids.include?(@mod.id)
-        incompatible = mod_list.incompatible_mod_ids.include?(@mod.id)
-      end
-    end
-
     # render response
-    render json: {
-        mod: json_format(@mod),
-        star: star,
-        in_mod_list: in_mod_list,
-        incompatible: incompatible
-    }
+    respond_with_json(@mod, :show, :mod)
   end
 
   # POST/GET /mods/1/corrections
   def corrections
     authorize! :read, @mod
-
-    # prepare corrections
-    corrections = @mod.corrections.accessible_by(current_ability)
-
-    # prepare agreement marks
-    agreement_marks = AgreementMark.for_user_content(current_user, corrections.ids)
-
-    # render response
-    render json: {
-        corrections: corrections,
-        agreement_marks: agreement_marks
-    }
+    @corrections = @mod.corrections.accessible_by(current_ability)
+    respond_with_json(@corrections, :base, :corrections)
   end
 
   # POST/GET /mods/1/reviews
@@ -74,22 +41,12 @@ class Api::V1::ModsController < Api::ApiController
 
     # prepare reviews
     reviews = @mod.reviews.preload(:review_ratings).includes(submitter: :reputation).references(submitter: :reputation).accessible_by(current_ability).sort(params[:sort]).paginate(page: params[:page], per_page: 10)
-    reviews = reviews.where("submitted_by != ? OR hidden = true", current_user.id) if current_user.present?
     count = @mod.reviews.includes(submitter: :reputation).references(submitter: :reputation).accessible_by(current_ability).count
     review_ids = reviews.ids
-
-    # prepare user review
-    user_review = Review.user_review(@mod, current_user)
-    review_ids.push(user_review.id) if user_review.present?
-
-    # prepare helpful marks
-    helpful_marks = HelpfulMark.for_user_content(current_user, "Review", review_ids)
 
     # render response
     render json: {
         reviews: reviews,
-        helpful_marks: helpful_marks,
-        user_review: user_review,
         max_entries: count,
         entries_per_page: 10
     }
@@ -103,13 +60,9 @@ class Api::V1::ModsController < Api::ApiController
     compatibility_notes = @mod.compatibility_notes.preload(:first_mod, :second_mod, :editor, :editors, :compatibility_mod, :compatibility_plugin, :compatibility_mod_option).eager_load(:submitter => :reputation).accessible_by(current_ability).sort(params[:sort]).paginate(page: params[:page], per_page: 10)
     count =  @mod.compatibility_notes.eager_load(:submitter => :reputation).accessible_by(current_ability).count
 
-    # prepare helpful marks
-    helpful_marks = HelpfulMark.for_user_content(current_user, "CompatibilityNote", compatibility_notes.ids)
-
     # render response
     render json: {
         compatibility_notes: compatibility_notes,
-        helpful_marks: helpful_marks,
         max_entries: count,
         entries_per_page: 10
     }
@@ -123,13 +76,9 @@ class Api::V1::ModsController < Api::ApiController
     install_order_notes = @mod.install_order_notes.includes(submitter: :reputation).references(submitter: :reputation).accessible_by(current_ability).sort(params[:sort]).paginate(page: params[:page], per_page: 10)
     count =  @mod.install_order_notes.includes(submitter: :reputation).references(submitter: :reputation).accessible_by(current_ability).count
 
-    # prepare helpful marks
-    helpful_marks = HelpfulMark.for_user_content(current_user, "InstallOrderNote", install_order_notes.ids)
-
     # render response
     render json: {
         install_order_notes: install_order_notes,
-        helpful_marks: helpful_marks,
         max_entries: count,
         entries_per_page: 10
     }
@@ -149,13 +98,9 @@ class Api::V1::ModsController < Api::ApiController
     load_order_notes = @mod.load_order_notes.includes(submitter: :reputation).references(submitter: :reputation).accessible_by(current_ability).sort(params[:sort]).paginate(page: params[:page], per_page: 10)
     count =  @mod.load_order_notes.includes(submitter: :reputation).references(submitter: :reputation).accessible_by(current_ability).count
 
-    # prepare helpful marks
-    helpful_marks = HelpfulMark.for_user_content(current_user, "LoadOrderNote", load_order_notes.ids)
-
     # render response
     render json: {
         load_order_notes: load_order_notes,
-        helpful_marks: helpful_marks,
         max_entries: count,
         entries_per_page: 10
     }

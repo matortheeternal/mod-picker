@@ -7,13 +7,9 @@ class Api::V1::CompatibilityNotesController < Api::V1::ContributionsController
     @compatibility_notes = CompatibilityNote.preload(:editor, :editors, :first_mod, :second_mod, :compatibility_mod, :compatibility_plugin, :compatibility_mod_option).eager_load(submitter: :reputation).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(page: params[:page])
     count = CompatibilityNote.eager_load(submitter: :reputation).accessible_by(current_ability).filter(filtering_params).count
 
-    # prepare helpful marks
-    helpful_marks = HelpfulMark.for_user_content(current_user, "CompatibilityNote", @compatibility_notes.ids)
-
     # render response
     render json: {
         compatibility_notes: @compatibility_notes,
-        helpful_marks: helpful_marks,
         max_entries: count,
         entries_per_page: CompatibilityNote.per_page
     }
