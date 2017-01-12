@@ -1,6 +1,25 @@
 class Api::ApiController < ActionController::Base
   before_filter :verify_api_token
 
+  # Render errors as appropriate
+  def render_standard_error(exception, status)
+    error_hash = { error: exception.message }
+    error_hash[:backtrace] = exception.backtrace unless Rails.env.production?
+    render json: error_hash, status: status
+  end
+
+  rescue_from ::StandardError do |exception|
+    render_standard_error(exception, 500)
+  end
+
+  rescue_from ActiveRecord::RecordNotFound do |exception|
+    render_standard_error(exception, 404)
+  end
+
+  rescue_from Exceptions::ModExistsError do |exception|
+    render json: exception.response_object, status: 500
+  end
+
   def verify_api_token
     @api_token = ApiToken.find_by(expired: false, api_key: params[:api_key])
     if @api_token.present?
