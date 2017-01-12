@@ -5,8 +5,8 @@
     "version" : "1.0.0",
     "description" : "This is the API specification for Mod Picker's public API.  For general information about the API refer to [the API help page](/help/api).  You will need an API Token to use the Mod Picker API, which you can create from the API Access tab of your [user settings page](/help/user_settings#api-access) on Mod Picker.  If you need help feel free to contact us on the [Mod Picker Discord Server](http://discord.gg/GCKrwTU).\n\n## Date formats\n\n### Data\nAll dates in data rendered by the server are provided as strings in the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.\n\n### Filters\nAll dates provided to the server for filtering purposes should be provided in `mm/dd/YYYY` or relative date format.  The relative date format supports strings in the following formats:\n\n- Now\n- `x` minute(s) ago\n- `x` hour(s) ago\n- `x` day(s) ago\n- `x` month(s) ago\n\n## Images\n\n### Users\n\nUser images can be retrieved from  `https://modpicker.com/users/id-size.ext`, where id is the mod's integer id, and ext is the image extension provided by the `image_ext` field.  User image sizes are listed below:\n\n- small (48px)\n- medium (96px)\n- big (250px)\n\n### Mods\n\nMod images can be retrieved from  `https://modpicker.com/mods/id-size.ext`, where id is the mod's integer id, and ext is the image extension provided by the `image_ext` field.  Mod image sizes are listed below:\n\n- small (100px)\n- medium (210px)\n- big (300px)\n"
   },
-  "host" : "localhost:3000",
-  "schemes" : ["http"],
+  "host" : "modpicker.com",
+  "schemes" : ["https"],
   "basePath" : "/api/v1",
   "produces" : ["application/json"],
   "paths" : {
