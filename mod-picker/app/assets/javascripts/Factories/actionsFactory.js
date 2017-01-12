@@ -284,4 +284,27 @@ app.service('actionsFactory', function() {
             }
         }]
     };
+
+    /* api token actions */
+    this.apiTokenActions = function() {
+        return [{
+            caption: "Edit",
+            title: "Edit this API Token's name",
+            hidden: function($scope, item) {
+                return item.expired;
+            },
+            execute: function($scope, item) {
+                $scope.$emit('editToken', item);
+            }
+        }, {
+            caption: "Expire",
+            title: "Expire this API token so it is no longer valid",
+            disabled: function($scope, item) {
+                return item.expired;
+            },
+            execute: function($scope, item) {
+                $scope.$emit('expireToken', item);
+            }
+        }]
+    };
 });

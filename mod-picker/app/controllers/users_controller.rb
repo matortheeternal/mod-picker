@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :comments, :endorse, :unendorse, :add_rep, :subtract_rep, :change_role, :mod_lists, :mods]
+  before_action :set_user, only: [:show, :comments, :endorse, :unendorse, :add_rep, :subtract_rep, :change_role, :mod_lists, :mods, :api_tokens]
 
   # GET/POST /users/index
   def index
@@ -122,6 +122,12 @@ class UsersController < ApplicationController
       favorites: favorite_mod_lists,
       authored: authored_mod_lists
     }
+  end
+
+  # GET /users/1/api_tokens
+  def api_tokens
+    authorize! :update, @user
+    respond_with_json(@user.api_tokens, :base, :api_tokens)
   end
 
   # GET /users/1/mods

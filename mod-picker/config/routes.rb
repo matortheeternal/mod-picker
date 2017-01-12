@@ -27,6 +27,12 @@ Rails.application.routes.draw do
     match '/settings/avatar', to: 'user_settings#avatar', via: [:post]
     match '/settings/link_account', to: 'user_settings#link_account', via: [:post]
 
+    # api tokens
+    match '/api_tokens', to: 'api_tokens#create', via: [:post]
+    match '/api_tokens/:id', to: 'api_tokens#update', via: [:patch, :put]
+    match '/api_tokens/:id', to: 'api_tokens#expire', via: [:delete]
+    match '/users/:id/api_tokens', to: 'users#api_tokens', via: [:get]
+
     # notifications
     match '/notifications/recent', to: 'notifications#recent', via: [:get]
     match '/notifications/read', to: 'notifications#read', via: [:post]
@@ -108,9 +114,9 @@ Rails.application.routes.draw do
     resources :mod_lists, only: [:create, :update]
 
     # mod list exporting
-    match 'mod_lists/:id/export_modlist', to: 'mod_lists#export_modlist', via: [:get]
-    match 'mod_lists/:id/export_plugins', to: 'mod_lists#export_plugins', via: [:get]
-    match 'mod_lists/:id/export_links', to: 'mod_lists#export_links', via: [:get]
+    match '/mod_lists/:id/export_modlist', to: 'mod_lists#export_modlist', via: [:get]
+    match '/mod_lists/:id/export_plugins', to: 'mod_lists#export_plugins', via: [:get]
+    match '/mod_lists/:id/export_links', to: 'mod_lists#export_links', via: [:get]
 
     # mod and mod list stars
     match '/mod_lists/:id/star', to: 'mod_lists#create_star', via: [:post]
@@ -130,6 +136,82 @@ Rails.application.routes.draw do
     match '/reports/index', to: 'reports#index', via: [:get, :post]
     match '/reports', to: 'reports#create', via: [:post]
     match '/reports/:id/resolve', to: 'reports#resolve', via: [:post]
+  end
+
+  # API ROUTES
+  namespace :api do
+    namespace :v1 do
+      #users
+      match '/users/index', to: 'users#index', via: [:get, :post]
+      match '/users/search', to: 'users#search', via: [:post]
+      match '/users/:id', to: 'users#show', via: [:get]
+
+      # user associations
+      match '/users/:id/comments', to: 'users#comments', via: [:get, :post]
+      match '/users/:id/mods', to: 'users#mods', via: [:get]
+
+      # tags
+      match '/all_tags', to: 'tags#all', via: [:get]
+      match '/tags/index', to: 'tags#index', via: [:post]
+
+      # mods
+      match '/mods/index', to: 'mods#index', via: [:get, :post]
+      match '/mods/search', to: 'mods#search', via: [:post]
+      resources :mods, only: [:show]
+
+      # mod options
+      match '/mod_options/search', to: 'mod_options#search', via: [:post]
+
+      # plugins
+      match '/plugins/index', to: 'plugins#index', via: [:get, :post]
+      match '/plugins/search', to: 'plugins#search', via: [:post]
+      match '/plugins/:id', to: 'plugins#show', via: [:get]
+
+      # content associated with mods
+      match '/mods/:id/corrections', to: 'mods#corrections', via: [:get, :post]
+      match '/mods/:id/reviews', to: 'mods#reviews', via: [:get, :post]
+      match '/mods/:id/compatibility_notes', to: 'mods#compatibility_notes', via: [:get, :post]
+      match '/mods/:id/install_order_notes', to: 'mods#install_order_notes', via: [:get, :post]
+      match '/mods/:id/load_order_notes', to: 'mods#load_order_notes', via: [:get, :post]
+      match '/mods/:id/analysis', to: 'mods#analysis', via: [:get, :post]
+
+      # reviews
+      match '/reviews/index', to: 'reviews#index', via: [:get, :post]
+      resources :reviews, only: [:show]
+
+      # compatibility notes
+      match '/compatibility_notes/index', to: 'compatibility_notes#index', via: [:get, :post]
+      match '/compatibility_notes/:id/corrections', to: 'compatibility_notes#corrections', via: [:get]
+      resources :compatibility_notes, only: [:show]
+
+      # install order notes
+      match '/install_order_notes/index', to: 'install_order_notes#index', via: [:get, :post]
+      match '/install_order_notes/:id/corrections', to: 'install_order_notes#corrections', via: [:get]
+      resources :install_order_notes, only: [:show]
+
+      # load order notes
+      match '/load_order_notes/index', to: 'load_order_notes#index', via: [:get, :post]
+      match '/load_order_notes/:id/corrections', to: 'load_order_notes#corrections', via: [:get]
+      resources :load_order_notes, only: [:show]
+
+      # corrections
+      match '/corrections/index', to: 'corrections#index', via: [:get, :post]
+      match '/corrections/:id/comments', to: 'corrections#comments', via: [:get, :post]
+      resources :corrections, only: [:show]
+
+      # comments
+      match '/comments/index', to: 'comments#index', via: [:get, :post]
+      resources :comments, only: [:show]
+
+      # static data
+      resources :categories, only: [:index]
+      resources :category_priorities, only: [:index]
+      resources :games, only: [:index]
+      resources :quotes, only: [:index]
+      resources :record_groups, only: [:index]
+      resources :review_sections, only: [:index]
+      resources :user_titles, only: [:index]
+    end
   end
 
   # users

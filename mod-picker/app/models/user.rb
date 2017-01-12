@@ -78,6 +78,8 @@ class User < ActiveRecord::Base
   has_many :messages, :inverse_of => 'recipient', :foreign_key => 'sent_to'
   has_many :sent_messages, :class_name => 'Message', :inverse_of => 'submitter', :foreign_key => 'submitter_by'
 
+  has_many :api_tokens, inverse_of: 'user'
+
   accepts_nested_attributes_for :settings, reject_if: :new_record?
 
   # COUNTER CACHE
