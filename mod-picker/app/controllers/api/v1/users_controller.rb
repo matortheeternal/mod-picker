@@ -22,7 +22,7 @@ class Api::V1::UsersController < Api::ApiController
   # GET /users/1
   def show
     authorize! :read, @user
-    response_with_json(@user, :show, :user)
+    respond_with_json(@user, :show, :user)
   end
 
   # GET /users/1/comments
