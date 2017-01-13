@@ -431,10 +431,19 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
         return modData;
     };
 
+    this.tagsChanged = function(originalModData, modData) {
+        return originalModData.mod.tag_names.join(",") !== modData.mod.tag_names.join(",");
+    };
+
     this.getDifferentModValues = function(originalMod, mod) {
         var originalModData = service.getModData(originalMod);
         var modData = service.getModData(mod);
-        return objectUtils.getDifferentObjectValues(originalModData, modData);
+        var changes = objectUtils.getDifferentObjectValues(originalModData, modData);
+        if (service.tagsChanged(originalModData, modData)) {
+            if (!changes.mod) changes.mod = {};
+            changes.mod.tag_names = modData.mod.tag_names;
+        }
+        return changes;
     };
 
     this.updateMod = function(modId, modData) {
