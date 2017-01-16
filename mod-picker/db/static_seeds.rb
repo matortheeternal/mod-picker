@@ -180,6 +180,16 @@ def seed_games
       nexus_name: "fallout3",
       steam_app_ids: "22300,22370"
   )
+  gameSkyrimSE = Game.create(
+      parent_game_id: gameBethesda.id,
+      display_name: "Skyrim SE",
+      long_name: "Skyrim: Special Edition",
+      abbr_name: "sse",
+      exe_name: "SkyrimSE.exe",
+      esm_name: "Skyrim.esm",
+      nexus_name: "skyrimspecialedition",
+      steam_app_ids: "489830"
+  )
 
   puts "    #{Game.count} games seeded"
 end
