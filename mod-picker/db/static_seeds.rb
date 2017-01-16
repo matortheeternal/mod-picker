@@ -1124,8 +1124,10 @@ def seed_record_groups
 
   # get helper variables
   gameSkyrim = Game.find_by(display_name: "Skyrim")
+  gameSkyrimSE = Game.find_by(display_name: "Skyrim SE")
 
   load_record_groups(gameSkyrim, "skyrim.json")
+  load_record_groups(gameSkyrimSE, "skyrimse.json")
 
   puts "    #{RecordGroup.count} record groups seeded"
 end
