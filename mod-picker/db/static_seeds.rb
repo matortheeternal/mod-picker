@@ -1132,17 +1132,13 @@ def seed_record_groups
   puts "    #{RecordGroup.count} record groups seeded"
 end
 
-def seed_official_content
-  puts "\nSeeding official content"
-
-  # get helper variables
-  mator = User.find_by(username: "Mator")
+def seed_skyrim_official_content(submitter)
   gameSkyrim = Game.find_by(display_name: "Skyrim")
 
   modSkyrim = Mod.create!(
       name: "Skyrim",
       authors: "Bethesda",
-      submitted_by: mator.id,
+      submitted_by: submitter.id,
       is_official: true,
       game_id: gameSkyrim.id,
       released: DateTime.new(2011, 11, 11),
@@ -1164,7 +1160,7 @@ def seed_official_content
   modDawnguard = Mod.create!(
       name: "Dawnguard",
       authors: "Bethesda",
-      submitted_by: mator.id,
+      submitted_by: submitter.id,
       is_official: true,
       game_id: gameSkyrim.id,
       primary_category_id: Category.find_by(name: "Locations").id,
@@ -1175,7 +1171,7 @@ def seed_official_content
           url: "http://store.steampowered.com/app/211720/"
       }]
   )
-  create_tags(mator, modDawnguard, ["Vampires", "Dawnguard", "Werewolves", "Soul Cairn", "Dragonbone"])
+  create_tags(submitter, modDawnguard, ["Vampires", "Dawnguard", "Werewolves", "Soul Cairn", "Dragonbone"])
   # Create plugins
   dawnguardOption = create_option(modDawnguard)
   create_plugin(dawnguardOption, "Skyrim/Dawnguard.esm.json")
@@ -1184,7 +1180,7 @@ def seed_official_content
   modHearthfire = Mod.create!(
       name: "Hearthfire",
       authors: "Bethesda",
-      submitted_by: mator.id,
+      submitted_by: submitter.id,
       is_official: true,
       game_id: gameSkyrim.id,
       primary_category_id: Category.find_by(name: "Locations - New Player Homes").id,
@@ -1195,7 +1191,7 @@ def seed_official_content
           url: "http://store.steampowered.com/app/220760/"
       }]
   )
-  create_tags(mator, modHearthfire, ["Building", "Family", "Marriage", "Adoption"])
+  create_tags(submitter, modHearthfire, ["Building", "Family", "Marriage", "Adoption"])
   # Create plugins
   hearthfireOption = create_option(modHearthfire)
   create_plugin(hearthfireOption, "Skyrim/HearthFires.esm.json")
@@ -1204,7 +1200,7 @@ def seed_official_content
   modDragonborn = Mod.create!(
       name: "Dragonborn",
       authors: "Bethesda",
-      submitted_by: mator.id,
+      submitted_by: submitter.id,
       is_official: true,
       game_id: gameSkyrim.id,
       primary_category_id: Category.find_by(name: "Locations - New Lands").id,
@@ -1214,7 +1210,7 @@ def seed_official_content
           url: "http://store.steampowered.com/app/211720/"
       }]
   )
-  create_tags(mator, modDragonborn, ["Solstheim", "Apocrypha", "Hermaeus Mora", "Shouts", "Stahlrim", "Nordic", "Bonemold", "Chitin"])
+  create_tags(submitter, modDragonborn, ["Solstheim", "Apocrypha", "Hermaeus Mora", "Shouts", "Stahlrim", "Nordic", "Bonemold", "Chitin"])
   # Create plugins
   dragonbornOption = create_option(modDragonborn)
   create_plugin(dragonbornOption, "Skyrim/Dragonborn.esm.json")
@@ -1223,7 +1219,7 @@ def seed_official_content
   modHighRes = Mod.create!(
       name: "High Resolution Texture Pack",
       authors: "Bethesda",
-      submitted_by: mator.id,
+      submitted_by: submitter.id,
       is_official: true,
       game_id: gameSkyrim.id,
       primary_category_id: Category.find_by(name: "Audiovisual - Models & Textures").id,
@@ -1233,13 +1229,53 @@ def seed_official_content
           url: "http://store.steampowered.com/app/202485/"
       }]
   )
-  create_tags(mator, modHighRes, ["1K", "Armor", "Weapons", "Architecture", "Actors", "Dungeons", "Terrain", "Clutter"])
+  create_tags(submitter, modHighRes, ["1K", "Armor", "Weapons", "Architecture", "Actors", "Dungeons", "Terrain", "Clutter"])
   # Create plugins
   highResOption = create_option(modHighRes)
   create_plugin(highResOption, "Skyrim/HighResTexturePack01.esp.json")
   create_plugin(highResOption, "Skyrim/HighResTexturePack02.esp.json")
   create_plugin(highResOption, "Skyrim/HighResTexturePack03.esp.json")
   modHighRes.update_lazy_counters
+end
+
+def seed_skyrimse_official_content(submitter)
+  gameSkyrimSE = Game.find_by(display_name: "Skyrim SE")
+
+  modSkyrimSE = Mod.create!(
+      name: "Skyrim: Special Edition",
+      authors: "Bethesda",
+      submitted_by: submitter.id,
+      is_official: true,
+      game_id: gameSkyrimSE.id,
+      released: DateTime.new(2011, 11, 11),
+      updated: DateTime.new(2013, 3, 20),
+      custom_sources_attributes: [{
+          label: "Steam Store",
+          url: "http://store.steampowered.com/app/489830/"
+      }]
+  )
+  # Create config files
+  create_config_file(modSkyrimSE, "Skyrim.ini", "{{MyGamesFolder}}")
+  create_config_file(modSkyrimSE, "SkyrimPrefs.ini", "{{MyGamesFolder}}")
+  # Create plugins
+  skyrimOption = create_option(modSkyrimSE)
+  create_plugin(modSkyrimSE, "SkyrimSE/Skyrim.esm.json")
+  create_plugin(modSkyrimSE, "SkyrimSE/Update.esm.json")
+  create_plugin(modSkyrimSE, "SkyrimSE/Dawnguard.esm.json")
+  create_plugin(modSkyrimSE, "SkyrimSE/Hearthfires.esm.json")
+  create_plugin(modSkyrimSE, "SkyrimSE/Dragonborn.esm.json")
+  modSkyrimSE.update_lazy_counters
+end
+
+def seed_official_content
+  puts "\nSeeding official content"
+
+  # get helper variables
+  mator = User.find_by(username: "Mator")
+
+  # seed content
+  seed_skyrim_official_content(mator)
+  seed_skyrimse_official_content(mator)
 
   puts "    #{Mod.count} official mods seeded"
   puts "    #{Plugin.count} official plugins seeded"
