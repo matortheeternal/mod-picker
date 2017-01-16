@@ -1,5 +1,5 @@
 def create_plugin(mod_option, dump_filename)
-  file = File.read(Rails.root.join("db", "dumps", dump_filename))
+  file = File.read(Rails.root.join("db", "plugins", dump_filename))
   hash = JSON.parse(file).with_indifferent_access
   hash[:game_id] = mod_option.mod.game_id
   mod_option.plugins.create(hash).save!
@@ -1157,8 +1157,8 @@ def seed_official_content
   create_config_file(modSkyrim, "SkyrimPrefs.ini", "{{MyGamesFolder}}")
   # Create plugins
   skyrimOption = create_option(modSkyrim)
-  create_plugin(skyrimOption, "Skyrim.esm.json")
-  create_plugin(skyrimOption, "Update.esm.json")
+  create_plugin(skyrimOption, "Skyrim/Skyrim.esm.json")
+  create_plugin(skyrimOption, "Skyrim/Update.esm.json")
   modSkyrim.update_lazy_counters
 
   modDawnguard = Mod.create!(
@@ -1178,7 +1178,7 @@ def seed_official_content
   create_tags(mator, modDawnguard, ["Vampires", "Dawnguard", "Werewolves", "Soul Cairn", "Dragonbone"])
   # Create plugins
   dawnguardOption = create_option(modDawnguard)
-  create_plugin(dawnguardOption, "Dawnguard.esm.json")
+  create_plugin(dawnguardOption, "Skyrim/Dawnguard.esm.json")
   modDawnguard.update_lazy_counters
 
   modHearthfire = Mod.create!(
@@ -1198,7 +1198,7 @@ def seed_official_content
   create_tags(mator, modHearthfire, ["Building", "Family", "Marriage", "Adoption"])
   # Create plugins
   hearthfireOption = create_option(modHearthfire)
-  create_plugin(hearthfireOption, "HearthFires.esm.json")
+  create_plugin(hearthfireOption, "Skyrim/HearthFires.esm.json")
   modHearthfire.update_lazy_counters
 
   modDragonborn = Mod.create!(
@@ -1217,7 +1217,7 @@ def seed_official_content
   create_tags(mator, modDragonborn, ["Solstheim", "Apocrypha", "Hermaeus Mora", "Shouts", "Stahlrim", "Nordic", "Bonemold", "Chitin"])
   # Create plugins
   dragonbornOption = create_option(modDragonborn)
-  create_plugin(dragonbornOption, "Dragonborn.esm.json")
+  create_plugin(dragonbornOption, "Skyrim/Dragonborn.esm.json")
   modDragonborn.update_lazy_counters
 
   modHighRes = Mod.create!(
@@ -1236,9 +1236,9 @@ def seed_official_content
   create_tags(mator, modHighRes, ["1K", "Armor", "Weapons", "Architecture", "Actors", "Dungeons", "Terrain", "Clutter"])
   # Create plugins
   highResOption = create_option(modHighRes)
-  create_plugin(highResOption, "HighResTexturePack01.esp.json")
-  create_plugin(highResOption, "HighResTexturePack02.esp.json")
-  create_plugin(highResOption, "HighResTexturePack03.esp.json")
+  create_plugin(highResOption, "Skyrim/HighResTexturePack01.esp.json")
+  create_plugin(highResOption, "Skyrim/HighResTexturePack02.esp.json")
+  create_plugin(highResOption, "Skyrim/HighResTexturePack03.esp.json")
   modHighRes.update_lazy_counters
 
   puts "    #{Mod.count} official mods seeded"
