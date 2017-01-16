@@ -1,8 +1,9 @@
 class HelpPage < ActiveRecord::Base
-  include RecordEnhancements, CounterCache, ScopeHelpers, BetterJson, Dateable
+  include RecordEnhancements, CounterCache, ScopeHelpers, BetterJson, Dateable, Approveable
 
   # ATTRIBUTES
   enum category: [:mod_picker, :modding, :guides]
+  self.approval_method = :has_help_page_auto_approval?
 
   # DATE COLUMNS
   date_column :submitted, :edited
