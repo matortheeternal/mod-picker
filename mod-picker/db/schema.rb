@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170116215253) do
+ActiveRecord::Schema.define(version: 20170117230220) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -895,7 +895,12 @@ ActiveRecord::Schema.define(version: 20170116215253) do
 
   create_table "user_settings", force: :cascade do |t|
     t.integer "user_id",              limit: 4,                  null: false
-    t.string  "theme",                limit: 64
+    t.string  "skyrim_theme",         limit: 64
+    t.string  "skyrimse_theme",       limit: 64
+    t.string  "fallout4_theme",       limit: 64
+    t.string  "oblivion_theme",       limit: 64
+    t.string  "falloutnv_theme",      limit: 64
+    t.string  "fallout3_theme",       limit: 64
     t.boolean "allow_comments",                  default: true,  null: false
     t.boolean "show_notifications",              default: true,  null: false
     t.boolean "email_notifications",             default: false, null: false
