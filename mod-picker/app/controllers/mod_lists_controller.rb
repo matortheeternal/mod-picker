@@ -101,7 +101,7 @@ class ModListsController < ApplicationController
 
     # prepare helpful marks
     c_helpful_marks = HelpfulMark.for_user_content(current_user, "CompatibilityNote", compatibility_notes.ids)
-    i_helpful_marks = HelpfulMark.for_user_content(current_user, "InstallOrderNote", install_order_notes.ids)
+    l_helpful_marks = HelpfulMark.for_user_content(current_user, "LoadOrderNote", load_order_notes.ids)
     
     # render response
     render json: {

@@ -37,7 +37,7 @@ class ModBuilder < Builder
 
   def after_save
     link_sources
-    create_tags
+    update_tags
     create_curator
   end
 
@@ -122,8 +122,8 @@ class ModBuilder < Builder
     end
   end
 
-  def create_tags
-    TagBuilder.update_tags(resource, @current_user, @tag_names) if @tag_names
+  def update_tags
+    TagBuilder.update_tags(resource, @current_user, @tag_names)
   end
 
   def create_curator
