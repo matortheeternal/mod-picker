@@ -123,6 +123,7 @@ class ModBuilder < Builder
   end
 
   def update_tags
+    return if @tag_names.nil?
     TagBuilder.update_tags(resource, @current_user, @tag_names)
   end
 
