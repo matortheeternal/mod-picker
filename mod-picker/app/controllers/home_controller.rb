@@ -22,7 +22,7 @@ class HomeController < ApplicationController
     if current_user.present?
       @current_theme = current_user.settings.theme
     else
-      @current_theme = 'High Hrothgar'
+      @current_theme = 'Falkreath'
     end
 
     # render layout
