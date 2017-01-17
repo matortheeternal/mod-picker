@@ -15,6 +15,20 @@ class HomeController < ApplicationController
     render 'angular/index', layout: "application"
   end
 
+  def skyrimse
+    # set instance variables
+    @games = Game.all
+    @current_game = Game.find_by(display_name: "Skyrim SE")
+    if current_user.present?
+      @current_theme = current_user.settings.theme
+    else
+      @current_theme = 'High Hrothgar'
+    end
+
+    # render layout
+    render 'angular/index', layout: "application"
+  end
+
   def fallout4
     # set instance variables
     @games = Game.all

@@ -314,6 +314,7 @@ Rails.application.routes.draw do
 
   # home page
   match '/skyrim', to: 'home#skyrim', via: [:get]
+  match '/skyrimse', to: 'home#skyrimse', via: [:get]
   match '/fallout4', to: 'home#fallout4', via: [:get]
   match '/home', to: 'home#index', via: [:get]
 
