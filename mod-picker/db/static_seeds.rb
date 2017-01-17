@@ -2,17 +2,15 @@ def create_plugin(mod_option, dump_filename)
   file = File.read(Rails.root.join("db", "plugins", dump_filename))
   hash = JSON.parse(file).with_indifferent_access
   hash[:game_id] = mod_option.mod.game_id
-  mod_option.plugins.create(hash).save!
+  mod_option.plugins.create(hash)
 end
 
 def create_option(mod)
-  option = mod.mod_options.create({
+  mod.mod_options.create({
       display_name: mod.name,
       name: mod.name,
       default: true
   })
-  option.save!
-  option
 end
 
 def create_tags(user, mod, tags)
