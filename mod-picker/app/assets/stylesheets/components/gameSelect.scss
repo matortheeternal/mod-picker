@@ -1,6 +1,5 @@
 game-select {
   display: inline-block;
-  width: 95px;
   text-align: center;
   position: relative;
 
@@ -22,10 +21,12 @@ game-select {
 
   .icon-sk {
     background-image: url(image_path("skyrim_icon.png"));
+    margin-left: -5px;
   }
 
   .icon-sse {
     background-image: url(image_path("skyrimse_icon.png"));
+    margin-left: -5px;
   }
 
   .dropdown {
