@@ -1249,8 +1249,8 @@ def seed_skyrimse_official_content(submitter)
       submitted_by: submitter.id,
       is_official: true,
       game_id: gameSkyrimSE.id,
-      released: DateTime.new(2011, 11, 11),
-      updated: DateTime.new(2013, 3, 20),
+      released: DateTime.new(2016, 10, 28),
+      updated: DateTime.new(2017, 1, 9),
       custom_sources_attributes: [{
           label: "Steam Store",
           url: "http://store.steampowered.com/app/489830/"
