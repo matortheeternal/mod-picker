@@ -56,7 +56,7 @@ class UserSettingsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:username, :role, :title, :joined, :about_me, :settings_attributes => [:id, :theme, :allow_comments, :show_notifications, :email_notifications, :email_public, :allow_adult_content, :enable_spellcheck, :disable_helper, :allow_nexus_mods, :allow_lovers_lab, :allow_steam_workshop])
+      params.require(:user).permit(:username, :role, :title, :joined, :about_me, :settings_attributes => [:id, :skyrim_theme, :skyrimse_theme, :allow_comments, :show_notifications, :email_notifications, :email_public, :allow_adult_content, :enable_spellcheck, :disable_helper, :allow_nexus_mods, :allow_lovers_lab, :allow_steam_workshop])
     end
 
     def avatar_params

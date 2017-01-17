@@ -8,7 +8,7 @@
       "except": ["user_id", "dont_compute"]
     },
     "settings": {
-      "except": ["user_id"]
+      "except": ["user_id", "fallout4_theme", "oblivion_theme", "falloutnv_theme", "fallout3_theme"]
     }
   },
   "methods": "image_type"
