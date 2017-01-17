@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170107210149) do
+ActiveRecord::Schema.define(version: 20170116215253) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -238,7 +238,7 @@ ActiveRecord::Schema.define(version: 20170107210149) do
     t.string  "display_name",              limit: 32,              null: false
     t.string  "long_name",                 limit: 128,             null: false
     t.string  "abbr_name",                 limit: 32,              null: false
-    t.string  "nexus_name",                limit: 16
+    t.string  "nexus_name",                limit: 32
     t.string  "exe_name",                  limit: 32
     t.string  "esm_name",                  limit: 32
     t.string  "steam_app_ids",             limit: 64
