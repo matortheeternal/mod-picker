@@ -6,10 +6,13 @@ def create_plugin(mod_option, dump_filename)
 end
 
 def create_option(mod)
-  mod.mod_options.create({
+  option = mod.mod_options.create({
+      display_name: mod.name,
       name: mod.name,
       default: true
   })
+  option.save!
+  option
 end
 
 def create_tags(user, mod, tags)
@@ -1112,8 +1115,9 @@ end
 
 def load_record_groups(game, filename)
   file = File.read(Rails.root.join("db", "record_groups", filename))
-  json = JSON.parse(file).with_indifferent_access
-  json.each do |record_group|
+  json = JSON.parse(file)
+  json.each do |item|
+    record_group = item.with_indifferent_access
     record_group[:game_id] = game.id
     RecordGroup.create(record_group)
   end
@@ -1258,12 +1262,12 @@ def seed_skyrimse_official_content(submitter)
   create_config_file(modSkyrimSE, "Skyrim.ini", "{{MyGamesFolder}}")
   create_config_file(modSkyrimSE, "SkyrimPrefs.ini", "{{MyGamesFolder}}")
   # Create plugins
-  skyrimOption = create_option(modSkyrimSE)
-  create_plugin(modSkyrimSE, "SkyrimSE/Skyrim.esm.json")
-  create_plugin(modSkyrimSE, "SkyrimSE/Update.esm.json")
-  create_plugin(modSkyrimSE, "SkyrimSE/Dawnguard.esm.json")
-  create_plugin(modSkyrimSE, "SkyrimSE/Hearthfires.esm.json")
-  create_plugin(modSkyrimSE, "SkyrimSE/Dragonborn.esm.json")
+  skyrimSEOption = create_option(modSkyrimSE)
+  create_plugin(skyrimSEOption, "SkyrimSE/Skyrim.esm.json")
+  create_plugin(skyrimSEOption, "SkyrimSE/Update.esm.json")
+  create_plugin(skyrimSEOption, "SkyrimSE/Dawnguard.esm.json")
+  create_plugin(skyrimSEOption, "SkyrimSE/Hearthfires.esm.json")
+  create_plugin(skyrimSEOption, "SkyrimSE/Dragonborn.esm.json")
   modSkyrimSE.update_lazy_counters
 end
 

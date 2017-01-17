@@ -530,9 +530,5 @@
 		"signature" : "VOLI",
 		"name" : "Volumetric Lighting",
 		"child_group" : false
-	}, {
-		"signature" : "SPGD",
-		"name" : "Shader Particle Geometry",
-		"child_group" : false
 	}
 ]
