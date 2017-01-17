@@ -24,6 +24,10 @@ game-select {
     background-image: url(image_path("skyrim_icon.png"));
   }
 
+  .icon-sse {
+    background-image: url(image_path("skyrimse_icon.png"));
+  }
+
   .dropdown {
     cursor: default;
     min-width: 100px;

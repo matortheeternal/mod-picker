@@ -4,7 +4,7 @@
     </span>
 </a>
 <div class="dropdown" ng-show="showGames" ng-click="stopPropagation($event)">
-    <a ng-repeat="game in games" ng-href="/{{game.nexus_name}}">
+    <a ng-repeat="game in games" ng-href="/{{game.url}}">
         <span class="game-icon icon-{{game.abbr_name}}">
             <span class="game-label">{{game.display_name}}</span>
         </span>
