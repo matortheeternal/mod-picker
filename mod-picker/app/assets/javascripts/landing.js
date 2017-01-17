@@ -26,10 +26,10 @@ app.controller('landingController', function($scope) {
             explanation: "The Elder Scrolls V: Skyrim"
         },
         {
-            available: false,
+            available: true,
             display_name: "Skyrim SE",
             name: "skyrimse",
-            explanation: "Coming Soon"
+            explanation: "Skyrim: Special Edition"
         },
         {
             available: false,
