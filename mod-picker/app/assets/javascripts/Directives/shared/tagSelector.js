@@ -23,7 +23,6 @@ app.controller('tagSelectorController', function($scope, $element, $timeout, tag
     $scope.removedTags = [];
     $scope.showModsCount = $scope.type === "mod" && $scope.showCount;
     $scope.showModListsCount = $scope.type === "mod-list" && $scope.showCount;
-    var addTagButton = $element[0].firstChild.lastElementChild;
 
     tagService.retrieveAllTags().then(function(data) {
         $scope.tags = data;
@@ -41,6 +40,8 @@ app.controller('tagSelectorController', function($scope, $element, $timeout, tag
     };
 
     $scope.focusAddTag = function() {
+        var loader = $element[0].firstChild;
+        var addTagButton = loader.lastChild.firstElementChild.lastElementChild;
         $timeout(function() {
             addTagButton.focus();
         }, 50);
@@ -98,9 +99,9 @@ app.controller('tagSelectorController', function($scope, $element, $timeout, tag
         $scope.$applyAsync(function() {
             if (!tag) return;
             angular.copyProperties(tag, $scope.rawNewTags[index]);
+            $scope.storeTags();
+            $scope.focusAddTag();
         });
-        $scope.storeTags();
-        $scope.focusAddTag();
     };
 
     $scope.rawTagText = function() {
