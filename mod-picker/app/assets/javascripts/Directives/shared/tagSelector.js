@@ -89,8 +89,12 @@ app.controller('tagSelectorController', function($scope, $element, $timeout, tag
     };
 
     $scope.applyTag = function(index, tag) {
-        $scope.rawNewTags[index] = tag;
+        $scope.$applyAsync(function() {
+            if (!tag) return;
+            angular.copyProperties(tag, $scope.rawNewTags[index]);
+        });
         $scope.storeTags();
+        $scope.focusAddTag();
     };
 
     $scope.rawTagText = function() {

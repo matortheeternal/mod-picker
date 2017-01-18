@@ -64,11 +64,12 @@ app.controller('tagInputController', function($scope, $timeout, formUtils) {
     };
 
     $scope.selectResult = function(result) {
-        $scope.tag = result;
-        $scope.applyTag($scope.index, result);
-        $scope.showDropdown = false;
-        $scope.results = [];
-        $scope.$applyAsync();
+        $scope.$applyAsync(function() {
+            $scope.tag = result;
+            $scope.applyTag($scope.index, result);
+            $scope.showDropdown = false;
+            $scope.results = [];
+        });
     };
 
     $scope.blurTag = function() {
@@ -110,7 +111,6 @@ app.controller('tagInputController', function($scope, $timeout, formUtils) {
             } else {
                 return;
             }
-            $scope.addTag();
             $event.preventDefault();
             $event.stopPropagation();
         }

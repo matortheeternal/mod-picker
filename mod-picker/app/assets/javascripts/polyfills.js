@@ -167,3 +167,11 @@ angular.default = function(scope, attribute, value) {
         scope[attribute] = value;
     }
 };
+
+angular.copyProperties = function(source, destination) {
+    for (var prop in source) {
+        if (source.hasOwnProperty(prop)) {
+            destination[prop] = source[prop];
+        }
+    }
+};
