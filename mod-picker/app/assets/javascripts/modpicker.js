@@ -43,7 +43,7 @@ app.config(function($futureStateProvider) {
 });
 
 app.run(['$rootScope', '$state', 'smoothScroll', function($rootScope, $state, smoothScroll) {
-    var lastScrolled;
+    var lastScrolled = 0;
     var scrollDelay = 1000;
 
     $rootScope.$on('$stateChangeStart', function(evt, toState, params, fromState) {
