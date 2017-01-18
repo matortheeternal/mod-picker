@@ -1,4 +1,5 @@
-<div class="tags-container">
+<loader data="!savingTags" spinner-class="small-spinner">
+    <div class="tags-container">
     <span ng-repeat="tag in activeTags" ng-class="tag.tagBoxClass" class="tag-box" title="Submitted by {{tag.submitter.username}}">
         <span class="tag-text">
             {{::tag.text}}
@@ -32,9 +33,10 @@
             <i class="fa fa-plus"></i> Add a tag
         </span>
     </span>
-</div>
+    </div>
 
-<div class="tag-actions-container" ng-if="saveCallback && (removedTags.length > 0 || rawNewTags.length > 0)">
-    <input class="btn small-action-btn" type="submit" value="Save Tags" ng-click="saveTags()">
-    <input class="btn small-action-btn" type="submit" value="Reset Tags" ng-click="resetTags()">
-</div>
+    <div class="tag-actions-container" ng-if="saveCallback && (removedTags.length > 0 || rawNewTags.length > 0)">
+        <input class="btn small-action-btn" type="submit" value="Save Tags" ng-click="saveTags()">
+        <input class="btn small-action-btn" type="submit" value="Reset Tags" ng-click="resetTags()">
+    </div>
+</loader>

@@ -80,11 +80,17 @@ app.controller('tagSelectorController', function($scope, $element, $timeout, tag
         $scope.rawNewTags.forEach(function(tag) {
             updatedTags.push(tag.text);
         });
+        $scope.savingTags = true;
         $scope.saveCallback(updatedTags).then(function(data) {
-            $scope.activeTags = data.tags;
             $scope.rawNewTags = [];
             $scope.removedTags = [];
-            $scope.storeTags();
+            $scope.newTags = [];
+            $scope.activeTags = data.tags;
+            $timeout(function() {
+                $scope.savingTags = false;
+            }, 300);
+        }, function() {
+            $scope.savingTags = false;
         });
     };
 
