@@ -65,7 +65,6 @@ app.controller('tagInputController', function($scope, $timeout, formUtils) {
 
     $scope.selectResult = function(result) {
         $scope.$applyAsync(function() {
-            $scope.tag = result;
             $scope.applyTag($scope.index, result);
             $scope.showDropdown = false;
             $scope.results = [];
@@ -96,12 +95,13 @@ app.controller('tagInputController', function($scope, $timeout, formUtils) {
 
         // pressing enter applies dropdown selection and adds a new tag
         if (key == 13) {
-            var isValidTag = $scope.tags.indexOf($scope.tag) > -1;
+            var existingTag = $scope.tags.find(function(tag) {
+                return $scope.tag.text === tag.text;
+            });
             if ($scope.currentIndex >= 0 && $scope.currentIndex < $scope.results.length) {
                 $scope.selectResult($scope.results[$scope.currentIndex]);
-            } else if (isValidTag) {
-                $scope.showDropdown = false;
-                $scope.results = [];
+            } else if (existingTag) {
+                $scope.selectResult(existingTag);
             } else if ($scope.canCreate) {
                 $scope.selectResult({
                     text: $scope.tag.text,
