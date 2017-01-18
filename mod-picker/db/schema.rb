@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170117230220) do
+ActiveRecord::Schema.define(version: 20170118033736) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -52,8 +52,8 @@ ActiveRecord::Schema.define(version: 20170117230220) do
     t.integer "mod_asset_files_count", limit: 4,   default: 0, null: false
   end
 
+  add_index "asset_files", ["game_id", "path"], name: "index_asset_files_on_game_id_and_path", unique: true, using: :btree
   add_index "asset_files", ["game_id"], name: "fk_rails_2e8fb86f89", using: :btree
-  add_index "asset_files", ["path"], name: "filepath", unique: true, using: :btree
 
   create_table "base_reports", force: :cascade do |t|
     t.integer  "reportable_id",   limit: 4,                   null: false
