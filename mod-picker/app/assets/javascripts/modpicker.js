@@ -43,8 +43,7 @@ app.config(function($futureStateProvider) {
 });
 
 app.run(['$rootScope', '$state', 'smoothScroll', function($rootScope, $state, smoothScroll) {
-    var lastScrolled = 0;
-    var scrollDelay = 1000;
+    var lastToState;
 
     $rootScope.$on('$stateChangeStart', function(evt, toState, params, fromState) {
         //this adds a redirectTo option into ui router, which makes default tabs much nicer
@@ -55,9 +54,8 @@ app.run(['$rootScope', '$state', 'smoothScroll', function($rootScope, $state, sm
         //don't scroll if the transition is from one sticky state to another
         if (!toState.sticky || !fromState.sticky) {
             // scroll to the top of the page
-            var now = new Date().getTime();
-            if (now - lastScrolled > scrollDelay) {
-                lastScrolled = now;
+            if (toState != lastToState) {
+                lastToState = toState;
                 smoothScroll(document.body, {duration: 300});
             }
         }
