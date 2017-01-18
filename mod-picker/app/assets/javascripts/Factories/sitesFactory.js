@@ -11,7 +11,7 @@ app.service('sitesFactory', function() {
                 shortLabel: "Nexus",
                 dataLabel: "nexus",
                 includeGame: true,
-                modUrlFormat: /(http[s]:\/\/?)?www\.nexusmods\.com\/skyrim\/mods\/([0-9]+)(\/\?)?/i,
+                modUrlFormat: "(http[s]:\/\/?)?www\.nexusmods\.com\/\[game\]\/mods\/([0-9]+)(\/\?)?",
                 baseUserUrlFormat: "https://forums.nexusmods.com/index.php?showuser=",
                 userUrlFormat: /(http[s]:\/\/?)?forums\.nexusmods\.com\/index\.php\?showuser=([0-9]+)(\/)?/i,
                 badUserUrlFormat: /(http[s]:\/\/?)?forums\.nexusmods\.com\/index\.php\?\/user\/([A-Za-z0-9\-]+)(\/)?/i,
@@ -75,6 +75,14 @@ app.service('sitesFactory', function() {
     this.getModUrl = function(label, id) {
         var site = this.getSite(label);
         return site.modUrlBase.replace("{id}", id);
+    };
+
+    this.getModUrlFormat = function(site, game) {
+        if (site.dataLabel === "nexus") {
+            return new RegExp(site.modUrlFormat.replace("[game]", game.nexus_name), "i");
+        } else {
+            return site.modUrlFormat;
+        }
     };
 
     this.getLinkSteps = function(label) {
