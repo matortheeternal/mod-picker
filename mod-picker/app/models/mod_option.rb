@@ -14,8 +14,9 @@ class ModOption < ActiveRecord::Base
   # ASSOCIATIONS
   belongs_to :mod, :inverse_of => 'mod_options'
 
-  has_many :plugins, :inverse_of => 'mod_option', :dependent => :destroy
-  has_many :mod_asset_files, :inverse_of => 'mod_option'
+  has_many :mod_option_plugins, :dependent => :destroy
+  has_many :plugins, :through => :mod_option_plugins
+  has_many :mod_asset_files, :inverse_of => :mod_option
 
   has_many :mod_list_mod_options, :inverse_of => 'mod_option', :dependent => :destroy
 
@@ -84,8 +85,7 @@ class ModOption < ActiveRecord::Base
       dump[:mod_option_id] = id
       Plugin.create!(dump)
     else
-      plugin.mod_option_id = id
-      plugin.save!
+      ModOptionPlugin.create(mod_option_id: id, plugin_id: plugin.id)
     end
   end
 

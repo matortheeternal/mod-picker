@@ -19,15 +19,16 @@ class Plugin < ActiveRecord::Base
   bytes_scope :file_size
 
   # UNIQUE SCOPES
-  scope :visible, -> { eager_load(:mod).where(:mods => {hidden: false}) }
-  scope :mods, -> (mod_ids) { eager_load(:mod_option).where(:mod_options => { :mod_id => mod_ids }) }
+  scope :visible, -> { eager_load(:mods).where(:mods => {hidden: false}) }
+  scope :mods, -> (mod_ids) { eager_load(:mod_options).where(:mod_options => { :mod_id => mod_ids }) }
   scope :esm, -> { where("filename like '%.esm'") }
   scope :categories, -> (categories) { joins(:mod).where("mods.primary_category_id IN (:ids) OR mods.secondary_category_id IN (:ids)", ids: categories) }
 
   # ASSOCIATIONS
   belongs_to :game, :inverse_of => 'plugins'
-  belongs_to :mod_option, :inverse_of => 'plugins'
-  has_one :mod, :through => 'mod_option', :inverse_of => 'plugins'
+  has_many :mod_option_plugins, :inverse_of => 'plugin'
+  has_many :mod_options, through: 'mod_option_plugins', foreign_key: 'mod_option_id'
+  has_many :mods, through: 'mod_options', inverse_of: 'plugins'
 
   # master associations
   has_many :dummy_masters, :inverse_of => 'plugin'
@@ -55,7 +56,7 @@ class Plugin < ActiveRecord::Base
   counter_cache :load_order_notes, conditional: { hidden: false, approved: true }, custom_reflection: { klass: LoadOrderNote, query_method: 'plugin_count_subquery' }
 
   # VALIDATIONS
-  validates :game_id, :mod_option_id, :filename, :crc_hash, :file_size, presence: true
+  validates :game_id, :filename, :crc_hash, :file_size, presence: true
 
   validates :filename, length: {maximum: 256}
   validates :author, length: {maximum: 512}
@@ -80,6 +81,18 @@ class Plugin < ActiveRecord::Base
   def self.find_master_plugin(master)
     Plugin.where(filename: master[:filename], crc_hash: master[:crc_hash]).first ||
         Plugin.where(filename: master[:filename]).first
+  end
+
+  def mod_option
+    mod_options.first
+  end
+
+  def mod
+    mods.first
+  end
+
+  def mod_option_id
+    mod_option.id
   end
 
   def update_lazy_counters

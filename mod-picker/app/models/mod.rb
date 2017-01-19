@@ -106,7 +106,8 @@ class Mod < ActiveRecord::Base
   # mod options
   has_many :mod_options, :inverse_of => 'mod', :dependent => :destroy
   # plugins associated with the mod
-  has_many :plugins, :inverse_of => 'mod', :through => 'mod_options'
+  has_many :mod_option_plugins, :through => :mod_options
+  has_many :plugins, :through => :mod_option_plugins
   # assets associated with the mod
   has_many :mod_asset_files, :inverse_of => 'mod', :through => 'mod_options'
   has_many :asset_files, :through => :mod_asset_files, :inverse_of => 'mods'
