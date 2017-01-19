@@ -364,6 +364,14 @@ app.service("filtersFactory", function() {
                 param: "loc"
             },
             {
+                label: "Mod Options Count",
+                common: false,
+                data: "mod_options",
+                type: "Range",
+                max: 300,
+                param: "moc"
+            },
+            {
                 label: "Asset Files Count",
                 common: false,
                 data: "asset_files",
@@ -376,7 +384,7 @@ app.service("filtersFactory", function() {
                 common: false,
                 data: "plugins",
                 type: "Range",
-                max: 50,
+                max: 100,
                 param: "pc"
             },
             {
