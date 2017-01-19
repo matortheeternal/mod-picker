@@ -1,3 +1,4 @@
 {
-  "only": ["id", "filename", "mod_option_id"]
+  "only": ["id", "filename"],
+  "methods": ["mod_option_id"]
 }
