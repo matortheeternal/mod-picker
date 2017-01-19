@@ -113,6 +113,13 @@ namespace :reset do
     end
   end
 
+  task mod_lazy_counters: :environment do
+    puts "\nResetting lazy mod counters"
+    Mod.all.find_each do |mod|
+      mod.update_lazy_counters
+    end
+  end
+
   task empty_mod_asset_files: :environment do
     puts "\nDestroying empty mod asset files"
     empty_mod_asset_files = ModAssetFile.where(subpath: "", asset_file_id: nil)
