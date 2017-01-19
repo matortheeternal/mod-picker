@@ -223,6 +223,7 @@ class Mod < ActiveRecord::Base
 
   def update_lazy_counters
     mod_option_ids = mod_options.ids
+    self.mod_options_count = mod_options.count
     self.asset_files_count = ModAssetFile.mod_options(mod_option_ids).count
     self.plugins_count = Plugin.mod_options(mod_option_ids).count
   end
