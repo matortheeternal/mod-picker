@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170118033736) do
+ActiveRecord::Schema.define(version: 20170119190443) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -642,6 +642,7 @@ ActiveRecord::Schema.define(version: 20170118033736) do
     t.integer  "secondary_category_id",     limit: 4
     t.float    "average_rating",            limit: 24,  default: 0.0,   null: false
     t.float    "reputation",                limit: 24,  default: 0.0,   null: false
+    t.integer  "mod_options_count",         limit: 4,   default: 0,     null: false
     t.integer  "plugins_count",             limit: 4,   default: 0,     null: false
     t.integer  "asset_files_count",         limit: 4,   default: 0,     null: false
     t.integer  "required_mods_count",       limit: 4,   default: 0,     null: false
