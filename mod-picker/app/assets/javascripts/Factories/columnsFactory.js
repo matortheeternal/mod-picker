@@ -561,6 +561,13 @@ app.service('columnsFactory', function() {
             {
                 group: "General",
                 visibility: false,
+                label: "Mod Options",
+                data: "mod.mod_options_count",
+                filter: "number"
+            },
+            {
+                group: "General",
+                visibility: false,
                 label: "Asset Files",
                 data: "mod.asset_files_count",
                 filter: "number"
