@@ -16,7 +16,8 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
     this.searchMods = function(name, utility) {
         var postData = {
             filters: {
-                search: name
+                search: name,
+                game: window._current_game_id
             }
         };
         if (angular.isDefined(utility)) {
