@@ -27,6 +27,9 @@ Rails.application.routes.draw do
     match '/settings/avatar', to: 'user_settings#avatar', via: [:post]
     match '/settings/link_account', to: 'user_settings#link_account', via: [:post]
 
+    # moderation cp
+    match '/moderator_cp', to: 'moderation#index', via: [:get]
+
     # api tokens
     match '/api_tokens', to: 'api_tokens#create', via: [:post]
     match '/api_tokens/:id', to: 'api_tokens#update', via: [:patch, :put]
@@ -311,6 +314,7 @@ Rails.application.routes.draw do
 
   # home page
   match '/skyrim', to: 'home#skyrim', via: [:get]
+  match '/skyrimse', to: 'home#skyrimse', via: [:get]
   match '/fallout4', to: 'home#fallout4', via: [:get]
   match '/home', to: 'home#index', via: [:get]
 

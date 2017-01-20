@@ -25,9 +25,7 @@ app.controller('pluginsController', function($scope, $rootScope, $stateParams, $
     // initialize filters
     $scope.filterPrototypes = filtersFactory.pluginFilters();
     $scope.statFilters = filtersFactory.pluginStatisticFilters();
-    $scope.filters = {
-        game: $scope.currentGame.id
-    };
+    $scope.filters = { game: $scope.currentGame.id };
 
     // build generic controller stuff
     $scope.route = 'plugins';

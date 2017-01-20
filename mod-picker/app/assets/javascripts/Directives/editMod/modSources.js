@@ -7,7 +7,7 @@ app.directive('modSources', function() {
     }
 });
 
-app.controller('modSourcesController', function($scope, sitesFactory, scrapeService) {
+app.controller('modSourcesController', function($scope, $rootScope, sitesFactory, scrapeService) {
     $scope.addSource = function() {
         if ($scope.mod.sources.length == $scope.sites.length) return;
         $scope.mod.sources.push({
@@ -27,7 +27,8 @@ app.controller('modSourcesController', function($scope, sitesFactory, scrapeServ
         var sourceUsed = $scope.mod.sources.find(function(item, index) {
             return index != sourceIndex && item.label === source.label
         });
-        var match = source.url.match(site.modUrlFormat);
+        var urlFormat = sitesFactory.getModUrlFormat(site, $rootScope.currentGame);
+        var match = source.url.match(urlFormat);
         source.valid = !sourceUsed && match != null;
     };
 
@@ -46,7 +47,8 @@ app.controller('modSourcesController', function($scope, sitesFactory, scrapeServ
     $scope.scrapeSource = function(source) {
         // exit if the source is invalid
         var site = sitesFactory.getSite(source.label);
-        var match = source.url.match(site.modUrlFormat);
+        var urlFormat = sitesFactory.getModUrlFormat(site, $rootScope.currentGame);
+        var match = source.url.match(urlFormat);
         if (!match) {
             return;
         }

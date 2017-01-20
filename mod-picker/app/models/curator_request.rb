@@ -26,6 +26,10 @@ class CuratorRequest < ActiveRecord::Base
   # CALLBACKS
   before_update :toggle_curator
 
+  def self.unapproved_count
+    where(state: CuratorRequest.states[:open]).count
+  end
+
   def curator_attributes
     { mod_id: mod_id, user_id: submitted_by, role: 2 }
   end

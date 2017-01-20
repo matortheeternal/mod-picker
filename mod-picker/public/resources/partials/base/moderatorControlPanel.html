@@ -4,6 +4,57 @@
 
         <p>Please refer to the <a href="/help/moderation_guide">Moderation Guide</a> for moderation policies and guidelines.</p>
 
+        <div class="tab-bar-items inverse-items">
+            <a class="quality-item link-item" href="#/reports">
+                <span class="quality-number">
+                    {{stats.unresolved_reports}}
+                </span>
+                UNRESOLVED REPORTS
+            </a>
+            <a class="quality-item link-item" href="#/curator-requests">
+                <span class="quality-number">
+                    {{stats.unapproved.curator_requests}}
+                </span>
+                OPEN CURATOR REQUESTS
+            </a>
+            <a class="quality-item link-item" href="#/mods?apr=0">
+                <span class="quality-number">
+                    {{stats.unapproved.mods}}
+                </span>
+                UNAPPROVED MODS
+            </a>
+            <a class="quality-item link-item" href="#/reviews?apr=0">
+                <span class="quality-number">
+                    {{stats.unapproved.reviews}}
+                </span>
+                UNAPPROVED REVIEWS
+            </a>
+            <a class="quality-item link-item" href="#/compatibility-notes?apr=0">
+                <span class="quality-number">
+                    {{stats.unapproved.compatibility_notes}}
+                </span>
+                UNAPPROVED COMPATIBILITY NOTES
+            </a>
+            <a class="quality-item link-item" href="#/install-order-notes?apr=0">
+                <span class="quality-number">
+                    {{stats.unapproved.install_order_notes}}
+                </span>
+                UNAPPROVED INSTALL ORDER NOTES
+            </a>
+            <a class="quality-item link-item" href="#/load-order-notes?apr=0">
+                <span class="quality-number">
+                    {{stats.unapproved.load_order_notes}}
+                </span>
+                UNAPPROVED LOAD ORDER NOTES
+            </a>
+            <a class="quality-item link-item" href="#/help-pages?apr=0">
+                <span class="quality-number">
+                    {{stats.unapproved.help_pages}}
+                </span>
+                UNAPPROVED HELP PAGES
+            </a>
+        </div>
+
         <section>
             <h3>Manage Users</h3>
             <ul>

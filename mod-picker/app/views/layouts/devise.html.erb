@@ -6,7 +6,7 @@
   <% if current_user.nil? %>
     <% current_theme = 'High Hrothgar' %>
   <% else %>
-    <% current_theme = current_user.settings.theme %>
+    <% current_theme = current_user.settings.skyrim_theme %>
   <% end %>
   <%= stylesheet_link_tag "main/#{current_theme}" %>
 </head>

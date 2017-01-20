@@ -80,6 +80,13 @@ app.service('columnsFactory', function() {
             {
                 group: "Mod Picker",
                 visibility: false,
+                label: "Mod Options",
+                data: "mod_options_count",
+                filter: "number"
+            },
+            {
+                group: "Mod Picker",
+                visibility: false,
                 label: "Plugins",
                 data: "plugins_count",
                 filter: "number"
@@ -549,6 +556,13 @@ app.service('columnsFactory', function() {
                 visibility: false,
                 label: "Stars",
                 data: "mod.stars_count",
+                filter: "number"
+            },
+            {
+                group: "General",
+                visibility: false,
+                label: "Mod Options",
+                data: "mod.mod_options_count",
                 filter: "number"
             },
             {

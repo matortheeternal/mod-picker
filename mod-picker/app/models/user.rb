@@ -158,6 +158,10 @@ class User < ActiveRecord::Base
     reputation.overall > 160
   end
 
+  def has_help_page_auto_approval?
+    false
+  end
+
   def subscribed_to?(event)
     if respond_to?(:notification_settings)
       key = "#{event.content_type.underscore}_#{event.event_type}"

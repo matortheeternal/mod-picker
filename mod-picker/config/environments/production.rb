@@ -23,6 +23,9 @@ Rails.application.configure do
   # NGINX, varnish or squid.
   # config.action_dispatch.rack_cache = true
 
+  # Enable prerender middleware for SEO
+  config.middleware.use Rack::Prerender, prerender_token: ENV['prerender_token']
+
   # Disable serving static files from the `/public` folder by default since
   # Apache or NGINX already handles this.
   config.serve_static_files = true

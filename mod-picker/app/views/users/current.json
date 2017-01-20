@@ -5,7 +5,7 @@
       "only": ["overall", "rep_to_count"]
     },
     "settings": {
-      "only": ["theme", "enable_spellcheck", "show_notifications", "allow_adult_content", "disable_helper"]
+      "only": ["skyrim_theme", "skyrimse_theme", "enable_spellcheck", "show_notifications", "allow_adult_content", "disable_helper"]
     }
   },
   "methods": ["image_type", "recent_notifications"]

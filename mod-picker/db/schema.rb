@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170107210149) do
+ActiveRecord::Schema.define(version: 20170119210115) do
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -52,8 +52,8 @@ ActiveRecord::Schema.define(version: 20170107210149) do
     t.integer "mod_asset_files_count", limit: 4,   default: 0, null: false
   end
 
+  add_index "asset_files", ["game_id", "path"], name: "index_asset_files_on_game_id_and_path", unique: true, using: :btree
   add_index "asset_files", ["game_id"], name: "fk_rails_2e8fb86f89", using: :btree
-  add_index "asset_files", ["path"], name: "filepath", unique: true, using: :btree
 
   create_table "base_reports", force: :cascade do |t|
     t.integer  "reportable_id",   limit: 4,                   null: false
@@ -238,7 +238,7 @@ ActiveRecord::Schema.define(version: 20170107210149) do
     t.string  "display_name",              limit: 32,              null: false
     t.string  "long_name",                 limit: 128,             null: false
     t.string  "abbr_name",                 limit: 32,              null: false
-    t.string  "nexus_name",                limit: 16
+    t.string  "nexus_name",                limit: 32
     t.string  "exe_name",                  limit: 32
     t.string  "esm_name",                  limit: 32
     t.string  "steam_app_ids",             limit: 64
@@ -464,7 +464,7 @@ ActiveRecord::Schema.define(version: 20170107210149) do
     t.boolean "cleaned",                             default: false, null: false
     t.boolean "merged",                              default: false, null: false
     t.integer "compatibility_note_id", limit: 4
-    t.string  "filename",              limit: 64,                    null: false
+    t.string  "filename",              limit: 255,                   null: false
     t.text    "description",           limit: 65535
   end
 
@@ -642,6 +642,7 @@ ActiveRecord::Schema.define(version: 20170107210149) do
     t.integer  "secondary_category_id",     limit: 4
     t.float    "average_rating",            limit: 24,  default: 0.0,   null: false
     t.float    "reputation",                limit: 24,  default: 0.0,   null: false
+    t.integer  "mod_options_count",         limit: 4,   default: 0,     null: false
     t.integer  "plugins_count",             limit: 4,   default: 0,     null: false
     t.integer  "asset_files_count",         limit: 4,   default: 0,     null: false
     t.integer  "required_mods_count",       limit: 4,   default: 0,     null: false
@@ -895,7 +896,12 @@ ActiveRecord::Schema.define(version: 20170107210149) do
 
   create_table "user_settings", force: :cascade do |t|
     t.integer "user_id",              limit: 4,                  null: false
-    t.string  "theme",                limit: 64
+    t.string  "skyrim_theme",         limit: 64
+    t.string  "skyrimse_theme",       limit: 64
+    t.string  "fallout4_theme",       limit: 64
+    t.string  "oblivion_theme",       limit: 64
+    t.string  "falloutnv_theme",      limit: 64
+    t.string  "fallout3_theme",       limit: 64
     t.boolean "allow_comments",                  default: true,  null: false
     t.boolean "show_notifications",              default: true,  null: false
     t.boolean "email_notifications",             default: false, null: false

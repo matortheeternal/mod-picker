@@ -26,15 +26,11 @@ app.config(['$stateProvider', function($stateProvider) {
             categoryPriorities: function(errorService, categoryService) {
                 return errorService.criticalRequest(categoryService.retrieveCategoryPriorities);
             }
-        },
-        onEnter: function(themesService, currentUser) {
-            var userTheme = currentUser.settings && currentUser.settings.theme;
-            themesService.changeTheme(userTheme || 'High Hrothgar');
         }
     })
 }]);
 
-app.controller('baseController', function($scope, $rootScope, $state, $window, $timeout, currentUser, activeModList, games, currentGame, categories, categoryPriorities, userService) {
+app.controller('baseController', function($scope, $rootScope, $state, $window, $timeout, currentUser, activeModList, games, currentGame, categories, categoryPriorities, userService, themesService) {
     // shared variables - used on multiple states.  These have to stored on the
     // $rootScope else we can't modify them for all states
     $rootScope.currentUser = currentUser;
@@ -44,6 +40,9 @@ app.controller('baseController', function($scope, $rootScope, $state, $window, $
     $rootScope.games = games;
     $rootScope.categories = categories;
     $rootScope.categoryPriorities = categoryPriorities;
+
+    // load current theme
+    themesService.changeTheme(currentUser.settings);
 
     // load artist credit
     $scope.loadArtistCredit = function() {

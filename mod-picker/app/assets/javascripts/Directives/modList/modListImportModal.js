@@ -9,7 +9,7 @@ app.directive('modListImportModal', function() {
 
 app.controller('modListImportModalController', function($scope, $rootScope, $state, modListService, eventHandlerFactory, formUtils, importUtils) {
     // inherited variables
-    $scope.gameName = $rootScope.currentGame.nexus_name;
+    $scope.gameName = $rootScope.currentGame.url;
 
     // inherited functions
     $scope.unfocusImportModal = formUtils.unfocusModal($scope.toggleImportModal);

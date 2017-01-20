@@ -124,6 +124,12 @@ app.controller('commentsController', function($scope, $rootScope, contributionSe
     };
 
     $scope.$on('startNewComment', function() {
+        $scope.$broadcast('cancelComment', 0);
         $scope.newComment();
+    });
+
+    $scope.$on('cancelComment', function(e, exceptId) {
+        if (exceptId == 0) return;
+        if ($scope.activeComment) $scope.discardNewComment();
     });
 });

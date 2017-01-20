@@ -1,4 +1,5 @@
-<div class="tags-container">
+<loader data="!savingTags" spinner-class="small-spinner">
+    <div class="tags-container">
     <span ng-repeat="tag in activeTags" ng-class="tag.tagBoxClass" class="tag-box" title="Submitted by {{tag.submitter.username}}">
         <span class="tag-text">
             {{::tag.text}}
@@ -18,10 +19,10 @@
             <tag-input tags="tags" tag="tag" can-create="canCreate" apply-tag="applyTag" remove-tag="removeTag" add-tag="focusAddTag" last="$last" index="$index"></tag-input>
         </span>
         <a ng-href="#/mods?t={{tag.text}}" ng-if="showModsCount" class="tag-count" title="The number of mods with this tag.  &#13;Click to browse for mods with this tag.">
-            {{::tag.mods_count | number}}
+            {{tag.mods_count | number}}
         </a>
         <a ng-href="#/mod-lists?t={{tag.text}}" ng-if="showModListsCount" class="tag-count" title="The number of mod lists with this tag.  &#13;Click to browse for mod lists with this tag.">
-            {{::tag.mod_lists_count | number}}
+            {{tag.mod_lists_count | number}}
         </a>
         <span class="remove-tag" ng-click="removeTag($index)" ng-mouseenter="enterRemove(tag)" ng-mouseleave="exitRemove(tag)" title="Click to remove this tag">
             <i class="fa fa-times"></i>
@@ -32,9 +33,10 @@
             <i class="fa fa-plus"></i> Add a tag
         </span>
     </span>
-</div>
+    </div>
 
-<div class="tag-actions-container" ng-if="saveCallback && (removedTags.length > 0 || rawNewTags.length > 0)">
-    <input class="btn small-action-btn" type="submit" value="Save Tags" ng-click="saveTags()">
-    <input class="btn small-action-btn" type="submit" value="Reset Tags" ng-click="resetTags()">
-</div>
+    <div class="tag-actions-container" ng-if="saveCallback && (removedTags.length > 0 || rawNewTags.length > 0)">
+        <input class="btn small-action-btn" type="submit" value="Save Tags" ng-click="saveTags()">
+        <input class="btn small-action-btn" type="submit" value="Reset Tags" ng-click="resetTags()">
+    </div>
+</loader>

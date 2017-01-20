@@ -44,7 +44,6 @@ app.service('configFilesService', function() {
     };
 
     this.addCustomConfigFile = function(model, customConfigFile) {
-        customConfigFile.active = true;
         var foundGroup = model.find(function(group) {
             return group.name === 'Custom';
         });
@@ -52,6 +51,7 @@ app.service('configFilesService', function() {
             foundGroup.children.push(customConfigFile);
             foundGroup.activeConfig = customConfigFile;
         } else {
+            customConfigFile.active = true;
             var group = {
                 name: 'Custom',
                 activeConfig: customConfigFile,
