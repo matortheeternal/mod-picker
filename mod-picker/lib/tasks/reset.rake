@@ -117,7 +117,7 @@ namespace :reset do
     puts "\nResetting lazy mod counters"
     Mod.find_each do |mod|
       mod.update_lazy_counters
-      mod.save
+      mod.save_columns!(:mod_options_count, :asset_files_count, :plugins_count)
     end
   end
 
