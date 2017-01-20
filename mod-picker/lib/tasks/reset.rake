@@ -115,8 +115,9 @@ namespace :reset do
 
   task mod_lazy_counters: :environment do
     puts "\nResetting lazy mod counters"
-    Mod.all.find_each do |mod|
+    Mod.find_each do |mod|
       mod.update_lazy_counters
+      mod.save
     end
   end
 
