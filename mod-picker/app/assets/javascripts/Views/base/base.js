@@ -48,8 +48,8 @@ app.controller('baseController', function($scope, $rootScope, $state, $window, $
     $scope.loadArtistCredit = function() {
         var creditElement = document.getElementById('artist-credit');
         creditElement.className = 'credit-link';
-        var afterElement = window.getComputedStyle(creditElement, ':before');
-        $scope.creditLink = afterElement.getPropertyValue('content').slice(1, -1);
+        var beforeElement = window.getComputedStyle(creditElement, ':before');
+        $scope.creditLink = beforeElement.getPropertyValue('content').slice(1, -1);
         creditElement.className = '';
     };
 
@@ -103,6 +103,8 @@ app.controller('baseController', function($scope, $rootScope, $state, $window, $
         $scope.setPageTitle(title);
     });
 
-    $scope.loadArtistCredit();
+    $timeout(function() {
+        $scope.loadArtistCredit();
+    });
     $scope.setPageTitle();
 });
