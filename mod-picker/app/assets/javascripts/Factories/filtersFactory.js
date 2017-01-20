@@ -368,7 +368,7 @@ app.service("filtersFactory", function() {
                 common: false,
                 data: "mod_options",
                 type: "Range",
-                max: 300,
+                max: 600,
                 param: "moc"
             },
             {
