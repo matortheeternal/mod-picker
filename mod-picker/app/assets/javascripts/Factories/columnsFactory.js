@@ -80,6 +80,13 @@ app.service('columnsFactory', function() {
             {
                 group: "Mod Picker",
                 visibility: false,
+                label: "Mod Options",
+                data: "mod_options_count",
+                filter: "number"
+            },
+            {
+                group: "Mod Picker",
+                visibility: false,
                 label: "Plugins",
                 data: "plugins_count",
                 filter: "number"

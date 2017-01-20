@@ -75,6 +75,14 @@ app.service('detailsFactory', function() {
             {
                 group: "Mod Picker",
                 visibility: false,
+                label: "Mod Options",
+                data: "mod_options_count",
+                filter: "number",
+                icon: "fa-sliders"
+            },
+            {
+                group: "Mod Picker",
+                visibility: false,
                 label: "Plugins",
                 data: "plugins_count",
                 filter: "number",

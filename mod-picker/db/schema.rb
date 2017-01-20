@@ -642,6 +642,7 @@ ActiveRecord::Schema.define(version: 20170119210115) do
     t.integer  "secondary_category_id",     limit: 4
     t.float    "average_rating",            limit: 24,  default: 0.0,   null: false
     t.float    "reputation",                limit: 24,  default: 0.0,   null: false
+    t.integer  "mod_options_count",         limit: 4,   default: 0,     null: false
     t.integer  "plugins_count",             limit: 4,   default: 0,     null: false
     t.integer  "asset_files_count",         limit: 4,   default: 0,     null: false
     t.integer  "required_mods_count",       limit: 4,   default: 0,     null: false
