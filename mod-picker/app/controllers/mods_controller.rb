@@ -16,7 +16,7 @@ class ModsController < ApplicationController
   # POST /mods/search
   def search
     if params.has_key?(:batch)
-      @mods = Mod.find_batch(params[:batch])
+      @mods = Mod.find_batch(params[:batch], params[:game])
       render json: @mods
     else
       @mods = Mod.visible.filter(search_params).limit(10)

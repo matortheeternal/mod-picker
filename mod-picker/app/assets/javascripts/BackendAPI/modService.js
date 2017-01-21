@@ -60,7 +60,10 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
     };
 
     this.searchModsBatch = function(batch) {
-        return backend.post('/mods/search', { batch: batch });
+        return backend.post('/mods/search', {
+            batch: batch,
+            game: window._current_game_id
+        });
     };
     
     this.retrieveMod = function(modId) {
