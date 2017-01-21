@@ -58,7 +58,10 @@ app.service('pluginService', function(backend, $q, $timeout, recordGroupService,
     };
 
     this.searchPluginsBatch = function(batch) {
-        return backend.post('/plugins/search', { batch: batch });
+        return backend.post('/plugins/search', {
+            batch: batch,
+            game: window._current_game_id
+        });
     };
 
     //combine dummy_masters array with masters array and sorts the masters array

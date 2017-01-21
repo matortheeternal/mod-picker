@@ -71,9 +71,9 @@ class Plugin < ActiveRecord::Base
   before_update :clear_associations
   before_destroy :prepare_to_destroy
 
-  def self.find_batch(batch)
+  def self.find_batch(batch, game)
     batch.collect do |item|
-      Plugin.visible.where(filename: item[:plugin_filename]).first
+      Plugin.visible.game(game).where(filename: item[:plugin_filename]).first
     end
   end
 
