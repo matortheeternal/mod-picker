@@ -202,13 +202,14 @@ app.service('listUtils', function() {
 
     this.moveItem = function(model, key, options) {
         // get the destination item
-        var destItem = service.findItem(model, key, 'id', options.destId);
+        var innerKey = options.outerId ? null : 'id';
+        var destItem = service.findItem(model, key, innerKey, options.destId);
         if (!destItem) {
             return 'Failed to move '+key+', could not find destination '+key+'.';
         }
 
         // get the item to move and splice it out of the model if found
-        var moveItem = service.findItem(model, key, 'id', options.moveId, true);
+        var moveItem = service.findItem(model, key, innerKey, options.moveId, true);
         if (!moveItem) {
             return 'Failed to move '+key+', could not find '+key+' to move.';
         }
@@ -217,10 +218,6 @@ app.service('listUtils', function() {
         var canInsert = options.forceInsert || service.getCanInsert(key, moveItem);
         var moveModel = service.getMoveModel(model, destItem, moveItem, canInsert);
         service.insertItem(moveModel, destItem, moveItem, options.after);
-    };
-
-    this.getParentModel = function(model, item) {
-        return item.group_id ? service.findGroup(model, item.group_id).children : model;
     };
 
     this.getDestinationItem = function(model, sourceItem) {
@@ -259,14 +256,17 @@ app.service('listUtils', function() {
 
     this.moveItemToNewIndex = function(model, key, sourceItem) {
         var destItem = service.getDestinationItem(model, sourceItem);
+        if (!destItem) return false;
         var sourceIndex = service.actualIndex(model, sourceItem);
         var destIndex = service.actualIndex(model, destItem);
-        service.moveItem(model, key, {
-            moveId: sourceItem.mod.id,
-            destId: destItem.mod.id,
+        service.moveItem(model, 'id', {
+            moveId: sourceItem.id,
+            destId: destItem.id,
             after: sourceIndex < destIndex,
-            forceInsert: true
+            forceInsert: true,
+            outerId: true
         });
+        return true;
     };
 
     this.recoverDestroyed = function(model) {
