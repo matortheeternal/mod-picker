@@ -214,9 +214,59 @@ app.service('listUtils', function() {
         }
 
         // insert the item to move after/before the destination item
-        var canInsert = service.getCanInsert(key, moveItem);
+        var canInsert = options.forceInsert || service.getCanInsert(key, moveItem);
         var moveModel = service.getMoveModel(model, destItem, moveItem, canInsert);
         service.insertItem(moveModel, destItem, moveItem, options.after);
+    };
+
+    this.getParentModel = function(model, item) {
+        return item.group_id ? service.findGroup(model, item.group_id).children : model;
+    };
+
+    this.getDestinationItem = function(model, sourceItem) {
+        var index = sourceItem.index;
+        for (var i = 0; i < model.length; i++) {
+            var item = model[i];
+            if (item.children) {
+                for (var j = 0; j < item.children.length; j++) {
+                    var child = item.children[j];
+                    if (child == sourceItem) continue;
+                    if (child.index == index) return child;
+                }
+            } else {
+                if (item == sourceItem) continue;
+                if (item.index == index) return item;
+            }
+        }
+    };
+
+    this.actualIndex = function(model, searchItem) {
+        var index = 0;
+        for (var i = 0; i < model.length; i++) {
+            var item = model[i];
+            if (item.children) {
+                for (var j = 0; j < item.children.length; j++) {
+                    var child = item.children[j];
+                    index++;
+                    if (child == searchItem) return index;
+                }
+            } else {
+                index++;
+                if (item == searchItem) return index;
+            }
+        }
+    };
+
+    this.moveItemToNewIndex = function(model, key, sourceItem) {
+        var destItem = service.getDestinationItem(model, sourceItem);
+        var sourceIndex = service.actualIndex(model, sourceItem);
+        var destIndex = service.actualIndex(model, destItem);
+        service.moveItem(model, key, {
+            moveId: sourceItem.mod.id,
+            destId: destItem.mod.id,
+            after: sourceIndex < destIndex,
+            forceInsert: true
+        });
     };
 
     this.recoverDestroyed = function(model) {
