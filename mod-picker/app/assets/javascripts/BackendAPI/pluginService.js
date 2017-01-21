@@ -33,7 +33,8 @@ app.service('pluginService', function(backend, $q, $timeout, recordGroupService,
         var plugins = $q.defer();
         var postData =  {
             filters: {
-                search: filename
+                search: filename,
+                game: window._current_game_id
             }
         };
         if (angular.isDefined(modIds)) {
