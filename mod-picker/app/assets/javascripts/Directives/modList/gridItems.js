@@ -46,12 +46,19 @@ app.controller('gridItemsController', function($scope, $timeout, smoothScroll, c
         smoothScroll(destElement, {duration: 300, offset: window.innerHeight / 3});
     };
 
+    $scope.focusItemIndex = function(item) {
+        var indexElement = document.getElementsByClassName('item-index')[item.index - 1];
+        indexElement.firstElementChild.focus();
+    };
+
     $scope.applyIndex = function(item) {
-        listUtils.moveItemToNewIndex($scope.model, "mod", item);
+        var success = listUtils.moveItemToNewIndex($scope.model, "mod", item);
+        if (!success) return;
         listUtils.updateItems($scope.model);
         $scope.$emit('itemMoved');
         $timeout(function() {
-            $scope.scrollToItem(item)
+            $scope.scrollToItem(item);
+            $scope.focusItemIndex(item);
         });
     };
 
