@@ -38,12 +38,13 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
         return backend.post('/mod_options/search', postData);
     };
 
-    this.searchModListMods = function(name) {
+    this.searchModListMods = function(str) {
         var postData = {
             filters: {
-                search: name,
+                search: str,
                 include_games: true,
-                utility: false
+                utility: false,
+                game: window._current_game_id
             }
         };
         return backend.post('/mods/search', postData);
@@ -53,7 +54,8 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
         var postData = {
             filters: {
                 search: str,
-                utility: true
+                utility: true,
+                game: window._current_game_id
             }
         };
         return backend.post('/mods/search', postData);
