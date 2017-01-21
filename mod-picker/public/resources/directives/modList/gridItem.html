@@ -3,7 +3,8 @@
     <span class="fa fa-times" ng-click="removeItem(item)" title="Remove" ng-if="editing"></span>
 </div>
 <div class="item-index">
-    {{item.index}}
+    <span ng-if="!editing">{{item.index}}</span>
+    <input type="text" ng-if="editing" ng-model="item.index" ng-keydown="indexKeyDown($event, item)" pu-elastic-input/>
 </div>
 <div class="image-container">
     <div class="helper"></div>
