@@ -12,7 +12,7 @@ app.directive('gridItems', function() {
     }
 });
 
-app.controller('gridItemsController', function($scope, $timeout, colorsFactory, objectUtils, listUtils, formUtils) {
+app.controller('gridItemsController', function($scope, $timeout, smoothScroll, colorsFactory, objectUtils, listUtils, formUtils) {
     // initialize variables
     $scope.colorOptions = colorsFactory.getColors();
 
@@ -39,6 +39,29 @@ app.controller('gridItemsController', function($scope, $timeout, colorsFactory, 
         array.splice(index, 1);
         listUtils.updateItems($scope.model);
         $scope.$emit('itemMoved');
+    };
+
+    $scope.scrollToItem = function(item) {
+        var destElement = document.getElementsByTagName('grid-item')[item.index - 1];
+        smoothScroll(destElement, {duration: 300, offset: window.innerHeight / 3});
+    };
+
+    $scope.applyIndex = function(item) {
+        listUtils.moveItemToNewIndex($scope.model, "mod", item);
+        listUtils.updateItems($scope.model);
+        $scope.$emit('itemMoved');
+        $timeout(function() {
+            $scope.scrollToItem(item)
+        });
+    };
+
+    $scope.indexKeyDown = function($event, item) {
+        var key = $event.keyCode;
+        if (key == 13) {
+            $scope.applyIndex(item);
+            $event.preventDefault();
+            $event.stopPropagation();
+        }
     };
 
     $scope.$on('moveItem', function(event, options) {
