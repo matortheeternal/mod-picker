@@ -4,7 +4,7 @@
 </div>
 <div class="item-index">
     <span ng-if="!editing">{{item.index}}</span>
-    <input type="text" ng-if="editing" ng-model="item.index" ng-keydown="indexKeyDown($event, item)" ng-blur="applyIndex(item)" pu-elastic-input/>
+    <input type="text" ng-if="editing" ng-model="item.index" ng-keydown="indexKeyDown($event, item)" ng-blur="resetIndex(item)" pu-elastic-input/>
 </div>
 <div class="image-container">
     <div class="helper"></div>

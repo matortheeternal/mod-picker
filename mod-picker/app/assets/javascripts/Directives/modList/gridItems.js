@@ -62,6 +62,10 @@ app.controller('gridItemsController', function($scope, $timeout, smoothScroll, c
         });
     };
 
+    $scope.resetIndex = function(item) {
+        item.index = listUtils.actualIndex($scope.model, item);
+    };
+
     $scope.indexKeyDown = function($event, item) {
         var key = $event.keyCode;
         if (key == 13) {
