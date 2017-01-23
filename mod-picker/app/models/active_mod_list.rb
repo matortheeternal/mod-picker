@@ -1,6 +1,10 @@
 class ActiveModList < ActiveRecord::Base
-  include BetterJson
+  include ScopeHelpers, BetterJson
 
+  # SCOPES
+  game_scope
+
+  # ASSOCIATIONS
   belongs_to :game
   belongs_to :user, inverse_of: 'active_mod_lists'
   belongs_to :mod_list

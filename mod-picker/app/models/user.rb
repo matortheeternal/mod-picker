@@ -109,6 +109,11 @@ class User < ActiveRecord::Base
     notifications.unread.limit(10)
   end
 
+  def active_mod_list(game)
+    a = active_mod_lists.game(game).first
+    a && a.mod_list
+  end
+
   def admin?
     role.to_sym == :admin
   end

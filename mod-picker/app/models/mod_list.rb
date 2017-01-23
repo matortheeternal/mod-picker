@@ -224,8 +224,8 @@ class ModList < ActiveRecord::Base
   end
 
   def set_active
-    submitter.active_mod_list_id = id
-    submitter.save
+    ActiveModList.clear(game_id, submitted_by)
+    ActiveModList.create(game_id: game_id, user_id: submitted_by, mod_list_id: id)
   end
 
   def mod_list_plugin_ids
