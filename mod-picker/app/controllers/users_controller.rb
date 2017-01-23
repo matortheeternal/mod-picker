@@ -115,8 +115,8 @@ class UsersController < ApplicationController
   def mod_lists
     authorize! :read, @user
 
-    favorite_mod_lists = @user.starred_mod_lists.accessible_by(current_ability)
-    authored_mod_lists = @user.mod_lists.accessible_by(current_ability)
+    favorite_mod_lists = @user.starred_mod_lists.game(params[:game]).accessible_by(current_ability)
+    authored_mod_lists = @user.mod_lists.game(params[:game]).accessible_by(current_ability)
 
     render json: {
       favorites: favorite_mod_lists,
@@ -134,9 +134,8 @@ class UsersController < ApplicationController
   def mods
     authorize! :read, @user
 
-    favorite_mods = @user.starred_mods.includes(:author_users).accessible_by(current_ability)
-    authored_mods = @user.mods.includes(:author_users).accessible_by(current_ability)
-    sources = { nexus: true, lab: true, workshop: true }
+    favorite_mods = @user.starred_mods.game(params[:game]).includes(:author_users).accessible_by(current_ability)
+    authored_mods = @user.mods.game(params[:game]).includes(:author_users).accessible_by(current_ability)
 
     render json: {
         favorites: json_format(favorite_mods, :index),

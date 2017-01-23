@@ -106,14 +106,20 @@ app.service('userService', function(backend, $q, userSettingsService, userTitleS
     };
 
     this.changeRole = function(userId, role) {
-        return backend.post('/users/' + userId + '/change_role', {role: role});
+        return backend.post('/users/' + userId + '/change_role', {
+            role: role
+        });
     };
 
     this.retrieveUserModLists = function(userId) {
-        return backend.retrieve('/users/' + userId + '/mod_lists');
+        return backend.retrieve('/users/' + userId + '/mod_lists', {
+            game: window._current_game_id
+        });
     };
 
     this.retrieveUserMods = function(userId) {
-        return backend.retrieve('/users/' + userId + '/mods');
+        return backend.retrieve('/users/' + userId + '/mods', {
+            game: window._current_game_id
+        });
     };
 });
