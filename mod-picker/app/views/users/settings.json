@@ -1,5 +1,5 @@
 {
-  "except": ["active_mod_list_id", "invitation_token", "invitation_created_at", "invitation_sent_at", "invitation_accepted_at", "invitation_limit", "invited_by_id", "invited_by_type", "invitations_count"],
+  "except": ["invitation_token", "invitation_created_at", "invitation_sent_at", "invitation_accepted_at", "invitation_limit", "invited_by_id", "invited_by_type", "invitations_count"],
   "include": {
     "bio": {
       "except": ["user_id"]
@@ -9,6 +9,9 @@
     },
     "settings": {
       "except": ["user_id", "fallout4_theme", "oblivion_theme", "falloutnv_theme", "fallout3_theme"]
+    },
+    "active_mod_lists": {
+      "only": ["game_id", "mod_list_id"]
     }
   },
   "methods": "image_type"

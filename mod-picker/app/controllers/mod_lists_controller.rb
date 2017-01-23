@@ -1,6 +1,7 @@
 class ModListsController < ApplicationController
   before_action :check_sign_in, only: [:create, :set_active, :update, :import, :update_tags, :create_star, :destroy_star]
   before_action :set_mod_list, only: [:show, :hide, :clone, :add, :update, :import, :update_tags, :tools, :mods, :plugins, :export_modlist, :export_plugins, :export_links, :config_files, :analysis, :comments]
+  before_action :soft_set_mod_list, only: [:set_active]
 
   # GET /mod_lists
   def index
@@ -26,7 +27,7 @@ class ModListsController < ApplicationController
 
   # GET /mod_lists/active
   def active
-    @mod_list = current_user.present? && current_user.active_mod_list
+    @mod_list = current_user && current_user.active_mod_list(params[:game])
     if @mod_list
       respond_with_json(@mod_list, :tracking)
     else
@@ -221,7 +222,7 @@ class ModListsController < ApplicationController
   # POST /mod_lists/1/add
   def add
     authorize! :read, @mod_list
-    @target_mod_list = current_user.active_mod_list
+    @target_mod_list = current_user.active_mod_list(params[:game])
     builder = ModListBuilder.new(@mod_list, @target_mod_list)
     builder.copy!
     respond_with_json(@target_mod_list, :tracking, :mod_list)
@@ -229,17 +230,16 @@ class ModListsController < ApplicationController
 
   # POST /mod_lists/active
   def set_active
-    @mod_list = nil
-    if params.has_key?(:id) && params[:id]
-      @mod_list = ModList.find(params[:id])
-      authorize! :read, @mod_list
-    end
-
-    if current_user.update(active_mod_list_id: params[:id])
-      render json: { mod_list: nil } unless @mod_list.present?
-      respond_with_json(@mod_list, :tracking, :mod_list)
+    ActiveModList.clear(params[:game], current_user)
+    if @mod_list.present?
+      @active_mod_list = ActiveModList.new(active_mod_list_params)
+      if @active_mod_list.save
+        respond_with_json(@mod_list, :tracking, :mod_list)
+      else
+        render json: @active_mod_list.errors, status: :unproccessable_entity
+      end
     else
-      render json: current_user.errors, status: :unproccessable_entity
+      render json: { mod_list: nil }
     end
   end
 
@@ -322,6 +322,14 @@ class ModListsController < ApplicationController
       @mod_list = ModList.find(params[:id])
     end
 
+    def soft_set_mod_list
+      @mod_list = nil
+      if params.has_key?(:id) && params[:id]
+        @mod_list = ModList.find(params[:id])
+        authorize! :read, @mod_list
+      end
+    end
+
     def force_download(filename)
       response.headers["Content-Disposition"] = "attachment; filename=#{filename}"
     end
@@ -356,7 +364,15 @@ class ModListsController < ApplicationController
       )
     end
 
-  def mod_list_import_params
-    params.permit(mods: [:id, :name, :nexus_info_id], plugins: [:id, :filename])
-  end
+    def mod_list_import_params
+      params.permit(mods: [:id, :name, :nexus_info_id], plugins: [:id, :filename])
+    end
+
+    def active_mod_list_params
+      {
+          game_id: params[:game],
+          user_id: current_user.id,
+          mod_list_id: params[:id]
+      }
+    end
 end

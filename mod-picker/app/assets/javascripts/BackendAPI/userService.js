@@ -38,6 +38,10 @@ app.service('userService', function(backend, $q, userSettingsService, userTitleS
             if (userData) {
                 userData.signed_in = true;
                 userData.permissions = service.getPermissions(userData);
+                var activeModList = userData.active_mod_lists.find(function(item) {
+                    return item.game_id == window._current_game_id;
+                });
+                userData.active_mod_list_id = activeModList && activeModList.mod_list_id;
             } else {
                 userData = { permissions: {} };
             }
