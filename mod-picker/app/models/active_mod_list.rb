@@ -2,7 +2,7 @@ class ActiveModList < ActiveRecord::Base
   include BetterJson
 
   belongs_to :game
-  belongs_to :user
+  belongs_to :user, inverse_of: 'active_mod_lists'
   belongs_to :mod_list
 
   def self.apply(game, user, mod_list)
