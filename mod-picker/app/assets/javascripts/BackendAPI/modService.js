@@ -70,7 +70,9 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
     
     this.retrieveMod = function(modId) {
         var action = $q.defer();
-        backend.retrieve('/mods/' + modId).then(function(data) {
+        backend.retrieve('/mods/' + modId, {
+            game: window._current_game_id
+        }).then(function(data) {
             service.associateModImage(data.mod);
             action.resolve(data);
         }, function(response) {
