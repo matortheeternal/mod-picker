@@ -292,8 +292,7 @@ class ModList < ActiveRecord::Base
   def required_plugins
     plugin_ids = mod_list_plugin_ids
     return Master.none if plugin_ids.empty?
-
-    Master.plugins(plugin_ids).visible.order(:master_plugin_id)
+    Master.eager_load(:plugin => :mod, :master_plugin => :mod).plugins(plugin_ids).visible.order(:master_plugin_id)
   end
 
   def incompatible_mod_ids
