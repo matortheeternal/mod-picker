@@ -197,7 +197,7 @@ app.service('listUtils', function() {
     };
 
     this.getCanInsert = function(key, moveItem) {
-        return key === "plugin" && moveItem.mod.primary_category.name === "Fixes - Patches";
+        return key === "plugin" && moveItem.mod.primary_category && moveItem.mod.primary_category.name === "Fixes - Patches";
     };
 
     this.moveItem = function(model, key, options) {
