@@ -174,19 +174,20 @@ class Mod < ActiveRecord::Base
   before_create :set_id
   before_save :touch_updated
 
-  def self.find_by_mod_name(mod_name)
-    Mod.visible.search(mod_name).first ||
-        Mod.visible.source_mod_name(mod_name, NexusInfo).first ||
-        Mod.visible.source_mod_name(mod_name, LoverInfo).first ||
-        Mod.visible.source_mod_name(mod_name, WorkshopInfo).first
+  def self.find_by_mod_name(mod_name, game)
+    base_query = Mod.visible.game(game)
+    base_query.search(mod_name).first ||
+        base_query.source_mod_name(mod_name, NexusInfo).first ||
+        base_query.source_mod_name(mod_name, LoverInfo).first ||
+        base_query.source_mod_name(mod_name, WorkshopInfo).first
   end
 
-  def self.find_batch(batch)
+  def self.find_batch(batch, game)
     batch.collect do |item|
       if item.has_key?(:nexus_info_id)
-        Mod.visible.nexus_id(item[:nexus_info_id]).first
+        Mod.visible.game(game).nexus_id(item[:nexus_info_id]).first
       else
-        Mod.find_by_mod_name(item[:mod_name])
+        Mod.find_by_mod_name(item[:mod_name], game)
       end
     end
   end

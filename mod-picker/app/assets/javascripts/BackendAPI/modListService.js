@@ -14,12 +14,16 @@ app.service('modListService', function(backend, $q, userTitleService, contributi
     };
 
     this.retrieveModList = function(modListId) {
-        return backend.retrieve('/mod_lists/' + modListId);
+        return backend.retrieve('/mod_lists/' + modListId, {
+            game: window._current_game_id
+        });
     };
 
     this.retrieveActiveModList = function() {
         var action = $q.defer();
-        backend.retrieve('/mod_lists/active').then(function(data) {
+        backend.retrieve('/mod_lists/active', {
+            game: window._current_game_id
+        }).then(function(data) {
             if (data.error) {
                 action.resolve(null);
             }
@@ -31,7 +35,10 @@ app.service('modListService', function(backend, $q, userTitleService, contributi
     };
 
     this.setActiveModList = function(modListId) {
-        return backend.post('/mod_lists/active', {id: modListId});
+        return backend.post('/mod_lists/active', {
+            id: modListId,
+            game: window._current_game_id
+        });
     };
 
     this.starModList = function(modListId, starred) {
@@ -174,7 +181,10 @@ app.service('modListService', function(backend, $q, userTitleService, contributi
     };
 
     this.newModList = function(mod_list, active) {
-        return backend.post('/mod_lists', {mod_list: mod_list, active: active})
+        return backend.post('/mod_lists', {
+            mod_list: mod_list,
+            active: active
+        });
     };
 
     this.newModListMod = function(mod_list_mod) {
@@ -287,7 +297,9 @@ app.service('modListService', function(backend, $q, userTitleService, contributi
     };
 
     this.addModCollection = function(modListId) {
-        return backend.post('/mod_lists/' + modListId + '/add', {});
+        return backend.post('/mod_lists/' + modListId + '/add', {
+            game: window._current_game_id
+        });
     };
 
     this.hideModList = function(modListId, hidden) {

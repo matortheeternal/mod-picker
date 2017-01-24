@@ -13,10 +13,10 @@
     <div class="content-container">
         <ul ng-if="showMissingPlugins">
             <li ng-repeat="requirement in required.missing_plugins">
-                <a ng-href="#/mod/{{requirement.master_plugin.mod_id}}/analysis?plugin={{requirement.master_plugin.id}}">{{requirement.master_plugin.filename}}</a>
+                <a ng-href="#/mod/{{requirement.master_plugin.mod.id}}/analysis?plugin={{requirement.master_plugin.id}}">{{requirement.master_plugin.filename}}</a>
                 is required by
                 <span ng-repeat="plugin in requirement.plugins | limitTo: 2">
-                    <a ng-href="#/mod/{{plugin.mod_id}}/analysis?plugin={{plugin.id}}">{{plugin.filename}}</a>{{!$last || requirement.plugins.length > 2 ? ', ' : ''}}
+                    <a ng-href="#/mod/{{plugin.mod.id}}/analysis?plugin={{plugin.id}}">{{plugin.filename}}</a>{{!$last || requirement.plugins.length > 2 ? ', ' : ''}}
                 </span>
                 <span ng-if="requirement.plugins.length > 2">
                     and
@@ -35,10 +35,10 @@
 
         <ul ng-if="!showMissingPlugins">
             <li ng-repeat="requirement in required.plugins" ng-show="requirement.plugins.length">
-                <a ng-href="#/mod/{{requirement.master_plugin.mod_id}}/analysis?plugin={{requirement.master_plugin.id}}">{{requirement.master_plugin.filename}}</a>
+                <a ng-href="#/mod/{{requirement.master_plugin.mod.id}}/analysis?plugin={{requirement.master_plugin.id}}">{{requirement.master_plugin.filename}}</a>
                 is required by
                 <span ng-repeat="plugin in requirement.plugins | limitTo: 2">
-                    <a ng-href="#/mod/{{plugin.mod_id}}/analysis?plugin={{plugin.id}}">{{plugin.filename}}</a>{{!$last || requirement.plugins.length > 2 ? ', ' : ''}}
+                    <a ng-href="#/mod/{{plugin.mod.id}}/analysis?plugin={{plugin.id}}">{{plugin.filename}}</a>{{!$last || requirement.plugins.length > 2 ? ', ' : ''}}
                 </span>
                 <span ng-if="requirement.plugins.length > 2">
                     and

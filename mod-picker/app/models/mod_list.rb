@@ -224,8 +224,8 @@ class ModList < ActiveRecord::Base
   end
 
   def set_active
-    submitter.active_mod_list_id = id
-    submitter.save
+    ActiveModList.clear(game_id, submitted_by)
+    ActiveModList.create(game_id: game_id, user_id: submitted_by, mod_list_id: id)
   end
 
   def mod_list_plugin_ids
@@ -292,8 +292,7 @@ class ModList < ActiveRecord::Base
   def required_plugins
     plugin_ids = mod_list_plugin_ids
     return Master.none if plugin_ids.empty?
-
-    Master.plugins(plugin_ids).visible.order(:master_plugin_id)
+    Master.eager_load(:plugin => :mod, :master_plugin => :mod).plugins(plugin_ids).visible.order(:master_plugin_id)
   end
 
   def incompatible_mod_ids
