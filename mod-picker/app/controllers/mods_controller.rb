@@ -26,7 +26,7 @@ class ModsController < ApplicationController
 
   # GET /mods/1
   def show
-    @mod = Mod.includes(:custom_sources, :plugins, {mod_authors: :user}, {tags: :submitter}, {required_mods: :required_mod}, {required_by: :mod}).find(params[:id])
+    @mod = Mod.game(params[:game]).includes(:custom_sources, :plugins, {mod_authors: :user}, {tags: :submitter}, {required_mods: :required_mod}, {required_by: :mod}).find(params[:id])
     authorize! :read, @mod, message: "You are not allowed to view this mod."
 
     # set up boolean variables
@@ -35,8 +35,8 @@ class ModsController < ApplicationController
     incompatible = false
     if current_user.present?
       star = ModStar.exists?(mod_id: @mod.id, user_id: current_user.id)
-      if current_user.active_mod_list_id.present?
-        mod_list = current_user.active_mod_list
+      if current_user.active_mod_list(@mod.game_id).present?
+        mod_list = current_user.active_mod_list(@mod.game_id)
         in_mod_list = mod_list.mod_list_mod_ids.include?(@mod.id)
         incompatible = mod_list.incompatible_mod_ids.include?(@mod.id)
       end

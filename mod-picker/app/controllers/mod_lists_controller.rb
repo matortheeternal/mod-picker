@@ -1,6 +1,6 @@
 class ModListsController < ApplicationController
   before_action :check_sign_in, only: [:create, :set_active, :update, :import, :update_tags, :create_star, :destroy_star]
-  before_action :set_mod_list, only: [:show, :hide, :clone, :add, :update, :import, :update_tags, :tools, :mods, :plugins, :export_modlist, :export_plugins, :export_links, :config_files, :analysis, :comments]
+  before_action :set_mod_list, only: [:hide, :clone, :add, :update, :import, :update_tags, :tools, :mods, :plugins, :export_modlist, :export_plugins, :export_links, :config_files, :analysis, :comments]
   before_action :soft_set_mod_list, only: [:set_active]
 
   # GET /mod_lists
@@ -17,6 +17,7 @@ class ModListsController < ApplicationController
 
   # GET /mod_lists/1
   def show
+    @mod_list = ModList.game(params[:game]).find(params[:id])
     authorize! :read, @mod_list, message: "You are not allowed to view this mod list."
     star = current_user.present? && ModListStar.exists?(mod_list_id: @mod_list.id, user_id: current_user.id)
     render json: {

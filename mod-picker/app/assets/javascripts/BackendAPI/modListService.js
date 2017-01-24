@@ -14,7 +14,9 @@ app.service('modListService', function(backend, $q, userTitleService, contributi
     };
 
     this.retrieveModList = function(modListId) {
-        return backend.retrieve('/mod_lists/' + modListId);
+        return backend.retrieve('/mod_lists/' + modListId, {
+            game: window._current_game_id
+        });
     };
 
     this.retrieveActiveModList = function() {
