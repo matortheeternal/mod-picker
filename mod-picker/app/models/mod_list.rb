@@ -224,7 +224,7 @@ class ModList < ActiveRecord::Base
   end
 
   def set_active
-    ActiveModList.clear(game_id, submitted_by)
+    ActiveModList.where(user_id: submitted_by, game_id: game_id).delete_all
     ActiveModList.create(game_id: game_id, user_id: submitted_by, mod_list_id: id)
   end
 
