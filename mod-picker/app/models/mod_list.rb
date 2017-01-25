@@ -376,9 +376,6 @@ class ModList < ActiveRecord::Base
     end
 
     def unset_active
-      if submitter.active_mod_list_id == id
-        submitter.active_mod_list_id = nil
-        submitter.save
-      end
+      ActiveModList.where(user_id: submitted_by, mod_list_id: id).destroy_all
     end
 end
