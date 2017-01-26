@@ -1,6 +1,6 @@
 app.service('backend', function($q, $http, objectUtils) {
     //Constant to be flexible in the future. Us as prefix for ALL requests
-    var BASE_LOCATION = 'http://localhost:3000';
+    var BASE_LOCATION = '';
     var service = this;
 
     this.retrieve = function(context, params) {
