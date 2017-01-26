@@ -16,7 +16,7 @@ class ModsController < ApplicationController
   # POST /mods/search
   def search
     if params.has_key?(:batch)
-      @mods = Mod.find_batch(params[:batch])
+      @mods = Mod.find_batch(params[:batch], params[:game])
       render json: @mods
     else
       @mods = Mod.visible.filter(search_params).limit(10)
@@ -26,7 +26,7 @@ class ModsController < ApplicationController
 
   # GET /mods/1
   def show
-    @mod = Mod.includes(:custom_sources, :plugins, {mod_authors: :user}, {tags: :submitter}, {required_mods: :required_mod}, {required_by: :mod}).find(params[:id])
+    @mod = Mod.game(params[:game]).includes(:custom_sources, :plugins, {mod_authors: :user}, {tags: :submitter}, {required_mods: :required_mod}, {required_by: :mod}).find(params[:id])
     authorize! :read, @mod, message: "You are not allowed to view this mod."
 
     # set up boolean variables
@@ -35,8 +35,8 @@ class ModsController < ApplicationController
     incompatible = false
     if current_user.present?
       star = ModStar.exists?(mod_id: @mod.id, user_id: current_user.id)
-      if current_user.active_mod_list_id.present?
-        mod_list = current_user.active_mod_list
+      if current_user.active_mod_list(@mod.game_id).present?
+        mod_list = current_user.active_mod_list(@mod.game_id)
         in_mod_list = mod_list.mod_list_mod_ids.include?(@mod.id)
         incompatible = mod_list.incompatible_mod_ids.include?(@mod.id)
       end
@@ -333,7 +333,7 @@ class ModsController < ApplicationController
     # Params we allow filtering on
     def filtering_params
       # construct valid filters array
-      valid_filters = [:adult, :hidden, :approved, :include_utilities, :compatibility, :sources, :search, :author, :mp_author, :game, :released, :updated, :utility, :categories, :tags, :stars, :reviews, :rating, :reputation, :compatibility_notes, :install_order_notes, :load_order_notes, :asset_files, :plugins, :required_mods, :required_by, :tags_count, :mod_lists, :submitted]
+      valid_filters = [:adult, :hidden, :approved, :include_utilities, :compatibility, :sources, :search, :author, :mp_author, :game, :released, :updated, :utility, :categories, :tags, :stars, :reviews, :rating, :reputation, :compatibility_notes, :install_order_notes, :load_order_notes, :mod_options, :asset_files, :plugins, :required_mods, :required_by, :tags_count, :mod_lists, :submitted]
       source_filters = [:views, :author, :posts, :videos, :images, :discussions, :downloads, :favorites, :subscribers, :endorsements, :unique_downloads, :files, :bugs, :articles]
       sources = params[:filters][:sources]
 
@@ -383,7 +383,7 @@ class ModsController < ApplicationController
     end
 
     def mod_update_params
-      p = params.require(:mod).permit(:name, :authors, :aliases, :is_utility, :has_adult_content, :status, :primary_category_id, :secondary_category_id, :released, :updated, :mark_updated, :nexus_info_id, :lover_info_id, :workshop_info_id, :disallow_contributors, :disable_reviews, :lock_tags, :hidden, :approved,
+      p = params.require(:mod).permit(:name, :authors, :aliases, :is_utility, :has_adult_content, :status, :primary_category_id, :secondary_category_id, :released, :updated, :mark_updated, :nexus_info_id, :lover_info_id, :workshop_info_id, :disallow_contributors, :disable_reviews, :lock_tags, :hidden, :approved, :tag_names,
          required_mods_attributes: [:id, :required_id, :_destroy],
          mod_authors_attributes: [:id, :role, :user_id, :_destroy],
           custom_sources_attributes: [:id, :label, :url, :_destroy],
@@ -399,6 +399,7 @@ class ModsController < ApplicationController
             ]
          ])
       p[:id] = params[:id]
+      p[:tag_names] = [] if p.has_key?(:tag_names) && p[:tag_names].nil?
       p
     end
 

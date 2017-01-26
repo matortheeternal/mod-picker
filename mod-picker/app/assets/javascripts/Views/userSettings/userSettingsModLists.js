@@ -14,6 +14,7 @@ app.controller('userSettingsModListsController', function($scope, $rootScope, $t
     $scope.retrieveModLists = function() {
         var options = {
             filters: {
+                game: window._current_game_id,
                 submitter: $scope.user.username
             }
         };

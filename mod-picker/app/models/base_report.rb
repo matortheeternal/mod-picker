@@ -33,4 +33,8 @@ class BaseReport < ActiveRecord::Base
 
   # VALIDATIONS
   validates :reportable_id, :reportable_type, presence: true
+
+  def self.unresolved_count
+    where(resolved: false).count
+  end
 end

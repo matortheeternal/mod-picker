@@ -25,9 +25,7 @@ app.controller('modListsController', function($scope, $rootScope, $stateParams, 
     $scope.filterPrototypes = filtersFactory.modListFilters();
     $scope.dateFilters = filtersFactory.modListDateFilters();
     $scope.statFilters = filtersFactory.modListStatisticFilters();
-    $scope.filters = {
-        game: $scope.currentGame.id
-    };
+    $scope.filters = { game: $scope.currentGame.id };
 
     // build generic controller stuff
     $scope.route = 'mod_lists';

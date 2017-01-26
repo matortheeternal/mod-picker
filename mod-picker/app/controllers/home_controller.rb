@@ -6,9 +6,23 @@ class HomeController < ApplicationController
     @games = Game.all
     @current_game = Game.find_by(display_name: "Skyrim")
     if current_user.present?
-      @current_theme = current_user.settings.theme
+      @current_theme = current_user.settings.skyrim_theme
     else
       @current_theme = 'High Hrothgar'
+    end
+
+    # render layout
+    render 'angular/index', layout: "application"
+  end
+
+  def skyrimse
+    # set instance variables
+    @games = Game.all
+    @current_game = Game.find_by(display_name: "Skyrim SE")
+    if current_user.present?
+      @current_theme = current_user.settings.skyrimse_theme
+    else
+      @current_theme = 'Falkreath'
     end
 
     # render layout
@@ -20,7 +34,7 @@ class HomeController < ApplicationController
     @games = Game.all
     @current_game = Game.find_by(display_name: "Fallout 4")
     if current_user.present?
-      @current_theme = current_user.settings.theme
+      @current_theme = current_user.settings.fallout4_theme
     else
       @current_theme = 'Workshop'
     end

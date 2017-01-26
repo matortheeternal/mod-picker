@@ -2,16 +2,19 @@
 <html lang="en" ng-app="modPicker">
 <head>
     <meta charset="UTF-8">
+    <base href="/<%= @current_game.url %>/">
     <title ng-bind="pageTitle" ng-init="pageTitle = 'Mod Picker: <%= @current_game.display_name %>'"></title>
     <link ng-controller="themesController" rel="stylesheet" href="<%= stylesheet_path "main/#{@current_theme}" %>" ng-href="{{currentTheme}}" />
     <script>
+        window.prerenderReady = false;
         window._token = '<%= form_authenticity_token %>';
         window._current_game_id = <%= @current_game.id %>;
         window._stylesheets = {
             Whiterun: "<%= stylesheet_path 'main/Whiterun' %>",
             Darkwater: "<%= stylesheet_path 'main/Darkwater' %>",
             Blackreach: "<%= stylesheet_path 'main/Blackreach' %>",
-            'High Hrothgar': "<%= stylesheet_path 'main/High Hrothgar' %>"
+            'High Hrothgar': "<%= stylesheet_path 'main/High Hrothgar' %>",
+            Falkreath: "<%= stylesheet_path 'main/Falkreath' %>"
         }
     </script>
     <% if Rails.env.production? %>

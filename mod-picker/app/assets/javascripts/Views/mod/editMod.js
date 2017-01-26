@@ -163,11 +163,11 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
         if ($scope.imageSuccess && $scope.modSuccess) {
             $scope.submissionSuccess("Mod updated successfully!", [
                 { 
-                    link: "#/mod/" + $scope.mod.id, 
+                    link: "mod/" + $scope.mod.id,
                     linkLabel: "return to the mod page."
                 },
                 {
-                    link: "#/mods", 
+                    link: "mods",
                     linkLabel: "return to the mods index page." 
                 }
             ]);

@@ -11,7 +11,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170107210149) do
+ActiveRecord::Schema.define(version: 20170121195705) do
+
+  create_table "active_mod_lists", force: :cascade do |t|
+    t.integer "game_id",     limit: 4, null: false
+    t.integer "user_id",     limit: 4, null: false
+    t.integer "mod_list_id", limit: 4, null: false
+  end
+
+  add_index "active_mod_lists", ["game_id", "user_id", "mod_list_id"], name: "index_active_mod_lists_on_game_id_and_user_id_and_mod_list_id", unique: true, using: :btree
+  add_index "active_mod_lists", ["mod_list_id"], name: "fk_rails_0659fed997", using: :btree
+  add_index "active_mod_lists", ["user_id"], name: "fk_rails_c1d0166a09", using: :btree
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -52,8 +62,8 @@ ActiveRecord::Schema.define(version: 20170107210149) do
     t.integer "mod_asset_files_count", limit: 4,   default: 0, null: false
   end
 
+  add_index "asset_files", ["game_id", "path"], name: "index_asset_files_on_game_id_and_path", unique: true, using: :btree
   add_index "asset_files", ["game_id"], name: "fk_rails_2e8fb86f89", using: :btree
-  add_index "asset_files", ["path"], name: "filepath", unique: true, using: :btree
 
   create_table "base_reports", force: :cascade do |t|
     t.integer  "reportable_id",   limit: 4,                   null: false
@@ -238,7 +248,7 @@ ActiveRecord::Schema.define(version: 20170107210149) do
     t.string  "display_name",              limit: 32,              null: false
     t.string  "long_name",                 limit: 128,             null: false
     t.string  "abbr_name",                 limit: 32,              null: false
-    t.string  "nexus_name",                limit: 16
+    t.string  "nexus_name",                limit: 32
     t.string  "exe_name",                  limit: 32
     t.string  "esm_name",                  limit: 32
     t.string  "steam_app_ids",             limit: 64
@@ -464,7 +474,7 @@ ActiveRecord::Schema.define(version: 20170107210149) do
     t.boolean "cleaned",                             default: false, null: false
     t.boolean "merged",                              default: false, null: false
     t.integer "compatibility_note_id", limit: 4
-    t.string  "filename",              limit: 64,                    null: false
+    t.string  "filename",              limit: 255,                   null: false
     t.text    "description",           limit: 65535
   end
 
@@ -642,6 +652,7 @@ ActiveRecord::Schema.define(version: 20170107210149) do
     t.integer  "secondary_category_id",     limit: 4
     t.float    "average_rating",            limit: 24,  default: 0.0,   null: false
     t.float    "reputation",                limit: 24,  default: 0.0,   null: false
+    t.integer  "mod_options_count",         limit: 4,   default: 0,     null: false
     t.integer  "plugins_count",             limit: 4,   default: 0,     null: false
     t.integer  "asset_files_count",         limit: 4,   default: 0,     null: false
     t.integer  "required_mods_count",       limit: 4,   default: 0,     null: false
@@ -895,7 +906,12 @@ ActiveRecord::Schema.define(version: 20170107210149) do
 
   create_table "user_settings", force: :cascade do |t|
     t.integer "user_id",              limit: 4,                  null: false
-    t.string  "theme",                limit: 64
+    t.string  "skyrim_theme",         limit: 64
+    t.string  "skyrimse_theme",       limit: 64
+    t.string  "fallout4_theme",       limit: 64
+    t.string  "oblivion_theme",       limit: 64
+    t.string  "falloutnv_theme",      limit: 64
+    t.string  "fallout3_theme",       limit: 64
     t.boolean "allow_comments",                  default: true,  null: false
     t.boolean "show_notifications",              default: true,  null: false
     t.boolean "email_notifications",             default: false, null: false
@@ -923,7 +939,6 @@ ActiveRecord::Schema.define(version: 20170107210149) do
     t.string   "email",                     limit: 255,   default: "", null: false
     t.string   "role",                      limit: 16,                 null: false
     t.string   "title",                     limit: 32
-    t.integer  "active_mod_list_id",        limit: 4
     t.text     "about_me",                  limit: 65535
     t.integer  "comments_count",            limit: 4,     default: 0,  null: false
     t.integer  "authored_mods_count",       limit: 4,     default: 0,  null: false
@@ -967,7 +982,6 @@ ActiveRecord::Schema.define(version: 20170107210149) do
     t.integer  "invitations_count",         limit: 4,     default: 0
   end
 
-  add_index "users", ["active_mod_list_id"], name: "active_ml_id", using: :btree
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["invitation_token"], name: "index_users_on_invitation_token", unique: true, using: :btree
@@ -996,6 +1010,9 @@ ActiveRecord::Schema.define(version: 20170107210149) do
 
   add_index "workshop_infos", ["mod_id"], name: "fk_rails_8707144ad7", using: :btree
 
+  add_foreign_key "active_mod_lists", "games"
+  add_foreign_key "active_mod_lists", "mod_lists"
+  add_foreign_key "active_mod_lists", "users"
   add_foreign_key "agreement_marks", "corrections"
   add_foreign_key "agreement_marks", "users", column: "submitted_by", name: "agreement_marks_ibfk_2"
   add_foreign_key "api_tokens", "users"
@@ -1122,6 +1139,5 @@ ActiveRecord::Schema.define(version: 20170107210149) do
   add_foreign_key "user_reputations", "users", name: "user_reputations_ibfk_1"
   add_foreign_key "user_settings", "users", name: "user_settings_ibfk_1"
   add_foreign_key "user_titles", "games"
-  add_foreign_key "users", "mod_lists", column: "active_mod_list_id", name: "users_ibfk_4"
   add_foreign_key "workshop_infos", "mods"
 end

@@ -8,6 +8,7 @@ app.run(function($futureState, indexFactory, filtersFactory) {
 app.controller('installOrderNotesController', function($scope, $rootScope, $stateParams, $state, contributionService, indexService, helpFactory, filtersFactory, indexFactory, sortFactory) {
     // get parent variables
     $scope.currentUser = $rootScope.currentUser;
+    $scope.currentGame = $rootScope.currentGame;
     $scope.permissions = angular.copy($rootScope.permissions);
     $scope.allowAdult = $scope.currentUser.signed_in && $scope.currentUser.settings.allow_adult_content;
 
@@ -23,6 +24,7 @@ app.controller('installOrderNotesController', function($scope, $rootScope, $stat
     $scope.filterPrototypes = filtersFactory.installOrderNoteFilters();
     $scope.dateFilters = filtersFactory.contributionDateFilters();
     $scope.statFilters = filtersFactory.noteStatisticFilters();
+    $scope.filters = { game: $scope.currentGame.id };
 
     // build generic controller stuff
     $scope.route = 'install_order_notes';

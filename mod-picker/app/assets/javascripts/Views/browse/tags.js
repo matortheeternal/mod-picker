@@ -9,6 +9,7 @@ app.run(function($futureState, indexFactory, filtersFactory) {
 app.controller('tagsIndexController', function($scope, $rootScope, $stateParams, $state, tagService, helpFactory, columnsFactory, filtersFactory, actionsFactory, indexService, indexFactory, eventHandlerFactory) {
     // get parent variables
     $scope.currentUser = $rootScope.currentUser;
+    $scope.currentGame = $rootScope.currentGame;
     $scope.permissions = $rootScope.permissions;
 
     // set page title
@@ -67,6 +68,7 @@ app.controller('tagsIndexController', function($scope, $rootScope, $stateParams,
     // filters for view
     $scope.filterPrototypes = filtersFactory.tagFilters();
     $scope.statFilters = filtersFactory.tagStatisticFilters();
+    $scope.filters = { game: $scope.currentGame.id };
 
     // build generic controller stuff
     $scope.route = 'tags';

@@ -11,7 +11,7 @@ app.directive('helpPageComments', function() {
 
 app.controller('helpPageCommentsController', function($scope, $rootScope, contributionService, userService) {
     $rootScope.currentGame = {
-        nexus_name: "skyrim"
+        url: "skyrim"
     };
     $scope.errors = {};
     $scope.pages = {

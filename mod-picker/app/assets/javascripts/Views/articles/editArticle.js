@@ -74,11 +74,11 @@ app.controller('editArticleController', function($scope, $stateParams, article, 
         var articleDiff = objectUtils.getDifferentObjectValues($scope.originalArticle, $scope.article);
         var articleLinks = [
             {
-                link: "#/article/" + articleId,
+                link: "article/" + articleId,
                 linkLabel: "view the updated article."
             },
             {
-                link: "#/articles",
+                link: "articles",
                 linkLabel: "return to the articles index."
             }
         ];
@@ -108,7 +108,7 @@ app.controller('editArticleController', function($scope, $stateParams, article, 
     $scope.deleteArticle = function() {
         $scope.startSubmission("Deleting article...");
         articleService.deleteArticle($scope.article.id).then(function() {
-            $scope.submissionSuccess("Article deleted successfully", [{ link: "#/articles", linkLabel: "return to the articles index."}]);
+            $scope.submissionSuccess("Article deleted successfully", [{ link: "articles", linkLabel: "return to the articles index."}]);
         }, function(response) {
             $scope.submissionError("There were errors deleting the article.", response);
         });

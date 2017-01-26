@@ -56,7 +56,7 @@ class CuratorRequestsController < ApplicationController
 
     # Params we allow filtering on
     def filtering_params
-      params[:filters].slice(:search, :submitter, :mod_name, :state, :submitted, :updated)
+      params[:filters].slice(:game, :search, :submitter, :mod_name, :state, :submitted, :updated)
     end
 
 end

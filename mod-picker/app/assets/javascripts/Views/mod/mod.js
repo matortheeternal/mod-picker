@@ -290,7 +290,7 @@ app.controller('modController', function($scope, $rootScope, $q, $stateParams, $
     };
 
     $scope.editMod = function() {
-        $window.location.hash = '#/mod/' + $scope.mod.id + '/edit';
+        $window.location.hash = 'mod/' + $scope.mod.id + '/edit';
     };
 
     $scope.starMod = function() {

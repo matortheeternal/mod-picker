@@ -48,13 +48,16 @@ app.controller('commentController', function($scope, $rootScope, $filter, $timeo
     };
 
     $scope.reply = function() {
+        // cancel any other open comments
+        $rootScope.$broadcast('cancelComment', $scope.comment.id, true);
+
+        // prepare reply comment
         $scope.activeComment = {
             parent_id: $scope.comment.id,
             commentable_id: $scope.comment.commentable_id,
             commentable_type: $scope.comment.commentable_type.slice(0),
             text_body: ""
         };
-
         $scope.comment.replying = true;
 
         // update markdown editor and validation
@@ -64,6 +67,10 @@ app.controller('commentController', function($scope, $rootScope, $filter, $timeo
 
     // edit comment
     $scope.edit = function() {
+        // cancel any other open comments
+        $rootScope.$broadcast('cancelComment', $scope.comment.id);
+
+        // prepare comment for editing
         $scope.comment.editing = true;
         $scope.activeComment = {
             parent_id: $scope.comment.parent_id,
@@ -94,7 +101,6 @@ app.controller('commentController', function($scope, $rootScope, $filter, $timeo
         if (!$scope.activeComment) {
             return;
         }
-
         $scope.activeComment.valid = $scope.activeComment.text_body.length > 4;
     };
 
@@ -148,4 +154,12 @@ app.controller('commentController', function($scope, $rootScope, $filter, $timeo
     // watch current user so if we get the user object after rendering actions
     // we can re-render them correctly per the user's permissions
     $scope.$watch('currentUser', $scope.setPermissions, true);
+
+    $scope.$on('cancelComment', function(e, exceptId, replying) {
+        if ($scope.comment.id == exceptId) {
+            var activeComment = $scope.activeComment;
+            if (activeComment && replying != activeComment.editing) return;
+        }
+        if ($scope.activeComment) $scope.discardComment();
+    });
 });

@@ -1,7 +1,10 @@
-<div class="content-block" ng-if="user.about_me">
+<div class="content-block">
     <div class="content-title">About Me</div>
     <div class="content-container">
         <div marked="user.about_me" class="text-container"></div>
+        <div ng-if="!user.about_me" class="content-message">
+            This user has not written anything about themselves yet.
+        </div>
     </div>
 </div>
 

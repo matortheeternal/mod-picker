@@ -4,22 +4,35 @@ app.config(['$stateProvider', function($stateProvider) {
         controller: 'moderatorController',
         url: '/moderator-cp',
         resolve: {
-            permissions: function($q, currentUser, errorService) {
-                var permissions = $q.defer();
-                if (currentUser.permissions.canModerate) {
-                    permissions.resolve(currentUser.permissions);
-                } else {
-                    var errorObj = errorService.frontendError('Error accessing Moderator Control Panel.', 'base.moderator-cp', 403, 'Not Authorized');
-                    permissions.reject(errorObj);
-                }
-                return permissions.promise;
+            stats: function($q, moderationService) {
+                var stats = $q.defer();
+                moderationService.retrieveStats().then(function(data) {
+                    stats.resolve(data);
+                }, function(response) {
+                    var errorObj = {
+                        text: 'Error accessing moderation control panel.',
+                        response: response,
+                        stateName: "base.moderator-cp",
+                        stateUrl: window.location.hash
+                    };
+                    stats.reject(errorObj);
+                });
+                return stats.promise;
             }
         }
     });
 }]);
 
-app.controller('moderatorController', function($scope, permissions, helpFactory) {
+app.controller('moderatorController', function($scope, $rootScope, stats, helpFactory) {
+    // get parent variables
+    $scope.stats = stats;
+
+    // inherited variables
+    $scope.permissions = angular.copy($rootScope.permissions);
+
+    // set page title
     $scope.$emit('setPageTitle', 'Moderator CP');
-    $scope.permissions = permissions;
+
+    // set help context
     helpFactory.setHelpContexts($scope, []);
 });

@@ -6,6 +6,9 @@ Rails.application.configure do
   # since you don't have to restart the web server when you make code changes.
   config.cache_classes = false
 
+  # Enable prerender middleware for SEO
+  config.middleware.use Rack::Prerender, prerender_token: ENV['prerender_token'], prerender_service_url: 'http://localhost:1340/'
+
   # BetterJSON templates are not cached in memory
   config.cache_json_templates = false
 

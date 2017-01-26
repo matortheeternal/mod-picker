@@ -16,7 +16,8 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
     this.searchMods = function(name, utility) {
         var postData = {
             filters: {
-                search: name
+                search: name,
+                game: window._current_game_id
             }
         };
         if (angular.isDefined(utility)) {
@@ -37,12 +38,13 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
         return backend.post('/mod_options/search', postData);
     };
 
-    this.searchModListMods = function(name) {
+    this.searchModListMods = function(str) {
         var postData = {
             filters: {
-                search: name,
+                search: str,
                 include_games: true,
-                utility: false
+                utility: false,
+                game: window._current_game_id
             }
         };
         return backend.post('/mods/search', postData);
@@ -52,19 +54,25 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
         var postData = {
             filters: {
                 search: str,
-                utility: true
+                utility: true,
+                game: window._current_game_id
             }
         };
         return backend.post('/mods/search', postData);
     };
 
     this.searchModsBatch = function(batch) {
-        return backend.post('/mods/search', { batch: batch });
+        return backend.post('/mods/search', {
+            batch: batch,
+            game: window._current_game_id
+        });
     };
     
     this.retrieveMod = function(modId) {
         var action = $q.defer();
-        backend.retrieve('/mods/' + modId).then(function(data) {
+        backend.retrieve('/mods/' + modId, {
+            game: window._current_game_id
+        }).then(function(data) {
             service.associateModImage(data.mod);
             action.resolve(data);
         }, function(response) {
@@ -318,6 +326,17 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
         return options;
     };
 
+    this.prepareTagNames = function(mod) {
+        var updatedTags = [];
+        mod.tags.forEach(function(tag) {
+            updatedTags.push(tag.text);
+        });
+        mod.newTags.forEach(function(newTagText) {
+            updatedTags.push(newTagText);
+        });
+        return updatedTags.length ? updatedTags : [null];
+    };
+
     this.getDate = function(mod, dateKey, dateTest) {
         var date = mod[dateKey];
         var sourceKeys = ["nexus", "lab", "workshop"];
@@ -382,6 +401,7 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
         var required_mods = service.prepareRequiredMods(mod);
         var custom_sources = service.prepareCustomSources(mod.custom_sources);
         var mod_options = service.prepareModOptions(mod);
+        var tag_names = service.prepareTagNames(mod);
 
         // prepare mod record
         var modData = {
@@ -400,7 +420,7 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
                 nexus_info_id: mod.nexus && mod.nexus.id,
                 workshop_info_id: mod.workshop && mod.workshop.id,
                 lover_info_id: mod.lab && mod.lab.id,
-                tag_names: mod.newTags,
+                tag_names: tag_names,
                 mod_options_attributes: mod_options,
                 mod_authors_attributes: mod_authors,
                 custom_sources_attributes: custom_sources,
@@ -419,10 +439,19 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
         return modData;
     };
 
+    this.tagsChanged = function(originalModData, modData) {
+        return originalModData.mod.tag_names.join(",") !== modData.mod.tag_names.join(",");
+    };
+
     this.getDifferentModValues = function(originalMod, mod) {
         var originalModData = service.getModData(originalMod);
         var modData = service.getModData(mod);
-        return objectUtils.getDifferentObjectValues(originalModData, modData);
+        var changes = objectUtils.getDifferentObjectValues(originalModData, modData);
+        if (service.tagsChanged(originalModData, modData)) {
+            if (!changes.mod) changes.mod = {};
+            changes.mod.tag_names = modData.mod.tag_names;
+        }
+        return changes;
     };
 
     this.updateMod = function(modId, modData) {

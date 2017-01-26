@@ -12,7 +12,7 @@
         <div class="contribution-container box-shadow">
             <div class="content-title">
                 <span>
-                    <a ng-href="#/{{report.reportable_type.underscore()}}/{{report.reportable.id}}" target="_blank">{{report.reportable.name}}</a>
+                    <a ng-href="{{report.reportable_type.underscore()}}/{{report.reportable.id}}" target="_blank">{{report.reportable.name}}</a>
                 </span>
             </div>
 
@@ -38,7 +38,7 @@
                         <div class="stat-item">
                             <dt class="stat-title">Submitted By</dt>
                             <dd class="stat-data">
-                                <a class="inverse-link" ng-href="#/user/{{report.reportable.submitted_by}}" target="_blank" tabindex="{{index}}">
+                                <a class="inverse-link" ng-href="user/{{report.reportable.submitted_by}}" target="_blank" tabindex="{{index}}">
                                     {{report.reportable.submitter.username}}
                                 </a>
                             </dd>
@@ -48,7 +48,7 @@
                             <dt class="stat-title">Mod Authors</dt>
                             <dd class="stat-data">
                                 <span ng-repeat="author in report.reportable.mod_authors">
-                                    <a ng-href="#/user/{{author.user_id}}">{{author.user.username}}</a> -
+                                    <a ng-href="user/{{author.user_id}}">{{author.user.username}}</a> -
                                     <span class="capitalize">{{author.role}}</span>
                                 </span>
                             </dd>
@@ -70,10 +70,10 @@
                     <!--Categories-->
                     <h3 class="section-title">Categories</h3>
                     <section class="reportable-content-block">
-                        <a ng-href="#/mods?c={{report.reportable.primary_category_id}}">
+                        <a ng-href="mods?c={{report.reportable.primary_category_id}}">
                             <div class="action-box">{{report.reportable.primary_category.name}}</div>
                         </a>
-                        <a ng-href="#/mods?c={{report.reportable.secondary_category_id}}" ng-show="report.reportable.secondary_category_id">
+                        <a ng-href="mods?c={{report.reportable.secondary_category_id}}" ng-show="report.reportable.secondary_category_id">
                             <div class="action-box">{{report.reportable.secondary_category.name}}</div>
                         </a>
                     </section>

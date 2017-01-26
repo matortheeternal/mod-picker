@@ -6,7 +6,7 @@ class TagBuilder
     @resource = resource
     @current_user = current_user
     @current_ability = Ability.new(current_user)
-    @tag_names = tag_names
+    @tag_names = tag_names || []
     @errors = ActiveModel::Errors.new(self)
   end
 

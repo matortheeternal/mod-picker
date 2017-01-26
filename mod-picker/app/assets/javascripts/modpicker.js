@@ -1,5 +1,6 @@
 //= require_self
 //= require ./polyfills.js
+//= require ./es6-polyfills.js
 //= require_tree ./BackendAPI
 //= require_tree ./Directives
 //= require_tree ./Factories
@@ -16,9 +17,10 @@ var app = angular.module('modPicker', [
     'ui.router', 'rzModule', 'ngAnimate', 'puElasticInput', 'hc.marked', 'smoothScroll', 'relativeDate', 'ct.ui.router.extras', 'dndLists', 'pasvaz.bindonce'
 ]);
 
-app.config(['$httpProvider', '$compileProvider', function($httpProvider, $compileProvider) {
+app.config(['$httpProvider', '$compileProvider', '$locationProvider', function($httpProvider, $compileProvider, $locationProvider) {
     $httpProvider.useApplyAsync(true);
     $compileProvider.debugInfoEnabled(false);
+    $locationProvider.html5Mode(true);
 }]);
 
 app.config(function($urlMatcherFactoryProvider) {
@@ -43,6 +45,8 @@ app.config(function($futureStateProvider) {
 });
 
 app.run(['$rootScope', '$state', 'smoothScroll', function($rootScope, $state, smoothScroll) {
+    var lastToState;
+
     $rootScope.$on('$stateChangeStart', function(evt, toState, params, fromState) {
         //this adds a redirectTo option into ui router, which makes default tabs much nicer
         if (toState.redirectTo) {
@@ -52,7 +56,10 @@ app.run(['$rootScope', '$state', 'smoothScroll', function($rootScope, $state, sm
         //don't scroll if the transition is from one sticky state to another
         if (!toState.sticky || !fromState.sticky) {
             // scroll to the top of the page
-            smoothScroll(document.body, {duration: 300});
+            if (toState != lastToState) {
+                lastToState = toState;
+                smoothScroll(document.body, {duration: 300});
+            }
         }
     });
 
