@@ -16,7 +16,7 @@
         <a class="inverse-link" href="settings">Settings</a>
     </li>
     <li>
-        <a class="inverse-link" href="users/sign_out">Log Out</a>
+        <a class="inverse-link" href="/users/sign_out">Log Out</a>
     </li>
     <li>
         <game-select games="games" selected-game="currentGame"></game-select>
@@ -25,10 +25,10 @@
 <!-- User signed out navigation -->
 <ul class="user-nav" ng-if="!currentUser.signed_in">
     <li>
-        <a class="inverse-link" href="users/sign_in">Log In</a>
+        <a class="inverse-link" href="/users/sign_in">Log In</a>
     </li>
     <li>
-        <a class="inverse-link" href="users/sign_up">Register</a>
+        <a class="inverse-link" href="/users/sign_up">Register</a>
     </li>
     <li>
         <game-select games="games" selected-game="currentGame"></game-select>
