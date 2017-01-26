@@ -214,6 +214,10 @@ class Mod < ActiveRecord::Base
     [nexus_infos, workshop_infos, lover_infos, custom_sources].flatten.compact
   end
 
+  def source_links
+    sources_array.map {|source| source.url}
+  end
+
   def correction_passed(correction)
     update_columns(status: Mod.statuses[correction.mod_status])
   end

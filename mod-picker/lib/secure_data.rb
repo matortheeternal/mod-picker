@@ -28,7 +28,7 @@ class SecureData
 
   def self.pad_string(str, user)
     amt = MIN_PAD + (MAGIC_3 * user.id**MAGIC_4) % (MAX_PAD - MIN_PAD)
-    SecureRandom.random_bytes(amt) + str
+    SecureRandom.hex(amt).upcase + str
   end
 
   def self.full(user, str)
