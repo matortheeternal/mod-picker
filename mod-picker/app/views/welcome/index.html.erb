@@ -9,7 +9,7 @@
             </div>
             <div class="secondary-nav">
                 <div class="games">
-                    <a ng-repeat="game in games | filter:{available: true}" ng-href="/{{game.name}}#" title="{{game.display_name}}">
+                    <a ng-repeat="game in games | filter:{available: true}" ng-href="/{{game.name}}" title="{{game.display_name}}">
                         <img ng-src="/images/{{game.name}}.png"/>
                     </a>
                     <span ng-repeat="game in games | filter:{available: false}" class="coming-soon" title="Coming Soon: {{game.display_name}}">
@@ -45,7 +45,7 @@
     <h2>We will expand to support more games soon!</h2>
 
     <div class="game-item" ng-repeat="game in games">
-        <a ng-if="game.available" ng-href="/{{game.name}}#">
+        <a ng-if="game.available" ng-href="/{{game.name}}">
             <img ng-src="/images/{{game.name}}.png"/>
             <h2>{{game.display_name}}</h2>
         </a>
