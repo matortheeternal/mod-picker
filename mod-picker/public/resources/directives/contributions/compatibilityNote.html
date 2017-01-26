@@ -4,23 +4,23 @@
             <span class="capitalize">{{note.status | humanize}}</span>
             {{note.compatibility_verb}}
             <span ng-if="note.first_mod.id == modId">
-                <a ng-href="#/mod/{{note.second_mod.id}}">{{note.second_mod.name}}</a>
+                <a ng-href="mod/{{note.second_mod.id}}">{{note.second_mod.name}}</a>
             </span>
             <span ng-if="note.second_mod.id == modId">
-                <a ng-href="#/mod/{{note.first_mod.id}}">{{note.first_mod.name}}</a>
+                <a ng-href="mod/{{note.first_mod.id}}">{{note.first_mod.name}}</a>
             </span>
         </span>
         <span ng-if="!modId" class="root">
             <span ng-if="note.compatibility_verb === 'for'">
                 <span class="capitalize">{{note.status | humanize}}</span> for
-                <a ng-href="#/mod/{{note.first_mod.id}}">{{note.first_mod.name}}</a>
+                <a ng-href="mod/{{note.first_mod.id}}">{{note.first_mod.name}}</a>
                 and
-                <a ng-href="#/mod/{{note.second_mod.id}}">{{note.second_mod.name}}</a>
+                <a ng-href="mod/{{note.second_mod.id}}">{{note.second_mod.name}}</a>
             </span>
             <span ng-if="note.compatibility_verb === 'with'">
-                <a ng-href="#/mod/{{note.first_mod.id}}">{{note.first_mod.name}}</a>
+                <a ng-href="mod/{{note.first_mod.id}}">{{note.first_mod.name}}</a>
                 is <span class="capitalize">{{note.status | humanize}}</span> with
-                <a ng-href="#/mod/{{note.second_mod.id}}">{{note.second_mod.name}}</a>
+                <a ng-href="mod/{{note.second_mod.id}}">{{note.second_mod.name}}</a>
             </span>
         </span>
         <span class="standing-item" title="This contribution is in {{note.standing}} standing">
@@ -31,17 +31,17 @@
     <div class="content-column">
         <div class="compatibility-container" ng-if="showCompatibilityContainer && !showResolutionOptions">
             <span ng-if="note.compatibility_mod">
-                Compatibility Mod: <a ng-href="#/mod/{{note.compatibility_mod.id}">
+                Compatibility Mod: <a ng-href="mod/{{note.compatibility_mod.id}">
                     {{note.compatibility_mod.name}}
                 </a>
             </span>
             <span ng-if="note.compatibility_mod_option">
-                Compatibility Mod Option: <a ng-href="#/mod/{{note.compatibility_mod_option.mod_id}}/analysis?options={{note.compatibility_mod_option.id}}" title="{{note.compatibility_mod_option.name}}">
+                Compatibility Mod Option: <a ng-href="mod/{{note.compatibility_mod_option.mod_id}}/analysis?options={{note.compatibility_mod_option.id}}" title="{{note.compatibility_mod_option.name}}">
                     {{note.compatibility_mod_option.display_name}}
                 </a>
             </span>
             <span ng-if="note.compatibility_plugin">
-                Compatibility Plugin: <a ng-href="#/mod/{{note.compatibility_plugin.mod.id}}/analysis?plugin={{note.compatibility_plugin.id}}">
+                Compatibility Plugin: <a ng-href="mod/{{note.compatibility_plugin.mod.id}}/analysis?plugin={{note.compatibility_plugin.id}}">
                     {{note.compatibility_plugin.filename}}
                 </a>
             </span>

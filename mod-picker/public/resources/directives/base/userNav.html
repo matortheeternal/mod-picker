@@ -1,7 +1,7 @@
 <!-- User signed in navigation -->
 <ul class="user-nav" ng-if="currentUser.signed_in">
     <li>
-        Welcome <a class="inverse-link" ng-href="#/user/{{currentUser.id}}">{{currentUser.username}}</a>
+        Welcome <a class="inverse-link" ng-href="user/{{currentUser.id}}">{{currentUser.username}}</a>
     </li>
     <li>
         <user-notifications notifications="currentUser.recent_notifications"></user-notifications>
@@ -10,13 +10,13 @@
         <contribution-select></contribution-select>
     </li>
     <li ng-if="currentUser.permissions.canModerate">
-        <a class="inverse-link" href="#/moderator-cp">Moderator CP</a>
+        <a class="inverse-link" href="moderator-cp">Moderator CP</a>
     </li>
     <li>
-        <a class="inverse-link" href="#/settings">Settings</a>
+        <a class="inverse-link" href="settings">Settings</a>
     </li>
     <li>
-        <a class="inverse-link" href="/users/sign_out">Log Out</a>
+        <a class="inverse-link" href="users/sign_out">Log Out</a>
     </li>
     <li>
         <game-select games="games" selected-game="currentGame"></game-select>
@@ -25,10 +25,10 @@
 <!-- User signed out navigation -->
 <ul class="user-nav" ng-if="!currentUser.signed_in">
     <li>
-        <a class="inverse-link" href="/users/sign_in">Log In</a>
+        <a class="inverse-link" href="users/sign_in">Log In</a>
     </li>
     <li>
-        <a class="inverse-link" href="/users/sign_up">Register</a>
+        <a class="inverse-link" href="users/sign_up">Register</a>
     </li>
     <li>
         <game-select games="games" selected-game="currentGame"></game-select>

@@ -1,6 +1,6 @@
 <ul>
     <li class="user-name">
-        <a class="inverse-link user-role-{{user.role}}" ng-href="#/user/{{user.id}}" target="_blank" tabindex="{{index}}">{{user.username}}</a>
+        <a class="inverse-link user-role-{{user.role}}" ng-href="user/{{user.id}}" target="_blank" tabindex="{{index}}">{{user.username}}</a>
     </li>
     <li class="user-avatar" ng-mouseover="mouseOverAvatar()" ng-mouseleave="mouseLeaveAvatar()">
         <img class="avatar avatar-medium" ng-src="{{user.avatars.medium}}"/>
@@ -15,7 +15,7 @@
     <li class="editors" ng-if="editors.length">
         <b>Editors:</b>
         <span ng-repeat="editor in editors">
-            <a href="#/profile/{{editor.id}}">{{editor.username}}</a><span ng-if="!$last">, </span>
+            <a href="user/{{editor.id}}">{{editor.username}}</a><span ng-if="!$last">, </span>
         </span>
     </li>
 </ul>
