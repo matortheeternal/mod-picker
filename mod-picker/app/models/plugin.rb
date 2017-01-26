@@ -71,15 +71,15 @@ class Plugin < ActiveRecord::Base
   before_update :clear_associations
   before_destroy :prepare_to_destroy
 
-  def self.find_batch(batch)
+  def self.find_batch(batch, game)
     batch.collect do |item|
-      Plugin.visible.where(filename: item[:plugin_filename]).first
+      Plugin.visible.game(game).where(filename: item[:plugin_filename]).first
     end
   end
 
-  def self.find_master_plugin(master)
-    Plugin.where(filename: master[:filename], crc_hash: master[:crc_hash]).first ||
-        Plugin.where(filename: master[:filename]).first
+  def self.find_master_plugin(game, master)
+    Plugin.game(game).where(filename: master[:filename], crc_hash: master[:crc_hash]).first ||
+        Plugin.game(game).where(filename: master[:filename]).first
   end
 
   def update_lazy_counters
@@ -96,7 +96,7 @@ class Plugin < ActiveRecord::Base
   def create_associations
     if @master_plugins
       @master_plugins.each_with_index do |master, index|
-        master_plugin = Plugin.find_master_plugin(master)
+        master_plugin = Plugin.find_master_plugin(game_id, master)
         if master_plugin.nil?
           dummy_masters.create(filename: master[:filename], index: index)
         else

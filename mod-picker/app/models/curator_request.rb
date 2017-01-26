@@ -15,6 +15,7 @@ class CuratorRequest < ActiveRecord::Base
 
   # UNIQUE SCOPES
   scope :mod_name, -> (name) { where("mods.name LIKE ?", "%#{name}%") }
+  scope :game, -> (game_id) { where("mods.game_id = ?", game_id) }
 
   # ASSOCIATIONS
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'curator_requests'

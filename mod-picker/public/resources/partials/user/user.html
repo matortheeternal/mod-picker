@@ -15,7 +15,7 @@
                 </section>
 
                 <h3 ng-if="!isCurrentUser && permissions.canReport || permissions.canModerate" class="section-title">Actions</h3>
-                <section ng-if="!isCurrentUser && permissions.canReport">
+                <section ng-if="!isCurrentUser && permissions.canReport && !permissions.canModerate">
                     <div class="action-box" ng-click="toggleReportModal(true)">
                         <i class="fa fa-flag-o" aria-hidden="true"></i> Report
                     </div>

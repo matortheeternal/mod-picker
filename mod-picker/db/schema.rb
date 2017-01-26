@@ -11,7 +11,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170119210115) do
+ActiveRecord::Schema.define(version: 20170121195705) do
+
+  create_table "active_mod_lists", force: :cascade do |t|
+    t.integer "game_id",     limit: 4, null: false
+    t.integer "user_id",     limit: 4, null: false
+    t.integer "mod_list_id", limit: 4, null: false
+  end
+
+  add_index "active_mod_lists", ["game_id", "user_id", "mod_list_id"], name: "index_active_mod_lists_on_game_id_and_user_id_and_mod_list_id", unique: true, using: :btree
+  add_index "active_mod_lists", ["mod_list_id"], name: "fk_rails_0659fed997", using: :btree
+  add_index "active_mod_lists", ["user_id"], name: "fk_rails_c1d0166a09", using: :btree
 
   create_table "agreement_marks", id: false, force: :cascade do |t|
     t.integer "correction_id", limit: 4,                null: false
@@ -929,7 +939,6 @@ ActiveRecord::Schema.define(version: 20170119210115) do
     t.string   "email",                     limit: 255,   default: "", null: false
     t.string   "role",                      limit: 16,                 null: false
     t.string   "title",                     limit: 32
-    t.integer  "active_mod_list_id",        limit: 4
     t.text     "about_me",                  limit: 65535
     t.integer  "comments_count",            limit: 4,     default: 0,  null: false
     t.integer  "authored_mods_count",       limit: 4,     default: 0,  null: false
@@ -973,7 +982,6 @@ ActiveRecord::Schema.define(version: 20170119210115) do
     t.integer  "invitations_count",         limit: 4,     default: 0
   end
 
-  add_index "users", ["active_mod_list_id"], name: "active_ml_id", using: :btree
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["invitation_token"], name: "index_users_on_invitation_token", unique: true, using: :btree
@@ -1002,6 +1010,9 @@ ActiveRecord::Schema.define(version: 20170119210115) do
 
   add_index "workshop_infos", ["mod_id"], name: "fk_rails_8707144ad7", using: :btree
 
+  add_foreign_key "active_mod_lists", "games"
+  add_foreign_key "active_mod_lists", "mod_lists"
+  add_foreign_key "active_mod_lists", "users"
   add_foreign_key "agreement_marks", "corrections"
   add_foreign_key "agreement_marks", "users", column: "submitted_by", name: "agreement_marks_ibfk_2"
   add_foreign_key "api_tokens", "users"
@@ -1128,6 +1139,5 @@ ActiveRecord::Schema.define(version: 20170119210115) do
   add_foreign_key "user_reputations", "users", name: "user_reputations_ibfk_1"
   add_foreign_key "user_settings", "users", name: "user_settings_ibfk_1"
   add_foreign_key "user_titles", "games"
-  add_foreign_key "users", "mod_lists", column: "active_mod_list_id", name: "users_ibfk_4"
   add_foreign_key "workshop_infos", "mods"
 end
