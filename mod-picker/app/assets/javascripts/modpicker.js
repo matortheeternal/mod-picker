@@ -17,9 +17,10 @@ var app = angular.module('modPicker', [
     'ui.router', 'rzModule', 'ngAnimate', 'puElasticInput', 'hc.marked', 'smoothScroll', 'relativeDate', 'ct.ui.router.extras', 'dndLists', 'pasvaz.bindonce'
 ]);
 
-app.config(['$httpProvider', '$compileProvider', function($httpProvider, $compileProvider) {
+app.config(['$httpProvider', '$compileProvider', '$locationProvider', function($httpProvider, $compileProvider, $locationProvider) {
     $httpProvider.useApplyAsync(true);
     $compileProvider.debugInfoEnabled(false);
+    $locationProvider.html5Mode(true);
 }]);
 
 app.config(function($urlMatcherFactoryProvider) {

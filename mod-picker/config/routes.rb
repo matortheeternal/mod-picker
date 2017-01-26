@@ -313,9 +313,9 @@ Rails.application.routes.draw do
   resources :user_titles, only: [:index]
 
   # home page
-  match '/skyrim', to: 'home#skyrim', via: [:get]
-  match '/skyrimse', to: 'home#skyrimse', via: [:get]
-  match '/fallout4', to: 'home#fallout4', via: [:get]
+  match '/skyrim/*path', to: 'home#skyrim', via: [:get]
+  match '/skyrimse/*path', to: 'home#skyrimse', via: [:get]
+  match '/fallout4/*path', to: 'home#fallout4', via: [:get]
   match '/home', to: 'home#index', via: [:get]
 
   #articles

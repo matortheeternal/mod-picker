@@ -2,6 +2,7 @@
 <html lang="en" ng-app="modPicker">
 <head>
     <meta charset="UTF-8">
+    <base href="/<%= @current_game.url %>/">
     <title ng-bind="pageTitle" ng-init="pageTitle = 'Mod Picker: <%= @current_game.display_name %>'"></title>
     <link ng-controller="themesController" rel="stylesheet" href="<%= stylesheet_path "main/#{@current_theme}" %>" ng-href="{{currentTheme}}" />
     <script>
