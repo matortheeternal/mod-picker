@@ -8,7 +8,6 @@ app.service('gameService', function(backend, $q) {
     this.getGameById = function(id) {
         var game = $q.defer();
         allGames.then(function(games) {
-            //document.body.innerHTML += '<p>' + JSON.stringify(games) + '</p>';
             var selectedGame = games.find(function(game) {
                 return game.id == id;
             });
