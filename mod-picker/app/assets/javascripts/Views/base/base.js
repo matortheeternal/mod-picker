@@ -105,6 +105,9 @@ app.controller('baseController', function($scope, $rootScope, $state, $window, $
 
     $timeout(function() {
         $scope.loadArtistCredit();
+        $timeout(function() {
+            window.prerenderReady = true;
+        }, 500);
     });
     $scope.setPageTitle();
 });

@@ -6,6 +6,7 @@
     <title ng-bind="pageTitle" ng-init="pageTitle = 'Mod Picker: <%= @current_game.display_name %>'"></title>
     <link ng-controller="themesController" rel="stylesheet" href="<%= stylesheet_path "main/#{@current_theme}" %>" ng-href="{{currentTheme}}" />
     <script>
+        window.prerenderReady = false;
         window._token = '<%= form_authenticity_token %>';
         window._current_game_id = <%= @current_game.id %>;
         window._stylesheets = {
