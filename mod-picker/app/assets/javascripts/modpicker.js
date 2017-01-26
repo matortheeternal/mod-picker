@@ -1,5 +1,6 @@
 //= require_self
 //= require ./polyfills.js
+//= require ./es6-polyfills.js
 //= require_tree ./BackendAPI
 //= require_tree ./Directives
 //= require_tree ./Factories
