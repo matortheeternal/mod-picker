@@ -20,9 +20,10 @@ class Game < ActiveRecord::Base
   has_many :reviews, :inverse_of => 'game'
   has_many :plugins, :inverse_of => 'game'
   has_many :help_pages, :inverse_of => 'game'
+  has_many :help_videos, :inverse_of => 'game'
 
   # COUNTER CACHE
-  counter_cache :mods, :nexus_infos, :lover_infos, :workshop_infos, :mod_lists, :config_files, :asset_files, :compatibility_notes, :corrections, :install_order_notes, :load_order_notes, :reviews, :plugins, :help_pages
+  counter_cache :mods, :nexus_infos, :lover_infos, :workshop_infos, :mod_lists, :config_files, :asset_files, :compatibility_notes, :corrections, :install_order_notes, :load_order_notes, :reviews, :plugins, :help_pages, :help_videos
 
   # VALIDATIONS
   validates :display_name, :long_name, :abbr_name, presence: true
