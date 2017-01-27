@@ -1,5 +1,5 @@
 {
-  "only": ["id", "name", "status", "submitted", "completed", "updated"],
+  "only": ["id", "game_id", "name", "status", "submitted", "completed", "updated"],
   "include": {
     "mod_list_plugins": {
       "only": ["index", "cleaned", "merged"],
