@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170127233329) do
+ActiveRecord::Schema.define(version: 20170128033613) do
 
   create_table "active_mod_lists", force: :cascade do |t|
     t.integer "game_id",     limit: 4, null: false
@@ -285,6 +285,17 @@ ActiveRecord::Schema.define(version: 20170127233329) do
 
   add_index "help_pages", ["game_id"], name: "index_help_pages_on_game_id", using: :btree
   add_index "help_pages", ["submitted_by"], name: "fk_rails_01a3f94bf2", using: :btree
+
+  create_table "help_video_sections", force: :cascade do |t|
+    t.integer "help_video_id", limit: 4,   null: false
+    t.integer "parent_id",     limit: 4
+    t.string  "label",         limit: 64,  null: false
+    t.string  "description",   limit: 255
+    t.integer "seconds",       limit: 3,   null: false
+  end
+
+  add_index "help_video_sections", ["help_video_id"], name: "fk_rails_edd4587296", using: :btree
+  add_index "help_video_sections", ["parent_id"], name: "fk_rails_f5da94a2eb", using: :btree
 
   create_table "help_videos", force: :cascade do |t|
     t.integer  "game_id",      limit: 4
@@ -1063,6 +1074,8 @@ ActiveRecord::Schema.define(version: 20170127233329) do
   add_foreign_key "games", "games", column: "parent_game_id"
   add_foreign_key "help_pages", "games"
   add_foreign_key "help_pages", "users", column: "submitted_by"
+  add_foreign_key "help_video_sections", "help_video_sections", column: "parent_id"
+  add_foreign_key "help_video_sections", "help_videos"
   add_foreign_key "help_videos", "games"
   add_foreign_key "help_videos", "users", column: "submitted_by"
   add_foreign_key "helpful_marks", "users", column: "submitted_by", name: "helpful_marks_ibfk_4"
