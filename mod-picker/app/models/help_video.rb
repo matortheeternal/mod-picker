@@ -1,5 +1,5 @@
 class HelpVideo < ActiveRecord::Base
-  include RecordEnhancements, ScopeHelpers, BetterJson, Dateable, Approveable
+  include RecordEnhancements, CounterCache, ScopeHelpers, BetterJson, Dateable, Approveable
 
   # ATTRIBUTES
   enum category: [:mod_picker, :modding, :guides]
@@ -15,6 +15,8 @@ class HelpVideo < ActiveRecord::Base
   # ASSOCIATIONS
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'help_videos'
   belongs_to :game, :inverse_of => 'help_videos'
+
+  has_many :help_video_sections, -> { where(parent_id: nil) }, inverse_of: "help_video", dependent: :destroy
 
   # COUNTER CACHE
   counter_cache_on :game
