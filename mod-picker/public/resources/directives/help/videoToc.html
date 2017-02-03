@@ -1,0 +1,21 @@
+<h2>Sections</h2>
+<div ng-repeat="section in sections" class="video-section" ng-class="{ 'active-section' : section.active }">
+    <span class="section-label" ng-click="navigateTo(section)">
+        <b>{{::section.label}}</b>
+        ({{::section.seconds | timecode}})
+    </span>
+    <p class="section-description" ng-show="section.description.length">
+        {{::section.description}}
+    </p>
+    <div ng-if="section.children.length" class="child-sections" ng-class="{ 'active-section' : section.active }">
+        <div class="video-section" ng-repeat="child in section.children">
+            <span class="section-label">
+                <b>{{::child.label}}</b>
+                ({{::child.seconds | timecode}})
+            </span>
+            <p class="section-description" ng-show="child.description.length">
+                {{::child.description}}
+            </p>
+        </div>
+    </div>
+</div>
