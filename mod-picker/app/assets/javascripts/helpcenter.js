@@ -10,6 +10,7 @@
 //= require BackendAPI/backend.js
 //= require BackendAPI/contributionService.js
 //= require BackendAPI/reviewSectionService.js
+//= require BackendAPI/helpVideoSectionService.js
 //= require BackendAPI/userService.js
 //= require BackendAPI/userSettingsService.js
 //= require BackendAPI/userTitleService.js
@@ -18,6 +19,7 @@
 //= require Directives/shared/sticky.js
 //= require Directives/contributions/comment.js
 //= require Directives/contributions/comments.js
+//= require Filters/timecodeFilter.js
 //= require Factories/spinnerFactory.js
 //= require Services/pageUtils.js
 //= require Services/ObjectUtils.js
