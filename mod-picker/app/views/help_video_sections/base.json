@@ -1,0 +1,6 @@
+{
+  "except": ["parent_id", "help_video_id"],
+  "include": {
+    "children": {}
+  }
+}
