@@ -1,4 +1,4 @@
-.help-page-content {
+.help-page-content, .help-video-content {
   max-width: $max-content-width;
   margin: 0 auto;
   display: block;
@@ -23,6 +23,23 @@
       margin-left: 0;
     }
   }
+}
+
+.help-video-container {
+  padding: 50px 0 10px;
+
+  .page-container {
+    padding: 0;
+  }
+
+  .help-video-player {
+    padding: 20px 0;
+    text-align: center;
+  }
+}
+
+.help-video-content {
+  padding: 10px 0 150px;
 }
 
 // help page header
