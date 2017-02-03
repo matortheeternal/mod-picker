@@ -303,6 +303,10 @@ Rails.application.routes.draw do
   resources :help_pages, path: 'help', except: [:new, :create, :edit, :update, :destroy]
   match '/help/*path', to: 'help_pages#record_not_found', via: :all
 
+  # help videos
+  match '/videos/:id', to: 'help_videos#show', via: [:get]
+  match '/videos/:id/sections', to: 'help_videos#sections', via: [:get]
+
   # static data
   resources :categories, only: [:index]
   resources :category_priorities, only: [:index]

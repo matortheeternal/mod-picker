@@ -16,7 +16,7 @@ class HelpVideo < ActiveRecord::Base
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'help_videos'
   belongs_to :game, :inverse_of => 'help_videos'
 
-  has_many :help_video_sections, -> { where(parent_id: nil) }, inverse_of: "help_video", dependent: :destroy
+  has_many :sections, -> { where(parent_id: nil) },  class_name: "HelpVideoSection", inverse_of: "help_video", dependent: :destroy
 
   # COUNTER CACHE
   counter_cache_on :game
