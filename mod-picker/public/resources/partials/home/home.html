@@ -20,6 +20,9 @@
                         </a>
                     </section>
                     <a href="#/mod-lists?scol=completed&sdir=DESC" class="explanation">Browse All</a>
+                    <div class="content-message" ng-if="!recent.mod_lists.length">
+                        No completed {{currentGame.display_name}} mod list found.
+                    </div>
                 </div>
 
                 <div class="recent-box box-shadow">
@@ -41,6 +44,9 @@
                         </a>
                     </section>
                     <a href="#/mods?scol=released&sdir=DESC" class="explanation">Browse All</a>
+                    <div class="content-message" ng-if="!recent.mods.length">
+                        No {{currentGame.display_name}} mods found.
+                    </div>
                 </div>
             </div>
 
