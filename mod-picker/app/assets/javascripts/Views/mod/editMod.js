@@ -13,7 +13,7 @@ app.config(['$stateProvider', function($stateProvider) {
                         text: 'Error editing mod.',
                         response: response,
                         stateName: "base.edit-mod",
-                        stateUrl: window.location.hash
+                        stateUrl: window.location.href
                     };
                     mod.reject(errorObj);
                 });

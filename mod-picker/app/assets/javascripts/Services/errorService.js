@@ -21,7 +21,7 @@ app.service('errorService', function($q) {
                 statusText: statusText,
                 data: null
             },
-            stateUrl: window.location.hash
+            stateUrl: window.location.href
         };
     };
 

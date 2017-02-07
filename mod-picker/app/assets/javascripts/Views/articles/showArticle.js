@@ -13,7 +13,7 @@ app.config(['$stateProvider', function($stateProvider) {
                         text: 'Error retrieving article.',
                         response: response,
                         stateName: "base.article",
-                        stateUrl: window.location.hash
+                        stateUrl: window.location.href
                     };
                     article.reject();
                 });

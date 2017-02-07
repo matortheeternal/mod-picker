@@ -13,7 +13,7 @@ app.config(['$stateProvider', function($stateProvider) {
                         text: 'Error editing article.',
                         response: response,
                         stateName: "base.edit-article",
-                        stateUrl: window.location.hash
+                        stateUrl: window.location.href
                     };
                     article.reject();
                 });

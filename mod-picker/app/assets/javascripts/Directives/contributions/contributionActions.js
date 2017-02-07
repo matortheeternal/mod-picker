@@ -42,7 +42,7 @@ app.controller('contributionActionsController', function($scope, $rootScope, $ti
 
     // determine share url based on the content type
     $scope.buildShareLink = function() {
-        var modTarget, modId, targetTab, targetId, baseUrl = location.href.replace(location.hash, "");
+        var modTarget, modId, targetTab, targetId, baseUrl = location.href.replace(location.href, "");
         if ($scope.modelName === "Correction") {
             var correctableType = $scope.target.correctable_type;
             if (correctableType === "Mod") {
