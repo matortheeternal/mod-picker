@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170121195705) do
+ActiveRecord::Schema.define(version: 20170209193522) do
 
   create_table "active_mod_lists", force: :cascade do |t|
     t.integer "game_id",     limit: 4, null: false
@@ -682,7 +682,8 @@ ActiveRecord::Schema.define(version: 20170121195705) do
   add_index "mods", ["secondary_category_id"], name: "fk_rails_26f394ea9d", using: :btree
   add_index "mods", ["submitted_by"], name: "fk_rails_5f28cca69a", using: :btree
 
-  create_table "nexus_infos", force: :cascade do |t|
+  create_table "nexus_infos", id: false, force: :cascade do |t|
+    t.integer  "nexus_id",            limit: 4,                   null: false
     t.integer  "game_id",             limit: 4,                   null: false
     t.boolean  "has_stats",                       default: false, null: false
     t.datetime "last_scraped"
@@ -715,6 +716,7 @@ ActiveRecord::Schema.define(version: 20170121195705) do
   end
 
   add_index "nexus_infos", ["game_id"], name: "fk_rails_46e3032463", using: :btree
+  add_index "nexus_infos", ["nexus_id", "game_id"], name: "index_nexus_infos_on_nexus_id_and_game_id", unique: true, using: :btree
 
   create_table "notifications", id: false, force: :cascade do |t|
     t.integer "event_id", limit: 4,                 null: false
