@@ -16,7 +16,7 @@ class HelpPage < ActiveRecord::Base
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'help_pages'
   belongs_to :game, :inverse_of => 'help_pages'
 
-  has_many :comments, :as => 'commentable'
+  has_many :comments, -> { where(parent_id: nil) }, :as => 'commentable'
 
   # COUNTER CACHE
   counter_cache_on :game

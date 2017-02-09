@@ -270,7 +270,7 @@ app.service('notificationsFactory', function() {
     };
 
     this.endorsee = function(event) {
-        if (content.target_user.id == factory.currentUserID) {
+        if (event.content.target_user.id == factory.currentUserID) {
             return 'you';
         } else {
             return '<a href="user/{{content.target_user.id}}">{{content.target_user.username}}</a>'

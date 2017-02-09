@@ -111,7 +111,7 @@
                     <!--Sources-->
                     <h3 class="section-title">Sources</h3>
                     <section class="sources">
-                        <source-link source="mod.nexus_infos" label="Nexus Mods" link="http://www.nexusmods.com/{{currentGame.nexus_name}}/mods/{{mod.nexus_infos.id}}"></source-link>
+                        <source-link source="mod.nexus_infos" label="Nexus Mods" link="http://www.nexusmods.com/{{currentGame.nexus_name}}/mods/{{mod.nexus_infos.nexus_id}}"></source-link>
                         <source-link source="mod.workshop_infos" label="Steam Workshop" link="http://steamcommunity.com/sharedfiles/filedetails/{{mod.workshop_infos.id}}"></source-link>
                         <source-link source="mod.lover_infos" label="Lover's Lab" link="http://www.loverslab.com/files/file/{{mod.lover_infos.id}}"></source-link>
                         <source-link ng-repeat="source in mod.custom_sources" source="source" label="{{source.label}}" link="{{source.url}}" title="{{source.url}}"></source-link>

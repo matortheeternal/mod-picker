@@ -226,6 +226,7 @@ class Ability
     can [:update, :hide], Mod, { mod_authors: { user_id: user.id } }
     can :destroy, ModRequirement, {mod_version: {mod: {mod_authors: {user_id: user.id } } } }
     can :destroy, ModTag, { mod: { mod_authors: { user_id: user.id } } }
+    cannot :create, Review, { mod: { mod_authors: { user_id: user.id, role: [0, 1] } } }
     # authors
     can :update_authors, Mod, { mod_authors: { user_id: user.id, role: 0 } }
     can :update_options, Mod, { mod_authors: { user_id: user.id, role: 0 } }
