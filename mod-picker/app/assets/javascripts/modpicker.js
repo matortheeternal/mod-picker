@@ -13,6 +13,11 @@
  (c) 2016 Mod Picker, LLC. https://www.modpicker.com
 */
 
+// fix urls in the old format
+if (["/skyrim", "/skyrimse"].indexOf(window.location.pathname) > -1) {
+    window.location.pathname += "/";
+}
+
 var app = angular.module('modPicker', [
     'ui.router', 'rzModule', 'ngAnimate', 'puElasticInput', 'hc.marked', 'smoothScroll', 'relativeDate', 'ct.ui.router.extras', 'dndLists', 'pasvaz.bindonce'
 ]);
