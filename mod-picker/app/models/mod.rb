@@ -65,7 +65,8 @@ class Mod < ActiveRecord::Base
   }
   scope :sources, -> (sources) {
     eager_load(sources.map {|key, value| get_source_class(key).table_name if value}.compact).
-        where(sources.map {|key, value| get_source_class(key).arel_table[:id].not_eq(nil) if value}.compact.inject(:or))
+        where(sources.map {|key, value|
+          get_source_class(key).arel_table[get_source_primary_key_column(key)].not_eq(nil) if value}.compact.inject(:or))
   }
   scope :source_mod_name, -> (mod_name, source_class) {
     eager_load(source_class.table_name).where(source_class.arel_table[:mod_name].eq(mod_name))
@@ -85,7 +86,7 @@ class Mod < ActiveRecord::Base
     where(where_clause.join(" OR "), author: author)
   }
   scope :nexus_id, -> (id) {
-    eager_load(:nexus_infos).where(nexus_infos: { id: id })
+    eager_load(:nexus_infos).where(nexus_infos: { nexus_id: id })
   }
 
   belongs_to :game, :inverse_of => 'mods'
