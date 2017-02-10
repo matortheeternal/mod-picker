@@ -5,7 +5,7 @@ app.service('helpFactory', function($timeout) {
 
     this.error = 'Sorry, an error happened when loading help messages for this page.  Please try <a href="javascript:location.reload();">reloading the page</a>!';
 
-    this.welcome = 'Welcome to the Mod Picker Beta!  Check out the <a href="article/1">Welcome Article</a> for help getting started using the site.';
+    this.welcome = 'Welcome to the Mod Picker Beta!  Check out the <a href="articles/1">Welcome Article</a> for help getting started using the site.';
 
     this.home = 'This is the Mod Picker home page.  You can view site news and recent contributions here.  <a href="/help/home_page" target="_blank">Click here</a> for more information.';
 

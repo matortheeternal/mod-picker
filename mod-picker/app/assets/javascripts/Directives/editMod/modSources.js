@@ -72,7 +72,7 @@ app.controller('modSourcesController', function($scope, $rootScope, sitesFactory
                 $scope.$emit('customMessage', {
                     type: 'error',
                     text: "Error scraping "+source.label+" mod page, "+response.data.error,
-                    url: baseUrl + "mod/" + response.data.mod_id
+                    url: baseUrl + "mods/" + response.data.mod_id
                 });
             } else {
                 $scope.$emit('errorMessage', {

@@ -3,20 +3,20 @@ app.service('reportsFactory', function() {
 
     var noteContentLink = function(noteType) {
         var noteTypeDashed = noteType.replace(' ', '-');
-        return '<a href="mod/{{report.reportable.first_mod_id}}/' + noteTypeDashed + '/{{report.reportable.id}}">'+noteType.titleCase()+' Note</a>';
+        return '<a href="mods/{{report.reportable.first_mod_id}}/' + noteTypeDashed + '/{{report.reportable.id}}">'+noteType.titleCase()+' Note</a>';
     };
 
     var associatedModReviewLink =
-        '<a href="mod/{{report.reportable.mod.id}}/reviews/{{report.reportable.id}}">{{report.reportable.mod.name}}</a>';
+        '<a href="mods/{{report.reportable.mod.id}}/reviews/{{report.reportable.id}}">{{report.reportable.mod.name}}</a>';
 
     var noteCorrectionCommentLink = function(noteType) {
         var noteTypeDashed = noteType.replace(' ', '-');
-        return '<a href="mod/{{report.reportable.commentable.correctable.first_mod.id}}/' + noteTypeDashed + '/{{report.reportable.commentable.correctable.id}}">Comment, ' + noteType + ' Note</a>';
+        return '<a href="mods/{{report.reportable.commentable.correctable.first_mod.id}}/' + noteTypeDashed + '/{{report.reportable.commentable.correctable.id}}">Comment, ' + noteType + ' Note</a>';
     };
 
     var noteCorrectionLink = function(noteType) {
         var noteTypeDashed = noteType.replace(' ', '-');
-        return '<a href="mod/{{report.reportable.correctable.first_mod.id}}/' + noteTypeDashed + '/{{report.reportable.correctable.id}}">Correction, ' + noteType + ' Note</a>';
+        return '<a href="mods/{{report.reportable.correctable.first_mod.id}}/' + noteTypeDashed + '/{{report.reportable.correctable.id}}">Correction, ' + noteType + ' Note</a>';
     };
 
     this.contentLinks = {
@@ -25,24 +25,24 @@ app.service('reportsFactory', function() {
         InstallOrderNote: noteContentLink('install order'),
         LoadOrderNote: noteContentLink('load order'),
         Tag: '<a href="mods?t={{report.reportable.text}}">Tag</a>',
-        Mod: '<a href="mod/{{report.reportable.id}}">Mod</a>',
-        ModList: '<a href="mod-list/{{report.reportable.id}}">Mod List</a>',
+        Mod: '<a href="mods/{{report.reportable.id}}">Mod</a>',
+        ModList: '<a href="mod-lists/{{report.reportable.id}}">Mod List</a>',
         Comment: {
             key: "commentable",
-            Article: '<a href="article/{{report.reportable_id}}">Comment, Article</a>',
+            Article: '<a href="articles/{{report.reportable_id}}">Comment, Article</a>',
             User: '<a href="user/{{report.reportable.commentable_id}}">Comment, User Profile</a>',
             Correction: {
                 key: "correctable",
-                Mod: '<a href="mod/{{report.reportable.commentable.correctable.id}}">Comment, Correction</a>',
+                Mod: '<a href="mods/{{report.reportable.commentable.correctable.id}}">Comment, Correction</a>',
                 CompatibilityNote: noteCorrectionCommentLink("compatibility"),
                 InstallOrderNote: noteCorrectionCommentLink("install order"),
                 LoadOrderNote: noteCorrectionCommentLink("load order")
             },
-            ModList: '<a href="mod-list/{{report.reportable.commentable_id}}/comments">Comment, Mod List</a>'
+            ModList: '<a href="mod-lists/{{report.reportable.commentable_id}}/comments">Comment, Mod List</a>'
         },
         Correction: {
             key: "correctable",
-            Mod: '<a href="mod/{{report.reportable.correctable.id}}">Correction, Mod </a>',
+            Mod: '<a href="mods/{{report.reportable.correctable.id}}">Correction, Mod </a>',
             CompatibilityNote: noteCorrectionLink("compatibility"),
             InstallOrderNote: noteCorrectionLink("install order"),
             LoadOrderNote: noteCorrectionLink("load order")

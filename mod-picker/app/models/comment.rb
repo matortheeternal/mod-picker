@@ -70,9 +70,9 @@ class Comment < ActiveRecord::Base
         "mods/load-order/" + commentable.correctable_id.to_s + "/corrections/" + commentable_id.to_s
       end
     elsif commentable_type == "ModList"
-      "mod-list/" + commentable_id.to_s + "/comments"
+      "mod-lists/" + commentable_id.to_s + "/comments"
     elsif commentable_type == "Article"
-      "article/" + commentable_id.to_s
+      "articles/" + commentable_id.to_s
     elsif commentable_type == "HelpPage"
       "/help/" + commentable.url
     elsif commentable_type == "User"

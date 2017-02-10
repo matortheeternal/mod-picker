@@ -67,7 +67,7 @@ app.controller('createArticleController', function($scope, $rootScope, $state, $
             } else {
                 $scope.submissionSuccess("Article submitted successfully.", [
                     { 
-                        link: "article/" + data.id,
+                        link: "articles/" + data.id,
                         linkLabel: "view the new article." 
                     },
                     {
@@ -85,7 +85,7 @@ app.controller('createArticleController', function($scope, $rootScope, $state, $
         articleService.submitImage(articleId, $scope.image.sizes).then(function() {
             $scope.submissionSuccess("Article submitted successfully.", [
                 { 
-                    link: "article/" + articleId,
+                    link: "articles/" + articleId,
                     linkLabel: "view the new article." 
                 },
                 { 
@@ -96,7 +96,7 @@ app.controller('createArticleController', function($scope, $rootScope, $state, $
         }, function() {
             $scope.submissionSuccess("Article submitted successfully, image submission failed.", [
                 { 
-                    link: "article/" + articleId,
+                    link: "articles/" + articleId,
                     linkLabel: "view the new article." 
                 },
                 {
