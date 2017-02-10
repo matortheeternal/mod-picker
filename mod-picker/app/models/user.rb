@@ -42,6 +42,7 @@ class User < ActiveRecord::Base
   has_many :install_order_notes, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
   has_many :load_order_notes, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
   has_many :compatibility_notes, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
+  has_many :related_mod_notes, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
   has_many :reviews, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
   has_many :corrections, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
   has_many :agreement_marks, :foreign_key => 'submitted_by', :inverse_of => 'submitter'

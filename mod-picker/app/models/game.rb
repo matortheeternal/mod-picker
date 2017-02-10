@@ -14,6 +14,7 @@ class Game < ActiveRecord::Base
   has_many :config_files, :inverse_of => 'game'
   has_many :asset_files, :inverse_of => 'game'
   has_many :compatibility_notes, :inverse_of => 'game'
+  has_many :related_mod_notes, :inverse_of => 'game'
   has_many :corrections, :inverse_of => 'game'
   has_many :install_order_notes, :inverse_of => 'game'
   has_many :load_order_notes, :inverse_of => 'game'
