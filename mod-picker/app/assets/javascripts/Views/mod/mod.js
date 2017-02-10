@@ -115,6 +115,24 @@ app.config(['$stateProvider', function($stateProvider) {
             filter: true,
             loadOrderNoteId: null
         }
+    }).state('base.mod.Related Mods', {
+        sticky: true,
+        deepStateRedirect: true,
+        reloadOnSearch: false,
+        views: {
+            'Related Mods': {
+                templateUrl: '/resources/partials/mod/modRelatedMods.html',
+                controller: 'modRelatedModsController'
+            }
+        },
+        url: '/related/{relatedModNoteId:int}?{page:int}&scol&sdir&{filter:bool}',
+        params: {
+            page: 1,
+            scol: 'reputation',
+            sdir: 'DESC',
+            filter: true,
+            relatedModNoteId: null
+        }
     }).state('base.mod.Analysis', {
         sticky: true,
         deepStateRedirect: true,
