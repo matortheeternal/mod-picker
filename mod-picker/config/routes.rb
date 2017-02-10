@@ -181,6 +181,7 @@ Rails.application.routes.draw do
       match '/mods/:id/compatibility_notes', to: 'mods#compatibility_notes', via: [:get, :post]
       match '/mods/:id/install_order_notes', to: 'mods#install_order_notes', via: [:get, :post]
       match '/mods/:id/load_order_notes', to: 'mods#load_order_notes', via: [:get, :post]
+      match '/mods/:id/related_mod_notes', to: 'mods#related_mod_notes', via: [:get, :post]
       match '/mods/:id/analysis', to: 'mods#analysis', via: [:get, :post]
 
       # reviews
@@ -260,6 +261,7 @@ Rails.application.routes.draw do
   match '/mods/:id/compatibility_notes', to: 'mods#compatibility_notes', via: [:get, :post]
   match '/mods/:id/install_order_notes', to: 'mods#install_order_notes', via: [:get, :post]
   match '/mods/:id/load_order_notes', to: 'mods#load_order_notes', via: [:get, :post]
+  match '/mods/:id/related_mod_notes', to: 'mods#related_mod_notes', via: [:get, :post]
   match '/mods/:id/analysis', to: 'mods#analysis', via: [:get, :post]
 
   # reviews
