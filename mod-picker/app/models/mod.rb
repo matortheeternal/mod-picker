@@ -158,6 +158,8 @@ class Mod < ActiveRecord::Base
   counter_cache :reviews, conditional: { hidden: false, approved: true }
   counter_cache :compatibility_notes, conditional: { hidden: false, approved: true },
       custom_reflection: { klass: CompatibilityNote, query_method: 'mod_count_subquery' }
+  counter_cache :related_mod_notes, conditional: { hidden: false, approved: true },
+      custom_reflection: { klass: RelatedModNote, query_method: 'mod_count_subquery' }
   counter_cache :install_order_notes, conditional: { hidden: false, approved: true },
       custom_reflection: { klass: InstallOrderNote, query_method: 'mod_count_subquery' }
   counter_cache :load_order_notes, conditional: { hidden: false, approved: true },
@@ -277,6 +279,10 @@ class Mod < ActiveRecord::Base
 
   def load_order_notes
     LoadOrderNote.plugin(plugins.ids)
+  end
+
+  def related_mod_notes
+    RelatedModNote.mod(id)
   end
 
   def contribution_authors
