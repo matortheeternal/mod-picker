@@ -256,7 +256,7 @@ app.controller('modListController', function($scope, $rootScope, $q, $state, $st
             var params = {
                 type: "success",
                 text: "Cloned mod list successfully.  Click here to view it.",
-                url: "mod-list/"+data.mod_list.id
+                url: "mod-lists/"+data.mod_list.id
             };
             $scope.$emit('customMessage', params);
         }, function(response) {

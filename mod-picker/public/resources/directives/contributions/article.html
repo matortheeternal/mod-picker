@@ -1,11 +1,11 @@
 <div class="news-box" ng-class="{ 'full-article' : showFull }">
     <div class="image-container">
-        <a ng-href="article/{{article.id}}">
+        <a ng-href="articles/{{article.id}}">
             <img ng-src="{{article.images.medium}}" />
         </a>
     </div>
     <div class="content-container">
-        <a ng-href="article/{{article.id}}" ng-if="!showFull">
+        <a ng-href="articles/{{article.id}}" ng-if="!showFull">
             <h3 class="article-title">{{article.title}}</h3>
         </a>
         <h3 ng-if="showFull" class="article-title">{{article.title}}</h3>
@@ -14,7 +14,7 @@
             on {{article.submitted | date}}
         </span>
         <div class="text-container" marked="article.text_body"></div>
-        <a ng-href="article/{{article.id}}" ng-if="truncated">
+        <a ng-href="articles/{{article.id}}" ng-if="truncated">
             Read More
         </a>
     </div>

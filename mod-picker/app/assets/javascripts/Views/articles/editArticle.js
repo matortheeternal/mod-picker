@@ -82,7 +82,7 @@ app.controller('editArticleController', function($scope, $stateParams, article, 
         var articleDiff = objectUtils.getDifferentObjectValues($scope.originalArticle, $scope.article);
         var articleLinks = [
             {
-                link: "article/" + articleId,
+                link: "articles/" + articleId,
                 linkLabel: "view the updated article."
             },
             {

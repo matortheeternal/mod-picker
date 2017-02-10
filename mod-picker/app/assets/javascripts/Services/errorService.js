@@ -39,15 +39,15 @@ app.service('errorService', function($q) {
         var url, label;
         switch(errorResponse.config.url) {
             case "/compatibility_notes.json":
-                url = "mod/" + baseId + "/compatibility/" + id;
+                url = "mods/" + baseId + "/compatibility/" + id;
                 label = "Compatibility Note";
                 break;
             case "/install_order_notes.json":
-                url = "mod/" + baseId + "/install-order/" + id;
+                url = "mods/" + baseId + "/install-order/" + id;
                 label = "Install Order Note";
                 break;
             case "/load_order_notes.json":
-                url = "mod/" + baseId + "/load-order/" + id;
+                url = "mods/" + baseId + "/load-order/" + id;
                 label = "Load Order Note";
                 break;
         }
