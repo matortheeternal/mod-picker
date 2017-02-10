@@ -50,7 +50,7 @@ class LoadOrderNote < ActiveRecord::Base
   has_many :mod_list_ignored_notes, :as => 'note'
 
   # old versions of this load order note
-  has_many :history_entries, :class_name => 'LoadOrderNoteHistoryEntry', :inverse_of => 'load_order_note', :foreign_key => 'load_order_note_id'
+  has_many :history_entries, :class_name => 'LoadOrderNoteHistoryEntry', :inverse_of => 'load_order_note', :foreign_key => 'load_order_note_id', :dependent => :destroy
   has_many :editors, -> { uniq }, :class_name => 'User', :through => 'history_entries'
 
   # COUNTER CACHE
@@ -59,8 +59,9 @@ class LoadOrderNote < ActiveRecord::Base
   # VALIDATIONS
   validates :game_id, :submitted_by, :first_plugin_id, :second_plugin_id, :text_body, presence: true
 
-  validates :text_body, length: {in: 256..16384}
+  validates :text_body, length: {in: 128..16384}
   validate :validate_unique_plugins
+  validate :validate_no_master_dependency
 
   # CALLBACKS
   before_save :set_adult
@@ -89,6 +90,15 @@ class LoadOrderNote < ActiveRecord::Base
     note_exists_error(existing_note) if existing_note.present?
   end
 
+  def plugin_is_master
+    second_plugin.masters.pluck(:master_plugin_id).include?(first_plugin_id) ||
+        first_plugin.masters.pluck(:master_plugin_id).include?(second_plugin_id)
+  end
+
+  def validate_no_master_dependency
+    errors.add(:plugins, "Load Order Notes for plugins with master dependencies are redundant.") if plugin_is_master
+  end
+
   def mod_author_users
     User.includes(:mod_authors).where(:mod_authors => {mod_id: [first_mod.id, second_mod.id]})
   end
@@ -105,6 +115,7 @@ class LoadOrderNote < ActiveRecord::Base
 
   def self.update_adult(ids)
     LoadOrderNote.where(id: ids).joins(:first_mod, :second_mod).update_all("load_order_notes.has_adult_content = mods.has_adult_content OR second_mods_load_order_notes.has_adult_content")
+    Correction.update_adult(LoadOrderNote, ids)
   end
 
   def self.join_to_mod_options(query, source_column, plugins, options)

@@ -1,8 +1,16 @@
+// redirect for the old url format of /mod/:modId/edit
+app.config(['$stateProvider', function($stateProvider) {
+    $stateProvider.state('base.old-edit-mod', {
+        url: '/mod/:modId/edit',
+        redirectTo: 'base.editMod'
+    })
+}]);
+
 app.config(['$stateProvider', function($stateProvider) {
     $stateProvider.state('base.edit-mod', {
         templateUrl: '/resources/partials/mod/editMod.html',
         controller: 'editModController',
-        url: '/mod/:modId/edit',
+        url: '/mods/:modId/edit',
         resolve: {
             modObject: function(modService, $stateParams, $q) {
                 var mod = $q.defer();
@@ -163,11 +171,11 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
         if ($scope.imageSuccess && $scope.modSuccess) {
             $scope.submissionSuccess("Mod updated successfully!", [
                 { 
-                    link: "#/mod/" + $scope.mod.id, 
+                    link: "mod/" + $scope.mod.id,
                     linkLabel: "return to the mod page."
                 },
                 {
-                    link: "#/mods", 
+                    link: "mods",
                     linkLabel: "return to the mods index page." 
                 }
             ]);

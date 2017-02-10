@@ -178,8 +178,10 @@ class WorkshopHelper
     stats = doc.at_css(".detailsStatsContainerRight").css(".detailsStatRight")
     date_submitted_str = stats[1].text.strip
     mod_data[:released] = DateTime.parse(date_submitted_str, workshop_date_format)
-    date_updated_str = stats[2].text.strip
-    mod_data[:updated] = DateTime.parse(date_updated_str, workshop_date_format)
+    if stats.length > 2
+      date_updated_str = stats[2].text.strip
+      mod_data[:updated] = DateTime.parse(date_updated_str, workshop_date_format)
+    end
 
     # scrape statistics
     mod_data[:has_stats] = Rails.application.config.scrape_workshop_statistics
@@ -197,8 +199,10 @@ class WorkshopHelper
       mod_data[:favorites] = statsTableRows[2].css("td")[0].text.gsub(',', '').to_i
       # <#highlight_strip_scroll>
       highlightStrip = doc.at_css("#highlight_strip_scroll")
-      mod_data[:images_count] = highlightStrip.css(".highlight_strip_screenshot").length
-      mod_data[:videos_count] = highlightStrip.css(".highlight_strip_movie").length
+      if highlightStrip.present?
+        mod_data[:images_count] = highlightStrip.css(".highlight_strip_screenshot").length
+        mod_data[:videos_count] = highlightStrip.css(".highlight_strip_movie").length
+      end
     end
 
     # return the mod data

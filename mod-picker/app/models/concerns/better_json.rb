@@ -63,7 +63,7 @@ module BetterJson
   module ClassMethods
     def get_template_options(options)
       options = get_json_template(options[:format] || :base) if json_options_empty(options)
-      options
+      options.deep_dup
     end
 
     def json_options_empty(options)

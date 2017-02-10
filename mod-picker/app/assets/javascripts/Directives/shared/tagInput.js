@@ -64,11 +64,11 @@ app.controller('tagInputController', function($scope, $timeout, formUtils) {
     };
 
     $scope.selectResult = function(result) {
-        $scope.tag = result;
-        $scope.applyTag($scope.index, result);
-        $scope.showDropdown = false;
-        $scope.results = [];
-        $scope.$applyAsync();
+        $scope.$applyAsync(function() {
+            $scope.applyTag($scope.index, result);
+            $scope.showDropdown = false;
+            $scope.results = [];
+        });
     };
 
     $scope.blurTag = function() {
@@ -95,12 +95,13 @@ app.controller('tagInputController', function($scope, $timeout, formUtils) {
 
         // pressing enter applies dropdown selection and adds a new tag
         if (key == 13) {
-            var isValidTag = $scope.tags.indexOf($scope.tag) > -1;
+            var existingTag = $scope.tags.find(function(tag) {
+                return $scope.tag.text === tag.text;
+            });
             if ($scope.currentIndex >= 0 && $scope.currentIndex < $scope.results.length) {
                 $scope.selectResult($scope.results[$scope.currentIndex]);
-            } else if (isValidTag) {
-                $scope.showDropdown = false;
-                $scope.results = [];
+            } else if (existingTag) {
+                $scope.selectResult(existingTag);
             } else if ($scope.canCreate) {
                 $scope.selectResult({
                     text: $scope.tag.text,
@@ -110,7 +111,6 @@ app.controller('tagInputController', function($scope, $timeout, formUtils) {
             } else {
                 return;
             }
-            $scope.addTag();
             $event.preventDefault();
             $event.stopPropagation();
         }
@@ -178,11 +178,10 @@ app.controller('tagInputController', function($scope, $timeout, formUtils) {
 app.directive('autoSelect', function($timeout) {
     return function(scope, element, attrs) {
         scope.$watch(attrs.autoSelect, function(newval) {
-            if (newval) {
-                $timeout(function() {
-                    element[0].select();
-                }, 0, false);
-            }
+            if (!newval) return;
+            $timeout(function() {
+                element[0].select();
+            }, 0, false);
         });
     };
 });

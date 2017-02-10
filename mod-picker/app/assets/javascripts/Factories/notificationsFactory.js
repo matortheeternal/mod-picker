@@ -82,19 +82,19 @@ app.service('notificationsFactory', function() {
     ];
 
     var noteContentLink =
-        '<a href="#/mod/{{content.first_mod.id}}">{{content.first_mod.name}}</a> and ' +
-        '<a href="#/mod/{{content.second_mod.id}}">{{content.second_mod.name}}</a>';
+        '<a href="mod/{{content.first_mod.id}}">{{content.first_mod.name}}</a> and ' +
+        '<a href="mod/{{content.second_mod.id}}">{{content.second_mod.name}}</a>';
     var associatedModLink =
-        '<a href="#/mod/{{content.mod.id}}">{{content.mod.name}}</a>';
+        '<a href="mod/{{content.mod.id}}">{{content.mod.name}}</a>';
     var associatedModListLink =
-        '<a href="#/mod-list/{{content.mod_list.id}}">{{content.mod_list.name}}</a>';
+        '<a href="mod-list/{{content.mod_list.id}}">{{content.mod_list.name}}</a>';
     var noteCorrectionCommentLink = function(noteType) {
         var noteTypeDashed = noteType.replace(' ', '-');
-        return '<a href="#/mod/{{content.commentable.correctable.first_mod.id}}/' + noteTypeDashed + '/{{content.commentable.correctable_id}}">((commentableOwnerClause)) ' + noteType + ' note correction</a>';
+        return '<a href="mod/{{content.commentable.correctable.first_mod.id}}/' + noteTypeDashed + '/{{content.commentable.correctable_id}}">((commentableOwnerClause)) ' + noteType + ' note correction</a>';
     };
     var noteCorrectionLink = function(noteType) {
         var noteTypeDashed = noteType.replace(' ', '-');
-        return '<a href="#/mod/{{content.correctable.first_mod.id}}/' + noteTypeDashed + '/{{content.correctable_id}}">your ' + noteType + ' note</a>';
+        return '<a href="mod/{{content.correctable.first_mod.id}}/' + noteTypeDashed + '/{{content.correctable_id}}">your ' + noteType + ' note</a>';
     };
     this.contentLinks = {
         Review: associatedModLink,
@@ -104,26 +104,26 @@ app.service('notificationsFactory', function() {
         ModTag: associatedModLink,
         ModListTag: associatedModListLink,
         ModAuthor: associatedModLink,
-        Mod: '<a href="#/mod/{{event.content_id}}">{{content.name}}</a>',
-        ModList: '<a href="#/mod-list/{{event.content_id}}">{{content.name}}</a>',
-        UserReputation: '<a href="#/user/{{event.content.user.id}}">{{content.user.username}}</a> has',
+        Mod: '<a href="mod/{{event.content_id}}">{{content.name}}</a>',
+        ModList: '<a href="mod-list/{{event.content_id}}">{{content.name}}</a>',
+        UserReputation: '<a href="user/{{event.content.user.id}}">{{content.user.username}}</a> has',
         Comment: {
             key: "commentable",
-            Article: '<a href="#/article/{{content.commentable_id}}">{{content.commentable.title}}</a>',
-            User: '<a href="#/user/{{content.commentable_id}}">((commentableOwnerClause)) profile</a>',
+            Article: '<a href="article/{{content.commentable_id}}">{{content.commentable.title}}</a>',
+            User: '<a href="user/{{content.commentable_id}}">((commentableOwnerClause)) profile</a>',
             Correction: {
                 key: "correctable",
-                Mod: '<a href="#/mod/{{content.commentable.correctable_id}}">((commentableOwnerClause)) appeal</a>',
+                Mod: '<a href="mod/{{content.commentable.correctable_id}}">((commentableOwnerClause)) appeal</a>',
                 CompatibilityNote: noteCorrectionCommentLink("compatibility"),
                 InstallOrderNote: noteCorrectionCommentLink("install order"),
                 LoadOrderNote: noteCorrectionCommentLink("load order")
             },
-            ModList: '<a href="#/mod-list/{{content.commentable_id}}/comments">((commentableOwnerClause)) mod list</a>',
+            ModList: '<a href="mod-list/{{content.commentable_id}}/comments">((commentableOwnerClause)) mod list</a>',
             HelpPage: '<a href="/help/{{content.commentable.title}}">{{content.commentable.title}}</a>'
         },
         Correction: {
             key: "correctable",
-            Mod: '<a href="#/mod/{{content.correctable.id}}">{{content.correctable.name}}</a>',
+            Mod: '<a href="mod/{{content.correctable.id}}">{{content.correctable.name}}</a>',
             CompatibilityNote: noteCorrectionLink("compatibility"),
             InstallOrderNote: noteCorrectionLink("install order"),
             LoadOrderNote: noteCorrectionLink("load order")
@@ -132,10 +132,10 @@ app.service('notificationsFactory', function() {
 
     var noteCorrectionDescription = function(noteType) {
         var noteTypeDashed = noteType.replace(' ', '-');
-        return '((ownershipClause)) correction on <a href="#/user/{{content.correctable.submitter.id}}">{{content.correctable.submitter.username}}\'s</a> <a href="#/mod/{{content.correctable.first_mod.id}}/'+noteTypeDashed+'/{{content.correctable_id}}">'+noteType+' note</a>';
+        return '((ownershipClause)) correction on <a href="user/{{content.correctable.submitter.id}}">{{content.correctable.submitter.username}}\'s</a> <a href="mod/{{content.correctable.first_mod.id}}/'+noteTypeDashed+'/{{content.correctable_id}}">'+noteType+' note</a>';
     };
     this.correctionDescriptions = {
-        Mod: '((ownershipClause)) appeal to mark <a href="#/mod/{{content.correctable.id}}">{{content.correctable.name}}</a> as {{content.mod_status}}',
+        Mod: '((ownershipClause)) appeal to mark <a href="mod/{{content.correctable.id}}">{{content.correctable.name}}</a> as {{content.mod_status}}',
         CompatibilityNote: noteCorrectionDescription('compatibility'),
         InstallOrderNote: noteCorrectionDescription('install order'),
         LoadOrderNote: noteCorrectionDescription('load order')
@@ -154,6 +154,7 @@ app.service('notificationsFactory', function() {
             banned: "You have been banned.",
             restricted: "Your account has been restricted.  You can no longer make public contributions.",
             user: "Your account has been returned to normal status.",
+            helper: "You are now a helper on Mod Picker.",
             moderator: "You are now a moderator on Mod Picker!",
             admin: "You are now a site admin.  Remember, with great power comes great responsibility."
         },
@@ -223,7 +224,7 @@ app.service('notificationsFactory', function() {
 
     this.authorUserClause = function(event) {
         if (factory.currentUserID !== event.content.user.id) {
-            return '<a href="#/user/{{content.user.id}}">{{content.user.username}}</a> has';
+            return '<a href="user/{{content.user.id}}">{{content.user.username}}</a> has';
         } else {
             return 'You have';
         }
@@ -265,14 +266,14 @@ app.service('notificationsFactory', function() {
     };
 
     this.endorser = function(event) {
-        return '<a href="#/user/{{content.source_user.id}}">{{content.source_user.username}}</a>';
+        return '<a href="user/{{content.source_user.id}}">{{content.source_user.username}}</a>';
     };
 
     this.endorsee = function(event) {
-        if (content.target_user.id == factory.currentUserID) {
+        if (event.content.target_user.id == factory.currentUserID) {
             return 'you';
         } else {
-            return '<a href="#/user/{{content.target_user.id}}">{{content.target_user.username}}</a>'
+            return '<a href="user/{{content.target_user.id}}">{{content.target_user.username}}</a>'
         }
     };
 

@@ -10,7 +10,7 @@ app.service('columnsFactory', function() {
                 label: "Mod Name",
                 data: "name",
                 link: function(mod) {
-                    return "#/mod/" + mod.id
+                    return "mod/" + mod.id
                 },
                 invertSort: true
             },
@@ -76,6 +76,13 @@ app.service('columnsFactory', function() {
                 label: "Avg Rating",
                 data: "average_rating",
                 filter: "number:0"
+            },
+            {
+                group: "Mod Picker",
+                visibility: false,
+                label: "Mod Options",
+                data: "mod_options_count",
+                filter: "number"
             },
             {
                 group: "Mod Picker",
@@ -292,7 +299,7 @@ app.service('columnsFactory', function() {
                 },
                 imageClass: "avatar-small",
                 link: function(user) {
-                    return "#/user/" + user.id
+                    return "user/" + user.id
                 },
                 invertSort: true
             },
@@ -487,7 +494,7 @@ app.service('columnsFactory', function() {
                 },
                 link: function(item) {
                     if (item.mod) {
-                        return "#/mod/" + item.mod.id;
+                        return "mod/" + item.mod.id;
                     } else if (item.url) {
                         return item.url;
                     }
@@ -549,6 +556,13 @@ app.service('columnsFactory', function() {
                 visibility: false,
                 label: "Stars",
                 data: "mod.stars_count",
+                filter: "number"
+            },
+            {
+                group: "General",
+                visibility: false,
+                label: "Mod Options",
+                data: "mod.mod_options_count",
                 filter: "number"
             },
             {
@@ -628,7 +642,7 @@ app.service('columnsFactory', function() {
                 },
                 link: function(item) {
                     if (item.mod && item.plugin) {
-                        return "#/mod/" + item.mod.id + "/analysis?plugin=" + item.plugin.id;
+                        return "mod/" + item.mod.id + "/analysis?plugin=" + item.plugin.id;
                     }
                 },
                 note: function($scope, item) {
@@ -645,7 +659,7 @@ app.service('columnsFactory', function() {
                 data: "mod.name",
                 link: function(item) {
                     if (item.mod) {
-                        return "#/mod/" + item.mod.id;
+                        return "mod/" + item.mod.id;
                     }
                 },
                 sortData: "mods.name",
@@ -728,7 +742,7 @@ app.service('columnsFactory', function() {
                 data: "name",
                 class: "primary-column",
                 link: function(item) {
-                    return "#/mod-list/" + item.id;
+                    return "mod-list/" + item.id;
                 },
                 invertSort: true
             },
@@ -738,7 +752,7 @@ app.service('columnsFactory', function() {
                 label: "Submitter",
                 data: "submitter.username",
                 link: function(item) {
-                    return "#/user/" + item.submitter.id;
+                    return "user/" + item.submitter.id;
                 },
                 sortData: "users.username",
                 invertSort: true
@@ -942,7 +956,7 @@ app.service('columnsFactory', function() {
                 data: "filename",
                 class: "primary-column",
                 link: function(item) {
-                    return "#/mod/" + item.mod.id + "/analysis?plugin=" + item.id;
+                    return "mod/" + item.mod.id + "/analysis?plugin=" + item.id;
                 },
                 invertSort: true
             },
@@ -952,7 +966,7 @@ app.service('columnsFactory', function() {
                 label: "Mod",
                 data: "mod.name",
                 link: function(item) {
-                    return "#/mod/" + item.mod.id;
+                    return "mod/" + item.mod.id;
                 },
                 sortData: "mods.name",
                 invertSort: true
@@ -1088,6 +1102,40 @@ app.service('columnsFactory', function() {
         ];
     };
 
+    this.modImportColumns = function() {
+        return [
+            {
+                label: "Source Data",
+                data: "sourceData"
+            },
+            {
+                label: "Mod",
+                data: "name"
+            },
+            {
+                label: "Custom",
+                data: "custom"
+            }
+        ]
+    };
+
+    this.pluginImportColumns = function() {
+        return [
+            {
+                label: "Plugin Filename",
+                data: "filename"
+            },
+            {
+                label: "Mod",
+                data: "mod_name"
+            },
+            {
+                label: "Custom",
+                data: "custom"
+            }
+        ]
+    };
+
     this.tagColumns = function() {
         return [
             {
@@ -1105,7 +1153,7 @@ app.service('columnsFactory', function() {
                 label: "Submitter",
                 data: "submitter.username",
                 link: function(item) {
-                    return "#/user/" + item.submitter.id;
+                    return "user/" + item.submitter.id;
                 },
                 invertSort: true
             },
@@ -1127,6 +1175,53 @@ app.service('columnsFactory', function() {
     };
 
     this.tagColumnGroups = function() {
+        return ["General"];
+    };
+
+    this.apiTokenColumns = function() {
+        return [
+            {
+                group: "General",
+                visibility: true,
+                required: true,
+                label: "Name",
+                data: "name",
+                invertSort: true,
+                dynamic: true
+            },
+            {
+                group: "General",
+                visibility: true,
+                label: "API Key",
+                data: "api_key",
+                invertSort: true
+            },
+            {
+                group: "General",
+                visibility: true,
+                label: "Requests",
+                data: "requests_count",
+                filter: "number"
+            },
+            {
+                group: "General",
+                visibility: true,
+                label: "Created",
+                data: "created",
+                filter: "date"
+            },
+            {
+                group: "General",
+                visibility: true,
+                label: "Expired",
+                data: "date_expired",
+                filter: "date",
+                dynamic: true
+            }
+        ]
+    };
+
+    this.apiTokenColumnGroups = function() {
         return ["General"];
     };
 });

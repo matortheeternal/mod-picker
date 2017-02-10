@@ -7,7 +7,7 @@ app.directive('modSources', function() {
     }
 });
 
-app.controller('modSourcesController', function($scope, sitesFactory, scrapeService) {
+app.controller('modSourcesController', function($scope, $rootScope, sitesFactory, scrapeService) {
     $scope.addSource = function() {
         if ($scope.mod.sources.length == $scope.sites.length) return;
         $scope.mod.sources.push({
@@ -27,7 +27,8 @@ app.controller('modSourcesController', function($scope, sitesFactory, scrapeServ
         var sourceUsed = $scope.mod.sources.find(function(item, index) {
             return index != sourceIndex && item.label === source.label
         });
-        var match = source.url.match(site.modUrlFormat);
+        var urlFormat = sitesFactory.getModUrlFormat(site, $rootScope.currentGame);
+        var match = source.url.match(urlFormat);
         source.valid = !sourceUsed && match != null;
     };
 
@@ -46,7 +47,8 @@ app.controller('modSourcesController', function($scope, sitesFactory, scrapeServ
     $scope.scrapeSource = function(source) {
         // exit if the source is invalid
         var site = sitesFactory.getSite(source.label);
-        var match = source.url.match(site.modUrlFormat);
+        var urlFormat = sitesFactory.getModUrlFormat(site, $rootScope.currentGame);
+        var match = source.url.match(urlFormat);
         if (!match) {
             return;
         }
@@ -70,7 +72,7 @@ app.controller('modSourcesController', function($scope, sitesFactory, scrapeServ
                 $scope.$emit('customMessage', {
                     type: 'error',
                     text: "Error scraping "+source.label+" mod page, "+response.data.error,
-                    url: baseUrl + "#/mod/" + response.data.mod_id
+                    url: baseUrl + "mod/" + response.data.mod_id
                 });
             } else {
                 $scope.$emit('errorMessage', {
@@ -107,6 +109,6 @@ app.controller('modSourcesController', function($scope, sitesFactory, scrapeServ
     };
 
     $scope.validateCustomSource = function(source) {
-        source.valid = (source.label.length > 4) && (source.url.length > 12);
+        source.valid = (source.label.length > 3) && (source.url.length > 12);
     };
 });

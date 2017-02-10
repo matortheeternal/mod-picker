@@ -227,6 +227,13 @@
     max-height: 400px;
     min-height: 400px;
   }
+
+  .CodeMirror-fullscreen {
+    max-height: none;
+    .CodeMirror-scroll {
+      max-height: none;
+    }
+  }
 }
 
 .mod-page-btn {

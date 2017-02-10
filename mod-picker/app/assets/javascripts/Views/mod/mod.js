@@ -1,8 +1,31 @@
+// redirects for the old url format of /mod/:modId
+app.config(['$stateProvider', function($stateProvider) {
+    $stateProvider.state('base.old-mod', {
+        url: '/mod/:modId',
+        redirectTo: 'base.mod'
+    }).state('base.old-mod.Reviews', {
+        url: '/reviews/{reviewId:int}?{page:int}&scol&sdir',
+        redirectTo: 'base.mod.Reviews'
+    }).state('base.old-mod.Compatibility', {
+        url: '/compatibility/{compatibilityNoteId:int}?{page:int}&scol&sdir&{filter:bool}',
+        redirectTo: 'base.mod.Compatibility'
+    }).state('base.old-mod.Install Order', {
+        url: '/install-order/{installOrderNoteId:int}?{page:int}&scol&sdir&{filter:bool}',
+        redirectTo: 'base.mod.Install Order'
+    }).state('base.old-mod.Load Order', {
+        url: '/load-order/{loadOrderNoteId:int}?{page:int}&scol&sdir&{filter:bool}',
+        redirectTo: 'base.mod.Load Order'
+    }).state('base.old-mod.Analysis', {
+        url: '/analysis?options&{plugin:int}',
+        redirectTo: 'base.mod.Analysis'
+    });
+}]);
+
 app.config(['$stateProvider', function($stateProvider) {
     $stateProvider.state('base.mod', {
         templateUrl: '/resources/partials/mod/mod.html',
         controller: 'modController',
-        url: '/mod/:modId',
+        url: '/mods/:modId',
         resolve: {
             modObject: function($stateParams, $q, categories, modService, categoryService) {
                 var mod = $q.defer();
@@ -197,7 +220,7 @@ app.controller('modController', function($scope, $rootScope, $q, $stateParams, $
     var isAuthor = angular.isDefined(author);
     var isCurator = isAuthor && (author.role === 'curator');
     $scope.permissions.isAuthor = isAuthor;
-    $scope.permissions.canManage = $scope.permissions.canModerate || isAuthor;
+    $scope.permissions.canManage = $scope.permissions.canManageMods || isAuthor;
     $scope.permissions.canReview = $scope.permissions.canContribute && (isCurator || !isAuthor);
 
     var redirectToFirstTab = function() {
@@ -290,7 +313,7 @@ app.controller('modController', function($scope, $rootScope, $q, $stateParams, $
     };
 
     $scope.editMod = function() {
-        $window.location.hash = '#/mod/' + $scope.mod.id + '/edit';
+        $window.location.hash = 'mod/' + $scope.mod.id + '/edit';
     };
 
     $scope.starMod = function() {
@@ -298,6 +321,16 @@ app.controller('modController', function($scope, $rootScope, $q, $stateParams, $
             $scope.mod.star = !$scope.mod.star;
         }, function(response) {
             var params = { label: 'Error starring mod', response: response };
+            $scope.$emit('errorMessage', params);
+        });
+    };
+
+    $scope.unHideMod = function() {
+        modService.hideMod($scope.mod.id, false).then(function() {
+            $scope.mod.hidden = false;
+            $scope.$emit('successMessage', 'Mod unhidden successfully.');
+        }, function(response) {
+            var params = { label: 'Error unhiding mod', response: response };
             $scope.$emit('errorMessage', params);
         });
     };

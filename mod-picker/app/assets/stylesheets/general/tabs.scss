@@ -123,6 +123,18 @@ two-columns {
       top: 30px;
     }
   }
+
+  a.quality-item {
+    cursor: pointer;
+    color: $text_color;
+  }
+}
+
+.inverse-items {
+  .quality-item {
+    background-color: $secondary_background;
+    border: 1px solid $hard_border_color;
+  }
 }
 
 .tabs-column {

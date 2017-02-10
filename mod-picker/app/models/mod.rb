@@ -17,6 +17,7 @@ class Mod < ActiveRecord::Base
 
   # NOTIFICATION SUBSCRIPTIONS
   subscribe :author_users, to: [:updated, :hidden, :unhidden, *Event.milestones]
+  # TODO: Fix this.
   # subscribe :contribution_authors, to: [:analysis_updated]
   # subscribe :user_stars, to: [:analysis_updated]
 
@@ -34,7 +35,8 @@ class Mod < ActiveRecord::Base
   date_scope :released, :updated, :submitted
   range_scope :reputation, :tags_count
   range_scope :average_rating, :alias => 'rating'
-  counter_scope :plugins_count, :asset_files_count, :required_mods_count, :required_by_count, :stars_count, :mod_lists_count, :reviews_count, :compatibility_notes_count, :install_order_notes_count, :load_order_notes_count, :corrections_count
+  counter_scope :mod_options_count, :plugins_count, :asset_files_count, :required_mods_count, :required_by_count, :stars_count, :mod_lists_count, :reviews_count, :compatibility_notes_count, :install_order_notes_count, :load_order_notes_count, :corrections_count
+  source_search_scope :mod_name, :sites => [:nexus, :lab, :workshop]
   source_scope :views, :sites =>  [:nexus, :lab, :workshop]
   source_scope :downloads, :sites => [:nexus, :lab]
   source_scope :file_size, :sites => [:nexus, :lab]
@@ -62,21 +64,16 @@ class Mod < ActiveRecord::Base
     where.not(id: mod_list.incompatible_mod_ids)
   }
   scope :sources, -> (sources) {
-    query = where(nil)
-    where_clause = []
-
-    sources.each_key do |key|
-      if sources[key]
-        table = get_source_table(key)
-        query = query.includes(table).references(table)
-        where_clause.push("#{table}.id IS NOT NULL")
-      end
-    end
-
-    query.where(where_clause.join(" OR "))
+    eager_load(sources.map {|key, value| get_source_class(key).table_name if value}.compact).
+        where(sources.map {|key, value|
+          get_source_class(key).arel_table[get_source_primary_key_column(key)].not_eq(nil) if value}.compact.inject(:or))
+  }
+  scope :source_mod_name, -> (mod_name, source_class) {
+    eager_load(source_class.table_name).where(source_class.arel_table[:mod_name].eq(mod_name))
   }
   scope :categories, -> (ids) { where("primary_category_id in (:ids) OR secondary_category_id in (:ids)", ids: ids) }
   scope :author, -> (hash) {
+    # TODO: arel here
     author = hash[:value]
     sources = hash[:sources]
     where_clause = []
@@ -87,6 +84,9 @@ class Mod < ActiveRecord::Base
     results = where_clause.push("mods.authors like :author") if sources[:other]
 
     where(where_clause.join(" OR "), author: author)
+  }
+  scope :nexus_id, -> (id) {
+    eager_load(:nexus_infos).where(nexus_infos: { nexus_id: id })
   }
 
   belongs_to :game, :inverse_of => 'mods'
@@ -175,6 +175,30 @@ class Mod < ActiveRecord::Base
   before_create :set_id
   before_save :touch_updated
 
+  def self.find_by_mod_name(mod_name, game)
+    base_query = Mod.visible.game(game)
+    base_query.search(mod_name).first ||
+        base_query.source_mod_name(mod_name, NexusInfo).first ||
+        base_query.source_mod_name(mod_name, LoverInfo).first ||
+        base_query.source_mod_name(mod_name, WorkshopInfo).first
+  end
+
+  def self.find_batch(batch, game)
+    batch.collect do |item|
+      if item.has_key?(:nexus_info_id)
+        Mod.visible.game(game).nexus_id(item[:nexus_info_id]).first
+      else
+        Mod.find_by_mod_name(item[:mod_name], game)
+      end
+    end
+  end
+
+  def self.submission_history(time_zone)
+    pluck(:submitted).group_by { |d|
+      d.in_time_zone(time_zone).to_date.to_s(:db)
+    }.map { |k,v| [k, v.length] }.sort
+  end
+
   def visible
     approved && !hidden
   end
@@ -201,6 +225,7 @@ class Mod < ActiveRecord::Base
 
   def update_lazy_counters
     mod_option_ids = mod_options.ids
+    self.mod_options_count = mod_options.count
     self.asset_files_count = ModAssetFile.mod_options(mod_option_ids).count
     self.plugins_count = Plugin.mod_options(mod_option_ids).count
   end

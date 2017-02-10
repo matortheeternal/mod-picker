@@ -13,8 +13,8 @@ module Filterable
     def parse_date(datestr)
       if datestr == "Now"
         DateTime.now.utc
-      elsif (match = /([0-9]+) hours ago/.match(datestr))
-        match[1].to_i.hours.ago
+      elsif (match = /([0-9]+) (minute|hour|day|month)(s)? ago/.match(datestr))
+        match[1].to_i.public_send(:"#{match[2]}s").ago
       else
         DateTime.strptime(datestr, "%m/%d/%Y")
       end

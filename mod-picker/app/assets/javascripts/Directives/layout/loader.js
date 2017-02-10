@@ -12,7 +12,7 @@ app.directive('loader', function(spinnerFactory) {
         link: function(scope, element, attrs) {
             var opts = spinnerFactory.getOpts(scope.spinnerClass);
             var target = element.children()[0].firstElementChild;
-            var spinner = new Spinner(opts).spin(target);
+            scope.spinner = new Spinner(opts).spin(target);
         }
     }
 });

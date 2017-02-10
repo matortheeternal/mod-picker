@@ -1,5 +1,6 @@
 //= require_self
 //= require ./polyfills.js
+//= require ./es6-polyfills.js
 //= require_tree ./BackendAPI
 //= require_tree ./Directives
 //= require_tree ./Factories
@@ -12,28 +13,41 @@
  (c) 2016 Mod Picker, LLC. https://www.modpicker.com
 */
 
+// fix urls in the old hash format
+if (["/skyrim", "/skyrimse"].indexOf(window.location.pathname) > -1) {
+    window.location.pathname += "/";
+}
+
 var app = angular.module('modPicker', [
     'ui.router', 'rzModule', 'ngAnimate', 'puElasticInput', 'hc.marked', 'smoothScroll', 'relativeDate', 'ct.ui.router.extras', 'dndLists', 'pasvaz.bindonce'
 ]);
 
-app.config(['$httpProvider', '$compileProvider', function($httpProvider, $compileProvider) {
+app.config(['$httpProvider', '$compileProvider', '$locationProvider', function($httpProvider, $compileProvider, $locationProvider) {
     $httpProvider.useApplyAsync(true);
     $compileProvider.debugInfoEnabled(false);
+    $locationProvider.html5Mode(true);
 }]);
 
-app.config(function($urlMatcherFactoryProvider) {
+app.config(function($urlMatcherFactoryProvider, $urlRouterProvider) {
     //this allows urls with and without trailing slashes to go to the same state
     $urlMatcherFactoryProvider.strictMode(false);
     //this will not display url parameters that are set to their defaults
     $urlMatcherFactoryProvider.defaultSquashPolicy(true);
-});
 
-//redirect to /home if someone types in an incorrect url
-app.config(function($urlRouterProvider) {
+    // redirect to /home if someone types in an incorrect url
     $urlRouterProvider.otherwise('/home');
+    // force index pages to have higher priority than show pages
+    var goToState = function(stateName) {
+        return function($state, $location) {
+            $state.go(stateName, $location.search());
+        };
+    };
+    $urlRouterProvider.when('/mods', goToState('base.mods'));
+    $urlRouterProvider.when('/mod-lists', goToState('base.modLists'));
+    $urlRouterProvider.when('/articles', goToState('base.articles'));
 });
 
-//this allows states to be defined at runtime by 
+// allow states to be defined at runtime
 app.config(function($futureStateProvider) {
     var lazyStateFactory = function($q, futureState) {
         return $q.when(futureState);
@@ -43,6 +57,8 @@ app.config(function($futureStateProvider) {
 });
 
 app.run(['$rootScope', '$state', 'smoothScroll', function($rootScope, $state, smoothScroll) {
+    var lastToState;
+
     $rootScope.$on('$stateChangeStart', function(evt, toState, params, fromState) {
         //this adds a redirectTo option into ui router, which makes default tabs much nicer
         if (toState.redirectTo) {
@@ -52,7 +68,10 @@ app.run(['$rootScope', '$state', 'smoothScroll', function($rootScope, $state, sm
         //don't scroll if the transition is from one sticky state to another
         if (!toState.sticky || !fromState.sticky) {
             // scroll to the top of the page
-            smoothScroll(document.body, {duration: 300});
+            if (toState != lastToState) {
+                lastToState = toState;
+                smoothScroll(document.body, {duration: 300});
+            }
         }
     });
 

@@ -13,6 +13,7 @@ class ModListCustomPlugin < ActiveRecord::Base
   # VALIDATIONS
   validates :mod_list_id, :index, :filename, presence: true
   validates :merged, :cleaned, inclusion: [true, false]
+  validates :filename, length: {maximum: 255}
   validates :description, length: {maximum: 4096}
 
   def copy_attributes(mod_list_id, index, group_id)

@@ -37,6 +37,11 @@ class HelpfulMark < ActiveRecord::Base
   after_create :update_helpfulable_reputation
   before_destroy :update_helpfulable_reputation
 
+  def self.for_user_content(user, helpfulable_type, helpfulable_ids)
+    return [] unless user.present?
+    HelpfulMark.submitter(user.id).helpfulables(helpfulable_type, helpfulable_ids)
+  end
+
   private
     def update_helpfulable_reputation
       helpfulable.compute_reputation!

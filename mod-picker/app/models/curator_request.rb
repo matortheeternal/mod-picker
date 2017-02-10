@@ -15,6 +15,7 @@ class CuratorRequest < ActiveRecord::Base
 
   # UNIQUE SCOPES
   scope :mod_name, -> (name) { where("mods.name LIKE ?", "%#{name}%") }
+  scope :game, -> (game_id) { where("mods.game_id = ?", game_id) }
 
   # ASSOCIATIONS
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'curator_requests'
@@ -25,6 +26,10 @@ class CuratorRequest < ActiveRecord::Base
 
   # CALLBACKS
   before_update :toggle_curator
+
+  def self.unapproved_count
+    where(state: CuratorRequest.states[:open]).count
+  end
 
   def curator_attributes
     { mod_id: mod_id, user_id: submitted_by, role: 2 }

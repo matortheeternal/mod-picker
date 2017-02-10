@@ -9,7 +9,7 @@ header {
   background-size: cover;
   position: relative;
   height: 192px;
-  z-index: 100;
+  z-index: 200;
 
   #artist-credit {
     position: absolute;
@@ -72,26 +72,28 @@ header {
 /* css for navbar */
 nav {
   display: block;
-  background-color: $bar_color;
   white-space: nowrap;
+  position: relative;
+  z-index: 100;
 
-  .primary-nav {
+  primary-nav {
     .nav-item {
       border-left: 1px solid $bar_highlight_color;
-      height: 60px;
-      padding: 12px 12px 16px;
-      color: $bar_text_color;
       background-color: $bar_color;
-      display: block;
       float: left;
       position: relative;
-      z-index: 99;
       @include transition(background-color 0.2s ease-in-out);
 
       &:hover, &:focus {
-        outline: none;
-        color: $bar_text_color;
         background-color: $bar_highlight_color;
+        outline: none;
+      }
+
+      .nav-link {
+        display: block;
+        height: 60px;
+        padding: 12px 12px 16px;
+        color: $bar_text_color;
       }
 
       &:last-child {
@@ -103,8 +105,9 @@ nav {
       display: block;
       white-space: normal;
       position: absolute;
+      left: 0;
       text-align: center;
-      z-index: 2;
+      z-index: -1;
       top: 60px;
       padding: 10px;
       background-color: $bar_highlight_color;
@@ -141,17 +144,21 @@ nav {
       }
     }
 
-    #mod-lists-dropdown {
-      left: 270px;
+    #manage-lists-dropdown {
+      width: 320px;
     }
 
     #mods-dropdown {
-      left: 338px;
       width: 502px;
+      left: -156px;
+    }
+
+    #mod-lists-dropdown {
+      width: 320px;
+      left: -80px;
     }
 
     #contributions-dropdown {
-      left: 155px;
       width: 182px;
 
       a {
@@ -196,10 +203,12 @@ nav {
 }
 
 .nav-wrapper {
-  position: relative;
+  background-color: $bar_color;
+  z-index: 5;
+  height: 60px;
 }
 
-.primary-nav {
+primary-nav {
   float: left;
 }
 

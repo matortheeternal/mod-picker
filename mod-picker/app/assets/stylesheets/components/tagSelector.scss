@@ -2,7 +2,7 @@
   max-width: 400px;
   display: inline-block;
 
-  span {
+  span, a {
     display: inline-block;
     padding: 4px;
   }
@@ -17,6 +17,12 @@
     white-space: nowrap;
     display: block;
     float: left;
+    @include transition(background-color 0.2s ease-in-out);
+
+    &.red-box {
+      background-color: $error_secondary;
+    }
+
 
     .tag-text, .tag-count, .remove-tag, .add-tag {
       line-height: 14px;
@@ -24,7 +30,7 @@
       @include user-select(none);
     }
 
-    .tag-text {
+    span.tag-text {
       cursor: default;
     }
 
@@ -45,8 +51,15 @@
     }
 
     .tag-count {
+      color: inherit;
+      text-decoration: inherit;
+      cursor: pointer;
+      transition: none;
       border-left: 1px solid $border_color;
-      cursor: default;
+
+      &:hover {
+        color: inherit;
+      }
     }
 
     .remove-tag {

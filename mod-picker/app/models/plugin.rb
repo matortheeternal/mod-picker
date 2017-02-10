@@ -57,8 +57,8 @@ class Plugin < ActiveRecord::Base
   # VALIDATIONS
   validates :game_id, :mod_option_id, :filename, :crc_hash, :file_size, presence: true
 
-  validates :filename, length: {maximum: 64}
-  validates :author, length: {maximum: 128}
+  validates :filename, length: {maximum: 256}
+  validates :author, length: {maximum: 512}
   validates :description, length: {maximum: 512}
   validates :crc_hash, length: {is: 8}
 
@@ -70,6 +70,17 @@ class Plugin < ActiveRecord::Base
   after_save :create_associations, :update_lazy_counters
   before_update :clear_associations
   before_destroy :prepare_to_destroy
+
+  def self.find_batch(batch, game)
+    batch.collect do |item|
+      Plugin.visible.game(game).where(filename: item[:plugin_filename]).first
+    end
+  end
+
+  def self.find_master_plugin(game, master)
+    Plugin.game(game).where(filename: master[:filename], crc_hash: master[:crc_hash]).first ||
+        Plugin.game(game).where(filename: master[:filename]).first
+  end
 
   def update_lazy_counters
     self.errors_count = plugin_errors.count
@@ -85,8 +96,7 @@ class Plugin < ActiveRecord::Base
   def create_associations
     if @master_plugins
       @master_plugins.each_with_index do |master, index|
-        master_plugin = Plugin.find_by(filename: master[:filename], crc_hash: master[:crc_hash])
-        master_plugin = Plugin.find_by(filename: master[:filename]) if master_plugin.nil?
+        master_plugin = Plugin.find_master_plugin(game_id, master)
         if master_plugin.nil?
           dummy_masters.create(filename: master[:filename], index: index)
         else

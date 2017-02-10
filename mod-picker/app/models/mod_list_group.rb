@@ -12,11 +12,18 @@ class ModListGroup < ActiveRecord::Base
   validates :mod_list_id, :name, presence: true
 
   def child_model
-    tab == :plugins ? ModListPlugin : ModListMod.utility(tab == :tools)
+    tab == "plugins" ? ModListPlugin : ModListMod.utility(tab == :tools)
+  end
+
+  def custom_child_model
+    tab == "plugins" ? ModListCustomPlugin : ModListCustomMod.utility(tab == :tools)
   end
 
   def children
-    child_model.where(group_id: id)
+    [
+        child_model.where(group_id: id).to_a,
+        custom_child_model.where(group_id: id).to_a
+    ].flatten
   end
 
   def copy_children_to(other_mod_list, index, new_group)

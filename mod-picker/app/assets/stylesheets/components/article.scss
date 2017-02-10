@@ -5,6 +5,20 @@ article {
     margin-left: 10px;
   }
 
+  h3.article-title {
+    font-size: 24px;
+    display: inline;
+    margin-left: 0;
+  }
+
+  a h3.article-title {
+    @include transition(all 0.2s ease-in-out);
+
+    &:hover {
+      color: $action_color;
+    }
+  }
+
   .news-box {
     padding-left: 20px;
     font-size: 14px;
@@ -25,20 +39,6 @@ article {
     .content-container {
       display: table-cell;
       vertical-align: top;
-
-      h3 {
-        font-size: 24px;
-        display: inline;
-        margin-left: 0;
-      }
-
-      a h3 {
-        @include transition(all 0.2s ease-in-out);
-
-        &:hover {
-          color: $action_color;
-        }
-      }
 
       read-more {
         display: block;

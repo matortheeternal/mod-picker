@@ -9,17 +9,17 @@
         <h2>{{mod.name}} Authors</h2>
         <ul>
             <li ng-repeat="author in mod.mod_authors">
-                <a ng-href="#/user/{{author.user_id}}">{{author.user.username}}</a> -
+                <a ng-href="user/{{author.user_id}}">{{author.user.username}}</a> -
                 <span class="capitalize">{{author.role}}</span>
             </li>
             <li ng-if="mod.nexus_infos">Uploaded by <b>{{mod.nexus_infos.uploaded_by}}</b> on Nexus Mods</li>
             <li ng-if="mod.lover_infos">Uploaded by <b>{{mod.lover_infos.uploaded_by}}</b> on Lover's Lab</li>
             <li ng-if="mod.workshop_infos">Uploaded by <b>{{mod.workshop_infos.uploaded_by}}</b> on Steam Workshop</li>
-            <li>Submitted by <a ng-href="#/user/{{mod.submitter.id}}">{{mod.submitter.username}}</a> {{mod.submitted | date}}</li>
+            <li>Submitted by <a ng-href="user/{{mod.submitter.id}}">{{mod.submitter.username}}</a> {{mod.submitted | date}}</li>
         </ul>
 
         <div class="action-button-container" ng-if="!permissions.isAuthor">
-            <input class="btn" type="button" ng-click="startNewCuratorRequest()" ng-disabled="!canCreateCuratorRequest" title="{{curatorRequestTitle}}" value="Create Curator Request">
+            <input class="btn" type="button" ng-click="startNewCuratorRequest()" ng-disabled="!permissions.canCreateCuratorRequest" title="{{curatorRequestTitle}}" value="Create Curator Request">
         </div>
     </div>
 

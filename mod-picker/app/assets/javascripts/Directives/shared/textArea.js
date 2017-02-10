@@ -10,7 +10,7 @@ app.directive('textArea', function($timeout) {
         },
         link: function(scope, element, attrs) {
             var user = scope.$root.currentUser;
-            var enableSpellCheck = user && user.settings.enable_spellcheck;
+            var enableSpellCheck = user && user.settings && user.settings.enable_spellcheck;
 
             // get text area element and turn it into a markdown editor
             var textarea = element.children()[0];

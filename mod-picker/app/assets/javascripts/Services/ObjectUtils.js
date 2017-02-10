@@ -92,7 +92,7 @@ app.service('objectUtils', function() {
     this.getDifferentArrayObjectValues = function(newItem, oldArray, result) {
         // new items that have an id should exist in the oldArray
         // find and compare them against their corresponding item in oldArray
-        if (newItem.hasOwnProperty('id')) {
+        if (newItem && newItem.hasOwnProperty('id')) {
             var oldItem = oldArray.find(function(item) {
                 return item.id == newItem.id;
             });

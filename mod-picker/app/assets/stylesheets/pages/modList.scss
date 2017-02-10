@@ -175,8 +175,92 @@ ul.required-list {
   }
 }
 
-mod-details-modal {
-  .custom-mod-name {
+mod-details-modal, plugin-details-modal {
+  .description-section {
+    margin-top: 0;
+
+    text-area {
+      display: block;
+    }
+  }
+
+  .item-name {
     font-size: 20px;
+  }
+}
+
+mod-list-import-modal {
+  submission-modal {
+    .modal {
+      box-shadow: none !important;
+    }
+  }
+
+  .import-type {
+    display: inline-block;
+    text-align: center;
+    cursor: pointer;
+    margin: 8px;
+    padding: 8px;
+    border: 1px solid rgba(#000,0);
+    @include transition(background-color 0.2s ease-in-out);
+
+    div {
+      margin-bottom: 4px;
+
+      img, .fa {
+        font-size: 128px;
+        width: 128px;
+      }
+    }
+
+    &.selected {
+      border: 1px solid $border_color;
+      background-color: $secondary_background;
+    }
+  }
+
+  input[type="file"] {
+    display: inline-block;
+  }
+
+  table.browse-table {
+    .actions-header {
+      min-width: 80px;
+    }
+
+    td.source-data-cell {
+      max-width: 300px;
+
+      a {
+        display: inline;
+        padding: 0;
+        color: $action-color;
+
+        &:hover {
+          color: $link_hover_color_secondary;
+        }
+      }
+    }
+
+    td.mod-search-cell {
+      padding: 8px;
+      max-width: 250px;
+
+      input[type="text"] {
+        min-width: 110px;
+        max-width: 100%;
+        margin-top: 0;
+        font-size: 12px;
+        padding: 4px;
+        height: 22px;
+      }
+
+      search-input {
+        .dropdown {
+          top: 20px;
+        }
+      }
+    }
   }
 }

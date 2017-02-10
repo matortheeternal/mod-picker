@@ -4,16 +4,19 @@
             <i class="fa fa-download"></i> Export
         </span>
         <div class="dropdown export-dropdown" ng-if="showExportDropdown">
-            <a ng-href="/mod_lists/{{mod_list.id}}/export_modlist.txt" target="_blank">
+            <a ng-href="mod_lists/{{mod_list.id}}/export_modlist.txt" target="_blank">
                 modlist.txt
             </a>
-            <a ng-href="/mod_lists/{{mod_list.id}}/export_plugins.txt" target="_blank">
+            <a ng-href="mod_lists/{{mod_list.id}}/export_plugins.txt" target="_blank">
                 plugins.txt
             </a>
-            <a ng-href="/mod_lists/{{mod_list.id}}/export_links.txt" target="_blank">
+            <a ng-href="mod_lists/{{mod_list.id}}/export_links.txt" target="_blank">
                 links.txt
             </a>
         </div>
+        <span class="right-item action-box" ng-click="toggleImportModal(true)" tabindex="0" ng-if="editing">
+            <i class="fa fa-upload"></i> Import
+        </span>
     </div>
     <div class="content-container" ng-if="!editing">
         <div marked="mod_list.description" class="text-container"></div>
@@ -87,4 +90,8 @@
     </div>
 </div>
 
-<tag-selector active-tags="mod_list.tags" new-tags="newTags" max-tags="10" show-mod-lists-count="true" show-add="!mod_list.lock_tags || editing" can-create="permissions.canCreateTags" show-remove="permissions.canManage && (!mod_list.lock_tags || editing)" save-callback="saveTags" class="wide-tag-selector"></tag-selector>
+<tag-selector active-tags="mod_list.tags" new-tags="newTags" max-tags="10" type="mod-list" show-count="true" show-add="(!mod_list.lock_tags && permissions.canTag) || editing" can-create="permissions.canCreateTags" show-remove="permissions.canManage && (!mod_list.lock_tags || editing)" save-callback="saveTags" class="wide-tag-selector"></tag-selector>
+<span class="stat-title" ng-show="mod_list.lock_tags && !mod_list.tags.length">Tags locked</span>
+<span class="stat-title" ng-show="!permissions.canTag && !mod_list.tags.length">You must log in to add tags</span>
+
+<mod-list-import-modal ng-if="showImportModal"></mod-list-import-modal>

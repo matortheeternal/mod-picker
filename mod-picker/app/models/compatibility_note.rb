@@ -50,7 +50,7 @@ class CompatibilityNote < ActiveRecord::Base
   has_many :mod_list_ignored_notes, :as => 'note'
 
   # old versions of this compatibility note
-  has_many :history_entries, :class_name => 'CompatibilityNoteHistoryEntry', :inverse_of => 'compatibility_note', :foreign_key => 'compatibility_note_id'
+  has_many :history_entries, :class_name => 'CompatibilityNoteHistoryEntry', :inverse_of => 'compatibility_note', :foreign_key => 'compatibility_note_id', :dependent => :destroy
   has_many :editors, -> { uniq }, :class_name => 'User', :through => 'history_entries'
 
   # COUNTER CACHE
@@ -58,7 +58,7 @@ class CompatibilityNote < ActiveRecord::Base
 
   # VALIDATIONS
   validates :game_id, :submitted_by, :status, :first_mod_id, :second_mod_id, :text_body, presence: true
-  validates :text_body, length: { in: 256..16384 }
+  validates :text_body, length: { in: 128..16384 }
   validate :validate_unique_mods
 
   # CALLBACKS
@@ -107,6 +107,7 @@ class CompatibilityNote < ActiveRecord::Base
 
   def self.update_adult(ids)
     CompatibilityNote.where(id: ids).joins(:first_mod, :second_mod).update_all("compatibility_notes.has_adult_content = mods.has_adult_content OR second_mods_compatibility_notes.has_adult_content")
+    Correction.update_adult(CompatibilityNote, ids)
   end
 
   def self.mod_count_subquery

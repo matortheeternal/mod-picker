@@ -59,6 +59,16 @@ app.config(['$stateProvider', function($stateProvider) {
             }
         },
         url: '/mods'
+    }).state('base.settings.API Access', {
+        sticky: true,
+        deepStateRedirect: true,
+        views: {
+            'API Access': {
+                templateUrl: '/resources/partials/userSettings/apiAccess.html',
+                controller: 'userSettingsApiController'
+            }
+        },
+        url: '/api-access'
     });
 }]);
 
@@ -139,7 +149,7 @@ app.controller('userSettingsController', function($scope, $rootScope, $q, userOb
     $scope.updateUserSettings = function(userDiff) {
         if (!userDiff.title && !userDiff.about_me && !userDiff.settings) return;
         userSettingsService.updateUserSettings(userDiff).then(function() {
-            themesService.changeTheme($scope.settings.theme);
+            themesService.changeTheme($scope.settings);
             $scope.$emit('successMessage', 'User settings saved successfully.');
 
             // update `originalUser` to include successfully changed settings

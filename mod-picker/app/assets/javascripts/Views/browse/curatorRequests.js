@@ -22,6 +22,7 @@ app.controller('curatorRequestsIndexController', function($scope, $rootScope, $s
     // filters for view
     $scope.filterPrototypes = filtersFactory.curatorRequestFilters();
     $scope.dateFilters = filtersFactory.curatorRequestDateFilters();
+    $scope.filters = { game: $scope.currentGame.id };
 
     // build generic controller stuff
     $scope.route = 'curator_requests';

@@ -12,7 +12,7 @@ app.controller('modsController', function($scope, $rootScope, $q, $stateParams, 
     $scope.categories = $rootScope.categories;
     $scope.activeModList = $rootScope.activeModList;
     $scope.permissions = angular.copy($rootScope.permissions);
-    $scope.allowAdult = $scope.currentUser && $scope.currentUser.settings.allow_adult_content;
+    $scope.allowAdult = $scope.currentUser.signed_in && $scope.currentUser.settings.allow_adult_content;
 
     // set page title
     $scope.$emit('setPageTitle', 'Browse Mods');
@@ -148,6 +148,7 @@ app.controller('modsController', function($scope, $rootScope, $q, $stateParams, 
         // handle column availability
         $scope.buildAvailableColumnData();
         $scope.hideUnavailableColumns();
+        $scope.$broadcast('reloadTags');
 
         // hide statistic filters that no longer apply
         $scope.availableStatFilters = $scope.availableFilters($scope.statFilters);

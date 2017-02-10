@@ -3,3 +3,9 @@
 		color: $text_color !important;
 	}
 }
+
+.CodeMirror {
+  img {
+    max-width: 100%;
+  }
+}

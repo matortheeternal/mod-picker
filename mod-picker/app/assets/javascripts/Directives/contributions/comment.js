@@ -18,6 +18,7 @@ app.controller('commentController', function($scope, $rootScope, $filter, $timeo
     // inherited variables
     $scope.currentUser = $rootScope.currentUser;
     $scope.currentGame = $rootScope.currentGame;
+    $scope.permissions = angular.copy($rootScope.permissions);
 
     // initialize local variables
     $scope.report = {
@@ -47,13 +48,16 @@ app.controller('commentController', function($scope, $rootScope, $filter, $timeo
     };
 
     $scope.reply = function() {
+        // cancel any other open comments
+        $rootScope.$broadcast('cancelComment', $scope.comment.id, true);
+
+        // prepare reply comment
         $scope.activeComment = {
             parent_id: $scope.comment.id,
             commentable_id: $scope.comment.commentable_id,
             commentable_type: $scope.comment.commentable_type.slice(0),
             text_body: ""
         };
-
         $scope.comment.replying = true;
 
         // update markdown editor and validation
@@ -63,6 +67,10 @@ app.controller('commentController', function($scope, $rootScope, $filter, $timeo
 
     // edit comment
     $scope.edit = function() {
+        // cancel any other open comments
+        $rootScope.$broadcast('cancelComment', $scope.comment.id);
+
+        // prepare comment for editing
         $scope.comment.editing = true;
         $scope.activeComment = {
             parent_id: $scope.comment.parent_id,
@@ -93,7 +101,6 @@ app.controller('commentController', function($scope, $rootScope, $filter, $timeo
         if (!$scope.activeComment) {
             return;
         }
-
         $scope.activeComment.valid = $scope.activeComment.text_body.length > 4;
     };
 
@@ -120,15 +127,14 @@ app.controller('commentController', function($scope, $rootScope, $filter, $timeo
     $scope.setPermissions = function() {
         // permissions helper variables
         var user = $scope.currentUser;
-        if (!user) return;
         var isAdmin = user && user.role === 'admin';
         var isModerator = user && user.role === 'moderator';
-        var isSubmitter = user && user.id === $scope.comment.submitted_by;
+        var isSubmitter = user && user.id === $scope.comment.submitter.id;
         // set up permissions
         $scope.isSubmitter = isSubmitter;
-        $scope.canReply = !$scope.isChild && user;
-        $scope.canReport = user || false;
-        $scope.canEdit = isAdmin || isModerator || isSubmitter;
+        $scope.canReply = !$scope.isChild && $scope.permissions.canComment;
+        $scope.canReport = $scope.permissions.canReport;
+        $scope.canEdit = $scope.permissions.canComment && (isAdmin || isModerator || isSubmitter);
         $scope.canHide = isAdmin || isModerator;
     };
 
@@ -148,4 +154,12 @@ app.controller('commentController', function($scope, $rootScope, $filter, $timeo
     // watch current user so if we get the user object after rendering actions
     // we can re-render them correctly per the user's permissions
     $scope.$watch('currentUser', $scope.setPermissions, true);
+
+    $scope.$on('cancelComment', function(e, exceptId, replying) {
+        if ($scope.comment.id == exceptId) {
+            var activeComment = $scope.activeComment;
+            if (activeComment && replying != activeComment.editing) return;
+        }
+        if ($scope.activeComment) $scope.discardComment();
+    });
 });

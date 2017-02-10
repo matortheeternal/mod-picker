@@ -1,9 +1,9 @@
 <div class="single-column">
     <div class="actions">
-        <a class="inverse-link" href="#/articles">
+        <a class="inverse-link" href="articles">
             <i class="fa fa-angle-left" aria-hidden="true"></i> Browse All Articles
         </a>
-        <a ng-href="#/article/{{article.id}}/edit" ng-if="permissions.canManageArticles">
+        <a ng-href="article/{{article.id}}/edit" ng-if="permissions.canManageArticles">
             <div class="action-box">
                 <i class="fa fa-edit" aria-hidden="true"></i> Edit Article
             </div>
@@ -14,7 +14,7 @@
 
     <div class="content-block">
         <div class="content-title">Comments
-            <span class="right-item action-box" ng-click="startNewComment()">
+            <span class="right-item action-box" ng-click="startNewComment()" ng-if="permissions.canComment">
                 <i class="fa fa-plus"></i> New Comment
             </span>
         </div>

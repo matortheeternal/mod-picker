@@ -1,0 +1,534 @@
+[{
+		"signature" : "ACHR",
+		"name" : "Placed NPC",
+		"child_group" : true
+	}, {
+		"signature" : "ACTI",
+		"name" : "Activator",
+		"child_group" : false
+	}, {
+		"signature" : "TACT",
+		"name" : "Talking Activator",
+		"child_group" : false
+	}, {
+		"signature" : "ALCH",
+		"name" : "Ingestible",
+		"child_group" : false
+	}, {
+		"signature" : "AMMO",
+		"name" : "Ammunition",
+		"child_group" : false
+	}, {
+		"signature" : "ANIO",
+		"name" : "Animated Object",
+		"child_group" : false
+	}, {
+		"signature" : "ARMO",
+		"name" : "Armor",
+		"child_group" : false
+	}, {
+		"signature" : "ARMA",
+		"name" : "Armor Addon",
+		"child_group" : false
+	}, {
+		"signature" : "BOOK",
+		"name" : "Book",
+		"child_group" : false
+	}, {
+		"signature" : "PARW",
+		"name" : "Placed Arrow",
+		"child_group" : true
+	}, {
+		"signature" : "PBAR",
+		"name" : "Placed Barrier",
+		"child_group" : true
+	}, {
+		"signature" : "PBEA",
+		"name" : "Placed Beam",
+		"child_group" : true
+	}, {
+		"signature" : "PCON",
+		"name" : "Placed Cone/Voice",
+		"child_group" : true
+	}, {
+		"signature" : "PFLA",
+		"name" : "Placed Flame",
+		"child_group" : true
+	}, {
+		"signature" : "PGRE",
+		"name" : "Placed Projectile",
+		"child_group" : true
+	}, {
+		"signature" : "PHZD",
+		"name" : "Placed Hazard",
+		"child_group" : true
+	}, {
+		"signature" : "PMIS",
+		"name" : "Placed Missile",
+		"child_group" : true
+	}, {
+		"signature" : "CELL",
+		"name" : "Cell",
+		"child_group" : false
+	}, {
+		"signature" : "CLAS",
+		"name" : "Class",
+		"child_group" : false
+	}, {
+		"signature" : "CLMT",
+		"name" : "Climate",
+		"child_group" : false
+	}, {
+		"signature" : "SPGD",
+		"name" : "Shader Particle Geometry",
+		"child_group" : false
+	}, {
+		"signature" : "RFCT",
+		"name" : "Visual Effect",
+		"child_group" : false
+	}, {
+		"signature" : "CONT",
+		"name" : "Container",
+		"child_group" : false
+	}, {
+		"signature" : "CSTY",
+		"name" : "Combat Style",
+		"child_group" : false
+	}, {
+		"signature" : "DIAL",
+		"name" : "Dialog Topic",
+		"child_group" : false
+	}, {
+		"signature" : "DOOR",
+		"name" : "Door",
+		"child_group" : false
+	}, {
+		"signature" : "EFSH",
+		"name" : "Effect Shader",
+		"child_group" : false
+	}, {
+		"signature" : "ENCH",
+		"name" : "Object Effect",
+		"child_group" : false
+	}, {
+		"signature" : "EYES",
+		"name" : "Eyes",
+		"child_group" : false
+	}, {
+		"signature" : "FACT",
+		"name" : "Faction",
+		"child_group" : false
+	}, {
+		"signature" : "FURN",
+		"name" : "Furniture",
+		"child_group" : false
+	}, {
+		"signature" : "GLOB",
+		"name" : "Global",
+		"child_group" : false
+	}, {
+		"signature" : "GMST",
+		"name" : "Game Setting",
+		"child_group" : false
+	}, {
+		"signature" : "KYWD",
+		"name" : "Keyword",
+		"child_group" : false
+	}, {
+		"signature" : "LCRT",
+		"name" : "Location Reference Type",
+		"child_group" : false
+	}, {
+		"signature" : "AACT",
+		"name" : "Action",
+		"child_group" : false
+	}, {
+		"signature" : "TXST",
+		"name" : "Texture Set",
+		"child_group" : false
+	}, {
+		"signature" : "HDPT",
+		"name" : "Head Part",
+		"child_group" : false
+	}, {
+		"signature" : "ASPC",
+		"name" : "Acoustic Space",
+		"child_group" : false
+	}, {
+		"signature" : "MSTT",
+		"name" : "Moveable Static",
+		"child_group" : false
+	}, {
+		"signature" : "IDLM",
+		"name" : "Idle Marker",
+		"child_group" : false
+	}, {
+		"signature" : "PROJ",
+		"name" : "Projectile",
+		"child_group" : false
+	}, {
+		"signature" : "HAZD",
+		"name" : "Hazard",
+		"child_group" : false
+	}, {
+		"signature" : "SLGM",
+		"name" : "Soul Gem",
+		"child_group" : false
+	}, {
+		"signature" : "NAVI",
+		"name" : "Navigation Mesh Info Map",
+		"child_group" : false
+	}, {
+		"signature" : "NAVM",
+		"name" : "Navigation Mesh",
+		"child_group" : true
+	}, {
+		"signature" : "EXPL",
+		"name" : "Explosion",
+		"child_group" : false
+	}, {
+		"signature" : "DEBR",
+		"name" : "Debris",
+		"child_group" : false
+	}, {
+		"signature" : "IMGS",
+		"name" : "Image Space",
+		"child_group" : false
+	}, {
+		"signature" : "IMAD",
+		"name" : "Image Space Adapter",
+		"child_group" : false
+	}, {
+		"signature" : "FLST",
+		"name" : "FormID List",
+		"child_group" : false
+	}, {
+		"signature" : "PERK",
+		"name" : "Perk",
+		"child_group" : false
+	}, {
+		"signature" : "BPTD",
+		"name" : "Body Part Data",
+		"child_group" : false
+	}, {
+		"signature" : "ADDN",
+		"name" : "Addon Node",
+		"child_group" : false
+	}, {
+		"signature" : "AVIF",
+		"name" : "Actor Value Information",
+		"child_group" : false
+	}, {
+		"signature" : "CAMS",
+		"name" : "Camera Shot",
+		"child_group" : false
+	}, {
+		"signature" : "CPTH",
+		"name" : "Camera Path",
+		"child_group" : false
+	}, {
+		"signature" : "VTYP",
+		"name" : "Voice Type",
+		"child_group" : false
+	}, {
+		"signature" : "MATT",
+		"name" : "Material Type",
+		"child_group" : false
+	}, {
+		"signature" : "IPCT",
+		"name" : "Impact",
+		"child_group" : false
+	}, {
+		"signature" : "IPDS",
+		"name" : "Impact Data Set",
+		"child_group" : false
+	}, {
+		"signature" : "ECZN",
+		"name" : "Encounter Zone",
+		"child_group" : false
+	}, {
+		"signature" : "LCTN",
+		"name" : "Location",
+		"child_group" : false
+	}, {
+		"signature" : "MESG",
+		"name" : "Message",
+		"child_group" : false
+	}, {
+		"signature" : "DOBJ",
+		"name" : "Default Object Manager",
+		"child_group" : false
+	}, {
+		"signature" : "LGTM",
+		"name" : "Lighting Template",
+		"child_group" : false
+	}, {
+		"signature" : "MUSC",
+		"name" : "Music Type",
+		"child_group" : false
+	}, {
+		"signature" : "FSTP",
+		"name" : "Footstep",
+		"child_group" : false
+	}, {
+		"signature" : "FSTS",
+		"name" : "Footstep Set",
+		"child_group" : false
+	}, {
+		"signature" : "SMBN",
+		"name" : "Story Manager Branch Node",
+		"child_group" : false
+	}, {
+		"signature" : "SMQN",
+		"name" : "Story Manager Quest Node",
+		"child_group" : false
+	}, {
+		"signature" : "SMEN",
+		"name" : "Story Manager Event Node",
+		"child_group" : false
+	}, {
+		"signature" : "DLBR",
+		"name" : "Dialog Branch",
+		"child_group" : false
+	}, {
+		"signature" : "MUST",
+		"name" : "Music Track",
+		"child_group" : false
+	}, {
+		"signature" : "DLVW",
+		"name" : "Dialog View",
+		"child_group" : false
+	}, {
+		"signature" : "WOOP",
+		"name" : "Word of Power",
+		"child_group" : false
+	}, {
+		"signature" : "SHOU",
+		"name" : "Shout",
+		"child_group" : false
+	}, {
+		"signature" : "EQUP",
+		"name" : "Equip Type",
+		"child_group" : false
+	}, {
+		"signature" : "RELA",
+		"name" : "Relationship",
+		"child_group" : false
+	}, {
+		"signature" : "SCEN",
+		"name" : "Scene",
+		"child_group" : false
+	}, {
+		"signature" : "ASTP",
+		"name" : "Association Type",
+		"child_group" : false
+	}, {
+		"signature" : "OTFT",
+		"name" : "Outfit",
+		"child_group" : false
+	}, {
+		"signature" : "ARTO",
+		"name" : "Art Object",
+		"child_group" : false
+	}, {
+		"signature" : "MATO",
+		"name" : "Material Object",
+		"child_group" : false
+	}, {
+		"signature" : "MOVT",
+		"name" : "Movement Type",
+		"child_group" : false
+	}, {
+		"signature" : "SNDR",
+		"name" : "Sound Descriptor",
+		"child_group" : false
+	}, {
+		"signature" : "DUAL",
+		"name" : "Dual Cast Data",
+		"child_group" : false
+	}, {
+		"signature" : "SNCT",
+		"name" : "Sound Category",
+		"child_group" : false
+	}, {
+		"signature" : "SOPM",
+		"name" : "Sound Output Model",
+		"child_group" : false
+	}, {
+		"signature" : "COLL",
+		"name" : "Collision Layer",
+		"child_group" : false
+	}, {
+		"signature" : "CLFM",
+		"name" : "Color",
+		"child_group" : false
+	}, {
+		"signature" : "REVB",
+		"name" : "Reverb Parameters",
+		"child_group" : false
+	}, {
+		"signature" : "GRAS",
+		"name" : "Grass",
+		"child_group" : false
+	}, {
+		"signature" : "IDLE",
+		"name" : "Idle Animation",
+		"child_group" : false
+	}, {
+		"signature" : "INFO",
+		"name" : "Dialog response",
+		"child_group" : true
+	}, {
+		"signature" : "INGR",
+		"name" : "Ingredient",
+		"child_group" : false
+	}, {
+		"signature" : "KEYM",
+		"name" : "Key",
+		"child_group" : false
+	}, {
+		"signature" : "LAND",
+		"name" : "Landscape",
+		"child_group" : true
+	}, {
+		"signature" : "LIGH",
+		"name" : "Light",
+		"child_group" : false
+	}, {
+		"signature" : "LSCR",
+		"name" : "Load Screen",
+		"child_group" : false
+	}, {
+		"signature" : "LTEX",
+		"name" : "Landscape Texture",
+		"child_group" : false
+	}, {
+		"signature" : "LVLN",
+		"name" : "Leveled NPC",
+		"child_group" : false
+	}, {
+		"signature" : "LVLI",
+		"name" : "Leveled Item",
+		"child_group" : false
+	}, {
+		"signature" : "LVSP",
+		"name" : "Leveled Spell",
+		"child_group" : false
+	}, {
+		"signature" : "MGEF",
+		"name" : "Magic Effect",
+		"child_group" : false
+	}, {
+		"signature" : "MISC",
+		"name" : "Misc. Item",
+		"child_group" : false
+	}, {
+		"signature" : "APPA",
+		"name" : "Alchemical Apparatus",
+		"child_group" : false
+	}, {
+		"signature" : "COBJ",
+		"name" : "Constructible Object",
+		"child_group" : false
+	}, {
+		"signature" : "NPC_",
+		"name" : "Non-Player Character (Actor)",
+		"child_group" : false
+	}, {
+		"signature" : "PACK",
+		"name" : "Package",
+		"child_group" : false
+	}, {
+		"signature" : "QUST",
+		"name" : "Quest",
+		"child_group" : false
+	}, {
+		"signature" : "RACE",
+		"name" : "Race",
+		"child_group" : false
+	}, {
+		"signature" : "REFR",
+		"name" : "Placed Object",
+		"child_group" : true
+	}, {
+		"signature" : "REGN",
+		"name" : "Region",
+		"child_group" : false
+	}, {
+		"signature" : "SOUN",
+		"name" : "Sound Marker",
+		"child_group" : false
+	}, {
+		"signature" : "SPEL",
+		"name" : "Spell",
+		"child_group" : false
+	}, {
+		"signature" : "SCRL",
+		"name" : "Scroll",
+		"child_group" : false
+	}, {
+		"signature" : "STAT",
+		"name" : "Static",
+		"child_group" : false
+	}, {
+		"signature" : "TES4",
+		"name" : "Main File Header",
+		"child_group" : true
+	}, {
+		"signature" : "TREE",
+		"name" : "Tree",
+		"child_group" : false
+	}, {
+		"signature" : "FLOR",
+		"name" : "Flora",
+		"child_group" : false
+	}, {
+		"signature" : "WATR",
+		"name" : "Water",
+		"child_group" : false
+	}, {
+		"signature" : "WEAP",
+		"name" : "Weapon",
+		"child_group" : false
+	}, {
+		"signature" : "WRLD",
+		"name" : "Worldspace",
+		"child_group" : false
+	}, {
+		"signature" : "WTHR",
+		"name" : "Weather",
+		"child_group" : false
+	}, {
+		"signature" : "CLDC",
+		"name" : "CLDC",
+		"child_group" : false
+	}, {
+		"signature" : "HAIR",
+		"name" : "HAIR",
+		"child_group" : false
+	}, {
+		"signature" : "PWAT",
+		"name" : "PWAT",
+		"child_group" : false
+	}, {
+		"signature" : "RGDL",
+		"name" : "RGDL",
+		"child_group" : false
+	}, {
+		"signature" : "SCOL",
+		"name" : "SCOL",
+		"child_group" : false
+	}, {
+		"signature" : "SCPT",
+		"name" : "SCPT",
+		"child_group" : false
+	}, {
+		"signature" : "LENS",
+		"name" : "Lens Flare",
+		"child_group" : false
+	}, {
+		"signature" : "VOLI",
+		"name" : "Volumetric Lighting",
+		"child_group" : false
+	}
+]
