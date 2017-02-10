@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170209193522) do
+ActiveRecord::Schema.define(version: 20170210010900) do
 
   create_table "active_mod_lists", force: :cascade do |t|
     t.integer "game_id",     limit: 4, null: false
@@ -816,7 +816,7 @@ ActiveRecord::Schema.define(version: 20170209193522) do
 
   add_index "related_mod_notes", ["edited_by"], name: "fk_rails_817132cd79", using: :btree
   add_index "related_mod_notes", ["first_mod_id"], name: "fk_rails_74f1b44973", using: :btree
-  add_index "related_mod_notes", ["game_id"], name: "index_related_mod_notes_on_game_id", using: :btree
+  add_index "related_mod_notes", ["game_id"], name: "fk_rails_2adfc3ea63", using: :btree
   add_index "related_mod_notes", ["second_mod_id"], name: "fk_rails_2446267533", using: :btree
   add_index "related_mod_notes", ["submitted_by"], name: "fk_rails_982f982522", using: :btree
 

@@ -1,7 +1,7 @@
 class CreateRelatedModNotes < ActiveRecord::Migration
   def change
     create_table :related_mod_notes do |t|
-      t.references :game, index: true, foreign_key: true, null: false
+      t.integer :game_id, null: false
       t.integer :submitted_by, null: false
       t.integer :edited_by, null: false
       t.integer :status, limit: 1, default: 0, null: false
@@ -20,6 +20,7 @@ class CreateRelatedModNotes < ActiveRecord::Migration
       t.datetime :edited
     end
 
+    add_foreign_key :related_mod_notes, :games
     add_foreign_key :related_mod_notes, :users, column: :submitted_by
     add_foreign_key :related_mod_notes, :users, column: :edited_by
     add_foreign_key :related_mod_notes, :mods, column: :first_mod_id
