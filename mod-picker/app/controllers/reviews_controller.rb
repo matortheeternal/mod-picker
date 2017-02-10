@@ -8,7 +8,7 @@ class ReviewsController < ContributionsController
     count = Review.accessible_by(current_ability).filter(filtering_params).count
 
     # prepare helpful marks
-    helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("Review", @reviews.ids)
+    helpful_marks = HelpfulMark.for_user_content(current_user, "Review", @reviews.ids)
 
     # render response
     render json: {
@@ -21,28 +21,23 @@ class ReviewsController < ContributionsController
 
   # PATCH/PUT /reviews/1
   def update
-    authorize! :update, @contribution
-    @contribution.clear_ratings
-
-    update_params = contribution_update_params
-    update_params[:edited_by] = current_user.id
-    if @contribution.update(update_params)
+    builder = ReviewBuilder.update(params[:id], current_user, contribution_update_params)
+    authorize! :update, builder.resource
+    if builder.update
       render json: {status: :ok}
     else
-      render json: @contribution.errors, status: :unprocessable_entity
+      render json: builder.errors, status: :unprocessable_entity
     end
   end
 
   # POST /reviews
   def create
-    @review = Review.new(contribution_params)
-    @review.submitted_by = current_user.id
-    authorize! :create, @review
-
-    if @review.save
-      render json: @review.reload
+    builder = ReviewBuilder.new(current_user, contribution_params)
+    authorize! :create, builder.resource
+    if builder.save
+      render json: builder.resource.reload
     else
-      render json: @review.errors, status: :unprocessable_entity
+      render json: builder.errors, status: :unprocessable_entity
     end
   end
 

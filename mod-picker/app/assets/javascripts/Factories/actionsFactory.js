@@ -171,8 +171,8 @@ app.service('actionsFactory', function() {
         }, {
             icon: "fa-gear",
             title: "View Details",
-            hidden: function($scope, item) {
-                return item.mod && item.mod.mod_options.length < 2
+            disabled: function($scope, item) {
+                return !$scope.editing && !item.description && (!item.mod || item.mod.mod_options.length <= 1);
             },
             execute: function($scope, item) {
                 $scope.$emit('toggleDetailsModal', {visible: true, item: item});
@@ -192,8 +192,8 @@ app.service('actionsFactory', function() {
         }, {
             icon: "fa-gear",
             title: "View Details",
-            hidden: function($scope, item) {
-                return item.mod && item.mod.mod_options.length < 2
+            disabled: function($scope, item) {
+                return !$scope.editing && !item.description && (!item.mod || item.mod.mod_options.length <= 1);
             },
             execute: function($scope, item) {
                 $scope.$emit('toggleDetailsModal', {visible: true, item: item});
@@ -214,10 +214,14 @@ app.service('actionsFactory', function() {
             key: "showOptions",
             icon: "fa-gear",
             title: "More Options",
-            disabled: function($scope, item) { return !$scope.editing && !!item.plugin },
+            disabled: function($scope, item) {
+                return !$scope.editing && !item.description && !!item.plugin;
+            },
             items: [{
                 text: "View details",
-                disabled: function($scope, item) { return !!item.plugin },
+                disabled: function($scope, item) {
+                    return !$scope.editing && !item.description && !!item.plugin;
+                },
                 execute: function($scope, item) {
                     $scope.$emit('toggleDetailsModal', {visible: true, item: item});
                 }
@@ -235,5 +239,72 @@ app.service('actionsFactory', function() {
                 execute: factory.toggleFunction('cleaned')
             }]
         }];
+    };
+
+    this.modListImportActions = function() {
+        return [{
+            caption: "Remove",
+            title: "Remove this item from the import list",
+            execute: function($scope, item) {
+                $scope.remove(item);
+            }
+        }]
+    };
+
+    /* tag actions */
+    this.tagIndexActions = function() {
+        return [{
+            caption: "Edit",
+            title: "Edit this tag's text",
+            hidden: function($scope, item) {
+                return item.hidden || !$scope.permissions.canModerate;
+            },
+            execute: function($scope, item) {
+                $scope.$emit('editTag', item);
+            }
+        }, {
+            caption: "Recover",
+            title: "This tag is hidden.  Click to recover it.",
+            class: 'green-box',
+            hidden: function($scope, item) {
+                return !item.hidden || !$scope.permissions.canModerate;
+            },
+            execute: function($scope, item) {
+                $scope.$emit('recoverTag', item);
+            }
+        }, {
+            caption: "Hide",
+            title: "This tag is publicly visible.  Click to hide it.",
+            class: 'yellow-box',
+            hidden: function($scope, item) {
+                return item.hidden || !$scope.permissions.canModerate;
+            },
+            execute: function($scope, item) {
+                $scope.$emit('hideTag', item);
+            }
+        }]
+    };
+
+    /* api token actions */
+    this.apiTokenActions = function() {
+        return [{
+            caption: "Edit",
+            title: "Edit this API Token's name",
+            hidden: function($scope, item) {
+                return item.expired;
+            },
+            execute: function($scope, item) {
+                $scope.$emit('editToken', item);
+            }
+        }, {
+            caption: "Expire",
+            title: "Expire this API token so it is no longer valid",
+            disabled: function($scope, item) {
+                return item.expired;
+            },
+            execute: function($scope, item) {
+                $scope.$emit('expireToken', item);
+            }
+        }]
     };
 });

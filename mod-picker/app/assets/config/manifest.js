@@ -7,6 +7,7 @@
 //= link main/Whiterun.css
 //= link main/Darkwater.css
 //= link main/Blackreach.css
+//= link main/Falkreath.css
 //= link "main/High Hrothgar.css"
 //= link "help/High Hrothgar.css"
 //= link "landing/High Hrothgar.css"

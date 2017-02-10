@@ -364,6 +364,14 @@ app.service("filtersFactory", function() {
                 param: "loc"
             },
             {
+                label: "Mod Options Count",
+                common: false,
+                data: "mod_options",
+                type: "Range",
+                max: 600,
+                param: "moc"
+            },
+            {
                 label: "Asset Files Count",
                 common: false,
                 data: "asset_files",
@@ -376,7 +384,7 @@ app.service("filtersFactory", function() {
                 common: false,
                 data: "plugins",
                 type: "Range",
-                max: 50,
+                max: 100,
                 param: "pc"
             },
             {
@@ -842,6 +850,42 @@ app.service("filtersFactory", function() {
         );
     };
 
+    /* related mod note index filters */
+    this.relatedModNoteTypeFilters = function() {
+        return [
+            {
+                data: "status.alternative_mod",
+                param: "alt",
+                type: "Boolean",
+                default: true
+            },
+            {
+                data: "status.recommended_mod",
+                param: "rec",
+                type: "Boolean",
+                default: true
+            }
+        ];
+    };
+
+    this.relatedModNoteStatisticFilters = function() {
+        return [
+            factory.contributionHelpfulnessFilter,
+            factory.submitterReputationFilter,
+            factory.helpfulFilter,
+            factory.notHelpfulFilter
+        ]
+    };
+
+    this.relatedModNoteFilters = function() {
+        return Array.prototype.concat(
+            factory.contributionGeneralFilters(),
+            factory.relatedModNoteTypeFilters(),
+            factory.contributionDateFilters(),
+            factory.noteStatisticFilters()
+        );
+    };
+
     /* corrections index filters */
     this.correctionGeneralFilters = function() {
         return [
@@ -1017,7 +1061,7 @@ app.service("filtersFactory", function() {
             factory.searchFilter,
             {
                 data: "description",
-                param: "t"
+                param: "d"
             },
             factory.submitterFilter,
             factory.showAdultFilter,
@@ -1553,6 +1597,43 @@ app.service("filtersFactory", function() {
             factory.curatorRequestGeneralFilters(),
             factory.curatorRequestDateFilters(),
             factory.curatorRequestStatisticFilters()
+        );
+    };
+
+    this.tagGeneralFilters = function() {
+        return [
+            factory.searchFilter,
+            factory.submitterFilter,
+            factory.hiddenFilter,
+            factory.unhiddenFilter
+        ]
+    };
+
+    this.tagStatisticFilters = function() {
+        return [
+            {
+                label: "Mods Count",
+                common: true,
+                data: "mods_count",
+                type: "Range",
+                max: 100,
+                param: "mc"
+            },
+            {
+                label: "Mod Lists Count",
+                common: true,
+                data: "mod_lists_count",
+                type: "Range",
+                max: 100,
+                param: "mlc"
+            }
+        ]
+    };
+
+    this.tagFilters = function() {
+        return Array.prototype.concat(
+            factory.tagGeneralFilters(),
+            factory.tagStatisticFilters()
         );
     };
 

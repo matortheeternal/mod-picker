@@ -1,3 +1,6 @@
 <div ng-repeat="note in recent.compatibility_notes" class="content-block">
     <compatibility-note note="note" show-user-column="true" index="100"></compatibility-note>
 </div>
+<div class="content-message" ng-if="!recent.compatibility_notes.length">
+    No {{currentGame.display_name}} compatibility notes found.
+</div>

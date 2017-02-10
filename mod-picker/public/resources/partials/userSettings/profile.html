@@ -2,7 +2,7 @@
 <section>
     <image-upload image="avatar" can-change="permissions.canChangeAvatar" default-src="defaultSrc" default-size="medium" label="avatar" image-class="avatar" sizes="avatarSizes"></image-upload>
     <span class="explanation" ng-if="!permissions.canChangeAvatar">
-        You need <a href="/help/reputation">{{20 - user.reputation.overall | number}} more reputation</a> to change your avatar.
+        You need <a href="/help/reputation">{{10 - user.reputation.overall | number}} more reputation</a> to change your avatar.
     </span>
 </section>
 

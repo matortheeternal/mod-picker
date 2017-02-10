@@ -11,11 +11,11 @@ app.service('sitesFactory', function() {
                 shortLabel: "Nexus",
                 dataLabel: "nexus",
                 includeGame: true,
-                modUrlFormat: /(http[s]:\/\/?)?www\.nexusmods\.com\/skyrim\/mods\/([0-9]+)(\/\?)?/i,
+                modUrlFormat: "(http[s]:\/\/?)?www\.nexusmods\.com\/\[game\]\/mods\/([0-9]+)(\/\?)?",
                 baseUserUrlFormat: "https://forums.nexusmods.com/index.php?showuser=",
                 userUrlFormat: /(http[s]:\/\/?)?forums\.nexusmods\.com\/index\.php\?showuser=([0-9]+)(\/)?/i,
                 badUserUrlFormat: /(http[s]:\/\/?)?forums\.nexusmods\.com\/index\.php\?\/user\/([A-Za-z0-9\-]+)(\/)?/i,
-                modUrlBase: "https://www.nexusmods.com/skyrim/mods/{id}",
+                modUrlBase: "https://www.nexusmods.com/{game}/mods/{id}",
                 userIndex: 2,
                 loginUrl: "https://forums.nexusmods.com/",
                 logoPath: "/images/nexus_logo.png"
@@ -72,9 +72,17 @@ app.service('sitesFactory', function() {
         }) || this.customSite();
     };
 
-    this.getModUrl = function(label, id) {
+    this.getModUrl = function(label, id, gameName) {
         var site = this.getSite(label);
-        return site.modUrlBase.replace("{id}", id);
+        return site.modUrlBase.replace("{id}", id).replace("{game}", gameName);
+    };
+
+    this.getModUrlFormat = function(site, game) {
+        if (site.dataLabel === "nexus") {
+            return new RegExp(site.modUrlFormat.replace("[game]", game.nexus_name), "i");
+        } else {
+            return site.modUrlFormat;
+        }
     };
 
     this.getLinkSteps = function(label) {

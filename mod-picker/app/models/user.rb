@@ -42,6 +42,7 @@ class User < ActiveRecord::Base
   has_many :install_order_notes, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
   has_many :load_order_notes, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
   has_many :compatibility_notes, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
+  has_many :related_mod_notes, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
   has_many :reviews, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
   has_many :corrections, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
   has_many :agreement_marks, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
@@ -62,8 +63,7 @@ class User < ActiveRecord::Base
   has_many :mod_authors, :inverse_of => 'user'
   has_many :mods, :through => 'mod_authors', :inverse_of => 'author_users'
   has_many :mod_lists, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
-
-  belongs_to :active_mod_list, :class_name => 'ModList', :foreign_key => 'active_mod_list_id'
+  has_many :active_mod_lists, :inverse_of => 'user'
 
   has_many :mod_stars, :inverse_of => 'user'
   has_many :starred_mods, :class_name => 'Mod', :through => 'mod_stars', :source => 'mod', :inverse_of => 'user_stars'
@@ -74,9 +74,11 @@ class User < ActiveRecord::Base
   has_many :profile_comments, -> { where(parent_id: nil) }, :class_name => 'Comment', :as => 'commentable'
   has_many :reports, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
 
-  has_many :notifications, -> { includes(:event).order("events.created DESC") }, :inverse_of => 'user'
+  has_many :notifications, -> { includes(:event).order("events.created DESC, events.id DESC") }, :inverse_of => 'user'
   has_many :messages, :inverse_of => 'recipient', :foreign_key => 'sent_to'
   has_many :sent_messages, :class_name => 'Message', :inverse_of => 'submitter', :foreign_key => 'submitter_by'
+
+  has_many :api_tokens, inverse_of: 'user'
 
   accepts_nested_attributes_for :settings, reject_if: :new_record?
 
@@ -85,7 +87,7 @@ class User < ActiveRecord::Base
   counter_cache :comments, column: 'submitted_comments_count', conditional: { hidden: false }
   counter_cache :starred_mods, :starred_mod_lists, :mod_tags, :mod_list_tags, :helpful_marks, :agreement_marks
   counter_cache :mod_authors, column: 'authored_mods_count'
-  counter_cache :submitted_mods, :reviews, :compatibility_notes, :install_order_notes, :load_order_notes, conditional: { hidden: false, approved: true }
+  counter_cache :submitted_mods, :reviews, :compatibility_notes, :install_order_notes, :load_order_notes, :related_mod_notes, conditional: { hidden: false, approved: true }
   counter_cache  :corrections, :tags, conditional: { hidden: false }
   bool_counter_cache :mod_lists, :is_collection, { true => :mod_collections, false => :mod_lists }
 
@@ -108,6 +110,11 @@ class User < ActiveRecord::Base
     notifications.unread.limit(10)
   end
 
+  def active_mod_list(game)
+    a = active_mod_lists.game(game).first
+    a && a.mod_list
+  end
+
   def admin?
     role.to_sym == :admin
   end
@@ -122,6 +129,10 @@ class User < ActiveRecord::Base
 
   def news_writer?
     role.to_sym == :writer
+  end
+
+  def helper?
+    role.to_sym == :helper
   end
 
   def restricted?
@@ -152,6 +163,10 @@ class User < ActiveRecord::Base
     reputation.overall > 160
   end
 
+  def has_help_page_auto_approval?
+    false
+  end
+
   def subscribed_to?(event)
     if respond_to?(:notification_settings)
       key = "#{event.content_type.underscore}_#{event.event_type}"
@@ -167,6 +182,10 @@ class User < ActiveRecord::Base
       new_role = is_author ? "author" : "user"
       update_column(:role, new_role) if role != new_role
     end
+  end
+
+  def mod_submission_history(time_zone)
+    submitted_mods.submission_history(time_zone)
   end
 
   def init

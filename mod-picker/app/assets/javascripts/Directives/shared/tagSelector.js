@@ -8,8 +8,8 @@ app.directive('tagSelector', function() {
             newTags: '=',
             maxTags: '=',
             canCreate: '=',
-            showModsCount: '=?',
-            showModListsCount: '=?',
+            type: '@',
+            showCount: '=?',
             showAuthor: '=?',
             showRemove: '=?',
             showAdd: '=?',
@@ -18,12 +18,15 @@ app.directive('tagSelector', function() {
     }
 });
 
-app.controller('tagSelectorController', function($scope, tagService) {
+app.controller('tagSelectorController', function($scope, $element, $timeout, tagService) {
     $scope.rawNewTags = [];
     $scope.removedTags = [];
+    $scope.showModsCount = $scope.type === "mod" && $scope.showCount;
+    $scope.showModListsCount = $scope.type === "mod-list" && $scope.showCount;
 
-    tagService.retrieveTags().then(function(data) {
+    tagService.retrieveAllTags().then(function(data) {
         $scope.tags = data;
+        $scope.loadTags();
     });
 
     $scope.addTag = function() {
@@ -34,6 +37,22 @@ app.controller('tagSelectorController', function($scope, tagService) {
                 mod_lists_count: 0
             });
         }
+    };
+
+    $scope.focusAddTag = function() {
+        var loader = $element[0].firstChild;
+        var addTagButton = loader.lastChild.firstElementChild.lastElementChild;
+        $timeout(function() {
+            addTagButton.focus();
+        }, 50);
+    };
+
+    $scope.enterRemove = function(tag) {
+        tag.tagBoxClass = 'red-box';
+    };
+
+    $scope.exitRemove = function(tag) {
+        tag.tagBoxClass = '';
     };
 
     $scope.removeTag = function($index) {
@@ -62,24 +81,51 @@ app.controller('tagSelectorController', function($scope, tagService) {
         $scope.rawNewTags.forEach(function(tag) {
             updatedTags.push(tag.text);
         });
+        $scope.savingTags = true;
         $scope.saveCallback(updatedTags).then(function(data) {
-            $scope.activeTags = data.tags;
             $scope.rawNewTags = [];
             $scope.removedTags = [];
-            $scope.storeTags();
+            $scope.newTags = [];
+            $scope.activeTags = data.tags;
+            $timeout(function() {
+                $scope.savingTags = false;
+            }, 300);
+        }, function() {
+            $scope.savingTags = false;
         });
     };
 
     $scope.applyTag = function(index, tag) {
-        $scope.rawNewTags[index] = tag;
-        $scope.storeTags();
+        $scope.$applyAsync(function() {
+            if (!tag) return;
+            angular.copyProperties(tag, $scope.rawNewTags[index]);
+            $scope.storeTags();
+            $scope.focusAddTag();
+        });
+    };
+
+    $scope.rawTagText = function() {
+        return $scope.rawNewTags.map(function(rawTag) {
+            return rawTag.text;
+        });
     };
 
     $scope.storeTags = function() {
-        $scope.newTags = [];
-        for (var i = 0; i < $scope.rawNewTags.length; i++) {
-            rawTag = $scope.rawNewTags[i];
-            $scope.newTags.push(rawTag.text);
-        }
+        $scope.newTags = $scope.rawTagText();
     };
+
+    $scope.findTag = function(tagText) {
+        return $scope.tags.find(function(tag) {
+            return tag.text === tagText
+        });
+    };
+
+    $scope.loadTags = function() {
+        if (!$scope.newTags || $scope.newTags.equals($scope.rawTagText())) return;
+        $scope.rawNewTags = $scope.newTags.map(function(newTag) {
+            return $scope.findTag(newTag);
+        }).filter(angular.isDefined);
+    };
+
+    $scope.$on('reloadTags', $scope.loadTags);
 });

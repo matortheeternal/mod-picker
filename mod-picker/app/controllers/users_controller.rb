@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :comments, :endorse, :unendorse, :add_rep, :subtract_rep, :change_role, :mod_lists, :mods]
+  before_action :set_user, only: [:show, :comments, :endorse, :unendorse, :add_rep, :subtract_rep, :change_role, :mod_lists, :mods, :api_tokens]
 
   # GET/POST /users/index
   def index
@@ -27,7 +27,7 @@ class UsersController < ApplicationController
   # GET /users/1
   def show
     authorize! :read, @user
-    endorsed = ReputationLink.exists?(from_rep_id: current_user.reputation.id, to_rep_id: @user.reputation.id)
+    endorsed = ReputationLink.exists_between(current_user, @user)
     render json: {
         user: json_format(@user),
         endorsed: endorsed
@@ -115,8 +115,8 @@ class UsersController < ApplicationController
   def mod_lists
     authorize! :read, @user
 
-    favorite_mod_lists = @user.starred_mod_lists.accessible_by(current_ability)
-    authored_mod_lists = @user.mod_lists.accessible_by(current_ability)
+    favorite_mod_lists = @user.starred_mod_lists.game(params[:game]).accessible_by(current_ability)
+    authored_mod_lists = @user.mod_lists.game(params[:game]).accessible_by(current_ability)
 
     render json: {
       favorites: favorite_mod_lists,
@@ -124,13 +124,18 @@ class UsersController < ApplicationController
     }
   end
 
+  # GET /users/1/api_tokens
+  def api_tokens
+    authorize! :update, @user
+    respond_with_json(@user.api_tokens, :base, :api_tokens)
+  end
+
   # GET /users/1/mods
   def mods
     authorize! :read, @user
 
-    favorite_mods = @user.starred_mods.includes(:author_users).accessible_by(current_ability)
-    authored_mods = @user.mods.includes(:author_users).accessible_by(current_ability)
-    sources = { nexus: true, lab: true, workshop: true }
+    favorite_mods = @user.starred_mods.game(params[:game]).includes(:author_users).accessible_by(current_ability)
+    authored_mods = @user.mods.game(params[:game]).includes(:author_users).accessible_by(current_ability)
 
     render json: {
         favorites: json_format(favorite_mods, :index),

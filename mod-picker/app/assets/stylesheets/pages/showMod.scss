@@ -227,6 +227,13 @@
     max-height: 400px;
     min-height: 400px;
   }
+
+  .CodeMirror-fullscreen {
+    max-height: none;
+    .CodeMirror-scroll {
+      max-height: none;
+    }
+  }
 }
 
 .mod-page-btn {
@@ -426,12 +433,6 @@
     color: $h4_color;
     display: block;
     margin-bottom: 8px;
-  }
-
-  label {
-    display: inline-block;
-    margin-right: 16px;
-    min-width: 365px;
   }
 }
 

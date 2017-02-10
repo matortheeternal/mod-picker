@@ -7,13 +7,11 @@
 <div class="comment-content-column">
     <div class="comment-header">
         <span class="user-name">
-            <a class="strong user-role-{{comment.submitter.role}}" ng-href="/{{currentGame.nexus_name}}#/user/{{comment.submitter.id}}" target="_blank" tabindex="{{index}}">{{comment.submitter.username}}</a>
+            <a class="strong user-role-{{comment.submitter.role}}" ng-href="user/{{comment.submitter.id}}" tabindex="{{index}}">{{comment.submitter.username}}</a>
         </span>
         <span class="user-title">
             {{comment.submitter.title}}
         </span>
-        <!-- TODO: Use a relative date -->
-        <!-- TODO: Show date edited in title as well -->
         <span class="date-submitted" title="{{getDateString()}}">
             {{comment.submitted | relativeDate}}
         </span>

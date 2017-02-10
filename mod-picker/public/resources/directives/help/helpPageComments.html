@@ -1,6 +1,6 @@
 <div class="content-block">
     <div class="content-title">Comments
-        <span class="right-item action-box" ng-click="startNewComment()">
+        <span class="right-item action-box" ng-click="startNewComment()" ng-if="permissions.canComment">
             <i class="fa fa-plus"></i> New Comment
         </span>
     </div>

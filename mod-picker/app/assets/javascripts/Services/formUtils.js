@@ -1,6 +1,10 @@
 app.service('formUtils', function($document) {
+    var lastFocusedInput;
+
     this.focusText = function($event) {
+        if ($event.target === lastFocusedInput) return;
         $event.target.select();
+        lastFocusedInput = $event.target;
     };
 
     this.hideWhenDocumentClicked = function(viewBoolean) {

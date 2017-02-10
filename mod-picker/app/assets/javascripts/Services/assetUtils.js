@@ -1,52 +1,104 @@
 app.service('assetUtils', function(fileUtils) {
     var service = this;
 
+    var extMap = [{
+        exts: [""],
+        iconClass: "fa-folder-o"
+    }, {
+        exts: ["exe", "jar"],
+        iconClass: "fa-list-alt"
+    }, {
+        exts: ["dll", "lib"],
+        iconClass: ["fa-file-o", "fa-gear"]
+    }, {
+        exts: ["esm", "esp"],
+        iconClass: "fa-globe"
+    }, {
+        exts: ["bsa", "ba2", "rar", "7z", "zip", "tar", "gz"],
+        iconClass: "fa-file-archive-o"
+    }, {
+        exts: ["pex", "psc", "bat", "pas", "cpp", "inl", "h", "c", "cs", "rc", "fx", "fxh", "hlsl", "inc", "def", "py", "pyd", "pyo", "pyc", "sln", "css", "vcproj", "vcxproj", "vbe"],
+        iconClass: "fa-file-code-o"
+    }, {
+        exts: ["swf", "bik"],
+        iconClass: "fa-file-video-o"
+    }, {
+        exts: ["ini", "cfg", "txt", "rtf", "yaml", "json", "xml", "html", "htm", "log"],
+        iconClass: "fa-file-text-o"
+    }, {
+        exts: ["doc", "docx"],
+        iconClass: "fa-file-word-o"
+    }, {
+        exts: ["pdf"],
+        iconClass: "fa-file-pdf-o"
+    }, {
+        exts: ["xlsx", "xls"],
+        iconClass: "fa-file-excel-o"
+    }, {
+        exts: ["csv", "ods"],
+        iconClass: "fa-table"
+    }, {
+        exts: ["fuz", "wav", "xwm", "mp3"],
+        iconClass: "fa-file-sound-o"
+    }, {
+        exts: ["dds", "tga", "png", "jpg", "jpeg", "bmp", "gif", "ico", "svg", "gfx", "psd"],
+        iconClass: "fa-image"
+    }, {
+        exts: ["tri", "hkx", "hkt", "nif", "bto", "btr", "btt", "lod"],
+        iconClass: "fa-cube"
+    }];
+
+    this.getIsIconStack = function(ext) {
+        return ["dll", "lib"].indexOf(ext) > -1;
+    };
+
     this.getIconClass = function(ext) {
-        switch(ext) {
-            case "": return "fa-folder-o";
-            case "esp": return "fa-globe";
-            case "esm": return "fa-globe";
-            case "bsa": return "fa-file-archive-o";
-            case "ba2": return "fa-file-archive-o";
-            case "pex": return "fa-file-code-o";
-            case "psc": return "fa-file-code-o";
-            case "ini": return "fa-file-text-o";
-            case "txt": return "fa-file-text-o";
-            case "xml": return "fa-file-text-o";
-            case "fuz": return "fa-file-sound-o";
-            case "tri": return "fa-location-arrow";
-            case "nif": return "fa-cube";
-            case "dds": return "fa-image";
-            default: return "fa-file-o"
+        for (var i = 0; i < extMap.length; i++) {
+            var extMapping = extMap[i];
+            if (extMapping.exts.indexOf(ext) > -1) {
+                return extMapping.iconClass;
+            }
         }
+        return "fa-file-o"
+    };
+
+    this.newLevel = function(currentLevel, levelName) {
+        var folderExt = fileUtils.getFileExtension(levelName).toLowerCase();
+        currentLevel.unshift({
+            name: levelName,
+            iconClass: service.getIconClass(folderExt),
+            iconStack: service.getIsIconStack(folderExt),
+            children: []
+        });
+        return currentLevel[0].children;
+    };
+
+    this.generateLevels = function(splitPath, currentLevel) {
+        splitPath.forEach(function(levelName) {
+            var foundLevel = currentLevel.find(function(item) {
+                return item.name.toLowerCase() === levelName.toLowerCase();
+            });
+            if (foundLevel) {
+                if (!foundLevel.children) foundLevel.children = [];
+                currentLevel = foundLevel.children;
+            } else {
+                currentLevel = service.newLevel(currentLevel, levelName);
+            }
+        });
+
+        return currentLevel;
     };
 
     this.getNestedAssets = function(assetPaths) {
         var nestedAssets = [];
         assetPaths.forEach(function(assetPath) {
-            var paths = assetPath.split('\\');
-            var fileName = paths.pop();
+            var splitPath = assetPath.split('\\');
+            var fileName = splitPath.pop();
             var fileExt = fileUtils.getFileExtension(fileName).toLowerCase();
             var currentLevel = nestedAssets;
 
             // traverse/generate levels as needed
-            paths.forEach(function(folderName) {
-                var folderExt = fileUtils.getFileExtension(folderName).toLowerCase();
-                var foundFolder = currentLevel.find(function(item) {
-                    return item.name.toLowerCase() === folderName.toLowerCase();
-                });
-                if (foundFolder) {
-                    if (!foundFolder.children) foundFolder.children = [];
-                    currentLevel = foundFolder.children;
-                } else {
-                    currentLevel.unshift({
-                        name: folderName,
-                        iconClass: service.getIconClass(folderExt),
-                        children: []
-                    });
-                    currentLevel = currentLevel[0].children;
-                }
-            });
+            currentLevel = service.generateLevels(splitPath, currentLevel);
 
             // push the file onto the current level if it isn't already present
             var foundFile = currentLevel.find(function(item) {
@@ -55,7 +107,8 @@ app.service('assetUtils', function(fileUtils) {
             if (!foundFile) {
                 currentLevel.push({
                     name: fileName,
-                    iconClass: service.getIconClass(fileExt)
+                    iconClass: service.getIconClass(fileExt),
+                    iconStack: service.getIsIconStack(fileExt)
                 });
             }
         });
@@ -65,12 +118,12 @@ app.service('assetUtils', function(fileUtils) {
 
     this.sortNestedAssets = function(nestedAssets) {
         nestedAssets.sort(function(a, b) {
-            if (a.children || !b.children) {
-                if (a.name < b.name) return -1;
-                if (a.name > b.name) return 1;
-                return 0;
+            if (!a.children == !b.children) {
+                var nameA = a.name.toUpperCase();
+                var nameB = b.name.toUpperCase();
+                return (nameA < nameB) ? -1 : (nameA > nameB) ? 1 : 0;
             } else {
-                return 1;
+                return !a.children ? 1 : -1;
             }
         });
         // recurse into children

@@ -1,0 +1,71 @@
+mod-option-tree {
+  ul {
+    list-style: none;
+    padding-left: 10px;
+
+    li {
+      margin: 8px 0;
+    }
+  }
+
+  .mod-option {
+    display: flex;
+
+    .mod-option-icon {
+      font-size: 32px;
+      margin-right: 10px;
+    }
+
+    .mod-option-details {
+      padding-right: 10px;
+
+      .mod-option-title {
+        display: flex;
+        font-size: 20px;
+
+        input {
+          margin: 6px 2px 0 0;
+          min-width: 16px;
+        }
+      }
+
+      .mod-option-stats {
+        padding-left: 18px;
+      }
+    }
+  }
+
+  .children-container {
+    padding-left: 37px;
+
+    .children-note {
+      cursor: pointer;
+
+      .fa {
+        min-width: 16px;
+      }
+    }
+  }
+
+  mod-option-tree {
+    ul {
+      padding-right: 5px;
+
+      li {
+        display: inline-block;
+        min-width: 350px;
+        max-width: 350px;
+      }
+    }
+
+    .mod-option .mod-option-details {
+      .mod-option-title {
+        font-size: 18px;
+      }
+
+      .mod-option-stats {
+        font-size: 14px;
+      }
+    }
+  }
+}

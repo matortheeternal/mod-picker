@@ -1,6 +1,7 @@
 class ModListsController < ApplicationController
-  before_action :check_sign_in, only: [:create, :set_active, :update, :update_tags, :create_star, :destroy_star]
-  before_action :set_mod_list, only: [:show, :hide, :clone, :add, :update, :update_tags, :tools, :mods, :plugins, :export_modlist, :export_plugins, :export_links, :config_files, :analysis, :comments]
+  before_action :check_sign_in, only: [:create, :set_active, :update, :import, :update_tags, :create_star, :destroy_star]
+  before_action :set_mod_list, only: [:hide, :clone, :add, :update, :import, :update_tags, :tools, :mods, :plugins, :export_modlist, :export_plugins, :export_links, :config_files, :analysis, :comments]
+  before_action :soft_set_mod_list, only: [:set_active]
 
   # GET /mod_lists
   def index
@@ -16,6 +17,7 @@ class ModListsController < ApplicationController
 
   # GET /mod_lists/1
   def show
+    @mod_list = ModList.game(params[:game]).find(params[:id])
     authorize! :read, @mod_list, message: "You are not allowed to view this mod list."
     star = current_user.present? && ModListStar.exists?(mod_list_id: @mod_list.id, user_id: current_user.id)
     render json: {
@@ -26,7 +28,7 @@ class ModListsController < ApplicationController
 
   # GET /mod_lists/active
   def active
-    @mod_list = current_user.present? && current_user.active_mod_list
+    @mod_list = current_user && current_user.active_mod_list(params[:game])
     if @mod_list
       respond_with_json(@mod_list, :tracking)
     else
@@ -68,8 +70,8 @@ class ModListsController < ApplicationController
     install_order_notes = @mod_list.install_order_notes.preload(:submitter, :editor, :editors, :first_mod, :second_mod)
 
     # prepare helpful marks
-    c_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("CompatibilityNote", compatibility_notes.ids)
-    i_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("InstallOrderNote", install_order_notes.ids)
+    c_helpful_marks = HelpfulMark.for_user_content(current_user, "CompatibilityNote", compatibility_notes.ids)
+    i_helpful_marks = HelpfulMark.for_user_content(current_user, "InstallOrderNote", install_order_notes.ids)
 
     # render response
     render json: {
@@ -100,8 +102,8 @@ class ModListsController < ApplicationController
     load_order_notes = @mod_list.load_order_notes.preload(:submitter, :editor, :editors, :first_mod, :second_mod, :first_plugin, :second_plugin)
 
     # prepare helpful marks
-    c_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("CompatibilityNote", compatibility_notes.ids)
-    l_helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("LoadOrderNote", load_order_notes.ids)
+    c_helpful_marks = HelpfulMark.for_user_content(current_user, "CompatibilityNote", compatibility_notes.ids)
+    l_helpful_marks = HelpfulMark.for_user_content(current_user, "LoadOrderNote", load_order_notes.ids)
     
     # render response
     render json: {
@@ -221,7 +223,7 @@ class ModListsController < ApplicationController
   # POST /mod_lists/1/add
   def add
     authorize! :read, @mod_list
-    @target_mod_list = current_user.active_mod_list
+    @target_mod_list = current_user.active_mod_list(params[:game])
     builder = ModListBuilder.new(@mod_list, @target_mod_list)
     builder.copy!
     respond_with_json(@target_mod_list, :tracking, :mod_list)
@@ -229,17 +231,16 @@ class ModListsController < ApplicationController
 
   # POST /mod_lists/active
   def set_active
-    @mod_list = nil
-    if params.has_key?(:id) && params[:id]
-      @mod_list = ModList.find(params[:id])
-      authorize! :read, @mod_list
-    end
-
-    if current_user.update(active_mod_list_id: params[:id])
-      render json: { mod_list: nil } unless @mod_list.present?
-      respond_with_json(@mod_list, :tracking, :mod_list)
+    ActiveModList.clear(params[:game], current_user)
+    if @mod_list.present?
+      @active_mod_list = ActiveModList.new(active_mod_list_params)
+      if @active_mod_list.save
+        respond_with_json(@mod_list, :tracking, :mod_list)
+      else
+        render json: @active_mod_list.errors, status: :unproccessable_entity
+      end
     else
-      render json: current_user.errors, status: :unproccessable_entity
+      render json: { mod_list: nil }
     end
   end
 
@@ -261,6 +262,7 @@ class ModListsController < ApplicationController
 
     @mod_list.updated_by = current_user.id
     if @mod_list.update(mod_list_params) && @mod_list.update_lazy_counters!
+      ModList.update_adult(@mod_list.id)
       @mod_list.compact_plugins
       respond_with_json(@mod_list, :tracking, :mod_list)
     else
@@ -268,50 +270,25 @@ class ModListsController < ApplicationController
     end
   end
 
+  # POST /mod_lists/1/import
+  def import
+    authorize! :update, @mod_list
+
+    @mod_list.updated_by = current_user.id
+    if @mod_list.import(mod_list_import_params) && @mod_list.update_all_counters!
+      render json: {status: :ok}
+    else
+      render json: @mod_list.errors, status: :unprocessable_entity
+    end
+  end
+
   # PATCH/PUT /mod_lists/1/tags
   def update_tags
-    # errors array to return to user
-    errors = ActiveModel::Errors.new(self)
-    current_user_id = current_user.id
-
-    params[:tags] ||= []
-
-    # perform tag deletions
-    existing_mod_list_tags = @mod_list.mod_list_tags
-    existing_tags_text = @mod_list.tags.pluck(:text)
-    @mod_list.mod_list_tags.each_with_index do |mod_list_tag, index|
-      if params[:tags].exclude?(existing_tags_text[index])
-        authorize! :destroy, mod_list_tag
-        mod_list_tag.destroy
-      end
-    end
-
-    # update tags
-    params[:tags].each do |tag_text|
-      if existing_tags_text.exclude?(tag_text)
-        # find or create tag
-        tag = Tag.where(game_id: params[:game_id], text: tag_text).first
-        if tag.nil?
-          tag = Tag.new(game_id: params[:game_id], text: tag_text, submitted_by: current_user_id)
-          authorize! :create, tag
-          if !tag.save
-            tag.errors.full_messages.each {|msg| errors[:base] << msg}
-            next
-          end
-        end
-
-        # create mod tag
-        mod_list_tag = @mod_list.mod_list_tags.new(tag_id: tag.id, submitted_by: current_user_id)
-        authorize! :create, mod_list_tag
-        next if mod_list_tag.save
-        mod_list_tag.errors.full_messages.each {|msg| errors[:base] << msg}
-      end
-    end
-
-    if errors.empty?
-      render json: {status: :ok, tags: @mod_list.tags}
+    builder = TagBuilder.new(@mod_list, current_user, params[:tags])
+    if builder.update_tags
+      respond_with_json(@mod_list.tags, :mod_list_tags, :tags)
     else
-      render json: {errors: errors, status: :unprocessable_entity, tags: @mod_list.tags}
+      render json: builder.errors, status: :unprocessable_entity
     end
   end
 
@@ -347,6 +324,14 @@ class ModListsController < ApplicationController
       @mod_list = ModList.find(params[:id])
     end
 
+    def soft_set_mod_list
+      @mod_list = nil
+      if params.has_key?(:id) && params[:id]
+        @mod_list = ModList.find(params[:id])
+        authorize! :read, @mod_list
+      end
+    end
+
     def force_download(filename)
       response.headers["Content-Disposition"] = "attachment; filename=#{filename}"
     end
@@ -362,15 +347,15 @@ class ModListsController < ApplicationController
     end
 
     def filtering_params
-      params[:filters].slice(:adult, :hidden, :search, :description, :submitter, :status, :kind, :submitted, :updated, :completed, :tools, :mods, :plugins, :config_files, :ignored_notes, :stars, :custom_tools, :custom_mods, :master_plugins, :available_plugins, :custom_plugins, :custom_config_files, :compatibility_notes, :install_order_notes, :load_order_notes, :bsa_files, :asset_files, :records, :override_records, :plugin_errors, :tags, :comments)
+      params[:filters].slice(:game, :adult, :hidden, :search, :description, :submitter, :status, :kind, :submitted, :updated, :completed, :tools, :mods, :plugins, :config_files, :ignored_notes, :stars, :custom_tools, :custom_mods, :master_plugins, :available_plugins, :custom_plugins, :custom_config_files, :compatibility_notes, :install_order_notes, :load_order_notes, :bsa_files, :asset_files, :records, :override_records, :plugin_errors, :tags, :comments)
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def mod_list_params
       params.require(:mod_list).permit(:game_id, :name, :description, :status, :visibility, :is_collection, :disable_comments, :lock_tags, :hidden,
-          mod_list_mods_attributes: [:id, :group_id, :mod_id, :index, :_destroy, mod_list_mod_options_attributes: [:id, :mod_option_id, :_destroy]],
+          mod_list_mods_attributes: [:id, :group_id, :mod_id, :index, :description, :_destroy, mod_list_mod_options_attributes: [:id, :mod_option_id, :_destroy]],
           custom_mods_attributes: [:id, :group_id, :is_utility, :index, :name, :url, :description, :_destroy],
-          mod_list_plugins_attributes: [:id, :group_id, :plugin_id, :index, :cleaned, :merged, :_destroy],
+          mod_list_plugins_attributes: [:id, :group_id, :plugin_id, :index, :cleaned, :merged, :description, :_destroy],
           custom_plugins_attributes: [:id, :group_id, :index, :cleaned, :merged, :compatibility_note_id, :filename, :description, :_destroy],
           mod_list_groups_attributes: [:id, :index, :tab, :color, :name, :description, :_destroy,
               children: [:id]
@@ -379,5 +364,17 @@ class ModListsController < ApplicationController
           custom_config_files_attributes: [:id, :filename, :install_path, :text_body, :_destroy],
           ignored_notes_attributes: [:id, :note_id, :note_type, :_destroy]
       )
+    end
+
+    def mod_list_import_params
+      params.permit(mods: [:id, :name, :nexus_info_id], plugins: [:id, :filename])
+    end
+
+    def active_mod_list_params
+      {
+          game_id: params[:game],
+          user_id: current_user.id,
+          mod_list_id: params[:id]
+      }
     end
 end

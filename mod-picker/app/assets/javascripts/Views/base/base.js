@@ -26,14 +26,11 @@ app.config(['$stateProvider', function($stateProvider) {
             categoryPriorities: function(errorService, categoryService) {
                 return errorService.criticalRequest(categoryService.retrieveCategoryPriorities);
             }
-        },
-        onEnter: function(themesService, currentUser) {
-            themesService.changeTheme(currentUser.settings.theme)
         }
     })
 }]);
 
-app.controller('baseController', function($scope, $rootScope, $state, $window, $timeout, currentUser, activeModList, games, currentGame, categories, categoryPriorities, userService) {
+app.controller('baseController', function($scope, $rootScope, $state, $window, $timeout, currentUser, activeModList, games, currentGame, categories, categoryPriorities, userService, themesService) {
     // shared variables - used on multiple states.  These have to stored on the
     // $rootScope else we can't modify them for all states
     $rootScope.currentUser = currentUser;
@@ -44,12 +41,15 @@ app.controller('baseController', function($scope, $rootScope, $state, $window, $
     $rootScope.categories = categories;
     $rootScope.categoryPriorities = categoryPriorities;
 
+    // load current theme
+    themesService.changeTheme(currentUser.settings);
+
     // load artist credit
     $scope.loadArtistCredit = function() {
         var creditElement = document.getElementById('artist-credit');
         creditElement.className = 'credit-link';
-        var afterElement = window.getComputedStyle(creditElement, ':before');
-        $scope.creditLink = afterElement.getPropertyValue('content').slice(1, -1);
+        var beforeElement = window.getComputedStyle(creditElement, ':before');
+        $scope.creditLink = beforeElement.getPropertyValue('content').slice(1, -1);
         creditElement.className = '';
     };
 
@@ -103,6 +103,11 @@ app.controller('baseController', function($scope, $rootScope, $state, $window, $
         $scope.setPageTitle(title);
     });
 
-    $scope.loadArtistCredit();
+    $timeout(function() {
+        $scope.loadArtistCredit();
+        $timeout(function() {
+            window.prerenderReady = true;
+        }, 500);
+    });
     $scope.setPageTitle();
 });

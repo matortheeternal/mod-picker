@@ -72,7 +72,7 @@ app.service("sortFactory", function() {
             factory.buildCountSortOption("Stars"),
             factory.buildSortOption("Reputation"),
             factory.buildSortOption("Avg Rating", "average_rating"),
-            factory.buildSortOption("Plugins", "plugins_count"),
+            factory.buildCountSortOption("Mod Options"),
             factory.buildCountSortOption("Plugins"),
             factory.buildCountSortOption("Mod Lists"),
             factory.buildCountSortOption("Required Mods"),
@@ -198,6 +198,16 @@ app.service("sortFactory", function() {
             factory.submittedSort,
             factory.editedSort,
             factory.correctionsSort
+        ];
+    };
+
+    /* related mod notes index sort options */
+    this.relatedModNoteSortOptions = function() {
+        return [
+            factory.helpfulnessSort,
+            factory.submitterReputationSort,
+            factory.submittedSort,
+            factory.editedSort
         ];
     };
 

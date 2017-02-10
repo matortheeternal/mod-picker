@@ -4,26 +4,77 @@
 
         <p>Please refer to the <a href="/help/moderation_guide">Moderation Guide</a> for moderation policies and guidelines.</p>
 
+        <div class="tab-bar-items inverse-items">
+            <a class="quality-item link-item" href="reports">
+                <span class="quality-number">
+                    {{stats.unresolved_reports}}
+                </span>
+                UNRESOLVED REPORTS
+            </a>
+            <a class="quality-item link-item" href="curator-requests">
+                <span class="quality-number">
+                    {{stats.unapproved.curator_requests}}
+                </span>
+                OPEN CURATOR REQUESTS
+            </a>
+            <a class="quality-item link-item" href="mods?apr=0">
+                <span class="quality-number">
+                    {{stats.unapproved.mods}}
+                </span>
+                UNAPPROVED MODS
+            </a>
+            <a class="quality-item link-item" href="reviews?apr=0">
+                <span class="quality-number">
+                    {{stats.unapproved.reviews}}
+                </span>
+                UNAPPROVED REVIEWS
+            </a>
+            <a class="quality-item link-item" href="compatibility-notes?apr=0">
+                <span class="quality-number">
+                    {{stats.unapproved.compatibility_notes}}
+                </span>
+                UNAPPROVED COMPATIBILITY NOTES
+            </a>
+            <a class="quality-item link-item" href="install-order-notes?apr=0">
+                <span class="quality-number">
+                    {{stats.unapproved.install_order_notes}}
+                </span>
+                UNAPPROVED INSTALL ORDER NOTES
+            </a>
+            <a class="quality-item link-item" href="load-order-notes?apr=0">
+                <span class="quality-number">
+                    {{stats.unapproved.load_order_notes}}
+                </span>
+                UNAPPROVED LOAD ORDER NOTES
+            </a>
+            <a class="quality-item link-item" href="help-pages?apr=0">
+                <span class="quality-number">
+                    {{stats.unapproved.help_pages}}
+                </span>
+                UNAPPROVED HELP PAGES
+            </a>
+        </div>
+
         <section>
             <h3>Manage Users</h3>
             <ul>
                 <li>
-                    <a href="#/users?adm=0&mod=0&ma=0&usr=0&bnd=1">Banned Users</a>
+                    <a href="users?adm=0&mod=0&ma=0&usr=0&bnd=1">Banned Users</a>
                 </li>
                 <li>
-                    <a href="#/users?adm=0&mod=0&ma=0&usr=0&rsr=1">Restricted Users</a>
+                    <a href="users?adm=0&mod=0&ma=0&usr=0&rsr=1">Restricted Users</a>
                 </li>
                 <li>
-                    <a href="#/reports?rr=0&rcn=0&rin=0&rln=0&rco=0&rcr=0&rm=0&rml=0&rt=0">Reported Users</a>
+                    <a href="reports?rr=0&rcn=0&rin=0&rln=0&rco=0&rcr=0&rm=0&rml=0&rt=0">Reported Users</a>
                 </li>
                 <li>
-                    <a href="#/invitations?acc=0&exp=0">Pending Invitations</a>
+                    <a href="invitations?acc=0&exp=0">Pending Invitations</a>
                 </li>
                 <li>
-                    <a href="#/invitations?acc=0&pen=0">Expired Invitations</a>
+                    <a href="invitations?acc=0&pen=0">Expired Invitations</a>
                 </li>
                 <li>
-                    <a href="#/invitations?exp=0&pen=0">Accepted Invitations</a>
+                    <a href="invitations?exp=0&pen=0">Accepted Invitations</a>
                 </li>
                 <li>
                     <a href="/users/invitation/new">Invite User</a>
@@ -33,41 +84,48 @@
                 </li>
             </ul>
 
-            <h3>News and Announcements</h3>
+            <h3 ng-if="permissions.canManageArticles">News and Announcements</h3>
+            <ul ng-if="permissions.canManageArticles">
+                <li>
+                    <a href="articles/submit">Create News Article</a>
+                </li>
+                <li ng-if="permissions.isAdmin">
+                    <a href="broadcast">Platform Broadcast</a>
+                </li>
+                <li ng-if="permissions.isAdmin">
+                    <a href="email-blast">Email Blast</a>
+                </li>
+            </ul>
+
+            <h3>General</h3>
             <ul>
                 <li>
-                    <a href="#/articles/submit">Create News Article</a>
-                </li>
-                <li ng-if="permissions.isAdmin">
-                    <a href="#/broadcast">Platform Broadcast</a>
-                </li>
-                <li ng-if="permissions.isAdmin">
-                    <a href="#/email-blast">Email Blast</a>
+                    <a href="activity">Activity Feed</a>
                 </li>
             </ul>
 
             <h3>Approval</h3>
             <ul>
                 <li>
-                    <a href="#/curator-requests">Curator Requests</a>
+                    <a href="curator-requests">Curator Requests</a>
                 </li>
                 <li>
-                    <a href="#/mods?apr=0">Unapproved Mods</a>
+                    <a href="mods?apr=0">Unapproved Mods</a>
                 </li>
                 <li>
-                    <a href="#/reviews?apr=0">Unapproved Reviews</a>
+                    <a href="reviews?apr=0">Unapproved Reviews</a>
                 </li>
                 <li>
-                    <a href="#/compatibility-notes?apr=0">Unapproved Compatibility Notes</a>
+                    <a href="compatibility-notes?apr=0">Unapproved Compatibility Notes</a>
                 </li>
                 <li>
-                    <a href="#/install-order-notes?apr=0">Unapproved Install Order Notes</a>
+                    <a href="install-order-notes?apr=0">Unapproved Install Order Notes</a>
                 </li>
                 <li>
-                    <a href="#/load-order-notes?apr=0">Unapproved Load Order Notes</a>
+                    <a href="load-order-notes?apr=0">Unapproved Load Order Notes</a>
                 </li>
                 <li>
-                    <a href="#/help-pages?apr=0">Unapproved Help Pages</a>
+                    <a href="help-pages?apr=0">Unapproved Help Pages</a>
                 </li>
             </ul>
         </section>
@@ -76,71 +134,71 @@
             <h3>Reporting</h3>
             <ul>
                 <li>
-                    <a href="#/reports">All Unresolved Reports</a>
+                    <a href="reports">All Unresolved Reports</a>
                 </li>
                 <li>
-                    <a href="#/reports?rr=0&rcn=0&rin=0&rln=0&rco=0&rcr=0&rml=0&rt=0&ru=0">Reported Mods</a>
+                    <a href="reports?rr=0&rcn=0&rin=0&rln=0&rco=0&rcr=0&rml=0&rt=0&ru=0">Reported Mods</a>
                 </li>
                 <li>
-                    <a href="#/reports?rr=0&rcn=0&rin=0&rln=0&rco=0&rcr=0&rm=0&rt=0&ru=0">Reported Mod Lists</a>
+                    <a href="reports?rr=0&rcn=0&rin=0&rln=0&rco=0&rcr=0&rm=0&rt=0&ru=0">Reported Mod Lists</a>
                 </li>
                 <li>
-                    <a href="#/reports?rr=0&rcn=0&rin=0&rln=0&rco=0&rcr=0&rm=0&rml=0&ru=0">Reported Tags</a>
+                    <a href="reports?rr=0&rcn=0&rin=0&rln=0&rco=0&rcr=0&rm=0&rml=0&ru=0">Reported Tags</a>
                 </li>
                 <li>
-                    <a href="#/reports?rr=0&rcn=0&rin=0&rln=0&rco=0&rcr=0&rm=0&rml=0&rt=0">Reported Users</a>
+                    <a href="reports?rr=0&rcn=0&rin=0&rln=0&rco=0&rcr=0&rm=0&rml=0&rt=0">Reported Users</a>
                 </li>
                 <li>
-                    <a href="#/reports?rr=0&rcn=0&rin=0&rln=0&rcr=0&rm=0&rml=0&rt=0&ru=0">Reported Comments</a>
+                    <a href="reports?rr=0&rcn=0&rin=0&rln=0&rcr=0&rm=0&rml=0&rt=0&ru=0">Reported Comments</a>
                 </li>
                 <li>
-                    <a href="#/reports?rcn=0&rin=0&rln=0&rco=0&rcr=0&rm=0&rml=0&rt=0&ru=0">Reported Reviews</a>
+                    <a href="reports?rcn=0&rin=0&rln=0&rco=0&rcr=0&rm=0&rml=0&rt=0&ru=0">Reported Reviews</a>
                 </li>
                 <li>
-                    <a href="#/reports?rr=0&rin=0&rln=0&rco=0&rcr=0&rm=0&rml=0&rt=0&ru=0">Reported Compatibility Notes</a>
+                    <a href="reports?rr=0&rin=0&rln=0&rco=0&rcr=0&rm=0&rml=0&rt=0&ru=0">Reported Compatibility Notes</a>
                 </li>
                 <li>
-                    <a href="#/reports?rr=0&rcn=0&rln=0&rco=0&rcr=0&rm=0&rml=0&rt=0&ru=0">Reported Install Order Notes</a>
+                    <a href="reports?rr=0&rcn=0&rln=0&rco=0&rcr=0&rm=0&rml=0&rt=0&ru=0">Reported Install Order Notes</a>
                 </li>
                 <li>
-                    <a href="#/reports?rr=0&rcn=0&rin=0&rco=0&rcr=0&rm=0&rml=0&rt=0&ru=0">Reported Load Order Notes</a>
+                    <a href="reports?rr=0&rcn=0&rin=0&rco=0&rcr=0&rm=0&rml=0&rt=0&ru=0">Reported Load Order Notes</a>
                 </li>
                 <li>
-                    <a href="#/reports?rr=0&rcn=0&rin=0&rln=0&rco=0&rm=0&rml=0&rt=0&ru=0">Reported Corrections</a>
+                    <a href="reports?rr=0&rcn=0&rin=0&rln=0&rco=0&rm=0&rml=0&rt=0&ru=0">Reported Corrections</a>
                 </li>
             </ul>
 
             <h3>Hidden Content</h3>
             <ul>
                 <li>
-                    <a href="#/mods?unh=0">Hidden Mods</a>
+                    <a href="mods?unh=0">Hidden Mods</a>
                 </li>
                 <li>
-                    <a href="#/plugins?unh=0">Hidden Plugins</a>
+                    <a href="plugins?unh=0">Hidden Plugins</a>
                 </li>
                 <li>
-                    <a href="#/mod-lists?unh=0&ste=1&sun=1&clc=1">Hidden Mod Lists</a>
+                    <a href="mod-lists?unh=0&ste=1&sun=1&clc=1">Hidden Mod Lists</a>
                 </li>
                 <li>
-                    <a href="#/tags?unh=0">Hidden Tags</a>
+                    <a href="tags?unh=0">Hidden Tags</a>
                 </li>
                 <li>
-                    <a href="#/comments?unh=0">Hidden Comments</a>
+                    <a href="comments?unh=0">Hidden Comments</a>
                 </li>
                 <li>
-                    <a href="#/reviews?unh=0">Hidden Reviews</a>
+                    <a href="reviews?unh=0">Hidden Reviews</a>
                 </li>
                 <li>
-                    <a href="#/compatibility-notes?unh=0">Hidden Compatibility Notes</a>
+                    <a href="compatibility-notes?unh=0">Hidden Compatibility Notes</a>
                 </li>
                 <li>
-                    <a href="#/install-order-notes?unh=0">Hidden Install Order Notes</a>
+                    <a href="install-order-notes?unh=0">Hidden Install Order Notes</a>
                 </li>
                 <li>
-                    <a href="#/load-order-notes?unh=0">Hidden Load Order Notes</a>
+                    <a href="load-order-notes?unh=0">Hidden Load Order Notes</a>
                 </li>
                 <li>
-                    <a href="#/corrections?unh=0">Hidden Corrections</a>
+                    <a href="corrections?unh=0">Hidden Corrections</a>
                 </li>
             </ul>
         </section>

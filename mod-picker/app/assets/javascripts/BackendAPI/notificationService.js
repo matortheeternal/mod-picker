@@ -10,6 +10,17 @@ app.service('notificationService', function($q, backend, pageUtils) {
         return action.promise;
     };
 
+    this.retrieveEvents = function(options, pageInformation) {
+        var action = $q.defer();
+        backend.post('/events', options).then(function(data) {
+            pageUtils.getPageInformation(data, pageInformation, options.page);
+            action.resolve(data);
+        }, function(response) {
+            action.reject(response);
+        });
+        return action.promise;
+    };
+
     this.retrieveRecent = function() {
         return backend.retrieve('/notifications/recent');
     };

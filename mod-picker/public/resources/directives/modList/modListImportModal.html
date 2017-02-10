@@ -1,0 +1,51 @@
+<div class="modal-container" ng-click="unfocusImportModal($event)">
+    <messages event="modalMessage"></messages>
+
+    <div class="modal huge-modal">
+        <form>
+            <div class="close-modal">
+                <span class="fa fa-times" ng-click="toggleImportModal()"></span>
+            </div>
+
+            <h2>Mod List Import</h2>
+
+            <h3 class="section-title">Import Type</h3>
+            <section class="center">
+                <span class="import-type" ng-repeat="importType in importTypes" ng-class="{ 'selected' : importType.selected }" ng-click="selectImportType(importType)">
+                    <div>
+                        <img ng-if="importType.image" ng-src="{{::importType.image}}"/>
+                        <i ng-if="importType.icon" class="fa {{::importType.icon}}"></i>
+                    </div>
+                    <span class="import-type-caption">{{::importType.name}}</span>
+                </span>
+            </section>
+
+            <h3 class="section-title">Import Files</h3>
+            <section>
+                <div ng-show="selectedImportType.modListXml">
+                    <span class="input-label">modlist.xml</span>
+                    <input id="mod-list-xml-input" type="file" file-change="selectModListXml" accept=".xml"/>
+                </div>
+                <div ng-show="selectedImportType.modListTxt">
+                    <span class="input-label">modlist.txt</span>
+                    <input id="mod-list-txt-input" type="file" file-change="selectModListTxt" accept=".txt"/>
+                </div>
+                <div ng-show="selectedImportType.loadOrderTxt">
+                    <span class="input-label">loadorder.txt</span>
+                    <input id="load-order-txt-input" type="file" file-change="selectLoadOrderTxt" accept=".txt"/>
+                </div>
+            </section>
+
+            <imported-mods imported-mods="imported.mods"></imported-mods>
+
+            <imported-plugins imported-plugins="imported.plugins"></imported-plugins>
+
+            <div class="action-button-container">
+                <input type="submit" class="btn action-btn" value="Import" ng-click="import()"/>
+                <input type="submit" class="btn action-btn" value="Close" ng-click="toggleImportModal()"/>
+            </div>
+        </form>
+    </div>
+
+    <submission-modal></submission-modal>
+</div>

@@ -8,8 +8,9 @@ app.run(function($futureState, indexFactory, filtersFactory) {
 app.controller('correctionsController', function($scope, $rootScope, $stateParams, $state, contributionService, indexService, helpFactory, filtersFactory, indexFactory, sortFactory) {
     // get parent variables
     $scope.currentUser = $rootScope.currentUser;
+    $scope.currentGame = $rootScope.currentGame;
     $scope.permissions = angular.copy($rootScope.permissions);
-    $scope.allowAdult = $scope.currentUser && $scope.currentUser.settings.allow_adult_content;
+    $scope.allowAdult = $scope.currentUser.signed_in && $scope.currentUser.settings.allow_adult_content;
 
     // set page title
     $scope.$emit('setPageTitle', 'Browse Corrections');
@@ -23,6 +24,7 @@ app.controller('correctionsController', function($scope, $rootScope, $stateParam
     $scope.filterPrototypes = filtersFactory.correctionFilters();
     $scope.dateFilters = filtersFactory.contributionDateFilters();
     $scope.statFilters = filtersFactory.correctionStatisticFilters();
+    $scope.filters = { game: $scope.currentGame.id };
 
     // build generic controller stuff
     $scope.route = 'corrections';

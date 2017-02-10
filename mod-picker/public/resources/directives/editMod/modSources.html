@@ -31,7 +31,7 @@
     <div class="scraped-data-container" ng-if="mod.nexus || mod.lab || mod.workshop">
         <div class="scraped-data" ng-if="mod.nexus">
             <h4>Nexus Mods Data</h4>
-            <loader data="mod.nexus.id" spinner-class="medium-spinner">
+            <loader data="mod.nexus.nexus_id" spinner-class="medium-spinner">
                 <table class="infotable">
                     <colgroup>
                         <col span="1" style="width: 160px;">
@@ -40,7 +40,7 @@
                     <tbody>
                     <tr>
                         <td>Mod ID</td>
-                        <td>{{mod.nexus.id}}</td>
+                        <td>{{mod.nexus.nexus_id}}</td>
                     </tr>
                     <tr>
                         <td>Mod Name</td>

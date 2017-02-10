@@ -1,12 +1,21 @@
 app.service('themesService', function($rootScope) {
-    var currentTheme;
+    var service = this;
 
-    this.changeTheme = function(newTheme) {
-        currentTheme = newTheme;
-        $rootScope.$broadcast('themeChanged', _stylesheets[currentTheme]);
+    var currentTheme;
+    var defaultThemes = {
+        skyrim: "High Hrothgar",
+        skyrimse: "Falkreath"
     };
 
-    this.getTheme = function() {
-        return currentTheme;
+    this.resolveGameTheme = function(settings) {
+        var gameKey = $rootScope.currentGame.url;
+        var defaultTheme = defaultThemes[gameKey];
+        if (!settings) return defaultTheme;
+        return settings[gameKey + "_theme"] || defaultTheme;
+    };
+
+    this.changeTheme = function(settings) {
+        currentTheme = service.resolveGameTheme(settings);
+        $rootScope.$broadcast('themeChanged', _stylesheets[currentTheme]);
     };
 });

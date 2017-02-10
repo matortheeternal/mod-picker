@@ -39,6 +39,9 @@ module ModPicker
     config.updated_owner_attributes = [:updated_by, :edited_by]
     config.removed_owner_attributes = [:removed_by]
 
+    # custom middleware for catching errors when parsing JSON requests
+    config.middleware.insert_before ActionDispatch::ParamsParser, "CatchJsonParseErrors"
+
     # rack attack config
     config.middleware.use Rack::Attack
 

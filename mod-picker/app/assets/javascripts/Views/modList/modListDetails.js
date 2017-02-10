@@ -12,6 +12,11 @@ app.controller('modListDetailsController', function($scope, $q, $timeout, tagSer
         }, 250);
     };
 
+    $scope.toggleImportModal = function(visible) {
+        $scope.$emit('toggleModal', visible);
+        $scope.showImportModal = visible;
+    };
+
     $scope.saveTags = function(updatedTags) {
         var action = $q.defer();
         tagService.updateModListTags($scope.mod_list, updatedTags).then(function(data) {

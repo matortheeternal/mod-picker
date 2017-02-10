@@ -17,7 +17,7 @@
             <tbody>
                 <tr ng-repeat="childReport in report.reports">
                     <td class="date-cell">{{childReport.submitted | date : 'short'}}</td>
-                    <td class="submitter-cell"><a ng-href="#/user/{{childReport.submitter.id}}">{{childReport.submitter.username}}</a></td>
+                    <td class="submitter-cell"><a ng-href="user/{{childReport.submitter.id}}">{{childReport.submitter.username}}</a></td>
                     <td class="text-cell" ng-if="childReport.note">
                         {{ childReport.note}}
                     </td>

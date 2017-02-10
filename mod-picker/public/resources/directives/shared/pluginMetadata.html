@@ -1,7 +1,8 @@
 <div class="stat-item">
     <dt class="stat-title">Filename</dt>
     <dd class="stat-data">{{plugin.filename}}
-        <span ng-if="plugin.is_esm" class="flag esm-flag">ESM</span>
+        <span ng-if="plugin.is_esm" class="flag esm-flag" title="This plugin has the ESM flag set to true in its file header.">ESM</span>
+        <span ng-if="plugin.used_dummy_plugins" class="flag dummy-flag" title="The user used a dummy master when analyzing this plugin.  Plugin error information may be incomplete.">DUMB</span>
     </dd>
 </div>
 

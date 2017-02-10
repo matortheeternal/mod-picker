@@ -87,11 +87,11 @@ app.controller('submitModController', function($scope, $rootScope, backend, modS
     $scope.submitImage = function(modId) {
         var successLinks = [
             {
-                link: "#/mod/" + modId,
+                link: "mods/" + modId,
                 linkLabel: "view the new mod."
             },
             {
-                link: "#/mods",
+                link: "mods",
                 linkLabel: "return to the mods index page."
             }
         ];

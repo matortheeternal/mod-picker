@@ -1,3 +1,6 @@
 <div ng-repeat="note in recent.install_order_notes" class="content-block">
     <install-order-note note="note" show-user-column="true" index="100"></install-order-note>
 </div>
+<div class="content-message" ng-if="!recent.install_order_notes.length">
+    No {{currentGame.display_name}} install order notes found.
+</div>

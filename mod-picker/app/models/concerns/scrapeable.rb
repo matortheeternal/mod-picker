@@ -18,8 +18,8 @@ module Scrapeable
     return if mod_id.blank?
 
     hash = Hash.new
-    hash[:updated] = updated if mod.updated.nil? || mod.updated < updated
-    hash[:released] = released if mod.released.nil? || mod.released > released
+    hash[:updated] = updated if updated && (mod.updated.nil? || mod.updated < updated)
+    hash[:released] = released if released && (mod.released.nil? || mod.released > released)
 
     mod.update_columns(hash) if hash.any?
   end

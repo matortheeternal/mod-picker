@@ -48,7 +48,7 @@
                     </td>
                     <td>{{correction.submitted | date}}</td>
                     <td>
-                        <a ng-href="#/profile/{{correction.submitted_by}}" class="strong">
+                        <a ng-href="user/{{correction.submitted_by}}" class="strong">
                             {{correction.submitter.username}}
                         </a>
                     </td>
@@ -91,7 +91,7 @@
         </div>
 
         <h3 class="section-title">Comments
-            <span class="action-box" ng-click="startNewComment()">
+            <span class="action-box" ng-click="startNewComment()" ng-if="permissions.canComment">
                 <i class="fa fa-plus"></i> New Comment
             </span>
         </h3>

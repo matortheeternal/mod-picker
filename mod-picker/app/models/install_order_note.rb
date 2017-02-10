@@ -43,7 +43,7 @@ class InstallOrderNote < ActiveRecord::Base
   has_many :mod_list_ignored_notes, :as => 'note'
 
   # old versions of this install order note
-  has_many :history_entries, :class_name => 'InstallOrderNoteHistoryEntry', :inverse_of => 'install_order_note', :foreign_key => 'install_order_note_id'
+  has_many :history_entries, :class_name => 'InstallOrderNoteHistoryEntry', :inverse_of => 'install_order_note', :foreign_key => 'install_order_note_id', :dependent => :destroy
   has_many :editors, -> { uniq }, :class_name => 'User', :through => 'history_entries'
 
   # COUNTER CACHE
@@ -52,7 +52,7 @@ class InstallOrderNote < ActiveRecord::Base
   # VALIDATIONS
   validates :game_id, :submitted_by, :first_mod_id, :second_mod_id, :text_body, presence: true
 
-  validates :text_body, length: { in: 256..16384 }
+  validates :text_body, length: { in: 128..16384 }
   validate :validate_unique_mods
 
   # CALLBACKS
@@ -98,6 +98,7 @@ class InstallOrderNote < ActiveRecord::Base
 
   def self.update_adult(ids)
     InstallOrderNote.where(id: ids).joins(:first_mod, :second_mod).update_all("install_order_notes.has_adult_content = mods.has_adult_content OR second_mods_install_order_notes.has_adult_content")
+    Correction.update_adult(InstallOrderNote, ids)
   end
 
   def self.mod_count_subquery

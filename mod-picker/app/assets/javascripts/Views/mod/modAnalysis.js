@@ -1,4 +1,4 @@
-app.controller('modAnalysisController', function($scope, $stateParams, $state, modService) {
+app.controller('modAnalysisController', function($scope, $stateParams, $state, modService, assetUtils) {
     $scope.updateParams = function() {
         var newState = {};
         if ($scope.optionIds) {
@@ -44,11 +44,31 @@ app.controller('modAnalysisController', function($scope, $stateParams, $state, m
         }
     };
 
+    $scope.buildNestedAssets = function() {
+        var assetPaths = [];
+        $scope.mod.options.forEach(function(option) {
+            if (option.active) {
+                assetPaths = assetPaths.concat(option.asset_file_paths);
+            }
+        });
+
+        // create nestedAssets tree
+        var nestedAssets = assetUtils.getNestedAssets(assetPaths);
+        assetUtils.sortNestedAssets(nestedAssets);
+
+        // apply nested assets to scope
+        $scope.$applyAsync(function() {
+            $scope.mod.nestedAssets = nestedAssets;
+            $scope.mod.assets = assetPaths;
+        });
+    };
+
     $scope.toggleOption = function() {
         $scope.updateOptionIds();
         $scope.updateOptionPlugins();
         $scope.updateCurrentPlugin($stateParams.plugin);
         $scope.updateParams();
+        $scope.buildNestedAssets();
     };
 
     $scope.toggleShowBenignErrors = function() {
@@ -95,9 +115,9 @@ app.controller('modAnalysisController', function($scope, $stateParams, $state, m
         modService.retrieveModAnalysis($stateParams.modId).then(function(analysis) {
             $scope.mod.analysis = analysis;
             $scope.mod.options = analysis.mod_options;
+            $scope.mod.nestedOptions = analysis.nestedOptions;
             $scope.mod.plugins = analysis.plugins;
             $scope.mod.assets = analysis.assets;
-            $scope.mod.nestedAssets = analysis.nestedAssets;
 
             // set current option and plugin
             $scope.setCurrentSelection();
@@ -116,4 +136,8 @@ app.controller('modAnalysisController', function($scope, $stateParams, $state, m
     $scope.showLess = function(master) {
         master.max_overrides -= 1000;
     };
+
+    $scope.$on('toggleModOption', function() {
+        $scope.toggleOption();
+    });
 });

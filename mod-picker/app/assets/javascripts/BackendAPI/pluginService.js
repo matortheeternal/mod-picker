@@ -33,7 +33,8 @@ app.service('pluginService', function(backend, $q, $timeout, recordGroupService,
         var plugins = $q.defer();
         var postData =  {
             filters: {
-                search: filename
+                search: filename,
+                game: window._current_game_id
             }
         };
         if (angular.isDefined(modIds)) {
@@ -54,6 +55,13 @@ app.service('pluginService', function(backend, $q, $timeout, recordGroupService,
             action.resolve(matchingPlugins);
             return action.promise;
         };
+    };
+
+    this.searchPluginsBatch = function(batch) {
+        return backend.post('/plugins/search', {
+            batch: batch,
+            game: window._current_game_id
+        });
     };
 
     //combine dummy_masters array with masters array and sorts the masters array

@@ -9,9 +9,9 @@ app.directive('helpPageComments', function() {
     };
 });
 
-app.controller('helpPageCommentsController', function($scope, $rootScope, contributionService, userService) {
+app.controller('helpPageCommentsController', function($scope, $rootScope, contributionService, userService, userTitleService) {
     $rootScope.currentGame = {
-        nexus_name: "skyrim"
+        url: "skyrim"
     };
     $scope.errors = {};
     $scope.pages = {
@@ -24,6 +24,7 @@ app.controller('helpPageCommentsController', function($scope, $rootScope, contri
     // retrieve current user
     userService.retrieveCurrentUser().then(function(currentUser) {
         $rootScope.currentUser = currentUser;
+        $rootScope.permissions = currentUser.permissions;
         $scope.currentUser = currentUser;
         $scope.permissions = currentUser.permissions;
     }, function(response) {
@@ -50,6 +51,12 @@ app.controller('helpPageCommentsController', function($scope, $rootScope, contri
     $scope.startNewComment = function() {
         $scope.$broadcast('startNewComment');
     };
-    // retrieve comments when the directive is loaded
-    $scope.retrieveComments();
+
+    // get user titles
+    userTitleService.retrieveUserTitles().then(function() {
+        // retrieve comments when the directive is loaded and we've retrieved user titles
+        $scope.retrieveComments();
+    }, function(response) {
+        $scope.errors.comments = response;
+    });
 });

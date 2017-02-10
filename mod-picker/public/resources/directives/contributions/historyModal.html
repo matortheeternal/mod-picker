@@ -32,7 +32,7 @@
                 <tr ng-if="target.editor" ng-click="showHistory()" ng-class="{ 'selected' : activeHistoryEntry.text_body === target.text_body }">
                     <td>{{target.edited | date}}</td>
                     <td>
-                        <a ng-href="#/profile/{{target.editor.id}}" class="strong">
+                        <a ng-href="user/{{target.editor.id}}" class="strong">
                             {{target.editor.username}}
                         </a>
                     </td>
@@ -41,7 +41,7 @@
                 <tr ng-repeat="entry in target.history" ng-click="showHistory(entry)" ng-class="{ 'selected' : activeHistoryEntry.text_body === entry.text_body }">
                     <td>{{entry.edited | date}}</td>
                     <td>
-                        <a ng-href="#/profile/{{entry.editor.id}}" class="strong">
+                        <a ng-href="user/{{entry.editor.id}}" class="strong">
                             {{entry.editor.username}}
                         </a>
                     </td>
@@ -50,7 +50,7 @@
                 <tr class="selected" ng-if="!target.history.length">
                     <td>{{target.submitted | date}}</td>
                     <td>
-                        <a ng-href="#/profile/{{target.submitter.id}}" class="strong">
+                        <a ng-href="user/{{target.submitter.id}}" class="strong">
                             {{target.submitter.username}}
                         </a>
                     </td>

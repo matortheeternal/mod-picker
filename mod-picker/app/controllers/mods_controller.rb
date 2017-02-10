@@ -1,5 +1,5 @@
 class ModsController < ApplicationController
-  before_action :set_mod, only: [:edit, :update, :hide, :approve, :update_tags, :image, :corrections, :reviews, :compatibility_notes, :install_order_notes, :load_order_notes, :analysis, :destroy]
+  before_action :set_mod, only: [:edit, :update, :hide, :approve, :update_tags, :image, :corrections, :reviews, :compatibility_notes, :install_order_notes, :load_order_notes, :related_mod_notes, :analysis, :destroy]
 
   # POST /mods/index
   def index
@@ -15,13 +15,18 @@ class ModsController < ApplicationController
 
   # POST /mods/search
   def search
-    @mods = Mod.visible.filter(search_params).order("CHAR_LENGTH(name)").limit(10)
-    render json: @mods
+    if params.has_key?(:batch)
+      @mods = Mod.find_batch(params[:batch], params[:game])
+      render json: @mods
+    else
+      @mods = Mod.visible.filter(search_params).limit(10)
+      render json: @mods
+    end
   end
 
   # GET /mods/1
   def show
-    @mod = Mod.includes(:custom_sources, :plugins, {mod_authors: :user}, {tags: :submitter}, {required_mods: :required_mod}, {required_by: :mod}).find(params[:id])
+    @mod = Mod.game(params[:game]).includes(:custom_sources, :plugins, {mod_authors: :user}, {tags: :submitter}, {required_mods: :required_mod}, {required_by: :mod}).find(params[:id])
     authorize! :read, @mod, message: "You are not allowed to view this mod."
 
     # set up boolean variables
@@ -30,8 +35,8 @@ class ModsController < ApplicationController
     incompatible = false
     if current_user.present?
       star = ModStar.exists?(mod_id: @mod.id, user_id: current_user.id)
-      if current_user.active_mod_list_id.present?
-        mod_list = current_user.active_mod_list
+      if current_user.active_mod_list(@mod.game_id).present?
+        mod_list = current_user.active_mod_list(@mod.game_id)
         in_mod_list = mod_list.mod_list_mod_ids.include?(@mod.id)
         incompatible = mod_list.incompatible_mod_ids.include?(@mod.id)
       end
@@ -59,10 +64,9 @@ class ModsController < ApplicationController
 
     builder = ModBuilder.new(current_user, mod_params)
     if builder.save
-      builder.mod.update_metrics
-
-      # update record to match newly saved record from database
-      render json: {status: :ok, id: builder.mod.reload.id}
+      builder.resource.update_metrics
+      builder.resource.reload
+      render json: {status: :ok, id: builder.resource.id}
     else
       render json: builder.errors, status: :unprocessable_entity
     end
@@ -86,7 +90,7 @@ class ModsController < ApplicationController
 
     builder = ModBuilder.new(current_user, mod_update_params)
     if builder.update
-      builder.mod.update_metrics
+      builder.resource.update_metrics
       render json: {status: :ok}
     else
       render json: builder.errors, status: :unprocessable_entity
@@ -95,9 +99,9 @@ class ModsController < ApplicationController
 
   # POST /mods/1/hide
   def hide
-    authorize! :hide, @mod
-    @mod.hidden = params[:hidden]
-    if @mod.save
+    authorize! :hide, @mod, :message => "You are not allowed to hide/unhide this mod."
+    builder = ModBuilder.new(current_user, hide_params)
+    if builder.update
       render json: {status: :ok}
     else
       render json: @mod.errors, status: :unprocessable_entity
@@ -106,9 +110,9 @@ class ModsController < ApplicationController
 
   # POST /mods/1/approve
   def approve
-    authorize! :approve, @mod
-    @mod.approved = params[:approved]
-    if @mod.save
+    authorize! :approve, @mod, :message => "You are not allowed to approve/unapprove this mod."
+    builder = ModBuilder.new(current_user, approve_params)
+    if builder.update
       render json: {status: :ok}
     else
       render json: @mod.errors, status: :unprocessable_entity
@@ -117,52 +121,11 @@ class ModsController < ApplicationController
 
   # PATCH/PUT /mods/1/tags
   def update_tags
-    # TODO: Move this into the model
-    # errors array to return to user
-    errors = ActiveModel::Errors.new(self)
-    current_user_id = current_user.id
-
-    # perform tag deletions
-    existing_mod_tags = @mod.mod_tags
-    existing_tags_text = @mod.tags.pluck(:text)
-
-    # empty arrays are converted to nil in params, default to empty array here.
-    # TODO: find a more generic solution(possibly disable deep_munge which is causing this in the first place due to security concerns)
-    params[:tags] ||= []
-    
-    @mod.mod_tags.each_with_index do |mod_tag, index|
-      if params[:tags].exclude?(existing_tags_text[index])
-        authorize! :destroy, mod_tag
-        mod_tag.destroy
-      end
-    end
-
-    # update tags
-    params[:tags].each do |tag_text|
-      if existing_tags_text.exclude?(tag_text)
-        # find or create tag
-        tag = Tag.where(game_id: params[:game_id], text: tag_text).first
-        if tag.nil?
-          tag = Tag.new(game_id: params[:game_id], text: tag_text, submitted_by: current_user_id)
-          authorize! :create, tag
-          if !tag.save
-            tag.errors.full_messages.each {|msg| errors[:base] << msg}
-            next
-          end
-        end
-
-        # create mod tag
-        mod_tag = @mod.mod_tags.new(tag_id: tag.id, submitted_by: current_user_id)
-        authorize! :create, mod_tag
-        next if mod_tag.save
-        mod_tag.errors.full_messages.each {|msg| errors[:base] << msg}
-      end
-    end
-
-    if errors.empty?
-      render json: {status: :ok, tags: @mod.tags}
+    builder = TagBuilder.new(@mod, current_user, params[:tags])
+    if builder.update_tags
+      respond_with_json(@mod.tags, :mod_tags, :tags)
     else
-      render json: {errors: errors, status: :unprocessable_entity, tags: @mod.tags}
+      render json: builder.errors, status: :unprocessable_entity
     end
   end
 
@@ -213,7 +176,7 @@ class ModsController < ApplicationController
     corrections = @mod.corrections.accessible_by(current_ability)
 
     # prepare agreement marks
-    agreement_marks = AgreementMark.submitter(current_user.id).corrections(corrections.ids)
+    agreement_marks = AgreementMark.for_user_content(current_user, corrections.ids)
 
     # render response
     render json: {
@@ -227,22 +190,17 @@ class ModsController < ApplicationController
     authorize! :read, @mod
 
     # prepare reviews
-    reviews = @mod.reviews.preload(:review_ratings).includes(submitter: :reputation).references(submitter: :reputation).accessible_by(current_ability).sort(params[:sort]).paginate(page: params[:page], per_page: 10).where("submitted_by != ? OR hidden = true", current_user.id)
+    reviews = @mod.reviews.preload(:review_ratings).includes(submitter: :reputation).references(submitter: :reputation).accessible_by(current_ability).sort(params[:sort]).paginate(page: params[:page], per_page: 10)
+    reviews = reviews.where("submitted_by != ? OR hidden = true", current_user.id) if current_user.present?
     count = @mod.reviews.includes(submitter: :reputation).references(submitter: :reputation).accessible_by(current_ability).count
     review_ids = reviews.ids
 
     # prepare user review
-    user_review = @mod.reviews.find_by(submitted_by: current_user.id)
-    if user_review.present?
-      if user_review.hidden
-        user_review = {}
-      else
-        review_ids.push(user_review.id) if user_review.present?
-      end
-    end
+    user_review = Review.user_review(@mod, current_user)
+    review_ids.push(user_review.id) if user_review.present?
 
     # prepare helpful marks
-    helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("Review", review_ids)
+    helpful_marks = HelpfulMark.for_user_content(current_user, "Review", review_ids)
 
     # render response
     render json: {
@@ -263,7 +221,7 @@ class ModsController < ApplicationController
     count =  @mod.compatibility_notes.eager_load(:submitter => :reputation).accessible_by(current_ability).count
 
     # prepare helpful marks
-    helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("CompatibilityNote", compatibility_notes.ids)
+    helpful_marks = HelpfulMark.for_user_content(current_user, "CompatibilityNote", compatibility_notes.ids)
 
     # render response
     render json: {
@@ -283,7 +241,7 @@ class ModsController < ApplicationController
     count =  @mod.install_order_notes.includes(submitter: :reputation).references(submitter: :reputation).accessible_by(current_ability).count
 
     # prepare helpful marks
-    helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("InstallOrderNote", install_order_notes.ids)
+    helpful_marks = HelpfulMark.for_user_content(current_user, "InstallOrderNote", install_order_notes.ids)
 
     # render response
     render json: {
@@ -309,7 +267,7 @@ class ModsController < ApplicationController
     count =  @mod.load_order_notes.includes(submitter: :reputation).references(submitter: :reputation).accessible_by(current_ability).count
 
     # prepare helpful marks
-    helpful_marks = HelpfulMark.submitter(current_user.id).helpfulables("LoadOrderNote", load_order_notes.ids)
+    helpful_marks = HelpfulMark.for_user_content(current_user, "LoadOrderNote", load_order_notes.ids)
 
     # render response
     render json: {
@@ -320,13 +278,32 @@ class ModsController < ApplicationController
     }
   end
 
+  # POST/GET /mods/1/related_mod_notes
+  def related_mod_notes
+    authorize! :read, @mod
+
+    # prepare related mod notes
+    related_mod_notes = @mod.related_mod_notes.preload(:first_mod, :second_mod, :editor).eager_load(:submitter => :reputation).accessible_by(current_ability).sort(params[:sort]).paginate(page: params[:page], per_page: 10)
+    count =  @mod.related_mod_notes.eager_load(:submitter => :reputation).accessible_by(current_ability).count
+
+    # prepare helpful marks
+    helpful_marks = HelpfulMark.for_user_content(current_user, "RelatedModNote", related_mod_notes.ids)
+
+    # render response
+    render json: {
+        related_mod_notes: related_mod_notes,
+        helpful_marks: helpful_marks,
+        max_entries: count,
+        entries_per_page: 10
+    }
+  end
+
   # POST/GET /mods/1/analysis
   def analysis
     authorize! :read, @mod
     render json: {
-        mod_options: @mod.mod_options,
-        plugins: json_format(@mod.plugins, :show),
-        assets: @mod.asset_file_paths
+        mod_options: json_format(@mod.mod_options, :show),
+        plugins: json_format(@mod.plugins, :show)
     }
   end
 
@@ -359,10 +336,24 @@ class ModsController < ApplicationController
       params.fetch(:sort, {}).permit(:column, :direction)
     end
 
+    def approve_params
+      {
+          id: params[:id],
+          approved: params[:approved]
+      }
+    end
+
+    def hide_params
+      {
+          id: params[:id],
+          hidden: params[:hidden]
+      }
+    end
+
     # Params we allow filtering on
     def filtering_params
       # construct valid filters array
-      valid_filters = [:adult, :hidden, :approved, :include_utilities, :compatibility, :sources, :search, :author, :mp_author, :game, :released, :updated, :utility, :categories, :tags, :stars, :reviews, :rating, :reputation, :compatibility_notes, :install_order_notes, :load_order_notes, :asset_files, :plugins, :required_mods, :required_by, :tags_count, :mod_lists, :submitted]
+      valid_filters = [:adult, :hidden, :approved, :include_utilities, :compatibility, :sources, :search, :author, :mp_author, :game, :released, :updated, :utility, :categories, :tags, :stars, :reviews, :rating, :reputation, :compatibility_notes, :install_order_notes, :load_order_notes,:related_mod_notes, :mod_options, :asset_files, :plugins, :required_mods, :required_by, :tags_count, :mod_lists, :submitted]
       source_filters = [:views, :author, :posts, :videos, :images, :discussions, :downloads, :favorites, :subscribers, :endorsements, :unique_downloads, :files, :bugs, :articles]
       sources = params[:filters][:sources]
 
@@ -402,7 +393,7 @@ class ModsController < ApplicationController
          tag_names: [],
          mod_options_attributes: [:name, :display_name, :size, :md5_hash, :default, :is_installer_option,
             asset_paths: [],
-            plugin_dumps: [:filename, :is_esm, :author, :description, :crc_hash, :record_count, :override_count, :file_size,
+            plugin_dumps: [:filename, :is_esm, :used_dummy_plugins, :author, :description, :crc_hash, :record_count, :override_count, :file_size,
                master_plugins: [:filename, :crc_hash],
                plugin_record_groups_attributes: [:sig, :record_count, :override_count],
                plugin_errors_attributes: [:signature, :form_id, :group, :path, :name, :data],
@@ -412,7 +403,7 @@ class ModsController < ApplicationController
     end
 
     def mod_update_params
-      p = params.require(:mod).permit(:name, :authors, :aliases, :is_utility, :has_adult_content, :status, :primary_category_id, :secondary_category_id, :released, :updated, :mark_updated, :nexus_info_id, :lover_info_id, :workshop_info_id, :disallow_contributors, :disable_reviews, :lock_tags, :hidden, :approved,
+      p = params.require(:mod).permit(:name, :authors, :aliases, :is_utility, :has_adult_content, :status, :primary_category_id, :secondary_category_id, :released, :updated, :mark_updated, :nexus_info_id, :lover_info_id, :workshop_info_id, :disallow_contributors, :disable_reviews, :lock_tags, :hidden, :approved, :tag_names,
          required_mods_attributes: [:id, :required_id, :_destroy],
          mod_authors_attributes: [:id, :role, :user_id, :_destroy],
           custom_sources_attributes: [:id, :label, :url, :_destroy],
@@ -420,7 +411,7 @@ class ModsController < ApplicationController
          tag_names: [],
          mod_options_attributes: [:id, :name, :display_name, :size, :md5_hash, :default, :is_installer_option, :_destroy,
             asset_paths: [],
-            plugin_dumps: [:id, :filename, :is_esm, :author, :description, :crc_hash, :record_count, :override_count, :file_size, :_destroy,
+            plugin_dumps: [:id, :filename, :is_esm, :used_dummy_plugins, :author, :description, :crc_hash, :record_count, :override_count, :file_size, :_destroy,
                 master_plugins: [:filename, :crc_hash],
                 plugin_record_groups_attributes: [:sig, :record_count, :override_count],
                 plugin_errors_attributes: [:signature, :form_id, :group, :path, :name, :data],
@@ -428,6 +419,7 @@ class ModsController < ApplicationController
             ]
          ])
       p[:id] = params[:id]
+      p[:tag_names] = [] if p.has_key?(:tag_names) && p[:tag_names].nil?
       p
     end
 

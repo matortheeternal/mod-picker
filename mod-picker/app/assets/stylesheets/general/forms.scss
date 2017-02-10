@@ -97,6 +97,22 @@ input[type="file"] {
   h1 {
     color: $text_color;
   }
+
+  h3 {
+    font-size: 20px;
+  }
+
+  blockquote {
+    border-left: 3px solid $border_color;
+    padding-left: 14px;
+    margin-left: 10px;
+    color: $medium_text_color;
+  }
+
+  img {
+    vertical-align: bottom;
+    max-width: 100%;
+  }
 }
 
 .editor-toolbar {
