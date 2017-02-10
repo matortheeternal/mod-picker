@@ -41,6 +41,12 @@ app.service('contributionFactory', function() {
         route: "load_order_notes",
         tab: "load-order",
         template: "## Description\r\n*What is the load order you're recommending for the mods?  How do the plugins conflict?  How critical is the load order you recommend?*\r\n\r\n## Reasoning\r\n*What evidence do you have to show that this load order is necessary?  How can someone else come to the same conclusion as you?*"
+    }, {
+            name: "RelatedModNote",
+            label: "Related Mod Note",
+            route: "related_mod_notes",
+            tab: "related-mods",
+            template: "## Description\r\n*For alternatives: What makes these mods similar, and what are their differences?  For recommendations: Why do these mods work well together?*"
     }];
 
     this.getDefaultTextBody = function(name) {
