@@ -262,6 +262,7 @@ class ModListsController < ApplicationController
 
     @mod_list.updated_by = current_user.id
     if @mod_list.update(mod_list_params) && @mod_list.update_lazy_counters!
+      ModList.update_adult(@mod_list.id)
       @mod_list.compact_plugins
       respond_with_json(@mod_list, :tracking, :mod_list)
     else
