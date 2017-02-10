@@ -60,6 +60,10 @@ app.service("tabsFactory", function() {
                     count: mod.load_order_notes_count
                 });
             }
+            tabs.push({
+                name: 'Related Mods',
+                count: mod.related_mod_notes_count
+            });
         }
 
         // all mod pages have the analysis tab
@@ -71,30 +75,23 @@ app.service("tabsFactory", function() {
     };
 
     this.buildModListTabs = function(modList) {
-        var tabs = [
-            {
-                name: 'Details'
-            },
-            {
-                name: 'Tools',
-                count: modList.tools_count + modList.custom_tools_count
-            },
-            {
-                name: 'Mods',
-                count: modList.mods_count + modList.custom_mods_count
-            },
-            {
-                name: 'Plugins',
-                count: modList.plugins_count + modList.custom_plugins_count
-            },
-            {
-                name: 'Config',
-                count: modList.config_files_count + modList.custom_config_files_count
-            },
-            {
-                name: 'Analysis'
-            }
-        ];
+        var tabs = [{
+            name: 'Details'
+        }, {
+            name: 'Tools',
+            count: modList.tools_count + modList.custom_tools_count
+        }, {
+            name: 'Mods',
+            count: modList.mods_count + modList.custom_mods_count
+        }, {
+            name: 'Plugins',
+            count: modList.plugins_count + modList.custom_plugins_count
+        }, {
+            name: 'Config',
+            count: modList.config_files_count + modList.custom_config_files_count
+        }, {
+            name: 'Analysis'
+        }];
 
         if (!modList.disable_comments) {
             tabs.push({
