@@ -201,6 +201,16 @@ app.service("sortFactory", function() {
         ];
     };
 
+    /* related mod notes index sort options */
+    this.relatedModNoteSortOptions = function() {
+        return [
+            factory.helpfulnessSort,
+            factory.submitterReputationSort,
+            factory.submittedSort,
+            factory.editedSort
+        ];
+    };
+
     /* mod list tool sort options */
     this.modListToolSortOptions = function() {
         return [
