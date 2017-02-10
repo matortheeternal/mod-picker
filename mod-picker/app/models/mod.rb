@@ -35,7 +35,7 @@ class Mod < ActiveRecord::Base
   date_scope :released, :updated, :submitted
   range_scope :reputation, :tags_count
   range_scope :average_rating, :alias => 'rating'
-  counter_scope :mod_options_count, :plugins_count, :asset_files_count, :required_mods_count, :required_by_count, :stars_count, :mod_lists_count, :reviews_count, :compatibility_notes_count, :install_order_notes_count, :load_order_notes_count, :corrections_count
+  counter_scope :mod_options_count, :plugins_count, :asset_files_count, :required_mods_count, :required_by_count, :stars_count, :mod_lists_count, :reviews_count, :compatibility_notes_count, :install_order_notes_count, :load_order_notes_count, :related_mod_notes_count, :corrections_count
   source_search_scope :mod_name, :sites => [:nexus, :lab, :workshop]
   source_scope :views, :sites =>  [:nexus, :lab, :workshop]
   source_scope :downloads, :sites => [:nexus, :lab]
