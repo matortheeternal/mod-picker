@@ -1,0 +1,32 @@
+<div class="contribution-container box-shadow">
+    <div class="content-title">
+		<span ng-if="modId" class="root">
+            <span class="capitalize">{{note.status | humanize}}: </span>
+            <span ng-if="note.first_mod.id == modId">
+                <a ng-href="mod/{{note.second_mod.id}}">{{note.second_mod.name}}</a>
+            </span>
+            <span ng-if="note.second_mod.id == modId">
+                <a ng-href="mod/{{note.first_mod.id}}">{{note.first_mod.name}}</a>
+            </span>
+        </span>
+        <span ng-if="!modId" class="root">
+            <span ng-if="note.status === 'alternative_mod'">
+                <b>Alternatives:</b>
+                <a ng-href="mod/{{note.first_mod.id}}">{{note.first_mod.name}}</a>
+                and
+                <a ng-href="mod/{{note.second_mod.id}}">{{note.second_mod.name}}</a>
+            </span>
+            <span ng-if="note.status === 'recommended_mod'">
+                <b>Recommendation:</b>
+                <a ng-href="mod/{{note.first_mod.id}}">{{note.first_mod.name}}</a>
+                and
+                <a ng-href="mod/{{note.second_mod.id}}">{{note.second_mod.name}}</a>
+            </span>
+        </span>
+    </div>
+    <user-column ng-if="showUserColumn" user="note.submitter" class="user-column" index="index"></user-column>
+    <div class="content-column">
+        <contribution-text target="note"></contribution-text>
+        <contribution-actions target="note" index="index" model-name="RelatedModNote" correctable="false" edit="edit"></contribution-actions>
+    </div>
+</div>
