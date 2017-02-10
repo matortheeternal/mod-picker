@@ -850,6 +850,42 @@ app.service("filtersFactory", function() {
         );
     };
 
+    /* related mod note index filters */
+    this.relatedModNoteTypeFilters = function() {
+        return [
+            {
+                data: "status.alternative_mod",
+                param: "alt",
+                type: "Boolean",
+                default: true
+            },
+            {
+                data: "status.recommended_mod",
+                param: "rec",
+                type: "Boolean",
+                default: true
+            }
+        ];
+    };
+
+    this.relatedModNoteStatisticFilters = function() {
+        return [
+            factory.contributionHelpfulnessFilter,
+            factory.submitterReputationFilter,
+            factory.helpfulFilter,
+            factory.notHelpfulFilter
+        ]
+    };
+
+    this.relatedModNoteFilters = function() {
+        return Array.prototype.concat(
+            factory.contributionGeneralFilters(),
+            factory.relatedModNoteTypeFilters(),
+            factory.contributionDateFilters(),
+            factory.noteStatisticFilters()
+        );
+    };
+
     /* corrections index filters */
     this.correctionGeneralFilters = function() {
         return [
