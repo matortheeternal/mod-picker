@@ -59,7 +59,7 @@ app.controller('modRelatedModsController', function($scope, $stateParams, $state
     $scope.startNewRelatedModNote = function() {
         // set up activeRelatedModNote object
         $scope.activeRelatedModNote = {
-            status: "incompatible",
+            status: "recommended_mod",
             text_body: contributionFactory.getDefaultTextBody("RelatedModNote")
         };
 
