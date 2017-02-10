@@ -15,7 +15,7 @@ app.controller('modRelatedModsController', function($scope, $stateParams, $state
             sort: $scope.sort.related_mod_notes,
             page: page || $scope.pages.related_mod_notes.current
         };
-        modService.retrieveModContributions($stateParams.modId, 'related_mod_Notes', options, $scope.pages.related_mod_notes).then(function(data) {
+        modService.retrieveModContributions($stateParams.modId, 'related_mod_notes', options, $scope.pages.related_mod_notes).then(function(data) {
             $scope.mod.related_mod_notes = data;
             if ($scope.errors.related_mod_notes) delete $scope.errors.related_mod_notes;
 
@@ -42,7 +42,6 @@ app.controller('modRelatedModsController', function($scope, $stateParams, $state
         var params = {
             scol: $scope.sort.related_mod_notes.column,
             sdir: $scope.sort.related_mod_notes.direction,
-            filter: $scope.filters.related_mod_notes.modlist,
             page: page || 1
         };
         $state.go($state.current.name, params);
