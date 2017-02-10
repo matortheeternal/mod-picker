@@ -125,7 +125,7 @@ app.config(['$stateProvider', function($stateProvider) {
                 controller: 'modRelatedModsController'
             }
         },
-        url: '/related/{relatedModNoteId:int}?{page:int}&scol&sdir&{filter:bool}',
+        url: '/related-mods/{relatedModNoteId:int}?{page:int}&scol&sdir&{filter:bool}',
         params: {
             page: 1,
             scol: 'reputation',
