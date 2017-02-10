@@ -81,7 +81,7 @@
                 <div class="filter-sections" ng-if="statFilters.length">
                     <h3>Statistic Filters</h3>
                     <div class="filter-section">
-                        <div ng-repeat="filter in statFilters" ng-show="filter.common || expanded.stat">
+                        <div ng-repeat="filter in statFilters">
                             <h4>{{filter.label}}
                                 <!--<span class="filter-controls" ng-if="filter.max > 500">
                                     <span class="fa fa-wrench" ng-click="" title="Custom Value"></span>
@@ -90,8 +90,6 @@
                             <slider filter-data="filters" filter="filter"></slider>
                         </div>
                     </div>
-
-                    <expander expanded="expanded" key="stat"></expander>
                 </div>
             </div>
 
