@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170210010900) do
+ActiveRecord::Schema.define(version: 20170210011956) do
 
   create_table "active_mod_lists", force: :cascade do |t|
     t.integer "game_id",     limit: 4, null: false
@@ -264,6 +264,7 @@ ActiveRecord::Schema.define(version: 20170210010900) do
     t.integer "compatibility_notes_count", limit: 4,   default: 0, null: false
     t.integer "install_order_notes_count", limit: 4,   default: 0, null: false
     t.integer "load_order_notes_count",    limit: 4,   default: 0, null: false
+    t.integer "related_mod_notes_count",   limit: 4,   default: 0, null: false
     t.integer "corrections_count",         limit: 4,   default: 0, null: false
     t.integer "help_pages_count",          limit: 4,   default: 0, null: false
   end
@@ -664,6 +665,7 @@ ActiveRecord::Schema.define(version: 20170210010900) do
     t.integer  "compatibility_notes_count", limit: 4,   default: 0,     null: false
     t.integer  "install_order_notes_count", limit: 4,   default: 0,     null: false
     t.integer  "load_order_notes_count",    limit: 4,   default: 0,     null: false
+    t.integer  "related_mod_notes_count",   limit: 4,   default: 0,     null: false
     t.integer  "corrections_count",         limit: 4,   default: 0,     null: false
     t.boolean  "disallow_contributors",                 default: false, null: false
     t.boolean  "disable_reviews",                       default: false, null: false
@@ -975,6 +977,7 @@ ActiveRecord::Schema.define(version: 20170210010900) do
     t.integer  "compatibility_notes_count", limit: 4,     default: 0,  null: false
     t.integer  "install_order_notes_count", limit: 4,     default: 0,  null: false
     t.integer  "load_order_notes_count",    limit: 4,     default: 0,  null: false
+    t.integer  "related_mod_notes_count",   limit: 4,     default: 0,  null: false
     t.integer  "corrections_count",         limit: 4,     default: 0,  null: false
     t.integer  "submitted_comments_count",  limit: 4,     default: 0,  null: false
     t.integer  "mod_lists_count",           limit: 4,     default: 0,  null: false
