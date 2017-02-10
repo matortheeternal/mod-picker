@@ -1,5 +1,5 @@
 class ModsController < ApplicationController
-  before_action :set_mod, only: [:edit, :update, :hide, :approve, :update_tags, :image, :corrections, :reviews, :compatibility_notes, :install_order_notes, :load_order_notes, :analysis, :destroy]
+  before_action :set_mod, only: [:edit, :update, :hide, :approve, :update_tags, :image, :corrections, :reviews, :compatibility_notes, :install_order_notes, :load_order_notes, :related_mod_notes, :analysis, :destroy]
 
   # POST /mods/index
   def index
@@ -272,6 +272,26 @@ class ModsController < ApplicationController
     # render response
     render json: {
         load_order_notes: load_order_notes,
+        helpful_marks: helpful_marks,
+        max_entries: count,
+        entries_per_page: 10
+    }
+  end
+
+  # POST/GET /mods/1/related_mod_notes
+  def related_mod_notes
+    authorize! :read, @mod
+
+    # prepare related mod notes
+    related_mod_notes = @mod.related_mod_notes.preload(:first_mod, :second_mod, :editor).eager_load(:submitter => :reputation).accessible_by(current_ability).sort(params[:sort]).paginate(page: params[:page], per_page: 10)
+    count =  @mod.related_mod_notes.eager_load(:submitter => :reputation).accessible_by(current_ability).count
+
+    # prepare helpful marks
+    helpful_marks = HelpfulMark.for_user_content(current_user, "RelatedModNote", related_mod_notes.ids)
+
+    # render response
+    render json: {
+        compatibility_notes: related_mod_notes,
         helpful_marks: helpful_marks,
         max_entries: count,
         entries_per_page: 10
