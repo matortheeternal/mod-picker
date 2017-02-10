@@ -3,7 +3,7 @@ class CreateRelatedModNotes < ActiveRecord::Migration
     create_table :related_mod_notes do |t|
       t.integer :game_id, null: false
       t.integer :submitted_by, null: false
-      t.integer :edited_by, null: false
+      t.integer :edited_by
       t.integer :status, limit: 1, default: 0, null: false
       t.integer :first_mod_id, null: false
       t.integer :second_mod_id, null: false

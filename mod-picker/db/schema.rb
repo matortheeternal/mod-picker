@@ -799,7 +799,7 @@ ActiveRecord::Schema.define(version: 20170210011956) do
   create_table "related_mod_notes", force: :cascade do |t|
     t.integer  "game_id",           limit: 4,                     null: false
     t.integer  "submitted_by",      limit: 4,                     null: false
-    t.integer  "edited_by",         limit: 4,                     null: false
+    t.integer  "edited_by",         limit: 4
     t.integer  "status",            limit: 1,     default: 0,     null: false
     t.integer  "first_mod_id",      limit: 4,                     null: false
     t.integer  "second_mod_id",     limit: 4,                     null: false
