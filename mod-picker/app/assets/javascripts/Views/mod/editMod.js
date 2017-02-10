@@ -1,13 +1,13 @@
 // redirect for the old url format of /mod/:modId/edit
 app.config(['$stateProvider', function($stateProvider) {
-    $stateProvider.state('base.oldEditMod', {
+    $stateProvider.state('base.old-edit-mod', {
         url: '/mod/:modId/edit',
         redirectTo: 'base.editMod'
     })
 }]);
 
 app.config(['$stateProvider', function($stateProvider) {
-    $stateProvider.state('base.editMod', {
+    $stateProvider.state('base.edit-mod', {
         templateUrl: '/resources/partials/mod/editMod.html',
         controller: 'editModController',
         url: '/mods/:modId/edit',
@@ -20,7 +20,7 @@ app.config(['$stateProvider', function($stateProvider) {
                     var errorObj = {
                         text: 'Error editing mod.',
                         response: response,
-                        stateName: "base.editMod",
+                        stateName: "base.edit-mod",
                         stateUrl: window.location.hash
                     };
                     mod.reject(errorObj);

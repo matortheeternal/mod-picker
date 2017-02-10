@@ -1,38 +1,38 @@
 // redirects for the old url format of /mod-list/:modListId
 app.config(['$stateProvider', function($stateProvider) {
-    $stateProvider.state('base.oldModList', {
+    $stateProvider.state('base.old-mod-list', {
         url: '/mod-list/:modListId',
-        redirectTo: 'base.modList'
-    }).state('base.oldModList.Details', {
+        redirectTo: 'base.mod-list'
+    }).state('base.old-mod-list.Details', {
         url: '/details',
-        redirectTo: 'base.modList.Details'
-    }).state('base.oldModList.Tools', {
+        redirectTo: 'base.mod-list.Details'
+    }).state('base.old-mod-list.Tools', {
         url: '/tools?scol&sdir',
-        redirectTo: 'base.modList.Tools'
-    }).state('base.oldModList.Mods', {
+        redirectTo: 'base.mod-list.Tools'
+    }).state('base.old-mod-list.Mods', {
         url: '/mods?scol&sdir',
         redirectTo: 'base.modList.Mods'
-    }).state('base.oldModList.Plugins', {
+    }).state('base.old-mod-list.Plugins', {
         url: '/plugins?scol&sdir',
-        redirectTo: 'base.modList.Plugins'
-    }).state('base.oldModList.Config', {
+        redirectTo: 'base.mod-list.Plugins'
+    }).state('base.old-mod-list.Config', {
         url: '/config',
-        redirectTo: 'base.modList.Config'
-    }).state('base.oldModList.Analysis', {
+        redirectTo: 'base.mod-list.Config'
+    }).state('base.old-mod-list.Analysis', {
         url: '/analysis',
-        redirectTo: 'base.modList.Analysis'
-    }).state('base.oldModList.Comments', {
+        redirectTo: 'base.mod-list.Analysis'
+    }).state('base.old-mod-list.Comments', {
         url: '/comments',
-        redirectTo: 'base.modList.Comments'
+        redirectTo: 'base.mod-list.Comments'
     })
 }]);
 
 app.config(['$stateProvider', function($stateProvider) {
-    $stateProvider.state('base.modList', {
+    $stateProvider.state('base.mod-list', {
         templateUrl: '/resources/partials/modList/modList.html',
         controller: 'modListController',
         url: '/mod-lists/:modListId',
-        redirectTo: 'base.modList.Details',
+        redirectTo: 'base.mod-list.Details',
         resolve: {
             modListObject: function(modListService, $stateParams, $q) {
                 var modList = $q.defer();
@@ -42,7 +42,7 @@ app.config(['$stateProvider', function($stateProvider) {
                     var errorObj = {
                         text: 'Error retrieving mod list.',
                         response: response,
-                        stateName: 'base.modList',
+                        stateName: 'base.mod-list',
                         stateUrl: window.location.hash
                     };
                     modList.reject(errorObj);
@@ -50,7 +50,7 @@ app.config(['$stateProvider', function($stateProvider) {
                 return modList.promise;
             }
         }
-    }).state('base.modList.Details', {
+    }).state('base.mod-list.Details', {
         sticky: true,
         deepStateRedirect: true,
         reloadOnSearch: false,
@@ -61,7 +61,7 @@ app.config(['$stateProvider', function($stateProvider) {
             }
         },
         url: '/details'
-    }).state('base.modList.Tools', {
+    }).state('base.mod-list.Tools', {
         sticky: true,
         deepStateRedirect: true,
         reloadOnSearch: false,
@@ -76,7 +76,7 @@ app.config(['$stateProvider', function($stateProvider) {
             scol: 'index',
             sdir: 'ASC'
         }
-    }).state('base.modList.Mods', {
+    }).state('base.mod-list.Mods', {
         sticky: true,
         deepStateRedirect: true,
         reloadOnSearch: false,
@@ -91,7 +91,7 @@ app.config(['$stateProvider', function($stateProvider) {
             scol: 'index',
             sdir: 'ASC'
         }
-    }).state('base.modList.Plugins', {
+    }).state('base.mod-list.Plugins', {
         sticky: true,
         deepStateRedirect: true,
         reloadOnSearch: false,
@@ -106,7 +106,7 @@ app.config(['$stateProvider', function($stateProvider) {
             scol: 'index',
             sdir: 'ASC'
         }
-    }).state('base.modList.Config', {
+    }).state('base.mod-list.Config', {
         sticky: true,
         deepStateRedirect: true,
         reloadOnSearch: false,
@@ -117,7 +117,7 @@ app.config(['$stateProvider', function($stateProvider) {
             }
         },
         url: '/config'
-    }).state('base.modList.Analysis', {
+    }).state('base.mod-list.Analysis', {
         sticky: true,
         deepStateRedirect: true,
         reloadOnSearch: false,
@@ -128,7 +128,7 @@ app.config(['$stateProvider', function($stateProvider) {
             }
         },
         url: '/analysis'
-    }).state('base.modList.Comments', {
+    }).state('base.mod-list.Comments', {
         sticky: true,
         deepStateRedirect: true,
         reloadOnSearch: false,

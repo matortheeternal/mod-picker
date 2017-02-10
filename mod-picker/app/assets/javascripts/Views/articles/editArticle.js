@@ -1,13 +1,13 @@
 // redirect for the old url format of /article/:articleId/edit
 app.config(['$stateProvider', function($stateProvider) {
-    $stateProvider.state('base.oldEditArticle', {
+    $stateProvider.state('base.old-edit-article', {
         url: '/article/:articleId/edit',
-        redirectTo: 'base.editArticle'
+        redirectTo: 'base.edit-article'
     })
 }]);
 
 app.config(['$stateProvider', function($stateProvider) {
-    $stateProvider.state('base.editArticle', {
+    $stateProvider.state('base.edit-article', {
         templateUrl: '/resources/partials/articles/editArticle.html',
         controller: 'editArticleController',
         url: '/articles/:articleId/edit',
@@ -20,7 +20,7 @@ app.config(['$stateProvider', function($stateProvider) {
                     this.self.errorObj = {
                         text: 'Error editing article.',
                         response: response,
-                        stateName: "base.editArticle",
+                        stateName: "base.edit-article",
                         stateUrl: window.location.hash
                     };
                     article.reject();

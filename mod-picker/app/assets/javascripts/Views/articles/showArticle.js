@@ -1,6 +1,6 @@
 // redirect for the old url format of /article/:articleId
 app.config(['$stateProvider', function($stateProvider) {
-    $stateProvider.state('base.oldArticle', {
+    $stateProvider.state('base.old-article', {
         url: '/article/:articleId',
         redirectTo: 'base.article'
     })
