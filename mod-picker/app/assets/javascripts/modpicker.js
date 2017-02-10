@@ -13,7 +13,7 @@
  (c) 2016 Mod Picker, LLC. https://www.modpicker.com
 */
 
-// fix urls in the old format
+// fix urls in the old hash format
 if (["/skyrim", "/skyrimse"].indexOf(window.location.pathname) > -1) {
     window.location.pathname += "/";
 }
@@ -28,19 +28,26 @@ app.config(['$httpProvider', '$compileProvider', '$locationProvider', function($
     $locationProvider.html5Mode(true);
 }]);
 
-app.config(function($urlMatcherFactoryProvider) {
+app.config(function($urlMatcherFactoryProvider, $urlRouterProvider) {
     //this allows urls with and without trailing slashes to go to the same state
     $urlMatcherFactoryProvider.strictMode(false);
     //this will not display url parameters that are set to their defaults
     $urlMatcherFactoryProvider.defaultSquashPolicy(true);
-});
 
-//redirect to /home if someone types in an incorrect url
-app.config(function($urlRouterProvider) {
+    // redirect to /home if someone types in an incorrect url
     $urlRouterProvider.otherwise('/home');
+    // force index pages to have higher priority than show pages
+    var goToState = function(stateName) {
+        return function($state, $location) {
+            $state.go(stateName, $location.search());
+        };
+    };
+    $urlRouterProvider.when('/mods', goToState('base.mods'));
+    $urlRouterProvider.when('/mod-lists', goToState('base.modLists'));
+    $urlRouterProvider.when('/articles', goToState('base.articles'));
 });
 
-//this allows states to be defined at runtime by 
+// allow states to be defined at runtime
 app.config(function($futureStateProvider) {
     var lazyStateFactory = function($q, futureState) {
         return $q.when(futureState);
