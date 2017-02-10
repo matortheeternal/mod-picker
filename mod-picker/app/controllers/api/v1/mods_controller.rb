@@ -116,7 +116,7 @@ class Api::V1::ModsController < Api::ApiController
 
     # render response
     render json: {
-        compatibility_notes: related_mod_notes,
+        related_mod_notes: related_mod_notes,
         max_entries: count,
         entries_per_page: 10
     }

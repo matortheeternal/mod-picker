@@ -291,7 +291,7 @@ class ModsController < ApplicationController
 
     # render response
     render json: {
-        compatibility_notes: related_mod_notes,
+        related_mod_notes: related_mod_notes,
         helpful_marks: helpful_marks,
         max_entries: count,
         entries_per_page: 10
