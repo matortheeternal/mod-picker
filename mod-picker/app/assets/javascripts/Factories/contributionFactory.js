@@ -46,7 +46,7 @@ app.service('contributionFactory', function() {
             label: "Related Mod Note",
             route: "related_mod_notes",
             tab: "related-mods",
-            template: "## Description\r\n*For alternatives: What makes these mods similar, and what are their differences?  For recommendations: Why do these mods work well together?*"
+            template: "## Description\r\n*For alternatives: What makes these mods similar, and what are their differences?\r\nFor recommendations: Why do these mods work well together?*"
     }];
 
     this.getDefaultTextBody = function(name) {
