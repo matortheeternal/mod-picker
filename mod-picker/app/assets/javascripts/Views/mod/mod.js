@@ -1,8 +1,31 @@
+// redirects for the old url format of /mod/:modId
+app.config(['$stateProvider', function($stateProvider) {
+    $stateProvider.state('base.oldMod', {
+        url: '/mod/:modId',
+        redirectTo: 'base.mod'
+    }).state('base.oldMod.Reviews', {
+        url: '/reviews/{reviewId:int}?{page:int}&scol&sdir',
+        redirectTo: 'base.mod.Reviews'
+    }).state('base.oldMod.Compatibility', {
+        url: '/compatibility/{compatibilityNoteId:int}?{page:int}&scol&sdir&{filter:bool}',
+        redirectTo: 'base.mod.Compatibility'
+    }).state('base.oldMod.Install Order', {
+        url: '/install-order/{installOrderNoteId:int}?{page:int}&scol&sdir&{filter:bool}',
+        redirectTo: 'base.mod.Install Order'
+    }).state('base.oldMod.Load Order', {
+        url: '/load-order/{loadOrderNoteId:int}?{page:int}&scol&sdir&{filter:bool}',
+        redirectTo: 'base.mod.Load Order'
+    }).state('base.oldMod.Analysis', {
+        url: '/analysis?options&{plugin:int}',
+        redirectTo: 'base.mod.Analysis'
+    });
+}]);
+
 app.config(['$stateProvider', function($stateProvider) {
     $stateProvider.state('base.mod', {
         templateUrl: '/resources/partials/mod/mod.html',
         controller: 'modController',
-        url: '/mod/:modId',
+        url: '/mods/:modId',
         resolve: {
             modObject: function($stateParams, $q, categories, modService, categoryService) {
                 var mod = $q.defer();
