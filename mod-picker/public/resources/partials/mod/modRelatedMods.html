@@ -1,0 +1,60 @@
+﻿<div class="tab-bar-items">
+    <div class="tab-bar-item primary-item">
+        <sort-control sort="sort.related_mod_notes" sort-options="sortOptions.related_mod_notes"></sort-control>
+    </div>
+    <div class="tab-bar-item">
+        <input class="btn" type="button" value="Add Related Mod Note" ng-click="startNewRelatedModNote()" ng-disabled="activeRelatedModNote || !permissions.canContribute"/>
+    </div>
+</div>
+
+<div class="content-block add-note-box" ng-show="activeRelatedModNote">
+    <div class="content-title">
+        <span ng-if="activeRelatedModNote.original">Edit</span>
+        <span ng-if="!activeRelatedModNote.original">Add</span>
+        Related Mod Note
+    </div>
+    <div class="content-options">
+        <span class="select compatibility-dropdown">
+            <select ng-model="activeRelatedModNote.status">
+                <option value="alternative_mod">Alternative mod</option>
+                <option value="recommended_mod">Recommended mod</option>
+            </select>
+        </span>
+        <search-input search-function="searchMods" result-id="activeRelatedModNote.mod_id" search-text="activeRelatedModNote.mod_name" excluded-id="mod.id" on-change="validateRelatedModNote" disabled="activeRelatedModNote.original" label="mod" key="name"></search-input>
+    </div>
+    <div class="content-container">
+        <text-area data="activeRelatedModNote.text_body" ng-refresh="updateMDE" class="note-text-area" on-change="validateRelatedModNote"></text-area>
+
+        <div class="message-input" ng-if="activeRelatedModNote.editing && activeRelatedModNote.original.submitted_by != currentUser.id">
+            <label>
+                <div>Edit Summary</div>
+                <input type="text" ng-model="activeRelatedModNote.edit_summary" maxlength="255">
+            </label>
+        </div>
+
+        <div class="action-button-container">
+            <input class="btn action-btn" type="submit" value="Submit" ng-click="saveRelatedModNote()" ng-disabled="!activeRelatedModNote.valid" title="{{activeRelatedModNote.valid ? 'Submit your related mod note' : 'Your related mod note is either too short or incomplete.'}}"/>
+            <input class="btn action-btn" type="button" value="Discard" ng-click="discardRelatedModNote()">
+        </div>
+    </div>
+</div>
+
+<loader data="mod.related_mod_notes" spinner-class="big-spinner" ng-if="!errors.related_mod_notes">
+    <!-- note specified in the url -->
+     <div class="content-block current-contribution" ng-if="currentRelatedModNote && !currentRelatedModNote.editing">
+         <related-mod-note note="currentRelatedModNote" index="99" edit="editRelatedModNote"></related-mod-note>
+     </div>
+
+     <!-- the rest of the notes -->
+    <div ng-repeat="note in mod.related_mod_notes" class="content-block" ng-hide="note.editing">
+        <related-mod-note note="note" mod-id="mod.id" index="100 + $index" edit="editRelatedModNote"></related-mod-note>
+    </div>
+
+    <div class="content-message" ng-hide="mod.related_mod_notes.length || currentRelatedModNote">
+        There are no Related Mod Notes for this mod yet.
+    </div>
+
+    <page-results pages="pages.related_mod_notes" data="mod.related_mod_notes" callback="retrieveRelatedModNotes"></page-results>
+</loader>
+
+<error-display content-class="content-message content-error" errors="errors.related_mod_notes" label="related mod notes for this mod"></error-display>
