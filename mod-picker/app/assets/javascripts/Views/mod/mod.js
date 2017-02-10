@@ -173,19 +173,22 @@ app.controller('modController', function($scope, $rootScope, $q, $stateParams, $
         reviews: {},
         compatibility_notes: {},
         install_order_notes: {},
-        load_order_notes: {}
+        load_order_notes: {},
+        related_mod_notes: {}
     };
     $scope.sort = {
         reviews: {},
         compatibility_notes: {},
         install_order_notes: {},
-        load_order_notes: {}
+        load_order_notes: {},
+        related_mod_notes: {}
     };
     $scope.sortOptions = {
         reviews: sortFactory.reviewSortOptions(),
         compatibility_notes: sortFactory.compatibilityNoteSortOptions(),
         install_order_notes: sortFactory.installOrderNoteSortOptions(),
-        load_order_notes: sortFactory.loadOrderNoteSortOptions()
+        load_order_notes: sortFactory.loadOrderNoteSortOptions(),
+        related_mod_notes: sortFactory.relatedModNoteSortOptions()
     };
     $scope.filters = {
         compatibility_notes: {
