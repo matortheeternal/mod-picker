@@ -3,6 +3,9 @@ app.config(['$stateProvider', function($stateProvider) {
     $stateProvider.state('base.old-mod', {
         url: '/mod/:modId',
         redirectTo: 'base.mod'
+    }).state('base.old-mod.Details', {
+        url: '/details',
+        redirectTo: 'base.mod.Details'
     }).state('base.old-mod.Reviews', {
         url: '/reviews/{reviewId:int}?{page:int}&scol&sdir',
         redirectTo: 'base.mod.Reviews'
@@ -44,6 +47,16 @@ app.config(['$stateProvider', function($stateProvider) {
                 return mod.promise;
             }
         }
+    }).state('base.mod.Details', {
+        sticky: true,
+        deepStateRedirect: true,
+        reloadOnSearch: false,
+        views: {
+            'Details': {
+                templateUrl: '/resources/partials/mod/modDetails.html'
+            }
+        },
+        url: '/details'
     }).state('base.mod.Reviews', {
         sticky: true,
         deepStateRedirect: true,
