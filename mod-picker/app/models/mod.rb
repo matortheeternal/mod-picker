@@ -3,6 +3,7 @@ class Mod < ActiveRecord::Base
 
   # ATTRIBUTES
   enum status: [ :good, :outdated, :unstable ]
+  enum notice_type: [ :success, :warning, :error ]
   attr_accessor :updated_by, :mark_updated
   self.per_page = 60
   self.approval_method = :has_mod_auto_approval?
