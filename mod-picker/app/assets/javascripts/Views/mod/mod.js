@@ -250,6 +250,17 @@ app.controller('modController', function($scope, $rootScope, $q, $stateParams, $
         }, 200);
     }
 
+    // display a message if the mod author set a notice
+    if ($scope.mod.notice) {
+        $timeout(function() {
+            $scope.$broadcast('message', {
+                type: $scope.mod.notice_type,
+                text: $scope.mod.notice,
+                decay: 600000 // 10 minutes
+            });
+        }, 250);
+    }
+
     //setting up the canManage permission
     var author = $scope.mod.mod_authors.find(function(author) {
         return author.user_id == $scope.currentUser.id;
