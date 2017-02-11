@@ -651,7 +651,7 @@ ActiveRecord::Schema.define(version: 20170210200448) do
     t.string   "authors",                   limit: 128,                 null: false
     t.string   "description",               limit: 512
     t.string   "notice",                    limit: 128
-    t.integer  "notice_type",               limit: 1
+    t.integer  "notice_type",               limit: 1,   default: 0,     null: false
     t.string   "support_link",              limit: 256
     t.string   "issues_link",               limit: 256
     t.integer  "status",                    limit: 1,   default: 0,     null: false
