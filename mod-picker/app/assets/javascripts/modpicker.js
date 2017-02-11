@@ -9,7 +9,7 @@
 //= stub_tree Directives/help
 /*
  Mod Picker v1.0
- (c) 2016 Mod Picker, LLC. https://www.modpicker.com
+ (c) 2017 Mod Picker, LLC. https://www.modpicker.com
 */
 
 var app = angular.module('modPicker', [
