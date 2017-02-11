@@ -645,6 +645,7 @@ ActiveRecord::Schema.define(version: 20170210200448) do
     t.integer  "edited_by",                 limit: 4
     t.boolean  "is_official",                           default: false, null: false
     t.boolean  "is_utility",                            default: false, null: false
+    t.boolean  "show_details_tab",                      default: false, null: false
     t.string   "name",                      limit: 128,                 null: false
     t.string   "aliases",                   limit: 128
     t.string   "authors",                   limit: 128,                 null: false
