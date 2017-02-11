@@ -1,7 +1,7 @@
 ﻿<div class="content-block" ng-if="mod.description">
     <div class="content-title">Description</div>
     <div class="content-container">
-        <div marked="mod.description" class="text-container"></div>
+        <div class="text-container plain-text-container">{{::mod.description}}</div>
         <div class="description-links" ng-if="mod.support_link || mod.issues_link">
             <a class="inverse-link" ng-href="{{mod.support_link}}" ng-if="mod.support_link">
                 Get Support

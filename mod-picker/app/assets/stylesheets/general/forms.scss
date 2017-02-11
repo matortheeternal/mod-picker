@@ -91,6 +91,10 @@ input[type="file"] {
   margin: 10px 0;
 }
 
+.plain-text-container {
+  white-space: pre-wrap;
+}
+
 .text-container, .comment-text-container {
   @include wordbreak;
 
