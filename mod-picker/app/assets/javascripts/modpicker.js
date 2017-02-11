@@ -33,7 +33,12 @@ app.config(function($urlRouterProvider) {
     $urlRouterProvider.otherwise('/home');
 });
 
-//this allows states to be defined at runtime by 
+// sanitize html in markdown
+app.config(function(markedProvider) {
+    markedProvider.setOptions({ sanitize: true });
+});
+
+// allow states to be defined at runtime
 app.config(function($futureStateProvider) {
     var lazyStateFactory = function($q, futureState) {
         return $q.when(futureState);
