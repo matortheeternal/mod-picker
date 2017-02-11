@@ -1,0 +1,54 @@
+<h3 class="section-title" ng-if="canSetDetails">Details
+    <span class="help-tooltip" ng-hide="hideTooltips" title="Optional tab for displaying basic details about the mod, such as a &#13;short description.  This tab can only be enabled by mod authors. ">
+        <i class="fa fa-question-circle"></i>
+    </span>
+</h3>
+<section ng-if="canSetDetails">
+    <label class="subsection">
+        <span class="input-label text-area-label">Short Description
+            <span class="help-tooltip small" ng-hide="hideTooltips" title="Short plaintext mod description.  Max length 512 characters.">
+                <i class="fa fa-question-circle"></i>
+            </span>
+        </span>
+        <textarea class="medium-text-area" ng-model="mod.description" maxlength="512"></textarea>
+    </label>
+    <label class="subsection">
+        <span class="input-label">Notice
+            <span class="help-tooltip small" ng-hide="hideTooltips" title="A notice which displays at the top of the details tab.  Use this &#13;for alerting users about critical events/information.  Max &#13;length 128 characters.">
+                <i class="fa fa-question-circle"></i>
+            </span>
+        </span>
+        <input type="text" class="medium-text" ng-model="mod.notice" maxlength="128">
+    </label>
+    <label class="subsection">
+        <span class="input-label">Notice Style
+            <span class="help-tooltip small" ng-hide="hideTooltips" title="The style to use for the notice message when it is displayed.">
+                <i class="fa fa-question-circle"></i>
+            </span>
+        </span>
+        <select ng-model="mod.notice_type">
+            <option value="success">Greeting (Green)</option>
+            <option value="warning">Warning (Yellow)</option>
+            <option value="error">Alarm (Red)</option>
+        </select>
+    </label>
+    <label class="subsection">
+        <span class="input-label">Support Link
+            <span class="help-tooltip small" ng-hide="hideTooltips" title="This is an optional field which you can specify if you have a &#13;preferred place for users look for support for this mod.  This could &#13;be your Nexus Mods Page, a forum thread, or another webpage.">
+                <i class="fa fa-question-circle"></i>
+            </span>
+        </span>
+        <input type="text" class="medium-text" ng-model="mod.support_link" maxlength="256">
+    </label>
+    <label class="subsection">
+        <span class="input-label">Issue Tracker
+            <span class="help-tooltip small" ng-hide="hideTooltips" title="This is an optional field which you can specify if you have a preferred &#13;place for users to report issues for this mod.  This could be a forum &#13;thread, an issue tracker, or another web page.">
+                <i class="fa fa-question-circle"></i>
+            </span>
+        </span>
+        <input type="text" class="medium-text" ng-model="mod.issues_link" maxlength="256">
+    </label>
+    <label class="subsection">
+        <input type="checkbox" ng-model="mod.show_details_tab"> Show Details Tab
+    </label>
+</section>
