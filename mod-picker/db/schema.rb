@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170210011956) do
+ActiveRecord::Schema.define(version: 20170210200448) do
 
   create_table "active_mod_lists", force: :cascade do |t|
     t.integer "game_id",     limit: 4, null: false
@@ -648,6 +648,10 @@ ActiveRecord::Schema.define(version: 20170210011956) do
     t.string   "name",                      limit: 128,                 null: false
     t.string   "aliases",                   limit: 128
     t.string   "authors",                   limit: 128,                 null: false
+    t.string   "description",               limit: 512
+    t.string   "notice",                    limit: 128
+    t.string   "support_link",              limit: 256
+    t.string   "issues_link",               limit: 256
     t.integer  "status",                    limit: 1,   default: 0,     null: false
     t.integer  "primary_category_id",       limit: 4
     t.integer  "secondary_category_id",     limit: 4
