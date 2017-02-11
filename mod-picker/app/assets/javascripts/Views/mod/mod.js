@@ -18,6 +18,9 @@ app.config(['$stateProvider', function($stateProvider) {
     }).state('base.old-mod.Load Order', {
         url: '/load-order/{loadOrderNoteId:int}?{page:int}&scol&sdir&{filter:bool}',
         redirectTo: 'base.mod.Load Order'
+    }).state('base.old-mod.Related', {
+        url: '/related',
+        redirectTo: 'base.mod.Related'
     }).state('base.old-mod.Analysis', {
         url: '/analysis?options&{plugin:int}',
         redirectTo: 'base.mod.Analysis'
@@ -128,17 +131,17 @@ app.config(['$stateProvider', function($stateProvider) {
             filter: true,
             loadOrderNoteId: null
         }
-    }).state('base.mod.Related Mods', {
+    }).state('base.mod.Related', {
         sticky: true,
         deepStateRedirect: true,
         reloadOnSearch: false,
         views: {
-            'Related Mods': {
+            'Related': {
                 templateUrl: '/resources/partials/mod/modRelatedMods.html',
                 controller: 'modRelatedModsController'
             }
         },
-        url: '/related-mods/{relatedModNoteId:int}?{page:int}&scol&sdir&{filter:bool}',
+        url: '/related/{relatedModNoteId:int}?{page:int}&scol&sdir&{filter:bool}',
         params: {
             page: 1,
             scol: 'reputation',

@@ -65,7 +65,7 @@ app.service("tabsFactory", function() {
                 });
             }
             tabs.push({
-                name: 'Related Mods',
+                name: 'Related',
                 count: mod.related_mod_notes_count
             });
         }
