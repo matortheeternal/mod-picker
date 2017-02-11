@@ -43,7 +43,7 @@ app.config(['$stateProvider', function($stateProvider) {
                         text: 'Error retrieving mod.',
                         response: response,
                         stateName: "base.mod",
-                        stateUrl: window.location.hash
+                        stateUrl: window.location.href
                     };
                     mod.reject(errorObj);
                 });
@@ -361,7 +361,7 @@ app.controller('modController', function($scope, $rootScope, $q, $stateParams, $
     };
 
     $scope.editMod = function() {
-        $window.location.hash = 'mods/' + $scope.mod.id + '/edit';
+        $window.location.href = 'mods/' + $scope.mod.id + '/edit';
     };
 
     $scope.starMod = function() {

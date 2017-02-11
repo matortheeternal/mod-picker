@@ -63,7 +63,7 @@ app.controller('baseController', function($scope, $rootScope, $state, $window, $
                 text: 'Error retrieving current user.',
                 response: response,
                 stateName: 'base',
-                stateUrl: window.location.hash
+                stateUrl: window.location.href
             };
             $state.go('base.error');
         });

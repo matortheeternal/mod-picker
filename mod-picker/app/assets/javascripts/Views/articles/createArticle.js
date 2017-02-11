@@ -13,7 +13,7 @@ app.config(['$stateProvider', function($stateProvider) {
                         text: 'Error starting new article.',
                         response: response,
                         stateName: "base.create-article",
-                        stateUrl: window.location.hash
+                        stateUrl: window.location.href
                     };
                     article.reject(errorObj);
                 });
