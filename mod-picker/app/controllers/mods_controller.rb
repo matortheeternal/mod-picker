@@ -87,6 +87,7 @@ class ModsController < ApplicationController
     authorize! :change_status, @mod, :message => "You are not allowed to change this mod's status." if params[:mod].has_key?(:status)
     authorize! :update_options, @mod, :message => "You are not allowed to update this mod's advanced options." if options_params.any?
     authorize! :assign_custom_sources, @mod, :message => "You are not allowed to assign custom sources." if params[:mod].has_key?(:custom_sources_attributes)
+    authorize! :update_details, @mod, :message => "You are not allowed to update this mod's details." if details_params.any?
 
     builder = ModBuilder.new(current_user, mod_update_params)
     if builder.update
@@ -403,7 +404,7 @@ class ModsController < ApplicationController
     end
 
     def mod_update_params
-      p = params.require(:mod).permit(:name, :authors, :aliases, :is_utility, :has_adult_content, :status, :primary_category_id, :secondary_category_id, :released, :updated, :mark_updated, :nexus_info_id, :lover_info_id, :workshop_info_id, :disallow_contributors, :disable_reviews, :lock_tags, :hidden, :approved, :tag_names,
+      p = params.require(:mod).permit(:name, :authors, :aliases, :is_utility, :has_adult_content, :status, :show_details_tab, :description, :notice, :notice_type, :support_link, :issues_link, :primary_category_id, :secondary_category_id, :released, :updated, :mark_updated, :nexus_info_id, :lover_info_id, :workshop_info_id, :disallow_contributors, :disable_reviews, :lock_tags, :hidden, :approved, :tag_names,
          required_mods_attributes: [:id, :required_id, :_destroy],
          mod_authors_attributes: [:id, :role, :user_id, :_destroy],
           custom_sources_attributes: [:id, :label, :url, :_destroy],
@@ -426,6 +427,10 @@ class ModsController < ApplicationController
     def options_params
       params[:mod].slice(:is_utility, :has_adult_content, :disallow_contributors, :disable_reviews, :lock_tags)
     end
+
+  def details_params
+    params[:mod].slice(:show_details_tab, :description, :notice, :notice_type, :support_link, :issues_link)
+  end
 
     def image_params
       {
