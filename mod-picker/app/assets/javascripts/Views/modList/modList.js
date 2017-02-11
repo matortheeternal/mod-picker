@@ -43,7 +43,7 @@ app.config(['$stateProvider', function($stateProvider) {
                         text: 'Error retrieving mod list.',
                         response: response,
                         stateName: 'base.mod-list',
-                        stateUrl: window.location.hash
+                        stateUrl: window.location.href
                     };
                     modList.reject(errorObj);
                 });

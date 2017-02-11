@@ -41,7 +41,7 @@ app.controller('primaryNavController', function($scope, $rootScope, $timeout, $s
                 text: 'Error creating new mod list.',
                 response: response,
                 stateName: 'base',
-                stateUrl: window.location.hash
+                stateUrl: window.location.href
             };
             $state.go('base.error');
         });
