@@ -120,6 +120,10 @@ app.service("filtersFactory", function() {
         return [
             factory.searchFilter,
             {
+                data: "description",
+                param: "d"
+            },
+            {
                 data: "author",
                 param: "a"
             },
