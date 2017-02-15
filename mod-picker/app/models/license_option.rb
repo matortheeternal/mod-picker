@@ -4,6 +4,8 @@ class LicenseOption < ActiveRecord::Base
   # ASSOCIATIONS
   belongs_to :license
 
+  has_many :mod_licenses
+
   # VALIDATIONS
   validates :name, presence: true
 end

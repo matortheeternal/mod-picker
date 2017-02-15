@@ -3,6 +3,7 @@ class License < ActiveRecord::Base
 
   # ASSOCIATIONS
   has_many :license_options
+  has_many :mod_licenses
 
   accepts_nested_attributes_for :license_options
 

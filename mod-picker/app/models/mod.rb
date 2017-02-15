@@ -121,6 +121,9 @@ class Mod < ActiveRecord::Base
   # config files associated with the mod
   has_many :config_files, :inverse_of => 'mod', :dependent => :destroy
 
+  # license
+  has_one :mod_license
+
   # users who can edit the mod
   has_many :mod_authors, :inverse_of => 'mod', :dependent => :destroy
   has_many :author_users, :class_name => 'User', :through => 'mod_authors', :source => 'user', :inverse_of => 'mods'
@@ -145,6 +148,7 @@ class Mod < ActiveRecord::Base
   accepts_nested_attributes_for :mod_options, allow_destroy: true
   accepts_nested_attributes_for :custom_sources, allow_destroy: true
   accepts_nested_attributes_for :config_files, allow_destroy: true
+  accepts_nested_attributes_for :mod_license, allow_destroy: true
   # cannot update required mods
   accepts_nested_attributes_for :required_mods, reject_if: proc {
       |attributes| attributes[:id] && !attributes[:_destroy]
