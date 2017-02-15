@@ -21,7 +21,7 @@ app.config(['$stateProvider', function($stateProvider) {
                         text: 'Error editing mod.',
                         response: response,
                         stateName: "base.edit-mod",
-                        stateUrl: window.location.hash
+                        stateUrl: window.location.href
                     };
                     mod.reject(errorObj);
                 });
@@ -75,6 +75,7 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
     var isAuthor = author && author.role == 'author';
     $scope.canManageOptions = $scope.permissions.canModerate || isAuthor;
     $scope.canChangeStatus = (isAuthor && $scope.mod.status == "good") || $scope.permissions.isAdmin;
+    $scope.canSetDetails  = $scope.permissions.canModerate || isAuthor;
 
     $scope.$watch('mod.categories', function() {
         // clear messages when user changes the category

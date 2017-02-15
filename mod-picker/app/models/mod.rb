@@ -3,6 +3,7 @@ class Mod < ActiveRecord::Base
 
   # ATTRIBUTES
   enum status: [ :good, :outdated, :unstable ]
+  enum notice_type: [ :success, :warning, :error ]
   attr_accessor :updated_by, :mark_updated
   self.per_page = 60
   self.approval_method = :has_mod_auto_approval?
@@ -30,6 +31,7 @@ class Mod < ActiveRecord::Base
   value_scope :is_utility
   game_scope :parent => true
   search_scope :name, :aliases, :combine => true
+  search_scope :description
   user_scope :author_users, :alias => 'mp_author'
   enum_scope :status
   date_scope :released, :updated, :submitted

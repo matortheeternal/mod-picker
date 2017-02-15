@@ -91,6 +91,10 @@ input[type="file"] {
   margin: 10px 0;
 }
 
+.plain-text-container {
+  white-space: pre-wrap;
+}
+
 .text-container, .comment-text-container {
   @include wordbreak;
 
@@ -253,6 +257,10 @@ form {
     min-width: 180px;
     margin-bottom: 5px;
     margin-top: 5px;
+  }
+
+  .text-area-label {
+    vertical-align: top;
   }
 
   .input-block {

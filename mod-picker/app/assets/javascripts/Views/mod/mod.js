@@ -3,6 +3,9 @@ app.config(['$stateProvider', function($stateProvider) {
     $stateProvider.state('base.old-mod', {
         url: '/mod/:modId',
         redirectTo: 'base.mod'
+    }).state('base.old-mod.Details', {
+        url: '/details',
+        redirectTo: 'base.mod.Details'
     }).state('base.old-mod.Reviews', {
         url: '/reviews/{reviewId:int}?{page:int}&scol&sdir',
         redirectTo: 'base.mod.Reviews'
@@ -15,6 +18,9 @@ app.config(['$stateProvider', function($stateProvider) {
     }).state('base.old-mod.Load Order', {
         url: '/load-order/{loadOrderNoteId:int}?{page:int}&scol&sdir&{filter:bool}',
         redirectTo: 'base.mod.Load Order'
+    }).state('base.old-mod.Related', {
+        url: '/related',
+        redirectTo: 'base.mod.Related'
     }).state('base.old-mod.Analysis', {
         url: '/analysis?options&{plugin:int}',
         redirectTo: 'base.mod.Analysis'
@@ -37,13 +43,23 @@ app.config(['$stateProvider', function($stateProvider) {
                         text: 'Error retrieving mod.',
                         response: response,
                         stateName: "base.mod",
-                        stateUrl: window.location.hash
+                        stateUrl: window.location.href
                     };
                     mod.reject(errorObj);
                 });
                 return mod.promise;
             }
         }
+    }).state('base.mod.Details', {
+        sticky: true,
+        deepStateRedirect: true,
+        reloadOnSearch: false,
+        views: {
+            'Details': {
+                templateUrl: '/resources/partials/mod/modDetails.html'
+            }
+        },
+        url: '/details'
     }).state('base.mod.Reviews', {
         sticky: true,
         deepStateRedirect: true,
@@ -115,17 +131,17 @@ app.config(['$stateProvider', function($stateProvider) {
             filter: true,
             loadOrderNoteId: null
         }
-    }).state('base.mod.Related Mods', {
+    }).state('base.mod.Related', {
         sticky: true,
         deepStateRedirect: true,
         reloadOnSearch: false,
         views: {
-            'Related Mods': {
+            'Related': {
                 templateUrl: '/resources/partials/mod/modRelatedMods.html',
                 controller: 'modRelatedModsController'
             }
         },
-        url: '/related-mods/{relatedModNoteId:int}?{page:int}&scol&sdir&{filter:bool}',
+        url: '/related/{relatedModNoteId:int}?{page:int}&scol&sdir&{filter:bool}',
         params: {
             page: 1,
             scol: 'reputation',
@@ -234,6 +250,17 @@ app.controller('modController', function($scope, $rootScope, $q, $stateParams, $
         }, 200);
     }
 
+    // display a message if the mod author set a notice
+    if ($scope.mod.notice) {
+        $timeout(function() {
+            $scope.$broadcast('message', {
+                type: $scope.mod.notice_type,
+                text: $scope.mod.notice,
+                decay: 600000 // 10 minutes
+            });
+        }, 250);
+    }
+
     //setting up the canManage permission
     var author = $scope.mod.mod_authors.find(function(author) {
         return author.user_id == $scope.currentUser.id;
@@ -334,7 +361,7 @@ app.controller('modController', function($scope, $rootScope, $q, $stateParams, $
     };
 
     $scope.editMod = function() {
-        $window.location.hash = 'mods/' + $scope.mod.id + '/edit';
+        $window.location.href = 'mods/' + $scope.mod.id + '/edit';
     };
 
     $scope.starMod = function() {

@@ -35,6 +35,10 @@ app.service("tabsFactory", function() {
         // mods without a primary category (games) don't have reviews,
         // compatibility notes, install order notes, or load order notes
         if (mod.primary_category_id) {
+            // show details tab if it is enabled
+            if (mod.show_details_tab) {
+                tabs.push({ name: 'Details' });
+            }
             // mod authors can disable reviews on their mods
             if (!mod.disable_reviews) {
                 tabs.push({
@@ -61,15 +65,13 @@ app.service("tabsFactory", function() {
                 });
             }
             tabs.push({
-                name: 'Related Mods',
+                name: 'Related',
                 count: mod.related_mod_notes_count
             });
         }
 
         // all mod pages have the analysis tab
-        tabs.push({
-            name: 'Analysis'
-        });
+        tabs.push({ name: 'Analysis' });
 
         return tabs;
     };

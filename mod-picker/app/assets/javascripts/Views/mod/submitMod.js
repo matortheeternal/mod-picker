@@ -13,7 +13,7 @@ app.config(['$stateProvider', function($stateProvider) {
                             text: 'Error submitting new mod.',
                             response: response,
                             stateName: "base.submit-mod",
-                            stateUrl: window.location.hash
+                            stateUrl: window.location.href
                         };
                         mod.reject(errorObj);
                     });

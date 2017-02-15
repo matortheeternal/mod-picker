@@ -161,6 +161,22 @@
   }
 }
 
+.description-links {
+  text-align: center;
+  font-size: 18px;
+  padding: 10px 0;
+
+  > a {
+    margin: 14px;
+    padding: 6px;
+    border: 1px solid $text_color;
+
+    &:hover {
+      border: 1px solid $link_hover_color_primary;
+    }
+  }
+}
+
 //add note box
 .add-note-box {
   border: 1px solid $bar_dark_color;

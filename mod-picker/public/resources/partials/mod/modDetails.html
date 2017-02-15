@@ -1,0 +1,23 @@
+﻿<div class="content-block" ng-if="mod.description">
+    <div class="content-title">Description</div>
+    <div class="content-container">
+        <div class="text-container plain-text-container">{{::mod.description}}</div>
+        <div class="description-links" ng-if="mod.support_link || mod.issues_link">
+            <a class="inverse-link" ng-href="{{mod.support_link}}" ng-if="mod.support_link">
+                Get Support
+            </a>
+            <a class="inverse-link" ng-href="{{mod.issues_link}}" ng-if="mod.issues_link">
+                Report an Issue
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="content-block" ng-show="mod.install_instructions">
+    <!-- TODO -->
+</div>
+
+<div class="content-block" ng-show="mod.license">
+    <div class="content-title">License</div>
+    <!-- TODO -->
+</div>

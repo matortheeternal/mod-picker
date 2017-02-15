@@ -122,7 +122,7 @@ class Ability
 
   def can_manage_mods
     # can update or hide any mod
-    can [:update, :hide, :approve, :assign_custom_sources, :update_authors, :update_options], Mod
+    can [:update, :hide, :approve, :assign_custom_sources, :update_authors, :update_options, :update_details], Mod
     can :destroy, ModRequirement
     # can approve curator requests
     can :update, CuratorRequest
@@ -228,8 +228,7 @@ class Ability
     can :destroy, ModTag, { mod: { mod_authors: { user_id: user.id } } }
     cannot :create, Review, { mod: { mod_authors: { user_id: user.id, role: [0, 1] } } }
     # authors
-    can :update_authors, Mod, { mod_authors: { user_id: user.id, role: 0 } }
-    can :update_options, Mod, { mod_authors: { user_id: user.id, role: 0 } }
+    can [:update_authors, :update_options, :update_details], Mod, { mod_authors: { user_id: user.id, role: 0 } }
     can :change_status, Mod, { status: 0, mod_authors: { user_id: user.id, role: 0 } }
     can [:read, :update], CuratorRequest, { mod: { mod_authors: { user_id: user.id, role: 0 } } }
     # contributors
