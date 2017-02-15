@@ -6,7 +6,7 @@ class CreateLicenses < ActiveRecord::Migration
       t.string :wikipedia_page, limit: 64
       t.string :description, limit: 512
       t.integer :clauses, limit: 1, default: 0, null: false
-      t.string :type, limit: 32, null: false
+      t.string :license_type, limit: 32, null: false
       t.boolean :code, default: false, null: false
       t.boolean :assets, default: false, null: false
       t.integer :credit, limit: 1, default: 0, null: false
