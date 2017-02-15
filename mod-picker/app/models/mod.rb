@@ -31,6 +31,7 @@ class Mod < ActiveRecord::Base
   value_scope :is_utility
   game_scope :parent => true
   search_scope :name, :aliases, :combine => true
+  search_scope :description
   user_scope :author_users, :alias => 'mp_author'
   enum_scope :status
   date_scope :released, :updated, :submitted
