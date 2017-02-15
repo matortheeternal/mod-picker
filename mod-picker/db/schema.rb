@@ -338,6 +338,33 @@ ActiveRecord::Schema.define(version: 20170210200448) do
   add_index "install_order_notes", ["second_mod_id"], name: "fk_rails_b74bbcab8b", using: :btree
   add_index "install_order_notes", ["submitted_by"], name: "fk_rails_ea0bdedfde", using: :btree
 
+  create_table "license_options", force: :cascade do |t|
+    t.integer "license_id", limit: 4,   null: false
+    t.string  "name",       limit: 128, null: false
+    t.string  "acronym",    limit: 16
+    t.string  "tldr",       limit: 128
+    t.string  "link",       limit: 256
+  end
+
+  add_index "license_options", ["license_id"], name: "fk_rails_53f4184380", using: :btree
+
+  create_table "licenses", force: :cascade do |t|
+    t.string  "name",           limit: 128,                 null: false
+    t.string  "acronym",        limit: 16
+    t.string  "wikipedia_page", limit: 64
+    t.string  "description",    limit: 512
+    t.integer "clauses",        limit: 1,   default: 0,     null: false
+    t.string  "type",           limit: 32,                  null: false
+    t.boolean "code",                       default: false, null: false
+    t.boolean "assets",                     default: false, null: false
+    t.integer "credit",         limit: 1,   default: 0,     null: false
+    t.integer "commercial",     limit: 1,   default: 0,     null: false
+    t.integer "redistribution", limit: 1,   default: 0,     null: false
+    t.integer "modification",   limit: 1,   default: 0,     null: false
+    t.integer "private_use",    limit: 1,   default: 0,     null: false
+    t.integer "include",        limit: 1,   default: 0,     null: false
+  end
+
   create_table "load_order_note_history_entries", force: :cascade do |t|
     t.integer  "load_order_note_id", limit: 4,     null: false
     t.integer  "edited_by",          limit: 4,     null: false
@@ -436,6 +463,23 @@ ActiveRecord::Schema.define(version: 20170210200448) do
 
   add_index "mod_authors", ["mod_id"], name: "mod_id", using: :btree
   add_index "mod_authors", ["user_id"], name: "user_id", using: :btree
+
+  create_table "mod_licenses", force: :cascade do |t|
+    t.integer "mod_id",            limit: 4,                 null: false
+    t.integer "license_id",        limit: 4,                 null: false
+    t.integer "license_option_id", limit: 4
+    t.integer "credit",            limit: 1,     default: 0, null: false
+    t.integer "commercial",        limit: 1,     default: 0, null: false
+    t.integer "redistribution",    limit: 1,     default: 0, null: false
+    t.integer "modification",      limit: 1,     default: 0, null: false
+    t.integer "private_use",       limit: 1,     default: 0, null: false
+    t.integer "include",           limit: 1,     default: 0, null: false
+    t.text    "text_body",         limit: 65535
+  end
+
+  add_index "mod_licenses", ["license_id"], name: "fk_rails_ed9ce5359f", using: :btree
+  add_index "mod_licenses", ["license_option_id"], name: "fk_rails_608f4a2096", using: :btree
+  add_index "mod_licenses", ["mod_id"], name: "fk_rails_3c8eedb43d", using: :btree
 
   create_table "mod_list_config_files", force: :cascade do |t|
     t.integer "mod_list_id",    limit: 4,     null: false
@@ -640,48 +684,48 @@ ActiveRecord::Schema.define(version: 20170210200448) do
   add_index "mod_tags", ["tag_id"], name: "fk_rails_ffd7f5019d", using: :btree
 
   create_table "mods", force: :cascade do |t|
-    t.integer  "game_id",                   limit: 4,                   null: false
-    t.integer  "submitted_by",              limit: 4,                   null: false
+    t.integer  "game_id",                   limit: 4,                    null: false
+    t.integer  "submitted_by",              limit: 4,                    null: false
     t.integer  "edited_by",                 limit: 4
-    t.boolean  "is_official",                           default: false, null: false
-    t.boolean  "is_utility",                            default: false, null: false
-    t.boolean  "show_details_tab",                      default: false, null: false
-    t.string   "name",                      limit: 128,                 null: false
+    t.boolean  "is_official",                            default: false, null: false
+    t.boolean  "is_utility",                             default: false, null: false
+    t.boolean  "show_details_tab",                       default: false, null: false
+    t.string   "name",                      limit: 128,                  null: false
     t.string   "aliases",                   limit: 128
-    t.string   "authors",                   limit: 128,                 null: false
+    t.string   "authors",                   limit: 128,                  null: false
     t.string   "description",               limit: 1024
     t.string   "notice",                    limit: 128
-    t.integer  "notice_type",               limit: 1,   default: 0,     null: false
+    t.integer  "notice_type",               limit: 1,    default: 0,     null: false
     t.string   "support_link",              limit: 256
     t.string   "issues_link",               limit: 256
-    t.integer  "status",                    limit: 1,   default: 0,     null: false
+    t.integer  "status",                    limit: 1,    default: 0,     null: false
     t.integer  "primary_category_id",       limit: 4
     t.integer  "secondary_category_id",     limit: 4
-    t.float    "average_rating",            limit: 24,  default: 0.0,   null: false
-    t.float    "reputation",                limit: 24,  default: 0.0,   null: false
-    t.integer  "mod_options_count",         limit: 4,   default: 0,     null: false
-    t.integer  "plugins_count",             limit: 4,   default: 0,     null: false
-    t.integer  "asset_files_count",         limit: 4,   default: 0,     null: false
-    t.integer  "required_mods_count",       limit: 4,   default: 0,     null: false
-    t.integer  "required_by_count",         limit: 4,   default: 0,     null: false
-    t.integer  "tags_count",                limit: 4,   default: 0,     null: false
-    t.integer  "stars_count",               limit: 4,   default: 0,     null: false
-    t.integer  "mod_lists_count",           limit: 4,   default: 0,     null: false
-    t.integer  "reviews_count",             limit: 4,   default: 0,     null: false
-    t.integer  "compatibility_notes_count", limit: 4,   default: 0,     null: false
-    t.integer  "install_order_notes_count", limit: 4,   default: 0,     null: false
-    t.integer  "load_order_notes_count",    limit: 4,   default: 0,     null: false
-    t.integer  "related_mod_notes_count",   limit: 4,   default: 0,     null: false
-    t.integer  "corrections_count",         limit: 4,   default: 0,     null: false
-    t.boolean  "disallow_contributors",                 default: false, null: false
-    t.boolean  "disable_reviews",                       default: false, null: false
-    t.boolean  "lock_tags",                             default: false, null: false
-    t.boolean  "has_adult_content",                     default: false, null: false
-    t.boolean  "hidden",                                default: false, null: false
-    t.boolean  "approved",                              default: false, null: false
-    t.datetime "released",                                              null: false
+    t.float    "average_rating",            limit: 24,   default: 0.0,   null: false
+    t.float    "reputation",                limit: 24,   default: 0.0,   null: false
+    t.integer  "mod_options_count",         limit: 4,    default: 0,     null: false
+    t.integer  "plugins_count",             limit: 4,    default: 0,     null: false
+    t.integer  "asset_files_count",         limit: 4,    default: 0,     null: false
+    t.integer  "required_mods_count",       limit: 4,    default: 0,     null: false
+    t.integer  "required_by_count",         limit: 4,    default: 0,     null: false
+    t.integer  "tags_count",                limit: 4,    default: 0,     null: false
+    t.integer  "stars_count",               limit: 4,    default: 0,     null: false
+    t.integer  "mod_lists_count",           limit: 4,    default: 0,     null: false
+    t.integer  "reviews_count",             limit: 4,    default: 0,     null: false
+    t.integer  "compatibility_notes_count", limit: 4,    default: 0,     null: false
+    t.integer  "install_order_notes_count", limit: 4,    default: 0,     null: false
+    t.integer  "load_order_notes_count",    limit: 4,    default: 0,     null: false
+    t.integer  "related_mod_notes_count",   limit: 4,    default: 0,     null: false
+    t.integer  "corrections_count",         limit: 4,    default: 0,     null: false
+    t.boolean  "disallow_contributors",                  default: false, null: false
+    t.boolean  "disable_reviews",                        default: false, null: false
+    t.boolean  "lock_tags",                              default: false, null: false
+    t.boolean  "has_adult_content",                      default: false, null: false
+    t.boolean  "hidden",                                 default: false, null: false
+    t.boolean  "approved",                               default: false, null: false
+    t.datetime "released",                                               null: false
     t.datetime "updated"
-    t.datetime "submitted",                                             null: false
+    t.datetime "submitted",                                              null: false
   end
 
   add_index "mods", ["edited_by"], name: "fk_rails_9ec1af790b", using: :btree
@@ -1093,6 +1137,7 @@ ActiveRecord::Schema.define(version: 20170210200448) do
   add_foreign_key "install_order_notes", "users", column: "corrector_id"
   add_foreign_key "install_order_notes", "users", column: "edited_by"
   add_foreign_key "install_order_notes", "users", column: "submitted_by"
+  add_foreign_key "license_options", "licenses"
   add_foreign_key "load_order_note_history_entries", "load_order_notes"
   add_foreign_key "load_order_note_history_entries", "users", column: "edited_by"
   add_foreign_key "load_order_notes", "games"
@@ -1111,6 +1156,9 @@ ActiveRecord::Schema.define(version: 20170210200448) do
   add_foreign_key "mod_asset_files", "mod_options"
   add_foreign_key "mod_authors", "mods", name: "mod_authors_ibfk_1"
   add_foreign_key "mod_authors", "users", name: "mod_authors_ibfk_2"
+  add_foreign_key "mod_licenses", "license_options"
+  add_foreign_key "mod_licenses", "licenses"
+  add_foreign_key "mod_licenses", "mods"
   add_foreign_key "mod_list_config_files", "config_files"
   add_foreign_key "mod_list_config_files", "mod_lists"
   add_foreign_key "mod_list_custom_config_files", "mod_lists"
