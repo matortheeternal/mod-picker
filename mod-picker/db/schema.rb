@@ -357,12 +357,12 @@ ActiveRecord::Schema.define(version: 20170210200448) do
     t.string  "license_type",   limit: 32,                  null: false
     t.boolean "code",                       default: false, null: false
     t.boolean "assets",                     default: false, null: false
-    t.integer "credit",         limit: 1,   default: 0,     null: false
-    t.integer "commercial",     limit: 1,   default: 0,     null: false
-    t.integer "redistribution", limit: 1,   default: 0,     null: false
-    t.integer "modification",   limit: 1,   default: 0,     null: false
-    t.integer "private_use",    limit: 1,   default: 0,     null: false
-    t.integer "include",        limit: 1,   default: 0,     null: false
+    t.integer "credit",         limit: 1,   default: -1,    null: false
+    t.integer "commercial",     limit: 1,   default: -1,    null: false
+    t.integer "redistribution", limit: 1,   default: -1,    null: false
+    t.integer "modification",   limit: 1,   default: -1,    null: false
+    t.integer "private_use",    limit: 1,   default: -1,    null: false
+    t.integer "include",        limit: 1,   default: -1,    null: false
   end
 
   create_table "load_order_note_history_entries", force: :cascade do |t|
@@ -465,15 +465,15 @@ ActiveRecord::Schema.define(version: 20170210200448) do
   add_index "mod_authors", ["user_id"], name: "user_id", using: :btree
 
   create_table "mod_licenses", force: :cascade do |t|
-    t.integer "mod_id",            limit: 4,                 null: false
-    t.integer "license_id",        limit: 4,                 null: false
+    t.integer "mod_id",            limit: 4,                  null: false
+    t.integer "license_id",        limit: 4,                  null: false
     t.integer "license_option_id", limit: 4
-    t.integer "credit",            limit: 1,     default: 0, null: false
-    t.integer "commercial",        limit: 1,     default: 0, null: false
-    t.integer "redistribution",    limit: 1,     default: 0, null: false
-    t.integer "modification",      limit: 1,     default: 0, null: false
-    t.integer "private_use",       limit: 1,     default: 0, null: false
-    t.integer "include",           limit: 1,     default: 0, null: false
+    t.integer "credit",            limit: 1,     default: -1, null: false
+    t.integer "commercial",        limit: 1,     default: -1, null: false
+    t.integer "redistribution",    limit: 1,     default: -1, null: false
+    t.integer "modification",      limit: 1,     default: -1, null: false
+    t.integer "private_use",       limit: 1,     default: -1, null: false
+    t.integer "include",           limit: 1,     default: -1, null: false
     t.text    "text_body",         limit: 65535
   end
 

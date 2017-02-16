@@ -9,12 +9,12 @@ class CreateLicenses < ActiveRecord::Migration
       t.string :license_type, limit: 32, null: false
       t.boolean :code, default: false, null: false
       t.boolean :assets, default: false, null: false
-      t.integer :credit, limit: 1, default: 0, null: false
-      t.integer :commercial, limit: 1, default: 0, null: false
-      t.integer :redistribution, limit: 1, default: 0, null: false
-      t.integer :modification, limit: 1, default: 0, null: false
-      t.integer :private_use, limit: 1, default: 0, null: false
-      t.integer :include, limit: 1, default: 0, null: false
+      t.integer :credit, limit: 1, default: -1, null: false
+      t.integer :commercial, limit: 1, default: -1, null: false
+      t.integer :redistribution, limit: 1, default: -1, null: false
+      t.integer :modification, limit: 1, default: -1, null: false
+      t.integer :private_use, limit: 1, default: -1, null: false
+      t.integer :include, limit: 1, default: -1, null: false
     end
 
     create_table :license_options do |t|
@@ -32,12 +32,12 @@ class CreateLicenses < ActiveRecord::Migration
       t.integer :license_id, null: false
       t.integer :license_option_id
       # this is here for searching purposes and custom licenses
-      t.integer :credit, limit: 1, default: 0, null: false
-      t.integer :commercial, limit: 1, default: 0, null: false
-      t.integer :redistribution, limit: 1, default: 0, null: false
-      t.integer :modification, limit: 1, default: 0, null: false
-      t.integer :private_use, limit: 1, default: 0, null: false
-      t.integer :include, limit: 1, default: 0, null: false
+      t.integer :credit, limit: 1, default: -1, null: false
+      t.integer :commercial, limit: 1, default: -1, null: false
+      t.integer :redistribution, limit: 1, default: -1, null: false
+      t.integer :modification, limit: 1, default: -1, null: false
+      t.integer :private_use, limit: 1, default: -1, null: false
+      t.integer :include, limit: 1, default: -1, null: false
       # for custom licenses
       t.text :text_body, limit: 16384
     end

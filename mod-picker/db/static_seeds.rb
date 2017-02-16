@@ -198,10 +198,10 @@ end
 def seed_licenses
   puts "\nSeeding licenses"
   terms = {
-      unknown: 0,
-      no: 1,
-      yes: 2,
-      with_permission: 3
+      unknown: -1,
+      no: 0,
+      yes: 1,
+      with_permission: 2
   }
 
   License.create(
