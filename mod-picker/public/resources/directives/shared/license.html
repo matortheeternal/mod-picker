@@ -1,6 +1,6 @@
 <div class="left-column">
-    <span class="fa {{::typeIcons[license.type]}}"></span>
-    <span class="license-type">{{::license.type}}</span>
+    <span class="fa {{::typeIcons[license.license_type]}}"></span>
+    <span class="license-type">{{::license.license_type}}</span>
     <span class="license-clauses" ng-if="license.hasOwnProperty('clauses')">{{::license.clauses | number}} clauses</span>
 </div>
 <div class="second-left-column">
