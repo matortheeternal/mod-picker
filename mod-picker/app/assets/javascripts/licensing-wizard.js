@@ -5,6 +5,7 @@
 //= require ./BackendAPI/backend.js
 //= require ./BackendAPI/licenseService.js
 //= require_tree ./Directives/legal
+//= require ./Services/ObjectUtils.js
 //= require ./Factories/licensesFactory.js
 //= require ./Factories/questionsFactory.js
 //= require ./polyfills.js

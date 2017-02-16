@@ -11,12 +11,7 @@ app.service('licensesFactory', function() {
     };
 
     this.getLicenses = function() {
-        var licenses = [];
-        for (var license in factory.licenses) {
-            if (factory.licenses.hasOwnProperty(license)) {
-                licenses.push(factory.licenses[license]);
-            }
-        }
+        var licenses = angular.copy(factory.licenses);
         var getClauses = function(license) {
             return license.hasOwnProperty('clauses') ? license.clauses : 99;
         };

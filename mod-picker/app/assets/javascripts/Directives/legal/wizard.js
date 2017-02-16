@@ -29,6 +29,7 @@ app.controller('wizardController', function($scope, licenseService, licensesFact
             $scope.error = response;
         });
     };
+    $scope.retrieveLicenses();
 
     $scope.switchTab = function(index) {
         $scope.currentTab = index;
