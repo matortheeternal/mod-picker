@@ -21,6 +21,12 @@ app.service('licensesFactory', function() {
         return licenses;
     };
 
+    this.customLicense = function() {
+        return factory.licenses.find(function(license) {
+            return license.license_type === "custom";
+        });
+    };
+
     this.responsesToLicenseParams = function(content, responses) {
         var contentResponses = responses[content];
         return {
@@ -73,14 +79,14 @@ app.service('licensesFactory', function() {
 
     this.getMatchingLicenses = function(content, responses) {
         if (factory.hasUniqueCircumstances(content, responses)) {
-            return [factory.licenses.custom];
+            return [factory.customLicense()];
         }
         var params = factory.responsesToLicenseParams(content, responses);
         var licenses = factory.getLicenses().filter(function(license) {
             return factory.licenseMatches(license, params);
         });
         if (licenses.length < 2) {
-            licenses.push(factory.licenses.custom);
+            licenses.push(factory.customLicense());
         }
         return licenses;
     };

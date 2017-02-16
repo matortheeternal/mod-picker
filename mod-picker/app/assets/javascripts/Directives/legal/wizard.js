@@ -50,7 +50,7 @@ app.controller('wizardController', function($scope, licenseService, licensesFact
         $scope.leaveQuestion(true);
         $scope.showResults = true;
         $scope.matchingLicenses = [];
-        $scope.similarLicenses =[];
+        $scope.similarLicenses = [];
         if ($scope.responses.contains < 2 || $scope.responses.same) {
             $scope.getLicenses(contents[$scope.responses.contains]);
         } else {
