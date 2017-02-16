@@ -224,6 +224,7 @@ Rails.application.routes.draw do
       resources :record_groups, only: [:index]
       resources :review_sections, only: [:index]
       resources :user_titles, only: [:index]
+      resources :licenses, only: [:index]
     end
   end
 
@@ -326,6 +327,7 @@ Rails.application.routes.draw do
   resources :record_groups, only: [:index]
   resources :review_sections, only: [:index]
   resources :user_titles, only: [:index]
+  resources :licenses, only: [:index]
 
   # home page
   match '/skyrim', to: 'home#skyrim', via: [:get]
