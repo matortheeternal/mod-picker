@@ -22,7 +22,8 @@
     },
     "mod_options": {
       "format": "edit"
-    }
+    },
+    "mod_license": {}
   },
   "methods": "image_type"
 }
