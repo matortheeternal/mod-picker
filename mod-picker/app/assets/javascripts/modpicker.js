@@ -7,6 +7,7 @@
 //= require_tree ./Filters
 //= require_tree ./Services
 //= require_tree ./Views
+//= stub_tree Directives/legal
 //= stub_tree Directives/help
 /*
  Mod Picker v1.0
