@@ -9,4 +9,15 @@ class License < ActiveRecord::Base
 
   # VALIDATIONS
   validates :name, :clauses, :license_type, :credit, :commercial, :redistribution, :modification, :private_use, :include, presence: true
+
+  def terms
+    {
+        credit: credit,
+        commercial: commercial,
+        redistribution: redistribution,
+        modification: modification,
+        private_use: private_use,
+        include: include
+    }
+  end
 end
