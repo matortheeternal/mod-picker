@@ -1,5 +1,6 @@
 class LicensesController < ApplicationController
   def index
-    respond_with_json(License.all, nil, :licenses)
+    @licenses = License.includes(:license_options)
+    respond_with_json(@licenses, nil, :licenses)
   end
 end
