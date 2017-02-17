@@ -265,6 +265,10 @@ form {
 
   .input-block {
     display: inline-block;
+
+    input[type="checkbox"] {
+      vertical-align: initial;
+    }
   }
 }
 
