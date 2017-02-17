@@ -15,7 +15,7 @@ app.config(['$stateProvider', function($stateProvider) {
             modObject: function(modService, $stateParams, $q) {
                 var mod = $q.defer();
                 modService.editMod($stateParams.modId).then(function(data) {
-                    mod.resolve(data);
+                    mod.resolve(data.mod);
                 }, function(response) {
                     var errorObj = {
                         text: 'Error editing mod.',

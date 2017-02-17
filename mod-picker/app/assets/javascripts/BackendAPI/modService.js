@@ -147,7 +147,7 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
     this.editMod = function(modId) {
         var action = $q.defer();
         backend.retrieve('/mods/' + modId + '/edit').then(function(data) {
-            service.associateModImage(data);
+            service.associateModImage(data.mod);
             action.resolve(data);
         }, function(response) {
             action.reject(response);
