@@ -31,6 +31,7 @@ class CreateLicenses < ActiveRecord::Migration
       t.integer :mod_id, null: false
       t.integer :license_id, null: false
       t.integer :license_option_id
+      t.integer :target, limit: 1, null: false
       # this is here for searching purposes and custom licenses
       t.integer :credit, limit: 1, default: -1, null: false
       t.integer :commercial, limit: 1, default: -1, null: false

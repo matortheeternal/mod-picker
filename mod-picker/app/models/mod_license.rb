@@ -1,13 +1,17 @@
 class ModLicense < ActiveRecord::Base
   include RecordEnhancements, CounterCache, BetterJson
 
+  # ATTRIBUTES
+  enum target: [:code, :assets, :materials]
+
   # ASSOCIATIONS
   belongs_to :mod
   belongs_to :license
   belongs_to :license_option
 
   # VALIDATIONS
-  validates :text_body, length: { max: 65536 }
+  validates :target, presence: true
+  validates :text_body, length: { maximum: 65536 }
 
   # CALLBACKS
   before_create :inherit_terms

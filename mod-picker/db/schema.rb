@@ -468,6 +468,7 @@ ActiveRecord::Schema.define(version: 20170210200448) do
     t.integer "mod_id",            limit: 4,                  null: false
     t.integer "license_id",        limit: 4,                  null: false
     t.integer "license_option_id", limit: 4
+    t.integer "target",            limit: 1,                  null: false
     t.integer "credit",            limit: 1,     default: -1, null: false
     t.integer "commercial",        limit: 1,     default: -1, null: false
     t.integer "redistribution",    limit: 1,     default: -1, null: false
