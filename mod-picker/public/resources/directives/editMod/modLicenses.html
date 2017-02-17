@@ -1,0 +1,98 @@
+<h3 class="section-title">License
+    <a href="/legal/wizard" target="_blank">
+        <span class="help-tooltip" ng-hide="hideTooltips" title="The license the mod is under.  You can specify a custom license or use a &#13;license from our database.  The license will be displayed on the details tab, &#13;if enabled.  If you need help choosing a license click here to go to the &#13;Mod Picker Licensing Wizard.">
+            <i class="fa fa-question-circle"></i>
+        </span>
+        <span ng-hide="licensesValid" class="error-tooltip" title="One or more licenses is invalid.">
+            <i class="fa fa-exclamation-circle"></i>
+        </span>
+    </a>
+</h3>
+<section>
+    <div class="dynamic-item dynamic-block" ng-repeat="mod_license in mod.mod_licenses" ng-hide="mod_license._destroy">
+        <span class="remove-item" ng-click="removeLicense(mod_license)" title="Remove license">
+            <i class="fa fa-times"></i>
+        </span>
+        <label class="subsection">
+            <strong>License Template</strong>
+            <select ng-model="mod_license.license_id" ng-options="license.id as license.name for license in licenses" ng-change="licenseChange(mod_license)">
+            </select>
+        </label>
+        <label class="subsection" ng-if="mod_license.license.license_options.length && !mod_license.custom">
+            <strong>License Option</strong>
+            <select ng-model="mod_license.license_option_id" ng-options="license_option.id as license_option.name for license_option in mod_license.license.license_options">
+            </select>
+        </label>
+        <label class="subsection">
+            <strong>License Target</strong>
+            <select ng-model="mod_license.target">
+                <option value="materials">Materials</option>
+                <option value="code">Code</option>
+                <option value="assets">Assets</option>
+            </select>
+            <span class="help-tooltip big" ng-hide="hideTooltips" title="The part of your work the license applies to.  You can license your code and assets &#13;under separate licenses, or together under a single license via the Materials option.">
+                <i class="fa fa-question-circle"></i>
+            </span>
+        </label>
+        <label class="subsection" ng-if="mod_license.license && !mod_license.custom">
+            <license license="mod_license.license"></license>
+        </label>
+        <div class="subsection" ng-if="mod_license.custom">
+            <strong style="vertical-align:top;">License Terms</strong>
+            <span class="input-block">
+                <div>
+                    <label>
+                        <input type="checkbox" ng-model="mod_license.credit"> Require attribution
+                    </label>
+                    <span class="help-tooltip small" ng-hide="hideTooltips" title="Require users credit you if they use your {{mod_license.target}}.">
+                        <i class="fa fa-question-circle"></i>
+                    </span>
+                </div>
+                <div>
+                    <label>
+                        <input type="checkbox" ng-model="mod_license.commercial"> Allow commercial use
+                    </label>
+                    <span class="help-tooltip small" ng-hide="hideTooltips" title="Allow your {{mod_license.target}} to be used by projects which are sold for money.">
+                        <i class="fa fa-question-circle"></i>
+                    </span>
+                </div>
+                <div>
+                    <label>
+                        <input type="checkbox" ng-model="mod_license.redistribution"> Allow redistribution
+                    </label>
+                    <span class="help-tooltip small" ng-hide="hideTooltips" title="Allow users to redistribute your {{mod_license.target}} without getting explicit permission.">
+                        <i class="fa fa-question-circle"></i>
+                    </span>
+                </div>
+                <div>
+                    <label>
+                        <input type="checkbox" ng-model="mod_license.modification"> Allow modification
+                    </label>
+                    <span class="help-tooltip small" ng-hide="hideTooltips" title="Allow users to distribute modified versions of your {{mod_license.target}} without getting &#13;explicit permission.">
+                        <i class="fa fa-question-circle"></i>
+                    </span>
+                </div>
+                <div>
+                    <label>
+                        <input type="checkbox" ng-model="mod_license.private_use"> Allow private use
+                    </label>
+                    <span class="help-tooltip small" ng-hide="hideTooltips" title="Allow users to use your {{mod_license.target}} privately.  This includes installing your &#13;mod and using it in their game and modifying the files for private use.">
+                        <i class="fa fa-question-circle"></i>
+                    </span>
+                </div>
+                <div>
+                    <label>
+                        <input type="checkbox" ng-model="mod_license.include"> Require license inclusion
+                    </label>
+                    <span class="help-tooltip small" ng-hide="hideTooltips" title="Requires any work which uses your {{mod_license.target}} in whole or in part to be licensed under &#13;the same license as your work.  This is known as &quot;share-alike&quot; or &quot;copyleft&quot;.">
+                        <i class="fa fa-question-circle"></i>
+                    </span>
+                </div>
+            </span>
+        </div>
+        <label class="subsection" ng-if="mod_license.custom">
+            <textarea class="big-text-area" ng-model="mod_license.text_body" spellcheck="true" placeholder="Enter license text here"></textarea>
+        </label>
+    </div>
+    <input type="button" class="btn" value="Add License" ng-click="addLicense()" ng-disabled="mod.mod_licenses.length >= 2">
+</section>
