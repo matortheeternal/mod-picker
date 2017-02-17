@@ -171,6 +171,30 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
         return backend.post('/mods/' + modId + '/approve', { approved: approved });
     };
 
+    var licenseKeys = ["license_id", "license_option_id", "target"];
+    var customLicenseKeys = licenseKeys.concat(["credit", "commercial", "redistribution", "modification", "private_use", "include", "text_body"]);
+    this.sanitizeLicense = function(mod_license) {
+        var keys = mod_license.custom ? customLicenseKeys : licenseKeys;
+        var license = objectUtils.sliceKeys(mod_license, keys);
+        if (mod_license.id) license.id = mod_license.id;
+        return license;
+    };
+
+    this.prepareModLicenses = function(mod) {
+        var mod_licenses = [];
+        mod.mod_licenses && mod.mod_licenses.forEach(function(mod_license) {
+            if (mod_license._destroy) {
+                mod_licenses.push({
+                    id: mod_license.id,
+                    _destroy: true
+                });
+            } else {
+                mod_licenses.push(service.sanitizeLicense(mod_license));
+            }
+        });
+        return mod_licenses;
+    };
+
     this.prepareModAuthors = function(mod) {
         var mod_authors = [];
         mod.mod_authors && mod.mod_authors.forEach(function(author) {
@@ -397,6 +421,7 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
 
     this.getModData = function(mod) {
         // prepare associations
+        var mod_licenses = service.prepareModLicenses(mod);
         var mod_authors = service.prepareModAuthors(mod);
         var required_mods = service.prepareRequiredMods(mod);
         var custom_sources = service.prepareCustomSources(mod.custom_sources);
@@ -427,6 +452,7 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
                 workshop_info_id: mod.workshop && mod.workshop.id,
                 lover_info_id: mod.lab && mod.lab.id,
                 tag_names: tag_names,
+                mod_licenses_attributes: mod_licenses,
                 mod_options_attributes: mod_options,
                 mod_authors_attributes: mod_authors,
                 custom_sources_attributes: custom_sources,
