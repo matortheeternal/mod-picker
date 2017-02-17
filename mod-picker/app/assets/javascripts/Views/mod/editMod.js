@@ -12,9 +12,10 @@ app.config(['$stateProvider', function($stateProvider) {
         controller: 'editModController',
         url: '/mods/:modId/edit',
         resolve: {
-            modObject: function(modService, $stateParams, $q) {
+            modObject: function(modService, $stateParams, $q, licenses, licenseService) {
                 var mod = $q.defer();
                 modService.editMod($stateParams.modId).then(function(data) {
+                    licenseService.resolveModLicenses(licenses, data.mod);
                     mod.resolve(data.mod);
                 }, function(response) {
                     var errorObj = {
@@ -37,6 +38,7 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
     $scope.categories = $rootScope.categories;
     $scope.categoryPriorities = $rootScope.categoryPriorities;
     $scope.permissions = angular.copy($rootScope.permissions);
+    $scope.licenses = angular.copy($rootScope.licenses);
 
     // inherited functions
     $scope.searchMods = modService.searchMods;

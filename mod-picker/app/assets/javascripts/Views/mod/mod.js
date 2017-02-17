@@ -33,9 +33,10 @@ app.config(['$stateProvider', function($stateProvider) {
         controller: 'modController',
         url: '/mods/:modId',
         resolve: {
-            modObject: function($stateParams, $q, categories, modService, categoryService) {
+            modObject: function($stateParams, $q, categories, licenses, modService, categoryService, licenseService) {
                 var mod = $q.defer();
                 modService.retrieveMod($stateParams.modId).then(function(data) {
+                    licenseService.resolveModLicenses(licenses, data.mod);
                     categoryService.resolveModCategories(categories, data.mod);
                     mod.resolve(data);
                 }, function(response) {

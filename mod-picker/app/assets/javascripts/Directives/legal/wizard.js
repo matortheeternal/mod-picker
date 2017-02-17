@@ -23,7 +23,7 @@ app.controller('wizardController', function($scope, licenseService, licensesFact
 
     $scope.retrieveLicenses = function() {
         licenseService.retrieveLicenses().then(function(data) {
-            licensesFactory.setLicenses(data.licenses);
+            licensesFactory.setLicenses(data);
             $scope.licenses = licensesFactory.getLicenses();
         }, function(response) {
             $scope.error = response;
