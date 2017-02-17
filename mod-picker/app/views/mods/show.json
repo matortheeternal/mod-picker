@@ -19,7 +19,7 @@
     "required_by": {
       "format": "required_by"
     },
-    "mod_license": {}
+    "mod_licenses": {}
   },
   "methods": "image_type"
 }

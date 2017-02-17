@@ -23,7 +23,7 @@
     "mod_options": {
       "format": "edit"
     },
-    "mod_license": {}
+    "mod_licenses": {}
   },
   "methods": "image_type"
 }
