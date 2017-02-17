@@ -406,7 +406,8 @@ class ModsController < ApplicationController
     def mod_update_params
       p = params.require(:mod).permit(:name, :authors, :aliases, :is_utility, :has_adult_content, :status, :show_details_tab, :description, :notice, :notice_type, :support_link, :issues_link, :primary_category_id, :secondary_category_id, :released, :updated, :mark_updated, :nexus_info_id, :lover_info_id, :workshop_info_id, :disallow_contributors, :disable_reviews, :lock_tags, :hidden, :approved, :tag_names,
          required_mods_attributes: [:id, :required_id, :_destroy],
-         mod_authors_attributes: [:id, :role, :user_id, :_destroy],
+         mod_licenses_attributes: [:id, :license_id, :license_option_id, :target, :credit, :commercial, :redistribution, :modification, :private_use, :include, :text_body, :_destroy],
+          mod_authors_attributes: [:id, :role, :user_id, :_destroy],
           custom_sources_attributes: [:id, :label, :url, :_destroy],
          config_files_attributes: [:id, :filename, :install_path, :text_body, :_destroy],
          tag_names: [],
@@ -429,7 +430,7 @@ class ModsController < ApplicationController
     end
 
   def details_params
-    params[:mod].slice(:show_details_tab, :description, :notice, :notice_type, :support_link, :issues_link)
+    params[:mod].slice(:show_details_tab, :description, :notice, :notice_type, :support_link, :issues_link, :mod_licenses_attributes)
   end
 
     def image_params
