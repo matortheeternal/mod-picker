@@ -17,15 +17,17 @@ app.service('licenseService', function(backend) {
         });
     };
 
-    this.associateModLicense = function(licenses, mod_license) {
+    this.associateLicense = function(licenses, mod_license) {
         if (!mod_license.license_id) return;
         mod_license.license = service.getLicenseById(licenses, mod_license.license_id);
         if (!mod_license.license_option_id) return;
         mod_license.license_option = service.getLicenseOption(mod_license.license, mod_license.license_option_id);
     };
 
-    this.resolveModLicense = function(licenses, mod) {
-        if (!mod.mod_license) return;
-        service.associateModLicense(licenses, mod.mod_license);
+    this.resolveModLicenses = function(licenses, mod) {
+        if (!mod.mod_licenses) return;
+        mod.mod_licenses.forEach(function(mod_license) {
+            service.associateLicense(licenses, mod_license);
+        })
     };
 });
