@@ -16,8 +16,8 @@
     <span class="license-title">{{::license.name}}</span>
     <span class="license-acronym" ng-if="license.acronym">({{::license.acronym}})</span>
     <span class="license-description">{{::license.description}}</span>
-    <ul ng-if="license.options">
-        <li ng-repeat="option in license.options">
+    <ul ng-if="license.license_options">
+        <li ng-repeat="option in license.license_options">
             <a ng-href="{{option.link}}" target="_blank">{{::option.name}}</a>
             <span ng-if="option.tldr">
                 [<a ng-href="https://tldrlegal.com/license/{{option.tldr}}" target="_blank">tl;dr</a>]
