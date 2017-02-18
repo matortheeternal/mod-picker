@@ -41,12 +41,10 @@ app.controller('licenseController', function($scope) {
             2: "allowed with permission"
         }
     };
-    $scope.termRequiredHints = {
-    };
     $scope.termIcons = {
         credit: "fa-external-link",
         commercial: "fa-money",
-        redistribution: "fa-share-square-o", // "fa-envelope-o", "fa-share", "fa-share-alt"
+        redistribution: "fa-retweet", // "fa-share-square-o", "fa-share"
         modification: "fa-edit",
         private_use: "fa-user",
         include: "fa-lock"
