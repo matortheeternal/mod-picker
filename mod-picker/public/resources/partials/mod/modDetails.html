@@ -17,7 +17,11 @@
     <!-- TODO -->
 </div>
 
-<div class="content-block" ng-show="mod.license">
-    <div class="content-title">License</div>
-    <!-- TODO -->
+<div class="content-block" ng-show="mod.mod_licenses.length">
+    <div class="content-title">Licenses</div>
+    <div class="content-container">
+        <div ng-repeat="mod_license in mod.mod_licenses" class="center">
+            <mod-license license="mod_license"></mod-license>
+        </div>
+    </div>
 </div>
