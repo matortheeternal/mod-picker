@@ -1,19 +1,67 @@
 license {
   display: flex;
   margin: 24px 6px;
-  line-height: initial;
   @include user-select(initial);
 
-  .left-column {
+  .description-column {
+    padding: 0 20px 0 10px;
+
+    span.license-title {
+      font-size: 20px;
+      font-weight: bold;
+    }
+  }
+
+  .terms-column {
+    min-width: 100px;
+    max-width: 100px;
+  }
+}
+
+mod-license {
+  display: inline-block;
+  margin: 10px;
+  @include user-select(initial);
+
+  .licensed-under {
+    text-align: center;
+  }
+
+  .license-container {
+    display: flex;
+  }
+
+  .name-column {
+    padding: 0 10px;
+
+    span.license-acronym {
+      font-size: 60px;
+      display: block;
+      margin: -5px 0;
+    }
+  }
+
+  .terms-column {
+    max-width: 70px;
+
+    .license-terms .fa-stack {
+      margin: -4px 0;
+      width: 1.5em;
+      height: 1.5em;
+      line-height: 1.5em;
+
+      .fa-stack-2x {
+        font-size: 1.5em;
+      }
+    }
+  }
+}
+
+mod-license, license {
+  .icon-column {
     min-width: 100px;
     max-width: 100px;
     text-align: center;
-    padding: 0;
-    display: block;
-    width: initial;
-    border-right: none;
-    background-color: initial;
-    vertical-align: initial;
 
     > span {
       display: block;
@@ -37,9 +85,7 @@ license {
     }
   }
 
-  .second-left-column {
-    min-width: 100px;
-    max-width: 100px;
+  .terms-column {
     text-align: center;
 
     .license-terms {
@@ -56,24 +102,6 @@ license {
         color: #ec5;
         opacity: 0.7;
       }
-    }
-  }
-
-  .right-column {
-    padding: 0 20px 0 10px;
-    display: block;
-    width: initial;
-    background-color: initial;
-    vertical-align: initial;
-
-
-    span.license-title {
-      font-size: 20px;
-      font-weight: bold;
-    }
-
-    span.license-description {
-      display: block;
     }
   }
 }
