@@ -17,21 +17,23 @@
 }
 
 //left column
-.left-mod-column {
-  padding-right: 20px;
-  font-size: 14px;
-  height: calc(100vh - 542px);
+.show-mod-page {
+  .left-column {
+    padding-right: 20px;
+    font-size: 14px;
+    height: calc(100vh - 542px);
 
-  .section-title {
-    font-size: 16px;
-    font-weight: 500;
-    color: $h4_color;
-  }
+    .section-title {
+      font-size: 16px;
+      font-weight: 500;
+      color: $h4_color;
+    }
 
-  section {
-    margin-top: 20px;
-    margin-left: 10px;
-    border-bottom: 2px solid $soft_border_color;
+    section {
+      margin-top: 20px;
+      margin-left: 10px;
+      border-bottom: 2px solid $soft_border_color;
+    }
   }
 }
 

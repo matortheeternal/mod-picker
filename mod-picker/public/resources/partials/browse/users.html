@@ -1,6 +1,6 @@
 <two-columns>
-    <div class="page-container">
-        <div class="left-column left-browse-column" style="width:250px; padding: 40px 48px 40px 0;">
+    <div class="page-container browse-page">
+        <div class="left-column" style="width:250px; padding: 40px 48px 40px 0;">
             <h2>Filters</h2>
 
             <div class="filter-section">
@@ -73,7 +73,7 @@
             </div>
         </div>
 
-        <div class="right-column right-browse-column">
+        <div class="right-column">
             <h2>Users</h2>
             <loader data="users" content-class="table-container" spinner-class="big-spinner" ng-if="!error">
                 <table-results label="users" data="users"></table-results>
