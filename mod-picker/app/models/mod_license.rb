@@ -24,4 +24,8 @@ class ModLicense < ActiveRecord::Base
     return if license_id.nil?
     term_keys.each { |term| public_send("#{term}=", license.public_send(term)) }
   end
+
+  def terms
+    term_keys.each_with_object(Hash.new(0)) {|key, terms| terms[key] = public_send(key) }
+  end
 end
