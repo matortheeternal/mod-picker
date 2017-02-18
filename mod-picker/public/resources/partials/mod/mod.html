@@ -59,7 +59,7 @@
                         <div class="action-box" ng-click="starMod()" ng-if="!mod.hidden">
                             <i class="fa {{mod.star ? 'fa-star' : 'fa-star-o'}}" aria-hidden="true"></i> {{mod.star ? 'Unfavorite' : 'Favorite'}}
                         </div>
-                        <div class="action-box" ng-if="activeModList && !mod.hidden" ng-click="toggleInModList()" title="Click here to {{ mod.in_mod_list ? 'remove this mod from' : 'add this mod to'}} your active mod list.">
+                        <div class="action-box {{mod.in_mod_list ? 'red-box' : 'green-box' }}" ng-if="activeModList && !mod.hidden" ng-click="toggleInModList()" title="Click here to {{ mod.in_mod_list ? 'remove this mod from' : 'add this mod to'}} your active mod list.">
                             <i class="fa {{ mod.in_mod_list ? 'fa-remove' : 'fa-plus' }}" aria-hidden="true"></i>
                             {{ mod.in_mod_list ? 'Remove' : 'Add' }}
                         </div>
