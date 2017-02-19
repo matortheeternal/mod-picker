@@ -1,0 +1,47 @@
+{
+  "only": ["id", "game_id", "name", "status", "submitted", "completed", "updated"],
+  "include": {
+    "mod_list_plugins": {
+      "only": ["index", "cleaned", "merged"],
+      "include": {
+        "plugin": {
+          "only": ["mod_option_id", "filename", "crc_hash", "file_size", "errors_count"]
+        }
+      }
+    },
+    "custom_plugins": {
+      "only": ["index", "cleaned", "merged", "filename"]
+    },
+    "mod_list_mods": {
+      "only": ["index", "is_utility"],
+      "include": {
+        "mod": {
+          "only": ["id", "name", "aliases", "authors", "status", "updated"],
+          "methods": ["source_links"],
+          "include": {
+            "mod_options": {
+              "only": ["id", "name", "display_name", "size", "md5_hash", "is_installer_option"]
+            }
+          }
+        },
+        "mod_list_mod_options": {
+          "only": ["mod_option_id"]
+        }
+      }
+    },
+    "custom_mods": {
+      "only": ["index", "is_utility", "name", "url"]
+    },
+    "mod_list_config_files": {
+      "only": ["text_body"],
+      "include": {
+        "config_file": {
+          "only": ["mod_id", "filename", "install_path"]
+        }
+      }
+    },
+    "custom_config_files": {
+      "only": ["filename", "install_path", "text_body"]
+    }
+  }
+}

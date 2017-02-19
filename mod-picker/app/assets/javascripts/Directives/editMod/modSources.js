@@ -57,7 +57,7 @@ app.controller('modSourcesController', function($scope, $rootScope, sitesFactory
         var modId = match[2];
 
         var key = site.dataLabel;
-        var baseUrl = location.href.replace(location.hash, "");
+        var baseUrl = location.href.replace(location.href, "");
         $scope.mod[key] = {};
         $scope.mod[key].scraping = true;
 
