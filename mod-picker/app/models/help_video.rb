@@ -30,6 +30,6 @@ class HelpVideo < ActiveRecord::Base
 
   def url
     # TODO: This isn't properly reversible, need to just make string url_safe maybe?
-    "Video:#{self.title.parameterize.underscore}"
+    "#{self.title.parameterize.underscore}"
   end
 end
