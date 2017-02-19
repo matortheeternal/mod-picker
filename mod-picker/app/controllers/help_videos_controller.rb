@@ -51,7 +51,7 @@ class HelpVideosController < ApplicationController
     authorize! :update, @help_video
     authorize! :approve, @help_video, :message => "You are not allowed to approve/unapprove this help video." if params[:help_video].has_key?(:approved)
     if @help_video.update(help_video_params)
-      redirect_to "/help/#{@help_video.url}"
+      redirect_to "/videos/#{@help_video.url}"
     else
       render "help_videos/edit"
     end
@@ -64,7 +64,7 @@ class HelpVideosController < ApplicationController
     if @help_video.destroy
       redirect_to action: "index"
     else
-      redirect_to "/help/#{@help_video.url}/edit"
+      redirect_to "/videos/#{@help_video.url}/edit"
     end
   end
 
