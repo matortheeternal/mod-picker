@@ -5,8 +5,7 @@
         <div class="left-column" style="width:250px; padding: 40px 48px 40px 0;">
             <h2>Filters</h2>
 
-            <div class="filter-section">
-                <h3>Search</h3>
+            <filter-section name="Search" expanded="true">
                 <h4>Mod Name</h4>
                 <input type="text" ng-model="filters.search">
 
@@ -15,10 +14,9 @@
 
                 <h4>Mod Author</h4>
                 <input type="text" ng-model="filters.author">
-            </div>
+            </filter-section>
 
-            <div class="filter-section" ng-if="activeModList">
-                <h3>Mod List</h3>
+            <filter-section name="Mod List" expanded="true" ng-if="activeModList">
                 <div class="sidebar-box box-shadow">
                     <ul class="checkbox-list">
                         <li>
@@ -50,10 +48,9 @@
                         </li>
                     </ul>
                 </div>
-            </div>
+            </filter-section>
 
-            <div class="filter-section" ng-if="permissions.canModerate || allowAdult">
-                <h3>Content Filters</h3>
+            <filter-section name="Content Filters" expanded="false" ng-if="permissions.canModerate || allowAdult">
                 <div class="sidebar-box box-shadow">
                     <ul class="checkbox-list" ng-if="allowAdult">
                         <li>
@@ -84,10 +81,9 @@
                         </li>
                     </ul>
                 </div>
-            </div>
+            </filter-section>
 
-            <div class="filter-section">
-                <h3>Sources</h3>
+            <filter-section name="Sources" expanded="true">
                 <div class="sidebar-box box-shadow">
                     <ul class="checkbox-list">
                         <li>
@@ -108,7 +104,7 @@
                         </li>
                     </ul>
                 </div>
-            </div>
+            </filter-section>
 
             <category-tree class="filter-section" categories="categories" selection="filters.categories" toggle-all="true"></category-tree>
 
@@ -117,8 +113,7 @@
                 <tag-selector active-tags="[]" new-tags="filters.tags" type="mod" show-count="true" can-create="false" show-add="true" max-tags="10"></tag-selector>
             </div>
 
-            <div class="filter-section">
-                <h3>Date Filters</h3>
+            <filter-section name="Date Filters" expanded="true">
                 <div ng-repeat="filter in dateFilters">
                     <h4>{{filter.label}}
                         <!--<span class="filter-controls">
@@ -127,10 +122,9 @@
                     </h4>
                     <slider filter-data="filters" filter="filter"></slider>
                 </div>
-            </div>
+            </filter-section>
 
-            <div class="filter-section">
-                <h3>Mod Picker Filters</h3>
+            <filter-section name="Mod Picker Filters" expanded="true">
                 <div ng-repeat="filter in modPickerFilters" ng-show="filter.common || expanded.modPicker">
                     <h4>{{filter.label}}
                         <!--<span class="filter-controls" ng-if="filter.max > 500">
@@ -141,10 +135,9 @@
                 </div>
 
                 <expander expanded="expanded" key="modPicker"></expander>
-            </div>
+            </filter-section>
 
-            <div class="filter-sections" ng-if="availableStatFilters.length">
-                <h3>Statistic Filters</h3>
+            <filter-section name="Statistic Filters" expanded="true" ng-if="availableStatFilters.length">
                 <div class="filter-section">
                     <div ng-repeat="filter in availableStatFilters" ng-show="filter.common || expanded.stat">
                         <h4>{{filter.label}}
@@ -157,7 +150,7 @@
                 </div>
 
                 <expander expanded="expanded" key="stat"></expander>
-            </div>
+            </filter-section>
         </div>
 
         <div class="right-column">

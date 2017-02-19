@@ -5,14 +5,12 @@
         <div class="left-column" style="width:250px; padding: 40px 48px 40px 0;">
             <h2>Filters</h2>
 
-            <div class="filter-section">
-                <h3>Search</h3>
+            <filter-section name="Search" expanded="true">
                 <h4>Submitter</h4>
                 <input type="text" ng-model="filters.submitter">
-            </div>
+            </filter-section>
 
-            <div class="filter-section">
-                <h3>Content Filters</h3>
+            <filter-section name="Content Filters" expanded="true">
                 <div class="sidebar-box box-shadow">
                     <ul class="checkbox-list">
                         <li>
@@ -25,10 +23,9 @@
                         </li>
                     </ul>
                 </div>
-            </div>
+            </filter-section>
 
-            <div class="filter-section">
-                <h3>Types</h3>
+            <filter-section name="Types" expanded="true">
                 <div class="sidebar-box box-shadow">
                     <ul class="checkbox-list">
                         <li>
@@ -73,10 +70,9 @@
                         </li>
                     </ul>
                 </div>
-            </div>
+            </filter-section>
 
-            <div class="filter-section">
-                <h3>Reasons</h3>
+            <filter-section name="Reasons" expanded="true">
                 <div class="sidebar-box box-shadow">
                     <ul class="checkbox-list">
                         <li>
@@ -109,10 +105,9 @@
                         </li>
                     </ul>
                 </div>
-            </div>
+            </filter-section>
 
-            <div class="filter-section">
-                <h3>Date Filters</h3>
+            <filter-section name="Date Filters" expanded="true">
                 <div ng-repeat="filter in dateFilters">
                     <h4>{{filter.label}}
                         <!--<span class="filter-controls">
@@ -123,8 +118,7 @@
                 </div>
             </div>
 
-            <div class="filter-sections">
-                <h3>Statistic Filters</h3>
+            <filter-section name="Statistic Filters" expanded="true">
                 <div class="filter-section">
                     <div ng-repeat="filter in statFilters">
                         <h4>{{filter.label}}
@@ -135,7 +129,7 @@
                         <slider filter-data="filters" filter="filter"></slider>
                     </div>
                 </div>
-            </div>
+            </filter-section>
         </div>
 
         <div class="right-column">
