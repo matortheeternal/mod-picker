@@ -362,7 +362,7 @@ app.controller('modController', function($scope, $rootScope, $q, $stateParams, $
     };
 
     $scope.editMod = function() {
-        $window.location.href = 'mods/' + $scope.mod.id + '/edit';
+        $state.go('base.edit-mod', {modId: $scope.mod.id});
     };
 
     $scope.starMod = function() {
