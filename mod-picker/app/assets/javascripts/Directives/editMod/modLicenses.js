@@ -11,7 +11,13 @@ app.controller('modLicensesController', function($scope, $timeout) {
     $scope.addLicense = function() {
         $scope.mod.mod_licenses.push({
             license_id: $scope.licenses[0].id,
-            target: 'materials'
+            target: 'materials',
+            credit: '1',
+            commercial: '0',
+            redistribution: '2',
+            modification: '2',
+            private_use: '1',
+            include: '0'
         });
     };
 
