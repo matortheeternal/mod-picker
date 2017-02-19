@@ -55,7 +55,7 @@ app.controller('modLicenseController', function($scope) {
         "-1": "fa-question",
         0: "fa-ban",
         1: "",
-        2: "fa-ban soft"
+        2: "fa-question"
     };
     $scope.termType = {
         credit: 'required',
