@@ -117,10 +117,9 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 6px;
+    cursor: pointer;
 
     &:hover {
-      cursor: pointer;
-
       .stat-expander {
         background-color: $bright_action_color;
       }
@@ -133,24 +132,14 @@
   }
 }
 
-.remove-caret {
-  .expanded-icon {
-    display: none;
-  }
-
-  .collapsed-icon {
-    display: none;
-  }
-}
-
 .stat-expander {
   background-color: $action_color;
   color: $action_text_color;
-  font-size: 16px;
-  padding: 6px;
+  font-size: 14px;
+  padding: 4px;
   line-height: inherit;
   text-align: center;
-  width: 28px;
+  width: 22px;
 }
 
 //right column
