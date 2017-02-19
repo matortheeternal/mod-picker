@@ -167,7 +167,37 @@ app.service("filtersFactory", function() {
             factory.hiddenFilter,
             factory.unhiddenFilter,
             factory.approvedFilter,
-            factory.unapprovedFilter
+            factory.unapprovedFilter,
+            {
+                data: "terms.credit",
+                param: "tcr",
+                type: "Integer"
+            },
+            {
+                data: "terms.commercial",
+                param: "tco",
+                type: "Integer"
+            },
+            {
+                data: "terms.redistribution",
+                param: "tre",
+                type: "Integer"
+            },
+            {
+                data: "terms.modification",
+                param: "tmo",
+                type: "Integer"
+            },
+            {
+                data: "terms.private_use",
+                param: "tpu",
+                type: "Integer"
+            },
+            {
+                data: "terms.include",
+                param: "tin",
+                type: "Integer"
+            }
         ]
     };
 
