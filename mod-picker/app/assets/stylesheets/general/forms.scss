@@ -30,7 +30,7 @@ select {
   background-repeat: no-repeat;
 }
 
-.big-text-area, .medium-text-area, .small-text-area {
+.big-text-area, .medium-text-area, .small-text-area, .mini-text-area {
   width: 100%;
   max-width: 100%;
   overflow-y: auto;
@@ -50,6 +50,12 @@ select {
 
 .small-text-area {
   height: 60px;
+}
+
+.mini-text-area {
+  width: 350px;
+  max-width: 350px;
+  height: 100px;
 }
 
 input, textarea {
@@ -239,6 +245,14 @@ form {
       padding: initial;
     }
 
+    input[type="number"] {
+      vertical-align: top;
+      width: 80px;
+      font-size: 20px;
+      height: 32px;
+      padding: 4px;
+    }
+
     input[type="date"] {
       width: 150px;
       font-family: inherit;
@@ -295,6 +309,71 @@ form {
     .subsection {
       display: inline-block;
       margin-top: 0 !important;
+    }
+  }
+
+
+  .dynamic-item {
+    margin-bottom: 8px;
+    display: block;
+    line-height: 32px;
+
+    search-input {
+      input {
+        margin-top: 0;
+      }
+    }
+
+    .source-label {
+      font-size: 13px;
+      border: 1px solid rgb(230, 230, 230);
+      padding: 0.5em;
+      min-width: 200px;
+      margin-right: 4px;
+    }
+
+    .remove-item {
+      cursor: pointer;
+    }
+
+    input {
+      vertical-align: top;
+    }
+  }
+
+  .dynamic-block {
+    position: relative;
+    background-color: $secondary_background;
+    padding: 16px;
+    border: 1px solid $border_color;
+    margin: 20px 0;
+
+    .subsection {
+      strong {
+        display: inline-block;
+        text-align: center;
+        min-width: 150px;
+      }
+    }
+
+    .remove-item {
+      position: absolute;
+      top: 0;
+      right: 8px;
+      cursor: pointer;
+    }
+
+    .subsection:first-of-type {
+      margin-top: 4px;
+    }
+
+    .subsection:last-of-type {
+      margin-bottom: 0;
+    }
+
+    .config-editor {
+      width: 100%;
+      height: 300px;
     }
   }
 }
