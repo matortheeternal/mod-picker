@@ -4,7 +4,7 @@ app.service('licensesFactory', function() {
     this.unknown = 0;
     this.no = 1;
     this.yes = 2;
-    this.with_permission = 3;
+    this.maybe = 3;
 
     this.setLicenses = function(licenses) {
         factory.licenses = licenses;

@@ -201,7 +201,7 @@ def seed_licenses
       unknown: -1,
       no: 0,
       yes: 1,
-      with_permission: 2
+      maybe: 2
   }
 
   License.create(
@@ -211,10 +211,10 @@ def seed_licenses
       clauses: 0,
       code: true,
       assets: true,
-      commercial: terms[:with_permission],
-      redistribution: terms[:with_permission],
-      modification: terms[:with_permission],
-      private_use: terms[:with_permission],
+      commercial: terms[:maybe],
+      redistribution: terms[:maybe],
+      modification: terms[:maybe],
+      private_use: terms[:maybe],
       include: terms[:no],
       description: "Without a license the materials are copyrighted by default.  People can view the materials, but they have no legal right to use them.  To use the materials they must contact the author directly and ask for permission.  That includes people using the mod in their game. Generally speaking you should never release a mod without an explicit license."
   )

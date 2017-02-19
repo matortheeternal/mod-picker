@@ -40,7 +40,7 @@ app.controller('modLicenseController', function($scope) {
             "-1": "up to you",
             0: "not allowed",
             1: "allowed",
-            2: "allowed with permission"
+            2: "allowed on a case-by-case basis"
         }
     };
     $scope.termIcons = {
