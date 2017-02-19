@@ -27,6 +27,29 @@
         <%= f.text_field :youtube_id %>
     </section>
 
+    <h3 class="section-title">Sections</h3>
+    <section class="help-video-sections" ng-controller="helpVideoSectionsController" ng-init="sections = <%= @help_video.sections.to_json %>">
+        <div class="dynamic-block" ng-repeat="section in sections" ng-hide="section._destroy">
+            <span class="remove-item" ng-click="removeSection(section)">
+                <i class="fa fa-times"></i>
+                <input class="hidden" type="checkbox" ng-model="section._destroy" name="help_video[sections_attributes][{{$index}}][_destroy]"/>
+            </span>
+            <label class="subsection">
+                <span class="input-label">Label</span>
+                <input type="text" ng-model="section.label" name="help_video[sections_attributes][{{$index}}][label]"/>
+            </label>
+            <label class="subsection">
+                <span class="input-label text-area-label">Description</span>
+                <textarea class="mini-text-area" ng-model="section.description" name="help_video[sections_attributes][{{$index}}][description]"></textarea>
+            </label>
+            <label class="subsection">
+                <span class="input-label">Seconds</span>
+                <input type="number" ng-model="section.seconds" name="help_video[sections_attributes][{{$index}}][seconds]"/>
+            </label>
+        </div>
+        <input type="button" class="btn" value="Add Section" ng-click="addSection()">
+    </section>
+
     <h3 class="section-title">Approved</h3>
     <section>
         <label>
