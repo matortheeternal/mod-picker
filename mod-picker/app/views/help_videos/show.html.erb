@@ -10,9 +10,9 @@
                 <%= @help_video.title %>
                 <span class="right-item">
                 <% if can? :update, HelpVideo %>
-                <%= link_to "/help/#{@help_video.url}/edit" do %>
+                <%= link_to "/videos/#{@help_video.url}/edit" do %>
                 <span class="action-box">
-                    <i class="fa fa-edit" aria-hidden="true"></i> Edit Help Page
+                    <i class="fa fa-edit" aria-hidden="true"></i> Edit Help Video
                 </span>
                 <% end %>
                 <% end %>
