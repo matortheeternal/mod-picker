@@ -106,6 +106,76 @@
                 </div>
             </filter-section>
 
+            <filter-section name="Permissions" expanded="false" class="filter-section">
+                <div class="sidebar-box box-shadow">
+                    <ul class="select-list">
+                        <li>
+                            <label>
+                                <span>Requires attribution</span>
+                                <select ng-model="filters.terms.credit" ng-change="termChange('credit')">
+                                    <option value="">-</option>
+                                    <option value="0">No</option>
+                                    <option value="1">Yes</option>
+                                </select>
+                            </label>
+                        </li>
+                        <li>
+                            <label>
+                                <span>Commercial use</span>
+                                <select ng-model="filters.terms.commercial" ng-change="termChange('commercial')">
+                                    <option value="">-</option>
+                                    <option value="0">No</option>
+                                    <option value="1">Yes</option>
+                                </select>
+                            </label>
+                        </li>
+                        <li>
+                            <label>
+                                <span>Redistribution</span>
+                                <select ng-model="filters.terms.redistribution" ng-change="termChange('redistribution')">
+                                    <option value="">-</option>
+                                    <option value="0">No</option>
+                                    <option value="1">Yes</option>
+                                    <option value="2" title="Redistribution permissions are granted on a case-by-case basis.">Maybe</option>
+                                </select>
+                            </label>
+                        </li>
+                        <li>
+                            <label>
+                                <span>Modification</span>
+                                <select ng-model="filters.terms.modification" ng-change="termChange('modification')">
+                                    <option value="">-</option>
+                                    <option value="0">No</option>
+                                    <option value="1">Yes</option>
+                                    <option value="2" title="Modification permissions are granted on a case-by-case basis.">Maybe</option>
+                                </select>
+                            </label>
+                        </li>
+                        <li>
+                            <label>
+                                <span>Private use</span>
+                                <select ng-model="filters.terms.private_use" ng-change="termChange('private_use')">
+                                    <option value="">-</option>
+                                    <option value="0">No</option>
+                                    <option value="1">Yes</option>
+                                    <option value="2">Maybe</option>
+                                </select>
+                            </label>
+                        </li>
+                        <li>
+                            <label>
+                                <span>License inclusion</span>
+                                <select ng-model="filters.terms.include" ng-change="termChange('include')">
+                                    <option value="">-</option>
+                                    <option value="0">No</option>
+                                    <option value="1">Yes</option>
+                                </select>
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+            </filter-section>
+
             <category-tree class="filter-section" categories="categories" selection="filters.categories" toggle-all="true"></category-tree>
 
             <div class="filter-section">
