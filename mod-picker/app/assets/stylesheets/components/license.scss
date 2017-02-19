@@ -1,6 +1,7 @@
 license {
   display: flex;
   margin: 24px 6px;
+  line-height: initial;
   @include user-select(initial);
 
   .description-column {
@@ -9,6 +10,10 @@ license {
     span.license-title {
       font-size: 20px;
       font-weight: bold;
+    }
+
+    span.license-description {
+      display: block;
     }
   }
 
