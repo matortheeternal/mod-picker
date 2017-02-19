@@ -44,8 +44,9 @@ app.config(function($urlMatcherFactoryProvider, $urlRouterProvider) {
         };
     };
     $urlRouterProvider.when('/mods', goToState('base.mods'));
-    $urlRouterProvider.when('/mod-lists', goToState('base.modLists'));
+    $urlRouterProvider.when('/mod-lists', goToState('base.mod-lists'));
     $urlRouterProvider.when('/articles', goToState('base.articles'));
+    $urlRouterProvider.when('/mods/submit', goToState('base.submit-mod'));
 });
 
 // sanitize html in markdown
