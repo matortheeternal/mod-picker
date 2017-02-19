@@ -80,6 +80,6 @@ class HelpVideosController < ApplicationController
     end
 
     def help_video_params
-      params.require(:help_video).permit(:game_id, :approved, :category, :youtube_id, :title, :text_body, help_video_sections: [:id, :label, :description, :seconds, :_destroy])
+      params.require(:help_video).permit(:game_id, :approved, :category, :youtube_id, :title, :text_body, sections_attributes: [:id, :label, :description, :seconds, :_destroy])
     end
 end
