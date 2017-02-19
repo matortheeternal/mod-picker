@@ -41,48 +41,75 @@
             <strong style="vertical-align:top;">License Terms</strong>
             <span class="input-block">
                 <div>
-                    <label>
-                        <input type="checkbox" ng-model="mod_license.credit"> Require attribution
+                    <label class="subsection">
+                        <span class="input-label">Require attribution</span>
+                        <select ng-model="mod_license.credit">
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+                        </select>
                     </label>
                     <span class="help-tooltip small" ng-hide="hideTooltips" title="Require users credit you if they use your {{mod_license.target}}.">
                         <i class="fa fa-question-circle"></i>
                     </span>
                 </div>
                 <div>
-                    <label>
-                        <input type="checkbox" ng-model="mod_license.commercial"> Allow commercial use
+                    <label class="subsection">
+                        <span class="input-label">Allow commercial use</span>
+                        <select ng-model="mod_license.commercial">
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+                            <option value="2" title="Inform users that you may grant commercial use permission on a case-by-case basis.">With permission</option>
+                        </select>
                     </label>
                     <span class="help-tooltip small" ng-hide="hideTooltips" title="Allow your {{mod_license.target}} to be used by projects which are sold for money.">
                         <i class="fa fa-question-circle"></i>
                     </span>
                 </div>
                 <div>
-                    <label>
-                        <input type="checkbox" ng-model="mod_license.redistribution"> Allow redistribution
+                    <label class="subsection">
+                        <span class="input-label">Allow redistribution</span>
+                        <select ng-model="mod_license.redistribution">
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+                            <option value="2" title="Inform users that you may grant redistribution permission on a case-by-case basis.">With permission</option>
+                        </select>
                     </label>
                     <span class="help-tooltip small" ng-hide="hideTooltips" title="Allow users to redistribute your {{mod_license.target}} without getting explicit permission.">
                         <i class="fa fa-question-circle"></i>
                     </span>
                 </div>
                 <div>
-                    <label>
-                        <input type="checkbox" ng-model="mod_license.modification"> Allow modification
+                    <label class="subsection">
+                        <span class="input-label">Allow modification</span>
+                        <select ng-model="mod_license.modification">
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+                            <option value="2" title="Inform users that you may grant modification permission on a case-by-case basis.">With permission</option>
+                        </select>
                     </label>
                     <span class="help-tooltip small" ng-hide="hideTooltips" title="Allow users to distribute modified versions of your {{mod_license.target}} without getting &#13;explicit permission.">
                         <i class="fa fa-question-circle"></i>
                     </span>
                 </div>
                 <div>
-                    <label>
-                        <input type="checkbox" ng-model="mod_license.private_use"> Allow private use
+                    <label class="subsection">
+                        <span class="input-label">Allow private use</span>
+                        <select ng-model="mod_license.private_use">
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+                        </select>
                     </label>
                     <span class="help-tooltip small" ng-hide="hideTooltips" title="Allow users to use your {{mod_license.target}} privately.  This includes installing your &#13;mod and using it in their game and modifying the files for private use.">
                         <i class="fa fa-question-circle"></i>
                     </span>
                 </div>
                 <div>
-                    <label>
-                        <input type="checkbox" ng-model="mod_license.include"> Require license inclusion
+                    <label class="subsection">
+                        <span class="input-label">Require license inclusion</span>
+                        <select ng-model="mod_license.include">
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+                        </select>
                     </label>
                     <span class="help-tooltip small" ng-hide="hideTooltips" title="Requires any work which uses your {{mod_license.target}} in whole or in part to be licensed under &#13;the same license as your work.  This is known as &quot;share-alike&quot; or &quot;copyleft&quot;.">
                         <i class="fa fa-question-circle"></i>

@@ -291,6 +291,11 @@ form {
     input[type="checkbox"] {
       vertical-align: initial;
     }
+
+    .subsection {
+      display: inline-block;
+      margin-top: 0 !important;
+    }
   }
 }
 
