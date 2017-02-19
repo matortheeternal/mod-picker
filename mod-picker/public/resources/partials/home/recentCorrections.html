@@ -1,3 +1,6 @@
 <div ng-repeat="correction in recent.corrections" class="content-block">
     <correction correction="correction" index="100" show-user-column="true" show-correctable="true"></correction>
 </div>
+<div class="content-message" ng-if="!recent.corrections.length">
+    No {{currentGame.display_name}} corrections found.
+</div>

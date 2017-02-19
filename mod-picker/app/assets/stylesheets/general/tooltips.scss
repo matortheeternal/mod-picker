@@ -7,6 +7,11 @@
   &.small {
     font-size: 18px;
   }
+
+  &.big {
+    font-size: 22px;
+    vertical-align: middle;
+  }
 }
 
 a .help-tooltip, a .error-tooltip {

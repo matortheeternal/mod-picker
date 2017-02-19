@@ -14,10 +14,10 @@
     <div class="content-container">
         <ul ng-if="showMissingMods" class="required-list">
             <li ng-repeat="requirement in required.missing_mods">
-                <a bindonce bo-href="'mod/' + requirement.required_mod.id" bo-text="requirement.required_mod.name"></a>
+                <a bindonce bo-href="'mods/' + requirement.required_mod.id" bo-text="requirement.required_mod.name"></a>
                 is required by
                 <span ng-repeat="mod in requirement.mods | limitTo: 2">
-                    <a bindonce bo-href="'mod/' + mod.id" bo-text="mod.name"></a><span bindonce bo-text="(!$last || requirement.mods.length > 2 ? ', ' : '')"></span>
+                    <a bindonce bo-href="'mods/' + mod.id" bo-text="mod.name"></a><span bindonce bo-text="(!$last || requirement.mods.length > 2 ? ', ' : '')"></span>
                 </span>
                 <span ng-if="requirement.mods.length > 2">
                     and
@@ -36,10 +36,10 @@
 
         <ul ng-if="!showMissingMods" class="required-list">
             <li ng-repeat="requirement in required.mods" ng-hide="requirement._destroy">
-                <a bindonce bo-href="'mod/' + requirement.required_mod.id" bo-text="requirement.required_mod.name"></a>
+                <a bindonce bo-href="'mods/' + requirement.required_mod.id" bo-text="requirement.required_mod.name"></a>
                 is required by
                 <span ng-repeat="mod in requirement.mods | limitTo: 2">
-                    <a bindonce bo-href="'mod/' + mod.id" bo-text="mod.name"></a><span bindonce bo-text="(!$last || requirement.mods.length > 2 ? ', ' : '')"></span>
+                    <a bindonce bo-href="'mods/' + mod.id" bo-text="mod.name"></a><span bindonce bo-text="(!$last || requirement.mods.length > 2 ? ', ' : '')"></span>
                 </span>
                 <span ng-if="requirement.mods.length > 2">
                     and

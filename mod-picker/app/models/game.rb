@@ -14,6 +14,7 @@ class Game < ActiveRecord::Base
   has_many :config_files, :inverse_of => 'game'
   has_many :asset_files, :inverse_of => 'game'
   has_many :compatibility_notes, :inverse_of => 'game'
+  has_many :related_mod_notes, :inverse_of => 'game'
   has_many :corrections, :inverse_of => 'game'
   has_many :install_order_notes, :inverse_of => 'game'
   has_many :load_order_notes, :inverse_of => 'game'
@@ -23,7 +24,7 @@ class Game < ActiveRecord::Base
   has_many :help_videos, :inverse_of => 'game'
 
   # COUNTER CACHE
-  counter_cache :mods, :nexus_infos, :lover_infos, :workshop_infos, :mod_lists, :config_files, :asset_files, :compatibility_notes, :corrections, :install_order_notes, :load_order_notes, :reviews, :plugins, :help_pages, :help_videos
+  counter_cache :mods, :nexus_infos, :lover_infos, :workshop_infos, :mod_lists, :config_files, :asset_files, :compatibility_notes, :corrections, :install_order_notes, :load_order_notes, :related_mod_notes, :reviews, :plugins, :help_pages, :help_videos
 
   # VALIDATIONS
   validates :display_name, :long_name, :abbr_name, presence: true
@@ -43,7 +44,7 @@ class Game < ActiveRecord::Base
   end
 
   def update_lazy_counters!
-    reset_counters!(:mods, :nexus_infos, :lover_infos, :workshop_infos, :mod_lists, :config_files, :asset_files, :compatibility_notes, :corrections, :install_order_notes, :load_order_notes, :reviews, :plugins, :help_pages)
+    reset_counters!(:mods, :nexus_infos, :lover_infos, :workshop_infos, :mod_lists, :config_files, :asset_files, :compatibility_notes, :corrections, :install_order_notes, :load_order_notes, :related_mod_notes, :reviews, :plugins, :help_pages, :help_videos)
   end
 
   def url

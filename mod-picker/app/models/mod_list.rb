@@ -357,6 +357,10 @@ class ModList < ActiveRecord::Base
     a.join("\r\n")
   end
 
+  def setup_string(user)
+    SecureData.full(user, to_json({format: "setup"}))
+  end
+
   def set_completed?
     status == "complete" && completed.nil?
   end

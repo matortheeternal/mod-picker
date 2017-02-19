@@ -1,0 +1,7 @@
+{
+  "except": ["credit", "commercial", "redistribution", "modification", "private_use", "include"],
+  "include": {
+    "license_options": {}
+  },
+  "methods": "terms"
+}

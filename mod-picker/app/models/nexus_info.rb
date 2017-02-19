@@ -1,6 +1,8 @@
 class NexusInfo < ActiveRecord::Base
   include Scrapeable, BetterJson
 
+  self.primary_keys = :nexus_id, :game_id
+
   # ASSOCIATIONS
   belongs_to :mod
   belongs_to :game, :inverse_of => 'nexus_infos'
@@ -8,16 +10,16 @@ class NexusInfo < ActiveRecord::Base
   # VALIDATIONS
   validates :game_id, :mod_name, :uploaded_by, :authors, :released, presence: true
 
-  def self.prepare_for_mod(id, game_id)
+  def self.prepare_for_mod(nexus_id, game_id)
     raise "cannot scrape Nexus Info with no game id" unless game_id
-    info = NexusInfo.find_or_initialize_by(id: id, game_id: game_id)
+    info = NexusInfo.find_or_initialize_by(nexus_id: nexus_id, game_id: game_id)
     raise Exceptions::ModExistsError.new(info.mod) if info.mod_id
     info
   end
 
   def scrape
     # scrape using the Nexus Helper
-    mod_data = NexusHelper.scrape_mod(game.nexus_name, id)
+    mod_data = NexusHelper.scrape_mod(game.nexus_name, nexus_id)
 
     # write the scraping results to the nexus info record
     self.assign_attributes(mod_data)
@@ -29,7 +31,7 @@ class NexusInfo < ActiveRecord::Base
   end
 
   def url
-    NexusHelper.mod_url(game.nexus_name, id)
+    NexusHelper.mod_url(game.nexus_name, nexus_id)
   end
 
   def after_scrape

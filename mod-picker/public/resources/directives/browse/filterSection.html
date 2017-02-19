@@ -1,0 +1,6 @@
+<div class="section-title">
+    <h3>{{::name}}</h3>
+    <span class="fa stat-expander {{expanded ? 'fa-minus' : 'fa-plus'}}" aria-hidden="true" ng-click="expanded = !expanded"></span>
+</div>
+<div ng-show="expanded" ng-transclude>
+</div>

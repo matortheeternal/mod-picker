@@ -1,10 +1,10 @@
-// mixins
-@mixin transition($values) {
-  -webkit-transition: $values;
-  -moz-transition: $values;
-  -o-transition: $values;
-  transition: $values;
-}
+// imports
+@import
+'roboto',
+'font-awesome.min',
+'general/mixins',
+'components/license',
+'components/wizard';
 
 // general
 * {

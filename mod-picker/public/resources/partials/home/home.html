@@ -1,11 +1,11 @@
 <loader data="recent" spinner-class="huge-spinner">
     <two-columns>
-        <div class="page-container">
-            <div class="left-column wide-column home-left-column">
+        <div class="page-container home-page">
+            <div class="left-column wide-column left-column">
                 <div class="recent-box box-shadow">
                     <h3 class="section-title">Recent Mod Lists</h3>
                     <section ng-repeat="mod_list in recent.mod_lists">
-                        <a ng-href="mod-list/{{mod_list.id}}">
+                        <a ng-href="mod-lists/{{mod_list.id}}">
                             <div class="recent-thing" ng-init="user = mod_list.submitter">
                                 <div class=" smaller-image-container">
                                     <img ng-src="{{user.avatars.medium}}">
@@ -19,6 +19,9 @@
                             </div>
                         </a>
                     </section>
+                    <div class="content-message" ng-if="!recent.mod_lists.length">
+                        No completed {{currentGame.display_name}} mod lists found.
+                    </div>
                     <a href="mod-lists?scol=completed&sdir=DESC" class="explanation">Browse All</a>
                 </div>
 
@@ -26,7 +29,7 @@
                     <h3 class="section-title">Recent Mods</h3>
                     <!-- TODO: make this into a directive -->
                     <section ng-repeat="mod in recent.mods">
-                        <a ng-href="mod/{{mod.id}}">
+                        <a ng-href="mods/{{mod.id}}">
                             <div class="recent-thing">
                                 <div class="image-container">
                                     <img ng-src="{{mod.images.small}}">
@@ -40,11 +43,14 @@
                             </div>
                         </a>
                     </section>
+                    <div class="content-message" ng-if="!recent.mods.length">
+                        No {{currentGame.display_name}} mods found.
+                    </div>
                     <a href="mods?scol=released&sdir=DESC" class="explanation">Browse All</a>
                 </div>
             </div>
 
-            <div class="right-column home-right-column">
+            <div class="right-column">
                 <div class="articles box-shadow">
                     <article data="article" ng-repeat="article in articles"></article>
                     <div class="load-older-posts">

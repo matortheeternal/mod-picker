@@ -13,7 +13,7 @@ app.config(['$stateProvider', function($stateProvider) {
                         text: 'Error accessing moderation control panel.',
                         response: response,
                         stateName: "base.moderator-cp",
-                        stateUrl: window.location.hash
+                        stateUrl: window.location.href
                     };
                     stats.reject(errorObj);
                 });

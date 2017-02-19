@@ -2,8 +2,8 @@
 
 <two-columns>
     <loader data="user" spinner-class="big-spinner">
-        <div class="page-container">
-            <div class="left-column left-user-column medium-column">
+        <div class="page-container user-page">
+            <div class="left-column medium-column">
                 <img class="avatar avatar-full" ng-src="{{user.avatars.big}}"/>
 
                 <h3 class="big-username">{{user.username}}</h3>
@@ -118,7 +118,7 @@
                     </div>
                 </section>
             </div>
-            <div class="right-column tabs-column right-user-column">
+            <div class="right-column tabs-column">
                 <tabs tabs="tabs"></tabs>
                 <div class="tab">
                     <tab-views></tab-views>

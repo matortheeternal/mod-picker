@@ -7,6 +7,7 @@ require_relative  'static_seeds'
 static_config = {
     staff: true,
     games: true,
+    licenses: true,
     categories: true,
     quotes: true,
     user_titles: true,
@@ -16,6 +17,7 @@ static_config = {
 
 seed_staff_users if static_config[:staff]
 seed_games if static_config[:games]
+seed_licenses if static_config[:licenses]
 seed_categories if static_config[:categories]
 seed_quotes if static_config[:quotes]
 seed_user_titles if static_config[:user_titles]

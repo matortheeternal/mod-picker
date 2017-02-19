@@ -1,8 +1,16 @@
+// redirect for the old url format of /article/:articleId
+app.config(['$stateProvider', function($stateProvider) {
+    $stateProvider.state('base.old-article', {
+        url: '/article/:articleId',
+        redirectTo: 'base.article'
+    })
+}]);
+
 app.config(['$stateProvider', function($stateProvider) {
     $stateProvider.state('base.article', {
         templateUrl: '/resources/partials/articles/showArticle.html',
         controller: 'showArticleController',
-        url: '/article/:articleId',
+        url: '/articles/:articleId',
         resolve: {
             article: function(articleService, $stateParams, $q) {
                 var article = $q.defer();
@@ -13,7 +21,7 @@ app.config(['$stateProvider', function($stateProvider) {
                         text: 'Error retrieving article.',
                         response: response,
                         stateName: "base.article",
-                        stateUrl: window.location.hash
+                        stateUrl: window.location.href
                     };
                     article.reject();
                 });

@@ -1,3 +1,3 @@
 {
-  "only": ["id", "last_scraped"]
+  "only": ["nexus_id", "last_scraped"]
 }

@@ -43,6 +43,7 @@ class User < ActiveRecord::Base
   has_many :install_order_notes, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
   has_many :load_order_notes, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
   has_many :compatibility_notes, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
+  has_many :related_mod_notes, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
   has_many :reviews, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
   has_many :corrections, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
   has_many :agreement_marks, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
@@ -87,7 +88,7 @@ class User < ActiveRecord::Base
   counter_cache :comments, column: 'submitted_comments_count', conditional: { hidden: false }
   counter_cache :starred_mods, :starred_mod_lists, :mod_tags, :mod_list_tags, :helpful_marks, :agreement_marks
   counter_cache :mod_authors, column: 'authored_mods_count'
-  counter_cache :submitted_mods, :reviews, :compatibility_notes, :install_order_notes, :load_order_notes, conditional: { hidden: false, approved: true }
+  counter_cache :submitted_mods, :reviews, :compatibility_notes, :install_order_notes, :load_order_notes, :related_mod_notes, conditional: { hidden: false, approved: true }
   counter_cache  :corrections, :tags, conditional: { hidden: false }
   bool_counter_cache :mod_lists, :is_collection, { true => :mod_collections, false => :mod_lists }
 

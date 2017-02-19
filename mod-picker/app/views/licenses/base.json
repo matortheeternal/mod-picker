@@ -1,0 +1,4 @@
+{
+  "except": ["credit", "commercial", "redistribution", "modification", "private_use", "include"],
+  "methods": "terms"
+}

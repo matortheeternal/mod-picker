@@ -13,7 +13,7 @@ app.config(['$stateProvider', function($stateProvider) {
                             text: 'Error submitting new mod.',
                             response: response,
                             stateName: "base.submit-mod",
-                            stateUrl: window.location.hash
+                            stateUrl: window.location.href
                         };
                         mod.reject(errorObj);
                     });
@@ -87,7 +87,7 @@ app.controller('submitModController', function($scope, $rootScope, backend, modS
     $scope.submitImage = function(modId) {
         var successLinks = [
             {
-                link: "mod/" + modId,
+                link: "mods/" + modId,
                 linkLabel: "view the new mod."
             },
             {

@@ -1,8 +1,37 @@
+// redirects for the old url format of /mod-list/:modListId
+app.config(['$stateProvider', function($stateProvider) {
+    $stateProvider.state('base.old-mod-list', {
+        url: '/mod-list/:modListId',
+        redirectTo: 'base.mod-list'
+    }).state('base.old-mod-list.Details', {
+        url: '/details',
+        redirectTo: 'base.mod-list.Details'
+    }).state('base.old-mod-list.Tools', {
+        url: '/tools?scol&sdir',
+        redirectTo: 'base.mod-list.Tools'
+    }).state('base.old-mod-list.Mods', {
+        url: '/mods?scol&sdir',
+        redirectTo: 'base.modList.Mods'
+    }).state('base.old-mod-list.Plugins', {
+        url: '/plugins?scol&sdir',
+        redirectTo: 'base.mod-list.Plugins'
+    }).state('base.old-mod-list.Config', {
+        url: '/config',
+        redirectTo: 'base.mod-list.Config'
+    }).state('base.old-mod-list.Analysis', {
+        url: '/analysis',
+        redirectTo: 'base.mod-list.Analysis'
+    }).state('base.old-mod-list.Comments', {
+        url: '/comments',
+        redirectTo: 'base.mod-list.Comments'
+    })
+}]);
+
 app.config(['$stateProvider', function($stateProvider) {
     $stateProvider.state('base.mod-list', {
         templateUrl: '/resources/partials/modList/modList.html',
         controller: 'modListController',
-        url: '/mod-list/:modListId',
+        url: '/mod-lists/:modListId',
         redirectTo: 'base.mod-list.Details',
         resolve: {
             modListObject: function(modListService, $stateParams, $q) {
@@ -14,7 +43,7 @@ app.config(['$stateProvider', function($stateProvider) {
                         text: 'Error retrieving mod list.',
                         response: response,
                         stateName: 'base.mod-list',
-                        stateUrl: window.location.hash
+                        stateUrl: window.location.href
                     };
                     modList.reject(errorObj);
                 });
@@ -227,7 +256,7 @@ app.controller('modListController', function($scope, $rootScope, $q, $state, $st
             var params = {
                 type: "success",
                 text: "Cloned mod list successfully.  Click here to view it.",
-                url: "mod-list/"+data.mod_list.id
+                url: "mod-lists/"+data.mod_list.id
             };
             $scope.$emit('customMessage', params);
         }, function(response) {

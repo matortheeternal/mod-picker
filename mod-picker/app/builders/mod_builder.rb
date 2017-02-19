@@ -108,18 +108,16 @@ class ModBuilder < Builder
   end
 
   def link_sources
-    link_source(@nexus_info_id, NexusInfo)
-    link_source(@lover_info_id, LoverInfo)
-    link_source(@workshop_info_id, WorkshopInfo)
+    link_source(NexusInfo, [@nexus_info_id, @resource.game_id]) if @nexus_info_id
+    link_source(LoverInfo, @lover_info_id) if @lover_info_id
+    link_source(WorkshopInfo, @workshop_info_id) if @workshop_info_id
   end
 
-  def link_source(info_id, model)
-    if info_id
-      info = model.find(info_id)
-      info.mod_id = resource.id
-      info.link_uploader
-      info.save!
-    end
+  def link_source(model, info_id)
+    info = model.find(info_id)
+    info.mod_id = resource.id
+    info.link_uploader
+    info.save!
   end
 
   def update_tags

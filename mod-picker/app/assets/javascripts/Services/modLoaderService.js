@@ -4,10 +4,10 @@ app.service('modLoaderService', function(gameService, sitesFactory, assetUtils) 
     this.loadSource = function(mod, infoLabel, sourceLabel, gameName) {
         infoLabel = infoLabel + '_infos';
         if (mod[infoLabel]) {
-            var sourceId = mod[infoLabel].id;
+            var pk = infoLabel === "nexus_infos" ? "nexus_id" : "id";
             mod.sources.push({
                 label: sourceLabel,
-                url: sitesFactory.getModUrl("Nexus Mods", sourceId, gameName),
+                url: sitesFactory.getModUrl(sourceLabel, mod[infoLabel][pk], gameName),
                 valid: true,
                 old: true,
                 scraped: true

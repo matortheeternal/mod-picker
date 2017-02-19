@@ -1,65 +1,67 @@
-.left-user-column {
-  padding-right: 20px;
-  font-size: 14px;
+.user-page {
+  .left-column {
+    padding-right: 20px;
+    font-size: 14px;
 
-  .big-username {
-    font-size: 20px;
-    font-weight: 500;
-  }
-
-  .user-title {
-    font-style: italic;
-  }
-
-  .user-role {
-    font-weight: 500;
-  }
-
-  .section-title {
-    font-size: 16px;
-    font-weight: 500;
-    color: $h4_color;
-  }
-
-  section {
-    padding-bottom: 10px;
-    padding-left: 10px;
-    border-bottom: 2px solid $soft_border_color;
-  }
-
-  .reputation {
-    font-size: 18px;
-    display: flex;
-    align-items: center;
-
-    .action-box {
-      margin-left: 20px;
+    .big-username {
+      font-size: 20px;
       font-weight: 500;
     }
-  }
 
-  .action-item {
-    margin-bottom: 4px;
+    .user-title {
+      font-style: italic;
+    }
 
-    span {
-      display: inline-block;
-      margin: 0 5px;
-      cursor: pointer;
-      min-width: 70px;
-      @include transition(all 0.2s ease-in-out);
+    .user-role {
+      font-weight: 500;
+    }
 
-      &:hover {
-        color: $link_hover_color_primary;
+    .section-title {
+      font-size: 16px;
+      font-weight: 500;
+      color: $h4_color;
+    }
+
+    section {
+      padding-bottom: 10px;
+      padding-left: 10px;
+      border-bottom: 2px solid $soft_border_color;
+    }
+
+    .reputation {
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+
+      .action-box {
+        margin-left: 20px;
+        font-weight: 500;
+      }
+    }
+
+    .action-item {
+      margin-bottom: 4px;
+
+      span {
+        display: inline-block;
+        margin: 0 5px;
+        cursor: pointer;
+        min-width: 70px;
+        @include transition(all 0.2s ease-in-out);
+
+        &:hover {
+          color: $link_hover_color_primary;
+        }
       }
     }
   }
-}
 
-.right-user-column {
-  .tab {
-	  padding: 20px;
-	  border: 1px solid $border_color;
-	  background-color: $secondary_background;
+  .right-column {
+    .tab {
+      padding: 20px;
+      border: 1px solid $border_color;
+      background-color: $secondary_background;
+    }
   }
 }
 

@@ -1,6 +1,6 @@
 class ModListsController < ApplicationController
   before_action :check_sign_in, only: [:create, :set_active, :update, :import, :update_tags, :create_star, :destroy_star]
-  before_action :set_mod_list, only: [:hide, :clone, :add, :update, :import, :update_tags, :tools, :mods, :plugins, :export_modlist, :export_plugins, :export_links, :config_files, :analysis, :comments]
+  before_action :set_mod_list, only: [:hide, :clone, :add, :update, :import, :update_tags, :tools, :mods, :plugins, :export_modlist, :export_plugins, :export_links, :setup, :config_files, :analysis, :comments]
   before_action :soft_set_mod_list, only: [:set_active]
 
   # GET /mod_lists
@@ -141,6 +141,12 @@ class ModListsController < ApplicationController
     render text: @mod_list.links_text
   end
 
+  # POST /mod_lists/:id/setup
+  def setup
+    authorize! :read, @mod_list
+    render text: @mod_list.setup_string(current_user)
+  end
+
   # GET /mod_lists/:id/config
   def config_files
     authorize! :read, @mod_list
@@ -262,6 +268,7 @@ class ModListsController < ApplicationController
 
     @mod_list.updated_by = current_user.id
     if @mod_list.update(mod_list_params) && @mod_list.update_lazy_counters!
+      ModList.update_adult(@mod_list.id)
       @mod_list.compact_plugins
       respond_with_json(@mod_list, :tracking, :mod_list)
     else

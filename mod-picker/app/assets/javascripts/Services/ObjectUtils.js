@@ -232,6 +232,14 @@ app.service('objectUtils', function() {
         return obj;
     };
 
+    this.sliceKeys = function(obj, keys) {
+        var result = {};
+        keys.forEach(function(key) {
+            if (obj.hasOwnProperty(key)) result[key] = obj[key];
+        });
+        return result;
+    };
+
     this.csv = function(obj, separator) {
         var a = [];
         for (var prop in obj) {

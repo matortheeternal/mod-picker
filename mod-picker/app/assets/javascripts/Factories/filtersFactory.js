@@ -120,6 +120,10 @@ app.service("filtersFactory", function() {
         return [
             factory.searchFilter,
             {
+                data: "description",
+                param: "d"
+            },
+            {
                 data: "author",
                 param: "a"
             },
@@ -163,7 +167,37 @@ app.service("filtersFactory", function() {
             factory.hiddenFilter,
             factory.unhiddenFilter,
             factory.approvedFilter,
-            factory.unapprovedFilter
+            factory.unapprovedFilter,
+            {
+                data: "terms.credit",
+                param: "tcr",
+                type: "Integer"
+            },
+            {
+                data: "terms.commercial",
+                param: "tco",
+                type: "Integer"
+            },
+            {
+                data: "terms.redistribution",
+                param: "tre",
+                type: "Integer"
+            },
+            {
+                data: "terms.modification",
+                param: "tmo",
+                type: "Integer"
+            },
+            {
+                data: "terms.private_use",
+                param: "tpu",
+                type: "Integer"
+            },
+            {
+                data: "terms.include",
+                param: "tin",
+                type: "Integer"
+            }
         ]
     };
 
@@ -845,6 +879,42 @@ app.service("filtersFactory", function() {
         return Array.prototype.concat(
             factory.loadOrderNoteGeneralFilters(),
             factory.contributionStandingFilters(),
+            factory.contributionDateFilters(),
+            factory.noteStatisticFilters()
+        );
+    };
+
+    /* related mod note index filters */
+    this.relatedModNoteTypeFilters = function() {
+        return [
+            {
+                data: "status.alternative_mod",
+                param: "alt",
+                type: "Boolean",
+                default: true
+            },
+            {
+                data: "status.recommended_mod",
+                param: "rec",
+                type: "Boolean",
+                default: true
+            }
+        ];
+    };
+
+    this.relatedModNoteStatisticFilters = function() {
+        return [
+            factory.contributionHelpfulnessFilter,
+            factory.submitterReputationFilter,
+            factory.helpfulFilter,
+            factory.notHelpfulFilter
+        ]
+    };
+
+    this.relatedModNoteFilters = function() {
+        return Array.prototype.concat(
+            factory.contributionGeneralFilters(),
+            factory.relatedModNoteTypeFilters(),
             factory.contributionDateFilters(),
             factory.noteStatisticFilters()
         );

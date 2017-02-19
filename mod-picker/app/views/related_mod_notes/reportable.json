@@ -1,0 +1,15 @@
+{
+  "except": ["submitted_by"],
+  "include": {
+    "submitter": {
+      "format": "submitter"
+    },
+    "editor": {},
+    "first_mod": {
+      "only": ["id", "name"]
+    },
+    "second_mod": {
+      "only": ["id", "name"]
+    }
+  }
+}
