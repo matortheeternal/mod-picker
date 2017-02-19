@@ -95,6 +95,7 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
     // validate the mod
     $scope.modValid = function() {
         $scope.sourcesValid = modValidationService.sourcesValid($scope.mod);
+        $scope.licensesValid = modValidationService.licensesValid($scope.mod);
         $scope.authorsValid = modValidationService.authorsValid($scope.mod.mod_authors);
         $scope.requirementsValid = modValidationService.requirementsValid($scope.mod.requirements);
         $scope.configsValid = modValidationService.configsValid($scope.mod.config_files);
