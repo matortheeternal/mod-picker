@@ -18,6 +18,8 @@ class HelpVideo < ActiveRecord::Base
 
   has_many :sections, -> { where(parent_id: nil) },  class_name: "HelpVideoSection", inverse_of: "help_video", dependent: :destroy
 
+  accepts_nested_attributes_for :sections, allow_destroy: true
+
   # COUNTER CACHE
   counter_cache_on :game
 
