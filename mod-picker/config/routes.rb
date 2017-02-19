@@ -137,6 +137,10 @@ Rails.application.routes.draw do
     match '/help/:id/destroy', to: 'help_pages#destroy', via: [:get]
     resources :help_pages, path: 'help', only: [:new, :create, :edit, :update]
 
+    # help videos
+    match '/videos/:id/destroy', to: 'help_videos#destroy', via: [:get]
+    resources :help_videos, path: 'videos', only: [:new, :create, :edit, :update]
+
     #articles
     match '/articles/:id/image', to: 'articles#image', via: [:post]
     resources :articles, only: [:new, :create, :edit, :update, :destroy]
@@ -317,7 +321,7 @@ Rails.application.routes.draw do
   match '/help/game/:game', to: 'help_pages#game', via: [:get]
   match '/help/:id/comments', to: 'help_pages#comments', via: [:get, :post]
   match '/help/search', to:  'help_pages#search', via: [:get]
-  resources :help_pages, path: 'help', except: [:new, :create, :edit, :update, :destroy]
+  match '/help/:id', to: 'help_pages#show', via: [:get]
   match '/help/*path', to: 'help_pages#record_not_found', via: :all
 
   # help videos
