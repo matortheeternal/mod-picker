@@ -66,7 +66,6 @@ class Mod < ActiveRecord::Base
     where.not(id: mod_list.incompatible_mod_ids)
   }
   scope :terms, -> (terms) {
-    term_value_range = { false => [0], true => [1,2]}
     eager_load(:mod_licenses).where(terms.map {|key,value| ModLicense.arel_table[key].eq(value)}.inject(:and))
   }
   scope :sources, -> (sources) {
