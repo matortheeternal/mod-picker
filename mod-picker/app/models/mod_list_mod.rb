@@ -105,6 +105,10 @@ class ModListMod < ActiveRecord::Base
     end
   end
 
+  def baseline_options
+    mod_list_mod_options.map {|option| option.mod_option.display_name}
+  end
+
   private
     def set_index_and_is_utility
       self.is_utility = mod.is_utility
