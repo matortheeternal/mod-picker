@@ -217,6 +217,9 @@ Rails.application.routes.draw do
       match '/comments/index', to: 'comments#index', via: [:get, :post]
       resources :comments, only: [:show]
 
+      # mod lists
+      match '/mod_lists/:id/step', to: 'mod_lists#step', via: [:get]
+
       # static data
       resources :categories, only: [:index]
       resources :category_priorities, only: [:index]
