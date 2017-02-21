@@ -492,6 +492,11 @@ app.service('columnsFactory', function() {
                 data: function(item) {
                     return item.name || item.mod.name;
                 },
+                note: function($scope, item) {
+                    if (!item.mod) {
+                        return "(Custom Mod)";
+                    }
+                },
                 link: function(item) {
                     if (item.mod) {
                         return "mods/" + item.mod.id;
@@ -646,7 +651,10 @@ app.service('columnsFactory', function() {
                     }
                 },
                 note: function($scope, item) {
-                    return item.cleaned ? '(cleaned)' : '';
+                    a = [];
+                    if (item.cleaned) a.push('cleaned');
+                    if (!item.mod) a.push('custom plugin');
+                    return '(' + a.join(', ') + ')';
                 },
                 class: "primary-column",
                 invertSort: true,
