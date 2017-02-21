@@ -57,7 +57,7 @@ app.controller('modSourcesController', function($scope, $rootScope, sitesFactory
         var modId = match[2];
 
         var key = site.dataLabel;
-        var baseUrl = location.href.replace(location.hash, "");
+        var baseUrl = location.href.replace(location.href, "");
         $scope.mod[key] = {};
         $scope.mod[key].scraping = true;
 
@@ -72,7 +72,7 @@ app.controller('modSourcesController', function($scope, $rootScope, sitesFactory
                 $scope.$emit('customMessage', {
                     type: 'error',
                     text: "Error scraping "+source.label+" mod page, "+response.data.error,
-                    url: baseUrl + "#/mod/" + response.data.mod_id
+                    url: baseUrl + "mods/" + response.data.mod_id
                 });
             } else {
                 $scope.$emit('errorMessage', {

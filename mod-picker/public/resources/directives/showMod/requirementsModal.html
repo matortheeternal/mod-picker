@@ -9,7 +9,7 @@
         <h3 ng-if="mod.required_mods.length">Requires</h3>
         <ol ng-if="mod.required_mods.length" class="requirements-list">
             <li ng-repeat="req in mod.required_mods">
-                <a ng-href="#/mod/{{req.required_mod.id}}">
+                <a ng-href="mods/{{req.required_mod.id}}">
                     {{req.required_mod.name}}
                 </a>
             </li>
@@ -18,7 +18,7 @@
         <h3 ng-if="mod.required_by.length">Required By</h3>
         <ol ng-if="mod.required_by.length" class="requirements-list">
             <li ng-repeat="req in mod.required_by">
-                <a ng-href="#/mod/{{req.mod.id}}">
+                <a ng-href="mods/{{req.mod.id}}">
                     {{req.mod.name}}
                 </a>
             </li>

@@ -224,8 +224,8 @@ class ModList < ActiveRecord::Base
   end
 
   def set_active
-    submitter.active_mod_list_id = id
-    submitter.save
+    ActiveModList.where(user_id: submitted_by, game_id: game_id).delete_all
+    ActiveModList.create(game_id: game_id, user_id: submitted_by, mod_list_id: id)
   end
 
   def mod_list_plugin_ids
@@ -292,8 +292,7 @@ class ModList < ActiveRecord::Base
   def required_plugins
     plugin_ids = mod_list_plugin_ids
     return Master.none if plugin_ids.empty?
-
-    Master.plugins(plugin_ids).visible.order(:master_plugin_id)
+    Master.eager_load(:plugin => :mod, :master_plugin => :mod).plugins(plugin_ids).visible.order(:master_plugin_id)
   end
 
   def incompatible_mod_ids
@@ -358,6 +357,10 @@ class ModList < ActiveRecord::Base
     a.join("\r\n")
   end
 
+  def setup_string(user)
+    SecureData.full(user, to_json({format: "setup"}))
+  end
+
   def set_completed?
     status == "complete" && completed.nil?
   end
@@ -377,9 +380,6 @@ class ModList < ActiveRecord::Base
     end
 
     def unset_active
-      if submitter.active_mod_list_id == id
-        submitter.active_mod_list_id = nil
-        submitter.save
-      end
+      ActiveModList.where(user_id: submitted_by, mod_list_id: id).destroy_all
     end
 end

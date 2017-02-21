@@ -11,6 +11,10 @@ module SourceHelpers
       }.with_indifferent_access[source_key]
     end
 
+    def get_source_primary_key_column(source_key)
+      source_key.to_sym == :nexus ? :nexus_id : :id
+    end
+
     def source_search_scope(attribute, options={})
       class_eval do
           scope attribute, -> (search) {

@@ -1,19 +1,28 @@
+// redirect for the old url format of /mod/:modId/edit
+app.config(['$stateProvider', function($stateProvider) {
+    $stateProvider.state('base.old-edit-mod', {
+        url: '/mod/:modId/edit',
+        redirectTo: 'base.editMod'
+    })
+}]);
+
 app.config(['$stateProvider', function($stateProvider) {
     $stateProvider.state('base.edit-mod', {
         templateUrl: '/resources/partials/mod/editMod.html',
         controller: 'editModController',
-        url: '/mod/:modId/edit',
+        url: '/mods/:modId/edit',
         resolve: {
-            modObject: function(modService, $stateParams, $q) {
+            modObject: function(modService, $stateParams, $q, licenses, licenseService) {
                 var mod = $q.defer();
                 modService.editMod($stateParams.modId).then(function(data) {
-                    mod.resolve(data);
+                    licenseService.resolveModLicenses(licenses, data.mod);
+                    mod.resolve(data.mod);
                 }, function(response) {
                     var errorObj = {
                         text: 'Error editing mod.',
                         response: response,
                         stateName: "base.edit-mod",
-                        stateUrl: window.location.hash
+                        stateUrl: window.location.href
                     };
                     mod.reject(errorObj);
                 });
@@ -29,6 +38,7 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
     $scope.categories = $rootScope.categories;
     $scope.categoryPriorities = $rootScope.categoryPriorities;
     $scope.permissions = angular.copy($rootScope.permissions);
+    $scope.licenses = angular.copy($rootScope.licenses);
 
     // inherited functions
     $scope.searchMods = modService.searchMods;
@@ -67,6 +77,7 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
     var isAuthor = author && author.role == 'author';
     $scope.canManageOptions = $scope.permissions.canModerate || isAuthor;
     $scope.canChangeStatus = (isAuthor && $scope.mod.status == "good") || $scope.permissions.isAdmin;
+    $scope.canSetDetails  = $scope.permissions.canModerate || isAuthor;
 
     $scope.$watch('mod.categories', function() {
         // clear messages when user changes the category
@@ -84,6 +95,7 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
     // validate the mod
     $scope.modValid = function() {
         $scope.sourcesValid = modValidationService.sourcesValid($scope.mod);
+        $scope.licensesValid = modValidationService.licensesValid($scope.mod);
         $scope.authorsValid = modValidationService.authorsValid($scope.mod.mod_authors);
         $scope.requirementsValid = modValidationService.requirementsValid($scope.mod.requirements);
         $scope.configsValid = modValidationService.configsValid($scope.mod.config_files);
@@ -163,11 +175,11 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
         if ($scope.imageSuccess && $scope.modSuccess) {
             $scope.submissionSuccess("Mod updated successfully!", [
                 { 
-                    link: "#/mod/" + $scope.mod.id, 
+                    link: "mods/" + $scope.mod.id,
                     linkLabel: "return to the mod page."
                 },
                 {
-                    link: "#/mods", 
+                    link: "mods",
                     linkLabel: "return to the mods index page." 
                 }
             ]);

@@ -91,6 +91,10 @@ input[type="file"] {
   margin: 10px 0;
 }
 
+.plain-text-container {
+  white-space: pre-wrap;
+}
+
 .text-container, .comment-text-container {
   @include wordbreak;
 
@@ -132,7 +136,7 @@ input[type="checkbox"] {
   height: 32px !important;
 }
 
-.checkbox-list {
+.checkbox-list, .select-list {
   padding: 0;
   margin: 0;
   font-size: 12px;
@@ -141,6 +145,28 @@ input[type="checkbox"] {
     list-style: outside none none;
     padding: 0;
     margin-bottom: 2px;
+  }
+}
+
+.select-list {
+  li {
+    margin-bottom: 7px;
+
+    label {
+      display: flex;
+      align-items: center;
+
+      > span {
+        flex-grow: 1;
+      }
+
+      select {
+        background: none;
+        -webkit-appearance: menulist;
+        padding: 0.4em 0.2em;
+        min-width: 65px;
+      }
+    }
   }
 }
 
@@ -255,8 +281,21 @@ form {
     margin-top: 5px;
   }
 
+  .text-area-label {
+    vertical-align: top;
+  }
+
   .input-block {
     display: inline-block;
+
+    input[type="checkbox"] {
+      vertical-align: initial;
+    }
+
+    .subsection {
+      display: inline-block;
+      margin-top: 0 !important;
+    }
   }
 }
 

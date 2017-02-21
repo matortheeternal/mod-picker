@@ -1,5 +1,5 @@
 {
-  "except": ["game_id", "submitted_by", "edited_by", "disallow_contributions", "disable_reviews", "lock_tags"],
+  "except": ["game_id", "submitted_by", "edited_by", "disallow_contributions", "disable_reviews", "lock_tags", "show_details_tab", "description", "notice", "notice_type", "support_link", "issues_link"],
   "include": {
     "author_users": {}
   },

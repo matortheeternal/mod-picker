@@ -14,7 +14,7 @@ app.config(['$stateProvider', function($stateProvider) {
                         text: 'Error retrieving user.',
                         response: response,
                         stateName: "base.user",
-                        stateUrl: window.location.hash
+                        stateUrl: window.location.href
                     };
                     user.reject(errorObj);
                 });

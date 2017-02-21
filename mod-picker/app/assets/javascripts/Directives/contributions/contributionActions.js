@@ -42,12 +42,12 @@ app.controller('contributionActionsController', function($scope, $rootScope, $ti
 
     // determine share url based on the content type
     $scope.buildShareLink = function() {
-        var modTarget, modId, targetTab, targetId, baseUrl = location.href.replace(location.hash, "");
+        var modTarget, modId, targetTab, targetId, baseUrl = location.href.replace(location.href, "");
         if ($scope.modelName === "Correction") {
             var correctableType = $scope.target.correctable_type;
             if (correctableType === "Mod") {
                 modId = $scope.target.correctable_id;
-                $scope.shareLink = baseUrl + '#/mod/' + modId + '/appeals';
+                $scope.shareLink = baseUrl + 'mods/' + modId + '/appeals';
             } else {
                 var correctable = $scope.target.correctable;
                 var correctableModel = contributionFactory.getModel(correctableType);
@@ -55,13 +55,13 @@ app.controller('contributionActionsController', function($scope, $rootScope, $ti
                 modId = modTarget.id;
                 targetTab = correctableModel.tab;
                 targetId = $scope.target.correctable_id;
-                $scope.shareLink = baseUrl + '#/mod/' + modId + '/' + targetTab + '/' + targetId + '/corrections';
+                $scope.shareLink = baseUrl + 'mods/' + modId + '/' + targetTab + '/' + targetId + '/corrections';
             }
         } else {
             modId = $scope.target.mod_id || $scope.target.first_mod_id;
             targetTab = $scope.modelObj.tab;
             targetId = $scope.target.id;
-            $scope.shareLink = baseUrl + '#/mod/' + modId + '/' + targetTab + '/' + targetId;
+            $scope.shareLink = baseUrl + 'mods/' + modId + '/' + targetTab + '/' + targetId;
         }
     };
 

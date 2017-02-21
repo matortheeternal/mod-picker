@@ -1,8 +1,16 @@
+// redirect for the old url format of /article/:articleId/edit
+app.config(['$stateProvider', function($stateProvider) {
+    $stateProvider.state('base.old-edit-article', {
+        url: '/article/:articleId/edit',
+        redirectTo: 'base.edit-article'
+    })
+}]);
+
 app.config(['$stateProvider', function($stateProvider) {
     $stateProvider.state('base.edit-article', {
         templateUrl: '/resources/partials/articles/editArticle.html',
         controller: 'editArticleController',
-        url: '/article/:articleId/edit',
+        url: '/articles/:articleId/edit',
         resolve: {
             article: function(articleService, $stateParams, $q) {
                 var article = $q.defer();
@@ -13,7 +21,7 @@ app.config(['$stateProvider', function($stateProvider) {
                         text: 'Error editing article.',
                         response: response,
                         stateName: "base.edit-article",
-                        stateUrl: window.location.hash
+                        stateUrl: window.location.href
                     };
                     article.reject();
                 });
@@ -74,11 +82,11 @@ app.controller('editArticleController', function($scope, $stateParams, article, 
         var articleDiff = objectUtils.getDifferentObjectValues($scope.originalArticle, $scope.article);
         var articleLinks = [
             {
-                link: "#/article/" + articleId,
+                link: "articles/" + articleId,
                 linkLabel: "view the updated article."
             },
             {
-                link: "#/articles",
+                link: "articles",
                 linkLabel: "return to the articles index."
             }
         ];
@@ -108,7 +116,7 @@ app.controller('editArticleController', function($scope, $stateParams, article, 
     $scope.deleteArticle = function() {
         $scope.startSubmission("Deleting article...");
         articleService.deleteArticle($scope.article.id).then(function() {
-            $scope.submissionSuccess("Article deleted successfully", [{ link: "#/articles", linkLabel: "return to the articles index."}]);
+            $scope.submissionSuccess("Article deleted successfully", [{ link: "articles", linkLabel: "return to the articles index."}]);
         }, function(response) {
             $scope.submissionError("There were errors deleting the article.", response);
         });

@@ -38,12 +38,13 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
         return backend.post('/mod_options/search', postData);
     };
 
-    this.searchModListMods = function(name) {
+    this.searchModListMods = function(str) {
         var postData = {
             filters: {
-                search: name,
+                search: str,
                 include_games: true,
-                utility: false
+                utility: false,
+                game: window._current_game_id
             }
         };
         return backend.post('/mods/search', postData);
@@ -53,19 +54,25 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
         var postData = {
             filters: {
                 search: str,
-                utility: true
+                utility: true,
+                game: window._current_game_id
             }
         };
         return backend.post('/mods/search', postData);
     };
 
     this.searchModsBatch = function(batch) {
-        return backend.post('/mods/search', { batch: batch });
+        return backend.post('/mods/search', {
+            batch: batch,
+            game: window._current_game_id
+        });
     };
     
     this.retrieveMod = function(modId) {
         var action = $q.defer();
-        backend.retrieve('/mods/' + modId).then(function(data) {
+        backend.retrieve('/mods/' + modId, {
+            game: window._current_game_id
+        }).then(function(data) {
             service.associateModImage(data.mod);
             action.resolve(data);
         }, function(response) {
@@ -140,7 +147,7 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
     this.editMod = function(modId) {
         var action = $q.defer();
         backend.retrieve('/mods/' + modId + '/edit').then(function(data) {
-            service.associateModImage(data);
+            service.associateModImage(data.mod);
             action.resolve(data);
         }, function(response) {
             action.reject(response);
@@ -162,6 +169,30 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
 
     this.approveMod = function(modId, approved) {
         return backend.post('/mods/' + modId + '/approve', { approved: approved });
+    };
+
+    var licenseKeys = ["license_id", "license_option_id", "target"];
+    var customLicenseKeys = licenseKeys.concat(["credit", "commercial", "redistribution", "modification", "private_use", "include", "text_body"]);
+    this.sanitizeLicense = function(mod_license) {
+        var keys = mod_license.custom ? customLicenseKeys : licenseKeys;
+        var license = objectUtils.sliceKeys(mod_license, keys);
+        if (mod_license.id) license.id = mod_license.id;
+        return license;
+    };
+
+    this.prepareModLicenses = function(mod) {
+        var mod_licenses = [];
+        mod.mod_licenses && mod.mod_licenses.forEach(function(mod_license) {
+            if (mod_license._destroy) {
+                mod_licenses.push({
+                    id: mod_license.id,
+                    _destroy: true
+                });
+            } else {
+                mod_licenses.push(service.sanitizeLicense(mod_license));
+            }
+        });
+        return mod_licenses;
     };
 
     this.prepareModAuthors = function(mod) {
@@ -373,7 +404,7 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
                 updated: updated,
                 primary_category_id: mod.categories[0],
                 secondary_category_id: mod.categories[1],
-                nexus_info_id: mod.nexus && mod.nexus.id,
+                nexus_info_id: mod.nexus && mod.nexus.nexus_id,
                 workshop_info_id: mod.workshop && mod.workshop.id,
                 lover_info_id: mod.lab && mod.lab.id,
                 tag_names: mod.tags,
@@ -390,6 +421,7 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
 
     this.getModData = function(mod) {
         // prepare associations
+        var mod_licenses = service.prepareModLicenses(mod);
         var mod_authors = service.prepareModAuthors(mod);
         var required_mods = service.prepareRequiredMods(mod);
         var custom_sources = service.prepareCustomSources(mod.custom_sources);
@@ -404,16 +436,23 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
                 authors: mod.authors,
                 status: mod.status,
                 is_utility: mod.is_utility,
+                show_details_tab: mod.show_details_tab,
+                description: mod.description,
+                notice: mod.notice,
+                notice_type: mod.notice_type,
+                support_link: mod.support_link,
+                issues_link: mod.issues_link,
                 game_id: mod.game_id,
                 released: mod.released,
                 updated: mod.updated,
                 mark_updated: mod_options.length > 0,
                 primary_category_id: mod.primary_category_id,
                 secondary_category_id: mod.secondary_category_id || null,
-                nexus_info_id: mod.nexus && mod.nexus.id,
+                nexus_info_id: mod.nexus && mod.nexus.nexus_id,
                 workshop_info_id: mod.workshop && mod.workshop.id,
                 lover_info_id: mod.lab && mod.lab.id,
                 tag_names: tag_names,
+                mod_licenses_attributes: mod_licenses,
                 mod_options_attributes: mod_options,
                 mod_authors_attributes: mod_authors,
                 custom_sources_attributes: custom_sources,

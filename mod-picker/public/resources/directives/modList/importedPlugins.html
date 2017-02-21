@@ -25,7 +25,7 @@
                     {{::item.filename}}
                 </td>
                 <td class="mod-search-cell">
-                    <a ng-href="#/mods/{{::item.mod_id}}" ng-if="item.mod_id && !item.custom">{{::item.mod_name}}</a>
+                    <a ng-href="mods/{{::item.mod_id}}" ng-if="item.mod_id && !item.custom">{{::item.mod_name}}</a>
                     <span ng-show="!item.mod_id || item.custom">-</span>
                 </td>
                 <td>

@@ -38,6 +38,10 @@ app.service('userService', function(backend, $q, userSettingsService, userTitleS
             if (userData) {
                 userData.signed_in = true;
                 userData.permissions = service.getPermissions(userData);
+                var activeModList = userData.active_mod_lists.find(function(item) {
+                    return item.game_id == window._current_game_id;
+                });
+                userData.active_mod_list_id = activeModList && activeModList.mod_list_id;
             } else {
                 userData = { permissions: {} };
             }
@@ -102,14 +106,20 @@ app.service('userService', function(backend, $q, userSettingsService, userTitleS
     };
 
     this.changeRole = function(userId, role) {
-        return backend.post('/users/' + userId + '/change_role', {role: role});
+        return backend.post('/users/' + userId + '/change_role', {
+            role: role
+        });
     };
 
     this.retrieveUserModLists = function(userId) {
-        return backend.retrieve('/users/' + userId + '/mod_lists');
+        return backend.retrieve('/users/' + userId + '/mod_lists', {
+            game: window._current_game_id
+        });
     };
 
     this.retrieveUserMods = function(userId) {
-        return backend.retrieve('/users/' + userId + '/mods');
+        return backend.retrieve('/users/' + userId + '/mods', {
+            game: window._current_game_id
+        });
     };
 });

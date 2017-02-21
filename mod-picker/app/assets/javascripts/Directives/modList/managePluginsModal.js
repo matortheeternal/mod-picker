@@ -58,13 +58,13 @@ app.controller('managePluginsModalController', function($scope, columnsFactory, 
     // helper functions to get links to plugin/mods
     $scope.getPluginLink = function(item) {
         if (item.mod && item.id) {
-            return "#/mod/" + item.mod.id + "/analysis?plugin=" + item.id;
+            return "mods/" + item.mod.id + "/analysis?plugin=" + item.id;
         }
     };
 
     $scope.getModLink = function(item) {
         if (item.mod) {
-            return "#/mod/" + item.mod.id;
+            return "mods/" + item.mod.id;
         }
     };
 

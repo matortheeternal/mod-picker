@@ -11,9 +11,9 @@
             <h2>{{ editing ? 'Edit Custom Plugin' : 'Custom Plugin Details' }}</h2>
 
             <h3 class="section-title" ng-if="detailsItem.compatibility_note">
-                <a ng-href="#/mod/{{detailsItem.compatibility_note.first_mod.id}}/compatibility/{{detailsItem.compatibility_note.id}}">Custom Patch</a> for
-                <a ng-href="#/mod/{{detailsItem.compatibility_note.first_mod.id}}">{{detailsItem.compatibility_note.first_mod.name}}</a> and
-                <a ng-href="#/mod/{{detailsItem.compatibility_note.second_mod.id}}">{{detailsItem.compatibility_note.second_mod.name}}</a>
+                <a ng-href="mods/{{detailsItem.compatibility_note.first_mod.id}}/compatibility/{{detailsItem.compatibility_note.id}}">Custom Patch</a> for
+                <a ng-href="mods/{{detailsItem.compatibility_note.first_mod.id}}">{{detailsItem.compatibility_note.first_mod.name}}</a> and
+                <a ng-href="mods/{{detailsItem.compatibility_note.second_mod.id}}">{{detailsItem.compatibility_note.second_mod.name}}</a>
             </h3>
             <h3 class="section-title">Filename</h3>
             <section>

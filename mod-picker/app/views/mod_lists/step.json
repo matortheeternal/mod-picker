@@ -1,0 +1,14 @@
+{
+  "only": ["id", "name", "updated"],
+  "include": {
+    "mod_list_groups": {
+      "only": ["id", "name"]
+    },
+    "mod_list_mods": {
+      "format": "step"
+    },
+    "custom_mods": {
+      "format": "step"
+    }
+  }
+}

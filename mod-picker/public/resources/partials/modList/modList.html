@@ -7,7 +7,7 @@
                 <br>
                 <span class="header-authors-container">
                     by
-                    <a ng-href="#/user/{{mod_list.submitter.id}}">{{mod_list.submitter.username}}</a>
+                    <a ng-href="user/{{mod_list.submitter.id}}">{{mod_list.submitter.username}}</a>
                 </span>
                 <span class="divider" ng-if="mod_list.submitted">|</span>
                 <span>Created {{mod_list.submitted | date}}</span>
@@ -60,7 +60,7 @@
 
 <messages></messages>
 
-<div class="page-container tabs-column mod-list-tabs-column">
+<div class="page-container tabs-column show-mod-list-page">
     <tabs tabs="tabs" class="secondary-tabs"></tabs>
     <div class="tab mod-list-tab box-shadow">
         <tab-views></tab-views>

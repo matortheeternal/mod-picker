@@ -31,6 +31,30 @@ app.service('modValidationService', function() {
         return sourcesValid;
     };
 
+    this.licenseValid = function(mod_license) {
+        if (mod_license.custom) {
+            return mod_license.text_body && mod_license.text_body.length > 4;
+        } else {
+            return true;
+        }
+    };
+
+    this.licensesValid = function(mod) {
+        var licensesValid = true;
+        var targets = {
+            materials: 0,
+            code: 0,
+            assets: 0
+        };
+        mod.mod_licenses.forEach(function(mod_license) {
+            licensesValid = licensesValid && service.licenseValid(mod_license);
+            targets[mod_license.target]++;
+        });
+        var noDuplicateTargets = targets.materials < 2 && targets.code < 2 && targets.assets < 2;
+        var validMaterialsTarget = (targets.materials + targets.code < 2) && (targets.materials + targets.assets < 2);
+        return licensesValid && noDuplicateTargets && validMaterialsTarget;
+    };
+
     this.sanitizeSet = function(set) {
         set.forEach(function(item) {
             delete item.error;

@@ -1,0 +1,27 @@
+<div class="licensed-under">{{::modLicense.target}} licensed under</div>
+<div class="license-container">
+    <div class="icon-column">
+        <span class="fa {{::typeIcons[license.license_type]}}"></span>
+        <span class="license-type">{{::license.license_type}}</span>
+    </div>
+    <div class="name-column" ng-if="licenseOption">
+        <span class="license-acronym">{{::licenseOption.acronym || license.acronym}}</span>
+        <a ng-href="{{licenseOption.link}}" target="_blank">{{::licenseOption.name}}</a>
+        <span ng-if="licenseOption.tldr">
+            (<a ng-href="https://tldrlegal.com/license/{{licenseOption.tldr}}" target="_blank">tl;dr</a>)
+        </span>
+    </div>
+    <div class="name-column" ng-if="!licenseOption">
+        <span class="license-acronym">Custom</span>
+        <a ng-click="displayLicenseText()">Custom License</a>
+    </div>
+    <div class="terms-column">
+        <span class="license-terms">
+            <span ng-repeat="(key, value) in modLicense.terms" title="{{::termHints[key]}} is {{::termValueHints[termType[key]][value]}}" class="fa-stack fa-lg">
+                <i class="fa fa-stack-1x {{::termIcons[key]}}"></i>
+                <i class="fa fa-stack-2x {{::termOverlays[value]}}"></i>
+            </span>
+            <i ng-repeat="(key, value) in modLicense.terms" title="{{::termHints[key][value]}}" class="fa {{::termIcons[key][value]}}"></i>
+        </span>
+    </div>
+</div>

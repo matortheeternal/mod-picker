@@ -10,7 +10,7 @@ app.service('columnsFactory', function() {
                 label: "Mod Name",
                 data: "name",
                 link: function(mod) {
-                    return "#/mod/" + mod.id
+                    return "mods/" + mod.id
                 },
                 invertSort: true
             },
@@ -299,7 +299,7 @@ app.service('columnsFactory', function() {
                 },
                 imageClass: "avatar-small",
                 link: function(user) {
-                    return "#/user/" + user.id
+                    return "user/" + user.id
                 },
                 invertSort: true
             },
@@ -494,7 +494,7 @@ app.service('columnsFactory', function() {
                 },
                 link: function(item) {
                     if (item.mod) {
-                        return "#/mod/" + item.mod.id;
+                        return "mods/" + item.mod.id;
                     } else if (item.url) {
                         return item.url;
                     }
@@ -642,7 +642,7 @@ app.service('columnsFactory', function() {
                 },
                 link: function(item) {
                     if (item.mod && item.plugin) {
-                        return "#/mod/" + item.mod.id + "/analysis?plugin=" + item.plugin.id;
+                        return "mods/" + item.mod.id + "/analysis?plugin=" + item.plugin.id;
                     }
                 },
                 note: function($scope, item) {
@@ -659,7 +659,7 @@ app.service('columnsFactory', function() {
                 data: "mod.name",
                 link: function(item) {
                     if (item.mod) {
-                        return "#/mod/" + item.mod.id;
+                        return "mods/" + item.mod.id;
                     }
                 },
                 sortData: "mods.name",
@@ -742,7 +742,7 @@ app.service('columnsFactory', function() {
                 data: "name",
                 class: "primary-column",
                 link: function(item) {
-                    return "#/mod-list/" + item.id;
+                    return "mod-lists/" + item.id;
                 },
                 invertSort: true
             },
@@ -752,7 +752,7 @@ app.service('columnsFactory', function() {
                 label: "Submitter",
                 data: "submitter.username",
                 link: function(item) {
-                    return "#/user/" + item.submitter.id;
+                    return "user/" + item.submitter.id;
                 },
                 sortData: "users.username",
                 invertSort: true
@@ -956,7 +956,7 @@ app.service('columnsFactory', function() {
                 data: "filename",
                 class: "primary-column",
                 link: function(item) {
-                    return "#/mod/" + item.mod.id + "/analysis?plugin=" + item.id;
+                    return "mods/" + item.mod.id + "/analysis?plugin=" + item.id;
                 },
                 invertSort: true
             },
@@ -966,7 +966,7 @@ app.service('columnsFactory', function() {
                 label: "Mod",
                 data: "mod.name",
                 link: function(item) {
-                    return "#/mod/" + item.mod.id;
+                    return "mods/" + item.mod.id;
                 },
                 sortData: "mods.name",
                 invertSort: true
@@ -1153,7 +1153,7 @@ app.service('columnsFactory', function() {
                 label: "Submitter",
                 data: "submitter.username",
                 link: function(item) {
-                    return "#/user/" + item.submitter.id;
+                    return "user/" + item.submitter.id;
                 },
                 invertSort: true
             },

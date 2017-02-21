@@ -11,6 +11,18 @@ class ModListGroup < ActiveRecord::Base
   # VALIDATIONS
   validates :mod_list_id, :name, presence: true
 
+  def self.nested_json(groups, mods, custom_mods)
+    groups_json = groups.as_json({format: "step"})
+    mods_json = mods.as_json({format: "step"}) + custom_mods.as_json({format: "step"})
+    groups_json.each do |group|
+      group[:children] = mods_json.
+          select{ |mod| mod["group_id"] == group["id"] }.
+          sort_by { |mod| mod["index"] }.
+          each { |mod| mod.delete("group_id"); mod.delete("index") }
+      group.delete("id")
+    end
+  end
+
   def child_model
     tab == "plugins" ? ModListPlugin : ModListMod.utility(tab == :tools)
   end

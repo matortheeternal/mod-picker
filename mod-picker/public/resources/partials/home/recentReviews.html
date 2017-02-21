@@ -1,3 +1,6 @@
 <div ng-repeat="review in recent.reviews" class="content-block">
 	<review review="review" show-user-column="true" show-mod="true" index="100"></review>
 </div>
+<div class="content-message" ng-if="!recent.reviews.length">
+	No {{currentGame.display_name}} reviews found.
+</div>

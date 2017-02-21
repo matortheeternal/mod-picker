@@ -16,7 +16,7 @@ class PluginsController < ApplicationController
   # POST /plugins/search
   def search
     if params.has_key?(:batch)
-      @plugins = Plugin.find_batch(params[:batch])
+      @plugins = Plugin.find_batch(params[:batch], params[:game])
       respond_with_json(@plugins, :base)
     else
       @plugins = Plugin.visible.filter(search_params).limit(10)

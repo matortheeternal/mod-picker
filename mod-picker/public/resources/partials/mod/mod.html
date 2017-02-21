@@ -59,7 +59,7 @@
                         <div class="action-box" ng-click="starMod()" ng-if="!mod.hidden">
                             <i class="fa {{mod.star ? 'fa-star' : 'fa-star-o'}}" aria-hidden="true"></i> {{mod.star ? 'Unfavorite' : 'Favorite'}}
                         </div>
-                        <div class="action-box" ng-if="activeModList && !mod.hidden" ng-click="toggleInModList()" title="Click here to {{ mod.in_mod_list ? 'remove this mod from' : 'add this mod to'}} your active mod list.">
+                        <div class="action-box {{mod.in_mod_list ? 'red-box' : 'green-box' }}" ng-if="activeModList && !mod.hidden" ng-click="toggleInModList()" title="Click here to {{ mod.in_mod_list ? 'remove this mod from' : 'add this mod to'}} your active mod list.">
                             <i class="fa {{ mod.in_mod_list ? 'fa-remove' : 'fa-plus' }}" aria-hidden="true"></i>
                             {{ mod.in_mod_list ? 'Remove' : 'Add' }}
                         </div>
@@ -89,108 +89,106 @@
 
         <report-modal ng-if="showReportModal"></report-modal>
 
-        <div class="page-container">
-            <loader data="mod" spinner-class="big-spinner">
-                <div class="left-column left-mod-column wide-column">
+        <div class="page-container show-mod-page">
+            <div class="left-column wide-column">
 
-                    <!--Image-->
-                    <img ng-src="{{mod.images.big}}" class="mod-image" />
+                <!--Image-->
+                <img ng-src="{{mod.images.big}}" class="mod-image" />
 
-                    <!-- General -->
-                    <h3 class="section-title">General</h3>
-                    <div class="stat-block">
-                        <section>
-                            <dt class="stat-title">Date Released</dt>
-                            <dd class="stat-data">{{mod.released | date}}</dd>
+                <!-- General -->
+                <h3 class="section-title">General</h3>
+                <div class="stat-block">
+                    <section>
+                        <dt class="stat-title">Date Released</dt>
+                        <dd class="stat-data">{{mod.released | date}}</dd>
 
-                            <dt class="stat-title" ng-if="mod.updated">Date Updated</dt>
-                            <dd class="stat-data" ng-if="mod.updated">{{mod.updated | date}}</dd>
-                        </section>
-                    </div>
-
-                    <!--Sources-->
-                    <h3 class="section-title">Sources</h3>
-                    <section class="sources">
-                        <source-link source="mod.nexus_infos" label="Nexus Mods" link="http://www.nexusmods.com/{{currentGame.nexus_name}}/mods/{{mod.nexus_infos.id}}"></source-link>
-                        <source-link source="mod.workshop_infos" label="Steam Workshop" link="http://steamcommunity.com/sharedfiles/filedetails/{{mod.workshop_infos.id}}"></source-link>
-                        <source-link source="mod.lover_infos" label="Lover's Lab" link="http://www.loverslab.com/files/file/{{mod.lover_infos.id}}"></source-link>
-                        <source-link ng-repeat="source in mod.custom_sources" source="source" label="{{source.label}}" link="{{source.url}}" title="{{source.url}}"></source-link>
+                        <dt class="stat-title" ng-if="mod.updated">Date Updated</dt>
+                        <dd class="stat-data" ng-if="mod.updated">{{mod.updated | date}}</dd>
                     </section>
-
-                    <!--Requirements-->
-                    <h3 ng-if="mod.required_mods.length" class="section-title">Requires</h3>
-                    <section ng-if="mod.required_mods.length">
-                        <ol class="requirements-list">
-                            <li ng-repeat="req in mod.required_mods | limitTo: 5">
-                                <a ng-href="#/mod/{{req.required_mod.id}}">
-                                    {{req.required_mod.name}}
-                                </a>
-                            </li>
-                            <li class="show-more" ng-show="mod.required_mods.length > 5">
-                                <a class="inverse-link" ng-click="toggleRequirementsModal(true)">
-                                    Show {{mod.required_mods.length - 5}} more
-                                </a>
-                            </li>
-                        </ol>
-                    </section>
-
-                    <h3 ng-if="mod.required_by.length" class="section-title">Required By</h3>
-                    <section ng-if="mod.required_by.length">
-                        <ol class="requirements-list">
-                            <li ng-repeat="req in mod.required_by | limitTo: 5">
-                                <a ng-href="#/mod/{{req.mod.id}}">
-                                    {{req.mod.name}}
-                                </a>
-                            </li>
-                            <li class="show-more" ng-show="mod.required_by.length > 5">
-                                <a class="inverse-link" ng-click="toggleRequirementsModal(true)">
-                                    Show {{mod.required_by.length - 5}} more
-                                </a>
-                            </li>
-                        </ol>
-                    </section>
-
-                    <!-- We hide categories and tags when viewing a mod with no primary category -->
-                    <div ng-if="mod.primary_category_id">
-                        <!--Categories-->
-                        <h3 class="section-title">Categories</h3>
-                        <section>
-                            <a ng-href="#/mods?c={{mod.primary_category_id}}" title="{{mod.primary_category.description.wordwrap()}}">
-                                <div class="action-box">{{mod.primary_category.name}}</div>
-                            </a>
-                            <a ng-href="#/mods?c={{mod.secondary_category_id}}" ng-show="mod.secondary_category_id" title="{{mod.secondary_category.description.wordwrap()}}">
-                                <div class="action-box">{{mod.secondary_category.name}}</div>
-                            </a>
-                        </section>
-
-                        <!--Tags-->
-                        <h3 class="section-title">Tags</h3>
-                        <section>
-                            <tag-selector active-tags="mod.tags" new-tags="newTags" max-tags="10" type="mod" show-count="true" show-add="!mod.lock_tags && permissions.canTag" can-create="permissions.canCreateTags" show-remove="!mod.lock_tags && permissions.canManage" save-callback="saveTags"></tag-selector>
-                            <span class="stat-title" ng-show="mod.lock_tags && !mod.tags.length">Tags locked</span>
-                            <span class="stat-title" ng-show="!permissions.canTag && !mod.tags.length">You must log in to add tags</span>
-                        </section>
-                    </div>
-
-                    <!--Site Stats-->
-                    <stat-expander info="mod.nexus_infos" expanded="nexusExpanded" label="Nexus Mods">
-                        <nexus-stats></nexus-stats>
-                    </stat-expander>
-                    <stat-expander info="mod.workshop_infos" expanded="workshopExpanded" label="Steam Workshop">
-                        <workshop-stats></workshop-stats>
-                    </stat-expander>
-                    <stat-expander info="mod.lover_infos" expanded="labExpanded" label="Lover's Lab">
-                        <lab-stats></lab-stats>
-                    </stat-expander>
-
                 </div>
-                <div class="right-column tabs-column">
-                    <tabs tabs="tabs"></tabs>
-                    <div class="tab box-shadow">
-                        <tab-views></tab-views>
-                    </div>
+
+                <!--Sources-->
+                <h3 class="section-title">Sources</h3>
+                <section class="sources">
+                    <source-link source="mod.nexus_infos" label="Nexus Mods" link="http://www.nexusmods.com/{{currentGame.nexus_name}}/mods/{{mod.nexus_infos.nexus_id}}"></source-link>
+                    <source-link source="mod.workshop_infos" label="Steam Workshop" link="http://steamcommunity.com/sharedfiles/filedetails/{{mod.workshop_infos.id}}"></source-link>
+                    <source-link source="mod.lover_infos" label="Lover's Lab" link="http://www.loverslab.com/files/file/{{mod.lover_infos.id}}"></source-link>
+                    <source-link ng-repeat="source in mod.custom_sources" source="source" label="{{source.label}}" link="{{source.url}}" title="{{source.url}}"></source-link>
+                </section>
+
+                <!--Requirements-->
+                <h3 ng-if="mod.required_mods.length" class="section-title">Requires</h3>
+                <section ng-if="mod.required_mods.length">
+                    <ol class="requirements-list">
+                        <li ng-repeat="req in mod.required_mods | limitTo: 5">
+                            <a ng-href="mods/{{req.required_mod.id}}">
+                                {{req.required_mod.name}}
+                            </a>
+                        </li>
+                        <li class="show-more" ng-show="mod.required_mods.length > 5">
+                            <a class="inverse-link" ng-click="toggleRequirementsModal(true)">
+                                Show {{mod.required_mods.length - 5}} more
+                            </a>
+                        </li>
+                    </ol>
+                </section>
+
+                <h3 ng-if="mod.required_by.length" class="section-title">Required By</h3>
+                <section ng-if="mod.required_by.length">
+                    <ol class="requirements-list">
+                        <li ng-repeat="req in mod.required_by | limitTo: 5">
+                            <a ng-href="mods/{{req.mod.id}}">
+                                {{req.mod.name}}
+                            </a>
+                        </li>
+                        <li class="show-more" ng-show="mod.required_by.length > 5">
+                            <a class="inverse-link" ng-click="toggleRequirementsModal(true)">
+                                Show {{mod.required_by.length - 5}} more
+                            </a>
+                        </li>
+                    </ol>
+                </section>
+
+                <!-- We hide categories and tags when viewing a mod with no primary category -->
+                <div ng-if="mod.primary_category_id">
+                    <!--Categories-->
+                    <h3 class="section-title">Categories</h3>
+                    <section>
+                        <a ng-href="mods?c={{mod.primary_category_id}}" title="{{mod.primary_category.description.wordwrap()}}">
+                            <div class="action-box">{{mod.primary_category.name}}</div>
+                        </a>
+                        <a ng-href="mods?c={{mod.secondary_category_id}}" ng-show="mod.secondary_category_id" title="{{mod.secondary_category.description.wordwrap()}}">
+                            <div class="action-box">{{mod.secondary_category.name}}</div>
+                        </a>
+                    </section>
+
+                    <!--Tags-->
+                    <h3 class="section-title">Tags</h3>
+                    <section>
+                        <tag-selector active-tags="mod.tags" new-tags="newTags" max-tags="10" type="mod" show-count="true" show-add="!mod.lock_tags && permissions.canTag" can-create="permissions.canCreateTags" show-remove="!mod.lock_tags && permissions.canManage" save-callback="saveTags"></tag-selector>
+                        <span class="stat-title" ng-show="mod.lock_tags && !mod.tags.length">Tags locked</span>
+                        <span class="stat-title" ng-show="!permissions.canTag && !mod.tags.length">You must log in to add tags</span>
+                    </section>
                 </div>
-            </loader>
+
+                <!--Site Stats-->
+                <stat-expander info="mod.nexus_infos" expanded="nexusExpanded" label="Nexus Mods">
+                    <nexus-stats></nexus-stats>
+                </stat-expander>
+                <stat-expander info="mod.workshop_infos" expanded="workshopExpanded" label="Steam Workshop">
+                    <workshop-stats></workshop-stats>
+                </stat-expander>
+                <stat-expander info="mod.lover_infos" expanded="labExpanded" label="Lover's Lab">
+                    <lab-stats></lab-stats>
+                </stat-expander>
+
+            </div>
+            <div class="right-column tabs-column">
+                <tabs tabs="tabs"></tabs>
+                <div class="box-shadow">
+                    <tab-views></tab-views>
+                </div>
+            </div>
         </div>
     </loader>
 </two-columns>

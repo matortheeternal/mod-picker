@@ -1,39 +1,60 @@
 //= require_self
 //= require ./polyfills.js
+//= require ./es6-polyfills.js
 //= require_tree ./BackendAPI
 //= require_tree ./Directives
 //= require_tree ./Factories
 //= require_tree ./Filters
 //= require_tree ./Services
 //= require_tree ./Views
+//= stub_tree Directives/legal
 //= stub_tree Directives/help
 /*
  Mod Picker v1.0
- (c) 2016 Mod Picker, LLC. https://www.modpicker.com
+ (c) 2017 Mod Picker, LLC. https://www.modpicker.com
 */
+
+// fix urls in the old hash format
+if (["/skyrim", "/skyrimse"].indexOf(window.location.pathname) > -1) {
+    window.location.pathname += "/";
+}
 
 var app = angular.module('modPicker', [
     'ui.router', 'rzModule', 'ngAnimate', 'puElasticInput', 'hc.marked', 'smoothScroll', 'relativeDate', 'ct.ui.router.extras', 'dndLists', 'pasvaz.bindonce'
 ]);
 
-app.config(['$httpProvider', '$compileProvider', function($httpProvider, $compileProvider) {
+app.config(['$httpProvider', '$compileProvider', '$locationProvider', function($httpProvider, $compileProvider, $locationProvider) {
     $httpProvider.useApplyAsync(true);
     $compileProvider.debugInfoEnabled(false);
+    $locationProvider.html5Mode(true);
 }]);
 
-app.config(function($urlMatcherFactoryProvider) {
+app.config(function($urlMatcherFactoryProvider, $urlRouterProvider) {
     //this allows urls with and without trailing slashes to go to the same state
     $urlMatcherFactoryProvider.strictMode(false);
     //this will not display url parameters that are set to their defaults
     $urlMatcherFactoryProvider.defaultSquashPolicy(true);
-});
 
-//redirect to /home if someone types in an incorrect url
-app.config(function($urlRouterProvider) {
+    // redirect to /home if someone types in an incorrect url
     $urlRouterProvider.otherwise('/home');
+    // force index pages to have higher priority than show pages
+    var goToState = function(stateName) {
+        return function($state, $location) {
+            $state.go(stateName, $location.search());
+        };
+    };
+    $urlRouterProvider.when('/mods', goToState('base.mods'));
+    $urlRouterProvider.when('/mod-lists', goToState('base.mod-lists'));
+    $urlRouterProvider.when('/articles', goToState('base.articles'));
+    $urlRouterProvider.when('/mods/submit', goToState('base.submit-mod'));
 });
 
-//this allows states to be defined at runtime by 
+// sanitize html in markdown
+app.config(function(markedProvider) {
+    markedProvider.setOptions({ sanitize: true });
+});
+
+// allow states to be defined at runtime
 app.config(function($futureStateProvider) {
     var lazyStateFactory = function($q, futureState) {
         return $q.when(futureState);

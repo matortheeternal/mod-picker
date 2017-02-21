@@ -2,6 +2,7 @@
 //= link modpicker.js
 //= link helpcenter.js
 //= link landing.js
+//= link licensing-wizard.js
 // themes
 //= link main/Whiterun.css
 //= link main/Darkwater.css

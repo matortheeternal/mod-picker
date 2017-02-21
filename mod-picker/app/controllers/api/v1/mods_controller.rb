@@ -1,5 +1,5 @@
 class Api::V1::ModsController < Api::ApiController
-  before_action :set_mod, only: [:corrections, :reviews, :compatibility_notes, :install_order_notes, :load_order_notes, :analysis]
+  before_action :set_mod, only: [:corrections, :reviews, :compatibility_notes, :install_order_notes, :load_order_notes, :related_mod_notes, :analysis]
 
   # POST /mods/index
   def index
@@ -101,6 +101,22 @@ class Api::V1::ModsController < Api::ApiController
     # render response
     render json: {
         load_order_notes: load_order_notes,
+        max_entries: count,
+        entries_per_page: 10
+    }
+  end
+
+  # POST/GET /mods/1/related_mod_notes
+  def related_mod_notes
+    authorize! :read, @mod
+
+    # prepare compatibility notes
+    related_mod_notes = @mod.related_mod_notes.preload(:first_mod, :second_mod, :editor).eager_load(:submitter => :reputation).accessible_by(current_ability).sort(params[:sort]).paginate(page: params[:page], per_page: 10)
+    count =  @mod.related_mod_notes.eager_load(:submitter => :reputation).accessible_by(current_ability).count
+
+    # render response
+    render json: {
+        related_mod_notes: related_mod_notes,
         max_entries: count,
         entries_per_page: 10
     }
