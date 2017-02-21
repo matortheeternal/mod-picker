@@ -51,11 +51,12 @@ app.controller('gridItemsController', function($scope, $timeout, smoothScroll, c
         indexElement.firstElementChild.focus();
     };
 
-    $scope.applyIndex = function(item) {
+    $scope.applyIndex = function(item, skipScroll) {
         var success = listUtils.moveItemToNewIndex($scope.model, "mod", item);
         if (!success) return;
         listUtils.updateItems($scope.model);
         $scope.$emit('itemMoved');
+        if (skipScroll) return;
         $timeout(function() {
             $scope.scrollToItem(item);
             $scope.focusItemIndex(item);
@@ -69,7 +70,7 @@ app.controller('gridItemsController', function($scope, $timeout, smoothScroll, c
     $scope.indexKeyDown = function($event, item) {
         var key = $event.keyCode;
         if (key == 13) {
-            $scope.applyIndex(item);
+            $scope.applyIndex(item, $event.shiftKey);
             $event.preventDefault();
             $event.stopPropagation();
         }
