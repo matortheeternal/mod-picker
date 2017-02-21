@@ -195,6 +195,10 @@ grid-items {
         font-weight: 500;
       }
 
+      li.mod-custom {
+        font-style: italic;
+      }
+
       li.mod-name, li.mod-author {
         @include wordbreak;
       }
