@@ -31,7 +31,7 @@
         <search-input search-function="searchPlugins" result-id="activeLoadOrderNote.second_plugin_id" search-text="activeLoadOrderNote.searchText" excluded-id="activeLoadOrderNote.first_plugin_id" placeholder="Enter plugin filename" on-change="noteChanged" disabled="activeLoadOrderNote.editing" label="plugins" key="filename"></search-input>
     </div>
     <div class="content-container">
-        <text-area data="activeLoadOrderNote.text_body" ng-refresh="updateMDE" class="note-text-area" on-change="validateLoadOrderNote"></text-area>
+        <text-area data="activeLoadOrderNote.text_body" ng-refresh="updateMDE" class="note-text-area" on-change="noteChanged" min-char-count="128" max-char-count="16384" char-count="activeLoadOrderNote.charCount"></text-area>
 
         <div class="message-input" ng-if="activeLoadOrderNote.editing && activeLoadOrderNote.original.submitter.id != currentUser.id">
             <label>

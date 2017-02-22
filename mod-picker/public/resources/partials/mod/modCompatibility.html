@@ -50,7 +50,7 @@
         </span>
     </div>
     <div class="content-container">
-        <text-area data="activeCompatibilityNote.text_body" ng-refresh="updateMDE" class="note-text-area" on-change="validateCompatibilityNote"></text-area>
+        <text-area data="activeCompatibilityNote.text_body" ng-refresh="updateMDE" class="note-text-area" on-change="noteChanged" min-char-count="128" max-char-count="16384" char-count="activeCompatibilityNote.charCount"></text-area>
 
         <div class="message-input" ng-if="activeCompatibilityNote.editing && activeCompatibilityNote.original.submitted_by != currentUser.id">
             <label>

@@ -38,7 +38,7 @@
         </div>
     </div>
     <div class="content-container">
-        <text-area class="note-text-area" data="activeReview.text_body" ng-refresh="updateMDE" on-change="validateReview"></text-area>
+        <text-area class="note-text-area" data="activeReview.text_body" ng-refresh="updateMDE" on-change="reviewChanged" char-count="activeReview.charCount" min-char-count="384" max-char-count="32768"></text-area>
 
         <div class="message-input" ng-if="activeReview.editing && activeReview.original.submitter.id != currentUser.id">
             <label>
