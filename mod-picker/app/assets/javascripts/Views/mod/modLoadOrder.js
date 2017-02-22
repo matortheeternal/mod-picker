@@ -116,7 +116,17 @@ app.controller('modLoadOrderController', function($scope, $state, $stateParams, 
         var pluginsValid = (loadOrderNote.first_plugin_id !== undefined) &&
             (loadOrderNote.second_plugin_id !== undefined);
 
-        loadOrderNote.valid = textValid && pluginsValid;
+        // load order note is valid if all parts are valid
+        $scope.$applyAsync(function() {
+            $scope.activeLoadOrderNote.charCount = sanitized_text.length;
+            $scope.activeLoadOrderNote.valid = textValid && pluginsValid;
+        });
+    };
+
+    var validationTimeout;
+    $scope.noteChanged = function() {
+        clearTimeout(validationTimeout);
+        validationTimeout = setTimeout($scope.validateLoadOrderNote, 100);
     };
 
     // discard the load order note object

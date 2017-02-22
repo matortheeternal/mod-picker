@@ -30,7 +30,7 @@
                 </select>:
                 <i class="fa fa-caret-down" aria-hidden="true"></i>
             </div>
-            <input ng-keyup="keyUp(rating)" ng-keypress="keyPress($event)" ng-model="rating.rating" ng-click="focusText($event)" placeholder="?" ng-change="validateReview()" title="Rating out of 100" pu-elastic-input>
+            <input ng-keyup="keyUp(rating)" ng-keypress="keyPress($event)" ng-model="rating.rating" ng-click="focusText($event)" placeholder="?" ng-change="reviewChanged()" title="Rating out of 100" pu-elastic-input>
         </div>
         <div class="section-tools right-tools">
             <i class="fa fa-plus" aria-hidden="true" ng-class="{ 'disabled' : activeReview.ratings.length >= 5 || availableSections.length == 0 }" ng-click="addNewRating()" title="{{ activeReview.ratings.length >= 5 || availableSections.length == 0 ? 'Maximum review sections reached.  You can\'t add any more!' : 'Add review section' }}"></i>
