@@ -14,14 +14,16 @@ app.directive('videoPlayer', function() {
     };
 });
 
-app.controller('videoPlayerController', function($scope, $rootScope, $sce) {
-    $scope.player = new YT.Player('player', {
-        events: {
-            'onReady': function() {
-                $scope.tracker = setInterval($scope.trackTime, 200);
+app.controller('videoPlayerController', function($scope, $rootScope, $sce, $timeout) {
+    $scope.setupPlayer = function() {
+        $scope.player = new YT.Player('player', {
+            events: {
+                'onReady': function() {
+                    $scope.tracker = setInterval($scope.trackTime, 200);
+                }
             }
-        }
-    });
+        });
+    };
 
     $scope.setUrl = function() {
         var url = "https://www.youtube.com/embed/" + encodeURIComponent($scope.youtubeId) + "?enablejsapi=1";
@@ -56,6 +58,12 @@ app.controller('videoPlayerController', function($scope, $rootScope, $sce) {
             $scope.playerProgress();
         }
     };
+
+    try {
+        $scope.setupPlayer();
+    } catch (e) {
+        $timeout($scope.setupPlayer);
+    }
 
     $scope.$watch('youtubeId', $scope.setUrl);
 
