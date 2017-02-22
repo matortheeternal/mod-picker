@@ -50,4 +50,8 @@ class Game < ActiveRecord::Base
   def url
     self.display_name.parameterize.gsub("-", "")
   end
+
+  def help_url
+    self.display_name.parameterize.underscore
+  end
 end
