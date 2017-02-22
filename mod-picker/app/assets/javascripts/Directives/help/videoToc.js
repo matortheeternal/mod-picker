@@ -27,13 +27,27 @@ app.controller('videoTocController', function($scope, $rootScope, helpVideoSecti
     $scope.toggleActiveSection = function(section) {
         if (activeSection) activeSection.active = false;
         activeSection = section;
-        section.active = true;
+        $scope.$applyAsync(function() {
+            if (section) section.active = true;
+        });
     };
 
     $scope.navigateTo = function(section) {
-        $scope.toggleActiveSection(section);
         $rootScope.$broadcast('navigateTo', section.seconds);
     };
+
+    $scope.$on('setActiveSection', function(event, sectionId) {
+        if (!sectionId) {
+            $scope.toggleActiveSection(null);
+        } else {
+            var newActiveSection = $scope.sections.find(function(section) {
+                return section.id == sectionId;
+            });
+            if (newActiveSection) {
+                $scope.toggleActiveSection(newActiveSection);
+            }
+        }
+    });
 
     $scope.retrieveToc();
 });

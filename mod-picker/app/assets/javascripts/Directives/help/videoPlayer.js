@@ -14,12 +14,47 @@ app.directive('videoPlayer', function() {
     };
 });
 
-app.controller('videoPlayerController', function($scope, $sce) {
-    $scope.player = new YT.Player('player', {});
+app.controller('videoPlayerController', function($scope, $rootScope, $sce) {
+    $scope.player = new YT.Player('player', {
+        events: {
+            'onReady': function() {
+                $scope.tracker = setInterval($scope.trackTime, 200);
+            }
+        }
+    });
 
     $scope.setUrl = function() {
         var url = "https://www.youtube.com/embed/" + encodeURIComponent($scope.youtubeId) + "?enablejsapi=1";
         $scope.videoUrl = $sce.trustAsResourceUrl(url);
+    };
+
+    $scope.setActiveSection = function(newActiveSection) {
+        $scope.activeSection = newActiveSection;
+        $rootScope.$broadcast('setActiveSection', newActiveSection.id);
+    };
+
+    $scope.getCurrentSection = function() {
+        var nextSectionIndex = $scope.sections.findIndex(function(section) {
+            return section.seconds > $scope.videoTime;
+        });
+        return nextSectionIndex > 0 && $scope.sections[nextSectionIndex - 1];
+    };
+
+    $scope.playerProgress = function() {
+        if (!$scope.sections) return;
+        var currentSection = $scope.getCurrentSection();
+        if (!$scope.activeSection || !currentSection || $scope.activeSection.id !== currentSection.id) {
+            $scope.setActiveSection(currentSection);
+        }
+    };
+
+    $scope.trackTime = function() {
+        if (!$scope.player || !$scope.videoUrl) return;
+        $scope.oldTime = $scope.videoTime;
+        $scope.videoTime = $scope.player.getCurrentTime();
+        if ($scope.videoTime !== $scope.oldTime) {
+            $scope.playerProgress();
+        }
     };
 
     $scope.$watch('youtubeId', $scope.setUrl);
