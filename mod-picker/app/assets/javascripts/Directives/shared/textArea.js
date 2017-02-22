@@ -11,6 +11,8 @@ app.directive('textArea', function($timeout) {
         link: function(scope, element, attrs) {
             var user = scope.$root.currentUser;
             var enableSpellCheck = user && user.settings && user.settings.enable_spellcheck;
+            var changeTimeout;
+
 
             // get text area element and turn it into a markdown editor
             var textarea = element.children()[0];
@@ -25,7 +27,7 @@ app.directive('textArea', function($timeout) {
                     mde.value(newVal);
                 }
             });
-            mde.codemirror.on("change", function(){
+            var mdeChanged = function() {
                 scope.data = mde.value();
                 scope.$applyAsync();
                 if (scope.onChange) {
@@ -33,6 +35,10 @@ app.directive('textArea', function($timeout) {
                         scope.onChange();
                     }, 50);
                 }
+            };
+            mde.codemirror.on("change", function() {
+                clearTimeout(changeTimeout);
+                setTimeout(mdeChanged, 100);
             });
 
             scope.$watch('refresh', function(newVal) {
