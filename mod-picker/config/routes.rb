@@ -331,7 +331,7 @@ Rails.application.routes.draw do
   match '/help/game/:game', to: 'help_pages#game', via: [:get]
   match '/help/:id/comments', to: 'help_pages#comments', via: [:get, :post]
   match '/help/search', to:  'help_pages#search', via: [:get]
-  match '/help/:id', to: 'help_pages#show', via: [:get]
+  resources :help_pages, path: 'help', only: [:show, :index]
   match '/help/*path', to: 'help_pages#record_not_found', via: :all
 
   # help videos
