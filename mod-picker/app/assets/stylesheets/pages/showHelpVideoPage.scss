@@ -11,7 +11,7 @@ video-toc {
 
   .video-section {
     padding: 10px;
-    @include transition(background-color 0.2s ease-in-out);
+    @include transition(background-color 0.4s ease-in-out);
 
     &.active-section {
       background-color: $success_primary;
