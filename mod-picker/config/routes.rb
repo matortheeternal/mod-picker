@@ -1,5 +1,8 @@
+require 'sidekiq/web'
+require 'sidekiq-scheduler'
+require 'sidekiq-scheduler/web'
+
 Rails.application.routes.draw do
-  # disable registration
   devise_for :users, :controllers => {
       sessions: 'sessions',
       registrations: 'registrations',
@@ -8,6 +11,10 @@ Rails.application.routes.draw do
   devise_scope :user do
     get '/users/invitation/batch/new' => 'user_invitations#new_batch'
     post '/users/invitation/batch' => 'user_invitations#create_batch'
+  end
+
+  authenticate :user, lambda { |u| u.admin? } do
+    mount Sidekiq::Web => '/sidekiq'
   end
 
   # require authentication before allowing user to submit things
@@ -220,6 +227,9 @@ Rails.application.routes.draw do
       # comments
       match '/comments/index', to: 'comments#index', via: [:get, :post]
       resources :comments, only: [:show]
+
+      # mod lists
+      match '/mod_lists/:id/step', to: 'mod_lists#step', via: [:get]
 
       # static data
       resources :categories, only: [:index]

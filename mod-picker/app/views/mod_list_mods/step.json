@@ -1,0 +1,9 @@
+{
+  "only": ["group_id", "index", "description"],
+  "include": {
+    "mod": {
+      "format": "step"
+    }
+  },
+  "methods": ["baseline_options"]
+}

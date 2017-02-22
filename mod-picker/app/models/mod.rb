@@ -230,6 +230,20 @@ class Mod < ActiveRecord::Base
     sources_array.map {|source| source.url}
   end
 
+  def quality_options
+    opts = {}
+    opts[:lq] = 1 if tags.any?{|tag| tag.text == "Low Quality Option"}
+    opts[:hq] = 1 if tags.any?{|tag| tag.text == "High Quality Option"}
+    opts
+  end
+
+  def dlc_requirements
+    req_mods = association(:required_mods).loaded? ? required_mods : []
+    req_mods.each_with_object(Hash.new(0)) do |req, reqs|
+      reqs[req.required_mod.name] = 1 if req.required_mod.is_official
+    end
+  end
+
   def correction_passed(correction)
     update_columns(status: Mod.statuses[correction.mod_status])
   end
