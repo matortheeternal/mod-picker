@@ -52,21 +52,21 @@ app.service('assetUtils', function(fileUtils) {
         return ["dll", "lib"].indexOf(ext) > -1;
     };
 
-    this.getIconClass = function(ext) {
+    this.getIconClass = function(ext, hasChildren) {
         for (var i = 0; i < extMap.length; i++) {
             var extMapping = extMap[i];
             if (extMapping.exts.indexOf(ext) > -1) {
                 return extMapping.iconClass;
             }
         }
-        return "fa-file-o"
+        return hasChildren ? "fa-folder-o" : "fa-file-o";
     };
 
     this.newLevel = function(currentLevel, levelName) {
         var folderExt = fileUtils.getFileExtension(levelName).toLowerCase();
         currentLevel.unshift({
             name: levelName,
-            iconClass: service.getIconClass(folderExt),
+            iconClass: service.getIconClass(folderExt, true),
             iconStack: service.getIsIconStack(folderExt),
             children: []
         });
