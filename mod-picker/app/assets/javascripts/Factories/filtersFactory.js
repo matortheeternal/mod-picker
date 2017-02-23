@@ -498,6 +498,12 @@ app.service("filtersFactory", function() {
                 default: true
             },
             {
+                data: "roles.helper",
+                param: "hlp",
+                type: "Boolean",
+                default: true
+            },
+            {
                 data: "roles.author",
                 param: "ma",
                 type: "Boolean",
