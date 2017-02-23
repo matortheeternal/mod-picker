@@ -30,7 +30,7 @@
                 </select>:
                 <i class="fa fa-caret-down" aria-hidden="true"></i>
             </div>
-            <input ng-keyup="keyUp(rating)" ng-keypress="keyPress($event)" ng-model="rating.rating" ng-click="focusText($event)" placeholder="?" ng-change="validateReview()" title="Rating out of 100" pu-elastic-input>
+            <input ng-keyup="keyUp(rating)" ng-keypress="keyPress($event)" ng-model="rating.rating" ng-click="focusText($event)" placeholder="?" ng-change="reviewChanged()" title="Rating out of 100" pu-elastic-input>
         </div>
         <div class="section-tools right-tools">
             <i class="fa fa-plus" aria-hidden="true" ng-class="{ 'disabled' : activeReview.ratings.length >= 5 || availableSections.length == 0 }" ng-click="addNewRating()" title="{{ activeReview.ratings.length >= 5 || availableSections.length == 0 ? 'Maximum review sections reached.  You can\'t add any more!' : 'Add review section' }}"></i>
@@ -38,7 +38,7 @@
         </div>
     </div>
     <div class="content-container">
-        <text-area class="note-text-area" data="activeReview.text_body" ng-refresh="updateMDE" on-change="validateReview"></text-area>
+        <text-area class="note-text-area" data="activeReview.text_body" ng-refresh="updateMDE" on-change="reviewChanged" char-count="activeReview.charCount" min-char-count="384" max-char-count="32768"></text-area>
 
         <div class="message-input" ng-if="activeReview.editing && activeReview.original.submitter.id != currentUser.id">
             <label>

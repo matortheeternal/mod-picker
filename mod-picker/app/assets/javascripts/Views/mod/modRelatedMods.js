@@ -104,7 +104,16 @@ app.controller('modRelatedModsController', function($scope, $stateParams, $state
         var modsValid = note.mod_id !== undefined;
 
         // related mod note is valid if all parts valid
-        note.valid = textValid && modsValid;
+        $scope.$applyAsync(function() {
+            $scope.activeRelatedModNote.charCount = sanitized_text.length;
+            $scope.activeRelatedModNote.valid = textValid && modsValid;
+        });
+    };
+
+    var validationTimeout;
+    $scope.noteChanged = function() {
+        clearTimeout(validationTimeout);
+        validationTimeout = setTimeout($scope.validateRelatedModNote, 100);
     };
 
     // discard the related mod note object

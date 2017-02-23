@@ -20,10 +20,13 @@
                 <option value="after">Install After</option>
             </select>
         </span>
-        <search-input search-function="searchMods" result-id="activeInstallOrderNote.mod_id" excluded-id="mod.id" on-change="validateInstallOrderNote" label="mod" key="name" search-text="activeInstallOrderNote.mod_name" disabled="activeInstallOrderNote.editing"></search-input>
+        <search-input search-function="searchMods" result-id="activeInstallOrderNote.mod_id" excluded-id="mod.id" on-change="noteChanged" label="mod" key="name" search-text="activeInstallOrderNote.mod_name" disabled="activeInstallOrderNote.editing"></search-input>
+        <span class="error-tooltip" title="You must specify two mods to create an install order note.  Enter the name of &#13;another mod in the text box and select it from the dropdown." ng-hide="activeLoadOrderNote.second_plugin_id">
+            <i class="fa fa-exclamation-circle"></i>
+        </span>
     </div>
     <div class="content-container">
-        <text-area data="activeInstallOrderNote.text_body" ng-refresh="updateMDE" class="note-text-area" on-change="validateInstallOrderNote"></text-area>
+        <text-area data="activeInstallOrderNote.text_body" ng-refresh="updateMDE" class="note-text-area" on-change="noteChanged" min-char-count="128" max-char-count="16384" char-count="activeInstallOrderNote.charCount"></text-area>
 
         <div class="message-input" ng-if="activeInstallOrderNote.editing && activeInstallOrderNote.original.submitter.id != currentUser.id">
             <label>

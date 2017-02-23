@@ -158,6 +158,6 @@ app.service('contributionService', function(backend, $q, userTitleService, pageU
     };
 
     this.removePrompts = function(text_body) {
-        return text_body.replace(/([^\n]+)\uFEFF([^\n]+)([\n]+)/g, '');
+        return text_body.replace(/([^\n]+)\uFEFF([^\n]+)([\n]+)/g, '').trim();
     };
 });

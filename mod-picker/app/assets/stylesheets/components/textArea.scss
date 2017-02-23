@@ -9,3 +9,20 @@
     max-width: 100%;
   }
 }
+
+.editor-statusbar {
+  cursor: default;
+
+  .characters {
+    color: $success_secondary;
+    font-weight: 500;
+
+    &.too-few {
+      color: $error_secondary;
+    }
+
+    &.too-many {
+      color: $error_secondary;
+    }
+  }
+}
