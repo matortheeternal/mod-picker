@@ -63,7 +63,8 @@ app.controller('modRelatedModsController', function($scope, $stateParams, $state
             text_body: contributionFactory.getDefaultTextBody("RelatedModNote")
         };
 
-        // update the markdown editor
+        // update validation, update the markdown editor
+        $scope.validateRelatedModNote();
         $scope.updateEditor();
     };
 

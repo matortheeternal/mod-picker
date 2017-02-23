@@ -68,7 +68,8 @@ app.controller('modCompatibilityController', function($scope, $stateParams, $sta
             text_body: contributionFactory.getDefaultTextBody("CompatibilityNote")
         };
 
-        // update the markdown editor
+        // update validation, update the markdown editor
+        $scope.validateCompatibilityNote();
         $scope.updateEditor();
     };
 

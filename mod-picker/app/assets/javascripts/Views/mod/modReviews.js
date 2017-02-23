@@ -100,7 +100,8 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
             $scope.activeReview.text_body += contributionFactory.preparePrompt(section.prompt) + "\n";
         });
 
-        // update the markdown editor
+        // update validation, update the markdown editor
+        $scope.validateReview();
         $scope.updateEditor();
     };
 

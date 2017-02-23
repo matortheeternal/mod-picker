@@ -67,7 +67,8 @@ app.controller('modLoadOrderController', function($scope, $state, $stateParams, 
             text_body: contributionFactory.getDefaultTextBody("LoadOrderNote")
         };
 
-        // update the markdown editor
+        // update validation, update the markdown editor
+        $scope.validateLoadOrderNote();
         $scope.updateEditor();
     };
 

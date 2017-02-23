@@ -66,7 +66,8 @@ app.controller('modInstallOrderController', function($scope, $stateParams, $stat
             text_body: contributionFactory.getDefaultTextBody("InstallOrderNote")
         };
 
-        // update the markdown editor
+        // update validation, update the markdown editor
+        $scope.validateInstallOrderNote();
         $scope.updateEditor();
     };
 
