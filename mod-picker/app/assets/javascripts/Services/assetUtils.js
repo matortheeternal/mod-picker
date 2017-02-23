@@ -1,9 +1,9 @@
 app.service('assetUtils', function(fileUtils) {
     var service = this;
 
-    var extMap = [{
+    var fileExtMap = [{
         exts: [""],
-        iconClass: "fa-folder-o"
+        iconClass: "fa-file-o"
     }, {
         exts: ["exe", "jar"],
         iconClass: "fa-list-alt"
@@ -48,18 +48,27 @@ app.service('assetUtils', function(fileUtils) {
         iconClass: "fa-cube"
     }];
 
+    var folderExtMap = [{
+        exts: [""],
+        iconClass: "fa-folder-o"
+    }, {
+        exts: ["bsa", "ba2", "rar", "7z", "zip", "tar", "gz"],
+        iconClass: "fa-file-archive-o"
+    }];
+
     this.getIsIconStack = function(ext) {
         return ["dll", "lib"].indexOf(ext) > -1;
     };
 
     this.getIconClass = function(ext, hasChildren) {
+        var extMap = hasChildren ? folderExtMap : fileExtMap;
         for (var i = 0; i < extMap.length; i++) {
             var extMapping = extMap[i];
             if (extMapping.exts.indexOf(ext) > -1) {
                 return extMapping.iconClass;
             }
         }
-        return hasChildren ? "fa-folder-o" : "fa-file-o";
+        return extMap[0].iconClass;
     };
 
     this.newLevel = function(currentLevel, levelName) {
