@@ -10,7 +10,7 @@
 //= stub_tree Directives/legal
 //= stub_tree Directives/help
 /*
- Mod Picker v1.0
+ Mod Picker v1.4
  (c) 2017 Mod Picker, LLC. https://www.modpicker.com
 */
 

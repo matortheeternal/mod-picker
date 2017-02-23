@@ -10,7 +10,7 @@
 //= require ./Factories/questionsFactory.js
 //= require ./polyfills.js
 /*
- Mod Picker Licensing Wizard v1.0
+ Mod Picker Licensing Wizard v1.4
  (c) 2017 Mod Picker, LLC. https://www.modpicker.com
 */
 

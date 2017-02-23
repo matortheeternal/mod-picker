@@ -25,7 +25,7 @@
 //= require Services/ObjectUtils.js
 //= require_tree ./Directives/help
 /*
- Mod Picker Help Center v1.0
+ Mod Picker Help Center v1.4
  (c) 2017 Mod Picker, LLC. https://www.modpicker.com
 */
 
