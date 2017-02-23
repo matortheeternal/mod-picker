@@ -21,6 +21,9 @@
             </select>
         </span>
         <search-input search-function="searchMods" result-id="activeRelatedModNote.mod_id" search-text="activeRelatedModNote.mod_name" excluded-id="mod.id" on-change="noteChanged" disabled="activeRelatedModNote.original" label="mod" key="name"></search-input>
+        <span class="error-tooltip" title="You must specify two mods to create a related mod note.  Enter the name of &#13;another mod in the text box and select it from the dropdown." ng-hide="activeRelatedModNote.mod_id">
+            <i class="fa fa-exclamation-circle"></i>
+        </span>
     </div>
     <div class="content-container">
         <text-area data="activeRelatedModNote.text_body" ng-refresh="updateMDE" class="note-text-area" on-change="noteChanged" min-char-count="128" max-char-count="16384" char-count="activeRelatedModNote.charCount"></text-area>
