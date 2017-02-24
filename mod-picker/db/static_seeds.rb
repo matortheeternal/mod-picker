@@ -572,10 +572,7 @@ def seed_licenses
   License.create(
       name: "Custom License",
       license_type: "custom",
-      license_options_attributes: [{
-          name: "Binpress License Generator",
-          link: "http://www.binpress.com/license/generator"
-      }],
+      license_options_attributes: [],
       code: true,
       assets: true,
       description: "Make your own license.  The advantage of making your own license is you can define the terms yourself.  The disadvantage is it becomes a harder for users to determine your permissions at a glance, and creating a strong, legally binding license can be time-consuming or difficult.  It is very important to include a statement releasing liability if you make a custom license!"
