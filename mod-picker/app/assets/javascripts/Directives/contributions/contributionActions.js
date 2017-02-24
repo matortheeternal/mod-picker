@@ -40,9 +40,15 @@ app.controller('contributionActionsController', function($scope, $rootScope, $ti
     $scope.errorEvent = $scope.eventPrefix ? $scope.eventPrefix + 'ErrorMessage' : 'errorMessage';
     $scope.modelObj = contributionFactory.getModel($scope.modelName);
 
+    $scope.getBaseUrl = function() {
+        var gamePath = window.location.pathname.split('/').slice(0, 2).join('/');
+        return window.location.origin + gamePath + '/';
+    };
+
     // determine share url based on the content type
     $scope.buildShareLink = function() {
-        var modTarget, modId, targetTab, targetId, baseUrl = location.href.replace(location.href, "");
+        var modTarget, modId, targetTab, targetId;
+        var baseUrl = $scope.getBaseUrl();
         if ($scope.modelName === "Correction") {
             var correctableType = $scope.target.correctable_type;
             if (correctableType === "Mod") {

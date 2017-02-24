@@ -3,10 +3,10 @@
     <div class="content-container">
         <div class="text-container plain-text-container">{{::mod.description}}</div>
         <div class="description-links" ng-if="mod.support_link || mod.issues_link">
-            <a class="inverse-link" ng-href="{{mod.support_link}}" ng-if="mod.support_link">
+            <a class="inverse-link" ng-href="{{mod.support_link}}" ng-if="mod.support_link" target="_blank">
                 Get Support
             </a>
-            <a class="inverse-link" ng-href="{{mod.issues_link}}" ng-if="mod.issues_link">
+            <a class="inverse-link" ng-href="{{mod.issues_link}}" ng-if="mod.issues_link" target="_blank">
                 Report an Issue
             </a>
         </div>
