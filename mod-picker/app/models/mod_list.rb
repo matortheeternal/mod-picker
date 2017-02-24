@@ -224,7 +224,7 @@ class ModList < ActiveRecord::Base
   end
 
   def set_active
-    ActiveModList.clear(game_id, submitted_by)
+    ActiveModList.where(user_id: submitted_by, game_id: game_id).delete_all
     ActiveModList.create(game_id: game_id, user_id: submitted_by, mod_list_id: id)
   end
 
@@ -357,6 +357,10 @@ class ModList < ActiveRecord::Base
     a.join("\r\n")
   end
 
+  def setup_string(user)
+    SecureData.full(user, to_json({format: "setup"}))
+  end
+
   def set_completed?
     status == "complete" && completed.nil?
   end
@@ -376,9 +380,6 @@ class ModList < ActiveRecord::Base
     end
 
     def unset_active
-      if submitter.active_mod_list_id == id
-        submitter.active_mod_list_id = nil
-        submitter.save
-      end
+      ActiveModList.where(user_id: submitted_by, mod_list_id: id).destroy_all
     end
 end

@@ -1,0 +1,11 @@
+{
+  "except": ["submitted_by"],
+  "include": {
+    "submitter": {
+      "format": "card"
+    },
+    "editor": {},
+    "first_mod": {},
+    "second_mod": {}
+  }
+}

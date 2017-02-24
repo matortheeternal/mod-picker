@@ -1,9 +1,11 @@
-.home-left-column {
-  padding: 20px 20px 0 0;
-}
+.home-page {
+  .left-column {
+    padding: 20px 20px 0 0;
+  }
 
-.home-right-column {
-  padding: 20px 0 0 20px;
+  .right-column {
+    padding: 20px 0 0 20px;
+  }
 }
 
 //left column's recent mods and modlists

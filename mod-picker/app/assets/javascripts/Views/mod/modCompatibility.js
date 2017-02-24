@@ -68,7 +68,8 @@ app.controller('modCompatibilityController', function($scope, $stateParams, $sta
             text_body: contributionFactory.getDefaultTextBody("CompatibilityNote")
         };
 
-        // update the markdown editor
+        // update validation, update the markdown editor
+        $scope.validateCompatibilityNote();
         $scope.updateEditor();
     };
 
@@ -122,7 +123,16 @@ app.controller('modCompatibilityController', function($scope, $stateParams, $sta
         }
 
         // compatibility note is valid if all parts valid
-        note.valid = textValid && modsValid && statusValid;
+        $scope.$applyAsync(function() {
+            $scope.activeCompatibilityNote.charCount = sanitized_text.length;
+            $scope.activeCompatibilityNote.valid = textValid && modsValid && statusValid;
+        });
+    };
+
+    var validationTimeout;
+    $scope.noteChanged = function() {
+        clearTimeout(validationTimeout);
+        validationTimeout = setTimeout($scope.validateCompatibilityNote, 100);
     };
 
     // discard the compatibility note object

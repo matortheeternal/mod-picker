@@ -13,4 +13,7 @@ class LegalPagesController < ApplicationController
 
   def copyright
   end
+
+  def wizard
+  end
 end

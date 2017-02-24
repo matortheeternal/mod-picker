@@ -3,7 +3,7 @@
     <li>
         <% if page.display_image %>
         <%= link_to "/help/#{page.url}", method: :get do %>
-            <%= image_tag "#{@help_page.display_image}", class: "header-image" %>
+            <%= image_tag "#{page.display_image}", class: "header-image" %>
         <% end %>
         <% end %>
 
@@ -49,5 +49,50 @@
             </span>
         </div>
     </li>
+    <% end %>
+    <% @help_videos.each do |video| %>
+        <li>
+            <div class="meta-container">
+                <%= link_to "/videos/#{video.url}", method: :get do %>
+                    <h4 class="item-header">
+                    <span class="item-title">
+                        <%= video.title %>
+                    </span>
+                        <% if video.submitted.between?((DateTime.now - 2.weeks), DateTime.now) %>
+                            <span class="new-label">NEW</span>
+                        <% end %>
+                        <% unless video.approved %>
+                            <span class="unapproved-label">UNAPPROVED</span>
+                        <% end %>
+                    </h4>
+                <% end %>
+
+
+                <span class="meta author">
+                    <i class="fa fa-user" aria-hidden="true" title="Author"></i>
+                    <%= link_to video.submitter.username, "/skyrim#/user/#{video.submitter.id}", class: "medium-link" %>
+                </span>
+
+                <div class="date">
+                    <span class="meta submit-date" title="<%= video.submitted.strftime("%m/%d/%Y %I:%M:%S %z") %>">
+                        <i class="fa fa-clock-o" aria-hidden="true" title="Created"></i>
+                        <%= time_ago_in_words(video.submitted).capitalize %> ago
+                    </span>
+                </div>
+
+                <span class="meta">
+                    <% if video.game.present? %>
+                    <span>
+                        <i class="fa fa-gamepad" aria-hidden="true" title="Game"></i>
+                        <%= link_to video.game.display_name, "/help/game/#{video.game.help_url}", class: "medium-link" %>
+                    </span>
+                    <% end %>
+                    <span>
+                        <i class="fa fa-folder" aria-hidden="true" title="Category"></i>
+                        <%= link_to video.category.humanize, "/help/category/#{video.category}", class: "medium-link capitalize" %>
+                    </span>
+                </span>
+            </div>
+        </li>
     <% end %>
 </ul>

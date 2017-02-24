@@ -12,7 +12,7 @@ app.directive('gridItems', function() {
     }
 });
 
-app.controller('gridItemsController', function($scope, $timeout, colorsFactory, objectUtils, listUtils, formUtils) {
+app.controller('gridItemsController', function($scope, $timeout, smoothScroll, colorsFactory, objectUtils, listUtils, formUtils) {
     // initialize variables
     $scope.colorOptions = colorsFactory.getColors();
 
@@ -39,6 +39,41 @@ app.controller('gridItemsController', function($scope, $timeout, colorsFactory, 
         array.splice(index, 1);
         listUtils.updateItems($scope.model);
         $scope.$emit('itemMoved');
+    };
+
+    $scope.scrollToItem = function(item) {
+        var destElement = document.getElementsByTagName('grid-item')[item.index - 1];
+        smoothScroll(destElement, {duration: 300, offset: window.innerHeight / 3});
+    };
+
+    $scope.focusItemIndex = function(item) {
+        var indexElement = document.getElementsByClassName('item-index')[item.index - 1];
+        indexElement.firstElementChild.focus();
+    };
+
+    $scope.applyIndex = function(item, skipScroll) {
+        var success = listUtils.moveItemToNewIndex($scope.model, "mod", item);
+        if (!success) return;
+        listUtils.updateItems($scope.model);
+        $scope.$emit('itemMoved');
+        if (skipScroll) return;
+        $timeout(function() {
+            $scope.scrollToItem(item);
+            $scope.focusItemIndex(item);
+        });
+    };
+
+    $scope.resetIndex = function(item) {
+        item.index = listUtils.actualIndex($scope.model, item);
+    };
+
+    $scope.indexKeyDown = function($event, item) {
+        var key = $event.keyCode;
+        if (key == 13) {
+            $scope.applyIndex(item, $event.shiftKey);
+            $event.preventDefault();
+            $event.stopPropagation();
+        }
     };
 
     $scope.$on('moveItem', function(event, options) {

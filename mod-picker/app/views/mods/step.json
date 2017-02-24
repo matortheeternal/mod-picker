@@ -1,0 +1,4 @@
+{
+  "only": ["id", "name"],
+  "methods": ["url", "quality_options", "dlc_requirements"]
+}

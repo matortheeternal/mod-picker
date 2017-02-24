@@ -146,13 +146,24 @@ grid-items {
       position: absolute;
       left: -1px;
       top: -1px;
-      padding: 0 2px;
       background-color: $primary_background;
-      border: 1px solid $border_color;
       min-width: 16px;
       font-size: 13px;
       font-weight: bold;
       text-align: center;
+
+      span {
+        padding: 0 2px;
+        border: 1px solid $border_color;
+      }
+
+      input {
+        font-size: 12px;
+        font-weight: bold;
+        height: 16px;
+        min-width: 14px;
+        text-align: center;
+      }
     }
 
     .image-container {
@@ -182,6 +193,10 @@ grid-items {
       li.mod-name {
         font-size: 14px;
         font-weight: 500;
+      }
+
+      li.mod-custom {
+        font-style: italic;
       }
 
       li.mod-name, li.mod-author {

@@ -378,6 +378,64 @@
         }
       }
     },
+    "/mods/{id}/related_mod_notes" : {
+      "post" : {
+        "summary" : "Get mod related mod notes",
+        "description" : "Get all public related mod notes associated with a mod.",
+        "parameters" : [{
+          "name" : "id",
+          "in" : "path",
+          "type" : "integer",
+          "description" : "The id of the mod to get related mod notes for.",
+          "required" : true
+        }, {
+          "name" : "api_key",
+          "in" : "query",
+          "required" : true,
+          "type" : "string",
+          "description" : "Your API key."
+        }, {
+          "name" : "body",
+          "in" : "body",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/ModRelatedModNotesRequest"
+          }
+        }
+        ],
+        "tags" : ["Related Mod Notes"],
+        "responses" : {
+          "200" : {
+            "description" : "An array of related mod notes",
+            "schema" : {
+              "type" : "object",
+              "properties" : {
+                "related_mod_notes" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/definitions/BaseRelatedModNote"
+                  }
+                },
+                "max_entries" : {
+                  "type" : "integer",
+                  "description" : "The number of results returned by the search."
+                },
+                "entries_per_page" : {
+                  "type" : "integer",
+                  "description" : "The number of results displayed per page."
+                }
+              }
+            }
+          },
+          "default" : {
+            "description" : "Unexpected error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
     "/mods/{id}/corrections" : {
       "post" : {
         "summary" : "Get mod appeals",
@@ -1365,6 +1423,97 @@
         }
       }
     },
+    "/related_mod_notes/index" : {
+      "post" : {
+        "summary" : "Related mod notes index",
+        "description" : "Search for related mod notes on Mod Picker with extensive filtering options.",
+        "parameters" : [{
+          "name" : "api_key",
+          "in" : "query",
+          "required" : true,
+          "type" : "string",
+          "description" : "Your API key."
+        }, {
+          "name" : "body",
+          "in" : "body",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/RelatedModNotesIndexRequest"
+          }
+        }
+        ],
+        "tags" : ["Related Mod Notes"],
+        "responses" : {
+          "200" : {
+            "description" : "Related mod note results",
+            "schema" : {
+              "type" : "object",
+              "properties" : {
+                "related_mod_notes" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/definitions/BaseRelatedModNote"
+                  }
+                },
+                "max_entries" : {
+                  "type" : "integer",
+                  "description" : "The number of results returned by the search."
+                },
+                "entries_per_page" : {
+                  "type" : "integer",
+                  "description" : "The number of results displayed per page."
+                }
+              }
+            }
+          },
+          "default" : {
+            "description" : "Unexpected error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/related_mod_notes/{id}" : {
+      "get" : {
+        "summary" : "Show related mod note",
+        "parameters" : [{
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "description" : "The id of the related mod note to get."
+        }, {
+          "name" : "api_key",
+          "in" : "query",
+          "required" : true,
+          "type" : "string",
+          "description" : "Your API key."
+        }
+        ],
+        "tags" : ["Related Mod Notes"],
+        "responses" : {
+          "200" : {
+            "description" : "Related mod note",
+            "schema" : {
+              "type" : "object",
+              "properties" : {
+                "related_mod_note" : {
+                  "$ref" : "#/definitions/BaseRelatedModNote"
+                }
+              }
+            }
+          },
+          "default" : {
+            "description" : "Unexpected error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
     "/comments/index" : {
       "post" : {
         "summary" : "Comments index",
@@ -2274,10 +2423,6 @@
         "moderator_message" : {
           "type" : "string"
         },
-        "overall_rating" : {
-          "type" : "number",
-          "format" : "float"
-        },
         "reputation" : {
           "type" : "number",
           "format" : "float"
@@ -2290,9 +2435,6 @@
           "type" : "integer"
         },
         "not_helpful_count" : {
-          "type" : "integer"
-        },
-        "ratings_count" : {
           "type" : "integer"
         },
         "corrections_count" : {
@@ -2369,10 +2511,6 @@
         "moderator_message" : {
           "type" : "string"
         },
-        "overall_rating" : {
-          "type" : "number",
-          "format" : "float"
-        },
         "reputation" : {
           "type" : "number",
           "format" : "float"
@@ -2385,9 +2523,6 @@
           "type" : "integer"
         },
         "not_helpful_count" : {
-          "type" : "integer"
-        },
-        "ratings_count" : {
           "type" : "integer"
         },
         "corrections_count" : {
@@ -2464,10 +2599,6 @@
         "moderator_message" : {
           "type" : "string"
         },
-        "overall_rating" : {
-          "type" : "number",
-          "format" : "float"
-        },
         "reputation" : {
           "type" : "number",
           "format" : "float"
@@ -2480,9 +2611,6 @@
           "type" : "integer"
         },
         "not_helpful_count" : {
-          "type" : "integer"
-        },
-        "ratings_count" : {
           "type" : "integer"
         },
         "corrections_count" : {
@@ -2526,6 +2654,75 @@
           "items" : {
             "$ref" : "#/definitions/BaseUser"
           }
+        },
+        "submitter" : {
+          "$ref" : "#/definitions/ExtUser"
+        }
+      }
+    },
+    "BaseRelatedModNote" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "integer"
+        },
+        "game_id" : {
+          "type" : "integer"
+        },
+        "submitted_by" : {
+          "type" : "integer"
+        },
+        "edited_by" : {
+          "type" : "integer"
+        },
+        "first_mod_id" : {
+          "type" : "integer"
+        },
+        "second_mod_id" : {
+          "type" : "integer"
+        },
+        "text_body" : {
+          "type" : "string"
+        },
+        "edit_summary" : {
+          "type" : "string"
+        },
+        "moderator_message" : {
+          "type" : "string"
+        },
+        "reputation" : {
+          "type" : "number",
+          "format" : "float"
+        },
+        "helpful_count" : {
+          "type" : "integer"
+        },
+        "not_helpful_count" : {
+          "type" : "integer"
+        },
+        "approved" : {
+          "type" : "boolean"
+        },
+        "hidden" : {
+          "type" : "boolean"
+        },
+        "has_adult_content" : {
+          "type" : "boolean"
+        },
+        "submitted" : {
+          "type" : "string"
+        },
+        "edited" : {
+          "type" : "string"
+        },
+        "first_mod" : {
+          "$ref" : "#/definitions/BaseMod"
+        },
+        "second_mod" : {
+          "$ref" : "#/definitions/BaseMod"
+        },
+        "editor" : {
+          "$ref" : "#/definitions/BaseUser"
         },
         "submitter" : {
           "$ref" : "#/definitions/ExtUser"
@@ -4484,6 +4681,122 @@
         }
       }
     },
+    "RelatedModNotesIndexRequest" : {
+      "type" : "object",
+      "required" : ["sort", "filters"],
+      "properties" : {
+        "page" : {
+          "type" : "integer",
+          "minimum" : 1
+        },
+        "sort" : {
+          "type" : "object",
+          "required" : ["column", "direction"],
+          "properties" : {
+            "column" : {
+              "type" : "string",
+              "enum" : ["helpfulness", "submitter.reputation", "submitted", "edited"],
+              "description" : "Column to sort by."
+            },
+            "direction" : {
+              "type" : "string",
+              "enum" : ["ASC", "DESC"],
+              "description" : "Direction to sort in (ASC for ascending, DESC for descending)."
+            }
+          }
+        },
+        "filters" : {
+          "type" : "object",
+          "properties" : {
+            "search" : {
+              "type" : "string",
+              "description" : "Returns reviews with text bodies containing the input string."
+            },
+            "submitter" : {
+              "type" : "string",
+              "description" : "Returns reviews submitted by the user specified.  Exact match."
+            },
+            "status" : {
+              "type" : "object",
+              "properties" : {
+                "alternative_mod" : {
+                  "type" : "boolean"
+                },
+                "recommended_mod" : {
+                  "type" : "boolean"
+                }
+              }
+            },
+            "submitted" : {
+              "type" : "object",
+              "properties" : {
+                "min" : {
+                  "type" : "string"
+                },
+                "max" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "edited" : {
+              "type" : "object",
+              "properties" : {
+                "min" : {
+                  "type" : "string"
+                },
+                "max" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "helpfulness" : {
+              "type" : "object",
+              "properties" : {
+                "min" : {
+                  "type" : "integer"
+                },
+                "max" : {
+                  "type" : "integer"
+                }
+              }
+            },
+            "reputation" : {
+              "type" : "object",
+              "properties" : {
+                "min" : {
+                  "type" : "integer"
+                },
+                "max" : {
+                  "type" : "integer"
+                }
+              }
+            },
+            "helpful_count" : {
+              "type" : "object",
+              "properties" : {
+                "min" : {
+                  "type" : "integer"
+                },
+                "max" : {
+                  "type" : "integer"
+                }
+              }
+            },
+            "not_helpful_count" : {
+              "type" : "object",
+              "properties" : {
+                "min" : {
+                  "type" : "integer"
+                },
+                "max" : {
+                  "type" : "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "CommentsIndexRequest" : {
       "type" : "object",
       "required" : ["sort", "filters"],
@@ -5113,6 +5426,32 @@
             "column" : {
               "type" : "string",
               "enum" : ["helpfulness", "submitter.reputation", "submitted", "edited", "corrections_count"],
+              "description" : "Column to sort by."
+            },
+            "direction" : {
+              "type" : "string",
+              "enum" : ["ASC", "DESC"],
+              "description" : "Direction to sort in (ASC for ascending, DESC for descending)."
+            }
+          }
+        }
+      }
+    },
+    "ModRelatedModNotesRequest" : {
+      "type" : "object",
+      "required" : ["sort"],
+      "properties" : {
+        "page" : {
+          "type" : "integer",
+          "minimum" : 1
+        },
+        "sort" : {
+          "type" : "object",
+          "required" : ["column", "direction"],
+          "properties" : {
+            "column" : {
+              "type" : "string",
+              "enum" : ["helpfulness", "submitter.reputation", "submitted", "edited"],
               "description" : "Column to sort by."
             },
             "direction" : {

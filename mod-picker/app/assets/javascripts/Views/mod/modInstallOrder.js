@@ -66,7 +66,8 @@ app.controller('modInstallOrderController', function($scope, $stateParams, $stat
             text_body: contributionFactory.getDefaultTextBody("InstallOrderNote")
         };
 
-        // update the markdown editor
+        // update validation, update the markdown editor
+        $scope.validateInstallOrderNote();
         $scope.updateEditor();
     };
 
@@ -104,7 +105,17 @@ app.controller('modInstallOrderController', function($scope, $stateParams, $stat
         var textValid = sanitized_text.length > 128;
         var modsValid = installOrderNote.mod_id !== undefined;
 
-        installOrderNote.valid = textValid && modsValid;
+        // install order note is valid if all parts are valid
+        $scope.$applyAsync(function() {
+            $scope.activeInstallOrderNote.charCount = sanitized_text.length;
+            $scope.activeInstallOrderNote.valid = textValid && modsValid;
+        });
+    };
+
+    var validationTimeout;
+    $scope.noteChanged = function() {
+        clearTimeout(validationTimeout);
+        validationTimeout = setTimeout($scope.validateInstallOrderNote, 100);
     };
 
     // discard the install order note object

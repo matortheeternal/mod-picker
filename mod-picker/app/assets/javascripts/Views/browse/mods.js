@@ -143,6 +143,12 @@ app.controller('modsController', function($scope, $rootScope, $q, $stateParams, 
         });
     };
 
+    $scope.termChange = function(term) {
+        if ($scope.filters.terms[term] === '') {
+            delete $scope.filters.terms[term];
+        }
+    };
+
     // handle special column/filter logic when filters change
     $scope.$watch('filters', function() {
         // handle column availability

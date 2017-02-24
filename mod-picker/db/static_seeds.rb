@@ -195,6 +195,395 @@ def seed_games
   puts "    #{Game.count} games seeded"
 end
 
+def seed_licenses
+  puts "\nSeeding licenses"
+  terms = {
+      unknown: -1,
+      no: 0,
+      yes: 1,
+      maybe: 2
+  }
+
+  License.create(
+      name: "None",
+      license_type: "copyright",
+      wikipedia_page: "Copyright",
+      clauses: 0,
+      code: true,
+      assets: true,
+      commercial: terms[:maybe],
+      redistribution: terms[:maybe],
+      modification: terms[:maybe],
+      private_use: terms[:maybe],
+      include: terms[:no],
+      description: "Without a license the materials are copyrighted by default.  People can view the materials, but they have no legal right to use them.  To use the materials they must contact the author directly and ask for permission.  That includes people using the mod in their game. Generally speaking you should never release a mod without an explicit license."
+  )
+  License.create(
+      name: "Public Domain",
+      acronym: "PD",
+      license_type: "permissive",
+      wikipedia_page: "Public_Domain",
+      license_options_attributes: [{
+          name: "Creative Commons CC0 1.0 Universal",
+          acronym: "CC-0",
+          tldr: "creative-commons-cc0-1.0-universal",
+          link: "https://creativecommons.org/publicdomain/zero/1.0/"
+      }, {
+          name: "Unlicense",
+          tldr: "unlicense",
+          link: "http://unlicense.org/"
+      }],
+      clauses: 0,
+      code: true,
+      assets: true,
+      credit: terms[:yes],
+      commercial: terms[:yes],
+      redistribution: terms[:yes],
+      modification: terms[:yes],
+      private_use: terms[:yes],
+      include: terms[:no],
+      description: "Releasing something into the public domain involves relinquishing all ownership/copyright over it.  If your materials are in the public domain that means anyone can use them for any purpose whatsoever, including commercial use."
+  )
+  License.create(
+      name: "Do What The F*ck You Want To Public License",
+      acronym: "WTFPL",
+      license_type: "permissive",
+      wikipedia_page: "WTFPL",
+      license_options_attributes: [{
+          name: "Do What the F*ck You Want To Public License v2",
+          tldr: "do-wtf-you-want-to-public-license-v2-(wtfpl-2.0)",
+          link: "http://www.wtfpl.net/about/"
+      }],
+      clauses: 1,
+      code: true,
+      assets: true,
+      credit: terms[:yes],
+      commercial: terms[:yes],
+      redistribution: terms[:yes],
+      modification: terms[:yes],
+      private_use: terms[:yes],
+      include: terms[:no],
+      description: "The WTFPL is almost a public domain grant. It is super-permissive. Basically, do whatever you want.  You still retain ownership."
+  )
+  License.create(
+      name: "GNU General Public License",
+      acronym: "GPL",
+      license_options_attributes: [{
+          name: "GNU General Public License, version 1",
+          acronym: "GPLv1",
+          link: "https://www.gnu.org/licenses/old-licenses/gpl-1.0.en.html"
+      }, {
+          name: "GNU General Public License, version 2",
+          acronym: "GPLv2",
+          tldr: "gnu-general-public-license-v2",
+          link: "https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html"
+      }, {
+          name: "GNU General Public License, version 3",
+          acronym: "GPLv3",
+          tldr: "gnu-general-public-license-v3-(gpl-3)",
+          link: "https://www.gnu.org/licenses/gpl-3.0.en.html"
+      }],
+      license_type: "copyleft",
+      wikipedia_page: "GNU_General_Public_License",
+      clauses: 12,
+      code: true,
+      assets: false,
+      credit: terms[:yes],
+      commercial: terms[:yes],
+      redistribution: terms[:yes],
+      modification: terms[:yes],
+      private_use: terms[:yes],
+      include: terms[:yes],
+      description: "While the GPL allows commercial use it's generally not viable to do so due to other clauses in the license."
+  )
+  License.create(
+      name: "GNU Lesser General Public License",
+      acronym: "LGPL",
+      license_type: "mostly copyleft",
+      wikipedia_page: "GNU_Lesser_General_Public_License",
+      license_options_attributes: [{
+          name: "GNU Lesser General Public License, version 2.1",
+          acronym: "LGPLv2",
+          tldr: "gnu-lesser-general-public-license-v2.1-(lgpl-2.1)",
+          link: "https://www.gnu.org/licenses/old-licenses/lgpl-2.1.en.html"
+      }, {
+          name: "GNU Lesser General Public License, version 3",
+          acronym: "LGPLv3",
+          tldr: "gnu-lesser-general-public-license-v3-(lgpl-3)",
+          link: "https://www.gnu.org/licenses/lgpl-3.0.en.html"
+      }],
+      clauses: 16,
+      code: true,
+      assets: false,
+      credit: terms[:yes],
+      commercial: terms[:yes],
+      redistribution: terms[:yes],
+      modification: terms[:yes],
+      private_use: terms[:yes],
+      include: terms[:yes],
+      description: "This license is mainly applied to libraries. You may copy, distribute and modify the software provided that modifications are described and licensed for free under LGPL. Derivatives works (including modifications or anything statically linked to the library) can only be redistributed under LGPL, but applications that use the library don't have to be."
+  )
+  License.create(
+      name: "MIT License",
+      acronym: "MIT",
+      license_type: "permissive",
+      license_options_attributes: [{
+          name: "MIT License",
+          tldr: "mit-license",
+          link: "https://en.wikipedia.org/wiki/MIT_License"
+      }],
+      clauses: 2,
+      code: true,
+      assets: false,
+      credit: terms[:yes],
+      commercial: terms[:yes],
+      redistribution: terms[:yes],
+      modification: terms[:yes],
+      private_use: terms[:yes],
+      include: terms[:yes],
+      description: "A short, permissive software license. Basically, you can do whatever you want as long as you include the original copyright and license notice in any copy of the software/source."
+  )
+  License.create(
+      name: "BSD License",
+      acronym: "BSD",
+      license_type: "permissive",
+      license_options_attributes: [{
+          name: "BSD License",
+          tldr: "bsd-2-clause-license-(freebsd)",
+          link: "https://www.freebsd.org/copyright/freebsd-license.html"
+      }],
+      clauses: 2,
+      code: true,
+      assets: false,
+      credit: terms[:yes],
+      commercial: terms[:yes],
+      redistribution: terms[:yes],
+      modification: terms[:yes],
+      private_use: terms[:yes],
+      include: terms[:yes],
+      description: "The BSD 2-clause license allows you almost unlimited freedom with the software so long as you include the BSD copyright notice in it."
+  )
+  License.create(
+      name: "Apache License",
+      acronym: "ASL",
+      license_options_attributes: [{
+          name: "Apache License 1.0",
+          acronym: "Apache-1.0",
+          tldr: "apache-license-1.0-(apache-1.0)",
+          link: "https://www.apache.org/licenses/LICENSE-1.0"
+      }, {
+          name: "Apache License 1.1",
+          acronym: "Apache-1.1",
+          tldr: "apache-license-1.1",
+          link: "https://www.apache.org/licenses/LICENSE-1.1"
+      }, {
+          name: "Apache License 2.0",
+          acronym: "Apache-2.0",
+          tldr: "apache-license-2.0-(apache-2.0)",
+          link: "https://www.apache.org/licenses/LICENSE-2.0"
+      }],
+      license_type: "permissive",
+      wikipedia_page: "Apache_License",
+      clauses: 9,
+      code: true,
+      assets: false,
+      credit: terms[:yes],
+      commercial: terms[:yes],
+      redistribution: terms[:yes],
+      modification: terms[:yes],
+      private_use: terms[:yes],
+      include: terms[:yes],
+      description: "You can do what you like with the software, as long as you include the required notices."
+  )
+  License.create(
+      name: "Eclipse Public License",
+      acronym: "EPL",
+      license_type: "permissive",
+      wikipedia_page: "Eclipse_Public_License",
+      license_options_attributes: [{
+          name: "Eclipse Public License 1.0",
+          tldr: "eclipse-public-license-1.0-(epl-1.0)",
+          link: "https://www.eclipse.org/legal/epl-v10.html"
+      }],
+      clauses: 7,
+      code: true,
+      assets: false,
+      credit: terms[:yes],
+      commercial: terms[:yes],
+      redistribution: terms[:yes],
+      modification: terms[:yes],
+      private_use: terms[:yes],
+      include: terms[:yes],
+      description: "This license, made and used by the Eclipse Foundation, is similar to GPL but allows you to link code under the license to proprietary applications. You may also license binaries under a proprietary license, as long as the source code is available under EPL."
+  )
+  License.create(
+      name: "Mozilla Public License",
+      acronym: "MPL",
+      license_options_attributes: [{
+          name: "Mozilla Public License 1.0",
+          acronym: "MPL-1.0",
+          tldr: "mozilla-public-license-1.0-(mpl-1.0)",
+          link: "https://www.mozilla.org/en-US/MPL/"
+      }, {
+          name: "Mozilla Public License 1.1",
+          acronym: "MPL-1.1",
+          tldr: "mozilla-public-license-1.1-(mpl-1.1)",
+          link: "https://www.mozilla.org/en-US/MPL/1.1/"
+      }, {
+          name: "Mozilla Public License 2.0",
+          acronym: "MPL-2.0",
+          tldr: "mozilla-public-license-2.0-(mpl-2)",
+          link: "https://www.mozilla.org/en-US/MPL/2.0/"
+      }],
+      license_type: "weak copyleft",
+      wikipedia_page: "Mozilla_Public_License",
+      clauses: 13,
+      code: true,
+      assets: false,
+      credit: terms[:yes],
+      commercial: terms[:yes],
+      redistribution: terms[:yes],
+      modification: terms[:yes],
+      private_use: terms[:yes],
+      include: terms[:yes],
+      description: "A copyleft license, though not considered strong copyleft since the license only requires the source code of modified components to be disclosed. Incompatible with GNU GPL (though MPL-2.0 is compatible)."
+  )
+  License.create(
+      name: "Creative Commons Attribution",
+      acronym: "CC BY",
+      license_type: "copyright",
+      license_options_attributes: [{
+          name: "Creative Commons BY 4.0",
+          tldr: "creative-commons-attribution-4.0-international-(cc-by-4)",
+          link: "https://creativecommons.org/licenses/by/4.0/"
+      }],
+      clauses: 8,
+      code: true,
+      assets: true,
+      credit: terms[:yes],
+      commercial: terms[:yes],
+      redistribution: terms[:yes],
+      modification: terms[:yes],
+      private_use: terms[:yes],
+      include: terms[:no],
+      description: "This creative commons license allows redistribution, derivative works, and commercial use."
+  )
+  License.create(
+      name: "Creative Commons Attribution-NonCommercial",
+      acronym: "CC BY-NC",
+      license_type: "copyright",
+      license_options_attributes: [{
+          name: "Creative Commons BY-NC 4.0",
+          tldr: "creative-commons-attribution-noncommercial-4.0-international-(cc-by-nc-4.0)",
+          link: "https://creativecommons.org/licenses/by-nc/4.0/"
+      }],
+      clauses: 8,
+      code: true,
+      assets: true,
+      credit: terms[:yes],
+      commercial: terms[:no],
+      redistribution: terms[:yes],
+      modification: terms[:yes],
+      private_use: terms[:yes],
+      include: terms[:no],
+      description: "This creative commons license allows redistribution and derivative works but restricts using the materials for commercial use."
+  )
+  License.create(
+      name: "Creative Commons Attribution-ShareAlike",
+      acronym: "CC BY-SA",
+      license_type: "copyright",
+      license_options_attributes: [{
+          name: "Creative Commons BY-SA 4.0",
+          tldr: "creative-commons-attribution-sharealike-4.0-international-(cc-by-sa-4.0)",
+          link: "https://creativecommons.org/licenses/by-sa/4.0/"
+      }],
+      clauses: 8,
+      code: true,
+      assets: true,
+      credit: terms[:yes],
+      commercial: terms[:yes],
+      redistribution: terms[:yes],
+      modification: terms[:yes],
+      private_use: terms[:yes],
+      include: terms[:yes],
+      description: "This creative commons license allows redistribution, derivative works, and commercial use.  The license requires people who use your materials to use a similar license (share alike)."
+  )
+  License.create(
+      name: "Creative Commons Attribution-NonCommercial-ShareAlike",
+      acronym: "CC BY-NC-SA",
+      license_type: "copyright",
+      license_options_attributes: [{
+          name: "Creative Commons BY-NC-SA 4.0",
+          tldr: "creative-commons-attribution-noncommercial-sharealike-4.0-international-(cc-by-nc-sa-4.0)",
+          link: "https://creativecommons.org/licenses/by-nc-sa/4.0/"
+      }],
+      clauses: 8,
+      code: true,
+      assets: true,
+      credit: terms[:yes],
+      commercial: terms[:no],
+      redistribution: terms[:yes],
+      modification: terms[:yes],
+      private_use: terms[:yes],
+      include: terms[:yes],
+      description: "This creative commons license allows redistribution and derivative works but restricts using the materials for commercial use.  The license requires derivative works to use a similar license (share alike)."
+  )
+  License.create(
+      name: "Creative Commons Attribution-NoDerivatives",
+      acronym: "CC BY-ND",
+      license_type: "copyright",
+      license_options_attributes: [{
+          name: "Creative Commons BY-ND 4.0",
+          tldr: "creative-commons-attribution-noderivatives-4.0-international-(cc-by-nd-4.0)",
+          link: "https://creativecommons.org/licenses/by-nd/4.0/",
+      }],
+      clauses: 8,
+      code: true,
+      assets: true,
+
+      credit: terms[:yes],
+      commercial: terms[:yes],
+      redistribution: terms[:yes],
+      modification: terms[:no],
+      private_use: terms[:yes],
+      include: terms[:no],
+      description: "This creative commons license allows redistribution and commerical use but restricts the creation of derivative works."
+  )
+  License.create(
+      name: "Creative Commons Attribution-NonCommercial-NoDerivatives",
+      acronym: "CC BY-NC-ND",
+      license_type: "copyright",
+      license_options_attributes: [{
+          name: "Creative Commons BY-NC-ND 4.0",
+          tldr: "creative-commons-attribution-noncommercial-noderivs-(cc-nc-nd)",
+          link: "https://creativecommons.org/licenses/by-nc-nd/4.0/"
+      }],
+      clauses: 8,
+      code: true,
+      assets: true,
+      credit: terms[:yes],
+      commercial: terms[:no],
+      redistribution: terms[:yes],
+      modification: terms[:no],
+      private_use: terms[:yes],
+      include: terms[:no],
+      description: "This is the most restrictive creative commons license.  The license allows redistribution, but restricts commercial use or derivative works."
+  )
+  License.create(
+      name: "Custom License",
+      license_type: "custom",
+      license_options_attributes: [{
+          name: "Binpress License Generator",
+          link: "http://www.binpress.com/license/generator"
+      }],
+      code: true,
+      assets: true,
+      description: "Make your own license.  The advantage of making your own license is you can define the terms yourself.  The disadvantage is it becomes a harder for users to determine your permissions at a glance, and creating a strong, legally binding license can be time-consuming or difficult.  It is very important to include a statement releasing liability if you make a custom license!"
+  )
+
+  puts "    #{License.count} licenses seeded"
+end
+
 def seed_categories
   #==================================================
   # CREATE SUPER-CATEGORIES

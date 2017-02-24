@@ -3,7 +3,8 @@
     <span class="fa fa-times" ng-click="removeItem(item)" title="Remove" ng-if="editing"></span>
 </div>
 <div class="item-index">
-    {{item.index}}
+    <span ng-if="!editing">{{item.index}}</span>
+    <input type="text" ng-if="editing" ng-model="item.index" ng-keydown="indexKeyDown($event, item)" ng-blur="resetIndex(item)" pu-elastic-input/>
 </div>
 <div class="image-container">
     <div class="helper"></div>
@@ -11,7 +12,7 @@
 </div>
 <ul class="mod-rows" ng-if="item.mod">
     <li class="mod-name">
-        <a href="#/mod/{{::item.mod.id}}">{{::item.mod.name}}</a>
+        <a href="mods/{{::item.mod.id}}">{{::item.mod.name}}</a>
         <span ng-if="item.mod.aliases">({{::item.mod.aliases.split(',')[0]}})</span>
     </li>
     <li class="mod-authors">by {{::item.mod.authors}}</li>
@@ -23,4 +24,5 @@
         <a ng-if="item.url" ng-href="{{item.url}}">{{item.name}}</a>
         <span ng-if="!item.url">{{item.name}}</span>
     </li>
+    <li class="mod-custom" title="A custom, user-added mod entry.">Custom Mod</li>
 </ul>

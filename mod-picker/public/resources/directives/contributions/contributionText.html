@@ -4,6 +4,6 @@
 </div>
 <div class="edit-summary" ng-if="target.edited">
     Edited {{target.edited | date : 'longDate'}} - {{target.edited | date : 'shortTime'}}
-    <span ng-show="target.editor">by <a href="#/profile/{{target.editor.id}}">{{target.editor.username}}</a></span><br>
+    <span ng-show="target.editor">by <a href="user/{{target.editor.id}}">{{target.editor.username}}</a></span><br>
     <span ng-show="target.edit_summary">{{target.edit_summary}}</span>
 </div>

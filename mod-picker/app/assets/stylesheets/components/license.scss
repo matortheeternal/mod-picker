@@ -1,0 +1,112 @@
+license {
+  display: flex;
+  margin: 24px 6px;
+  line-height: initial;
+  @include user-select(initial);
+
+  .description-column {
+    padding: 0 20px 0 10px;
+
+    span.license-title {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    span.license-description {
+      display: block;
+    }
+  }
+
+  .terms-column {
+    min-width: 100px;
+    max-width: 100px;
+  }
+}
+
+mod-license {
+  display: inline-block;
+  margin: 10px;
+  @include user-select(initial);
+
+  .licensed-under {
+    text-align: center;
+  }
+
+  .license-container {
+    display: flex;
+  }
+
+  .name-column {
+    padding: 0 10px;
+
+    span.license-acronym {
+      font-size: 60px;
+      display: block;
+      margin: -5px 0;
+    }
+  }
+
+  .terms-column {
+    max-width: 70px;
+
+    .license-terms .fa-stack {
+      margin: -4px 0;
+      width: 1.5em;
+      height: 1.5em;
+      line-height: 1.5em;
+
+      .fa-stack-2x {
+        font-size: 1.5em;
+      }
+    }
+  }
+}
+
+mod-license, license {
+  .icon-column {
+    min-width: 100px;
+    max-width: 100px;
+    text-align: center;
+
+    > span {
+      display: block;
+      font-size: 14px;
+    }
+
+    .fa {
+      font-size: 64px;
+    }
+
+    .fa-file-text-o {
+      margin-bottom: 4px;
+    }
+
+    .fa-universal-access {
+      margin-bottom: 2px;
+    }
+
+    span.license-type {
+      text-transform: capitalize;
+    }
+  }
+
+  .terms-column {
+    text-align: center;
+
+    .license-terms {
+      .fa-stack {
+        margin-bottom: -1px;
+      }
+
+      .fa-ban {
+        color: #f00;
+        opacity: 0.5;
+      }
+
+      .fa-question {
+        color: #ec5;
+        opacity: 0.7;
+      }
+    }
+  }
+}

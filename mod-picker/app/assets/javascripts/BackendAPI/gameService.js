@@ -8,9 +8,10 @@ app.service('gameService', function(backend, $q) {
     this.getGameById = function(id) {
         var game = $q.defer();
         allGames.then(function(games) {
-            game.resolve(games.find(function(data) {
-                return data.id == id;
-            }));
+            var selectedGame = games.find(function(game) {
+                return game.id == id;
+            });
+            game.resolve(selectedGame);
         });
         return game.promise;
     };

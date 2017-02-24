@@ -1,5 +1,5 @@
 class ModsController < ApplicationController
-  before_action :set_mod, only: [:edit, :update, :hide, :approve, :update_tags, :image, :corrections, :reviews, :compatibility_notes, :install_order_notes, :load_order_notes, :analysis, :destroy]
+  before_action :set_mod, only: [:edit, :update, :hide, :approve, :update_tags, :image, :corrections, :reviews, :compatibility_notes, :install_order_notes, :load_order_notes, :related_mod_notes, :analysis, :destroy]
 
   # POST /mods/index
   def index
@@ -75,7 +75,7 @@ class ModsController < ApplicationController
   # GET /mods/1/edit
   def edit
     authorize! :update, @mod, message: "You are not allowed to edit this mod."
-    respond_with_json(@mod)
+    respond_with_json(@mod, nil, :mod)
   end
 
   # PATCH/PUT /mods/1
@@ -87,6 +87,7 @@ class ModsController < ApplicationController
     authorize! :change_status, @mod, :message => "You are not allowed to change this mod's status." if params[:mod].has_key?(:status)
     authorize! :update_options, @mod, :message => "You are not allowed to update this mod's advanced options." if options_params.any?
     authorize! :assign_custom_sources, @mod, :message => "You are not allowed to assign custom sources." if params[:mod].has_key?(:custom_sources_attributes)
+    authorize! :update_details, @mod, :message => "You are not allowed to update this mod's details." if details_params.any?
 
     builder = ModBuilder.new(current_user, mod_update_params)
     if builder.update
@@ -278,6 +279,26 @@ class ModsController < ApplicationController
     }
   end
 
+  # POST/GET /mods/1/related_mod_notes
+  def related_mod_notes
+    authorize! :read, @mod
+
+    # prepare related mod notes
+    related_mod_notes = @mod.related_mod_notes.preload(:first_mod, :second_mod, :editor).eager_load(:submitter => :reputation).accessible_by(current_ability).sort(params[:sort]).paginate(page: params[:page], per_page: 10)
+    count =  @mod.related_mod_notes.eager_load(:submitter => :reputation).accessible_by(current_ability).count
+
+    # prepare helpful marks
+    helpful_marks = HelpfulMark.for_user_content(current_user, "RelatedModNote", related_mod_notes.ids)
+
+    # render response
+    render json: {
+        related_mod_notes: related_mod_notes,
+        helpful_marks: helpful_marks,
+        max_entries: count,
+        entries_per_page: 10
+    }
+  end
+
   # POST/GET /mods/1/analysis
   def analysis
     authorize! :read, @mod
@@ -333,7 +354,7 @@ class ModsController < ApplicationController
     # Params we allow filtering on
     def filtering_params
       # construct valid filters array
-      valid_filters = [:adult, :hidden, :approved, :include_utilities, :compatibility, :sources, :search, :author, :mp_author, :game, :released, :updated, :utility, :categories, :tags, :stars, :reviews, :rating, :reputation, :compatibility_notes, :install_order_notes, :load_order_notes, :mod_options, :asset_files, :plugins, :required_mods, :required_by, :tags_count, :mod_lists, :submitted]
+      valid_filters = [:adult, :hidden, :approved, :include_utilities, :compatibility, :sources, :terms, :search, :description, :author, :mp_author, :game, :released, :updated, :utility, :categories, :tags, :stars, :reviews, :rating, :reputation, :compatibility_notes, :install_order_notes, :load_order_notes,:related_mod_notes, :mod_options, :asset_files, :plugins, :required_mods, :required_by, :tags_count, :mod_lists, :submitted]
       source_filters = [:views, :author, :posts, :videos, :images, :discussions, :downloads, :favorites, :subscribers, :endorsements, :unique_downloads, :files, :bugs, :articles]
       sources = params[:filters][:sources]
 
@@ -383,9 +404,10 @@ class ModsController < ApplicationController
     end
 
     def mod_update_params
-      p = params.require(:mod).permit(:name, :authors, :aliases, :is_utility, :has_adult_content, :status, :primary_category_id, :secondary_category_id, :released, :updated, :mark_updated, :nexus_info_id, :lover_info_id, :workshop_info_id, :disallow_contributors, :disable_reviews, :lock_tags, :hidden, :approved, :tag_names,
+      p = params.require(:mod).permit(:name, :authors, :aliases, :is_utility, :has_adult_content, :status, :show_details_tab, :description, :notice, :notice_type, :support_link, :issues_link, :primary_category_id, :secondary_category_id, :released, :updated, :mark_updated, :nexus_info_id, :lover_info_id, :workshop_info_id, :disallow_contributors, :disable_reviews, :lock_tags, :hidden, :approved, :tag_names,
          required_mods_attributes: [:id, :required_id, :_destroy],
-         mod_authors_attributes: [:id, :role, :user_id, :_destroy],
+         mod_licenses_attributes: [:id, :license_id, :license_option_id, :target, :credit, :commercial, :redistribution, :modification, :private_use, :include, :text_body, :_destroy],
+          mod_authors_attributes: [:id, :role, :user_id, :_destroy],
           custom_sources_attributes: [:id, :label, :url, :_destroy],
          config_files_attributes: [:id, :filename, :install_path, :text_body, :_destroy],
          tag_names: [],
@@ -406,6 +428,10 @@ class ModsController < ApplicationController
     def options_params
       params[:mod].slice(:is_utility, :has_adult_content, :disallow_contributors, :disable_reviews, :lock_tags)
     end
+
+  def details_params
+    params[:mod].slice(:show_details_tab, :description, :notice, :notice_type, :support_link, :issues_link, :mod_licenses_attributes)
+  end
 
     def image_params
       {

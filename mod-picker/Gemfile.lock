@@ -312,6 +312,7 @@ DEPENDENCIES
   sidekiq
   sidekiq-scheduler (~> 2.0)
   simple_form
+  sinatra
   therubyracer
   turbolinks
   tzinfo-data

@@ -5,8 +5,8 @@
 <div class="page-container help-list-page">
     <h1 class="page-title"><%= @page_title %></h1>
 
-    <% if @help_pages.length > 0 %>
-    <%= render "list" %>
+    <% if @help_pages.length > 0 || @help_videos.length > 0 %>
+        <%= render "list" %>
     <% else %>
     <div class="content-message">
         There are no help pages in this category.

@@ -1,60 +1,55 @@
 <messages></messages>
 
 <two-columns>
-    <div class="page-container">
-        <div class="column-wrapper">
-            <div class="left-column left-browse-column" style="width:250px; padding: 40px 48px 40px 0;">
-                <h2>Filters</h2>
+    <div class="page-container browse-page">
+        <div class="left-column" style="width:250px; padding: 40px 48px 40px 0;">
+            <h2>Filters</h2>
 
+            <filter-section name="Search" expanded="true">
+                <h4>Text</h4>
+                <input type="text" ng-model="filters.search">
+
+                <h4>Submitter</h4>
+                <input type="text" ng-model="filters.submitter">
+            </filter-section>>
+
+            <filter-section name="Content Filters" expanded="true" ng-if="permissions.canModerate">
+                <div class="sidebar-box box-shadow">
+                    <ul class="checkbox-list">
+                        <li>
+                            <label><input type="checkbox" ng-model="filters.hidden['1']">
+                                Hidden</label>
+                        </li>
+                        <li>
+                            <label><input type="checkbox" ng-model="filters.hidden['0']">
+                                Unhidden</label>
+                        </li>
+                    </ul>
+                </div>
+            </filter-section>
+
+            <filter-section name="Statistic Filters" expanded="true" ng-if="statFilters.length">
                 <div class="filter-section">
-                    <h3>Search</h3>
-                    <h4>Text</h4>
-                    <input type="text" ng-model="filters.search">
-
-                    <h4>Submitter</h4>
-                    <input type="text" ng-model="filters.submitter">
-                </div>
-
-                <div class="filter-section" ng-if="permissions.canModerate">
-                    <h3>Content Filters</h3>
-                    <div class="sidebar-box box-shadow">
-                        <ul class="checkbox-list">
-                            <li>
-                                <label><input type="checkbox" ng-model="filters.hidden['1']">
-                                    Hidden</label>
-                            </li>
-                            <li>
-                                <label><input type="checkbox" ng-model="filters.hidden['0']">
-                                    Unhidden</label>
-                            </li>
-                        </ul>
+                    <div ng-repeat="filter in statFilters">
+                        <h4>{{filter.label}}
+                            <!--<span class="filter-controls" ng-if="filter.max > 500">
+                                <span class="fa fa-wrench" ng-click="" title="Custom Value"></span>
+                            </span>-->
+                        </h4>
+                        <slider filter-data="filters" filter="filter"></slider>
                     </div>
                 </div>
+            </filter-section>
+        </div>
 
-                <div class="filter-sections" ng-if="statFilters.length">
-                    <h3>Statistic Filters</h3>
-                    <div class="filter-section">
-                        <div ng-repeat="filter in statFilters">
-                            <h4>{{filter.label}}
-                                <!--<span class="filter-controls" ng-if="filter.max > 500">
-                                    <span class="fa fa-wrench" ng-click="" title="Custom Value"></span>
-                                </span>-->
-                            </h4>
-                            <slider filter-data="filters" filter="filter"></slider>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="right-column">
+            <h2>Tags</h2>
+            <loader data="tags" content-class="table-container" spinner-class="big-spinner" ng-if="!error">
+                <table-results label="tags" data="tags"></table-results>
+                <page-results pages="pages" data="tags" callback="getData"></page-results>
+            </loader>
 
-            <div class="right-column right-browse-column">
-                <h2>Tags</h2>
-                <loader data="tags" content-class="table-container" spinner-class="big-spinner" ng-if="!error">
-                    <table-results label="tags" data="tags"></table-results>
-                    <page-results pages="pages" data="tags" callback="getData"></page-results>
-                </loader>
-
-                <error-display content-class="content-message content-error" errors="error" label="Tags"></error-display>
-            </div>
+            <error-display content-class="content-message content-error" errors="error" label="Tags"></error-display>
         </div>
     </div>
 </two-columns>

@@ -1,6 +1,6 @@
 class ModListsController < ApplicationController
   before_action :check_sign_in, only: [:create, :set_active, :update, :import, :update_tags, :create_star, :destroy_star]
-  before_action :set_mod_list, only: [:hide, :clone, :add, :update, :import, :update_tags, :tools, :mods, :plugins, :export_modlist, :export_plugins, :export_links, :config_files, :analysis, :comments]
+  before_action :set_mod_list, only: [:hide, :clone, :add, :update, :import, :update_tags, :tools, :mods, :plugins, :export_modlist, :export_plugins, :export_links, :setup, :config_files, :analysis, :comments]
   before_action :soft_set_mod_list, only: [:set_active]
 
   # GET /mod_lists
@@ -139,6 +139,12 @@ class ModListsController < ApplicationController
     authorize! :read, @mod_list
     force_download("links.txt")
     render text: @mod_list.links_text
+  end
+
+  # POST /mod_lists/:id/setup
+  def setup
+    authorize! :read, @mod_list
+    render text: @mod_list.setup_string(current_user)
   end
 
   # GET /mod_lists/:id/config

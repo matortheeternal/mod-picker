@@ -1,5 +1,8 @@
+require 'sidekiq/web'
+require 'sidekiq-scheduler'
+require 'sidekiq-scheduler/web'
+
 Rails.application.routes.draw do
-  # disable registration
   devise_for :users, :controllers => {
       sessions: 'sessions',
       registrations: 'registrations',
@@ -8,6 +11,10 @@ Rails.application.routes.draw do
   devise_scope :user do
     get '/users/invitation/batch/new' => 'user_invitations#new_batch'
     post '/users/invitation/batch' => 'user_invitations#create_batch'
+  end
+
+  authenticate :user, lambda { |u| u.admin? } do
+    mount Sidekiq::Web => '/sidekiq'
   end
 
   # require authentication before allowing user to submit things
@@ -84,6 +91,11 @@ Rails.application.routes.draw do
     match '/install_order_notes/:id/approve', to: 'install_order_notes#approve', via: [:post]
     resources :load_order_notes, only: [:create, :update]
 
+    # related mod notes
+    match '/related_mod_notes/:id/approve', to: 'related_mod_notes#approve', via: [:post]
+    match '/related_mod_notes/:id/hide', to: 'related_mod_notes#hide', via: [:post]
+    resources :related_mod_notes, only: [:create, :update]
+
     # corrections
     match '/corrections/:id/hide', to: 'corrections#hide', via: [:post]
     match '/load_order_notes/:id/approve', to: 'load_order_notes#approve', via: [:post]
@@ -120,6 +132,7 @@ Rails.application.routes.draw do
     match '/mod_lists/:id/export_modlist', to: 'mod_lists#export_modlist', via: [:get]
     match '/mod_lists/:id/export_plugins', to: 'mod_lists#export_plugins', via: [:get]
     match '/mod_lists/:id/export_links', to: 'mod_lists#export_links', via: [:get]
+    match '/mod_lists/:id/setup', to: 'mod_lists#setup', via: [:get]
 
     # mod and mod list stars
     match '/mod_lists/:id/star', to: 'mod_lists#create_star', via: [:post]
@@ -130,6 +143,10 @@ Rails.application.routes.draw do
     # help pages
     match '/help/:id/destroy', to: 'help_pages#destroy', via: [:get]
     resources :help_pages, path: 'help', only: [:new, :create, :edit, :update]
+
+    # help videos
+    match '/videos/:id/destroy', to: 'help_videos#destroy', via: [:get]
+    resources :help_videos, path: 'videos', only: [:new, :create, :edit, :update]
 
     #articles
     match '/articles/:id/image', to: 'articles#image', via: [:post]
@@ -176,6 +193,7 @@ Rails.application.routes.draw do
       match '/mods/:id/compatibility_notes', to: 'mods#compatibility_notes', via: [:get, :post]
       match '/mods/:id/install_order_notes', to: 'mods#install_order_notes', via: [:get, :post]
       match '/mods/:id/load_order_notes', to: 'mods#load_order_notes', via: [:get, :post]
+      match '/mods/:id/related_mod_notes', to: 'mods#related_mod_notes', via: [:get, :post]
       match '/mods/:id/analysis', to: 'mods#analysis', via: [:get, :post]
 
       # reviews
@@ -197,6 +215,10 @@ Rails.application.routes.draw do
       match '/load_order_notes/:id/corrections', to: 'load_order_notes#corrections', via: [:get]
       resources :load_order_notes, only: [:show]
 
+      # related mod notes
+      match '/related_mod_notes/index', to: 'related_mod_notes#index', via: [:get, :post]
+      resources :related_mod_notes, only: [:show]
+
       # corrections
       match '/corrections/index', to: 'corrections#index', via: [:get, :post]
       match '/corrections/:id/comments', to: 'corrections#comments', via: [:get, :post]
@@ -206,6 +228,9 @@ Rails.application.routes.draw do
       match '/comments/index', to: 'comments#index', via: [:get, :post]
       resources :comments, only: [:show]
 
+      # mod lists
+      match '/mod_lists/:id/step', to: 'mod_lists#step', via: [:get]
+
       # static data
       resources :categories, only: [:index]
       resources :category_priorities, only: [:index]
@@ -214,6 +239,7 @@ Rails.application.routes.draw do
       resources :record_groups, only: [:index]
       resources :review_sections, only: [:index]
       resources :user_titles, only: [:index]
+      resources :licenses, only: [:index]
     end
   end
 
@@ -251,6 +277,7 @@ Rails.application.routes.draw do
   match '/mods/:id/compatibility_notes', to: 'mods#compatibility_notes', via: [:get, :post]
   match '/mods/:id/install_order_notes', to: 'mods#install_order_notes', via: [:get, :post]
   match '/mods/:id/load_order_notes', to: 'mods#load_order_notes', via: [:get, :post]
+  match '/mods/:id/related_mod_notes', to: 'mods#related_mod_notes', via: [:get, :post]
   match '/mods/:id/analysis', to: 'mods#analysis', via: [:get, :post]
 
   # reviews
@@ -274,6 +301,10 @@ Rails.application.routes.draw do
   match '/load_order_notes/:id/corrections', to: 'load_order_notes#corrections', via: [:get]
   match '/load_order_notes/:id/history', to: 'load_order_notes#history', via: [:get]
   resources :load_order_notes, only: [:show]
+
+  # related mod notes
+  match '/related_mod_notes/index', to: 'related_mod_notes#index', via: [:get, :post]
+  resources :related_mod_notes, only: [:show]
 
   # corrections
   match '/corrections/index', to: 'corrections#index', via: [:get, :post]
@@ -300,8 +331,12 @@ Rails.application.routes.draw do
   match '/help/game/:game', to: 'help_pages#game', via: [:get]
   match '/help/:id/comments', to: 'help_pages#comments', via: [:get, :post]
   match '/help/search', to:  'help_pages#search', via: [:get]
-  resources :help_pages, path: 'help', except: [:new, :create, :edit, :update, :destroy]
+  resources :help_pages, path: 'help', only: [:show, :index]
   match '/help/*path', to: 'help_pages#record_not_found', via: :all
+
+  # help videos
+  match '/videos/:id', to: 'help_videos#show', via: [:get]
+  match '/videos/:id/sections', to: 'help_videos#sections', via: [:get]
 
   # static data
   resources :categories, only: [:index]
@@ -311,11 +346,15 @@ Rails.application.routes.draw do
   resources :record_groups, only: [:index]
   resources :review_sections, only: [:index]
   resources :user_titles, only: [:index]
+  resources :licenses, only: [:index]
 
   # home page
   match '/skyrim', to: 'home#skyrim', via: [:get]
   match '/skyrimse', to: 'home#skyrimse', via: [:get]
   match '/fallout4', to: 'home#fallout4', via: [:get]
+  match '/skyrim/*path', to: 'home#skyrim', via: [:get]
+  match '/skyrimse/*path', to: 'home#skyrimse', via: [:get]
+  match '/fallout4/*path', to: 'home#fallout4', via: [:get]
   match '/home', to: 'home#index', via: [:get]
 
   #articles
@@ -331,6 +370,7 @@ Rails.application.routes.draw do
   match '/legal/tos', to: 'legal_pages#tos', via: [:get]
   match '/legal/privacy', to: 'legal_pages#privacy', via: [:get]
   match '/legal/copyright', to: 'legal_pages#copyright', via: [:get]
+  match '/legal/wizard', to: 'legal_pages#wizard', via: [:get]
 
   # contact us and subscribe
   match '/contacts', to: 'contacts#new', via: [:get]

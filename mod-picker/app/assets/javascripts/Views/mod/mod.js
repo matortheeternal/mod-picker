@@ -1,12 +1,42 @@
+// redirects for the old url format of /mod/:modId
+app.config(['$stateProvider', function($stateProvider) {
+    $stateProvider.state('base.old-mod', {
+        url: '/mod/:modId',
+        redirectTo: 'base.mod'
+    }).state('base.old-mod.Details', {
+        url: '/details',
+        redirectTo: 'base.mod.Details'
+    }).state('base.old-mod.Reviews', {
+        url: '/reviews/{reviewId:int}?{page:int}&scol&sdir',
+        redirectTo: 'base.mod.Reviews'
+    }).state('base.old-mod.Compatibility', {
+        url: '/compatibility/{compatibilityNoteId:int}?{page:int}&scol&sdir&{filter:bool}',
+        redirectTo: 'base.mod.Compatibility'
+    }).state('base.old-mod.Install Order', {
+        url: '/install-order/{installOrderNoteId:int}?{page:int}&scol&sdir&{filter:bool}',
+        redirectTo: 'base.mod.Install Order'
+    }).state('base.old-mod.Load Order', {
+        url: '/load-order/{loadOrderNoteId:int}?{page:int}&scol&sdir&{filter:bool}',
+        redirectTo: 'base.mod.Load Order'
+    }).state('base.old-mod.Related', {
+        url: '/related',
+        redirectTo: 'base.mod.Related'
+    }).state('base.old-mod.Analysis', {
+        url: '/analysis?options&{plugin:int}',
+        redirectTo: 'base.mod.Analysis'
+    });
+}]);
+
 app.config(['$stateProvider', function($stateProvider) {
     $stateProvider.state('base.mod', {
         templateUrl: '/resources/partials/mod/mod.html',
         controller: 'modController',
-        url: '/mod/:modId',
+        url: '/mods/:modId',
         resolve: {
-            modObject: function($stateParams, $q, categories, modService, categoryService) {
+            modObject: function($stateParams, $q, categories, licenses, modService, categoryService, licenseService) {
                 var mod = $q.defer();
                 modService.retrieveMod($stateParams.modId).then(function(data) {
+                    licenseService.resolveModLicenses(licenses, data.mod);
                     categoryService.resolveModCategories(categories, data.mod);
                     mod.resolve(data);
                 }, function(response) {
@@ -14,13 +44,23 @@ app.config(['$stateProvider', function($stateProvider) {
                         text: 'Error retrieving mod.',
                         response: response,
                         stateName: "base.mod",
-                        stateUrl: window.location.hash
+                        stateUrl: window.location.href
                     };
                     mod.reject(errorObj);
                 });
                 return mod.promise;
             }
         }
+    }).state('base.mod.Details', {
+        sticky: true,
+        deepStateRedirect: true,
+        reloadOnSearch: false,
+        views: {
+            'Details': {
+                templateUrl: '/resources/partials/mod/modDetails.html'
+            }
+        },
+        url: '/details'
     }).state('base.mod.Reviews', {
         sticky: true,
         deepStateRedirect: true,
@@ -92,6 +132,24 @@ app.config(['$stateProvider', function($stateProvider) {
             filter: true,
             loadOrderNoteId: null
         }
+    }).state('base.mod.Related', {
+        sticky: true,
+        deepStateRedirect: true,
+        reloadOnSearch: false,
+        views: {
+            'Related': {
+                templateUrl: '/resources/partials/mod/modRelatedMods.html',
+                controller: 'modRelatedModsController'
+            }
+        },
+        url: '/related/{relatedModNoteId:int}?{page:int}&scol&sdir&{filter:bool}',
+        params: {
+            page: 1,
+            scol: 'reputation',
+            sdir: 'DESC',
+            filter: true,
+            relatedModNoteId: null
+        }
     }).state('base.mod.Analysis', {
         sticky: true,
         deepStateRedirect: true,
@@ -132,19 +190,22 @@ app.controller('modController', function($scope, $rootScope, $q, $stateParams, $
         reviews: {},
         compatibility_notes: {},
         install_order_notes: {},
-        load_order_notes: {}
+        load_order_notes: {},
+        related_mod_notes: {}
     };
     $scope.sort = {
         reviews: {},
         compatibility_notes: {},
         install_order_notes: {},
-        load_order_notes: {}
+        load_order_notes: {},
+        related_mod_notes: {}
     };
     $scope.sortOptions = {
         reviews: sortFactory.reviewSortOptions(),
         compatibility_notes: sortFactory.compatibilityNoteSortOptions(),
         install_order_notes: sortFactory.installOrderNoteSortOptions(),
-        load_order_notes: sortFactory.loadOrderNoteSortOptions()
+        load_order_notes: sortFactory.loadOrderNoteSortOptions(),
+        related_mod_notes: sortFactory.relatedModNoteSortOptions()
     };
     $scope.filters = {
         compatibility_notes: {
@@ -188,6 +249,17 @@ app.controller('modController', function($scope, $rootScope, $q, $stateParams, $
                 decay: 600000 // 10 minutes
             });
         }, 200);
+    }
+
+    // display a message if the mod author set a notice
+    if ($scope.mod.notice) {
+        $timeout(function() {
+            $scope.$broadcast('message', {
+                type: $scope.mod.notice_type,
+                text: $scope.mod.notice,
+                decay: 600000 // 10 minutes
+            });
+        }, 250);
     }
 
     //setting up the canManage permission
@@ -290,7 +362,7 @@ app.controller('modController', function($scope, $rootScope, $q, $stateParams, $
     };
 
     $scope.editMod = function() {
-        $window.location.hash = '#/mod/' + $scope.mod.id + '/edit';
+        $state.go('base.edit-mod', {modId: $scope.mod.id});
     };
 
     $scope.starMod = function() {

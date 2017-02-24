@@ -35,8 +35,8 @@
 
         <ul>
             <% @games.each do |game| %>
-            <% if game.help_pages_count > 0 %>
-            <% game_link = game.url %>
+            <% if game.help_pages_count > 0 || game.help_videos_count > 0 %>
+            <% game_link = game.help_url %>
             <li class="page">
                 <div class="page-content">
                     <%= link_to "/help/game/#{game_link}" do %>

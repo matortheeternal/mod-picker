@@ -35,6 +35,8 @@ gem 'rest-client'
 gem 'sidekiq'
 # use sidekiq scheduler for scheduling background tasks
 gem 'sidekiq-scheduler', '~> 2.0'
+# sinatra for sidekiq ui
+gem 'sinatra', :require => nil
 
 # Use redcarpet for rendering markdown in the help center
 gem 'redcarpet'

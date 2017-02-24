@@ -202,21 +202,71 @@ app.service('listUtils', function() {
 
     this.moveItem = function(model, key, options) {
         // get the destination item
-        var destItem = service.findItem(model, key, 'id', options.destId);
+        var innerKey = options.outerId ? null : 'id';
+        var destItem = service.findItem(model, key, innerKey, options.destId);
         if (!destItem) {
             return 'Failed to move '+key+', could not find destination '+key+'.';
         }
 
         // get the item to move and splice it out of the model if found
-        var moveItem = service.findItem(model, key, 'id', options.moveId, true);
+        var moveItem = service.findItem(model, key, innerKey, options.moveId, true);
         if (!moveItem) {
             return 'Failed to move '+key+', could not find '+key+' to move.';
         }
 
         // insert the item to move after/before the destination item
-        var canInsert = service.getCanInsert(key, moveItem);
+        var canInsert = options.forceInsert || service.getCanInsert(key, moveItem);
         var moveModel = service.getMoveModel(model, destItem, moveItem, canInsert);
         service.insertItem(moveModel, destItem, moveItem, options.after);
+    };
+
+    this.getDestinationItem = function(model, sourceItem) {
+        var index = sourceItem.index;
+        for (var i = 0; i < model.length; i++) {
+            var item = model[i];
+            if (item.children) {
+                for (var j = 0; j < item.children.length; j++) {
+                    var child = item.children[j];
+                    if (child == sourceItem) continue;
+                    if (child.index == index) return child;
+                }
+            } else {
+                if (item == sourceItem) continue;
+                if (item.index == index) return item;
+            }
+        }
+    };
+
+    this.actualIndex = function(model, searchItem) {
+        var index = 0;
+        for (var i = 0; i < model.length; i++) {
+            var item = model[i];
+            if (item.children) {
+                for (var j = 0; j < item.children.length; j++) {
+                    var child = item.children[j];
+                    index++;
+                    if (child == searchItem) return index;
+                }
+            } else {
+                index++;
+                if (item == searchItem) return index;
+            }
+        }
+    };
+
+    this.moveItemToNewIndex = function(model, key, sourceItem) {
+        var destItem = service.getDestinationItem(model, sourceItem);
+        if (!destItem) return false;
+        var sourceIndex = service.actualIndex(model, sourceItem);
+        var destIndex = service.actualIndex(model, destItem);
+        service.moveItem(model, 'id', {
+            moveId: sourceItem.id,
+            destId: destItem.id,
+            after: sourceIndex < destIndex,
+            forceInsert: true,
+            outerId: true
+        });
+        return true;
     };
 
     this.recoverDestroyed = function(model) {

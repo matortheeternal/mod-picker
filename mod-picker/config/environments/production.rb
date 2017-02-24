@@ -24,7 +24,7 @@ Rails.application.configure do
   # config.action_dispatch.rack_cache = true
 
   # Enable prerender middleware for SEO
-  config.middleware.use Rack::Prerender, prerender_token: ENV['prerender_token']
+  config.middleware.use Rack::Prerender, prerender_token: ENV['prerender_token'], blacklist: ["/legal", "/help"]
 
   # Disable serving static files from the `/public` folder by default since
   # Apache or NGINX already handles this.

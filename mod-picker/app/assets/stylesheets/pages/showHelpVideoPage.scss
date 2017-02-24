@@ -1,0 +1,40 @@
+video-toc {
+  display: inline-block;
+  vertical-align: top;
+  width: 300px;
+  padding: 0 14px;
+
+  > h2 {
+    border-bottom: 1px solid $border_color;
+    margin-bottom: 8px;
+  }
+
+  .video-section {
+    padding: 10px;
+    @include transition(background-color 0.4s ease-in-out);
+
+    &.active-section {
+      background-color: $success_primary;
+
+      .section-label {
+        color: $text_color !important;
+      }
+    }
+
+    .section-label {
+      cursor: pointer;
+      @include transition(color 0.2s ease-in-out);
+
+      &:hover {
+        color: $action_color;
+      }
+    }
+  }
+
+  .child-sections {
+    margin-left: 20px;
+    padding-left: 5px;
+    margin-top: 15px;
+    border-left: 8px solid $bar_color;
+  }
+}

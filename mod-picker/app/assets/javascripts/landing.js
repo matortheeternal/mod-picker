@@ -5,7 +5,7 @@
 //= require Directives/shared/sticky.js
 //= require Services/ObjectUtils.js
 /*
- Mod Picker Landing Page v1.0
+ Mod Picker Landing Page v1.4
  (c) 2017 Mod Picker, LLC. https://www.modpicker.com
 */
 

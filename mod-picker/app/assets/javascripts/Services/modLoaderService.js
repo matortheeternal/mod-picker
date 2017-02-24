@@ -1,14 +1,13 @@
-app.service('modLoaderService', function(sitesFactory, assetUtils) {
+app.service('modLoaderService', function(gameService, sitesFactory, assetUtils) {
     var service = this;
     
-    this.loadSource = function(mod, infoLabel, sourceLabel) {
+    this.loadSource = function(mod, infoLabel, sourceLabel, gameName) {
         infoLabel = infoLabel + '_infos';
         if (mod[infoLabel]) {
-            var pk = "id";
-            if (infoLabel === "nexus_infos") pk = "nexus_id";
+            var pk = infoLabel === "nexus_infos" ? "nexus_id" : "id";
             mod.sources.push({
                 label: sourceLabel,
-                url: sitesFactory.getModUrl(sourceLabel, mod[infoLabel][pk]),
+                url: sitesFactory.getModUrl(sourceLabel, mod[infoLabel][pk], gameName),
                 valid: true,
                 old: true,
                 scraped: true
@@ -17,10 +16,12 @@ app.service('modLoaderService', function(sitesFactory, assetUtils) {
     };
 
     this.loadSources = function(mod) {
-        mod.sources = [];
-        service.loadSource(mod, "nexus", "Nexus Mods");
-        service.loadSource(mod, "lover", "Lover's Lab");
-        service.loadSource(mod, "workshop", "Steam Workshop");
+        gameService.getGameById(window._current_game_id).then(function(game) {
+            mod.sources = [];
+            service.loadSource(mod, "nexus", "Nexus Mods", game.nexus_name);
+            service.loadSource(mod, "lover", "Lover's Lab");
+            service.loadSource(mod, "workshop", "Steam Workshop");
+        });
     };
 
     this.loadCustomSources = function(mod) {

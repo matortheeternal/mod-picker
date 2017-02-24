@@ -97,10 +97,11 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
         $scope.activeReview.ratings.forEach(function(rating) {
             var section = rating.section;
             $scope.activeReview.text_body += "## " + section.name + "\n";
-            $scope.activeReview.text_body += contributionFactory.preparePrompt(section.prompt);
+            $scope.activeReview.text_body += contributionFactory.preparePrompt(section.prompt) + "\n";
         });
 
-        // update the markdown editor
+        // update validation, update the markdown editor
+        $scope.validateReview();
         $scope.updateEditor();
     };
 
@@ -191,7 +192,18 @@ app.controller('modReviewsController', function($scope, $stateParams, $state, mo
         var ratingsValid = review.ratings.reduce(function(valid, section) {
             return valid && section.rating;
         }, true);
-        $scope.activeReview.valid = textValid && ratingsValid;
+
+        // review is valid if all parts are valid
+        $scope.$applyAsync(function() {
+            $scope.activeReview.charCount = sanitized_text.length;
+            $scope.activeReview.valid = textValid && ratingsValid;
+        });
+    };
+
+    var validationTimeout;
+    $scope.reviewChanged = function() {
+        clearTimeout(validationTimeout);
+        validationTimeout = setTimeout($scope.validateReview, 100);
     };
 
     // discard a new review object

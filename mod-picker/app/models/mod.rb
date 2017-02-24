@@ -3,6 +3,7 @@ class Mod < ActiveRecord::Base
 
   # ATTRIBUTES
   enum status: [ :good, :outdated, :unstable ]
+  enum notice_type: [ :success, :warning, :error ]
   attr_accessor :updated_by, :mark_updated
   self.per_page = 60
   self.approval_method = :has_mod_auto_approval?
@@ -30,12 +31,13 @@ class Mod < ActiveRecord::Base
   value_scope :is_utility
   game_scope :parent => true
   search_scope :name, :aliases, :combine => true
+  search_scope :description
   user_scope :author_users, :alias => 'mp_author'
   enum_scope :status
   date_scope :released, :updated, :submitted
   range_scope :reputation, :tags_count
   range_scope :average_rating, :alias => 'rating'
-  counter_scope :mod_options_count, :plugins_count, :asset_files_count, :required_mods_count, :required_by_count, :stars_count, :mod_lists_count, :reviews_count, :compatibility_notes_count, :install_order_notes_count, :load_order_notes_count, :corrections_count
+  counter_scope :mod_options_count, :plugins_count, :asset_files_count, :required_mods_count, :required_by_count, :stars_count, :mod_lists_count, :reviews_count, :compatibility_notes_count, :install_order_notes_count, :load_order_notes_count, :related_mod_notes_count, :corrections_count
   source_search_scope :mod_name, :sites => [:nexus, :lab, :workshop]
   source_scope :views, :sites =>  [:nexus, :lab, :workshop]
   source_scope :downloads, :sites => [:nexus, :lab]
@@ -62,6 +64,9 @@ class Mod < ActiveRecord::Base
   scope :compatibility, -> (mod_list_id) {
     mod_list = ModList.find(mod_list_id)
     where.not(id: mod_list.incompatible_mod_ids)
+  }
+  scope :terms, -> (terms) {
+    eager_load(:mod_licenses).where(terms.map {|key,value| ModLicense.arel_table[key].eq(value)}.inject(:and))
   }
   scope :sources, -> (sources) {
     eager_load(sources.map {|key, value| get_source_class(key).table_name if value}.compact).
@@ -119,6 +124,9 @@ class Mod < ActiveRecord::Base
   # config files associated with the mod
   has_many :config_files, :inverse_of => 'mod', :dependent => :destroy
 
+  # license
+  has_many :mod_licenses
+
   # users who can edit the mod
   has_many :mod_authors, :inverse_of => 'mod', :dependent => :destroy
   has_many :author_users, :class_name => 'User', :through => 'mod_authors', :source => 'user', :inverse_of => 'mods'
@@ -143,6 +151,7 @@ class Mod < ActiveRecord::Base
   accepts_nested_attributes_for :mod_options, allow_destroy: true
   accepts_nested_attributes_for :custom_sources, allow_destroy: true
   accepts_nested_attributes_for :config_files, allow_destroy: true
+  accepts_nested_attributes_for :mod_licenses, allow_destroy: true
   # cannot update required mods
   accepts_nested_attributes_for :required_mods, reject_if: proc {
       |attributes| attributes[:id] && !attributes[:_destroy]
@@ -158,6 +167,8 @@ class Mod < ActiveRecord::Base
   counter_cache :reviews, conditional: { hidden: false, approved: true }
   counter_cache :compatibility_notes, conditional: { hidden: false, approved: true },
       custom_reflection: { klass: CompatibilityNote, query_method: 'mod_count_subquery' }
+  counter_cache :related_mod_notes, conditional: { hidden: false, approved: true },
+      custom_reflection: { klass: RelatedModNote, query_method: 'mod_count_subquery' }
   counter_cache :install_order_notes, conditional: { hidden: false, approved: true },
       custom_reflection: { klass: InstallOrderNote, query_method: 'mod_count_subquery' }
   counter_cache :load_order_notes, conditional: { hidden: false, approved: true },
@@ -213,6 +224,24 @@ class Mod < ActiveRecord::Base
 
   def sources_array
     [nexus_infos, workshop_infos, lover_infos, custom_sources].flatten.compact
+  end
+
+  def source_links
+    sources_array.map {|source| source.url}
+  end
+
+  def quality_options
+    opts = {}
+    opts[:lq] = 1 if tags.any?{|tag| tag.text == "Low Quality Option"}
+    opts[:hq] = 1 if tags.any?{|tag| tag.text == "High Quality Option"}
+    opts
+  end
+
+  def dlc_requirements
+    req_mods = association(:required_mods).loaded? ? required_mods : []
+    req_mods.each_with_object(Hash.new(0)) do |req, reqs|
+      reqs[req.required_mod.name] = 1 if req.required_mod.is_official
+    end
   end
 
   def correction_passed(correction)
@@ -277,6 +306,10 @@ class Mod < ActiveRecord::Base
 
   def load_order_notes
     LoadOrderNote.plugin(plugins.ids)
+  end
+
+  def related_mod_notes
+    RelatedModNote.mod(id)
   end
 
   def contribution_authors

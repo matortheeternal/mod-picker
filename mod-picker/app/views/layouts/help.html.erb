@@ -32,7 +32,10 @@
                 <%= link_to "Modding", "/help/category/modding", class: active_url("/help/category/modding") %>
                 <%= link_to "Guides", "/help/category/guides", class: active_url("/help/category/guides") %>
                 <% if can? :create, HelpPage %>
-                    <%= link_to "New Help Page", "/help/new", class: active_url("/help/new") %>
+                    <%= link_to "New Page", "/help/new", class: active_url("/help/new") %>
+                <% end %>
+                <% if can? :create, HelpVideo %>
+                    <%= link_to "New Video", "/videos/new", class: active_url("/videos/new") %>
                 <% end %>
             </div>
         </div>
@@ -43,11 +46,11 @@
             <% end %>
             <div class="user-nav">
                 <% if current_user %>
-                    <a href="/skyrim#/user/<%= current_user.id %>">Profile</a>
-                    <a href="/users/sign_out">Log Out</a>
+                    <a href="/skyrim/user/<%= current_user.id %>">Profile</a>
+                    <a href="users/sign_out">Log Out</a>
                 <% else %>
-                    <a href="/users/sign_in">Log In</a>
-                    <a href="/users/sign_up">Sign Up</a>
+                    <a href="users/sign_in">Log In</a>
+                    <a href="users/sign_up">Sign Up</a>
                 <% end %>
             </div>
         </div>
@@ -66,7 +69,7 @@
             <li><a href="/help/about_us">About Us</a></li>
             <li><a href="/legal/tos">Terms of Service</a></li>
             <li><a href="/legal/privacy">Privacy Policy</a></li>
-            <li><a href="/skyrim#/donate">Donate</a></li>
+            <li><a href="/skyrim/donate">Donate</a></li>
             <li><a href="/help/contact">Contact</a></li>
         </ul>
     </div>

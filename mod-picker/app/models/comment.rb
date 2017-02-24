@@ -61,22 +61,22 @@ class Comment < ActiveRecord::Base
   def context_link
     if commentable_type == "Correction"
       if commentable.correctable_type == "Mod"
-        "#/mods/" + commentable.correctable_id.to_s + "/appeals/" + commentable_id.to_s
+        "mods/" + commentable.correctable_id.to_s + "/appeals/" + commentable_id.to_s
       elsif commentable.correctable_type == "CompatibilityNote"
-        "#/mods/compatibility/" + commentable.correctable_id.to_s + "/corrections/" + commentable_id.to_s
+        "mods/compatibility/" + commentable.correctable_id.to_s + "/corrections/" + commentable_id.to_s
       elsif commentable.correctable_type == "InstallOrderNote"
-        "#/mods/install-order/" + commentable.correctable_id.to_s + "/corrections/" + commentable_id.to_s
+        "mods/install-order/" + commentable.correctable_id.to_s + "/corrections/" + commentable_id.to_s
       elsif commentable.correctable_type == "LoadOrderNote"
-        "#/mods/load-order/" + commentable.correctable_id.to_s + "/corrections/" + commentable_id.to_s
+        "mods/load-order/" + commentable.correctable_id.to_s + "/corrections/" + commentable_id.to_s
       end
     elsif commentable_type == "ModList"
-      "#/mod-list/" + commentable_id.to_s + "/comments"
+      "mod-lists/" + commentable_id.to_s + "/comments"
     elsif commentable_type == "Article"
-      "#/article/" + commentable_id.to_s
+      "articles/" + commentable_id.to_s
     elsif commentable_type == "HelpPage"
       "/help/" + commentable.url
     elsif commentable_type == "User"
-      "#/user/" + commentable_id.to_s + "/social"
+      "user/" + commentable_id.to_s + "/social"
     end
   end
 
