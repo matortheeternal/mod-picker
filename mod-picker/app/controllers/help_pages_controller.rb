@@ -29,8 +29,8 @@ class HelpPagesController < ApplicationController
     @page_title = params[:search].humanize.titleize
 
     # search by title and text_body via help_page scope
-    @help_pages = HelpPage.search(params[:search])
-    @help_videos = HelpVideo.search(params[:search])
+    @help_pages = HelpPage.search(params[:search]).accessible_by(current_ability)
+    @help_videos = HelpVideo.search(params[:search]).accessible_by(current_ability)
 
     render "help_pages/search"
   end
@@ -63,8 +63,8 @@ class HelpPagesController < ApplicationController
     end
 
     @page_title = params[:category].humanize.titleize
-    @help_pages = HelpPage.where(category: HelpPage.categories[params[:category]]).order(submitted: :desc)
-    @help_videos = HelpVideo.where(category: HelpVideo.categories[params[:category]]).order(submitted: :asc)
+    @help_pages = HelpPage.where(category: HelpPage.categories[params[:category]]).order(submitted: :desc).accessible_by(current_ability)
+    @help_videos = HelpVideo.where(category: HelpVideo.categories[params[:category]]).order(submitted: :asc).accessible_by(current_ability)
 
     render "help_pages/category"
   end
@@ -75,8 +75,8 @@ class HelpPagesController < ApplicationController
     game = Game.find_by_display_name!(params[:game].humanize)
 
     @page_title = game.long_name.titleize
-    @help_pages = HelpPage.where(game_id: game.id).order(submitted: :asc)
-    @help_videos = HelpVideo.where(game_id: game_id).order(submitted: :asc)
+    @help_pages = HelpPage.where(game_id: game.id).order(submitted: :asc).accessible_by(current_ability)
+    @help_videos = HelpVideo.where(game_id: game_id).order(submitted: :asc).accessible_by(current_ability)
 
     render "help_pages/game"
   end
