@@ -86,10 +86,7 @@ app.directive('textArea', function($timeout) {
                     }, 50);
                 }
             };
-            mde.codemirror.on("change", function() {
-                clearTimeout(changeTimeout);
-                setTimeout(mdeChanged, 100);
-            });
+            mde.codemirror.on("change", mdeChanged);
 
             scope.$watch('refresh', function(newVal) {
                 // Skip undefined or false variables
