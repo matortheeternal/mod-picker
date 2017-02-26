@@ -76,7 +76,7 @@ class HelpPagesController < ApplicationController
 
     @page_title = game.long_name.titleize
     @help_pages = HelpPage.where(game_id: game.id).order(submitted: :asc).accessible_by(current_ability)
-    @help_videos = HelpVideo.where(game_id: game_id).order(submitted: :asc).accessible_by(current_ability)
+    @help_videos = HelpVideo.where(game_id: game.id).order(submitted: :asc).accessible_by(current_ability)
 
     render "help_pages/game"
   end
