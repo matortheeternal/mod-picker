@@ -348,12 +348,12 @@ class ModList < ActiveRecord::Base
   end
 
   def links_text
-    tools = mod_list_mods.utility(true).official(false).preload(:mod => [:lover_infos, :workshop_infos, :custom_sources, :nexus_infos => :game]).order(:index)
-    mods = mod_list_mods.utility(false).official(false).preload(:mod => [:lover_infos, :workshop_infos, :custom_sources, :nexus_infos => :game]).order(:index)
+    tools = mod_list_mods.utility(true).official(false).preload(:mod => [:lover_infos, :workshop_infos, :custom_sources, :nexus_infos => :game], :mod_list_mod_options => [:mod_option]).order(:index)
+    mods = mod_list_mods.utility(false).official(false).preload(:mod => [:lover_infos, :workshop_infos, :custom_sources, :nexus_infos => :game], :mod_list_mod_options => [:mod_option]).order(:index)
     a = [base_text, "\r\nTools:"]
-    tools.each { |mod_list_tool| a.push(mod_list_tool.mod.links_text) }
+    tools.each { |mod_list_tool| a.push(mod_list_tool.links_text) }
     a.push("\r\nMods:")
-    mods.each { |mod_list_mod| a.push(mod_list_mod.mod.links_text) }
+    mods.each { |mod_list_mod| a.push(mod_list_mod.links_text) }
     a.join("\r\n")
   end
 

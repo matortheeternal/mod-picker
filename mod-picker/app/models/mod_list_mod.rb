@@ -105,6 +105,15 @@ class ModListMod < ActiveRecord::Base
     end
   end
 
+  def links_text
+    if mod_list_mod_options.length > 0
+      options_text = mod_list_mod_options.map{|m| m.mod_option.display_name}.join(", ")
+      "#{mod.links_text}        Options: #{options_text}\n"
+    else
+      mod.links_text
+    end
+  end
+
   def baseline_options
     mod_list_mod_options.map {|option| option.mod_option.display_name}
   end
