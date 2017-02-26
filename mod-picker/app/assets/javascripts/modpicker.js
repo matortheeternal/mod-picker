@@ -29,7 +29,7 @@ app.config(['$httpProvider', '$compileProvider', '$locationProvider', function($
     $locationProvider.html5Mode(true);
 }]);
 
-app.config(function($urlMatcherFactoryProvider, $urlRouterProvider) {
+app.config(['$urlMatcherFactoryProvider', '$urlRouterProvider', function($urlMatcherFactoryProvider, $urlRouterProvider) {
     //this allows urls with and without trailing slashes to go to the same state
     $urlMatcherFactoryProvider.strictMode(false);
     //this will not display url parameters that are set to their defaults
@@ -39,29 +39,29 @@ app.config(function($urlMatcherFactoryProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise('/home');
     // force index pages to have higher priority than show pages
     var goToState = function(stateName) {
-        return function($state, $location) {
+        return ['$state', '$location', function($state, $location) {
             $state.go(stateName, $location.search());
-        };
+        }];
     };
     $urlRouterProvider.when('/mods', goToState('base.mods'));
     $urlRouterProvider.when('/mod-lists', goToState('base.mod-lists'));
     $urlRouterProvider.when('/articles', goToState('base.articles'));
     $urlRouterProvider.when('/mods/submit', goToState('base.submit-mod'));
-});
+}]);
 
 // sanitize html in markdown
-app.config(function(markedProvider) {
+app.config(['markedProvider', function(markedProvider) {
     markedProvider.setOptions({ sanitize: true });
-});
+}]);
 
 // allow states to be defined at runtime
-app.config(function($futureStateProvider) {
+app.config(['$futureStateProvider', function($futureStateProvider) {
     var lazyStateFactory = function($q, futureState) {
         return $q.when(futureState);
     };
     lazyStateFactory.$inject = ["$q", "futureState"];
     $futureStateProvider.stateFactory('lazy', lazyStateFactory);
-});
+}]);
 
 app.run(['$rootScope', '$state', 'smoothScroll', function($rootScope, $state, smoothScroll) {
     var lastToState;
