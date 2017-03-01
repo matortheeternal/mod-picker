@@ -10,7 +10,7 @@
         <h1 class="page-title">
             <%= @help_page.title %>
             <span class="right-item">
-                <% if can? :update, HelpPage %>
+                <% if can? :update, @help_page %>
                 <%= link_to "/help/#{@help_page.url}/edit" do %>
                 <span class="action-box">
                     <i class="fa fa-edit" aria-hidden="true"></i> Edit Help Page
