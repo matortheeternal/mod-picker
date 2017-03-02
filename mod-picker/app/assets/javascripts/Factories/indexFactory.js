@@ -41,17 +41,19 @@ app.service('indexFactory', function(indexService, objectUtils) {
             }
         };
 
-        $scope.$watch('[filters, sort]', function() {
+        $scope.refreshFilters = function(pageChange) {
             // fetch data again when filters or sort changes
             var dataWait = $scope.dataRetrieved ? 1000 : 0;
             clearTimeout($scope.getDataTimeout);
-            $scope.pages.current = 1;
+            if (!pageChange) {
+                $scope.pages.current = 1;
+            }
             $scope.getDataTimeout = setTimeout($scope.getData, dataWait);
 
             // set url parameters
             var params = indexService.getParams($scope.filters, $scope.sort, $scope.filterPrototypes);
             $state.transitionTo($state.current.name, params, { notify: false });
-        }, true);
+        };
     };
 
     this.buildState = function(scol, sdir, label, filterPrototypes) {
