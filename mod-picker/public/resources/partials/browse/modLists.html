@@ -109,7 +109,7 @@
             <h2>Mod Lists</h2>
             <loader data="mod_lists" content-class="table-container" spinner-class="big-spinner" ng-if="!error">
                 <table-results label="mod lists" data="mod_lists"></table-results>
-                <page-results pages="pages" data="mod_lists" callback="getData"></page-results>
+                <page-results pages="pages" data="mod_lists" callback="refreshFilters"></page-results>
             </loader>
 
             <error-display content-class="content-message content-error" errors="error" label="Mod Lists"></error-display>

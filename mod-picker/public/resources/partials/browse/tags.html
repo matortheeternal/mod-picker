@@ -46,7 +46,7 @@
             <h2>Tags</h2>
             <loader data="tags" content-class="table-container" spinner-class="big-spinner" ng-if="!error">
                 <table-results label="tags" data="tags"></table-results>
-                <page-results pages="pages" data="tags" callback="getData"></page-results>
+                <page-results pages="pages" data="tags" callback="refreshFilters"></page-results>
             </loader>
 
             <error-display content-class="content-message content-error" errors="error" label="Tags"></error-display>

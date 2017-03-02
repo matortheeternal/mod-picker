@@ -15,6 +15,9 @@ app.service('indexFactory', function(indexService, objectUtils) {
         angular.default($scope, 'filters', {});
         indexService.setFiltersFromParams($scope.filters, $scope.filterPrototypes, $stateParams);
 
+        // load current page value from url params
+        $scope.pages.current = parseInt($scope.filters.page);
+
         /* data fetching functions */
         $scope.getData = function(page) {
             delete $scope[$scope.route];
@@ -41,22 +44,22 @@ app.service('indexFactory', function(indexService, objectUtils) {
             }
         };
 
-        $scope.refreshFilters = function(pageChange) {
-            // fetch data again when filters or sort changes
-            var dataWait = $scope.dataRetrieved ? 1000 : 0;
-            clearTimeout($scope.getDataTimeout);
-            if (!pageChange) {
-                $scope.pages.current = 1;
-            }
-            $scope.getDataTimeout = setTimeout($scope.getData, dataWait);
+        $scope.refreshFilters = function(page) {
+            if ($scope.dataRetrieved) {
+                clearTimeout($scope.getDataTimeout);
+                $scope.pages.current = page || 1;
+                //set the page filter, so the url can be updated
+                $scope.filters.page = $scope.pages.current;
+                $scope.getDataTimeout = setTimeout($scope.getData($scope.pages.current), 1000);
 
-            // set url parameters
-            var params = indexService.getParams($scope.filters, $scope.sort, $scope.filterPrototypes);
-            $state.transitionTo($state.current.name, params, { notify: false });
+                // set url parameters
+                var params = indexService.getParams($scope.filters, $scope.sort, $scope.filterPrototypes);
+                $state.transitionTo($state.current.name, params, { notify: false });
+            }
         };
 
         //retrieve the initial mods using the initial url params
-        $scope.getData();
+        $scope.getData($scope.pages.current);
     };
 
     this.buildState = function(scol, sdir, label, filterPrototypes) {

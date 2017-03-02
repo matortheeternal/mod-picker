@@ -73,7 +73,7 @@
                     No curator requests were found matching your search criteria.
                 </div>
 
-                <page-results pages="pages" data="curator_requests" callback="getData"></page-results>
+                <page-results pages="pages" data="curator_requests" callback="refreshFilters"></page-results>
             </loader>
 
             <error-display content-class="content-message content-error" errors="error" label="Curator Requests"></error-display>

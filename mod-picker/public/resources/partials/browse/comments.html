@@ -99,7 +99,7 @@
             <loader data="comments" content-class="grid-results" spinner-class="big-spinner" ng-if="!error">
                 <comments comments="comments" show-context="true"></comments>
 
-                <page-results pages="pages" data="comments" callback="getData"></page-results>
+                <page-results pages="pages" data="comments" callback="refreshFilters"></page-results>
             </loader>
             <error-display content-class="content-message content-error" errors="error" label="comments"></error-display>
         </div>
