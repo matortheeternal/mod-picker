@@ -47,7 +47,7 @@
                 </div>
             </filter-section>
 
-            <category-tree class="filter-section" categories="categories" selection="filters.categories" toggle-all="true"></category-tree>
+            <category-tree on-change="refreshFilters()" class="filter-section" categories="categories" selection="filters.categories" toggle-all="true"></category-tree>
 
             <filter-section name="Statistic Filters" expanded="true" ng-if="statFilters.length">
                 <div class="filter-section">

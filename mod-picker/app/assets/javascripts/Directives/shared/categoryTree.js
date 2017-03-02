@@ -7,7 +7,8 @@ app.directive('categoryTree', function() {
         scope: {
             categories: '=',
             selection: '=',
-            toggleAll: '='
+            toggleAll: '=',
+            changeCallback: '&onChange'
         }
     }
 });
@@ -15,6 +16,11 @@ app.directive('categoryTree', function() {
 app.controller('categoryTreeController', function($scope, categoryService) {
     // default scope attributes
     angular.default($scope, 'selection', []);
+
+    //
+    $scope.$watch('selection', function() {
+        $scope.changeCallback();
+    }, true);
 
     $scope.findCategoryIndexes = function(category_id) {
         for (var i = 0; i < $scope.nestedCategories.length; i++) {
