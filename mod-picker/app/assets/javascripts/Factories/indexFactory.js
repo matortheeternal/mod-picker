@@ -54,6 +54,9 @@ app.service('indexFactory', function(indexService, objectUtils) {
             var params = indexService.getParams($scope.filters, $scope.sort, $scope.filterPrototypes);
             $state.transitionTo($state.current.name, params, { notify: false });
         };
+
+        //retrieve the initial mods using the initial url params
+        $scope.getData();
     };
 
     this.buildState = function(scol, sdir, label, filterPrototypes) {
