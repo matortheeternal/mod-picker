@@ -5,7 +5,8 @@ app.directive('slider', function() {
         controller: 'sliderController',
         scope: {
             filterData: '=',
-            filter: '='
+            filter: '=',
+            changeCallback: '&onChange'
         }
     }
 });
@@ -37,6 +38,8 @@ app.controller('sliderController', function($scope, sliderFactory, $timeout) {
             min: min,
             max: max
         };
+
+        $scope.changeCallback();
     };
 
     $scope.$watch('rawData', function(rawData) {
