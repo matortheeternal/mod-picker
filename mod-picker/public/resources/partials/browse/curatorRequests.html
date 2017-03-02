@@ -5,28 +5,28 @@
 
             <filter-section name="Search" expanded="true">
                 <h4>Text</h4>
-                <input type="text" ng-model="filters.search">
+                <input type="text" ng-model="filters.search" ng-change="refreshFilters()">
 
                 <h4>Submitter</h4>
-                <input type="text" ng-model="filters.submitter">
+                <input type="text" ng-model="filters.submitter" ng-change="refreshFilters()">
 
                 <h4>Mod Name</h4>
-                <input type="text" ng-model="filters.mod_name">
+                <input type="text" ng-model="filters.mod_name" ng-change="refreshFilters()">
             </filter-section>
 
             <filter-section name="States" expanded="true">
                 <div class="sidebar-box box-shadow">
                     <ul class="checkbox-list">
                         <li>
-                            <label><input type="checkbox" ng-model="filters.state.open">
+                            <label><input type="checkbox" ng-model="filters.state.open" ng-change="refreshFilters()">
                                 Open</label>
                         </li>
                         <li>
-                            <label><input type="checkbox" ng-model="filters.state.approved">
+                            <label><input type="checkbox" ng-model="filters.state.approved" ng-change="refreshFilters()">
                                 Approved</label>
                         </li>
                         <li>
-                            <label><input type="checkbox" ng-model="filters.state.denied">
+                            <label><input type="checkbox" ng-model="filters.state.denied" ng-change="refreshFilters()">
                                 Denied</label>
                         </li>
                     </ul>

@@ -7,21 +7,21 @@
 
             <filter-section name="Search" expanded="true">
                 <h4>Text</h4>
-                <input type="text" ng-model="filters.search">
+                <input type="text" ng-model="filters.search" ng-change="refreshFilters()">
 
                 <h4>Submitter</h4>
-                <input type="text" ng-model="filters.submitter">
+                <input type="text" ng-model="filters.submitter" ng-change="refreshFilters()">
             </filter-section>
 
             <filter-section name="Content Filters" expanded="true" ng-if="permissions.canModerate">
                 <div class="sidebar-box box-shadow">
                     <ul class="checkbox-list">
                         <li>
-                            <label><input type="checkbox" ng-model="filters.hidden['1']">
+                            <label><input type="checkbox" ng-model="filters.hidden['1']" ng-change="refreshFilters()">
                                 Hidden</label>
                         </li>
                         <li>
-                            <label><input type="checkbox" ng-model="filters.hidden['0']">
+                            <label><input type="checkbox" ng-model="filters.hidden['0']" ng-change="refreshFilters()">
                                 Unhidden</label>
                         </li>
                     </ul>

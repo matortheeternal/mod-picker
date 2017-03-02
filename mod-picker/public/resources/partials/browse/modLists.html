@@ -6,34 +6,34 @@
             <filter-section name="Search" expanded="true">
                 <h3>Search</h3>
                 <h4>Name</h4>
-                <input type="text" ng-model="filters.search">
+                <input type="text" ng-model="filters.search" ng-change="refreshFilters()">
 
                 <h4>Description</h4>
-                <input type="text" ng-model="filters.description">
+                <input type="text" ng-model="filters.description" ng-change="refreshFilters()">
 
                 <h4>Submitter</h4>
-                <input type="text" ng-model="filters.submitter">
+                <input type="text" ng-model="filters.submitter" ng-change="refreshFilters()">
             </filter-section>
 
             <filter-section name="Content Filters" expanded="false" ng-if="permissions.canModerate || allowAdult">
                 <div class="sidebar-box box-shadow">
                     <ul class="checkbox-list" ng-if="allowAdult">
                         <li>
-                            <label><input type="checkbox" ng-model="filters.adult['1']">
+                            <label><input type="checkbox" ng-model="filters.adult['1']" ng-change="refreshFilters()">
                                 Show Adult Content</label>
                         </li>
                         <li>
-                            <label><input type="checkbox" ng-model="filters.adult['0']">
+                            <label><input type="checkbox" ng-model="filters.adult['0']" ng-change="refreshFilters()">
                                 Show Non-Adult Content</label>
                         </li>
                     </ul>
                     <ul class="checkbox-list" ng-if="permissions.canModerate">
                         <li>
-                            <label><input type="checkbox" ng-model="filters.hidden['1']">
+                            <label><input type="checkbox" ng-model="filters.hidden['1']" ng-change="refreshFilters()">
                                 Hidden</label>
                         </li>
                         <li>
-                            <label><input type="checkbox" ng-model="filters.hidden['0']">
+                            <label><input type="checkbox" ng-model="filters.hidden['0']" ng-change="refreshFilters()">
                                 Unhidden</label>
                         </li>
                     </ul>
@@ -44,15 +44,15 @@
                 <div class="sidebar-box box-shadow">
                     <ul class="checkbox-list">
                         <li>
-                            <label><input type="checkbox" ng-model="filters.status.complete">
+                            <label><input type="checkbox" ng-model="filters.status.complete" ng-change="refreshFilters()">
                                 Completed</label>
                         </li>
                         <li>
-                            <label><input type="checkbox" ng-model="filters.status.testing">
+                            <label><input type="checkbox" ng-model="filters.status.testing" ng-change="refreshFilters()">
                                 Testing</label>
                         </li>
                         <li>
-                            <label><input type="checkbox" ng-model="filters.status.under_construction">
+                            <label><input type="checkbox" ng-model="filters.status.under_construction" ng-change="refreshFilters()">
                                 Under Construction</label>
                         </li>
                     </ul>
@@ -63,11 +63,11 @@
                 <div class="sidebar-box box-shadow">
                     <ul class="checkbox-list">
                         <li>
-                            <label><input type="checkbox" ng-model="filters.kind.normal">
+                            <label><input type="checkbox" ng-model="filters.kind.normal" ng-change="refreshFilters()">
                                 Normal Mod Lists</label>
                         </li>
                         <li>
-                            <label><input type="checkbox" ng-model="filters.kind.collection">
+                            <label><input type="checkbox" ng-model="filters.kind.collection" ng-change="refreshFilters()">
                                 Collections</label>
                         </li>
                     </ul>

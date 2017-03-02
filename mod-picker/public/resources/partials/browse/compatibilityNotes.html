@@ -5,42 +5,42 @@
 
             <filter-section name="Search" expanded="true">
                 <h4>Text</h4>
-                <input type="text" ng-model="filters.search">
+                <input type="text" ng-model="filters.search" ng-change="refreshFilters()">
 
                 <h4>Submitter</h4>
-                <input type="text" ng-model="filters.submitter">
+                <input type="text" ng-model="filters.submitter" ng-change="refreshFilters()">
 
                 <!--<h4>Editor</h4>-->
-                <!--<input type="text" ng-model="filters.editor">-->
+                <!--<input type="text" ng-model="filters.editor" ng-change="refreshFilters()">-->
             </filter-section>
 
             <filter-section name="Content Filters" expanded="true" ng-if="permissions.canModerate || allowAdult">
                 <div class="sidebar-box box-shadow">
                     <ul class="checkbox-list" ng-if="allowAdult">
                         <li>
-                            <label><input type="checkbox" ng-model="filters.adult['1']">
+                            <label><input type="checkbox" ng-model="filters.adult['1']" ng-change="refreshFilters()">
                                 Show Adult Content</label>
                         </li>
                         <li>
-                            <label><input type="checkbox" ng-model="filters.adult['0']">
+                            <label><input type="checkbox" ng-model="filters.adult['0']" ng-change="refreshFilters()">
                                 Show Non-Adult Content</label>
                         </li>
                     </ul>
                     <ul class="checkbox-list" ng-if="permissions.canModerate">
                         <li>
-                            <label><input type="checkbox" ng-model="filters.hidden['1']">
+                            <label><input type="checkbox" ng-model="filters.hidden['1']" ng-change="refreshFilters()">
                                 Hidden</label>
                         </li>
                         <li>
-                            <label><input type="checkbox" ng-model="filters.hidden['0']">
+                            <label><input type="checkbox" ng-model="filters.hidden['0']" ng-change="refreshFilters()">
                                 Unhidden</label>
                         </li>
                         <li>
-                            <label><input type="checkbox" ng-model="filters.approved['1']">
+                            <label><input type="checkbox" ng-model="filters.approved['1']" ng-change="refreshFilters()">
                                 Approved</label>
                         </li>
                         <li>
-                            <label><input type="checkbox" ng-model="filters.approved['0']">
+                            <label><input type="checkbox" ng-model="filters.approved['0']" ng-change="refreshFilters()">
                                 Unapproved</label>
                         </li>
                     </ul>
@@ -51,23 +51,23 @@
                 <div class="sidebar-box box-shadow">
                     <ul class="checkbox-list">
                         <li>
-                            <label><input type="checkbox" ng-model="filters.status.incompatible">
+                            <label><input type="checkbox" ng-model="filters.status.incompatible" ng-change="refreshFilters()">
                                 Incompatible</label>
                         </li>
                         <li>
-                            <label><input type="checkbox" ng-model="filters.status.partially_compatible">
+                            <label><input type="checkbox" ng-model="filters.status.partially_compatible" ng-change="refreshFilters()">
                                 Partially Compatible</label>
                         </li>
                         <li>
-                            <label><input type="checkbox" ng-model="filters.status.compatibility_mod">
+                            <label><input type="checkbox" ng-model="filters.status.compatibility_mod" ng-change="refreshFilters()">
                                 Compatibility Mod</label>
                         </li>
                         <li>
-                            <label><input type="checkbox" ng-model="filters.status.compatibility_option">
+                            <label><input type="checkbox" ng-model="filters.status.compatibility_option" ng-change="refreshFilters()">
                                 Compatibility Option</label>
                         </li>
                         <li>
-                            <label><input type="checkbox" ng-model="filters.status.make_custom_patch">
+                            <label><input type="checkbox" ng-model="filters.status.make_custom_patch" ng-change="refreshFilters()">
                                 Make Custom Patch</label>
                         </li>
                     </ul>
@@ -78,15 +78,15 @@
                 <div class="sidebar-box box-shadow">
                     <ul class="checkbox-list">
                         <li>
-                            <label><input type="checkbox" ng-model="filters.standing.good">
+                            <label><input type="checkbox" ng-model="filters.standing.good" ng-change="refreshFilters()">
                                 Good</label>
                         </li>
                         <li>
-                            <label><input type="checkbox" ng-model="filters.standing.unknown">
+                            <label><input type="checkbox" ng-model="filters.standing.unknown" ng-change="refreshFilters()">
                                 Unknown</label>
                         </li>
                         <li>
-                            <label><input type="checkbox" ng-model="filters.standing.bad">
+                            <label><input type="checkbox" ng-model="filters.standing.bad" ng-change="refreshFilters()">
                                 Bad</label>
                         </li>
                     </ul>

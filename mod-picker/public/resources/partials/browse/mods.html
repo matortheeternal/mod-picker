@@ -7,13 +7,13 @@
 
             <filter-section name="Search" expanded="true">
                 <h4>Mod Name</h4>
-                <input type="text" ng-model="filters.search">
+                <input type="text" ng-model="filters.search" ng-change="refreshFilters()">
 
                 <h4>Description</h4>
-                <input type="text" ng-model="filters.description">
+                <input type="text" ng-model="filters.description" ng-change="refreshFilters()">
 
                 <h4>Mod Author</h4>
-                <input type="text" ng-model="filters.author">
+                <input type="text" ng-model="filters.author" ng-change="refreshFilters()">
             </filter-section>
 
             <filter-section name="Mod List" expanded="true" ng-if="activeModList">
@@ -54,29 +54,29 @@
                 <div class="sidebar-box box-shadow">
                     <ul class="checkbox-list" ng-if="allowAdult">
                         <li>
-                            <label><input type="checkbox" ng-model="filters.adult['1']">
+                            <label><input type="checkbox" ng-model="filters.adult['1']" ng-change="refreshFilters()">
                                 Show Adult Content</label>
                         </li>
                         <li>
-                            <label><input type="checkbox" ng-model="filters.adult['0']">
+                            <label><input type="checkbox" ng-model="filters.adult['0']" ng-change="refreshFilters()">
                                 Show Non-Adult Content</label>
                         </li>
                     </ul>
                     <ul class="checkbox-list" ng-if="permissions.canModerate">
                         <li>
-                            <label><input type="checkbox" ng-model="filters.hidden['1']">
+                            <label><input type="checkbox" ng-model="filters.hidden['1']" ng-change="refreshFilters()">
                                 Hidden</label>
                         </li>
                         <li>
-                            <label><input type="checkbox" ng-model="filters.hidden['0']">
+                            <label><input type="checkbox" ng-model="filters.hidden['0']" ng-change="refreshFilters()">
                                 Unhidden</label>
                         </li>
                         <li>
-                            <label><input type="checkbox" ng-model="filters.approved['1']">
+                            <label><input type="checkbox" ng-model="filters.approved['1']" ng-change="refreshFilters()">
                                 Approved</label>
                         </li>
                         <li>
-                            <label><input type="checkbox" ng-model="filters.approved['0']">
+                            <label><input type="checkbox" ng-model="filters.approved['0']" ng-change="refreshFilters()">
                                 Unapproved</label>
                         </li>
                     </ul>
@@ -87,19 +87,19 @@
                 <div class="sidebar-box box-shadow">
                     <ul class="checkbox-list">
                         <li>
-                            <label><input type="checkbox" ng-model="filters.sources.nexus">
+                            <label><input type="checkbox" ng-model="filters.sources.nexus" ng-change="refreshFilters()">
                                 Nexus Mods</label>
                         </li>
                         <li>
-                            <label><input type="checkbox" ng-model="filters.sources.workshop">
+                            <label><input type="checkbox" ng-model="filters.sources.workshop" ng-change="refreshFilters()">
                                 Steam Workshop</label>
                         </li>
                         <li>
-                            <label><input type="checkbox" ng-model="filters.sources.lab">
+                            <label><input type="checkbox" ng-model="filters.sources.lab" ng-change="refreshFilters()">
                                 Lovers Lab</label>
                         </li>
                         <li>
-                            <label><input type="checkbox" ng-model="filters.sources.other">
+                            <label><input type="checkbox" ng-model="filters.sources.other" ng-change="refreshFilters()">
                                 Other</label>
                         </li>
                     </ul>
@@ -112,7 +112,7 @@
                         <li>
                             <label>
                                 <span>Requires attribution</span>
-                                <select ng-model="filters.terms.credit" ng-change="termChange('credit')">
+                                <select ng-model="filters.terms.credit" ng-change="termChange('credit')" ng-change="refreshFilters()">
                                     <option value="">Any</option>
                                     <option value="0">No</option>
                                     <option value="1">Yes</option>
@@ -122,7 +122,7 @@
                         <li>
                             <label>
                                 <span>Commercial use</span>
-                                <select ng-model="filters.terms.commercial" ng-change="termChange('commercial')">
+                                <select ng-model="filters.terms.commercial" ng-change="termChange('commercial')" ng-change="refreshFilters()">
                                     <option value="">Any</option>
                                     <option value="0">No</option>
                                     <option value="1">Yes</option>
@@ -133,7 +133,7 @@
                         <li>
                             <label>
                                 <span>Redistribution</span>
-                                <select ng-model="filters.terms.redistribution" ng-change="termChange('redistribution')">
+                                <select ng-model="filters.terms.redistribution" ng-change="termChange('redistribution')" ng-change="refreshFilters()">
                                     <option value="">Any</option>
                                     <option value="0">No</option>
                                     <option value="1">Yes</option>
@@ -144,7 +144,7 @@
                         <li>
                             <label>
                                 <span>Modification</span>
-                                <select ng-model="filters.terms.modification" ng-change="termChange('modification')">
+                                <select ng-model="filters.terms.modification" ng-change="termChange('modification')" ng-change="refreshFilters()">
                                     <option value="">Any</option>
                                     <option value="0">No</option>
                                     <option value="1">Yes</option>
@@ -155,7 +155,7 @@
                         <li>
                             <label>
                                 <span>Private use</span>
-                                <select ng-model="filters.terms.private_use" ng-change="termChange('private_use')">
+                                <select ng-model="filters.terms.private_use" ng-change="termChange('private_use')" ng-change="refreshFilters()">
                                     <option value="">Any</option>
                                     <option value="0">No</option>
                                     <option value="1">Yes</option>
@@ -165,7 +165,7 @@
                         <li>
                             <label>
                                 <span>License inclusion</span>
-                                <select ng-model="filters.terms.include" ng-change="termChange('include')">
+                                <select ng-model="filters.terms.include" ng-change="termChange('include')" ng-change="refreshFilters()">
                                     <option value="">Any</option>
                                     <option value="0">No</option>
                                     <option value="1">Yes</option>

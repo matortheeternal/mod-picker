@@ -5,41 +5,41 @@
 
             <filter-section name="Search" expanded="true">
                 <h4>Username</h4>
-                <input type="text" ng-model="filters.search">
+                <input type="text" ng-model="filters.search" ng-change="refreshFilters()">
 
                 <h4>Linked Account Username</h4>
-                <input type="text" ng-model="filters.linked">
+                <input type="text" ng-model="filters.linked" ng-change="refreshFilters()">
             </filter-section>
 
             <filter-section name="Roles" expanded="true">
                 <div class="sidebar-box box-shadow">
                     <ul class="checkbox-list">
                         <li>
-                            <label><input type="checkbox" ng-model="filters.roles.admin">
+                            <label><input type="checkbox" ng-model="filters.roles.admin" ng-change="refreshFilters()">
                                 Admin</label>
                         </li>
                         <li>
-                            <label><input type="checkbox" ng-model="filters.roles.moderator">
+                            <label><input type="checkbox" ng-model="filters.roles.moderator" ng-change="refreshFilters()">
                                 Moderator</label>
                         </li>
                         <li>
-                            <label><input type="checkbox" ng-model="filters.roles.helper">
+                            <label><input type="checkbox" ng-model="filters.roles.helper" ng-change="refreshFilters()">
                                 Helper</label>
                         </li>
                         <li>
-                            <label><input type="checkbox" ng-model="filters.roles.author">
+                            <label><input type="checkbox" ng-model="filters.roles.author" ng-change="refreshFilters()">
                                 Mod Author</label>
                         </li>
                         <li>
-                            <label><input type="checkbox" ng-model="filters.roles.user">
+                            <label><input type="checkbox" ng-model="filters.roles.user" ng-change="refreshFilters()">
                                 User</label>
                         </li>
                         <li ng-if="permissions.canModerate">
-                            <label><input type="checkbox" ng-model="filters.roles.restricted">
+                            <label><input type="checkbox" ng-model="filters.roles.restricted" ng-change="refreshFilters()">
                                 Restricted</label>
                         </li>
                         <li ng-if="permissions.canModerate">
-                            <label><input type="checkbox" ng-model="filters.roles.banned">
+                            <label><input type="checkbox" ng-model="filters.roles.banned" ng-change="refreshFilters()">
                                 Banned</label>
                         </li>
                     </ul>
