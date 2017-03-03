@@ -21,7 +21,7 @@
                 </span>
                 <span ng-if="requirement.mods.length > 2">
                     and
-                    <span bindonce class="text-tooltip" bo-title="getRequirerList(requirement, 2)" bo-text="(requirement.mods.length - 2) + ' more'"></span>
+                    <span bindonce class="text-tooltip" ng-attr-title="::getRequirerList(requirement, 2)" bo-text="(requirement.mods.length - 2) + ' more'"></span>
                 </span>
                 <!-- resolution options -->
                 <span ng-if="editing">
@@ -43,7 +43,7 @@
                 </span>
                 <span ng-if="requirement.mods.length > 2">
                     and
-                    <span bindonce class="text-tooltip" bo-title="getRequirerList(requirement, 2)" bo-text="(requirement.mods.length - 2) + ' more'"></span>
+                    <span bindonce class="text-tooltip" ng-attr-title="::getRequirerList(requirement, 2)" bo-text="(requirement.mods.length - 2) + ' more'"></span>
                 </span>
             </li>
         </ul>
