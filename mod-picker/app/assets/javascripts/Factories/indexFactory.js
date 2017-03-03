@@ -5,7 +5,6 @@ app.service('indexFactory', function(indexService, objectUtils, $timeout) {
         $scope.actions = [];
         $scope.expanded = {};
         $scope.pages = {};
-        $scope.dataRetrieved = false;
 
         // load sort values from url parameters
         $scope.sort = {};
@@ -29,12 +28,10 @@ app.service('indexFactory', function(indexService, objectUtils, $timeout) {
             objectUtils.deleteEmptyProperties(options.filters, 0, true);
             var dataCallback = function(data) {
                 $scope[$scope.route] = data[$scope.route];
-                $scope.dataRetrieved = true;
                 delete $scope.error;
                 if ($scope.dataCallback) $scope.dataCallback();
             };
             var errorCallback = function(response) {
-                $scope.dataRetrieved = true;
                 $scope.error = response;
             };
             if ($scope.contributions) {
