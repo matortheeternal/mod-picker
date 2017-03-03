@@ -45,17 +45,15 @@ app.service('indexFactory', function(indexService, objectUtils) {
         };
 
         $scope.refreshFilters = function(page) {
-            if ($scope.dataRetrieved) {
-                clearTimeout($scope.getDataTimeout);
-                $scope.pages.current = page || 1;
-                //set the page filter, so the url can be updated
-                $scope.filters.page = $scope.pages.current;
-                $scope.getDataTimeout = setTimeout($scope.getData($scope.pages.current), 1000);
+            clearTimeout($scope.getDataTimeout);
+            $scope.pages.current = page || 1;
+            //set the page filter, so the url can be updated
+            $scope.filters.page = $scope.pages.current;
+            $scope.getDataTimeout = setTimeout($scope.getData($scope.pages.current), 1000);
 
-                // set url parameters
-                var params = indexService.getParams($scope.filters, $scope.sort, $scope.filterPrototypes);
-                $state.transitionTo($state.current.name, params, { notify: false });
-            }
+            // set url parameters
+            var params = indexService.getParams($scope.filters, $scope.sort, $scope.filterPrototypes);
+            $state.transitionTo($state.current.name, params, { notify: false });
         };
 
         //retrieve the initial mods using the initial url params
