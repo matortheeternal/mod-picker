@@ -1,6 +1,5 @@
 //= require angular.min.1.5.1.js
 //= require marked.min.js
-//= require bindonce.min.js
 //= require angular-marked.min.js
 //= require angular-drag-and-drop-lists.min.js
 //= require angular-ui-router.min.js
