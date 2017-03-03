@@ -199,8 +199,7 @@
         <div class="content-container analysis-container">
             <ul>
                 <li bindonce ng-repeat="plugin in analysis.plugins" ng-if="plugin.errors_count > 0">
-                    <a bindonce bo-href="'mods/' + plugin.mod.id + '/analysis?plugin='
-                     + plugin.id">{{::plugin.filename}}</a>
+                    <a ng-href="mods/{{::plugin.mod.id}}/analysis?plugin={{::plugin.id}}">{{::plugin.filename}}</a>
                    {{::'(' + plugin.errors_count + ' errors)'}}
                 </li>
             </ul>

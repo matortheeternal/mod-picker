@@ -1,11 +1,11 @@
 <td ng-repeat="column in columns" ng-if="column.visibility" bindonce ng-class="::column.fullClass">
     <span bindonce ng-if="::!!column.dynamic">
-        <a bindonce ng-if="::!!column.link" class="strong" bo-href="item.columnData[$index].link" ng-bind="item.columnData[$index].data"></a>
+        <a bindonce ng-if="::!!column.link" class="strong" ng-href="{{::item.columnData[$index].link}}" ng-bind="item.columnData[$index].data"></a>
         <span bindonce ng-if="::!column.link" ng-bind="item.columnData[$index].data"></span>
         <span bindonce ng-if="::!!column.note" class="note" ng-bind="item.columnData[$index].note"></span>
     </span>
     <span bindonce ng-if="::!column.dynamic">
-        <a ng-if="::!!column.link" class="strong" bo-href="item.columnData[$index].link">{{::item.columnData[$index].data}}</a>
+        <a ng-if="::!!column.link" class="strong" ng-href="{{::item.columnData[$index].link}}">{{::item.columnData[$index].data}}</a>
         <span bindonce ng-if="::!column.link">{{::item.columnData[$index].data}}</span>
         <span bindonce ng-if="::!!column.note" class="note">{{::item.columnData[$index].note}}</span>
     </span>
