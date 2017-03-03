@@ -76,7 +76,7 @@
         <div class="right-column">
             <h2>Users</h2>
             <loader data="users" content-class="table-container" spinner-class="big-spinner" ng-if="!error">
-                <table-results label="users" data="users"></table-results>
+                <table-results on-change="refreshFilters()" label="users" data="users"></table-results>
                 <page-results pages="pages" data="users" callback="refreshFilters"></page-results>
             </loader>
 

@@ -239,7 +239,7 @@
                 </span>
             </h2>
             <loader data="mods" content-class="table-container" spinner-class="big-spinner" ng-if="!error">
-                <table-results label="mods" data="mods" ng-if="tableView"></table-results>
+                <table-results on-change="refreshFilters()" label="mods" data="mods" ng-if="tableView"></table-results>
                 <grid-results label="mods" data="mods" ng-if="!tableView"></grid-results>
                 <page-results pages="pages" data="mods" callback="refreshFilters"></page-results>
             </loader>

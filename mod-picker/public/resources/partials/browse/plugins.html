@@ -66,7 +66,7 @@
         <div class="right-column">
             <h2>Plugins</h2>
             <loader data="plugins" content-class="table-container" spinner-class="big-spinner" ng-if="!error">
-                <table-results label="plugins" data="plugins"></table-results>
+                <table-results on-change="refreshFilters()" label="plugins" data="plugins"></table-results>
                 <page-results pages="pages" data="plugins" callback="refreshFilters"></page-results>
             </loader>
 
