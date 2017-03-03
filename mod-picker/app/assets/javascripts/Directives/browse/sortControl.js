@@ -5,7 +5,8 @@ app.directive('sortControl', function() {
         controller: 'sortController',
         scope: {
             sort: '=?',
-            sortOptions: '=?'
+            sortOptions: '=?',
+            changeCallback: '&onChange'
         }
     }
 });

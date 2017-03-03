@@ -95,7 +95,7 @@
 
         <div class="right-column">
             <h2>Install Order Notes <span class="right-item">
-                <sort-control></sort-control>
+                <sort-control on-change="refreshFilters()"></sort-control>
             </span></h2>
             <loader data="install_order_notes" content-class="grid-results" spinner-class="big-spinner" ng-if="!error">
                 <div class="content-block" ng-repeat="note in install_order_notes">
