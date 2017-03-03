@@ -5,7 +5,7 @@
             <th ng-repeat="column in columns" bindonce ng-show="column.visibility"
                 bo-class="{ 'no-action' : !sort || column.unsortable }" ng-click="sortColumn(column)">
                 {{column.label}}
-                <div bindonce class="sorting-options" bo-if="sort && !column.unsortable">
+                <div bindonce class="sorting-options" ng-if="::sort && !column.unsortable">
                     <div class="sort-up" ng-class="{ 'active' : column.up }">
                         <i class="fa fa-caret-up"></i>
                     </div>
@@ -24,19 +24,19 @@
         <tbody>
         <tr ng-repeat="item in data" ng-class="{ 'row-hidden' : item.hidden }">
             <td ng-repeat="column in columns" bindonce ng-if="column.visibility" bo-class="column.fullClass">
-                <span bindonce bo-if="!!column.dynamic">
-                    <a bindonce bo-if="!!column.link" bo-href="item.columnData[$index].link">
-                        <img bindonce bo-if="!!column.image" bo-src="item.columnData[$index].image" bo-class="column.imageClass"/>
+                <span bindonce ng-if="::!!column.dynamic">
+                    <a bindonce ng-if="::!!column.link" bo-href="item.columnData[$index].link">
+                        <img bindonce ng-if="::!!column.image" bo-src="item.columnData[$index].image" bo-class="column.imageClass"/>
                         <span bindonce ng-bind="item.columnData[$index].data"></span>
                     </a>
-                    <span bindonce bo-if="!column.link && column.data" ng-bind="item.columnData[$index].data"></span>
+                    <span bindonce ng-if="::!column.link && column.data" ng-bind="item.columnData[$index].data"></span>
                 </span>
-                <span bindonce bo-if="!column.dynamic">
-                    <a bindonce bo-if="!!column.link" bo-href="item.columnData[$index].link">
-                        <img bindonce bo-if="!!column.image" bo-src="item.columnData[$index].image" bo-class="column.imageClass"/>
+                <span bindonce ng-if="::!column.dynamic">
+                    <a bindonce ng-if="::!!column.link" bo-href="item.columnData[$index].link">
+                        <img bindonce ng-if="::!!column.image" bo-src="item.columnData[$index].image" bo-class="column.imageClass"/>
                         <span bindonce bo-text="item.columnData[$index].data"></span>
                     </a>
-                    <span bindonce bo-if="!column.link && column.data" bo-text="item.columnData[$index].data"></span>
+                    <span bindonce ng-if="::!column.link && column.data" bo-text="item.columnData[$index].data"></span>
                 </span>
             </td>
             <td class="actions-cell">

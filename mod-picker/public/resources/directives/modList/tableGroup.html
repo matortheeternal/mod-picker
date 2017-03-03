@@ -18,15 +18,15 @@
         <tbody dnd-list="item.children" dnd-allowed-types="['item']">
             <tr ng-repeat="item in item.children as children" ng-hide="item._destroy" dnd-draggable="item" dnd-moved="itemMoved(children, $index)" dnd-effect-allowed="move" dnd-disable-if="!editing" dnd-type="'item'" ng-class="{ 'merged' : item.merged }">
                 <td bindonce ng-repeat="column in columns" ng-if="column.visibility" bo-class="column.fullClass">
-                    <span bindonce bo-if="!!column.dynamic">
-                        <a bindonce bo-if="!!column.link" class="strong" bo-href="item.columnData[$index].link" ng-bind="item.columnData[$index].data"></a>
-                        <span bindonce bo-if="!column.link" ng-bind="item.columnData[$index].data"></span>
-                        <span bindonce bo-if="!!column.note" class="note" ng-bind="item.columnData[$index].note"></span>
+                    <span bindonce ng-if="::!!column.dynamic">
+                        <a bindonce ng-if="::!!column.link" class="strong" bo-href="item.columnData[$index].link" ng-bind="item.columnData[$index].data"></a>
+                        <span bindonce ng-if="::!column.link" ng-bind="item.columnData[$index].data"></span>
+                        <span bindonce ng-if="::!!column.note" class="note" ng-bind="item.columnData[$index].note"></span>
                     </span>
-                    <span bindonce bo-if="!column.dynamic">
-                        <a bindonce bo-if="!!column.link" class="strong" bo-href="item.columnData[$index].link" bo-text="item.columnData[$index].data"></a>
-                        <span bindonce bo-if="!column.link" bo-text="item.columnData[$index].data"></span>
-                        <span bindonce bo-if="!!column.note" class="note" bo-text="item.columnData[$index].note"></span>
+                    <span bindonce ng-if="::!column.dynamic">
+                        <a bindonce ng-if="::!!column.link" class="strong" bo-href="item.columnData[$index].link" bo-text="item.columnData[$index].data"></a>
+                        <span bindonce ng-if="::!column.link" bo-text="item.columnData[$index].data"></span>
+                        <span bindonce ng-if="::!!column.note" class="note" bo-text="item.columnData[$index].note"></span>
                     </span>
                 </td>
                 <td class="actions-cell">
