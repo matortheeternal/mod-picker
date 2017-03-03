@@ -141,12 +141,12 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr bindonce ng-repeat="asset in analysis.conflicting_assets">
+                <tr ng-repeat="asset in analysis.conflicting_assets">
                     <td>{{::asset.asset_file.path}}</td>
                     <td>
-                        <div bindonce ng-repeat="mod in asset.mods" ng-attr-title="::mod.subpath + asset.asset_file.path" ng-class="::{ 'winning-asset' : mod.wins }">
+                        <div ng-repeat="mod in asset.mods" ng-attr-title="::mod.subpath + asset.asset_file.path" ng-class="::{ 'winning-asset' : mod.wins }">
                            {{::'[' + mod.index + '] ' + mod.mod.name}}
-                            <span bindonce bo-show="mod.subpath && mod.subpath.endsWith('.bsa\\')">
+                            <span ng-show="::mod.subpath && mod.subpath.endsWith('.bsa\\')">
                                 (BSA)
                             </span>
                         </div>
@@ -174,11 +174,11 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr bindonce ng-repeat="override in analysis.conflicting_overrides  | limitTo: analysis.maxOverrides">
+                <tr ng-repeat="override in analysis.conflicting_overrides  | limitTo: analysis.maxOverrides">
                     <td>{{::override.master_plugin.plugin.filename}}</td>
                     <td>{{::'[' + override.sig + ':' + (override.fid | hex:8) + ']'}}</td>
                     <td>
-                        <span bindonce ng-repeat="plugin in override.plugins track by $index">{{::plugin.plugin.filename + ($last ? '' : ', ')}}
+                        <span ng-repeat="plugin in override.plugins track by $index">{{::plugin.plugin.filename + ($last ? '' : ', ')}}
                         </span>
                     </td>
                 </tr>
@@ -198,7 +198,7 @@
         </div>
         <div class="content-container analysis-container">
             <ul>
-                <li bindonce ng-repeat="plugin in analysis.plugins" ng-if="plugin.errors_count > 0">
+                <li ng-repeat="plugin in analysis.plugins" ng-if="plugin.errors_count > 0">
                     <a ng-href="mods/{{::plugin.mod.id}}/analysis?plugin={{::plugin.id}}">{{::plugin.filename}}</a>
                    {{::'(' + plugin.errors_count + ' errors)'}}
                 </li>

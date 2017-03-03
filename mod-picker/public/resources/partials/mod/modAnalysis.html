@@ -87,7 +87,7 @@
             <div ng-repeat="master in mod.currentPlugin.masters" ng-if="master.overrides.length > 0">
                 <h3 class="section-title">{{master.master_plugin.filename}}</h3>
                 <ul class="overrides-list">
-                    <li ng-repeat="override in master.overrides | limitTo: master.max_overrides" bindonce>
+                    <li ng-repeat="override in master.overrides | limitTo: master.max_overrides">
                         {{::'[' + override.sig + ':'  + (override.fid | hex:8) + ']'}}></li>
                     <li class="show-more" ng-if="master.max_overrides < master.overrides.length" ng-click="showMore(master)">Show More</li>
                     <li class="show-less" ng-if="master.max_overrides > 1000" ng-click="showLess(master)">Show Less</li>

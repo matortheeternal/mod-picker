@@ -14,14 +14,14 @@
     <div class="content-container">
         <ul ng-if="showMissingTools" class="required-list">
             <li ng-repeat="requirement in required.missing_tools">
-                <a bindonce ng-href="mods/{{::requirement.required_mod.id}}">{{::requirement.required_mod.name}}</a>
+                <a ng-href="mods/{{::requirement.required_mod.id}}">{{::requirement.required_mod.name}}</a>
                 is required by
                 <span ng-repeat="mod in requirement.mods | limitTo: 2">
-                    <a bindonce ng-href="mods/{{::mod.id}}">{{::mod.name}}</a>{{::(!$last || requirement.mods.length > 2 ? ', ' : '')}}
+                    <a ng-href="mods/{{::mod.id}}">{{::mod.name}}</a>{{::(!$last || requirement.mods.length > 2 ? ', ' : '')}}
                 </span>
                 <span ng-if="requirement.mods.length > 2">
                     and
-                    <span bindonce class="text-tooltip" ng-attr-title="::getRequirerList(requirement, 2)">{{::(requirement.mods.length - 2) + ' more'}}</span>
+                    <span class="text-tooltip" ng-attr-title="::getRequirerList(requirement, 2)">{{::(requirement.mods.length - 2) + ' more'}}</span>
                 </span>
                 <!-- resolution options -->
                 <span ng-if="editing">
@@ -36,14 +36,14 @@
 
         <ul ng-if="!showMissingTools" class="required-list">
             <li ng-repeat="requirement in required.tools" ng-hide="requirement._destroy">
-                <a bindonce ng-href="mods/{{::requirement.required_mod.id}}">{{::requirement.required_mod.name}}</a>
+                <a ng-href="mods/{{::requirement.required_mod.id}}">{{::requirement.required_mod.name}}</a>
                 is required by
                 <span ng-repeat="mod in requirement.mods | limitTo: 2">
-                    <a bindonce ng-href="mods/{{::mod.id}}">{{::mod.name}}</a>{{::(!$last || requirement.mods.length > 2 ? ', ' : '')}}
+                    <a ng-href="mods/{{::mod.id}}">{{::mod.name}}</a>{{::(!$last || requirement.mods.length > 2 ? ', ' : '')}}
                 </span>
                 <span ng-if="requirement.mods.length > 2">
                     and
-                    <span bindonce class="text-tooltip" ng-attr-title="::getRequirerList(requirement, 2)">{{::(requirement.mods.length - 2) + ' more'}}</span>
+                    <span class="text-tooltip" ng-attr-title="::getRequirerList(requirement, 2)">{{::(requirement.mods.length - 2) + ' more'}}</span>
                 </span>
             </li>
         </ul>

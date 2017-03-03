@@ -1,10 +1,10 @@
 <div class="action-container inline-flex" ng-repeat="action in actions" ng-hide="resolve(action.hidden, item)">
-    <span bindonce ng-attr-title="::action.title" tabindex="0" class="action-box" ng-class="::action.class" ng-class="{ 'disabled' : resolve(action.disabled, item), 'icon-box' : !!action.icon }" ng-click="actionClick(action, item)" ng-blur="actionBlur(action, item)">
-        <i bindonce ng-if="::!!action.icon" ng-class="::action.icon" class="fa"></i>
+    <span ng-attr-title="::action.title" tabindex="0" class="action-box" ng-class="::action.class" ng-class="{ 'disabled' : resolve(action.disabled, item), 'icon-box' : !!action.icon }" ng-click="actionClick(action, item)" ng-blur="actionBlur(action, item)">
+        <i ng-if="::!!action.icon" ng-class="::action.icon" class="fa"></i>
         {{::action.caption}}
     </span>
     <div ng-if="action.items && item[action.key]" class="dropdown">
-        <div bindonce class="dropdown-item" ng-repeat="actionItem in action.items" ng-click="resolve(actionItem.execute, item)" ng-hide="resolve(actionItem.disabled, item)">
+        <div class="dropdown-item" ng-repeat="actionItem in action.items" ng-click="resolve(actionItem.execute, item)" ng-hide="resolve(actionItem.disabled, item)">
             {{::resolve(actionItem.text, item)}}
         </div>
     </div>

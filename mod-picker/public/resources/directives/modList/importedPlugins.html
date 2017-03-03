@@ -21,7 +21,7 @@
             </thead>
             <tbody>
             <tr ng-repeat="item in importedPlugins | orderBy:sort.column:(sort.direction === 'DESC')">
-                <td bindonce class="mod-search-cell">
+                <td class="mod-search-cell">
                     {{::item.filename}}
                 </td>
                 <td class="mod-search-cell">
