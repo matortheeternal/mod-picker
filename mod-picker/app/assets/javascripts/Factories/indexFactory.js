@@ -43,8 +43,8 @@ app.service('indexFactory', function(indexService, objectUtils, $timeout) {
 
         $scope.refreshFilters = function(page) {
             //change pages instantly
-            //but only update params and retrieve new data 500ms after the last filter change
-            var timeoutLength = page ? 0 : 500;
+            //but only update params and retrieve new data 800ms after the last filter change
+            var timeoutLength = page ? 0 : 800;
             $timeout.cancel($scope.refreshTimeout);
             $scope.refreshTimeout = $timeout(function() {
                 $scope.pages.current = page || 1;
