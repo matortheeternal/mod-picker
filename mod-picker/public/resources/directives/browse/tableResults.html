@@ -34,9 +34,9 @@
                 <span bindonce ng-if="::!column.dynamic">
                     <a bindonce ng-if="::!!column.link" bo-href="item.columnData[$index].link">
                         <img bindonce ng-if="::!!column.image" bo-src="item.columnData[$index].image" bo-class="column.imageClass"/>
-                        <span bindonce bo-text="item.columnData[$index].data"></span>
+                        {{::item.columnData[$index].data}}
                     </a>
-                    <span bindonce ng-if="::!column.link && column.data" bo-text="item.columnData[$index].data"></span>
+                    <span ng-if="::!column.link && column.data">{{::item.columnData[$index].data}}</span>
                 </span>
             </td>
             <td class="actions-cell">

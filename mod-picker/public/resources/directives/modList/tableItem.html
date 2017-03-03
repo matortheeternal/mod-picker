@@ -5,9 +5,9 @@
         <span bindonce ng-if="::!!column.note" class="note" ng-bind="item.columnData[$index].note"></span>
     </span>
     <span bindonce ng-if="::!column.dynamic">
-        <a bindonce ng-if="::!!column.link" class="strong" bo-href="item.columnData[$index].link" bo-text="item.columnData[$index].data"></a>
-        <span bindonce ng-if="::!column.link" bo-text="item.columnData[$index].data"></span>
-        <span bindonce ng-if="::!!column.note" class="note" bo-text="item.columnData[$index].note"></span>
+        <a ng-if="::!!column.link" class="strong" bo-href="item.columnData[$index].link">{{::item.columnData[$index].data}}</a>
+        <span bindonce ng-if="::!column.link">{{::item.columnData[$index].data}}</span>
+        <span bindonce ng-if="::!!column.note" class="note">{{::item.columnData[$index].note}}</span>
     </span>
 </td>
 <td class="actions-cell">
