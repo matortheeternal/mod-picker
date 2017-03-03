@@ -1,4 +1,4 @@
-app.service('indexFactory', function(indexService, objectUtils) {
+app.service('indexFactory', function(indexService, objectUtils, $timeout) {
     this.buildIndex = function($scope, $stateParams, $state) {
         // initialize local variables
         $scope.availableColumnData = [];
@@ -45,15 +45,21 @@ app.service('indexFactory', function(indexService, objectUtils) {
         };
 
         $scope.refreshFilters = function(page) {
-            clearTimeout($scope.getDataTimeout);
-            $scope.pages.current = page || 1;
-            //set the page filter, so the url can be updated
-            $scope.filters.page = $scope.pages.current;
-            $scope.getDataTimeout = setTimeout($scope.getData($scope.pages.current), 1000);
+            //change pages instantly
+            //but only update params and retrieve new data 500ms after the last filter change
+            var timeoutLength = page ? 0 : 500;
+            $timeout.cancel($scope.refreshTimeout);
+            $scope.refreshTimeout = $timeout(function() {
+                $scope.pages.current = page || 1;
+                //set the page filter, so the url can be updated
+                $scope.filters.page = $scope.pages.current;
 
-            // set url parameters
-            var params = indexService.getParams($scope.filters, $scope.sort, $scope.filterPrototypes);
-            $state.transitionTo($state.current.name, params, { notify: false });
+                // set url parameters
+                var params = indexService.getParams($scope.filters, $scope.sort, $scope.filterPrototypes);
+                $state.transitionTo($state.current.name, params, { notify: false });
+                //retreive new data
+                $scope.getData($scope.pages.current);
+            }, timeoutLength);
         };
 
         //retrieve the initial mods using the initial url params
