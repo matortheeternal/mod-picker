@@ -1,4 +1,4 @@
-<td ng-repeat="column in columns" ng-if="column.visibility" bindonce bo-class="column.fullClass">
+<td ng-repeat="column in columns" ng-if="column.visibility" bindonce ng-class="::column.fullClass">
     <span bindonce ng-if="::!!column.dynamic">
         <a bindonce ng-if="::!!column.link" class="strong" bo-href="item.columnData[$index].link" ng-bind="item.columnData[$index].data"></a>
         <span bindonce ng-if="::!column.link" ng-bind="item.columnData[$index].data"></span>

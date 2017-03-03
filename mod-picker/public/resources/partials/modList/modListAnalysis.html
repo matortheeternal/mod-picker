@@ -144,7 +144,7 @@
                 <tr bindonce ng-repeat="asset in analysis.conflicting_assets">
                     <td>{{::asset.asset_file.path}}</td>
                     <td>
-                        <div bindonce ng-repeat="mod in asset.mods" ng-attr-title="::mod.subpath + asset.asset_file.path" bo-class="{ 'winning-asset' : mod.wins }">
+                        <div bindonce ng-repeat="mod in asset.mods" ng-attr-title="::mod.subpath + asset.asset_file.path" ng-class="::{ 'winning-asset' : mod.wins }">
                            {{::'[' + mod.index + '] ' + mod.mod.name}}
                             <span bindonce bo-show="mod.subpath && mod.subpath.endsWith('.bsa\\')">
                                 (BSA)

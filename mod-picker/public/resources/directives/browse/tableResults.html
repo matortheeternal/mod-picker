@@ -3,7 +3,7 @@
         <thead>
         <tr>
             <th ng-repeat="column in columns" bindonce ng-show="column.visibility"
-                bo-class="{ 'no-action' : !sort || column.unsortable }" ng-click="sortColumn(column)">
+                ng-class="::{ 'no-action' : !sort || column.unsortable }" ng-click="sortColumn(column)">
                 {{column.label}}
                 <div bindonce class="sorting-options" ng-if="::sort && !column.unsortable">
                     <div class="sort-up" ng-class="{ 'active' : column.up }">
@@ -23,17 +23,17 @@
         </thead>
         <tbody>
         <tr ng-repeat="item in data" ng-class="{ 'row-hidden' : item.hidden }">
-            <td ng-repeat="column in columns" bindonce ng-if="column.visibility" bo-class="column.fullClass">
+            <td ng-repeat="column in columns" bindonce ng-if="column.visibility" ng-class="::column.fullClass">
                 <span bindonce ng-if="::!!column.dynamic">
                     <a bindonce ng-if="::!!column.link" bo-href="item.columnData[$index].link">
-                        <img bindonce ng-if="::!!column.image" bo-src="item.columnData[$index].image" bo-class="column.imageClass"/>
+                        <img bindonce ng-if="::!!column.image" bo-src="item.columnData[$index].image" ng-class="::column.imageClass"/>
                         <span bindonce ng-bind="item.columnData[$index].data"></span>
                     </a>
                     <span bindonce ng-if="::!column.link && column.data" ng-bind="item.columnData[$index].data"></span>
                 </span>
                 <span bindonce ng-if="::!column.dynamic">
                     <a bindonce ng-if="::!!column.link" bo-href="item.columnData[$index].link">
-                        <img bindonce ng-if="::!!column.image" bo-src="item.columnData[$index].image" bo-class="column.imageClass"/>
+                        <img bindonce ng-if="::!!column.image" bo-src="item.columnData[$index].image" ng-class="::column.imageClass"/>
                         {{::item.columnData[$index].data}}
                     </a>
                     <span ng-if="::!column.link && column.data">{{::item.columnData[$index].data}}</span>
