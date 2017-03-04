@@ -14,9 +14,6 @@ app.service('indexFactory', function(indexService, objectUtils, $timeout) {
         angular.default($scope, 'filters', {});
         indexService.setFiltersFromParams($scope.filters, $scope.filterPrototypes, $stateParams);
 
-        // load current page value from url params
-        $scope.pages.current = parseInt($scope.filters.page);
-
         /* data fetching functions */
         $scope.getData = function(page) {
             delete $scope[$scope.route];
@@ -47,20 +44,18 @@ app.service('indexFactory', function(indexService, objectUtils, $timeout) {
             var timeoutLength = page ? 0 : 800;
             $timeout.cancel($scope.refreshTimeout);
             $scope.refreshTimeout = $timeout(function() {
-                $scope.pages.current = page || 1;
-                //set the page filter, so the url can be updated
-                $scope.filters.page = $scope.pages.current;
+                $scope.filters.page = page || 1;
 
                 // set url parameters
                 var params = indexService.getParams($scope.filters, $scope.sort, $scope.filterPrototypes);
                 $state.transitionTo($state.current.name, params, { notify: false });
                 //retreive new data
-                $scope.getData($scope.pages.current);
+                $scope.getData($scope.filters.page);
             }, timeoutLength);
         };
 
         //retrieve the initial mods using the initial url params
-        $scope.getData($scope.pages.current);
+        $scope.getData($scope.filters.page);
     };
 
     this.buildState = function(scol, sdir, label, filterPrototypes) {
