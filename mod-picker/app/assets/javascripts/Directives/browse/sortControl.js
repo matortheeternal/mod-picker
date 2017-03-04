@@ -5,7 +5,8 @@ app.directive('sortControl', function() {
         controller: 'sortController',
         scope: {
             sort: '=?',
-            sortOptions: '=?'
+            sortOptions: '=?',
+            dynamic: '@'
         }
     }
 });
@@ -15,13 +16,15 @@ app.controller('sortController', function($scope) {
     angular.inherit($scope, 'sort');
     angular.inherit($scope, 'sortOptions');
 
-    $scope.$parent.$watch('sortOptions', function() {
-        $scope.sortOptions = $scope.$parent.sortOptions;
-        var currentSortOption = $scope.sortOptions.find(function(sortOption) {
-            return sortOption.value === $scope.sort.column;
+    if ($scope.dynamic) {
+        $scope.$parent.$watch('sortOptions', function() {
+            $scope.sortOptions = $scope.$parent.sortOptions;
+            var currentSortOption = $scope.sortOptions.find(function(sortOption) {
+                return sortOption.value === $scope.sort.column;
+            });
+            if (!currentSortOption) {
+                $scope.sort.column = $scope.sortOptions[0].value;
+            }
         });
-        if (!currentSortOption) {
-            $scope.sort.column = $scope.sortOptions[0].value;
-        }
-    });
+    }
 });
