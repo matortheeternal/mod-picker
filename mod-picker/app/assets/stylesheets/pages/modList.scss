@@ -186,6 +186,10 @@ mod-details-modal, plugin-details-modal {
     }
   }
 
+  td.primary-column {
+    max-width: 500px;
+  }
+
   .item-name {
     font-size: 20px;
   }
