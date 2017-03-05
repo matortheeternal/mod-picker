@@ -388,7 +388,7 @@ class ModsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def mod_params
-      params.require(:mod).permit(:game_id, :name, :authors, :aliases, :is_utility, :has_adult_content, :primary_category_id, :secondary_category_id, :released, :updated, :nexus_info_id, :lover_info_id, :workshop_info_id, :curate,
+      params.require(:mod).permit(:game_id, :name, :authors, :aliases, :is_utility, :is_mod_manager, :is_extender, :has_adult_content, :primary_category_id, :secondary_category_id, :released, :updated, :nexus_info_id, :lover_info_id, :workshop_info_id, :curate,
          custom_sources_attributes: [:label, :url],
          required_mods_attributes: [:required_id],
          tag_names: [],
@@ -404,7 +404,7 @@ class ModsController < ApplicationController
     end
 
     def mod_update_params
-      p = params.require(:mod).permit(:name, :authors, :aliases, :is_utility, :has_adult_content, :status, :show_details_tab, :description, :notice, :notice_type, :support_link, :issues_link, :primary_category_id, :secondary_category_id, :released, :updated, :mark_updated, :nexus_info_id, :lover_info_id, :workshop_info_id, :disallow_contributors, :disable_reviews, :lock_tags, :hidden, :approved, :tag_names,
+      p = params.require(:mod).permit(:name, :authors, :aliases, :is_utility, :is_mod_manager, :is_extender, :has_adult_content, :status, :show_details_tab, :description, :notice, :notice_type, :support_link, :issues_link, :primary_category_id, :secondary_category_id, :released, :updated, :mark_updated, :nexus_info_id, :lover_info_id, :workshop_info_id, :disallow_contributors, :disable_reviews, :lock_tags, :hidden, :approved, :tag_names,
          required_mods_attributes: [:id, :required_id, :_destroy],
          mod_licenses_attributes: [:id, :license_id, :license_option_id, :target, :credit, :commercial, :redistribution, :modification, :private_use, :include, :text_body, :_destroy],
           mod_authors_attributes: [:id, :role, :user_id, :_destroy],
@@ -426,7 +426,7 @@ class ModsController < ApplicationController
     end
 
     def options_params
-      params[:mod].slice(:is_utility, :has_adult_content, :disallow_contributors, :disable_reviews, :lock_tags)
+      params[:mod].slice(:is_utility, :is_mod_manager, :is_extender, :has_adult_content, :disallow_contributors, :disable_reviews, :lock_tags)
     end
 
   def details_params
