@@ -48,6 +48,22 @@
             </span><br/>
 
             <label class="checkbox-option">
+                <input type="checkbox" ng-model="mod.is_extender">
+                Extender
+            </label>
+            <span class="help-tooltip small" ng-hide="hideTooltips" title="Check this if the mod is an extender which should be installed &#13;directly in the game folder.  (e.g. SKSE and ENB)">
+                <i class="fa fa-question-circle"></i>
+            </span><br/>
+
+            <label class="checkbox-option">
+                <input type="checkbox" ng-model="mod.is_mod_manager">
+                Mod Manager
+            </label>
+            <span class="help-tooltip small" ng-hide="hideTooltips" title="Check this if the mod is a mod manager.  (e.g. Nexus Mod Manager, &#13;Mod Organizer, and Wrye Bash)">
+                <i class="fa fa-question-circle"></i>
+            </span><br/>
+
+            <label class="checkbox-option">
                 <input type="checkbox" ng-model="mod.has_adult_content">
                 Has Adult Content
             </label>

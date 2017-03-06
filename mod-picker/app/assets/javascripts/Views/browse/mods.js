@@ -26,7 +26,7 @@ app.controller('modsController', function($scope, $rootScope, $q, $stateParams, 
     $scope.detailGroups = detailsFactory.modDetailGroups();
 
     // sort options for view
-    $scope.sortOptions = sortFactory.modSortOptions();
+    $scope.baseSortOptions = sortFactory.modSortOptions();
 
     // set help context
     helpFactory.setHelpContexts($scope, [helpFactory.modsIndex]);
@@ -74,6 +74,38 @@ app.controller('modsController', function($scope, $rootScope, $q, $stateParams, 
                 $scope.availableColumnData.push(property);
             }
         }
+    };
+
+    $scope.activeSourceKeys = function(obj) {
+        return Object.keys(obj).filter(function(key) {
+            return $scope.filters.sources[key];
+        });
+    };
+
+    $scope.getSortOptionValue = function(sortOptionValue) {
+        return $scope.activeSourceKeys(sortOptionValue).map(function(key) {
+            return sortOptionValue[key];
+        }).join(',');
+    };
+
+    // build sortOptions based on sources
+    $scope.buildSortOptions = function() {
+        $scope.sortOptions = $scope.baseSortOptions.filter(function(sortOption) {
+            if (typeof sortOption.value === 'object') {
+                return $scope.activeSourceKeys(sortOption.value).length > 0;
+            } else {
+                return true;
+            }
+        }).map(function(sortOption) {
+            if (typeof sortOption.value === 'object') {
+                return {
+                    label: sortOption.label,
+                    value: $scope.getSortOptionValue(sortOption.value)
+                }
+            } else {
+                return sortOption;
+            }
+        });
     };
 
     // hide columns that are no longer available
@@ -131,6 +163,7 @@ app.controller('modsController', function($scope, $rootScope, $q, $stateParams, 
 
     // override some data from the generic controller
     $scope.buildAvailableColumnData();
+    $scope.buildSortOptions();
     $scope.actions = actionsFactory.modIndexActions();
 
     // build available stat filters for view
@@ -151,12 +184,13 @@ app.controller('modsController', function($scope, $rootScope, $q, $stateParams, 
 
     // handle special column/filter logic when filters change
     $scope.$watch('filters', function() {
-        // handle column availability
+        $scope.$broadcast('reloadTags');
+    }, true);
+
+    $scope.$watch('filters.sources', function() {
         $scope.buildAvailableColumnData();
         $scope.hideUnavailableColumns();
-        $scope.$broadcast('reloadTags');
-
-        // hide statistic filters that no longer apply
+        $scope.buildSortOptions();
         $scope.availableStatFilters = $scope.availableFilters($scope.statFilters);
     }, true);
 });
