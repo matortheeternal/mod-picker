@@ -43,5 +43,6 @@
     "custom_config_files": {
       "only": ["filename", "install_path", "text_body"]
     }
-  }
+  },
+  "methods": ["extenders", "mod_managers"]
 }
