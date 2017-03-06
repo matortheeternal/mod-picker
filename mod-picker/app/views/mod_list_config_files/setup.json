@@ -1,0 +1,8 @@
+{
+  "only": ["text_body"],
+  "include": {
+    "config_file": {
+      "only": ["mod_id", "filename", "install_path"]
+    }
+  }
+}

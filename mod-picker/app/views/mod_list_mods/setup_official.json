@@ -1,0 +1,9 @@
+{
+  "only": ["index"],
+  "include": {
+    "mod": {
+      "only": ["name"],
+      "methods": ["source_links"]
+    }
+  }
+}

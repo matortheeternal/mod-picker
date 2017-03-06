@@ -1,0 +1,4 @@
+{
+  "only": ["id", "game_id", "name", "status", "submitted", "completed", "updated"],
+  "methods": ["mods", "plugins", "custom_mods", "custom_plugins", "config_files", "custom_config_files", "extenders", "mod_managers"]
+}

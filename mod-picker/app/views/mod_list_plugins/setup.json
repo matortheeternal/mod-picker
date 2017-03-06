@@ -1,0 +1,4 @@
+{
+  "only": ["index"],
+  "methods": ["plugin_filename"]
+}
