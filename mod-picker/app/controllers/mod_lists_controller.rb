@@ -144,7 +144,8 @@ class ModListsController < ApplicationController
   # POST /mod_lists/:id/setup
   def setup
     authorize! :read, @mod_list
-    render text: ModList.preload(:custom_plugins, :custom_mods, mod_list_mods: [{mod: [:lover_infos, :workshop_infos, :custom_sources, :mod_options,{nexus_infos: [:game]}]}, :mod_list_mod_options], mod_list_plugins: [:plugin], mod_list_config_files: [:config_file]).find(params[:id]).setup_string(current_user)
+    decorator = ModListSetupDecorator.new(@mod_list)
+    render text: SecureData.full(current_user, decorator.to_json)
   end
 
   # GET /mod_lists/:id/config
