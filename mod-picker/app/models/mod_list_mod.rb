@@ -118,6 +118,10 @@ class ModListMod < ActiveRecord::Base
     mod_list_mod_options.map {|option| option.mod_option.display_name}
   end
 
+  def mod_option_ids
+    mod_list_mod_options.map {|option| option.mod_option_id}
+  end
+
   private
     def set_index_and_is_utility
       self.is_utility = mod.is_utility

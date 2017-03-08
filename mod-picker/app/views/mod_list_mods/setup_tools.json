@@ -2,7 +2,7 @@
   "only": ["index"],
   "include": {
     "mod": {
-      "only": ["id", "name", "aliases", "authors"],
+      "only": ["id", "name", "aliases", "authors", "is_extender", "is_mod_manager"],
       "methods": ["source_links"],
       "include": {
         "mod_options": {
