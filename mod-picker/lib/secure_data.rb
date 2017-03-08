@@ -19,9 +19,9 @@ class SecureData
   def self.crypt_string(str, key, dec)
     result = ""
     kl = key.length
-    str.each_byte.with_index do |b, i|
+    str.length.times do |i|
       kv = (key[i % kl] + self.offset(i, dec)) % 255
-      result += "%02X" % (kv ^ b)
+      result << "%02X" % (kv ^ (str[i] || 0).ord)
     end
     result
   end
