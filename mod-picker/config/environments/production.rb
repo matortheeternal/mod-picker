@@ -24,7 +24,21 @@ Rails.application.configure do
   # config.action_dispatch.rack_cache = true
 
   # Enable prerender middleware for SEO
-  config.middleware.use Rack::Prerender, prerender_token: ENV['prerender_token'], whitelist: ["/skyrim/home", "/skyrimse/home", "/skyrim/articles/([0-9])+", "/skyrim/user/([0-9])+/social", "/skyrim/mod-lists/([0-9])+/details", "/skyrim/mods/([0-9])+/details", "/skyrim/mods/([0-9])+/reviews", "/skyrim/mods/([0-9])+/compatibility", "/skyrim/mods/([0-9])+/install-order", "/skyrim/mods/([0-9])+/load-order", "/skyrim/mods/([0-9])+/related", "/skyrim/mods/([0-9])+/analysis"]
+  prerender_whitelist = %w(
+    /skyrim/home
+    /skyrimse/home
+    /skyrim/articles/([0-9])+
+    /skyrim/user/([0-9])+/social
+    /skyrim(se)?/mod-lists/([0-9])+/details
+    /skyrim(se)?/mods/([0-9])+/details
+    /skyrim(se)?/mods/([0-9])+/reviews
+    /skyrim(se)?/mods/([0-9])+/compatibility
+    /skyrim(se)?/mods/([0-9])+/install-order
+    /skyrim(se)?/mods/([0-9])+/load-order
+    /skyrim(se)?/mods/([0-9])+/related
+  )
+  config.middleware.use Rack::Prerender, prerender_token: ENV['prerender_token'], whitelist: prerender_whitelist
+
 
   # Disable serving static files from the `/public` folder by default since
   # Apache or NGINX already handles this.
