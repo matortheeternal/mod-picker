@@ -287,6 +287,7 @@ class Ability
       cannot :read, Mod, { has_adult_content: true }
       cannot :read, Plugin, { has_adult_content: true }
       cannot :read, ModList, { has_adult_content: true }
+      can :read, ModList, { has_adult_content: true, submitted_by: user.id }
       cannot :read, Review, { has_adult_content: true }
       cannot :read, CompatibilityNote, { has_adult_content: true }
       cannot :read, InstallOrderNote, { has_adult_content: true }
