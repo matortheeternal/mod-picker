@@ -1,6 +1,6 @@
 class HelpPagesController < ApplicationController
   before_action :set_help_page, only: [:show, :edit]
-  before_action :set_help_page_from_id, only: [:comments, :update, :destroy]
+  before_action :set_help_page_from_id, only: [:comments, :sections, :update, :destroy]
   rescue_from ::ActiveRecord::RecordNotFound, with: :record_not_found
 
   layout "help"
@@ -90,6 +90,15 @@ class HelpPagesController < ApplicationController
         comments: comments,
         max_entries: count,
         entries_per_page: 10
+    }
+  end
+
+  # GET /help/1/sections
+  def sections
+    authorize! :read, @help_page
+    sections = @help_page.sections.includes(:children)
+    render json: {
+        sections: sections,
     }
   end
 

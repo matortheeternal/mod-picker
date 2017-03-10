@@ -330,13 +330,10 @@ Rails.application.routes.draw do
   match '/help/category/:category', to: 'help_pages#category', via: [:get]
   match '/help/game/:game', to: 'help_pages#game', via: [:get]
   match '/help/:id/comments', to: 'help_pages#comments', via: [:get, :post]
+  match '/help/:id/sections', to: 'help_pages#sections', via: [:get]
   match '/help/search', to:  'help_pages#search', via: [:get]
   resources :help_pages, path: 'help', only: [:show, :index]
   match '/help/*path', to: 'help_pages#record_not_found', via: :all
-
-  # help videos
-  match '/videos/:id', to: 'help_videos#show', via: [:get]
-  match '/videos/:id/sections', to: 'help_videos#sections', via: [:get]
 
   # static data
   resources :categories, only: [:index]
