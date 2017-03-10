@@ -38,7 +38,6 @@ class User < ActiveRecord::Base
 
   has_many :articles, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
   has_many :help_pages, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
-  has_many :help_videos, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
   has_many :comments, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
   has_many :install_order_notes, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
   has_many :load_order_notes, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
