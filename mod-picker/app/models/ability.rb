@@ -12,7 +12,6 @@ class Ability
     cannot :read, Review, approved: false
     cannot :read, Mod, approved: false
     cannot :read, HelpPage, approved: false
-    cannot :read, HelpVideo, approved: false
 
     # can read unapproved content they submitted
     can :read, CompatibilityNote, approved: false, submitted_by: user.id
@@ -21,7 +20,6 @@ class Ability
     can :read, Review, approved: false, submitted_by: user.id
     can :read, Mod, approved: false, submitted_by: user.id
     can :read, HelpPage, approved: false, submitted_by: user.id
-    can :read, HelpVideo, approved: false, submitted_by: user.id
   end
 
   def cannot_read_hidden_content
@@ -56,7 +54,6 @@ class Ability
   def rep_10_abilities(user, can_contribute)
     can :set_avatar, User, id: user.id
     can :create, HelpPage if can_contribute
-    can :create, HelpVideo if can_contribute
   end
 
   def rep_20_abilities(user, can_contribute)
@@ -134,7 +131,6 @@ class Ability
   def can_manage_help_pages
     # can create, update, and approve help pages
     can [:create, :update, :approve], HelpPage
-    can [:create, :update, :approve], HelpVideo
   end
 
   def can_manage_mod_lists
@@ -207,7 +203,6 @@ class Ability
     can :update, InstallOrderNote, submitted_by: user.id, hidden: false
     can :update, Review, submitted_by: user.id, hidden: false
     can :update, HelpPage, submitted_by: user.id
-    can :update, HelpVideo, submitted_by: user.id
 
     # can update contributions they have a passed correction for
     can :update, CompatibilityNote, corrector_id: user.id, hidden: false
