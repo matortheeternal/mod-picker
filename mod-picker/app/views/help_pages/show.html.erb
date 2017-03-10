@@ -52,6 +52,13 @@
             </span>
             <% end %>
         </span>
+
+        <% if @help_page.youtube_id.present? %>
+        <div class="help-video-player">
+            <video-toc video-id="<%= @help_page.id %>"></video-toc>
+            <video-player youtube-id="<%= @help_page.youtube_id %>"></video-player>
+        </div>
+        <% end %>
     </div>
     <!-- enddate -->
 
