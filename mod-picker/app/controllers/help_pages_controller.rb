@@ -138,6 +138,6 @@ class HelpPagesController < ApplicationController
     end
 
     def help_page_params
-      params.require(:help_page).permit(:game_id, :approved, :category, :title, :text_body)
+      params.require(:help_page).permit(:game_id, :approved, :category, :youtube_id, :title, :text_body, sections_attributes: [:id, :label, :description, :seconds, :_destroy])
     end
 end
