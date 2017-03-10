@@ -3,7 +3,7 @@
 <% end %>
 
 <div class="page-container help-list-page search-page-container">
-    <% if @help_pages.length > 0 || @help_videos.length > 0 %>
+    <% if @help_pages.length > 0 %>
         <h1 class="page-title"><%= @help_pages.length %> Results for '<%= @page_title.humanize %>'</h1>
     <% else %>
         <div class="content-message">
@@ -16,7 +16,7 @@
         <%= submit_tag "Search", :name => nil, class: "btn" %>
     <% end %>
 
-    <% if @help_pages.length > 0 || @help_videos.length > 0 %>
+    <% if @help_pages.length > 0 %>
         <%= render "list" %>
     <% end %>
 </div>
