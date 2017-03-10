@@ -34,9 +34,6 @@
                 <% if can? :create, HelpPage %>
                     <%= link_to "New Page", "/help/new", class: active_url("/help/new") %>
                 <% end %>
-                <% if can? :create, HelpVideo %>
-                    <%= link_to "New Video", "/videos/new", class: active_url("/videos/new") %>
-                <% end %>
             </div>
         </div>
         <div class="secondary-nav">
