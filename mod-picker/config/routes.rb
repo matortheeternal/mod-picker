@@ -144,10 +144,6 @@ Rails.application.routes.draw do
     match '/help/:id/destroy', to: 'help_pages#destroy', via: [:get]
     resources :help_pages, path: 'help', only: [:new, :create, :edit, :update]
 
-    # help videos
-    match '/videos/:id/destroy', to: 'help_videos#destroy', via: [:get]
-    resources :help_videos, path: 'videos', only: [:new, :create, :edit, :update]
-
     #articles
     match '/articles/:id/image', to: 'articles#image', via: [:post]
     resources :articles, only: [:new, :create, :edit, :update, :destroy]
