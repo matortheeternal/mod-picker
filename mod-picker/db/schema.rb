@@ -267,7 +267,6 @@ ActiveRecord::Schema.define(version: 20170310202553) do
     t.integer "related_mod_notes_count",   limit: 4,   default: 0, null: false
     t.integer "corrections_count",         limit: 4,   default: 0, null: false
     t.integer "help_pages_count",          limit: 4,   default: 0, null: false
-    t.integer "help_videos_count",         limit: 4,   default: 0, null: false
   end
 
   add_index "games", ["parent_game_id"], name: "fk_rails_f750cfc2c5", using: :btree
