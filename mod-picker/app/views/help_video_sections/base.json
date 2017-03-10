@@ -1,5 +1,5 @@
 {
-  "except": ["parent_id", "help_video_id"],
+  "except": ["parent_id", "help_page_id"],
   "include": {
     "children": {}
   }
