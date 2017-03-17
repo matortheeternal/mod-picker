@@ -9,6 +9,7 @@ app.directive('tagSelector', function() {
             maxTags: '=',
             canCreate: '=',
             type: '@',
+            addTagCaption: '@?',
             showCount: '=?',
             showAuthor: '=?',
             showRemove: '=?',
@@ -19,6 +20,8 @@ app.directive('tagSelector', function() {
 });
 
 app.controller('tagSelectorController', function($scope, $element, $timeout, tagService) {
+    angular.default($scope, 'addTagCaption', 'Add a tag');
+
     $scope.rawNewTags = [];
     $scope.removedTags = [];
     $scope.showModsCount = $scope.type === "mod" && $scope.showCount;
