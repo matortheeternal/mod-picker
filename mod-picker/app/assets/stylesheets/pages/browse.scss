@@ -105,6 +105,14 @@ filter-section {
     max-width: 970px;
     height: calc(100vh - 428px);
 
+    .results-count {
+      font-size: 16px;
+      margin-left: 6px;
+      display: inline-block;
+      vertical-align: middle;
+      margin-bottom: 2px;
+    }
+
     sort-control {
       font-size: 14px;
       margin: 0 8px;
