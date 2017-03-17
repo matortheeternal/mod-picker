@@ -30,6 +30,7 @@ app.service('imageUtils', function() {
         canvas.width = img.width;
         canvas.height = img.height;
         canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+        var hasTransparency = service.hasTransparentPixels(canvas);
 
         //halves the width of the img as many times as it can before applying the expensive algorithm
         while (canvas.width >= (2 * maxWidth)) {
@@ -53,8 +54,8 @@ app.service('imageUtils', function() {
             canvas = service.scaleCanvasWithAlgorithm(canvas, heightScale);
         }
 
-        // return jpg at 90% quality unless the canvas has transparent pixels
-        if (service.hasTransparentPixels(canvas)) {
+        // return jpg at 90% quality unless the canvas had transparency
+        if (hasTransparency) {
             canvas.toBlob(callback('png'));
         } else {
             canvas.toBlob(callback('jpg'), 'image/jpeg', 0.9);
