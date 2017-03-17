@@ -93,9 +93,14 @@
         </div>
 
         <div class="right-column">
-            <h2>Comments <span class="right-item">
-                <sort-control></sort-control>
-            </span></h2>
+            <h2>Comments
+                <span class="results-count" ng-show="pages.resultsCount">
+                    ({{pages.resultsCount}} results)
+                </span>
+                <span class="right-item">
+                    <sort-control></sort-control>
+                </span>
+            </h2>
             <loader data="comments" content-class="grid-results" spinner-class="big-spinner" ng-if="!error">
                 <comments comments="comments" show-context="true"></comments>
 

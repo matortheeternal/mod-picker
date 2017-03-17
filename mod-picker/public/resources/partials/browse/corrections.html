@@ -134,9 +134,14 @@
         </div>
 
         <div class="right-column">
-            <h2>Corrections <span class="right-item">
-                <sort-control></sort-control>
-            </span></h2>
+            <h2>Corrections
+                <span class="results-count" ng-show="pages.resultsCount">
+                    ({{pages.resultsCount}} results)
+                </span>
+                <span class="right-item">
+                    <sort-control></sort-control>
+                </span>
+            </h2>
             <loader data="corrections" content-class="grid-results" spinner-class="big-spinner" ng-if="!error">
                 <div class="content-block" ng-repeat="correction in corrections">
                     <correction correction="correction" index="100" show-user-column="true" show-correctable="true"></correction>

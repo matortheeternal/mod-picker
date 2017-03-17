@@ -94,9 +94,14 @@
         </div>
 
         <div class="right-column">
-            <h2>Install Order Notes <span class="right-item">
-                <sort-control></sort-control>
-            </span></h2>
+            <h2>Install Order Notes
+                <span class="results-count" ng-show="pages.resultsCount">
+                    ({{pages.resultsCount}} results)
+                </span>
+                <span class="right-item">
+                    <sort-control></sort-control>
+                </span>
+            </h2>
             <loader data="install_order_notes" content-class="grid-results" spinner-class="big-spinner" ng-if="!error">
                 <div class="content-block" ng-repeat="note in install_order_notes">
                     <install-order-note note="note" show-user-column="true" index="100"></install-order-note>

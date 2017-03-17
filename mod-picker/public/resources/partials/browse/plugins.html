@@ -64,7 +64,11 @@
         </div>
 
         <div class="right-column">
-            <h2>Plugins</h2>
+            <h2>Plugins
+                <span class="results-count" ng-show="pages.resultsCount">
+                    ({{pages.resultsCount}} results)
+                </span>
+            </h2>
             <loader data="plugins" content-class="table-container" spinner-class="big-spinner" ng-if="!error">
                 <table-results label="plugins" data="plugins"></table-results>
                 <page-results pages="pages" data="plugins" callback="getData"></page-results>

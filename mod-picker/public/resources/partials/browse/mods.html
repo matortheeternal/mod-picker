@@ -226,6 +226,9 @@
         <div class="right-column">
             <h2>
                 Mods
+                <span class="results-count" ng-show="pages.resultsCount">
+                    ({{pages.resultsCount}} results)
+                </span>
                 <span class="right-item view-mode-item">
                     <span class="right-item" ng-if="!tableView">
                         <sort-control dynamic="true"></sort-control>

@@ -106,7 +106,11 @@
         </div>
 
         <div class="right-column">
-            <h2>Mod Lists</h2>
+            <h2>Mod Lists
+                <span class="results-count" ng-show="pages.resultsCount">
+                    ({{pages.resultsCount}} results)
+                </span>
+            </h2>
             <loader data="mod_lists" content-class="table-container" spinner-class="big-spinner" ng-if="!error">
                 <table-results label="mod lists" data="mod_lists"></table-results>
                 <page-results pages="pages" data="mod_lists" callback="getData"></page-results>
