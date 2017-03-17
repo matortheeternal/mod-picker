@@ -65,6 +65,10 @@ class Mod < ActiveRecord::Base
     mod_list = ModList.find(mod_list_id)
     where.not(id: mod_list.incompatible_mod_ids)
   }
+  scope :excluded_tags, -> (tags) {
+    tags_condition = ModTag.arel_table.project(Arel.sql('*')).where(Mod.arel_table[:id].eq(ModTag.arel_table[:mod_id])).join(Tag.arel_table, Arel::Nodes::OuterJoin).on(ModTag.arel_table[:tag_id].eq(Tag.arel_table[:id])).where(Tag.arel_table[:text].in(tags)).exists.not
+    where(tags_condition)
+  }
   scope :terms, -> (terms) {
     eager_load(:mod_licenses).where(terms.map {|key,value| ModLicense.arel_table[key].eq(value)}.inject(:and))
   }

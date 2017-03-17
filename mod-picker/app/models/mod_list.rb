@@ -45,6 +45,10 @@ class ModList < ActiveRecord::Base
     # return query if length is 1
     where(is_collection: is_collection) if is_collection.length == 1
   }
+  scope :excluded_tags, -> (tags) {
+    tags_condition = ModListTag.arel_table.project(Arel.sql('*')).where(Mod.arel_table[:id].eq(ModListTag.arel_table[:mod_id])).join(Tag.arel_table, Arel::Nodes::OuterJoin).on(ModListTag.arel_table[:tag_id].eq(Tag.arel_table[:id])).where(Tag.arel_table[:text].in(tags)).exists.not
+    where(tags_condition)
+  }
 
   # ASSOCIATIONS
   belongs_to :game, :inverse_of => 'mod_lists'
