@@ -27,8 +27,21 @@ class Rack::Attack
     end
   end
 
+  throttle('sign_in/ip', :limit => 1000, :period => 1.day) do |req|
+    if req.path == '/users/sign_in' && req.post?
+      req.ip
+    end
+  end
+
   # Throttle POST requests to /login by email param
   throttle("sign_in/account", :limit => 5, :period => 10.seconds) do |req|
+    if req.path == '/users/sign_in' && req.post?
+      # return the email if present, nil otherwise
+      req.params['login'].presence
+    end
+  end
+
+  throttle("sign_in/account", :limit => 1000, :period => 1.day) do |req|
     if req.path == '/users/sign_in' && req.post?
       # return the email if present, nil otherwise
       req.params['login'].presence
