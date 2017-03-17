@@ -133,6 +133,11 @@ app.service("filtersFactory", function() {
                 type: "List"
             },
             {
+                data: "excluded_tags",
+                param: "x",
+                type: "List"
+            },
+            {
                 data: "categories",
                 param: "c",
                 type: "List",
@@ -1111,6 +1116,11 @@ app.service("filtersFactory", function() {
             {
                 data: "tags",
                 param: "t",
+                type: "List"
+            },
+            {
+                data: "excluded_tags",
+                param: "x",
                 type: "List"
             },
             {
