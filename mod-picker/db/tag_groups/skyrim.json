@@ -1,0 +1,359 @@
+[{
+	"category_name": "Audiovisual - Animations",
+	"name": "Animation Type",
+  "param": "at",
+	"tag_names": ["Movement", "Combat", "Magic", "Idle", "Action"]
+}, {
+	"category_name": "Audiovisual - Animations",
+	"name": "Animation Target",
+  "param": "ag",
+	"tag_names": ["Characters", "Creatures", "Items", "Objects", "Player Character"]
+}, {
+	"category_name": "Audiovisual - Lighting & Weather",
+	"name": "Content",
+  "param": "lwc",
+	"tag_names": ["New Weathers", "New Lights", "New Visual Effects"]
+}, {
+	"category_name": "Audiovisual - Lighting & Weather",
+	"name": "Weather Type",
+  "param": "wt",
+	"exclusion_label": "Other",
+	"tag_names": ["Clouds", "Fog", "Rain", "Lightning", "Snow", "Wind"]
+}, {
+	"category_name": "Audiovisual - Lighting & Weather",
+	"name": "Lighting Target",
+  "param": "lg",
+	"tag_names": ["Interiors", "Items", "Magic", "Objects", "World"]
+}, {
+	"category_name": "Audiovisual - Models & Textures",
+	"name": "Content",
+  "param": "mtc",
+	"tag_names": ["Meshes", "Textures", "Shaders"]
+}, {
+	"category_name": "Audiovisual - Models & Textures",
+	"name": "Texture Resolution",
+  "param": "tr",
+	"tag_names": ["256", "512", "1K", "2K", "4K", "8K"]
+}, {
+	"category_name": "Audiovisual - Models & Textures",
+	"name": "Target",
+  "param": "mtg",
+	"tag_names": ["Architecture", "Armor", "Clothing", "Clutter", "Creatures", "Food", "Landscape", "Potions", "Poisons", "Magic", "Sky", "User Interface", "Weapons"]
+}, {
+	"category_name": "Audiovisual - Post-processing",
+	"name": "Content",
+  "param": "pc",
+	"exclusion_label": "Other",
+	"tag_names": ["ENB Preset", "SweetFX Preset", "ReShade Preset", "FXAA Preset"]
+}, {
+	"category_name": "Audiovisual - Sounds & Music",
+	"name": "Sound Content",
+  "param": "sc",
+	"tag_names": ["Music", "Sounds", "Silence"]
+}, {
+	"category_name": "Audiovisual - Sounds & Music",
+	"name": "Sound Type",
+  "param": "st",
+	"tag_names": ["Ambient", "Combat", "Dialogue", "Interaction", "User Interface"]
+}, {
+	"category_name": "Character Appearance",
+	"name": "Character Gender",
+  "param": "cg",
+	"tag_names": ["Male", "Female"]
+}, {
+	"category_name": "Character Appearance",
+	"name": "Character Race",
+  "param": "cr",
+	"tag_names": ["Humans", "Elves", "Beastmen", "Altmer", "Argonian", "Bosmer", "Breton", "Dunmer", "Imperial", "Khajiit", "Nord", "Orsimer", "Redguard"]
+}, {
+	"category_name": "Character Appearance - Body Mods",
+	"name": "Content",
+  "param": "cc",
+	"tag_names": ["Body Shape", "Ears", "Feet", "Nudity", "Skin", "Tails"]
+}, {
+	"category_name": "Character Appearance - Face Parts",
+	"name": "Face Part Type",
+  "param": "fpt",
+	"tag_names": ["Hair", "Eyes", "Eyebrows", "Facial Hair", "Mouths", "Noses"]
+}, {
+	"category_name": "Character Appearance - NPC Overhauls",
+	"name": "Target",
+  "param": "ot",
+	"tag_names": ["Bandits", "Children", "Elderly", "Followers", "Forsworn", "Guards", "Jarls", "Mages", "Townspeople", "Vampires"]
+}, {
+	"category_name": "Character Appearance - Overlays",
+	"name": "Type",
+  "param": "yt",
+	"tag_names": ["Dirt", "Freckles", "Makeup", "Scars", "Tattoos", "Warpaint"]
+}, {
+	"category_name": "Fixes",
+	"name": "Type",
+  "param": "ft",
+	"tag_names": ["Compatibility", "Exploit Removal", "Immersion", "Performance", "Stability", "Text", "Vanilla Game Bugfix"]
+}, {
+	"category_name": "Gameplay - AI & Combat",
+	"name": "Content",
+  "param": "acc",
+	"tag_names": ["Character Stats", "Combat Mechanics", "Killmoves", "NPC Behavior", "Stealth Mechanics"]
+}, {
+	"category_name": "Gameplay - Classes & Races",
+	"name": "Content",
+  "param": "crc",
+	"tag_names": ["New Classes", "New Races", "Abilities", "Powers", "Skill Bonuses"]
+}, {
+	"category_name": "Gameplay - Classes & Races",
+	"name": "Race",
+  "param": "crr",
+	"tag_names": ["Altmer", "Argonian", "Bosmer", "Breton", "Dunmer", "Imperial", "Khajiit", "Nord", "Orsimer", "Redguard", "Vampires", "Vampire Lords", "Werebears", "Werewolves"]
+}, {
+	"category_name": "Gameplay - Crafting",
+	"name": "Type",
+  "param": "ct",
+	"tag_names": ["Alchemy", "Breakdown", "Building", "Cooking", "Enchanting", "Gardening", "Smithing", "Spell Creation", "Staff Enchanting"]
+}, {
+	"category_name": "Gameplay - Economy & Item Balance",
+	"name": "Affects",
+  "param": "eia",
+	"tag_names": ["Loot", "Gold", "Merchants", "Quest Rewards", "Item Stats"]
+}, {
+	"category_name": "Gameplay - Magic & Abilities",
+	"name": "Content",
+  "param": "mac",
+	"tag_names": ["Active Effects", "Dragon Shouts", "Enchantments", "Powers", "Scrolls", "Spells"]
+}, {
+	"category_name": "Gameplay - Magic & Abilities",
+	"name": "Magic Type",
+  "param": "mt",
+	"tag_names": ["Alteration Magic", "Conjuration Magic", "Destruction Magic", "Illusion Magic", "Enchanting Magic", "Restoration Magic"]
+}, {
+	"category_name": "Gameplay - Quests & Stories",
+	"name": "Content",
+  "param": "qsc",
+	"tag_names": ["Faction Entry Requirements", "Game Start", "Main Questline", "New Factions", "New Role-playing Options", "New Storylines", "Quest Markers", "Radiant Quests", "Vanilla Quests"]
+}, {
+	"category_name": "Gameplay - Quests & Stories",
+	"name": "Factions",
+  "param": "qsf",
+	"tag_names": ["The Aldmeri Dominion", "The Bards College", "The Black-Briars", "The Blades", "The College of Winterhold", "The Companions Guild", "The Coven of Namira", "The Dark Brotherhood", "The Dawnguard", "The East Empire Trading Company", "The Forsworn", "The Imperial Legion", "The Great House Telvanni", "The Greybeards", "The Morag Tong", "The Mythic Dawn", "The Nightingales", "The Penitus Oculatus", "The Psijic Order", "The Skaal", "The Stormcloaks", "The Thalmor", "The Thieves Guild", "The Vigilants of Stendarr", "The Volkihar Clan", "The Silver Hand", "The Silver-Bloods", "The Summerset Shadows", "Tribal Orcs"]
+}, {
+	"category_name": "Gameplay - Skills & Perks",
+	"name": "Content",
+  "param": "spc",
+	"tag_names": ["New Skills", "New Perks", "New Skill Mechanics", "Skill Limits", "Perk Points", "Training"]
+}, {
+	"category_name": "Gameplay - Skills & Perks",
+	"name": "Skill",
+  "param": "sps",
+	"tag_names": ["Illusion", "Conjuration", "Destruction", "Restoration", "Alteration", "Enchanting", "Smithing", "Heavy Armor", "Block", "Two-Handed", "One-Handed", "Archery", "Light Armor", "Sneak", "Lockpicking", "Pickpocket", "Speech", "Alchemy"]
+}, {
+	"category_name": "Gameplay - User Interface",
+	"name": "Affects",
+  "param": "uia",
+	"tag_names": ["Crafting Menu", "Cursor", "Dialogues", "Dialogue Menu", "Favorites Menu", "Font", "Item Names", "Loading Screens", "Lockpicking", "Looting", "Main Menu", "Magic Menu", "Map Markers", "Reading", "Resource Bars", "Skill Interface", "Sleeping", "Stealing", "Stealth", "Waiting", "World Map"]
+}, {
+	"category_name": "Gameplay - User Interface",
+	"name": "Content",
+  "param": "uic",
+	"tag_names": ["New Hotkeys", "New Menus", "New Meters", "New Widgets"]
+}, {
+	"category_name": "Items",
+	"name": "Item Type",
+  "param": "it",
+	"tag_names": ["Unique Items", "Daedric Artifacts", "Craftable", "Lootable"]
+}, {
+	"category_name": "Items",
+	"name": "Animation",
+  "param": "ia",
+	"tag_names": ["Animated", "HDT"]
+}, {
+	"category_name": "Items",
+	"name": "Character Class",
+  "param": "ic",
+	"tag_names": ["Assassin", "Bard", "Cleric", "Hunter", "Knight", "Noble", "Mage", "Monk", "Paladin", "Pirate", "Servant", "Thief"]
+}, {
+	"category_name": "Items",
+	"name": "Franchise",
+  "param": "if",
+	"tag_names": ["Assassin's Creed", "Berserk", "Black Desert", "Blade & Soul", "Bless Online", "Dark Souls", "Final Fantasy", "Guild Wars", "Oblivion", "Morrowind", "Star Wars", "Tera Online", "The Elder Scrolls Online", "The Witcher", "Vindictus"]
+}, {
+	"category_name": "Items - Armor, Clothing, & Accessories",
+	"name": "Type",
+  "param": "act",
+	"tag_names": ["Accessories", "Armor", "Clothing", "Heavy Armor", "Jewelry", "Light Armor"]
+}, {
+	"category_name": "Items - Armor, Clothing, & Accessories",
+	"name": "Gender",
+  "param": "acg",
+	"tag_names": ["Male", "Female"]
+}, {
+	"category_name": "Items - Armor, Clothing, & Accessories",
+	"name": "Body Type",
+  "param": "acb",
+	"tag_names": ["7Base", "ADEC", "BBP", "BodySlide", "CBBE", "CHSBHC", "TBBP", "UNP", "UNPB", "UNPC"]
+}, {
+	"category_name": "Items - Armor, Clothing, & Accessories",
+	"name": "Style",
+  "param": "acs",
+	"exclusion_label": "Standard",
+	"tag_names": ["Sexy", "Skimpy"]
+}, {
+	"category_name": "Items - Armor, Clothing, & Accessories",
+	"name": "Theme",
+  "param": "ach",
+	"tag_names": ["Altmer", "Argonian", "Bosmer", "Breton", "Daedric", "Draugr", "Dunmer", "Dwemer", "Elven", "Falmer", "Forsworn", "Imperial", "Khajiit", "Nordic", "Orcish", "Redguard", "Skaal"]
+}, {
+	"category_name": "Items - Armor, Clothing, & Accessories",
+	"name": "Material",
+  "param": "acm",
+	"tag_names": ["Fabric", "Fur", "Hide", "Leather", "Wood", "Metal", "Iron", "Steel", "Silver", "Chitin", "Stahlrim", "Dragonscale", "Dragonbone", "Bonemold", "Ebony"]
+}, {
+	"category_name": "Items - Armor, Clothing, & Accessories",
+	"name": "Clothing",
+  "param": "acc",
+	"tag_names": ["Dresses", "Hats", "Hoods", "Gloves", "Masks", "Pants", "Robes", "Shirts", "Shoes", "Undergarments"]
+}, {
+	"category_name": "Items - Armor, Clothing, & Accessories",
+	"name": "Armor",
+  "param": "aca",
+	"tag_names": ["Boots", "Cuirass", "Gauntlets", "Helmet", "Horse Armor", "Shield"]
+}, {
+	"category_name": "Items - Armor, Clothing, & Accessories",
+	"name": "Accessory",
+  "param": "acy",
+	"tag_names": ["Backpacks", "Bags", "Belts", "Circlets", "Cloaks", "Eyewear", "Necklaces", "Rings", "Scarves"]
+}, {
+	"category_name": "Items - Ingestibles",
+	"name": "Type",
+  "param": "gt",
+	"tag_names": ["Alchohol", "Food", "Drinks", "Drugs", "Ingredients", "Potions", "Poisons"]
+}, {
+	"category_name": "Items - Tools & Clutter",
+	"name": "Type",
+  "param": "tct",
+	"tag_names": ["Books", "Lamps", "Torches"]
+}, {
+	"category_name": "Items - Weapons",
+	"name": "Type",
+  "param": "wt",
+	"tag_names": ["Battleaxe", "Bow", "Crossbow", "Fist Weapon", "Greatsword", "Gun", "Mace", "Spear", "Staff", "Sword", "Warhammer", "War Axe", "Wand"]
+}, {
+	"category_name": "Items - Weapons",
+	"name": "Theme",
+  "param": "wh",
+	"tag_names": ["Altmer", "Argonian", "Bosmer", "Breton", "Daedric", "Draugr", "Dunmer", "Dwemer", "Elven", "Falmer", "Forsworn", "Imperial", "Khajiit", "Nordic", "Orcish", "Redguard", "Skaal"]
+}, {
+	"category_name": "Items - Weapons",
+	"name": "Material",
+  "param": "wm",
+	"tag_names": ["Wood", "Metal", "Iron", "Steel", "Silver", "Chitin", "Stahlrim", "Dragonbone", "Ebony"]
+}, {
+	"category_name": "Locations",
+	"name": "Size",
+  "param": "lz",
+	"tag_names": ["Tiny", "Small", "Medium", "Large", "Huge"]
+}, {
+	"category_name": "Locations - New Dungeons",
+	"name": "Type",
+  "param": "ndt",
+	"tag_names": ["Cave", "Mine", "Labyrinth", "Prison", "Realm", "Sewer", "Tomb", "Underground City", "Vault"]
+}, {
+	"category_name": "Locations - New Dungeons",
+	"name": "Theme",
+  "param": "ndh",
+	"tag_names": ["Daedric", "Dwemer", "Magical", "Nordic", "Redguard"]
+}, {
+	"category_name": "Locations - New Dungeons",
+	"name": "Location",
+  "param": "ndl",
+	"tag_names": ["Eastmarch (Hold)", "Falkreath (Hold)", "Haafingar (Hold)", "Hjaalmarch (Hold)", "The Pale (Hold)", "The Reach (Hold)", "The Rift (Hold)", "Winterhold (Hold)", "Whiterun (Hold)", "Solstheim"]
+}, {
+	"category_name": "Locations - New Lands",
+	"name": "Type",
+  "param": "nlt",
+	"tag_names": ["Island", "Realm", "Region", "World"]
+}, {
+	"category_name": "Locations - New Lands",
+	"name": "New Content",
+  "param": "nlc",
+	"tag_names": ["Accessories", "Architecture", "Armor", "Characters", "Creatures", "Clothing", "Clutter", "Food", "Music", "New Storylines", "Potions", "Poisons", "Sounds", "Radiant Quests", "Weapons"]
+}, {
+	"category_name": "Locations - New Player Homes",
+	"name": "Type",
+  "param": "pht",
+	"tag_names": ["Castle", "Cabin", "Estate", "Flying", "Hideout", "Palace", "Realm", "Ship", "Treehouse", "Underground", "Vault"]
+}, {
+	"category_name": "Locations - New Player Homes",
+	"name": "Architectural Theme",
+  "param": "phh",
+	"tag_names": ["Ayleid", "Daedric", "Dwemer", "Magical", "Nordic", "Redguard", "Snow Elf"]
+}, {
+	"category_name": "Locations - New Player Homes",
+	"name": "Character Class",
+  "param": "phc",
+	"tag_names": ["Assassin", "Argonian", "Alchemist", "Bard", "Druid", "Evil", "Hunter", "Mage", "Necromancer", "Thief", "Vampire"]
+}, {
+	"category_name": "Locations - New Player Homes",
+	"name": "Location",
+  "param": "phl",
+	"tag_names": ["Portable", "Dawnstar", "Falkreath", "Markarth", "Morthal", "Riften", "Raven Rock", "Solitude", "Whiterun", "Windhelm", "Winterhold", "Eastmarch (Hold)", "Falkreath (Hold)", "Haafingar (Hold)", "Hjaalmarch (Hold)", "The Pale (Hold)", "The Reach (Hold)", "The Rift (Hold)", "Winterhold (Hold)", "Whiterun (Hold)", "Solstheim"]
+}, {
+	"category_name": "Locations - New Structures & Landmarks",
+	"name": "Content",
+  "param": "slc",
+	"tag_names": ["Bridges", "Cities", "Castle", "Docks", "Forts", "Lighthouses", "Outposts", "Ruins", "Shrines", "Stores", "Temples", "Towns"]
+}, {
+	"category_name": "Locations - New Structures & Landmarks",
+	"name": "Location",
+  "param": "sll",
+	"tag_names": ["Dawnstar", "Falkreath", "Markarth", "Morthal", "Riften", "Raven Rock", "Solitude", "Whiterun", "Windhelm", "Winterhold", "Eastmarch (Hold)", "Falkreath (Hold)", "Haafingar (Hold)", "Hjaalmarch (Hold)", "The Pale (Hold)", "The Reach (Hold)", "The Rift (Hold)", "Winterhold (Hold)", "Whiterun (Hold)", "Solstheim"]
+}, {
+	"category_name": "Locations - Overhauls",
+	"name": "Target",
+  "param": "ovt",
+	"tag_names": ["Bridges", "Cities", "Castles", "Docks", "Forts", "Lighthouses", "Outposts", "Ruins", "Shrines", "Stores", "Temples", "Towns", "Dawnstar", "Falkreath", "Markarth", "Morthal", "Riften", "Raven Rock", "Solitude", "Whiterun", "Windhelm", "Winterhold"]
+}, {
+	"category_name": "New Characters",
+	"name": "Character Distribution",
+  "param": "cd",
+	"tag_names": ["Unique Characters", "Leveled Characters", "Random Encounters"]
+}, {
+	"category_name": "New Characters",
+	"name": "Character Type",
+  "param": "ct",
+	"tag_names": ["Animals", "Creatures", "Male", "Female"]
+}, {
+	"category_name": "New Characters",
+	"name": "Character Race",
+  "param": "cr",
+	"tag_names": ["Humans", "Elves", "Beastmen", "Altmer", "Argonian", "Bosmer", "Breton", "Dunmer", "Imperial", "Khajiit", "Nord", "Orsimer", "Redguard", "Vampires", "Vampire Lords", "Werebears", "Werewolves"]
+}, {
+	"category_name": "New Characters - Allies",
+	"name": "Content",
+  "param": "ac",
+	"tag_names": ["Custom Dialogue", "Fully Voiced", "Marriage Quest", "New Storylines", "NPC Interactions", "Skill Trainers", "Romance"]
+}, {
+	"category_name": "New Characters - Allies",
+	"name": "Character Class",
+  "param": "acc",
+	"tag_names": ["Bard", "Hunter", "Mage", "Mercenary", "Thief", "Rogue", "Warrior"]
+}, {
+	"category_name": "New Characters - Allies",
+	"name": "Character Skills",
+  "param": "acs",
+	"tag_names": ["Illusion", "Conjuration", "Destruction", "Restoration", "Alteration", "Enchanting", "Smithing", "Heavy Armor", "Block", "Two-Handed", "One-Handed", "Archery", "Light Armor", "Sneak", "Lockpicking", "Pickpocket", "Speech", "Alchemy"]
+}, {
+	"category_name": "New Characters - Enemies",
+	"name": "Humanoid Types",
+  "param": "eht",
+	"tag_names": ["Bandits", "Bounty Hunters", "Forsworn", "Thieves", "Vampires", "Werewolves"]
+}, {
+	"category_name": "New Characters - Enemies",
+	"name": "Creature Types",
+  "param": "ect",
+	"tag_names": ["Atronarchs", "Automatons", "Beasts", "Birds", "Bugs", "Fish", "Magical Creatures", "Monsters", "Undead"]
+}, {
+	"category_name": "New Characters - Neutral",
+	"name": "Character Types",
+  "param": "nct",
+	"tag_names": ["Acolytes", "Adventurers", "Citizens", "Children", "Elderly", "Farmers", "Guards", "Laborers", "Merchants", "Pilgrims", "Scoundrels", "Skill Trainers", "Travelers"]
+}]
