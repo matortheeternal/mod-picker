@@ -675,22 +675,28 @@ def seed_categories
 
   # Character Appearance sub-categories
   Category.create(
+      name: "Character Appearance - Body Mods",
+      parent_id: catCharacter.id,
+      description: "Mods that adjust body shapes or textures.",
+      priority: 201
+  )
+  Category.create(
       name: "Character Appearance - Face Parts",
       parent_id: catCharacter.id,
       description: "Mods that add new face parts.  E.g. Hairs, beards, brows, eyes, and noses.",
-      priority: 201
+      priority: 202
   )
   Category.create(
       name: "Character Appearance - NPC Overhauls",
       parent_id: catCharacter.id,
       description: "Mods that overhaul NPCs with different faces/outfits.",
-      priority: 203
+      priority: 204
   )
   Category.create(
       name: "Character Appearance - Overlays",
       parent_id: catCharacter.id,
       description: "Mods that add new overlays for characters.  That is, warpaints, tattoos, freckles, tanlines, pimples, chest hair, etc.",
-      priority: 202
+      priority: 203
   )
 
   # Fixes sub-categories
@@ -709,64 +715,52 @@ def seed_categories
 
   # Gameplay sub-categories
   catClassesAndRaces = Category.create(
-      name: "Gameplay - Classes and Races",
+      name: "Gameplay - Classes & Races",
       parent_id: catGameplay.id,
       description: "Mods that add or alter character classes or races.",
-      priority: 115
+      priority: 114
   )
   Category.create(
       name: "Gameplay - AI & Combat",
       parent_id: catGameplay.id,
       description: "Mods which alter character behavior, combat mechanics, or enemy strength in general.",
-      priority: 114
+      priority: 113
   )
   Category.create(
       name: "Gameplay - Crafting",
       parent_id: catGameplay.id,
       description: "Any mod which modifies the alchemy, enchanting, or smithing systems in the game.  Also includes mods which modify other crafting systems or add new crafting systems.",
-      priority: 116
+      priority: 115
   )
   Category.create(
       name: "Gameplay - Economy & Item Balance",
       parent_id: catGameplay.id,
       description: "Mods which alter the economy of the game - viz., the acquisition of items and currency.  E.g. modifications to merchants or leveled loot.  Also includes mods which rebalance items, e.g. their weight, gold value, and armor rating/damage.",
-      priority: 120
-  )
-  catFactions = Category.create(
-      name: "Gameplay - Factions",
-      parent_id: catGameplay.id,
-      description: "Mods which alter existing factions and faction quest lines or add new ones.",
-      priority: 117
+      priority: 118
   )
   catImmersionAndRolePlaying = Category.create(
       name: "Gameplay - Immersion & Role-playing",
       parent_id: catGameplay.id,
       description: "Mods which exist specifically to increase the player's immersion in the game world, or to aid in role-playing.",
-      priority: 119
+      priority: 117
   )
   catMagic = Category.create(
-      name: "Gameplay - Magic",
+      name: "Gameplay - Magic & Abilities",
       parent_id: catGameplay.id,
       description: "Mods which add new spells, or magic-based mechanics to the game.  Note: Mods that only alter magic-related perk trees should go into Gameplay - Skills & Perks.",
       priority: 112
   )
   catQuests = Category.create(
-      name: "Gameplay - Quests",
+      name: "Gameplay - Quests & Stories",
       parent_id: catGameplay.id,
       description: "Mods which add or alter quests in the game.",
-      priority: 118
+      priority: 116
   )
   catSkillsAndPerks = Category.create(
       name: "Gameplay - Skills & Perks",
       parent_id: catGameplay.id,
       description: "Mods which modify skills or perks in the game, or add new ones.",
       priority: 111
-  )
-  Category.create(
-      name: "Gameplay - Stealth",
-      parent_id: catGameplay.id,
-      description: "Mods which modify the mechanics of detection, pickpocketing, or lockpicking.  Also includes mods which add new stealth-based mechanics.",
-      priority: 113
   )
   Category.create(
       name: "Gameplay - User Interface",
@@ -919,16 +913,6 @@ def seed_categories
       dominant_id: catGameplay.id,
       recessive_id: catFixes.id,
       description: 'Changing gameplay often involves fixing issues with the base game.'
-  )
-  CategoryPriority.create(
-      dominant_id: catFactions.id,
-      recessive_id: catNewChars.id,
-      description: 'Faction mods often involve adding new characters.'
-  )
-  CategoryPriority.create(
-      dominant_id: catFactions.id,
-      recessive_id: catQuests.id,
-      description: 'Faction mods often involve adding or altering quests.'
   )
   CategoryPriority.create(
       dominant_id: catMagic.id,
