@@ -1,8 +1,16 @@
 class TagGroup < ActiveRecord::Base
-  include RecordEnhancements, CounterCache, BetterJson
+  include RecordEnhancements, CounterCache, ScopeHelpers, BetterJson
 
   # ATTRIBUTES
   attr_accessor :category_name, :tag_names
+
+  # SCOPES
+  game_scope
+
+  scope :category, -> (id) {
+    category_ids = [id] + Category.where(parent_id: id).ids
+    where(category_id: category_ids)
+  }
 
   # ASSOCIATIONS
   belongs_to :game
