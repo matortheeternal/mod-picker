@@ -29,6 +29,18 @@ def create_config_file(mod, config_filename, config_install_path)
   mod.config_files.create(hash).save!
 end
 
+def create_tag_groups(game_name)
+  filename = game_name.downcase.underscore + ".json"
+  file = File.read(Rails.root.join("db", "tag_groups", filename))
+  game = Game.find_by(display_name: game_name)
+  JSON.parse(file).each do |tag_group|
+    tag_group["game_id"] = game.id
+    category = Category.find_by(name: tag_group["category_name"])
+    tag_group["category_id"] = category.id
+    TagGroup.create!(tag_group.with_indifferent_access)
+  end
+end
+
 def generate_password
   if Rails.env.production?
     pw = SecureRandom.urlsafe_base64
@@ -1479,6 +1491,11 @@ def seed_user_titles
   )
 
   puts "    #{UserTitle.count} user titles seeded"
+end
+
+def seed_tag_groups
+  create_tag_groups("Skyrim")
+  create_tag_groups("Skyrim SE")
 end
 
 def load_record_groups(game, filename)
