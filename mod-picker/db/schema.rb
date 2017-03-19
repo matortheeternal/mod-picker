@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170310202553) do
+ActiveRecord::Schema.define(version: 20170319051217) do
 
   create_table "active_mod_lists", force: :cascade do |t|
     t.integer "game_id",     limit: 4, null: false
@@ -950,6 +950,29 @@ ActiveRecord::Schema.define(version: 20170310202553) do
   add_index "reviews", ["mod_id"], name: "mod_id", using: :btree
   add_index "reviews", ["submitted_by"], name: "submitted_by", using: :btree
 
+  create_table "tag_group_tags", force: :cascade do |t|
+    t.integer "tag_group_id",   limit: 4,              null: false
+    t.integer "tag_id",         limit: 4,              null: false
+    t.integer "index",          limit: 2,              null: false
+    t.string  "alias",          limit: 64
+    t.integer "mod_tags_count", limit: 4,  default: 0, null: false
+  end
+
+  add_index "tag_group_tags", ["tag_group_id"], name: "fk_rails_f91c6eb907", using: :btree
+  add_index "tag_group_tags", ["tag_id"], name: "fk_rails_0b5eaff770", using: :btree
+
+  create_table "tag_groups", force: :cascade do |t|
+    t.integer "game_id",         limit: 4,               null: false
+    t.integer "category_id",     limit: 4,               null: false
+    t.string  "name",            limit: 64,              null: false
+    t.string  "exclusion_label", limit: 64
+    t.string  "param",           limit: 10,              null: false
+    t.integer "tags_count",      limit: 4,   default: 0, null: false
+  end
+
+  add_index "tag_groups", ["category_id"], name: "fk_rails_fdc5fe53d7", using: :btree
+  add_index "tag_groups", ["game_id"], name: "fk_rails_2acb6f26ac", using: :btree
+
   create_table "tags", force: :cascade do |t|
     t.integer "game_id",         limit: 4,                  null: false
     t.integer "submitted_by",    limit: 4,                  null: false
@@ -1240,6 +1263,10 @@ ActiveRecord::Schema.define(version: 20170310202553) do
   add_foreign_key "reviews", "mods", name: "reviews_ibfk_2"
   add_foreign_key "reviews", "users", column: "edited_by"
   add_foreign_key "reviews", "users", column: "submitted_by", name: "reviews_ibfk_1"
+  add_foreign_key "tag_group_tags", "tag_groups"
+  add_foreign_key "tag_group_tags", "tags"
+  add_foreign_key "tag_groups", "categories"
+  add_foreign_key "tag_groups", "games"
   add_foreign_key "tags", "games"
   add_foreign_key "tags", "users", column: "submitted_by"
   add_foreign_key "user_bios", "users", name: "user_bios_ibfk_1"
