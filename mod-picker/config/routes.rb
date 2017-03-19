@@ -251,6 +251,7 @@ Rails.application.routes.draw do
   match '/users/:id/mod_lists', to: 'users#mod_lists', via: [:get]
 
   # tags
+  match '/tag_groups', to: 'tag_groups#index', via: [:get]
   match '/all_tags', to: 'tags#all', via: [:get]
   match '/tags', to: 'tags#index', via: [:post]
 
