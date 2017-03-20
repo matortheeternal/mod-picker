@@ -25,12 +25,26 @@ app.service('categoryService', function($q, backend) {
         });
     };
 
-    this.nestCategories = function(categories) {
+    this.getCategoryByName = function(categories, categoryName) {
+        return categories.find(function(category) {
+            return category.name === categoryName;
+        });
+    };
+
+    this.getCategoryTree = function(categories) {
         var primaryCategories = angular.copy(service.filterCategories(categories));
         primaryCategories.forEach(function(primaryCategory) {
             primaryCategory.childs = angular.copy(service.filterCategories(categories, primaryCategory.id));
         });
         return primaryCategories;
+    };
+
+    this.removeSuperCategoryNames = function(categories) {
+        categories.forEach(function(category) {
+            if (category.name.indexOf('- ') > -1) {
+                category.name = category.name.split('- ')[1];
+            }
+        });
     };
 
     this.resolveModCategories = function(categories, mod) {
@@ -48,4 +62,10 @@ app.service('categoryService', function($q, backend) {
             item.mod && service.resolveModCategories(categories, item.mod);
         });
     };
+
+    this.associateTagGroupCategories = function(categories, tagGroups) {
+        tagGroups.forEach(function(tagGroup) {
+            tagGroup.category = service.getCategoryById(categories, tagGroup.category_id);
+        });
+    }
 });
