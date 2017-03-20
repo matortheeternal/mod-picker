@@ -190,11 +190,11 @@
 		"name" : "Item Animation",
 		"tag_names" : ["Animated", "HDT"]
 	}, {
-		"category_name" : "Items",
+		"category_name" : "Items - Armor, Clothing, & Accessories",
 		"name" : "Character Class",
 		"tag_names" : ["Assassin", "Bard", "Cleric", "Hunter", "Knight", "Noble", "Mage", "Monk", "Paladin", "Pirate", "Servant", "Thief"]
 	}, {
-		"category_name" : "Items",
+		"category_name" : "Items - Armor, Clothing, & Accessories",
 		"name" : "Franchise",
 		"tag_names" : ["Assassin's Creed", "Berserk", "Black Desert", "Blade & Soul", "Bless Online", "Dark Souls", "Final Fantasy", "Guild Wars", "Oblivion", "Morrowind", "Star Wars", "Tera Online", "The Elder Scrolls Online", "The Witcher", "Vindictus"]
 	}, {
