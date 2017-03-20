@@ -3,11 +3,7 @@
   "include": {
     "tag_group_tags": {
       "except": ["id", "tag_group_id", "tag_id"],
-      "include": {
-        "tag": {
-          "only": ["text", "mods_count"]
-        }
-      }
+      "methods": ["tag_text"]
     }
   }
 }

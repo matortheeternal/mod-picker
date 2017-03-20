@@ -15,6 +15,10 @@ class TagGroupTag < ActiveRecord::Base
   # CALLBACKS
   after_create :reset_mod_tags_counter
 
+  def tag_text
+    tag.text
+  end
+
   def reset_mod_tags_counter
     reset_counter!(:mod_tags)
   end
