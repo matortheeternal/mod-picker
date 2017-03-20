@@ -482,6 +482,66 @@ app.service("filtersFactory", function() {
         );
     };
 
+    this.modTagGroupFilter = function() {
+        return [
+            {
+                label: "Tag Groups",
+                data: "tag_groups",
+                param: "tg",
+                type: "TagGroup"
+            }
+        ];
+    };
+
+    this.modCategoryGeneralFilters = function() {
+        return [
+            {
+                data: "categories",
+                param: "c",
+                type: "List",
+                subtype: "Integer"
+            },
+            {
+                data: "sources.nexus",
+                param: "nm",
+                type: "Boolean",
+                default: true
+            },
+            {
+                data: "sources.lab",
+                param: "ll",
+                type: "Boolean",
+                default: true
+            },
+            {
+                data: "sources.workshop",
+                param: "sw",
+                type: "Boolean",
+                default: true
+            },
+            {
+                data: "sources.other",
+                param: "ot",
+                type: "Boolean",
+                default: true
+            },
+            factory.showAdultFilter,
+            factory.showNonAdultFilter,
+            factory.hiddenFilter,
+            factory.unhiddenFilter,
+            factory.approvedFilter,
+            factory.unapprovedFilter
+        ];
+    };
+
+    this.modCategoryFilters = function() {
+        return Array.prototype.concat(
+            factory.modCategoryGeneralFilters(),
+            factory.modDateFilters(),
+            factory.modTagGroupFilter()
+        );
+    };
+
     /* users index filters */
     this.userGeneralFilters = function() {
         return [
