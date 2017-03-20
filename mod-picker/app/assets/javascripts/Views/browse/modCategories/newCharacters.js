@@ -1,4 +1,4 @@
-app.run(function($futureState, $rootScope, modsIndexFactory, filtersFactory) {
+app.run(function($futureState, modsIndexFactory, filtersFactory) {
     // dynamically construct and apply state
     var filterPrototypes = filtersFactory.modCategoryFilters();
     var state = modsIndexFactory.buildModsIndexState('New Characters', filterPrototypes);
