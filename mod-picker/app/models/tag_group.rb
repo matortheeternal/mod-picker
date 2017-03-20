@@ -7,11 +7,6 @@ class TagGroup < ActiveRecord::Base
   # SCOPES
   game_scope
 
-  scope :category, -> (id) {
-    category_ids = [id] + Category.where(parent_id: id).ids
-    where(category_id: category_ids)
-  }
-
   # ASSOCIATIONS
   belongs_to :game
   belongs_to :category
@@ -30,6 +25,10 @@ class TagGroup < ActiveRecord::Base
   def next_index
     tags = tag_group_tags.select { |tag| tag.id.present? }
     tags.empty? ? 0 : tags.max_by(&:index)
+  end
+
+  def category_ids
+    category.parent_id.nil? ? category.sub_categories.ids + [category_id] : category_id
   end
 
   def add_tag(tag, _alias=nil)

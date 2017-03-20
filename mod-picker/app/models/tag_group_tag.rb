@@ -4,7 +4,7 @@ class TagGroupTag < ActiveRecord::Base
   # ASSOCIATIONS
   belongs_to :tag_group
   belongs_to :tag
-  has_many :mod_tags, -> (object) { joins(:mod).where("mods.primary_category_id in (:ids) OR mods.secondary_category_id in (:ids)", ids: object.tag_group.category_id) }, through: "tag"
+  has_many :mod_tags, -> (object) { joins(:mod).where("mods.primary_category_id in (:ids) OR mods.secondary_category_id in (:ids)", ids: object.tag_group.category_ids) }, through: "tag"
 
   # COUNTER CACHE
   counter_cache :mod_tags, column: 'mod_tags_count'
