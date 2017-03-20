@@ -32,7 +32,7 @@ class TagGroup < ActiveRecord::Base
   end
 
   def add_tag(tag, _alias=nil)
-    tag_group_tags.create(tag_id: tag.id, index: next_index, alias: _alias)
+    TagGroupTag.create(tag_group_id: id, tag_id: tag.id, index: next_index, alias: _alias)
   end
 
   private
