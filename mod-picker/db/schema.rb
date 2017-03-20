@@ -966,7 +966,6 @@ ActiveRecord::Schema.define(version: 20170319051217) do
     t.integer "category_id",     limit: 4,               null: false
     t.string  "name",            limit: 64,              null: false
     t.string  "exclusion_label", limit: 64
-    t.string  "param",           limit: 10,              null: false
     t.integer "tags_count",      limit: 4,   default: 0, null: false
   end
 

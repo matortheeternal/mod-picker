@@ -21,9 +21,8 @@ class TagGroup < ActiveRecord::Base
   counter_cache :tag_group_tags, column: 'tags_count'
 
   # VALIDATIONS
-  validates :game_id, :category_id, :name, :param, presence: true
+  validates :game_id, :category_id, :name, presence: true
   validates :name, length: {in: 2..64}
-  validates :param, length: {in: 1..10}
 
   # CALLBACKS
   after_create :link_tags

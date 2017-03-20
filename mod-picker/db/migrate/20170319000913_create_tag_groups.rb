@@ -5,7 +5,6 @@ class CreateTagGroups < ActiveRecord::Migration
       t.integer :category_id, null: false
       t.string :name, limit: 64, null: false
       t.string :exclusion_label, limit: 64
-      t.string :param, limit: 10, null: false
       t.integer :tags_count, default: 0, null: false
     end
 
