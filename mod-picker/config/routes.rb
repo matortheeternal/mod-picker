@@ -258,6 +258,7 @@ Rails.application.routes.draw do
   # mods
   match '/mods/index', to: 'mods#index', via: [:get, :post]
   match '/mods/search', to: 'mods#search', via: [:post]
+  match '/mods/:id/mod_options', to: 'mods#mod_options', via: [:get]
   resources :mods, only: [:show]
 
   # mod options

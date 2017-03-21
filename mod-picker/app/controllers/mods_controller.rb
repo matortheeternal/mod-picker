@@ -1,5 +1,5 @@
 class ModsController < ApplicationController
-  before_action :set_mod, only: [:edit, :update, :hide, :approve, :update_tags, :image, :corrections, :reviews, :compatibility_notes, :install_order_notes, :load_order_notes, :related_mod_notes, :analysis, :destroy]
+  before_action :set_mod, only: [:mod_options, :edit, :update, :hide, :approve, :update_tags, :image, :corrections, :reviews, :compatibility_notes, :install_order_notes, :load_order_notes, :related_mod_notes, :analysis, :destroy]
 
   # POST /mods/index
   def index
@@ -49,6 +49,11 @@ class ModsController < ApplicationController
         in_mod_list: in_mod_list,
         incompatible: incompatible
     }
+  end
+
+  # GET /mods/1/mod_options
+  def mod_options
+    respond_with_json(@mod.mod_options, :mod_list_mod)
   end
 
   # GET /mods/new
