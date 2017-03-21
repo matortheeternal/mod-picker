@@ -5,7 +5,7 @@ app.run(function($futureState, indexFactory, filtersFactory) {
     $futureState.futureState(state);
 });
 
-app.controller('modsController', function($scope, $rootScope, $q, $stateParams, $state, modService, categoryService, modListService, indexService, helpFactory, sliderFactory, columnsFactory, detailsFactory, sortFactory, filtersFactory, actionsFactory, indexFactory, eventHandlerFactory) {
+app.controller('modsController', function($scope, $rootScope, $q, $stateParams, $state, modService, categoryService, modListService, indexService, helpFactory, sliderFactory, columnsFactory, detailsFactory, sortFactory, filtersFactory, actionsFactory, indexFactory, modsIndexFactory, eventHandlerFactory) {
     // inherited variables
     $scope.currentUser = $rootScope.currentUser;
     $scope.currentGame = $rootScope.currentGame;
@@ -30,6 +30,9 @@ app.controller('modsController', function($scope, $rootScope, $q, $stateParams, 
 
     // set help context
     helpFactory.setHelpContexts($scope, [helpFactory.modsIndex]);
+
+    // mod list mod addition/removal handlers
+    modsIndexFactory.buildModAddRemoveHandlers($scope);
 
     /* helper functions */
     // returns true if the input filter is available
@@ -118,32 +121,6 @@ app.controller('modsController', function($scope, $rootScope, $q, $stateParams, 
             }
         });
     };
-
-    // adds a mod to the user's mod list
-    $scope.$on('addMod', function(event, mod) {
-        modListService.addModListMod($scope.activeModList, mod).then(function() {
-            $scope.$emit('successMessage', 'Added mod "'+mod.name+'" to your mod list successfully.');
-        }, function(response) {
-            var params = {
-                label: 'Error adding mod "'+mod.name+'" to your mod list',
-                response: response
-            };
-            $scope.$emit('errorMessage', params);
-        });
-    });
-
-    // removes a mod from the user's mod list
-    $scope.$on('removeMod', function(event, mod) {
-        modListService.removeModListMod($scope.activeModList, mod).then(function() {
-            $scope.$emit('successMessage', 'Removed mod "'+mod.name+'" from your mod list successfully.');
-        }, function(response) {
-            var params = {
-                label: 'Error removing mod "'+mod.name+'" from your mod list',
-                response: response
-            };
-            $scope.$emit('errorMessage', params);
-        });
-    });
 
     // filters for view
     $scope.filterPrototypes = filtersFactory.modFilters();
