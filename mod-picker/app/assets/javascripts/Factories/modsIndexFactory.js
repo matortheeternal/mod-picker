@@ -176,6 +176,7 @@ app.service('modsIndexFactory', function(modService, categoryService, tagService
                 return subcategory.id;
             });
             $scope.filters.categories = subcategoryIds.length > 0 ? subcategoryIds : $scope.categoryIds;
+            $scope.refreshFilters();
         };
 
         $scope.getTagGroupsVisible = function() {
@@ -211,6 +212,7 @@ app.service('modsIndexFactory', function(modService, categoryService, tagService
             }).filter(function(tagGroupFilter) {
                 return tagGroupFilter.exclude || tagGroupFilter.include.length;
             });
+            $scope.refreshFilters();
         };
 
         // filters for view
