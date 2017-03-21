@@ -38,6 +38,12 @@
                     </ul>
                 </div>
             </filter-section>
+            <span class="content-message" ng-if="!tagGroups.length">
+                No tag groups available.
+            </span>
+            <span class="content-message" ng-if="tagGroups.length && !tagGroupsVisible">
+                Select a subcategory to display tag groups.
+            </span>
 
             <h2>Filters</h2>
 
