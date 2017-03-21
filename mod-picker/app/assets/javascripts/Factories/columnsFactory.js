@@ -790,21 +790,27 @@ app.service('columnsFactory', function() {
                 group: "General",
                 visibility: !!onIndex,
                 label: "Tools",
-                data: "tools_count",
+                data: function(item) {
+                    return item.tools_count + item.custom_tools_count;
+                },
                 filter: "number"
             },
             {
                 group: "General",
                 visibility: true,
                 label: "Mods",
-                data: "mods_count",
+                data: function(item) {
+                    return item.mods_count + item.custom_mods_count;
+                },
                 filter: "number"
             },
             {
                 group: "General",
                 visibility: true,
                 label: "Plugins",
-                data: "plugins_count",
+                data: function(item) {
+                    return item.plugins_count + item.custom_plugins_count;
+                },
                 filter: "number"
             },
             {
