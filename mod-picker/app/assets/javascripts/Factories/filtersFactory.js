@@ -4,7 +4,7 @@ app.service("filtersFactory", function() {
     /* shared filter prototypes */
     this.pageFilter = {
         data: "page",
-        param: "pg",
+        param: "page",
         default: 1
     };
     this.searchFilter = {
