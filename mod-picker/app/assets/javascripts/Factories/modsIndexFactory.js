@@ -53,12 +53,19 @@ app.service('modsIndexFactory', function(modService, categoryService, tagService
         };
 
         $scope.categoriesChanged = function() {
+            $scope.getTagGroupsVisible();
             var subcategoryIds = $scope.subcategories.filter(function(subcategory) {
                 return subcategory.enabled;
             }).map(function(subcategory) {
                 return subcategory.id;
             });
             $scope.filters.categories = subcategoryIds.length > 0 ? subcategoryIds : $scope.categoryIds;
+        };
+
+        $scope.getTagGroupsVisible = function() {
+            $scope.tagGroupsVisible = $scope.tagGroups.reduce(function(b, group) {
+                return b || group.category.enabled;
+            }, false);
         };
 
         $scope.tagTexts = function(tags) {
@@ -162,6 +169,9 @@ app.service('modsIndexFactory', function(modService, categoryService, tagService
                 }
             });
         }
+
+        // get tag groups visible
+        $scope.getTagGroupsVisible();
 
         // override some data from the generic controller
         $scope.actions = actionsFactory.modIndexActions();
