@@ -1,4 +1,45 @@
 app.service('modsIndexFactory', function(modService, categoryService, tagService, modListService, indexService, helpFactory, sliderFactory, columnsFactory, detailsFactory, sortFactory, filtersFactory, actionsFactory, indexFactory, eventHandlerFactory) {
+    var factory = this;
+
+
+    this.setupCategoriesAndTagGroups = function($scope, $rootScope) {
+        $scope.category = angular.copy(categoryService.getCategoryByName($scope.categories, $scope.categoryName));
+        $scope.category.enabled = true;
+        $scope.subcategories = angular.copy(categoryService.filterCategories($scope.categories, $scope.category.id));
+        categoryService.removeSuperCategoryNames($scope.subcategories);
+        $scope.modelCategories = [$scope.category].concat($scope.subcategories);
+        $scope.subcategoryIds = $scope.subcategories.map(function(subcategory) {
+            return subcategory.id;
+        });
+        $scope.categoryIds = [$scope.category.id].concat($scope.subcategoryIds);
+        $scope.tagGroups = tagService.categoryTagGroups($rootScope.tagGroups, $scope.categoryIds);
+        categoryService.associateTagGroupCategories($scope.modelCategories, $scope.tagGroups);
+    };
+
+    this.loadTagGroupFilters = function($scope) {
+        if ($scope.filters.tag_groups) {
+            $scope.filters.tag_groups.forEach(function(tagGroup) {
+                if (tagGroup.include) {
+                    tagGroup.include.forEach(function(tag) {
+                        $scope.enableTag(tag);
+                    });
+                } else {
+                    $scope.excludeTagGroup(tagGroup);
+                }
+            });
+        }
+    };
+
+    this.loadCategoryFilters = function($scope) {
+        if ($scope.filters.categories.length != $scope.categoryIds.length) {
+            $scope.subcategories.forEach(function(subcategory) {
+                if ($scope.filters.categories.indexOf(subcategory.id) > -1) {
+                    subcategory.enabled = true;
+                }
+            });
+        }
+    };
+
     this.buildModsIndex = function($scope, $rootScope, $stateParams, $state) {
         // inherited variables
         $scope.currentUser = $rootScope.currentUser;
@@ -124,17 +165,7 @@ app.service('modsIndexFactory', function(modService, categoryService, tagService
         });
 
         // filters for view
-        $scope.category = angular.copy(categoryService.getCategoryByName($scope.categories, $scope.categoryName));
-        $scope.category.enabled = true;
-        $scope.subcategories = angular.copy(categoryService.filterCategories($scope.categories, $scope.category.id));
-        categoryService.removeSuperCategoryNames($scope.subcategories);
-        $scope.modelCategories = [$scope.category].concat($scope.subcategories);
-        $scope.subcategoryIds = $scope.subcategories.map(function(subcategory) {
-            return subcategory.id;
-        });
-        $scope.categoryIds = [$scope.category.id].concat($scope.subcategoryIds);
-        $scope.tagGroups = tagService.categoryTagGroups($rootScope.tagGroups, $scope.categoryIds);
-        categoryService.associateTagGroupCategories($scope.modelCategories, $scope.tagGroups);
+        factory.setupCategoriesAndTagGroups($scope, $rootScope);
         $scope.filterPrototypes = filtersFactory.modCategoryFilters();
         $scope.dateFilters = filtersFactory.modDateFilters();
         $scope.filters = {
@@ -148,29 +179,9 @@ app.service('modsIndexFactory', function(modService, categoryService, tagService
         indexFactory.buildIndex($scope, $stateParams, $state);
         eventHandlerFactory.buildMessageHandlers($scope);
 
-        // load tag groups from params into view model
-        if ($scope.filters.tag_groups) {
-            $scope.filters.tag_groups.forEach(function(tagGroup) {
-                if (tagGroup.include) {
-                    tagGroup.include.forEach(function(tag) {
-                        $scope.enableTag(tag);
-                    });
-                } else {
-                    $scope.excludeTagGroup(tagGroup);
-                }
-            });
-        }
-
-        // load categories from params into view model
-        if ($scope.filters.categories.length != $scope.categoryIds.length) {
-            $scope.subcategories.forEach(function(subcategory) {
-                if ($scope.filters.categories.indexOf(subcategory.id) > -1) {
-                    subcategory.enabled = true;
-                }
-            });
-        }
-
-        // get tag groups visible
+        // load filters into view model
+        factory.loadTagGroupFilters($scope);
+        factory.loadCategoryFilters($scope);
         $scope.getTagGroupsVisible();
 
         // override some data from the generic controller
