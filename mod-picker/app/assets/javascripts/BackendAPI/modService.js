@@ -13,6 +13,10 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
         return action.promise;
     };
 
+    this.retrieveModOptions = function(modId) {
+        return backend.retrieve('/mods/' + modId + '/mod_options');
+    };
+
     this.searchMods = function(name, utility) {
         var postData = {
             filters: {
