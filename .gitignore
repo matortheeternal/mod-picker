@@ -97,3 +97,4 @@ dumps/*.sql
 mod-picker/public/mods/
 mod-picker/public/users/
 mod-picker/public/articles/
+loc/
