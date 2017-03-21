@@ -8,7 +8,7 @@ app.directive('modOptionsModal', function() {
 });
 
 app.controller('modOptionsModalController', function($scope, columnsFactory, formUtils, tableUtils, sortUtils) {
-    $scope.unfocusDetailsModal = formUtils.unfocusModal($scope.toggleModOptionsModal);
+    $scope.unfocusModOptionsModal = formUtils.unfocusModal($scope.toggleModOptionsModal);
 
     // initialize variables
     $scope.moColumns = columnsFactory.modListModDetailsColumns();
