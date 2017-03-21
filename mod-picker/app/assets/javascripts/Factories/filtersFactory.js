@@ -501,6 +501,7 @@ app.service("filtersFactory", function() {
 
     this.modCategoryGeneralFilters = function() {
         return [
+            factory.pageFilter,
             {
                 data: "categories",
                 param: "c",
