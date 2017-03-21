@@ -131,6 +131,28 @@ app.service("sortFactory", function() {
         ];
     };
 
+    this.modCategorySortOptions = function() {
+        return [
+            factory.buildSortOption("Mod ID", "id"),
+            factory.buildSortOption("Mod Name", "name"),
+            factory.buildSortOption("Authors"),
+            factory.buildSortOption("Primary Category", "primary_category.name"),
+            factory.buildSortOption("Secondary Category", "secondary_category.name"),
+            factory.buildSortOption("Submitted"),
+            factory.buildSortOption("Released"),
+            factory.buildSortOption("Updated"),
+            factory.buildCountSortOption("Stars"),
+            factory.buildSortOption("Reputation"),
+            factory.buildSortOption("Avg Rating", "average_rating"),
+            factory.buildCountSortOption("Mod Options"),
+            factory.buildCountSortOption("Plugins"),
+            factory.buildCountSortOption("Mod Lists"),
+            factory.buildCountSortOption("Required Mods"),
+            factory.buildCountSortOption("Required By"),
+            factory.buildCountSortOption("Tags")
+        ];
+    };
+
     /* comments index sort options */
     this.commentSortOptions = function() {
         return [

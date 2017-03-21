@@ -133,7 +133,7 @@ app.service('modsIndexFactory', function(modService, categoryService, tagService
         $scope.detailGroups = detailsFactory.modDetailGroups();
 
         // sort options for view
-        $scope.baseSortOptions = sortFactory.modSortOptions();
+        $scope.sortOptions = sortFactory.modCategorySortOptions();
 
         // set help context
         helpFactory.setHelpContexts($scope, [helpFactory.modsIndex]);
