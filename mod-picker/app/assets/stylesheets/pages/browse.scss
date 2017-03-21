@@ -94,9 +94,23 @@ filter-section {
       background-color: $slider_range_color !important;
     }
 
+    .content-message {
+      font-size: 16px;
+      display: block;
+      margin: 0;
+    }
+
     input[type="text"] {
       padding: 3px;
       width: 100%;
+    }
+
+    h2 {
+      margin-top: 12px;
+    }
+
+    h2:first-child {
+      margin-top: 0;
     }
   }
 
@@ -104,6 +118,14 @@ filter-section {
   .right-column {
     max-width: 970px;
     height: calc(100vh - 428px);
+
+    .results-count {
+      font-size: 16px;
+      margin-left: 6px;
+      display: inline-block;
+      vertical-align: middle;
+      margin-bottom: 2px;
+    }
 
     sort-control {
       font-size: 14px;

@@ -207,13 +207,14 @@ app.service('modListService', function(backend, $q, userTitleService, contributi
     };
 
     // this function is used to add a mod list mod when not on the mod list page
-    this.addModListMod = function(mod_list, mod) {
+    this.addModListMod = function(mod_list, mod, mod_option_ids) {
         var action = $q.defer();
         var options = {
             mod_list_mod: {
                 mod_list_id: mod_list.id,
                 mod_id: mod.id
             },
+            mod_option_ids: mod_option_ids,
             no_response: true
         };
         backend.post('/mod_list_mods', options).then(function(data) {

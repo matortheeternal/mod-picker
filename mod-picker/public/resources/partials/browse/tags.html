@@ -43,7 +43,11 @@
         </div>
 
         <div class="right-column">
-            <h2>Tags</h2>
+            <h2>Tags
+                <span class="results-count" ng-show="pages.resultsCount">
+                    ({{pages.resultsCount}} results)
+                </span>
+            </h2>
             <loader data="tags" content-class="table-container" spinner-class="big-spinner" ng-if="!error">
                 <table-results on-change="refreshFilters()" label="tags" data="tags"></table-results>
                 <page-results pages="pages" data="tags" callback="refreshFilters"></page-results>

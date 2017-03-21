@@ -178,10 +178,10 @@
 
             <category-tree on-change="refreshFilters()" class="filter-section" categories="categories" selection="filters.categories" toggle-all="true"></category-tree>
 
-            <div class="filter-section">
-                <h3>Tags</h3>
-                <tag-selector active-tags="[]" new-tags="filters.tags" type="mod" show-count="true" can-create="false" show-add="true" max-tags="10"></tag-selector>
-            </div>
+            <filter-section name="Tags" expanded="true">
+                <tag-selector class="included-tags" active-tags="[]" new-tags="filters.tags" type="mod" show-count="true" can-create="false" show-add="true" max-tags="10" add-tag-caption="Include tag"></tag-selector>
+                <tag-selector class="excluded-tags" active-tags="[]" new-tags="filters.excluded_tags" type="mod" show-count="true" can-create="false" show-add="true" max-tags="30" add-tag-caption="Exclude tag"></tag-selector>
+            </filter-section>
 
             <filter-section name="Date Filters" expanded="true">
                 <div ng-repeat="filter in dateFilters">
@@ -226,6 +226,9 @@
         <div class="right-column">
             <h2>
                 Mods
+                <span class="results-count" ng-show="pages.resultsCount">
+                    ({{pages.resultsCount}} results)
+                </span>
                 <span class="right-item view-mode-item">
                     <span class="right-item" ng-if="!tableView">
                         <sort-control dynamic="true" on-change="refreshFilters()"></sort-control>
@@ -243,6 +246,8 @@
                 <grid-results label="mods" data="mods" ng-if="!tableView"></grid-results>
                 <page-results pages="pages" data="mods" callback="refreshFilters"></page-results>
             </loader>
+
+            <mod-options-modal></mod-options-modal>
 
             <error-display content-class="content-message content-error" errors="error" label="Mods"></error-display>
         </div>

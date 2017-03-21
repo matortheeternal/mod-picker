@@ -75,9 +75,14 @@
         </div>
 
         <div class="right-column">
-            <h2>Reviews <span class="right-item">
+            <h2>Reviews
+                <span class="results-count" ng-show="pages.resultsCount">
+                    ({{pages.resultsCount}} results)
+                </span>
+                <span class="right-item">
                 <sort-control on-change="refreshFilters()"></sort-control>
-            </span></h2>
+                </span>
+            </h2>
             <loader data="reviews" content-class="grid-results" spinner-class="big-spinner" ng-if="!error">
                 <div class="content-block" ng-repeat="review in reviews">
                     <review review="review" show-user-column="true" show-mod="true" index="100"></review>

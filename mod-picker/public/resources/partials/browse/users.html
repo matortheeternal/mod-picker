@@ -74,7 +74,11 @@
         </div>
 
         <div class="right-column">
-            <h2>Users</h2>
+            <h2>Users
+                <span class="results-count" ng-show="pages.resultsCount">
+                    ({{pages.resultsCount}} results)
+                </span>
+            </h2>
             <loader data="users" content-class="table-container" spinner-class="big-spinner" ng-if="!error">
                 <table-results on-change="refreshFilters()" label="users" data="users"></table-results>
                 <page-results pages="pages" data="users" callback="refreshFilters"></page-results>

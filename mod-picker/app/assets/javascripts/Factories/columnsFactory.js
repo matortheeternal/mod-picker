@@ -1170,6 +1170,9 @@ app.service('columnsFactory', function() {
                 visibility: true,
                 label: "Mods Count",
                 data: "mods_count",
+                link: function(item) {
+                    return "mods?t=" + item.text;
+                },
                 filter: "number"
             },
             {
@@ -1177,6 +1180,9 @@ app.service('columnsFactory', function() {
                 visibility: true,
                 label: "Mod Lists Count",
                 data: "mod_lists_count",
+                link: function(item) {
+                    return "mod-lists?t=" + item.text;
+                },
                 filter: "number"
             }
         ]

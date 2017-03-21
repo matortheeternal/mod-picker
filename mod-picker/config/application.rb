@@ -21,7 +21,7 @@ module ModPicker
     # config.i18n.default_locale = :de
 
     # AUTOLOAD PATCHER
-    config.autoload_paths += %W(#{config.root}/lib #{config.root}/app/builders)
+    config.autoload_paths += %W(#{config.root}/lib #{config.root}/app/builders #{config.root}/app/decorators)
 
     # SET THE USER AGENT FOR SCRAPING
     config.user_agent = "Mod Picker Scraper"

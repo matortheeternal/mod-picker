@@ -1,0 +1,9 @@
+{
+  "except": ["id", "game_id"],
+  "include": {
+    "tag_group_tags": {
+      "except": ["id", "tag_group_id", "tag_id"],
+      "methods": ["tag_text"]
+    }
+  }
+}

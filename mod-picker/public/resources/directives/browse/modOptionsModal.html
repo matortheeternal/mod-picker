@@ -1,0 +1,66 @@
+<div class="modal-container" ng-if="showModOptionsModal" ng-click="unfocusModOptionsModal($event)">
+    <div class="modal extra-wide-modal">
+        <form>
+            <div class="close-modal">
+                <span class="fa fa-times" ng-click="toggleModOptionsModal()"></span>
+            </div>
+
+            <h2 class="section-title">Select {{activeMod.name}} Mod Options</h2>
+            <loader data="activeModOptions" content-class="box-shadow" spinner-class="big-spinner" ng-if="!modOptionsError">
+                <table class="browse-table">
+                    <thead>
+                    <tr>
+                        <th ng-repeat="column in moColumns" ng-click="sortColumn(column, moSort, sortedColumn)" class="{{column.class}}" title="{{column.title}}">
+                            {{::column.label}}
+                            <div class="sorting-options" ng-if="sort && !column.unsortable">
+                                <div class="sort-up" ng-class="{ 'active' : column.up }">
+                                    <i class="fa fa-caret-up"></i>
+                                </div>
+                                <div class="sort-down" ng-class="{ 'active' : column.down }">
+                                    <i class="fa fa-caret-down"></i>
+                                </div>
+                            </div>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="item in activeModOptions | orderBy:moSort.column:(moSort.direction === 'DESC')">
+                        <td>
+                            <label class="manage-item">
+                                <input type="checkbox" ng-model="item.enabled"/>
+                            </label>
+                        </td>
+                        <td class="primary-column" title="{{item.name}}">
+                            <a ng-href="#" target="_blank">
+                                {{item.display_name}}
+                            </a>
+                        </td>
+                        <td>
+                            {{item.default ? 'Yes' : 'No'}}
+                        </td>
+                        <td>
+                            {{item.size | bytes}}
+                        </td>
+                        <td>
+                            {{item.asset_files_count}}
+                        </td>
+                        <td>
+                            <span ng-repeat="plugin in item.plugins">
+                                {{plugin.filename}}{{$last ? '' : ', '}}
+                                <br ng-if="!$last" />
+                            </span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </loader>
+
+            <error-display content-class="content-message content-error" errors="modOptionsError" label="mod options"></error-display>
+
+            <div class="action-button-container">
+                <input type="submit" class="btn" value="Add" ng-click="modOptionsModalAdd()">
+                <input type="submit" class="btn" value="Cancel" ng-click="toggleModOptionsModal(false)">
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,6 +1,6 @@
 class HelpPagesController < ApplicationController
   before_action :set_help_page, only: [:show, :edit]
-  before_action :set_help_page_from_id, only: [:comments, :update, :destroy]
+  before_action :set_help_page_from_id, only: [:comments, :sections, :update, :destroy]
   rescue_from ::ActiveRecord::RecordNotFound, with: :record_not_found
 
   layout "help"
@@ -30,7 +30,6 @@ class HelpPagesController < ApplicationController
 
     # search by title and text_body via help_page scope
     @help_pages = HelpPage.search(params[:search]).accessible_by(current_ability)
-    @help_videos = HelpVideo.search(params[:search]).accessible_by(current_ability)
 
     render "help_pages/search"
   end
@@ -64,7 +63,6 @@ class HelpPagesController < ApplicationController
 
     @page_title = params[:category].humanize.titleize
     @help_pages = HelpPage.where(category: HelpPage.categories[params[:category]]).order(submitted: :desc).accessible_by(current_ability)
-    @help_videos = HelpVideo.where(category: HelpVideo.categories[params[:category]]).order(submitted: :asc).accessible_by(current_ability)
 
     render "help_pages/category"
   end
@@ -76,7 +74,6 @@ class HelpPagesController < ApplicationController
 
     @page_title = game.long_name.titleize
     @help_pages = HelpPage.where(game_id: game.id).order(submitted: :asc).accessible_by(current_ability)
-    @help_videos = HelpVideo.where(game_id: game.id).order(submitted: :asc).accessible_by(current_ability)
 
     render "help_pages/game"
   end
@@ -90,6 +87,15 @@ class HelpPagesController < ApplicationController
         comments: comments,
         max_entries: count,
         entries_per_page: 10
+    }
+  end
+
+  # GET /help/1/sections
+  def sections
+    authorize! :read, @help_page
+    sections = @help_page.sections.includes(:children)
+    render json: {
+        sections: sections,
     }
   end
 
@@ -132,6 +138,6 @@ class HelpPagesController < ApplicationController
     end
 
     def help_page_params
-      params.require(:help_page).permit(:game_id, :approved, :category, :title, :text_body)
+      params.require(:help_page).permit(:game_id, :approved, :category, :youtube_id, :title, :text_body, sections_attributes: [:id, :label, :description, :seconds, :_destroy])
     end
 end

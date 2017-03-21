@@ -75,7 +75,8 @@
             </filter-section>
 
             <filter-section name="Tags" expanded="true">
-                <tag-selector active-tags="[]" new-tags="filters.tags" type="mod-list" show-count="true" can-create="false" show-add="true" max-tags="10"></tag-selector>
+                <tag-selector class="included-tags" active-tags="[]" new-tags="filters.tags" type="mod-list" show-count="true" can-create="false" show-add="true" max-tags="10" add-tag-caption="Include tag"></tag-selector>
+                <tag-selector class="excluded-tags" active-tags="[]" new-tags="filters.excluded_tags" type="mod-list" show-count="true" can-create="false" show-add="true" max-tags="30" add-tag-caption="Exclude tag"></tag-selector>
             </filter-section>
 
             <filter-section name="Date Filters" expanded="true">
@@ -106,7 +107,11 @@
         </div>
 
         <div class="right-column">
-            <h2>Mod Lists</h2>
+            <h2>Mod Lists
+                <span class="results-count" ng-show="pages.resultsCount">
+                    ({{pages.resultsCount}} results)
+                </span>
+            </h2>
             <loader data="mod_lists" content-class="table-container" spinner-class="big-spinner" ng-if="!error">
                 <table-results on-change="refreshFilters()" label="mod lists" data="mod_lists"></table-results>
                 <page-results pages="pages" data="mod_lists" callback="refreshFilters"></page-results>

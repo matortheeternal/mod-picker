@@ -83,6 +83,28 @@
   }
 }
 
+tag-selector {
+  &.included-tags {
+    .add-tag-box {
+      background-color: $success_secondary;
+
+      &:hover {
+        background-color: $bar_highlight_color;
+      }
+    }
+  }
+
+  &.excluded-tags {
+    .add-tag-box {
+      background-color: $error_secondary;
+
+      &:hover {
+        background-color: $bar_highlight_color;
+      }
+    }
+  }
+}
+
 .tag-actions-container {
   margin: 6px;
   text-align: center;

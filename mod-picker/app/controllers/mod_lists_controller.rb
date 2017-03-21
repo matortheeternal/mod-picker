@@ -144,7 +144,8 @@ class ModListsController < ApplicationController
   # POST /mod_lists/:id/setup
   def setup
     authorize! :read, @mod_list
-    render text: ModList.preload(:custom_plugins, :custom_mods, mod_list_mods: [{mod: [:lover_infos, :workshop_infos, :custom_sources, :mod_options,{nexus_infos: [:game]}]}, :mod_list_mod_options], mod_list_plugins: [:plugin], mod_list_config_files: [:config_file]).find(params[:id]).setup_string(current_user)
+    decorator = ModListSetupDecorator.new(@mod_list)
+    render text: SecureData.full(current_user, decorator.to_json)
   end
 
   # GET /mod_lists/:id/config
@@ -353,7 +354,7 @@ class ModListsController < ApplicationController
     end
 
     def filtering_params
-      params[:filters].slice(:game, :adult, :hidden, :search, :description, :submitter, :status, :kind, :submitted, :updated, :completed, :tools, :mods, :plugins, :config_files, :ignored_notes, :stars, :custom_tools, :custom_mods, :master_plugins, :available_plugins, :custom_plugins, :custom_config_files, :compatibility_notes, :install_order_notes, :load_order_notes, :bsa_files, :asset_files, :records, :override_records, :plugin_errors, :tags, :comments)
+      params[:filters].slice(:game, :adult, :hidden, :search, :description, :submitter, :status, :kind, :submitted, :updated, :completed, :tools, :mods, :plugins, :config_files, :ignored_notes, :stars, :custom_tools, :custom_mods, :master_plugins, :available_plugins, :custom_plugins, :custom_config_files, :compatibility_notes, :install_order_notes, :load_order_notes, :bsa_files, :asset_files, :records, :override_records, :plugin_errors, :tags, :excluded_tags, :comments)
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

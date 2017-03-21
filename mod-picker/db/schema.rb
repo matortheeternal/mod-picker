@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170305231247) do
+ActiveRecord::Schema.define(version: 20170319051217) do
 
   create_table "active_mod_lists", force: :cascade do |t|
     t.integer "game_id",     limit: 4, null: false
@@ -267,7 +267,6 @@ ActiveRecord::Schema.define(version: 20170305231247) do
     t.integer "related_mod_notes_count",   limit: 4,   default: 0, null: false
     t.integer "corrections_count",         limit: 4,   default: 0, null: false
     t.integer "help_pages_count",          limit: 4,   default: 0, null: false
-    t.integer "help_videos_count",         limit: 4,   default: 0, null: false
   end
 
   add_index "games", ["parent_game_id"], name: "fk_rails_f750cfc2c5", using: :btree
@@ -276,6 +275,7 @@ ActiveRecord::Schema.define(version: 20170305231247) do
     t.integer  "game_id",        limit: 4
     t.integer  "category",       limit: 1,     default: 0,     null: false
     t.integer  "submitted_by",   limit: 4,                     null: false
+    t.string   "youtube_id",     limit: 16
     t.string   "title",          limit: 128,                   null: false
     t.text     "text_body",      limit: 65535,                 null: false
     t.integer  "comments_count", limit: 4,     default: 0,     null: false
@@ -288,30 +288,15 @@ ActiveRecord::Schema.define(version: 20170305231247) do
   add_index "help_pages", ["submitted_by"], name: "fk_rails_01a3f94bf2", using: :btree
 
   create_table "help_video_sections", force: :cascade do |t|
-    t.integer "help_video_id", limit: 4,   null: false
-    t.integer "parent_id",     limit: 4
-    t.string  "label",         limit: 64,  null: false
-    t.string  "description",   limit: 255
-    t.integer "seconds",       limit: 3,   null: false
+    t.integer "help_page_id", limit: 4,   null: false
+    t.integer "parent_id",    limit: 4
+    t.string  "label",        limit: 64,  null: false
+    t.string  "description",  limit: 255
+    t.integer "seconds",      limit: 3,   null: false
   end
 
-  add_index "help_video_sections", ["help_video_id"], name: "fk_rails_edd4587296", using: :btree
+  add_index "help_video_sections", ["help_page_id"], name: "fk_rails_99944b3c93", using: :btree
   add_index "help_video_sections", ["parent_id"], name: "fk_rails_f5da94a2eb", using: :btree
-
-  create_table "help_videos", force: :cascade do |t|
-    t.integer  "game_id",      limit: 4
-    t.integer  "category",     limit: 1,     default: 0,     null: false
-    t.integer  "submitted_by", limit: 4,                     null: false
-    t.string   "youtube_id",   limit: 16,                    null: false
-    t.string   "title",        limit: 128,                   null: false
-    t.text     "text_body",    limit: 65535,                 null: false
-    t.boolean  "approved",                   default: false, null: false
-    t.datetime "submitted",                                  null: false
-    t.datetime "edited"
-  end
-
-  add_index "help_videos", ["game_id"], name: "fk_rails_518c950676", using: :btree
-  add_index "help_videos", ["submitted_by"], name: "fk_rails_e8e5110693", using: :btree
 
   create_table "helpful_marks", id: false, force: :cascade do |t|
     t.integer  "submitted_by",     limit: 4,                  null: false
@@ -965,6 +950,28 @@ ActiveRecord::Schema.define(version: 20170305231247) do
   add_index "reviews", ["mod_id"], name: "mod_id", using: :btree
   add_index "reviews", ["submitted_by"], name: "submitted_by", using: :btree
 
+  create_table "tag_group_tags", force: :cascade do |t|
+    t.integer "tag_group_id",   limit: 4,              null: false
+    t.integer "tag_id",         limit: 4,              null: false
+    t.integer "index",          limit: 2,              null: false
+    t.string  "alias",          limit: 64
+    t.integer "mod_tags_count", limit: 4,  default: 0, null: false
+  end
+
+  add_index "tag_group_tags", ["tag_group_id"], name: "fk_rails_f91c6eb907", using: :btree
+  add_index "tag_group_tags", ["tag_id"], name: "fk_rails_0b5eaff770", using: :btree
+
+  create_table "tag_groups", force: :cascade do |t|
+    t.integer "game_id",         limit: 4,               null: false
+    t.integer "category_id",     limit: 4,               null: false
+    t.string  "name",            limit: 64,              null: false
+    t.string  "exclusion_label", limit: 64
+    t.integer "tags_count",      limit: 4,   default: 0, null: false
+  end
+
+  add_index "tag_groups", ["category_id"], name: "fk_rails_fdc5fe53d7", using: :btree
+  add_index "tag_groups", ["game_id"], name: "fk_rails_2acb6f26ac", using: :btree
+
   create_table "tags", force: :cascade do |t|
     t.integer "game_id",         limit: 4,                  null: false
     t.integer "submitted_by",    limit: 4,                  null: false
@@ -1158,10 +1165,8 @@ ActiveRecord::Schema.define(version: 20170305231247) do
   add_foreign_key "games", "games", column: "parent_game_id"
   add_foreign_key "help_pages", "games"
   add_foreign_key "help_pages", "users", column: "submitted_by"
+  add_foreign_key "help_video_sections", "help_pages"
   add_foreign_key "help_video_sections", "help_video_sections", column: "parent_id"
-  add_foreign_key "help_video_sections", "help_videos"
-  add_foreign_key "help_videos", "games"
-  add_foreign_key "help_videos", "users", column: "submitted_by"
   add_foreign_key "helpful_marks", "users", column: "submitted_by", name: "helpful_marks_ibfk_4"
   add_foreign_key "install_order_note_history_entries", "install_order_notes"
   add_foreign_key "install_order_note_history_entries", "users", column: "edited_by"
@@ -1257,6 +1262,10 @@ ActiveRecord::Schema.define(version: 20170305231247) do
   add_foreign_key "reviews", "mods", name: "reviews_ibfk_2"
   add_foreign_key "reviews", "users", column: "edited_by"
   add_foreign_key "reviews", "users", column: "submitted_by", name: "reviews_ibfk_1"
+  add_foreign_key "tag_group_tags", "tag_groups"
+  add_foreign_key "tag_group_tags", "tags"
+  add_foreign_key "tag_groups", "categories"
+  add_foreign_key "tag_groups", "games"
   add_foreign_key "tags", "games"
   add_foreign_key "tags", "users", column: "submitted_by"
   add_foreign_key "user_bios", "users", name: "user_bios_ibfk_1"

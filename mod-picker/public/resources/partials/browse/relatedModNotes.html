@@ -88,9 +88,14 @@
         </div>
 
         <div class="right-column">
-            <h2>Related Mod Notes <span class="right-item">
-                <sort-control on-change="refreshFilters()"></sort-control>
-            </span></h2>
+            <h2>Related Mod Notes
+                <span class="results-count" ng-show="pages.resultsCount">
+                    ({{pages.resultsCount}} results)
+                </span>
+                <span class="right-item">
+                    <sort-control on-change="refreshFilters()"></sort-control>
+                </span>
+            </h2>
             <loader data="related_mod_notes" content-class="grid-results" spinner-class="big-spinner" ng-if="!error">
                 <div class="content-block" ng-repeat="note in related_mod_notes">
                     <related-mod-note note="note" show-user-column="true" index="100"></related-mod-note>

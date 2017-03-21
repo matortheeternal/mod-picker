@@ -16,6 +16,17 @@ app.service('tagService', function(backend, $q, pageUtils) {
         return action.promise;
     };
 
+    this.retrieveTagGroups = function() {
+        var params = { game: window._current_game_id };
+        return backend.retrieve('/tag_groups', params);
+    };
+
+    this.categoryTagGroups = function(tagGroups, categoryIds) {
+        return tagGroups.filter(function(tagGroup) {
+            return categoryIds.indexOf(tagGroup.category_id) > -1;
+        });
+    };
+
     this.hideTag = function(tagId, hidden) {
         return backend.post('/tags/' + tagId + '/hide', {hidden: hidden});
     };

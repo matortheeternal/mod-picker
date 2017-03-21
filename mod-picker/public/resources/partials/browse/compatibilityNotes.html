@@ -121,9 +121,14 @@
         </div>
 
         <div class="right-column right-browse-column">
-            <h2>Compatibility Notes <span class="right-item">
-                <sort-control on-change="refreshFilters()"></sort-control>
-            </span></h2>
+            <h2>Compatibility Notes
+                <span class="results-count" ng-show="pages.resultsCount">
+                    ({{pages.resultsCount}} results)
+                </span>
+                <span class="right-item">
+                    <sort-control on-change="refreshFilters()"></sort-control>
+                </span>
+            </h2>
             <loader data="compatibility_notes" content-class="grid-results" spinner-class="big-spinner" ng-if="!error">
                 <div class="content-block" ng-repeat="note in compatibility_notes">
                     <compatibility-note note="note" show-user-column="true" index="100"></compatibility-note>

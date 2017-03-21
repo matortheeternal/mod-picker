@@ -116,7 +116,7 @@
                     </h4>
                     <slider on-change="refreshFilters()" filter-data="filters" filter="filter"></slider>
                 </div>
-            </div>
+            </filter-section>
 
             <filter-section name="Statistic Filters" expanded="true">
                 <div class="filter-section">
@@ -132,10 +132,15 @@
             </filter-section>
         </div>
 
-        <div class="right-column">
-            <h2>Reports <span class="right-item">
-                <sort-control on-change="refreshFilters()"></sort-control>
-            </span></h2>
+        <div class="right-column">/h2>
+            <h2>Reports
+                <span class="results-count" ng-show="pages.resultsCount">
+                    ({{pages.resultsCount}} results)
+                </span>
+                <span class="right-item">
+                    <sort-control on-change="refreshFilters()"></sort-control>
+                </span>
+            </h2>
             <loader data="reports" content-class="grid-results" spinner-class="big-spinner" ng-if="!error">
                 <report data="report" ng-repeat="report in reports"></report>
 

@@ -2,13 +2,18 @@ app.service('errorService', function($q) {
     var service = this;
 
     this.criticalError = function(response) {
-        switch(response.status) {
-            case 404:
-            case 422:
-                window.location.href = '/' + response.status;
-                break;
-            default:
-                window.location.href = '/500';
+        try {
+            switch(response.status) {
+                case 404:
+                case 422:
+                    window.location.href = '/' + response.status;
+                    break;
+                default:
+                    window.location.href = '/500';
+            }
+        } catch (x) {
+            console.log(x);
+            window.location.href = '/500';
         }
     };
 
@@ -27,12 +32,17 @@ app.service('errorService', function($q) {
 
     this.criticalRequest = function(requestFunction, arg) {
         var request = $q.defer();
-        requestFunction(arg).then(function(data) {
-            request.resolve(data);
-        }, function(response) {
-            service.criticalError(response);
-        });
-        return request.promise;
+        try {
+            requestFunction(arg).then(function(data) {
+                request.resolve(data);
+            }, function(response) {
+                service.criticalError(response);
+            });
+            return request.promise;
+        } catch (x) {
+            console.log(x);
+            window.location.href = '/500';
+        }
     };
 
     this.createErrorLink = function(errors, errorResponse, id, baseId) {
