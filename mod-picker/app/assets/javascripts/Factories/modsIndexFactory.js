@@ -1,6 +1,78 @@
 app.service('modsIndexFactory', function(modService, categoryService, tagService, modListService, indexService, helpFactory, sliderFactory, columnsFactory, detailsFactory, sortFactory, filtersFactory, actionsFactory, indexFactory, eventHandlerFactory) {
     var factory = this;
 
+    this.buildModAddRemoveHandlers = function($scope) {
+        // toggles the mod options modal
+        $scope.toggleModOptionsModal = function(visible) {
+            $scope.$emit('toggleModal', visible);
+            $scope.showModOptionsModal = visible;
+        };
+
+        $scope.setModOptionsModalMod = function(mod) {
+            $scope.activeMod = mod;
+            $scope.activeModOptions = null;
+            modService.retrieveModOptions(mod.id).then(function(modOptions) {
+               modOptions.forEach(function(modOption) {
+                    modOption.enabled = modOption.default;
+                });
+                $scope.activeModOptions = modOptions;
+            }, function(response) {
+                $scope.modOptionsError = response;
+            });
+        };
+
+        $scope.modOptionsModalAdd = function() {
+            var modOptionIds = $scope.activeModOptions.filter(function(modOption) {
+                return modOption.enabled;
+            }).map(function(modOption) {
+                return modOption.id;
+            });
+            $scope.addMod($scope.activeMod, modOptionIds);
+            $scope.toggleModOptionsModal(false);
+        };
+
+        // gets a mod option selection
+        $scope.getModOptionSelection = function(mod) {
+            $scope.setModOptionsModalMod(mod);
+            $scope.toggleModOptionsModal(true);
+        };
+
+        // adds a mod to the user's mod list
+        $scope.addMod = function(mod, mod_option_ids) {
+            modListService.addModListMod($scope.activeModList, mod, mod_option_ids).then(function() {
+                $scope.$emit('successMessage', 'Added mod "'+mod.name+'" to your mod list successfully.');
+            }, function(response) {
+                var params = {
+                    label: 'Error adding mod "'+mod.name+'" to your mod list',
+                    response: response
+                };
+                $scope.$emit('errorMessage', params);
+            });
+        };
+
+        // when user clicks add mod button we should get mod option selection
+        // if the mod has more than one mod option
+        $scope.$on('addMod', function(event, mod) {
+            if (mod.mod_options_count > 1) {
+                $scope.getModOptionSelection(mod);
+            } else {
+                $scope.addMod(mod);
+            }
+        });
+
+        // removes a mod from the user's mod list
+        $scope.$on('removeMod', function(event, mod) {
+            modListService.removeModListMod($scope.activeModList, mod).then(function() {
+                $scope.$emit('successMessage', 'Removed mod "'+mod.name+'" from your mod list successfully.');
+            }, function(response) {
+                var params = {
+                    label: 'Error removing mod "'+mod.name+'" from your mod list',
+                    response: response
+                };
+                $scope.$emit('errorMessage', params);
+            });
+        });
+    };
 
     this.setupCategoriesAndTagGroups = function($scope, $rootScope) {
         $scope.category = angular.copy(categoryService.getCategoryByName($scope.categories, $scope.categoryName));
@@ -65,6 +137,9 @@ app.service('modsIndexFactory', function(modService, categoryService, tagService
 
         // set help context
         helpFactory.setHelpContexts($scope, [helpFactory.modsIndex]);
+
+        // mod list mod addition/removal handlers
+        factory.buildModAddRemoveHandlers($scope);
 
         /* helper functions */
         $scope.showDetailsModal = function() {
@@ -137,32 +212,6 @@ app.service('modsIndexFactory', function(modService, categoryService, tagService
                 return tagGroupFilter.exclude || tagGroupFilter.include.length;
             });
         };
-
-        // adds a mod to the user's mod list
-        $scope.$on('addMod', function(event, mod) {
-            modListService.addModListMod($scope.activeModList, mod).then(function() {
-                $scope.$emit('successMessage', 'Added mod "'+mod.name+'" to your mod list successfully.');
-            }, function(response) {
-                var params = {
-                    label: 'Error adding mod "'+mod.name+'" to your mod list',
-                    response: response
-                };
-                $scope.$emit('errorMessage', params);
-            });
-        });
-
-        // removes a mod from the user's mod list
-        $scope.$on('removeMod', function(event, mod) {
-            modListService.removeModListMod($scope.activeModList, mod).then(function() {
-                $scope.$emit('successMessage', 'Removed mod "'+mod.name+'" from your mod list successfully.');
-            }, function(response) {
-                var params = {
-                    label: 'Error removing mod "'+mod.name+'" from your mod list',
-                    response: response
-                };
-                $scope.$emit('errorMessage', params);
-            });
-        });
 
         // filters for view
         factory.setupCategoriesAndTagGroups($scope, $rootScope);
