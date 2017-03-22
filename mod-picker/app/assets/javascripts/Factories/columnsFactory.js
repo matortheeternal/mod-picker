@@ -654,7 +654,7 @@ app.service('columnsFactory', function() {
                     a = [];
                     if (item.cleaned) a.push('cleaned');
                     if (!item.mod) a.push('custom plugin');
-                    return '(' + a.join(', ') + ')';
+                    if (a.length > 0) return '(' + a.join(', ') + ')';
                 },
                 class: "primary-column",
                 invertSort: true,
