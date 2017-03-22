@@ -38,8 +38,8 @@ app.service('modsIndexFactory', function(modService, categoryService, tagService
         };
 
         // adds a mod to the user's mod list
-        $scope.addMod = function(mod, mod_option_ids) {
-            modListService.addModListMod($scope.activeModList, mod, mod_option_ids).then(function() {
+        $scope.addMod = function(mod, modOptionIds) {
+            modListService.addModListMod($scope.activeModList, mod, modOptionIds).then(function() {
                 $scope.$emit('successMessage', 'Added mod "'+mod.name+'" to your mod list successfully.');
             }, function(response) {
                 var params = {
