@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170319051217) do
+ActiveRecord::Schema.define(version: 20170323000116) do
 
   create_table "active_mod_lists", force: :cascade do |t|
     t.integer "game_id",     limit: 4, null: false
@@ -389,33 +389,31 @@ ActiveRecord::Schema.define(version: 20170319051217) do
   add_index "load_order_note_history_entries", ["load_order_note_id"], name: "fk_rails_f99a4f8204", using: :btree
 
   create_table "load_order_notes", force: :cascade do |t|
-    t.integer  "game_id",               limit: 4,                     null: false
-    t.integer  "submitted_by",          limit: 4,                     null: false
-    t.integer  "edited_by",             limit: 4
-    t.integer  "corrector_id",          limit: 4
-    t.integer  "first_plugin_id",       limit: 4,                     null: false
-    t.integer  "second_plugin_id",      limit: 4,                     null: false
-    t.text     "text_body",             limit: 65535,                 null: false
-    t.string   "edit_summary",          limit: 255
-    t.string   "moderator_message",     limit: 255
-    t.float    "reputation",            limit: 24,    default: 0.0,   null: false
-    t.integer  "standing",              limit: 1,     default: 0,     null: false
-    t.integer  "helpful_count",         limit: 4,     default: 0,     null: false
-    t.integer  "not_helpful_count",     limit: 4,     default: 0,     null: false
-    t.integer  "corrections_count",     limit: 4,     default: 0,     null: false
-    t.integer  "history_entries_count", limit: 4,     default: 0,     null: false
-    t.boolean  "approved",                            default: false, null: false
-    t.boolean  "hidden",                              default: false, null: false
-    t.boolean  "has_adult_content",                   default: false, null: false
-    t.datetime "submitted",                                           null: false
+    t.integer  "game_id",                limit: 4,                     null: false
+    t.integer  "submitted_by",           limit: 4,                     null: false
+    t.integer  "edited_by",              limit: 4
+    t.integer  "corrector_id",           limit: 4
+    t.string   "first_plugin_filename",  limit: 255,                   null: false
+    t.string   "second_plugin_filename", limit: 255,                   null: false
+    t.text     "text_body",              limit: 65535,                 null: false
+    t.string   "edit_summary",           limit: 255
+    t.string   "moderator_message",      limit: 255
+    t.float    "reputation",             limit: 24,    default: 0.0,   null: false
+    t.integer  "standing",               limit: 1,     default: 0,     null: false
+    t.integer  "helpful_count",          limit: 4,     default: 0,     null: false
+    t.integer  "not_helpful_count",      limit: 4,     default: 0,     null: false
+    t.integer  "corrections_count",      limit: 4,     default: 0,     null: false
+    t.integer  "history_entries_count",  limit: 4,     default: 0,     null: false
+    t.boolean  "approved",                             default: false, null: false
+    t.boolean  "hidden",                               default: false, null: false
+    t.boolean  "has_adult_content",                    default: false, null: false
+    t.datetime "submitted",                                            null: false
     t.datetime "edited"
   end
 
   add_index "load_order_notes", ["corrector_id"], name: "fk_rails_454b530bc3", using: :btree
   add_index "load_order_notes", ["edited_by"], name: "fk_rails_e2453073ea", using: :btree
-  add_index "load_order_notes", ["first_plugin_id"], name: "fk_rails_d6c931c1cc", using: :btree
   add_index "load_order_notes", ["game_id"], name: "fk_rails_cd2fa42211", using: :btree
-  add_index "load_order_notes", ["second_plugin_id"], name: "fk_rails_af9e3c9509", using: :btree
   add_index "load_order_notes", ["submitted_by"], name: "fk_rails_9992d700a9", using: :btree
 
   create_table "lover_infos", force: :cascade do |t|
@@ -962,11 +960,11 @@ ActiveRecord::Schema.define(version: 20170319051217) do
   add_index "tag_group_tags", ["tag_id"], name: "fk_rails_0b5eaff770", using: :btree
 
   create_table "tag_groups", force: :cascade do |t|
-    t.integer "game_id",         limit: 4,               null: false
-    t.integer "category_id",     limit: 4,               null: false
-    t.string  "name",            limit: 64,              null: false
+    t.integer "game_id",         limit: 4,              null: false
+    t.integer "category_id",     limit: 4,              null: false
+    t.string  "name",            limit: 64,             null: false
     t.string  "exclusion_label", limit: 64
-    t.integer "tags_count",      limit: 4,   default: 0, null: false
+    t.integer "tags_count",      limit: 4,  default: 0, null: false
   end
 
   add_index "tag_groups", ["category_id"], name: "fk_rails_fdc5fe53d7", using: :btree
@@ -1180,8 +1178,6 @@ ActiveRecord::Schema.define(version: 20170319051217) do
   add_foreign_key "load_order_note_history_entries", "load_order_notes"
   add_foreign_key "load_order_note_history_entries", "users", column: "edited_by"
   add_foreign_key "load_order_notes", "games"
-  add_foreign_key "load_order_notes", "plugins", column: "first_plugin_id"
-  add_foreign_key "load_order_notes", "plugins", column: "second_plugin_id"
   add_foreign_key "load_order_notes", "users", column: "corrector_id"
   add_foreign_key "load_order_notes", "users", column: "edited_by"
   add_foreign_key "load_order_notes", "users", column: "submitted_by"
