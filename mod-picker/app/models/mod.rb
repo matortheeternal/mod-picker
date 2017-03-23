@@ -317,7 +317,7 @@ class Mod < ActiveRecord::Base
   end
 
   def load_order_notes
-    LoadOrderNote.plugin(plugins.ids)
+    LoadOrderNote.plugin(plugins.pluck(:filename).uniq)
   end
 
   def related_mod_notes
