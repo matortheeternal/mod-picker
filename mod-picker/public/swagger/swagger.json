@@ -2584,11 +2584,11 @@
         "corrector_id" : {
           "type" : "integer"
         },
-        "first_plugin_id" : {
-          "type" : "integer"
+        "first_plugin_filename" : {
+          "type" : "string"
         },
-        "second_plugin_id" : {
-          "type" : "integer"
+        "second_plugin_filename" : {
+          "type" : "string"
         },
         "text_body" : {
           "type" : "string"
