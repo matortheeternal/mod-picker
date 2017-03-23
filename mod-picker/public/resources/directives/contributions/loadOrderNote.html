@@ -3,9 +3,9 @@
 		<span>
             Load
             <span class="root">
-                <a ng-href="mods/{{note.first_mod.id}}/analysis">{{note.first_plugin.filename}}</a>
+                <a ng-href="mods/{{note.first_mod.id}}/analysis?options={{note.first_plugin.mod_option_id}}&plugin={{note.first_plugin.id}}">{{note.first_plugin.filename}}</a>
                 Before
-                <a ng-href="mods/{{note.second_mod.id}}/analysis">{{note.second_plugin.filename}}</a>
+                <a ng-href="mods/{{note.second_mod.id}}/analysis?options={{note.second_plugin.mod_option_id}}&plugin={{note.second_plugin.id}}">{{note.second_plugin.filename}}</a>
             </span>
         </span>
         <span class="standing-item" title="This contribution is in {{note.standing}} standing">
