@@ -9,6 +9,7 @@ class Ability
     cannot :read, CompatibilityNote, approved: false
     cannot :read, InstallOrderNote, approved: false
     cannot :read, LoadOrderNote, approved: false
+    cannot :read, RelatedModNote, approved: false
     cannot :read, Review, approved: false
     cannot :read, Mod, approved: false
     cannot :read, HelpPage, approved: false
@@ -17,6 +18,7 @@ class Ability
     can :read, CompatibilityNote, approved: false, submitted_by: user.id
     can :read, InstallOrderNote, approved: false, submitted_by: user.id
     can :read, LoadOrderNote, approved: false, submitted_by: user.id
+    can :read, RelatedModNote, approved: false, submitted_by: user.id
     can :read, Review, approved: false, submitted_by: user.id
     can :read, Mod, approved: false, submitted_by: user.id
     can :read, HelpPage, approved: false, submitted_by: user.id
@@ -27,6 +29,7 @@ class Ability
     cannot :read, CompatibilityNote, hidden: true
     cannot :read, InstallOrderNote, hidden: true
     cannot :read, LoadOrderNote, hidden: true
+    cannot :read, RelatedModNote, hidden: true
     cannot :read, Review, hidden: true
     cannot :read, Tag, hidden: true
     cannot :read, Mod, hidden: true
@@ -85,6 +88,7 @@ class Ability
     can :update, CompatibilityNote, { submitter: { inactive?: true } }
     can :update, InstallOrderNote, { submitter: { inactive?: true } }
     can :update, LoadOrderNote, { submitter: { inactive?: true } }
+    can :update, RelatedModNote, { submitter: { inactive?: true } }
   end
 
   def rep_640_abilities(user, can_contribute)
@@ -145,6 +149,7 @@ class Ability
     can [:update, :approve, :hide], Correction
     can [:update, :approve, :hide], InstallOrderNote
     can [:update, :approve, :hide], LoadOrderNote
+    can [:update, :approve, :hide], RelatedModNote
     can [:update, :approve, :hide], Review
     can [:update, :hide], Tag
     # can delete tags
@@ -182,6 +187,7 @@ class Ability
     can :create, CompatibilityNote
     can :create, InstallOrderNote
     can :create, LoadOrderNote
+    can :create, RelatedModNote
     can :create, Review
     can :create, ModTag
     can :create, ModListTag
@@ -197,17 +203,19 @@ class Ability
   end
 
   def can_update_their_contributions(user)
-    can :update, CompatibilityNote, submitted_by: user.id, hidden: false
     can :update, Correction, submitted_by: user.id, hidden: false
-    can :update, LoadOrderNote, submitted_by: user.id, hidden: false
+    can :update, CompatibilityNote, submitted_by: user.id, hidden: false
     can :update, InstallOrderNote, submitted_by: user.id, hidden: false
+    can :update, LoadOrderNote, submitted_by: user.id, hidden: false
+    can :update, RelatedModNote, submitted_by: user.id, hidden: false
     can :update, Review, submitted_by: user.id, hidden: false
     can :update, HelpPage, submitted_by: user.id
 
     # can update contributions they have a passed correction for
     can :update, CompatibilityNote, corrector_id: user.id, hidden: false
-    can :update, LoadOrderNote, corrector_id: user.id, hidden: false
     can :update, InstallOrderNote, corrector_id: user.id, hidden: false
+    can :update, LoadOrderNote, corrector_id: user.id, hidden: false
+    can :update, RelatedModNote, corrector_id: user.id, hidden: false
 
     # can remove tags they created
     can :destroy, ModTag, submitted_by: user.id
@@ -287,6 +295,7 @@ class Ability
       cannot :read, CompatibilityNote, { has_adult_content: true }
       cannot :read, InstallOrderNote, { has_adult_content: true }
       cannot :read, LoadOrderNote, { has_adult_content: true }
+      cannot :read, RelatedModNote, { has_adult_content: true }
       cannot :read, Comment, { has_adult_content: true }
       cannot :read, Correction, { has_adult_content: true }
     end
