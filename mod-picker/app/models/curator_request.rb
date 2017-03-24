@@ -12,8 +12,6 @@ class CuratorRequest < ActiveRecord::Base
   date_scope :submitted, :updated
 
   # UNIQUE SCOPES
-  # TODO: Move this into search scopes
-  scope :mod_name, -> (name) { where("mods.name LIKE ?", "%#{name}%") }
   scope :game, -> (game_id) { where("mods.game_id = ?", game_id) }
 
   # ASSOCIATIONS

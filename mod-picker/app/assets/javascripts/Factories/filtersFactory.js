@@ -1339,7 +1339,8 @@ app.service("filtersFactory", function() {
         return [
             factory.searchFilter([
                 factory.searchTerm("text", "curator request's text body"),
-                factory.searchTerm("submitter", "curator request submitter's username")
+                factory.searchTerm("submitter", "curator request submitter's username"),
+                factory.searchTerm("mod_name", "curator request's mod name")
             ]),
             factory.pageFilter,
             {
