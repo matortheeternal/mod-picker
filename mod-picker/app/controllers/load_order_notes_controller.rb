@@ -4,8 +4,8 @@ class LoadOrderNotesController < ContributionsController
   # GET /load_order_notes
   def index
     # prepare load order notes
-    @load_order_notes = LoadOrderNote.preload(:editor, :editors).eager_load(submitter: :reputation).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(page: params[:page])
-    count = LoadOrderNote.eager_load(submitter: :reputation).accessible_by(current_ability).filter(filtering_params).count
+    @load_order_notes = LoadOrderNote.preload(:editor).eager_load({submitter: :reputation}, :editors).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(page: params[:page])
+    count = LoadOrderNote.eager_load({submitter: :reputation}, :editors).accessible_by(current_ability).filter(filtering_params).count
 
     # prepare helpful marks
     helpful_marks = HelpfulMark.for_user_content(current_user, "LoadOrderNote", @load_order_notes.ids)
@@ -40,7 +40,7 @@ class LoadOrderNotesController < ContributionsController
 
     # Params we allow filtering on
     def filtering_params
-      params[:filters].slice(:adult, :hidden, :approved, :game, :search, :submitter, :editor, :plugin_filename, :helpfulness, :reputation, :helpful_count, :not_helpful_count, :standing, :corrections_count, :history_entries_count, :submitted, :edited);
+      params[:filters].slice(:adult, :hidden, :approved, :game, :search, :plugin_filename, :helpfulness, :reputation, :helpful_count, :not_helpful_count, :standing, :corrections_count, :history_entries_count, :submitted, :edited);
     end
 
     # Params allowed during creation

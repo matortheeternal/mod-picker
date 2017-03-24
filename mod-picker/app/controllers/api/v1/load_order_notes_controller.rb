@@ -4,8 +4,8 @@ class Api::V1::LoadOrderNotesController < Api::V1::ContributionsController
   # GET /load_order_notes
   def index
     # prepare load order notes
-    @load_order_notes = LoadOrderNote.preload(:editor, :editors).includes(submitter: :reputation).references(submitter: :reputation).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(page: params[:page])
-    count = LoadOrderNote.accessible_by(current_ability).filter(filtering_params).count
+    @load_order_notes = LoadOrderNote.preload(:editor, :editors).eager_load(submitter: :reputation).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(page: params[:page])
+    count = LoadOrderNote.eager_load(submitter: :reputation).accessible_by(current_ability).filter(filtering_params).count
 
     # render response
     render json: {
