@@ -3820,11 +3820,7 @@
             },
             "search" : {
               "type" : "string",
-              "description" : "Returns tags containing the input string."
-            },
-            "submitter" : {
-              "type" : "string",
-              "description" : "Returns tags submitted by the user specified by the input string.  Exact match."
+              "description" : "Returns tags containing the input string, or where the submitter's username contains the input string.  Advanced search terms: text, submitter."
             },
             "mods" : {
               "type" : "object",
@@ -3916,11 +3912,7 @@
           "properties" : {
             "search" : {
               "type" : "string",
-              "description" : "Returns users with usernames containing the input string."
-            },
-            "linked" : {
-              "type" : "string",
-              "description" : "Returns users with linked account usernames containing the input string."
+              "description" : "Returns users with usernames or linked account usernames containing the input string.  Advanced search terms: username, linked."
             },
             "roles" : {
               "type" : "object",
@@ -4136,15 +4128,7 @@
           "properties" : {
             "search" : {
               "type" : "string",
-              "description" : "Returns reviews with text bodies containing the input string."
-            },
-            "submitter" : {
-              "type" : "string",
-              "description" : "Returns reviews submitted by the user specified.  Exact match."
-            },
-            "editor" : {
-              "type" : "string",
-              "description" : "Returns reviews edited by the user specified.  Exact match."
+              "description" : "Returns reviews with text bodies or submitter usernames containing the input string.  Advanced search terms: text, submitter."
             },
             "submitted" : {
               "type" : "object",
@@ -4267,11 +4251,7 @@
           "properties" : {
             "search" : {
               "type" : "string",
-              "description" : "Returns reviews with text bodies containing the input string."
-            },
-            "submitter" : {
-              "type" : "string",
-              "description" : "Returns reviews submitted by the user specified.  Exact match."
+              "description" : "Returns compatibility notes with text bodies or submitter usernames containing the input string.  Advanced search terms: text, submitter."
             },
             "status" : {
               "type" : "object",
@@ -4428,11 +4408,7 @@
           "properties" : {
             "search" : {
               "type" : "string",
-              "description" : "Returns reviews with text bodies containing the input string."
-            },
-            "submitter" : {
-              "type" : "string",
-              "description" : "Returns reviews submitted by the user specified.  Exact match."
+              "description" : "Returns install order notes with text bodies or submitter usernames containing the input string.  Advanced search terms: text, submitter."
             },
             "standing" : {
               "type" : "object",
@@ -4569,11 +4545,7 @@
           "properties" : {
             "search" : {
               "type" : "string",
-              "description" : "Returns reviews with text bodies containing the input string."
-            },
-            "submitter" : {
-              "type" : "string",
-              "description" : "Returns reviews submitted by the user specified.  Exact match."
+              "description" : "Returns load order notes with text bodies or submitter usernames containing the input string.  Advanced search terms: text, submitter."
             },
             "standing" : {
               "type" : "object",
@@ -4710,11 +4682,7 @@
           "properties" : {
             "search" : {
               "type" : "string",
-              "description" : "Returns reviews with text bodies containing the input string."
-            },
-            "submitter" : {
-              "type" : "string",
-              "description" : "Returns reviews submitted by the user specified.  Exact match."
+              "description" : "Returns related mod notes with text bodies or submitter usernames containing the input string.  Advanced search terms: text, submitter."
             },
             "status" : {
               "type" : "object",
@@ -4826,11 +4794,7 @@
           "properties" : {
             "search" : {
               "type" : "string",
-              "description" : "Returns comments with text bodies containing the input string."
-            },
-            "submitter" : {
-              "type" : "string",
-              "description" : "Returns comments submitted by the specified user.  Exact match."
+              "description" : "Returns comments with text bodies or submitter usernames containing the input string.  Advanced search terms: text, submitter."
             },
             "commentable" : {
               "type" : "object",
@@ -4947,15 +4911,7 @@
             },
             "search" : {
               "type" : "string",
-              "description" : "Returns plugins with filenames containing the input string."
-            },
-            "author" : {
-              "type" : "string",
-              "description" : "Returns plugins with author fields containing the input string."
-            },
-            "description" : {
-              "type" : "string",
-              "description" : "Returns plugins with description fields containing the input string."
+              "description" : "Returns plugins with filenames, authors, or descriptions containing the input string.  Advanced search terms: filename, author, description."
             },
             "categories" : {
               "type" : "array",
@@ -5132,11 +5088,7 @@
             },
             "search" : {
               "type" : "string",
-              "description" : "Returns mods with names or aliases containing the input string."
-            },
-            "author" : {
-              "type" : "string",
-              "description" : "Returns mods uploaded by or authored by the input author.  Exact match."
+              "description" : "Returns mods with names, aliases, descriptions, or authors containing the input string.  Advanced search terms: name, aliases, description, mp_author, author."
             },
             "categories" : {
               "type" : "array",
