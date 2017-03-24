@@ -1,5 +1,5 @@
 class BaseReport < ActiveRecord::Base
-  include RecordEnhancements, CounterCache, Filterable, Sortable, ScopeHelpers, BetterJson, Dateable
+  include RecordEnhancements, CounterCache, Filterable, Sortable, ScopeHelpers, Searchable, BetterJson, Dateable
 
   # DATE COLUMNS
   date_column :submitted, :edited
