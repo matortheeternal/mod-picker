@@ -1,0 +1,40 @@
+[
+  {
+    "column": "name"
+  },
+  {
+    "column": "aliases"
+  },
+  {
+    "column": "description"
+  },
+  {
+    "model": "User",
+    "column": "username",
+    "alias": "mp_author"
+  },
+  {
+    "alias": "author",
+    "subqueries": [
+      {
+        "column": "authors"
+      },
+      {
+        "model": "NexusInfo",
+        "column": "authors"
+      },
+      {
+        "model": "NexusInfo",
+        "column": "uploaded_by"
+      },
+      {
+        "model": "LoverInfo",
+        "column": "uploaded_by"
+      },
+      {
+        "model": "WorkshopInfo",
+        "column": "uploaded_by"
+      }
+    ]
+  }
+]
