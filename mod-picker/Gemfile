@@ -65,6 +65,9 @@ gem 'mailcatcher'
 # allow for composite primary keys in rails
 gem 'composite_primary_keys', '~> 8.1'
 
+# make arel easier with arel helpers
+gem 'arel-helpers'
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 

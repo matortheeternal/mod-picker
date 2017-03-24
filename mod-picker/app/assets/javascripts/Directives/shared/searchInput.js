@@ -16,6 +16,7 @@ app.directive('searchInput', function() {
             minLength: '=?',
             placeholder: '@',
             label: '@',
+            idKey: '@?',
             key: '@'
         }
     }
@@ -24,6 +25,7 @@ app.directive('searchInput', function() {
 app.controller('searchInputController', function($scope, $timeout) {
     // default scope attributes
     angular.default($scope, 'pause', 300);
+    angular.default($scope, 'idKey', 'id');
     angular.default($scope, 'minLength', 2);
     angular.default($scope, 'placeholder', 'Enter ' + $scope.label + ' ' + $scope.key);
 
@@ -40,7 +42,7 @@ app.controller('searchInputController', function($scope, $timeout) {
                 $scope.searching = false;
                 if ($scope.excludedId) {
                     data = data.filter(function(item) {
-                        return item.id !== $scope.excludedId;
+                        return item[$scope.idKey] !== $scope.excludedId;
                     });
                 }
                 $scope.results = data;
@@ -54,7 +56,7 @@ app.controller('searchInputController', function($scope, $timeout) {
     };
 
     $scope.selectResult = function(result) {
-        $scope.resultId = result.id;
+        $scope.resultId = result[$scope.idKey];
         $scope.searchText = result[$scope.key];
         $scope.showDropdown = false;
         $scope.results = [];

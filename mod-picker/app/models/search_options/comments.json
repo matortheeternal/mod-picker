@@ -1,0 +1,11 @@
+[
+  {
+    "column": "text_body",
+    "alias": "text"
+  },
+  {
+    "model": "User",
+    "column": "username",
+    "alias": "submitter"
+  }
+]

@@ -130,37 +130,6 @@ module ScopeHelpers
       end
     end
 
-    def build_search(attribute, search)
-      search_terms = search.split
-      search_terms.map{ |term|
-        arel_table[attribute.to_sym].matches("%#{term}%")
-      }.inject(:and)
-    end
-
-    def search_scope(*attributes, **options)
-      if options[:combine]
-        class_eval do
-            scope :search, -> (search) {
-              where(attributes.map{ |attribute|
-                build_search(attribute, search)
-              }.inject(:or)).
-              order(attributes.map { |attribute|
-                "CHAR_LENGTH(#{attribute})"
-              }.join(","))
-            }
-        end
-      else
-        attributes.each do |attribute|
-          scope_name = options[:alias] || attribute
-          class_eval do
-            scope scope_name.to_sym, -> (search) {
-              where(build_search(attribute, search)).order("CHAR_LENGTH(#{attribute})")
-            }
-          end
-        end
-      end
-    end
-
     def eval_enum_key(plural_attribute, key)
       key == "nil" ? nil : public_send(plural_attribute)[key]
     end

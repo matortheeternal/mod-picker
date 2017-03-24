@@ -1,5 +1,5 @@
 class Review < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, CounterCache, Helpfulable, Reportable, Approveable, ScopeHelpers, Trackable, BetterJson, Dateable
+  include Filterable, Sortable, RecordEnhancements, CounterCache, Helpfulable, Reportable, Approveable, ScopeHelpers, Searchable, Trackable, BetterJson, Dateable
 
   # ATTRIBUTES
   self.per_page = 25
@@ -22,8 +22,6 @@ class Review < ActiveRecord::Base
   include_scope :hidden
   visible_scope :approvable => true
   game_scope
-  search_scope :text_body, :alias => 'search'
-  user_scope :submitter, :editor
   range_scope :overall, :association => 'submitter_reputation', :table => 'user_reputations', :alias => 'reputation'
   range_scope :overall_rating, :ratings_count
   date_scope :submitted, :edited

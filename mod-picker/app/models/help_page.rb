@@ -1,5 +1,5 @@
 class HelpPage < ActiveRecord::Base
-  include RecordEnhancements, CounterCache, ScopeHelpers, BetterJson, Dateable, Approveable
+  include RecordEnhancements, CounterCache, ScopeHelpers, Searchable, BetterJson, Dateable, Approveable
 
   # ATTRIBUTES
   enum category: [:mod_picker, :modding, :guides]
@@ -10,7 +10,6 @@ class HelpPage < ActiveRecord::Base
 
   # SCOPES
   game_scope
-  search_scope :title, :text_body, :combine => true
 
   # ASSOCIATIONS
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'help_pages'

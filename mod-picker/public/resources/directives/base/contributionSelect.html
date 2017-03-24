@@ -4,10 +4,10 @@
 <div class="dropdown" ng-show="showContributions" ng-click="stopPropagation($event)">
     <a href="settings/mods">Mods</a>
     <a href="settings/mod-lists">Mod Lists</a>
-    <a ng-href="comments?s={{currentUser.username}}">Comments</a>
-    <a ng-href="reviews?s={{currentUser.username}}">Reviews</a>
-    <a ng-href="compatibility-notes?s={{currentUser.username}}">Compatibility Notes</a>
-    <a ng-href="install-order-notes?s={{currentUser.username}}">Install Order Notes</a>
-    <a ng-href="load-order-notes?s={{currentUser.username}}">Load Order Notes</a>
-    <a ng-href="corrections?s={{currentUser.username}}">Corrections</a>
+    <a ng-href="comments?q=submitter:{{currentUser.username}}">Comments</a>
+    <a ng-href="reviews?q=submitter:{{currentUser.username}}">Reviews</a>
+    <a ng-href="compatibility-notes?q=submitter:{{currentUser.username}}">Compatibility Notes</a>
+    <a ng-href="install-order-notes?q=submitter:{{currentUser.username}}">Install Order Notes</a>
+    <a ng-href="load-order-notes?q=submitter:{{currentUser.username}}">Load Order Notes</a>
+    <a ng-href="corrections?q=submitter:{{currentUser.username}}">Corrections</a>
 </div>

@@ -1,5 +1,5 @@
 class ModList < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, CounterCache, Reportable, ScopeHelpers, Trackable, BetterJson, Dateable
+  include Filterable, Sortable, RecordEnhancements, CounterCache, Reportable, ScopeHelpers, Searchable, Trackable, BetterJson, Dateable
 
   # ATTRIBUTES
   enum status: [ :under_construction, :testing, :complete ]
@@ -23,9 +23,6 @@ class ModList < ActiveRecord::Base
   hash_scope :hidden, alias: 'hidden'
   hash_scope :adult, alias: 'adult', column: 'has_adult_content'
   game_scope
-  search_scope :name, :alias => 'search'
-  search_scope :description
-  user_scope :submitter
   enum_scope :status
   counter_scope :tools_count, :mods_count, :custom_tools_count, :custom_mods_count, :plugins_count, :master_plugins_count, :available_plugins_count, :custom_plugins_count, :config_files_count, :custom_config_files_count, :compatibility_notes_count, :install_order_notes_count, :load_order_notes_count, :ignored_notes_count, :bsa_files_count, :asset_files_count, :records_count, :override_records_count, :plugin_errors_count, :tags_count, :stars_count, :comments_count
   date_scope :submitted, :completed, :updated
@@ -142,11 +139,12 @@ class ModList < ActiveRecord::Base
     mod_ids = mod_list_mod_ids
     mod_option_ids = mod_list_mod_option_ids
     plugin_ids = mod_list_plugin_ids
+    plugin_filenames = mod_list_plugin_filenames
     self.available_plugins_count = plugins_store.count
     self.master_plugins_count = Plugin.where(id: plugin_ids).esm.count
     self.compatibility_notes_count = CompatibilityNote.visible.mods(mod_ids).count
     self.install_order_notes_count = InstallOrderNote.visible.mods(mod_ids).count
-    self.load_order_notes_count = LoadOrderNote.visible.plugins(plugin_ids).count
+    self.load_order_notes_count = LoadOrderNote.visible.plugins(plugin_filenames).count
 
     plugin_ids = mod_list_plugins.official(false).pluck(:plugin_id)
     self.bsa_files_count = ModAssetFile.mod_options(mod_option_ids).bsa.count
@@ -233,15 +231,19 @@ class ModList < ActiveRecord::Base
   end
 
   def mod_list_plugin_ids
-    mod_list_plugins.all.pluck(:plugin_id)
+    mod_list_plugins.pluck(:plugin_id)
+  end
+
+  def mod_list_plugin_filenames
+    plugins.pluck(:filename)
   end
 
   def mod_list_mod_ids
-    mod_list_mods.all.pluck(:mod_id)
+    mod_list_mods.pluck(:mod_id)
   end
 
   def mod_list_mod_option_ids
-    mod_list_mod_options.all.pluck(:mod_option_id)
+    mod_list_mod_options.pluck(:mod_option_id)
   end
 
   def plugins_store
@@ -273,10 +275,10 @@ class ModList < ActiveRecord::Base
   end
 
     def load_order_notes
-    plugin_ids = Plugin.mod_options(mod_list_mod_option_ids).ids
-    return LoadOrderNote.none if plugin_ids.empty?
+    plugin_filenames = Plugin.mod_options(mod_list_mod_option_ids).pluck(:filename)
+    return LoadOrderNote.none if plugin_filenames.empty?
 
-    LoadOrderNote.visible.plugins(plugin_ids).includes(:first_plugin, :second_plugin, :first_mod, :second_mod, :history_entries, :submitter => :reputation)
+    LoadOrderNote.visible.plugins(plugin_filenames).includes(:first_plugin, :second_plugin, :first_mod, :second_mod, :history_entries, :submitter => :reputation)
   end
 
   def required_tools
@@ -294,9 +296,9 @@ class ModList < ActiveRecord::Base
   end
 
   def required_plugins
-    plugin_ids = mod_list_plugin_ids
-    return Master.none if plugin_ids.empty?
-    Master.eager_load(:plugin => :mod, :master_plugin => :mod).plugins(plugin_ids).visible.order(:master_plugin_id)
+    plugin_filenames = mod_list_plugin_filenames
+    return Master.none if plugin_filenames.empty?
+    Master.eager_load(:plugin => :mod, :master_plugin => :mod).plugins(plugin_filenames).visible.order(:master_plugin_id)
   end
 
   def incompatible_mod_ids

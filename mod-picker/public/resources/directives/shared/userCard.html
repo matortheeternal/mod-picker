@@ -51,32 +51,32 @@
 <div class="column third-column">
     <ul>
         <li>
-            <a class="inverse-link" ng-href="reviews?scol=submitted&s={{user.username}}">
+            <a class="inverse-link" ng-href="reviews?scol=submitted&q=submitter:{{user.username}}">
                 <b>{{user.reviews_count | number}}</b> Reviews
             </a>
         </li>
         <li>
-            <a class="inverse-link" ng-href="compatibility-notes?scol=submitted&s={{user.username}}">
+            <a class="inverse-link" ng-href="compatibility-notes?scol=submitted&q=submitter:{{user.username}}">
                 <b>{{user.compatibility_notes_count | number}}</b> Compatibility Notes
             </a>
         </li>
         <li>
-            <a class="inverse-link" ng-href="install-order-notes?scol=submitted&s={{user.username}}">
+            <a class="inverse-link" ng-href="install-order-notes?scol=submitted&q=submitter:{{user.username}}">
                 <b>{{user.install_order_notes_count| number}}</b> Install Order Notes
             </a>
         </li>
         <li>
-            <a class="inverse-link" ng-href="load-order-notes?scol=submitted&s={{user.username}}">
+            <a class="inverse-link" ng-href="load-order-notes?scol=submitted&q=submitter:{{user.username}}">
                 <b>{{user.load_order_notes_count | number}}</b> Load Order Notes
             </a>
         </li>
         <li>
-            <a class="inverse-link" ng-href="corrections?scol=submitted&s={{user.username}}">
+            <a class="inverse-link" ng-href="corrections?scol=submitted&q=submitter:{{user.username}}">
                 <b>{{user.corrections_count | number}}</b> Corrections
             </a>
         </li>
         <li>
-            <a class="inverse-link" ng-href="comments?scol=submitted&s={{user.username}}">
+            <a class="inverse-link" ng-href="comments?scol=submitted&q=submitter:{{user.username}}">
                 <b>{{user.comments_count | number}}</b> Comments
             </a>
         </li>

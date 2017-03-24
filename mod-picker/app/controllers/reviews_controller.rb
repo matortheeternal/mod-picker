@@ -59,7 +59,7 @@ class ReviewsController < ContributionsController
 
     # Params we allow filtering on
     def filtering_params
-      params[:filters].slice(:adult, :hidden, :approved, :game, :search, :submitter, :editor, :overall_rating, :helpfulness, :reputation, :helpful_count, :not_helpful_count, :ratings_count, :submitted, :edited);
+      params[:filters].slice(:adult, :hidden, :approved, :game, :search, :overall_rating, :helpfulness, :reputation, :helpful_count, :not_helpful_count, :ratings_count, :submitted, :edited);
     end
 
     # Params allowed during creation

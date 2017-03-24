@@ -39,6 +39,8 @@ GEM
     addressable (2.5.0)
       public_suffix (~> 2.0, >= 2.0.2)
     arel (6.0.3)
+    arel-helpers (2.3.0)
+      activerecord (>= 3.1.0, < 6)
     bcrypt (3.1.11)
     bcrypt (3.1.11-x64-mingw32)
     bcrypt-ruby (3.0.0)
@@ -283,6 +285,7 @@ PLATFORMS
   x64-mingw32
 
 DEPENDENCIES
+  arel-helpers
   bcrypt-ruby (= 3.0.0)
   byebug
   cancancan (~> 1.10)

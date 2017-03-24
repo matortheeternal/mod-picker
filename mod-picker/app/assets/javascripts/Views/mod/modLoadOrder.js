@@ -62,7 +62,7 @@ app.controller('modLoadOrderController', function($scope, $state, $stateParams, 
     $scope.startNewLoadOrderNote = function() {
         // set up activeLoadOrderNote object
         $scope.activeLoadOrderNote = {
-            first_plugin_id: $scope.mod.plugins[0].id.toString(),
+            first_plugin_filename: $scope.mod.plugins[0].filename,
             order: "before",
             text_body: contributionFactory.getDefaultTextBody("LoadOrderNote")
         };
@@ -79,21 +79,21 @@ app.controller('modLoadOrderController', function($scope, $state, $stateParams, 
         // update the markdown editor
         $scope.updateEditor();
         load_order_note.editing = true;
-        var order, searchText, firstPluginId, secondPluginId;
+        var order, searchText, firstPluginFilename, secondPluginFilename;
         if (load_order_note.first_mod.id != $scope.mod.id) {
             searchText = load_order_note.first_plugin.filename;
             order = 'after';
-            firstPluginId = load_order_note.second_plugin_id.toString();
-            secondPluginId = load_order_note.first_plugin_id.toString();
+            firstPluginFilename = load_order_note.second_plugin_filename;
+            secondPluginFilename = load_order_note.first_plugin_filename;
         } else {
             searchText = load_order_note.second_plugin.filename;
             order = 'before';
-            firstPluginId = load_order_note.first_plugin_id.toString();
-            secondPluginId = load_order_note.second_plugin_id.toString();
+            firstPluginFilename = load_order_note.first_plugin_filename;
+            secondPluginFilename = load_order_note.second_plugin_filename;
         }
         $scope.activeLoadOrderNote = {
-            first_plugin_id: firstPluginId,
-            second_plugin_id: secondPluginId,
+            first_plugin_filename: firstPluginFilename,
+            second_plugin_filename: secondPluginFilename,
             order: order,
             searchText: searchText,
             text_body: load_order_note.text_body.slice(0),
@@ -114,8 +114,8 @@ app.controller('modLoadOrderController', function($scope, $state, $stateParams, 
 
         var sanitized_text = contributionService.removePrompts(loadOrderNote.text_body);
         var textValid = sanitized_text.length > 128;
-        var pluginsValid = (loadOrderNote.first_plugin_id !== undefined) &&
-            (loadOrderNote.second_plugin_id !== undefined);
+        var pluginsValid = (loadOrderNote.first_plugin_filename !== undefined) &&
+            (loadOrderNote.second_plugin_filename !== undefined);
 
         // load order note is valid if all parts are valid
         $scope.$applyAsync(function() {
@@ -144,12 +144,12 @@ app.controller('modLoadOrderController', function($scope, $state, $stateParams, 
     $scope.updateLoadOrderNote = function(updatedNote) {
         var originalNote = $scope.activeLoadOrderNote.original;
         // update the values on the original note
-        if ((originalNote.first_plugin_id == updatedNote.second_plugin_id) &&
-            (originalNote.second_plugin_id == updatedNote.first_plugin_id)) {
+        if ((originalNote.first_plugin_filename == updatedNote.second_plugin_filename) &&
+            (originalNote.second_plugin_filename == updatedNote.first_plugin_filename)) {
             originalNote.mods.reverse();
             originalNote.plugins.reverse();
-            originalNote.first_plugin_id = originalNote.first_plugin.id;
-            originalNote.second_plugin_id = originalNote.second_plugin.id;
+            originalNote.first_plugin_filename = originalNote.first_plugin.filename;
+            originalNote.second_plugin_filename = originalNote.second_plugin.filename;
         }
         originalNote.text_body = updatedNote.text_body.slice(0);
         originalNote.moderator_message = updatedNote.moderator_message && updatedNote.moderator_message.slice(0);
@@ -162,21 +162,21 @@ app.controller('modLoadOrderController', function($scope, $state, $stateParams, 
 
         // prepare load order note fields for submission
         var sanitized_text = contributionService.removePrompts(loadOrderNote.text_body);
-        var first_plugin_id, second_plugin_id;
+        var first_plugin_filename, second_plugin_filename;
         if (loadOrderNote.order === 'before') {
-            first_plugin_id = parseInt(loadOrderNote.first_plugin_id);
-            second_plugin_id = parseInt(loadOrderNote.second_plugin_id);
+            first_plugin_filename = loadOrderNote.first_plugin_filename;
+            second_plugin_filename = loadOrderNote.second_plugin_filename;
         } else {
-            first_plugin_id = parseInt(loadOrderNote.second_plugin_id);
-            second_plugin_id = parseInt(loadOrderNote.first_plugin_id);
+            first_plugin_filename = loadOrderNote.second_plugin_filename;
+            second_plugin_filename = loadOrderNote.first_plugin_filename;
         }
 
         // submit the load order note
         var noteObj = {
             load_order_note: {
                 game_id: $scope.mod.game_id,
-                first_plugin_id: first_plugin_id,
-                second_plugin_id: second_plugin_id,
+                first_plugin_filename: first_plugin_filename,
+                second_plugin_filename: second_plugin_filename,
                 text_body: sanitized_text,
                 edit_summary: loadOrderNote.edit_summary,
                 moderator_message: loadOrderNote.moderator_message

@@ -55,22 +55,22 @@
 
                 <h3 class="section-title">Contributions</h3>
                 <section>
-                    <a ng-href="reviews?scol=submitted&s={{user.username}}">
+                    <a ng-href="reviews?scol=submitted&q=submitter:{{user.username}}">
                         <div class="stat-item">{{user.reviews_count | number}} Reviews</div>
                     </a>
-                    <a ng-href="compatibility-notes?scol=submitted&s={{user.username}}">
+                    <a ng-href="compatibility-notes?scol=submitted&q=submitter:{{user.username}}">
                         <div class="stat-item">{{user.compatibility_notes_count | number}} Compatibility Notes</div>
                     </a>
-                    <a ng-href="install-order-notes?scol=submitted&s={{user.username}}">
+                    <a ng-href="install-order-notes?scol=submitted&q=submitter:{{user.username}}">
                         <div class="stat-item">{{user.install_order_notes_count| number}} Install Order Notes</div>
                     </a>
-                    <a ng-href="load-order-notes?scol=submitted&s={{user.username}}">
+                    <a ng-href="load-order-notes?scol=submitted&q=submitter:{{user.username}}">
                         <div class="stat-item">{{user.load_order_notes_count | number}} Load Order Notes</div>
                     </a>
-                    <a ng-href="corrections?scol=submitted&s={{user.username}}">
+                    <a ng-href="corrections?scol=submitted&q=submitter:{{user.username}}">
                         <div class="stat-item">{{user.corrections_count | number}} Corrections</div>
                     </a>
-                    <a ng-href="comments?scol=submitted&s={{user.username}}">
+                    <a ng-href="comments?scol=submitted&q=submitter:{{user.username}}">
                         <div class="stat-item">{{user.submitted_comments_count | number}} Comments</div>
                     </a>
                 </section>
@@ -120,7 +120,7 @@
             </div>
             <div class="right-column tabs-column">
                 <tabs tabs="tabs"></tabs>
-                <div class="tab">
+                <div>
                     <tab-views></tab-views>
                 </div>
             </div>

@@ -1,0 +1,11 @@
+[
+  {
+    "column": "filename"
+  },
+  {
+    "column": "author"
+  },
+  {
+    "column": "description"
+  }
+]

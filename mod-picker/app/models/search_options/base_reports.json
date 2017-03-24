@@ -1,0 +1,12 @@
+[
+  {
+    "model": "User",
+    "column": "username",
+    "alias": "submitter"
+  },
+  {
+    "model": "Report",
+    "column": "note",
+    "alias": "text"
+  }
+]

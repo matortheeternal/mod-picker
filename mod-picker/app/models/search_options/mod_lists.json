@@ -1,0 +1,13 @@
+[
+  {
+    "column": "name"
+  },
+  {
+    "column": "description"
+  },
+  {
+    "model": "User",
+    "column": "username",
+    "alias": "submitter"
+  }
+]

@@ -8,7 +8,11 @@
     "editors": {},
     "first_mod": {},
     "second_mod": {},
-    "first_plugin": {},
-    "second_plugin": {}
+    "first_plugin": {
+      "format": "load_order_note"
+    },
+    "second_plugin": {
+      "format": "load_order_note"
+    }
   }
 }

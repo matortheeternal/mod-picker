@@ -64,6 +64,6 @@ class Api::V1::UsersController < Api::ApiController
 
     # Params we allow filtering on
     def filtering_params
-      params[:filters].slice(:search, :linked, :roles, :reputation, :joined, :last_seen, :authored_mods, :mod_lists, :submitted_comments, :comments, :reviews, :compatibility_notes, :install_order_notes, :load_order_notes, :corrections)
+      params[:filters].slice(:search, :roles, :reputation, :joined, :last_seen, :authored_mods, :mod_lists, :submitted_comments, :comments, :reviews, :compatibility_notes, :install_order_notes, :load_order_notes, :corrections)
     end
 end

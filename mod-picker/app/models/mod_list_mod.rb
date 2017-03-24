@@ -61,10 +61,10 @@ class ModListMod < ActiveRecord::Base
   end
 
   def load_order_notes
-    plugin_ids = mod_list.mod_list_plugin_ids
-    return [] if plugin_ids.empty?
+    plugin_filenames = mod_list.mod_list_plugin_ids
+    return [] if plugin_filenames.empty?
 
-    LoadOrderNote.visible.plugin(plugin_ids).plugin(mod.plugins.ids)
+    LoadOrderNote.visible.plugin(plugin_filenames).plugin(mod.plugins.pluck(:filename).uniq)
   end
 
   def required_tools

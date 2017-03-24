@@ -1,5 +1,5 @@
 class CompatibilityNote < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, CounterCache, Correctable, Helpfulable, Reportable, Approveable, ScopeHelpers, Trackable, BetterJson, Dateable
+  include Filterable, Sortable, RecordEnhancements, CounterCache, Correctable, Helpfulable, Reportable, Approveable, ScopeHelpers, Searchable, Trackable, BetterJson, Dateable
 
   # ATTRIBUTES
   enum status: [ :incompatible, :partially_incompatible, :compatibility_mod, :compatibility_option, :make_custom_patch ]
@@ -23,8 +23,6 @@ class CompatibilityNote < ActiveRecord::Base
   include_scope :hidden
   visible_scope :approvable => true
   game_scope
-  search_scope :text_body, :alias => 'search'
-  user_scope :submitter
   enum_scope :status
   range_scope :overall, :association => 'submitter_reputation', :table => 'user_reputations', :alias => 'reputation'
   ids_scope :mod_id, :columns => [:first_mod_id, :second_mod_id]

@@ -11,8 +11,6 @@ class BaseReport < ActiveRecord::Base
   range_scope :reports_count
 
   # UNIQUE SCOPES
-  # TODO: Expand User scope so we can specify a join like this
-  scope :submitter, -> (text) { where("users.username LIKE ?", "#{text}") }
   # TODO: Expand Enum scope so we can specify a join like this
   scope :reason, -> (values) {
     if values.is_a?(Hash)
