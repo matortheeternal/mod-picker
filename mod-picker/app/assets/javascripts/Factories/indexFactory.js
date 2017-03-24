@@ -53,9 +53,6 @@ app.service('indexFactory', function(indexService, objectUtils, $timeout) {
                 $scope.getData($scope.filters.page);
             }, timeoutLength);
         };
-
-        //retrieve the initial mods using the initial url params
-        $scope.getData($scope.filters.page);
     };
 
     this.buildState = function(scol, sdir, label, filterPrototypes) {
