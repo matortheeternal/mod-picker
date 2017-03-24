@@ -359,7 +359,7 @@ class ModsController < ApplicationController
     # Params we allow filtering on
     def filtering_params
       # construct valid filters array
-      valid_filters = [:adult, :hidden, :approved, :include_utilities, :compatibility, :sources, :terms, :game, :released, :updated, :utility, :categories, :tags, :excluded_tags, :tag_groups, :stars, :reviews, :rating, :reputation, :compatibility_notes, :install_order_notes, :load_order_notes,:related_mod_notes, :mod_options, :asset_files, :plugins, :required_mods, :required_by, :tags_count, :mod_lists, :submitted]
+      valid_filters = [:adult, :hidden, :approved, :include_utilities, :compatibility, :sources, :search, :terms, :game, :released, :updated, :utility, :categories, :tags, :excluded_tags, :tag_groups, :stars, :reviews, :rating, :reputation, :compatibility_notes, :install_order_notes, :load_order_notes,:related_mod_notes, :mod_options, :asset_files, :plugins, :required_mods, :required_by, :tags_count, :mod_lists, :submitted]
       source_filters = [:views, :author, :posts, :videos, :images, :discussions, :downloads, :favorites, :subscribers, :endorsements, :unique_downloads, :files, :bugs, :articles]
       sources = params[:filters][:sources]
 
