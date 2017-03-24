@@ -33,7 +33,7 @@ class Api::V1::PluginsController < Api::ApiController
 
     # Params we allow filtering on
     def filtering_params
-      params[:filters].slice(:adult, :hidden, :approved, :game, :search, :author, :description, :categories, :file_size, :records, :overrides, :errors, :mod_lists, :load_order_notes)
+      params[:filters].slice(:adult, :hidden, :approved, :game, :search, :categories, :file_size, :records, :overrides, :errors, :mod_lists, :load_order_notes)
     end
 
     # Params we allow searching on

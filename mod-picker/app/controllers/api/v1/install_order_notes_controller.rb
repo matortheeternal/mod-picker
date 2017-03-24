@@ -23,7 +23,7 @@ class Api::V1::InstallOrderNotesController < Api::ApiController
 
     # Params we allow filtering on
     def filtering_params
-      params[:filters].slice(:adult, :hidden, :approved, :game, :search, :submitter, :editor, :helpfulness, :reputation, :helpful_count, :not_helpful_count, :standing, :corrections_count, :history_entries_count, :submitted, :edited);
+      params[:filters].slice(:adult, :hidden, :approved, :game, :search, :helpfulness, :reputation, :helpful_count, :not_helpful_count, :standing, :corrections_count, :history_entries_count, :submitted, :edited);
     end
 
 end

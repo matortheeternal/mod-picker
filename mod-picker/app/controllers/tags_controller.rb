@@ -52,6 +52,6 @@ class TagsController < ApplicationController
 
     # Params we allow filtering on
     def filtering_params
-      params[:filters].slice(:game, :hidden, :search, :submitter, :mods_count, :mod_lists_count)
+      params[:filters].slice(:game, :hidden, :search, :mods_count, :mod_lists_count)
     end
 end

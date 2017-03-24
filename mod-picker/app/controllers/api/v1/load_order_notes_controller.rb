@@ -23,7 +23,7 @@ class Api::V1::LoadOrderNotesController < Api::V1::ContributionsController
 
     # Params we allow filtering on
     def filtering_params
-      params[:filters].slice(:adult, :hidden, :approved, :game, :search, :submitter, :editor, :plugin_filename, :helpfulness, :reputation, :helpful_count, :not_helpful_count, :standing, :corrections_count, :history_entries_count, :submitted, :edited);
+      params[:filters].slice(:adult, :hidden, :approved, :game, :search, :plugin_filename, :helpfulness, :reputation, :helpful_count, :not_helpful_count, :standing, :corrections_count, :history_entries_count, :submitted, :edited);
     end
 
 end

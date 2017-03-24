@@ -40,7 +40,7 @@ class RelatedModNotesController < ContributionsController
 
     # Params we allow filtering on
     def filtering_params
-      params[:filters].slice(:adult, :hidden, :approved, :game, :search, :status, :submitter, :editor, :helpfulness, :reputation, :helpful_count, :not_helpful_count, :submitted, :edited);
+      params[:filters].slice(:adult, :hidden, :approved, :game, :search, :status, :helpfulness, :reputation, :helpful_count, :not_helpful_count, :submitted, :edited);
     end
 
     # Params allowed during creation
