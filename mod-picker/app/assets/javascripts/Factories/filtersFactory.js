@@ -10,6 +10,13 @@ app.service("filtersFactory", function() {
         };
     };
 
+    this.searchTerm = function(name, matchTarget, noThe) {
+        return {
+            name: name,
+            description: "Matches against " + (noThe ? "" : "the ") + matchTarget + "."
+        }
+    };
+
     this.userDateSlider = function(options) {
         options.type = "Range";
         options.subtype = "Date";
@@ -24,33 +31,56 @@ app.service("filtersFactory", function() {
         return options;
     };
 
+    this.enumFilters = function(enumName, values, numEnabled, type) {
+        var maxIndex = numEnabled || 100;
+        return Object.keys(values).map(function(key, index) {
+            var obj = {
+                data: enumName + "." + key,
+                param: values[key],
+                type: type || "Boolean"
+            };
+            if (!type) {
+                obj.default = index < maxIndex;
+            }
+            return obj;
+        });
+    };
+
     this.modSearchFilter = factory.searchFilter([
-        {
-            name: "name",
-            description: "Matches against the name of the mod."
-        },
-        {
-            name: "aliases",
-            description: "Matches against the mod's aliases."
-        },
-        {
-            name: "description",
-            description: "Matches against the mod's description."
-        },
-        {
-            name: "author",
-            description: "Matches against the mod's authors and uploaders."
-        },
-        {
-            name: "mp_author",
-            description: "Matches against the mod's authors on Mod Picker."
-        }
+        factory.searchTerm("name", "name of the mod"),
+        factory.searchTerm("aliases", "mod's aliases"),
+        factory.searchTerm("description", "mod's description"),
+        factory.searchTerm("author", "mod's authors and uploaders"),
+        factory.searchTerm("mp_author", "mod's authors on Mod Picker")
     ]);
+
+    this.modSourceFilters = factory.enumFilters("sources", {
+        nexus: "nm",
+        lab: "ll",
+        workshop: "sw",
+        other: "ot"
+    });
 
     this.pageFilter = {
         data: "page",
         param: "page",
         default: 1
+    };
+    this.tagsFilter = {
+        data: "tags",
+        param: "t",
+        type: "List"
+    };
+    this.excludedTagsFilter = {
+        data: "excluded_tags",
+        param: "x",
+        type: "List"
+    };
+    this.categoriesFilter = {
+        data: "categories",
+        param: "c",
+        type: "List",
+        subtype: "Integer"
     };
     this.showAdultFilter = {
         data: "adult.1",
@@ -144,83 +174,26 @@ app.service("filtersFactory", function() {
         return [
             factory.modSearchFilter,
             factory.pageFilter,
-            {
-                data: "tags",
-                param: "t",
-                type: "List"
-            },
-            {
-                data: "excluded_tags",
-                param: "x",
-                type: "List"
-            },
-            {
-                data: "categories",
-                param: "c",
-                type: "List",
-                subtype: "Integer"
-            },
-            {
-                data: "sources.nexus",
-                param: "nm",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "sources.lab",
-                param: "ll",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "sources.workshop",
-                param: "sw",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "sources.other",
-                param: "ot",
-                type: "Boolean",
-                default: true
-            },
+            factory.tagsFilter,
+            factory.excludedTagsFilter,
+            factory.categoriesFilter,
             factory.showAdultFilter,
             factory.showNonAdultFilter,
             factory.hiddenFilter,
             factory.unhiddenFilter,
             factory.approvedFilter,
-            factory.unapprovedFilter,
-            {
-                data: "terms.credit",
-                param: "tcr",
-                type: "Integer"
-            },
-            {
-                data: "terms.commercial",
-                param: "tco",
-                type: "Integer"
-            },
-            {
-                data: "terms.redistribution",
-                param: "tre",
-                type: "Integer"
-            },
-            {
-                data: "terms.modification",
-                param: "tmo",
-                type: "Integer"
-            },
-            {
-                data: "terms.private_use",
-                param: "tpu",
-                type: "Integer"
-            },
-            {
-                data: "terms.include",
-                param: "tin",
-                type: "Integer"
-            }
-        ]
+            factory.unapprovedFilter
+        ].concat(
+            factory.modSourceFilters,
+            factory.enumFilters("terms", {
+                credit: "tcr",
+                commercial: "tco",
+                redistribution: "tre",
+                modification: "tmo",
+                private_use: "tpu",
+                include: "tin"
+            }, 0, "Integer")
+        )
     };
 
     this.modStatisticFilters = function() {
@@ -514,43 +487,16 @@ app.service("filtersFactory", function() {
         return [
             factory.pageFilter,
             factory.modSearchFilter,
-            {
-                data: "categories",
-                param: "c",
-                type: "List",
-                subtype: "Integer"
-            },
-            {
-                data: "sources.nexus",
-                param: "nm",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "sources.lab",
-                param: "ll",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "sources.workshop",
-                param: "sw",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "sources.other",
-                param: "ot",
-                type: "Boolean",
-                default: true
-            },
+            factory.categoriesFilter,
             factory.showAdultFilter,
             factory.showNonAdultFilter,
             factory.hiddenFilter,
             factory.unhiddenFilter,
             factory.approvedFilter,
             factory.unapprovedFilter
-        ];
+        ].concat(
+            factory.modSourceFilters
+        );
     };
 
     this.modCategoryFilters = function() {
@@ -565,59 +511,21 @@ app.service("filtersFactory", function() {
     this.userGeneralFilters = function() {
         return [
             factory.searchFilter([
-                {
-                    name: "username",
-                    description: "Matches against the user's username."
-                },
-                {
-                    name: "linked",
-                    description: "Matches against the user's linked account usernames."
-                }
+                factory.searchTerm("username", "user's username"),
+                factory.searchTerm("linked", "user's linked account usernames")
             ]),
-            factory.pageFilter,
-            {
-                data: "roles.admin",
-                param: "adm",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "roles.moderator",
-                param: "mod",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "roles.helper",
-                param: "hlp",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "roles.author",
-                param: "ma",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "roles.user",
-                param: "usr",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "roles.restricted",
-                param: "rsr",
-                type: "Boolean",
-                default: false
-            },
-            {
-                data: "roles.banned",
-                param: "bnd",
-                type: "Boolean",
-                default: false
-            }
-        ]
+            factory.pageFilter
+        ].concat(
+            factory.enumFilters("roles", {
+                admin: "adm",
+                moderator: "mod",
+                helper: "hlp",
+                author: "ma",
+                user: "usr",
+                restricted: "rsr",
+                banned: "bnd"
+            }, 5)
+        )
     };
 
     this.userStatisticFilters = function() {
@@ -728,19 +636,20 @@ app.service("filtersFactory", function() {
         );
     };
 
+    this.contributionSearchFilter = function(includeEditor) {
+        var terms = [
+            factory.searchTerm("text", "contribution text"),
+            factory.searchTerm("submitter", "contribution submitter's username")
+        ];
+        if (includeEditor) {
+            terms.push(factory.searchTerm("editor", "contribution editor usernames", true));
+        }
+        return [factory.searchFilter(terms)];
+    };
+
     /* contribution index filters */
     this.contributionGeneralFilters = function() {
         return [
-            factory.searchFilter([
-                {
-                    name: "text",
-                    description: "Matches against the contribution text."
-                },
-                {
-                    name: "submitter",
-                    description: "Matches against the contribution submitter's username."
-                }
-            ]),
             factory.pageFilter,
             factory.showAdultFilter,
             factory.showNonAdultFilter,
@@ -767,40 +676,19 @@ app.service("filtersFactory", function() {
     };
 
     this.contributionStandingFilters = function() {
-        return [
-            {
-                data: "standing.good",
-                type: "Boolean",
-                default: true,
-                param: "stg"
-            },
-            {
-                data: "standing.unknown",
-                type: "Boolean",
-                default: true,
-                param: "stu"
-            },
-            {
-                data: "standing.bad",
-                type: "Boolean",
-                default: true,
-                param: "stb"
-            }
-        ];
+        return factory.enumFilters("standing", {
+            good: "stg",
+            unknown: "stu",
+            bad: "stb"
+        });
     };
 
     /* comments index filters */
     this.commentGeneralFilters = function() {
         return [
             factory.searchFilter([
-                {
-                    name: "text",
-                    description: "Matches against the comment text."
-                },
-                {
-                    name: "submitter",
-                    description: "Matches against the comment submitter's username."
-                }
+                factory.searchTerm("text", "comment text"),
+                factory.searchTerm("text", "comment submitter's username")
             ]),
             factory.pageFilter,
             factory.showAdultFilter,
@@ -812,38 +700,16 @@ app.service("filtersFactory", function() {
                 param: "c",
                 type: "Boolean",
                 default: true
-            },
-            {
-                data: "commentable.ModList",
-                param: "ml",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "commentable.Correction",
-                param: "cor",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "commentable.User",
-                param: "usr",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "commentable.Article",
-                param: "art",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "commentable.HelpPage",
-                param: "hlp",
-                type: "Boolean",
-                default: true
             }
-        ]
+        ].concat(
+            factory.enumFilters("commentable", {
+                "ModList": "ml",
+                "Correction": "cor",
+                "User": "usr",
+                "Article": "art",
+                "HelpPage": "hlp"
+            })
+        )
     };
 
     this.commentStatisticFilters = function() {
@@ -895,6 +761,7 @@ app.service("filtersFactory", function() {
 
     this.reviewFilters = function() {
         return Array.prototype.concat(
+            factory.contributionSearchFilter(),
             factory.contributionGeneralFilters(),
             factory.contributionDateFilters(),
             factory.reviewStatisticFilters()
@@ -915,42 +782,18 @@ app.service("filtersFactory", function() {
 
     /* compatibility notes index filters */
     this.compatibilityNoteTypeFilters = function() {
-        return [
-            {
-                data: "status.incompatible",
-                param: "inc",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "status.partially_compatible",
-                param: "pc",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "status.compatibility_mod",
-                param: "cm",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "status.compatibility_option",
-                param: "co",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "status.make_custom_patch",
-                param: "mcp",
-                type: "Boolean",
-                default: true
-            }
-        ]
+        return factory.enumFilters("status", {
+            incompatible: "inc",
+            partially_incompatible: "pc",
+            compatibility_mod: "cm",
+            compatibility_option: "co",
+            make_custom_patch: "mcp"
+        });
     };
 
     this.compatibilityNoteFilters = function() {
         return Array.prototype.concat(
+            factory.contributionSearchFilter(true),
             factory.contributionGeneralFilters(),
             factory.compatibilityNoteTypeFilters(),
             factory.contributionStandingFilters(),
@@ -962,6 +805,7 @@ app.service("filtersFactory", function() {
     /* install order notes index filters */
     this.installOrderNoteFilters = function() {
         return Array.prototype.concat(
+            factory.contributionSearchFilter(true),
             factory.contributionGeneralFilters(),
             factory.contributionStandingFilters(),
             factory.contributionDateFilters(),
@@ -972,16 +816,6 @@ app.service("filtersFactory", function() {
     /* load order notes index filters */
     this.loadOrderNoteGeneralFilters = function() {
         return [
-            factory.searchFilter([
-                {
-                    name: "text",
-                    description: "Matches against the contribution text."
-                },
-                {
-                    name: "submitter",
-                    description: "Matches against the contribution submitter's username."
-                }
-            ]),
             factory.pageFilter,
             {
                 data: "plugin_filename",
@@ -998,6 +832,7 @@ app.service("filtersFactory", function() {
 
     this.loadOrderNoteFilters = function() {
         return Array.prototype.concat(
+            factory.contributionSearchFilter(true),
             factory.loadOrderNoteGeneralFilters(),
             factory.contributionStandingFilters(),
             factory.contributionDateFilters(),
@@ -1007,20 +842,10 @@ app.service("filtersFactory", function() {
 
     /* related mod note index filters */
     this.relatedModNoteTypeFilters = function() {
-        return [
-            {
-                data: "status.alternative_mod",
-                param: "alt",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "status.recommended_mod",
-                param: "rec",
-                type: "Boolean",
-                default: true
-            }
-        ];
+        return  factory.enumFilters("status", {
+            alternative_mod: "alt",
+            recommended_mod: "rec"
+        });
     };
 
     this.relatedModNoteStatisticFilters = function() {
@@ -1034,6 +859,7 @@ app.service("filtersFactory", function() {
 
     this.relatedModNoteFilters = function() {
         return Array.prototype.concat(
+            factory.contributionSearchFilter(),
             factory.contributionGeneralFilters(),
             factory.relatedModNoteTypeFilters(),
             factory.contributionDateFilters(),
@@ -1045,14 +871,8 @@ app.service("filtersFactory", function() {
     this.correctionGeneralFilters = function() {
         return [
             factory.searchFilter([
-                {
-                    name: "text",
-                    description: "Matches against the correction text."
-                },
-                {
-                    name: "submitter",
-                    description: "Matches against the correction submitter's username."
-                }
+                factory.searchTerm("text", "correction text"),
+                factory.searchTerm("text", "correction submitter's username")
             ]),
             factory.pageFilter,
             factory.showAdultFilter,
@@ -1063,90 +883,30 @@ app.service("filtersFactory", function() {
     };
 
     this.correctionTypeFilters = function() {
-        return [
-            {
-                data: "correctable.Mod",
-                param: "tmo",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "correctable.CompatibilityNote",
-                param: "tcn",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "correctable.InstallOrderNote",
-                param: "tio",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "correctable.LoadOrderNote",
-                param: "tlo",
-                type: "Boolean",
-                default: true
-            }
-        ];
+        return factory.enumFilters("correctable", {
+            "Mod": "tmo",
+            "CompatibilityNote": "tcn",
+            "InstallOrderNote": "tio",
+            "LoadOrderNote": "tlo"
+        });
     };
 
     this.correctionStatusFilters = function() {
-        return [
-            {
-                data: "status.open",
-                param: "sto",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "status.passed",
-                param: "stp",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "status.failed",
-                param: "stf",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "status.closed",
-                param: "stc",
-                type: "Boolean",
-                default: true
-            }
-        ];
+        return factory.enumFilters("status", {
+            open: "sto",
+            passed: "stp",
+            failed: "stf",
+            closed: "stc"
+        });
     };
 
     this.correctionModStatusFilters = function() {
-        return [
-            {
-                data: "mod_status.nil",
-                param: "msn",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "mod_status.good",
-                param: "msg",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "mod_status.outdated",
-                param: "mso",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "mod_status.unstable",
-                param: "msu",
-                type: "Boolean",
-                default: true
-            }
-        ];
+        return factory.enumFilters("mod_status", {
+            nil: "msn",
+            good: "msg",
+            outdated: "mso",
+            unstable: "msu"
+        })
     };
 
     this.correctionStatisticFilters = function() {
@@ -1193,18 +953,9 @@ app.service("filtersFactory", function() {
     this.articleGeneralFilters = function() {
         return [
             factory.searchFilter([
-                {
-                    name: "title",
-                    description: "Matches against the article title."
-                },
-                {
-                    name: "text",
-                    description: "Matches against the article text."
-                },
-                {
-                    name: "submitter",
-                    description: "Matches against the article submitter's username."
-                }
+                factory.searchTerm("title", "article title"),
+                factory.searchTerm("text", "article text"),
+                factory.searchTerm("submitter", "article submitter's username")
             ]),
             factory.pageFilter
         ];
@@ -1231,65 +982,28 @@ app.service("filtersFactory", function() {
     this.modListGeneralFilters = function() {
         return [
             factory.searchFilter([
-                {
-                    name: "name",
-                    description: "Matches against the mod list title."
-                },
-                {
-                    name: "description",
-                    description: "Matches against the mod list description."
-                },
-                {
-                    name: "submitter",
-                    description: "Matches against the mod list submitter's username."
-                }
+                factory.searchTerm("name", "mod list name"),
+                factory.searchTerm("description", "mod list description"),
+                factory.searchTerm("submitter", "mod list submitter's username")
             ]),
             factory.pageFilter,
             factory.showAdultFilter,
             factory.showNonAdultFilter,
             factory.hiddenFilter,
             factory.unhiddenFilter,
-            {
-                data: "tags",
-                param: "t",
-                type: "List"
-            },
-            {
-                data: "excluded_tags",
-                param: "x",
-                type: "List"
-            },
-            {
-                data: "status.complete",
-                param: "sco",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "status.testing",
-                param: "ste",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "status.under_construction",
-                param: "sun",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "kind.normal",
-                param: "cln",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "kind.collection",
-                param: "clc",
-                type: "Boolean",
-                default: true
-            }
-        ];
+            factory.tagsFilter,
+            factory.excludedTagsFilter,
+        ].concat(
+            factory.enumFilters("status", {
+                complete: "sco",
+                testing: "ste",
+                under_construction: "sun"
+            }),
+            factory.enumFilters("kind", {
+                normal: "kn",
+                collection: "kc"
+            })
+        );
     };
 
     this.modListDateFilters = function() {
@@ -1480,18 +1194,9 @@ app.service("filtersFactory", function() {
     this.pluginGeneralFilters = function() {
         return [
             factory.searchFilter([
-                {
-                    name: "filename",
-                    description: "Matches against the plugin's filename."
-                },
-                {
-                    name: "author",
-                    description: "Matches against the plugin's author field."
-                },
-                {
-                    name: "description",
-                    description: "Matches against the plugin's description field."
-                }
+                factory.searchTerm("filename", "plugin's filename"),
+                factory.searchTerm("author", "plugin's author field"),
+                factory.searchTerm("description", "plugin's description field")
             ]),
             factory.pageFilter,
             factory.showAdultFilter,
@@ -1567,131 +1272,36 @@ app.service("filtersFactory", function() {
     this.reportGeneralFilters = function() {
         return [
             factory.searchFilter([
-                {
-                    name: "text",
-                    description: "Matches against report note text."
-                },
-                {
-                    name: "submitter",
-                    description: "Matches against the report submitter's username."
-                }
+                factory.searchTerm("text", "report note text", true),
+                factory.searchTerm("submitter", "report submitter's username")
             ]),
-            factory.pageFilter,
-            {
-                data: "resolved.1",
-                param: "res",
-                type: "Boolean",
-                default: false
-            },
-            {
-                data: "resolved.0",
-                param: "unr",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "reportable.Review",
-                param: "rr",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "reportable.CompatibilityNote",
-                param: "rcn",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "reportable.InstallOrderNote",
-                param: "rin",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "reportable.LoadOrderNote",
-                param: "rln",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "reportable.Comment",
-                param: "rco",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "reportable.Correction",
-                param: "rcr",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "reportable.Mod",
-                param: "rm",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "reportable.ModList",
-                param: "rml",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "reportable.Tag",
-                param: "rt",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "reportable.User",
-                param: "ru",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "reason.be_respectful",
-                param: "sbr",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "reason.be_trustworthy",
-                param: "sbt",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "reason.be_constructive",
-                param: "sbc",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "reason.spam",
-                param: "sns",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "reason.piracy",
-                param: "snp",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "reason.adult_content",
-                param: "sac",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "reason.other",
-                param: "sot",
-                type: "Boolean",
-                default: true
-            }
-        ]
+            factory.pageFilter
+        ].concat(
+            factory.enumFilters("resolved", {
+                "0": "unr",
+                "1": "res"
+            }, 1),
+            factory.enumFilters("reportable", {
+                "Review": "rr",
+                "CompatibilityNote": "rcn",
+                "InstallOrderNote": "rin",
+                "LoadOrderNote": "rln",
+                "Comment": "rco",
+                "Correction": "rcr",
+                "Mod": "rm",
+                "Tag": "rt",
+                "User": "ru"
+            }),
+            factory.enumFilters("reason", {
+                be_respectful: "sbr",
+                be_trustworthy: "sbt",
+                be_constructive: "sbc",
+                spam: "sns",
+                piracy: "snp",
+                adult_content: "sac",
+                other: "sot"
+            })
+        )
     };
 
     this.reportDateFilters = function() {
@@ -1728,39 +1338,21 @@ app.service("filtersFactory", function() {
     this.curatorRequestGeneralFilters = function() {
         return [
             factory.searchFilter([
-                {
-                    name: "text",
-                    description: "Matches against the curator request's text body."
-                },
-                {
-                    name: "submitter",
-                    description: "Matches against the curator request submitter's username."
-                }
+                factory.searchTerm("text", "curator request's text body"),
+                factory.searchTerm("submitter", "curator request submitter's username")
             ]),
             factory.pageFilter,
             {
                 label: "Mod Name",
                 data: "mod_name"
-            },
-            {
-                data: "state.open",
-                param: "sop",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "state.approved",
-                param: "sap",
-                type: "Boolean",
-                default: false
-            },
-            {
-                data: "state.denied",
-                param: "sde",
-                type: "Boolean",
-                default: false
             }
-        ]
+        ].concat(
+            factory.enumFilters("state", {
+                open: "sop",
+                approved: "sap",
+                denied: "sde"
+            }, 1)
+        )
     };
 
     this.curatorRequestDateFilters = function() {
@@ -1802,14 +1394,8 @@ app.service("filtersFactory", function() {
     this.tagGeneralFilters = function() {
         return [
             factory.searchFilter([
-                {
-                    name: "text",
-                    description: "Matches against tag text."
-                },
-                {
-                    name: "submitter",
-                    description: "Matches against the tag submitter's username."
-                }
+                factory.searchTerm("text", "tag_text", true),
+                factory.searchTerm("submitter", "tag submitter's username")
             ]),
             factory.pageFilter,
             factory.hiddenFilter,
