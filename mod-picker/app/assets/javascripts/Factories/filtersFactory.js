@@ -2,6 +2,51 @@ app.service("filtersFactory", function() {
     var factory = this;
 
     /* shared filter prototypes */
+    this.searchFilter = function(terms) {
+        return {
+            data: "search",
+            param: "q",
+            terms: terms
+        };
+    };
+
+    this.userDateSlider = function(options) {
+        options.type = "Range";
+        options.subtype = "Date";
+        options.start = new Date(2016,0,1);
+        return options;
+    };
+
+    this.modDateSlider = function(options) {
+        options.type = "Range";
+        options.subtype = "Date";
+        options.start = new Date(2011,10,11);
+        return options;
+    };
+
+    this.modSearchFilter = factory.searchFilter([
+        {
+            name: "name",
+            description: "Matches against the name of the mod."
+        },
+        {
+            name: "aliases",
+            description: "Matches against the mod's aliases."
+        },
+        {
+            name: "description",
+            description: "Matches against the mod's description."
+        },
+        {
+            name: "author",
+            description: "Matches against the mod's authors and uploaders."
+        },
+        {
+            name: "mp_author",
+            description: "Matches against the mod's authors on Mod Picker."
+        }
+    ]);
+
     this.pageFilter = {
         data: "page",
         param: "page",
@@ -94,53 +139,10 @@ app.service("filtersFactory", function() {
         param: "hec"
     };
 
-    this.searchFilter = function(terms) {
-        return {
-            data: "search",
-            param: "q",
-            terms: terms
-        };
-    };
-
-    this.userDateSlider = function(options) {
-        options.type = "Range";
-        options.subtype = "Date";
-        options.start = new Date(2016,0,1);
-        return options;
-    };
-
-    this.modDateSlider = function(options) {
-        options.type = "Range";
-        options.subtype = "Date";
-        options.start = new Date(2011,10,11);
-        return options;
-    };
-
     /* mods index filters */
     this.modGeneralFilters = function() {
         return [
-            factory.searchFilter([
-                {
-                    name: "name",
-                    description: "Matches against the name of the mod."
-                },
-                {
-                    name: "aliases",
-                    description: "Matches against the mod's aliases."
-                },
-                {
-                    name: "description",
-                    description: "Matches against the mod's description."
-                },
-                {
-                    name: "author",
-                    description: "Matches against the mod's authors and uploaders."
-                },
-                {
-                    name: "mp_author",
-                    description: "Matches against the mod's authors on Mod Picker."
-                }
-            ]),
+            factory.modSearchFilter,
             factory.pageFilter,
             {
                 data: "tags",
@@ -511,6 +513,7 @@ app.service("filtersFactory", function() {
     this.modCategoryGeneralFilters = function() {
         return [
             factory.pageFilter,
+            factory.modSearchFilter,
             {
                 data: "categories",
                 param: "c",
