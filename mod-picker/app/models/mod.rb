@@ -1,5 +1,5 @@
 class Mod < ActiveRecord::Base
-  include Filterable, Sortable, Reportable, Imageable, RecordEnhancements, CounterCache, SourceHelpers, ScopeHelpers, Trackable, BetterJson, Dateable, Approveable
+  include Filterable, Sortable, Reportable, Imageable, RecordEnhancements, CounterCache, SourceHelpers, ScopeHelpers, Searchable, Trackable, BetterJson, Dateable, Approveable
 
   # ATTRIBUTES
   enum status: [ :good, :outdated, :unstable ]
@@ -30,9 +30,6 @@ class Mod < ActiveRecord::Base
   include_scope :is_utility, :alias => 'include_utilities'
   value_scope :is_utility
   game_scope :parent => true
-  search_scope :name, :aliases, :combine => true
-  search_scope :description
-  user_scope :author_users, :alias => 'mp_author'
   enum_scope :status
   date_scope :released, :updated, :submitted
   range_scope :reputation, :tags_count
@@ -89,19 +86,6 @@ class Mod < ActiveRecord::Base
     eager_load(source_class.table_name).where(source_class.arel_table[:mod_name].eq(mod_name))
   }
   scope :categories, -> (ids) { where("primary_category_id in (:ids) OR secondary_category_id in (:ids)", ids: ids) }
-  scope :author, -> (hash) {
-    # TODO: arel here
-    author = hash[:value]
-    sources = hash[:sources]
-    where_clause = []
-
-    results = where_clause.push("nexus_infos.authors like :author OR nexus_infos.uploaded_by like :author") if sources[:nexus]
-    results = where_clause.push("lover_infos.uploaded_by like :author") if sources[:lab]
-    results = where_clause.push("workshop_infos.uploaded_by like :author") if sources[:workshop]
-    results = where_clause.push("mods.authors like :author") if sources[:other]
-
-    where(where_clause.join(" OR "), author: author)
-  }
   scope :nexus_id, -> (id) {
     eager_load(:nexus_infos).where(nexus_infos: { nexus_id: id })
   }

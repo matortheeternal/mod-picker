@@ -1,5 +1,5 @@
 class CuratorRequest < ActiveRecord::Base
-  include RecordEnhancements, BetterJson, CounterCache, ScopeHelpers, Filterable, Sortable, Dateable
+  include RecordEnhancements, BetterJson, CounterCache, ScopeHelpers, Searchable, Filterable, Sortable, Dateable
 
   # ATTRIBUTES
   enum state: [:open, :approved, :denied]
@@ -8,12 +8,11 @@ class CuratorRequest < ActiveRecord::Base
   date_column :submitted, :updated
 
   # SCOPES
-  search_scope :text_body, alias: 'search'
-  user_scope :submitter
   enum_scope :state
   date_scope :submitted, :updated
 
   # UNIQUE SCOPES
+  # TODO: Move this into search scopes
   scope :mod_name, -> (name) { where("mods.name LIKE ?", "%#{name}%") }
   scope :game, -> (game_id) { where("mods.game_id = ?", game_id) }
 

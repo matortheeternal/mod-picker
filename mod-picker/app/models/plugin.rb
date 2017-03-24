@@ -1,5 +1,5 @@
 class Plugin < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, CounterCache, ScopeHelpers, BetterJson
+  include Filterable, Sortable, RecordEnhancements, CounterCache, ScopeHelpers, Searchable, BetterJson
 
   # ATTRIBUTES
   attr_accessor :master_plugins
@@ -11,8 +11,6 @@ class Plugin < ActiveRecord::Base
   hash_scope :hidden, alias: 'hidden', table: 'mods'
   hash_scope :adult, alias: 'adult', column: 'has_adult_content'
   ids_scope :mod_option_id
-  search_scope :filename, :alias => :search
-  search_scope :author, :description
   range_scope :record_count, :alias => 'records'
   range_scope :override_count, :alias => 'overrides'
   counter_scope :errors_count, :mod_lists_count, :load_order_notes_count

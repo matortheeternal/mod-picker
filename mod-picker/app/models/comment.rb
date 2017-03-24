@@ -1,5 +1,5 @@
 class Comment < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, CounterCache, Reportable, ScopeHelpers, Trackable, BetterJson, Dateable
+  include Filterable, Sortable, RecordEnhancements, CounterCache, Reportable, ScopeHelpers, Searchable, Trackable, BetterJson, Dateable
 
   # ATTRIBUTES
   self.per_page = 50
@@ -20,8 +20,6 @@ class Comment < ActiveRecord::Base
   hash_scope :adult, alias: 'adult', column: 'has_adult_content'
   include_scope :hidden
   include_scope :parent_id, value: nil, alias: 'include_replies'
-  search_scope :text_body, :alias => 'search'
-  user_scope :submitter
   polymorphic_scope :commentable
   range_scope :children_count, :alias => 'replies'
   date_scope :submitted, :edited

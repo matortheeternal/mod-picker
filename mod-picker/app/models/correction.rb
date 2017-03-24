@@ -1,5 +1,5 @@
 class Correction < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, CounterCache, Reportable, ScopeHelpers, Trackable, BetterJson, Dateable
+  include Filterable, Sortable, RecordEnhancements, CounterCache, Reportable, ScopeHelpers, Searchable, Trackable, BetterJson, Dateable
 
   # ATTRIBUTES
   enum status: [:open, :passed, :failed, :closed]
@@ -23,8 +23,6 @@ class Correction < ActiveRecord::Base
   include_scope :hidden
   game_scope
   visible_scope
-  search_scope :title, :text_body, :combine => true
-  user_scope :submitter
   enum_scope :status
   enum_scope :mod_status
   polymorphic_scope :correctable
