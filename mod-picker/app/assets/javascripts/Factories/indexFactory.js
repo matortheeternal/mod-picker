@@ -1,5 +1,5 @@
 app.service('indexFactory', function(indexService, objectUtils, $timeout) {
-    this.buildIndex = function($scope, $stateParams, $state) {
+    this.buildIndex = function($scope, $stateParams, $state, skipGetData) {
         // initialize local variables
         $scope.availableColumnData = [];
         $scope.actions = [];
@@ -53,6 +53,11 @@ app.service('indexFactory', function(indexService, objectUtils, $timeout) {
                 $scope.getData($scope.filters.page);
             }, timeoutLength);
         };
+
+        // initially get data unless skipping
+        if (!skipGetData) {
+            $scope.getData(1);
+        }
     };
 
     this.buildState = function(scol, sdir, label, filterPrototypes) {
