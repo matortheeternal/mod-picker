@@ -6,14 +6,7 @@
             <h2>Filters</h2>
 
             <filter-section name="Search" expanded="true">
-                <h4>Mod Name</h4>
                 <input type="text" ng-model="filters.search" ng-change="refreshFilters()">
-
-                <h4>Description</h4>
-                <input type="text" ng-model="filters.description" ng-change="refreshFilters()">
-
-                <h4>Mod Author</h4>
-                <input type="text" ng-model="filters.author" ng-change="refreshFilters()">
             </filter-section>
 
             <filter-section name="Mod List" expanded="true" ng-if="activeModList">
