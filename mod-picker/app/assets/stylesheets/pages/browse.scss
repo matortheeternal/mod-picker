@@ -19,7 +19,7 @@
   display: inline-block;
 }
 
-filter-section {
+filter-section, search-filter-section {
   display: block;
 
   .section-title {
@@ -41,6 +41,12 @@ filter-section {
       &:hover {
         background-color: $bright_action_color;
       }
+    }
+
+    .help-tooltip {
+      display: inline-block;
+      font-size: 20px;
+      margin: -5px 0;
     }
   }
 }
