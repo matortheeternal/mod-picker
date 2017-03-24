@@ -11,14 +11,6 @@ app.service("filtersFactory", function() {
         data: "search",
         param: "q"
     };
-    this.submitterFilter = {
-        data: "submitter",
-        param: "s"
-    };
-    this.editorFilter = {
-        data: "editor",
-        param: "e"
-    };
     this.showAdultFilter = {
         data: "adult.1",
         param: "adc",
@@ -125,14 +117,6 @@ app.service("filtersFactory", function() {
         return [
             factory.searchFilter,
             factory.pageFilter,
-            {
-                data: "description",
-                param: "d"
-            },
-            {
-                data: "author",
-                param: "a"
-            },
             {
                 data: "tags",
                 param: "t",
@@ -555,10 +539,6 @@ app.service("filtersFactory", function() {
             factory.searchFilter,
             factory.pageFilter,
             {
-                data: "linked",
-                param: "l"
-            },
-            {
                 data: "roles.admin",
                 param: "adm",
                 type: "Boolean",
@@ -716,8 +696,6 @@ app.service("filtersFactory", function() {
         return [
             factory.searchFilter,
             factory.pageFilter,
-            factory.submitterFilter,
-            //factory.editorFilter,
             factory.showAdultFilter,
             factory.showNonAdultFilter,
             factory.hiddenFilter,
@@ -770,7 +748,6 @@ app.service("filtersFactory", function() {
         return [
             factory.searchFilter,
             factory.pageFilter,
-            factory.submitterFilter,
             factory.showAdultFilter,
             factory.showNonAdultFilter,
             factory.hiddenFilter,
@@ -942,8 +919,6 @@ app.service("filtersFactory", function() {
         return [
             factory.searchFilter,
             factory.pageFilter,
-            factory.submitterFilter,
-            //factory.editorFilter,
             {
                 data: "plugin_filename",
                 param: "p"
@@ -1007,8 +982,6 @@ app.service("filtersFactory", function() {
         return [
             factory.searchFilter,
             factory.pageFilter,
-            factory.submitterFilter,
-            //factory.editorFilter,
             factory.showAdultFilter,
             factory.showNonAdultFilter,
             factory.hiddenFilter,
@@ -1144,15 +1117,10 @@ app.service("filtersFactory", function() {
         )
     };
 
-    this.articleSearchFilters = function() {
+    this.articleGeneralFilters = function() {
         return [
             factory.searchFilter,
-            factory.pageFilter,
-            {
-                data: "text",
-                param: "t"
-            },
-            factory.submitterFilter
+            factory.pageFilter
         ];
     };
 
@@ -1169,7 +1137,7 @@ app.service("filtersFactory", function() {
     // TODO: Article Game Filters
     this.articleFilters = function() {
         return Array.prototype.concat(
-            factory.articleSearchFilters(),
+            factory.articleGeneralFilters(),
             factory.articleDateFilters()
         );
     };
@@ -1178,11 +1146,6 @@ app.service("filtersFactory", function() {
         return [
             factory.searchFilter,
             factory.pageFilter,
-            {
-                data: "description",
-                param: "d"
-            },
-            factory.submitterFilter,
             factory.showAdultFilter,
             factory.showNonAdultFilter,
             factory.hiddenFilter,
@@ -1419,14 +1382,6 @@ app.service("filtersFactory", function() {
         return [
             factory.searchFilter,
             factory.pageFilter,
-            {
-                data: "author",
-                param: "a"
-            },
-            {
-                data: "description",
-                param: "d"
-            },
             factory.showAdultFilter,
             factory.showNonAdultFilter,
             factory.hiddenFilter,
@@ -1497,15 +1452,10 @@ app.service("filtersFactory", function() {
         )
     };
 
-    this.reportSearchFilters = function() {
-        return [
-            factory.submitterFilter,
-            factory.pageFilter,
-        ];
-    };
-
     this.reportGeneralFilters = function() {
         return [
+            factory.searchFilter,
+            factory.pageFilter,
             {
                 data: "resolved.1",
                 param: "res",
@@ -1648,27 +1598,20 @@ app.service("filtersFactory", function() {
 
     this.reportFilters = function() {
         return Array.prototype.concat(
-            factory.reportSearchFilters(),
             factory.reportGeneralFilters(),
             factory.reportDateFilters(),
             factory.reportStatisticFilters()
         );
     };
 
-    this.curatorRequestSearchFilters = function() {
+    this.curatorRequestGeneralFilters = function() {
         return [
             factory.searchFilter,
             factory.pageFilter,
-            factory.submitterFilter,
             {
                 label: "Mod Name",
                 data: "mod_name"
-            }
-        ];
-    };
-
-    this.curatorRequestGeneralFilters = function() {
-        return [
+            },
             {
                 data: "state.open",
                 param: "sop",
@@ -1720,7 +1663,6 @@ app.service("filtersFactory", function() {
 
     this.curatorRequestFilters = function() {
         return Array.prototype.concat(
-            factory.curatorRequestSearchFilters(),
             factory.curatorRequestGeneralFilters(),
             factory.curatorRequestDateFilters(),
             factory.curatorRequestStatisticFilters()
@@ -1731,7 +1673,6 @@ app.service("filtersFactory", function() {
         return [
             factory.searchFilter,
             factory.pageFilter,
-            factory.submitterFilter,
             factory.hiddenFilter,
             factory.unhiddenFilter
         ]
