@@ -3,9 +3,7 @@
         <div class="left-column" style="width:250px; padding: 40px 48px 40px 0;">
             <h2>Filters</h2>
 
-            <filter-section name="Search" expanded="true">
-                <input type="text" ng-model="filters.search" ng-change="refreshFilters()">
-            </filter-section>
+            <search-filter-section></search-filter-section>
 
             <filter-section name="Date Filters" expanded="true">
                 <div ng-repeat="filter in dateFilters">
