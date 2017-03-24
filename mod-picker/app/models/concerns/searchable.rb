@@ -57,8 +57,16 @@ module Searchable
       }.inject(:or)
     end
 
+    def get_query_table(query)
+      if query.has_key?(:table_alias)
+        query[:model].safe_constantize.arel_table.alias(query[:table_alias])
+      else
+        query[:model].safe_constantize.arel_table
+      end
+    end
+
     def association_arel_search(query)
-      column = query[:model].safe_constantize.arel_table[query[:column].to_sym]
+      column = get_query_table(query)[query[:column].to_sym]
       query[:search].map { |term| column.matches("%#{term}%") }.inject(:and)
     end
 
