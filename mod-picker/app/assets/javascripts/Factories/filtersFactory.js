@@ -7,10 +7,6 @@ app.service("filtersFactory", function() {
         param: "page",
         default: 1
     };
-    this.searchFilter = {
-        data: "search",
-        param: "q"
-    };
     this.showAdultFilter = {
         data: "adult.1",
         param: "adc",
@@ -98,6 +94,14 @@ app.service("filtersFactory", function() {
         param: "hec"
     };
 
+    this.searchFilter = function(terms) {
+        return {
+            data: "search",
+            param: "q",
+            terms: terms
+        };
+    };
+
     this.userDateSlider = function(options) {
         options.type = "Range";
         options.subtype = "Date";
@@ -115,7 +119,28 @@ app.service("filtersFactory", function() {
     /* mods index filters */
     this.modGeneralFilters = function() {
         return [
-            factory.searchFilter,
+            factory.searchFilter([
+                {
+                    name: "name",
+                    description: "Matches against the name of the mod."
+                },
+                {
+                    name: "aliases",
+                    description: "Matches against the mod's aliases."
+                },
+                {
+                    name: "description",
+                    description: "Matches against the mod's description."
+                },
+                {
+                    name: "author",
+                    description: "Matches against the mod's authors and uploaders."
+                },
+                {
+                    name: "mp_author",
+                    description: "Matches against the mod's authors on Mod Picker."
+                }
+            ]),
             factory.pageFilter,
             {
                 data: "tags",
@@ -536,7 +561,16 @@ app.service("filtersFactory", function() {
     /* users index filters */
     this.userGeneralFilters = function() {
         return [
-            factory.searchFilter,
+            factory.searchFilter([
+                {
+                    name: "username",
+                    description: "Searches for users with a matching username"
+                },
+                {
+                    name: "linked",
+                    description: "Searches for users with a matching linked account username from Nexus Mods, Lover's Lab, and the Steam Workshop."
+                }
+            ]),
             factory.pageFilter,
             {
                 data: "roles.admin",
@@ -694,7 +728,16 @@ app.service("filtersFactory", function() {
     /* contribution index filters */
     this.contributionGeneralFilters = function() {
         return [
-            factory.searchFilter,
+            factory.searchFilter([
+                {
+                    name: "text",
+                    description: "Matches against the contribution text."
+                },
+                {
+                    name: "submitter",
+                    description: "Matches against the username of the user who submitted the contribution."
+                }
+            ]),
             factory.pageFilter,
             factory.showAdultFilter,
             factory.showNonAdultFilter,
@@ -746,7 +789,16 @@ app.service("filtersFactory", function() {
     /* comments index filters */
     this.commentGeneralFilters = function() {
         return [
-            factory.searchFilter,
+            factory.searchFilter([
+                {
+                    name: "text",
+                    description: "Matches against the comment text."
+                },
+                {
+                    name: "submitter",
+                    description: "Matches against the username of the user who submitted the comment."
+                }
+            ]),
             factory.pageFilter,
             factory.showAdultFilter,
             factory.showNonAdultFilter,
@@ -917,7 +969,16 @@ app.service("filtersFactory", function() {
     /* load order notes index filters */
     this.loadOrderNoteGeneralFilters = function() {
         return [
-            factory.searchFilter,
+            factory.searchFilter([
+                {
+                    name: "text",
+                    description: "Matches against the contribution text."
+                },
+                {
+                    name: "submitter",
+                    description: "Matches against the username of the user who submitted the contribution."
+                }
+            ]),
             factory.pageFilter,
             {
                 data: "plugin_filename",
@@ -980,7 +1041,16 @@ app.service("filtersFactory", function() {
     /* corrections index filters */
     this.correctionGeneralFilters = function() {
         return [
-            factory.searchFilter,
+            factory.searchFilter([
+                {
+                    name: "text",
+                    description: "Matches against the correction text."
+                },
+                {
+                    name: "submitter",
+                    description: "Matches against the username of the user who submitted the correction."
+                }
+            ]),
             factory.pageFilter,
             factory.showAdultFilter,
             factory.showNonAdultFilter,
@@ -1119,7 +1189,20 @@ app.service("filtersFactory", function() {
 
     this.articleGeneralFilters = function() {
         return [
-            factory.searchFilter,
+            factory.searchFilter([
+                {
+                    name: "title",
+                    description: "Matches against the article title."
+                },
+                {
+                    name: "text",
+                    description: "Matches against the article text."
+                },
+                {
+                    name: "submitter",
+                    description: "Matches against the username of the user who submitted the article."
+                }
+            ]),
             factory.pageFilter
         ];
     };
@@ -1144,7 +1227,20 @@ app.service("filtersFactory", function() {
 
     this.modListGeneralFilters = function() {
         return [
-            factory.searchFilter,
+            factory.searchFilter([
+                {
+                    name: "name",
+                    description: "Matches against the Mod List title."
+                },
+                {
+                    name: "description",
+                    description: "Matches against the Mod List description."
+                },
+                {
+                    name: "submitter",
+                    description: "Matches against the username of the user who submitted the mod list."
+                }
+            ]),
             factory.pageFilter,
             factory.showAdultFilter,
             factory.showNonAdultFilter,
@@ -1380,7 +1476,20 @@ app.service("filtersFactory", function() {
 
     this.pluginGeneralFilters = function() {
         return [
-            factory.searchFilter,
+            factory.searchFilter([
+                {
+                    name: "filename",
+                    description: "Matches against the plugin's filename."
+                },
+                {
+                    name: "author",
+                    description: "Matches against the plugin's author field."
+                },
+                {
+                    name: "description",
+                    description: "Matches against the plugin's description field."
+                }
+            ]),
             factory.pageFilter,
             factory.showAdultFilter,
             factory.showNonAdultFilter,
@@ -1454,7 +1563,16 @@ app.service("filtersFactory", function() {
 
     this.reportGeneralFilters = function() {
         return [
-            factory.searchFilter,
+            factory.searchFilter([
+                {
+                    name: "text",
+                    description: "Matches against report note text."
+                },
+                {
+                    name: "submitter",
+                    description: "Matches against the username of the user who submitted the report."
+                }
+            ]),
             factory.pageFilter,
             {
                 data: "resolved.1",
@@ -1606,7 +1724,16 @@ app.service("filtersFactory", function() {
 
     this.curatorRequestGeneralFilters = function() {
         return [
-            factory.searchFilter,
+            factory.searchFilter([
+                {
+                    name: "text",
+                    description: "Matches against the curator request's text body."
+                },
+                {
+                    name: "submitter",
+                    description: "Matches against the username of the user who submitted the curator request."
+                }
+            ]),
             factory.pageFilter,
             {
                 label: "Mod Name",
@@ -1671,7 +1798,16 @@ app.service("filtersFactory", function() {
 
     this.tagGeneralFilters = function() {
         return [
-            factory.searchFilter,
+            factory.searchFilter([
+                {
+                    name: "text",
+                    description: "Matches against tag text."
+                },
+                {
+                    name: "submitter",
+                    description: "Matches against the username of the user who submitted the tag"
+                }
+            ]),
             factory.pageFilter,
             factory.hiddenFilter,
             factory.unhiddenFilter
