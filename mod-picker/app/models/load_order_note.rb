@@ -23,11 +23,11 @@ class LoadOrderNote < ActiveRecord::Base
   visible_scope :approvable => true
   game_scope
   range_scope :overall, :association => 'submitter_reputation', :table => 'user_reputations', :alias => 'reputation'
-  ids_scope :plugin_id, :columns => [:first_plugin_id, :second_plugin_id]
   date_scope :submitted, :edited
 
   # UNIQUE SCOPES
-  scope :plugin_filename, -> (filename) { joins(:first_plugin, :second_plugin).where("plugins.filename like ?", "%#{filename}%") }
+  scope :plugins, -> (filenames) { joins(:first_plugin, :second_plugin).where("plugins.filename in (:filenames) AND second_plugins_load_order_notes.filename in (:filenames)", filenames: filenames) }
+  scope :plugin, -> (filenames) { joins(:first_plugin, :second_plugin).where("plugins.filename in (:filenames) OR second_plugins_load_order_notes.filename in (:filenames)", filenames: filenames) }
 
   # ASSOCIATIONS
   belongs_to :game, :inverse_of => 'load_order_notes'
@@ -37,8 +37,8 @@ class LoadOrderNote < ActiveRecord::Base
   has_one :submitter_reputation, :class_name => 'UserReputation', :through => 'submitter', :source => 'reputation'
 
   # plugins associatied with this load order note
-  belongs_to :first_plugin, :foreign_key => 'first_plugin_id', :class_name => 'Plugin'
-  belongs_to :second_plugin, :foreign_key => 'second_plugin_id', :class_name => 'Plugin'
+  belongs_to :first_plugin, :foreign_key => 'first_plugin_filename', :class_name => 'Plugin', :primary_key => 'filename'
+  belongs_to :second_plugin, :foreign_key => 'second_plugin_filename', :class_name => 'Plugin', :primary_key => 'filename'
 
   # mods associated with this load order note
   has_one :first_mod, :through => :first_plugin, :class_name => 'Mod', :source => 'mod', :foreign_key => 'mod_id'
@@ -55,7 +55,7 @@ class LoadOrderNote < ActiveRecord::Base
   counter_cache_on :first_plugin, :second_plugin, :first_mod, :second_mod, :submitter, conditional: { hidden: false, approved: true }
 
   # VALIDATIONS
-  validates :game_id, :submitted_by, :first_plugin_id, :second_plugin_id, :text_body, presence: true
+  validates :game_id, :submitted_by, :first_plugin_filename, :second_plugin_filename, :text_body, presence: true
 
   validates :text_body, length: {in: 128..16384}
   validate :validate_unique_plugins
@@ -64,9 +64,9 @@ class LoadOrderNote < ActiveRecord::Base
   # CALLBACKS
   before_save :set_adult
 
-  def get_existing_note(plugin_ids)
+  def get_existing_note(plugin_filenames)
     table = LoadOrderNote.arel_table
-    LoadOrderNote.plugins(plugin_ids).where(table[:hidden].eq(0).and(table[:id].not_eq(id))).first
+    LoadOrderNote.plugins(plugin_filenames).where(table[:hidden].eq(0).and(table[:id].not_eq(id))).first
   end
 
   def note_exists_error(existing_note)
@@ -79,18 +79,18 @@ class LoadOrderNote < ActiveRecord::Base
   end
 
   def duplicate_plugins_error
-    errors.add(:plugins, "You cannot create a Load Order Note between a plugin and itself.") if first_plugin_id == second_plugin_id
+    errors.add(:plugins, "You cannot create a Load Order Note between a plugin and itself.") if first_plugin_filename == second_plugin_filename
   end
 
   def validate_unique_plugins
     return if duplicate_plugins_error
-    existing_note = get_existing_note([first_plugin_id, second_plugin_id])
+    existing_note = get_existing_note([first_plugin_filename, second_plugin_filename])
     note_exists_error(existing_note) if existing_note.present?
   end
 
   def plugin_is_master
-    second_plugin.masters.pluck(:master_plugin_id).include?(first_plugin_id) ||
-        first_plugin.masters.pluck(:master_plugin_id).include?(second_plugin_id)
+    second_plugin.masters.pluck(:master_plugin_id).include?(first_plugin.id) ||
+        first_plugin.masters.pluck(:master_plugin_id).include?(second_plugin.id)
   end
 
   def validate_no_master_dependency
@@ -117,7 +117,7 @@ class LoadOrderNote < ActiveRecord::Base
   end
 
   def self.join_to_mod_options(query, source_column, plugins, options)
-    query.join(plugins).on(arel_table[source_column].eq(plugins[:id])).
+    query.join(plugins).on(arel_table[source_column].eq(plugins[:filename])).
         join(options).on(plugins[:mod_option_id].eq(options[:id]))
   end
 
@@ -125,8 +125,8 @@ class LoadOrderNote < ActiveRecord::Base
     mod_options = ModOption.arel_table
     mod_options_alias = ModOption.arel_table.alias
     [
-        [:first_plugin_id, Plugin.arel_table, mod_options],
-        [:second_plugin_id, Plugin.arel_table.alias, mod_options_alias]
+        [:first_plugin_filename, Plugin.arel_table, mod_options],
+        [:second_plugin_filename, Plugin.arel_table.alias, mod_options_alias]
     ].inject(arel_table) { |query, args|
       query = join_to_mod_options(query, *args)
     }.where(Mod.arel_table[:id].eq(mod_options[:mod_id]).
@@ -135,8 +135,8 @@ class LoadOrderNote < ActiveRecord::Base
   end
 
   def self.plugin_count_subquery
-    where(Plugin.arel_table[:id].eq(arel_table[:first_plugin_id]).
-        or(Plugin.arel_table[:id].eq(arel_table[:second_plugin_id]))).
+    where(Plugin.arel_table[:filename].eq(arel_table[:first_plugin_filename]).
+        or(Plugin.arel_table[:filename].eq(arel_table[:second_plugin_filename]))).
         project(Arel.sql('*').count)
   end
 

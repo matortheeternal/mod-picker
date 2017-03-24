@@ -139,11 +139,12 @@ class ModList < ActiveRecord::Base
     mod_ids = mod_list_mod_ids
     mod_option_ids = mod_list_mod_option_ids
     plugin_ids = mod_list_plugin_ids
+    plugin_filenames = mod_list_plugin_filenames
     self.available_plugins_count = plugins_store.count
     self.master_plugins_count = Plugin.where(id: plugin_ids).esm.count
     self.compatibility_notes_count = CompatibilityNote.visible.mods(mod_ids).count
     self.install_order_notes_count = InstallOrderNote.visible.mods(mod_ids).count
-    self.load_order_notes_count = LoadOrderNote.visible.plugins(plugin_ids).count
+    self.load_order_notes_count = LoadOrderNote.visible.plugins(plugin_filenames).count
 
     plugin_ids = mod_list_plugins.official(false).pluck(:plugin_id)
     self.bsa_files_count = ModAssetFile.mod_options(mod_option_ids).bsa.count
@@ -230,15 +231,19 @@ class ModList < ActiveRecord::Base
   end
 
   def mod_list_plugin_ids
-    mod_list_plugins.all.pluck(:plugin_id)
+    mod_list_plugins.pluck(:plugin_id)
+  end
+
+  def mod_list_plugin_filenames
+    plugins.pluck(:filename)
   end
 
   def mod_list_mod_ids
-    mod_list_mods.all.pluck(:mod_id)
+    mod_list_mods.pluck(:mod_id)
   end
 
   def mod_list_mod_option_ids
-    mod_list_mod_options.all.pluck(:mod_option_id)
+    mod_list_mod_options.pluck(:mod_option_id)
   end
 
   def plugins_store
@@ -270,10 +275,10 @@ class ModList < ActiveRecord::Base
   end
 
     def load_order_notes
-    plugin_ids = Plugin.mod_options(mod_list_mod_option_ids).ids
-    return LoadOrderNote.none if plugin_ids.empty?
+    plugin_filenames = Plugin.mod_options(mod_list_mod_option_ids).pluck(:filename)
+    return LoadOrderNote.none if plugin_filenames.empty?
 
-    LoadOrderNote.visible.plugins(plugin_ids).includes(:first_plugin, :second_plugin, :first_mod, :second_mod, :history_entries, :submitter => :reputation)
+    LoadOrderNote.visible.plugins(plugin_filenames).includes(:first_plugin, :second_plugin, :first_mod, :second_mod, :history_entries, :submitter => :reputation)
   end
 
   def required_tools
@@ -291,9 +296,9 @@ class ModList < ActiveRecord::Base
   end
 
   def required_plugins
-    plugin_ids = mod_list_plugin_ids
-    return Master.none if plugin_ids.empty?
-    Master.eager_load(:plugin => :mod, :master_plugin => :mod).plugins(plugin_ids).visible.order(:master_plugin_id)
+    plugin_filenames = mod_list_plugin_filenames
+    return Master.none if plugin_filenames.empty?
+    Master.eager_load(:plugin => :mod, :master_plugin => :mod).plugins(plugin_filenames).visible.order(:master_plugin_id)
   end
 
   def incompatible_mod_ids
