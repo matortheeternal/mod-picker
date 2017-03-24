@@ -567,11 +567,11 @@ app.service("filtersFactory", function() {
             factory.searchFilter([
                 {
                     name: "username",
-                    description: "Searches for users with a matching username"
+                    description: "Matches against the user's username."
                 },
                 {
                     name: "linked",
-                    description: "Searches for users with a matching linked account username from Nexus Mods, Lover's Lab, and the Steam Workshop."
+                    description: "Matches against the user's linked account usernames."
                 }
             ]),
             factory.pageFilter,
@@ -738,7 +738,7 @@ app.service("filtersFactory", function() {
                 },
                 {
                     name: "submitter",
-                    description: "Matches against the username of the user who submitted the contribution."
+                    description: "Matches against the contribution submitter's username."
                 }
             ]),
             factory.pageFilter,
@@ -799,7 +799,7 @@ app.service("filtersFactory", function() {
                 },
                 {
                     name: "submitter",
-                    description: "Matches against the username of the user who submitted the comment."
+                    description: "Matches against the comment submitter's username."
                 }
             ]),
             factory.pageFilter,
@@ -979,7 +979,7 @@ app.service("filtersFactory", function() {
                 },
                 {
                     name: "submitter",
-                    description: "Matches against the username of the user who submitted the contribution."
+                    description: "Matches against the contribution submitter's username."
                 }
             ]),
             factory.pageFilter,
@@ -1051,7 +1051,7 @@ app.service("filtersFactory", function() {
                 },
                 {
                     name: "submitter",
-                    description: "Matches against the username of the user who submitted the correction."
+                    description: "Matches against the correction submitter's username."
                 }
             ]),
             factory.pageFilter,
@@ -1203,7 +1203,7 @@ app.service("filtersFactory", function() {
                 },
                 {
                     name: "submitter",
-                    description: "Matches against the username of the user who submitted the article."
+                    description: "Matches against the article submitter's username."
                 }
             ]),
             factory.pageFilter
@@ -1233,15 +1233,15 @@ app.service("filtersFactory", function() {
             factory.searchFilter([
                 {
                     name: "name",
-                    description: "Matches against the Mod List title."
+                    description: "Matches against the mod list title."
                 },
                 {
                     name: "description",
-                    description: "Matches against the Mod List description."
+                    description: "Matches against the mod list description."
                 },
                 {
                     name: "submitter",
-                    description: "Matches against the username of the user who submitted the mod list."
+                    description: "Matches against the mod list submitter's username."
                 }
             ]),
             factory.pageFilter,
@@ -1573,7 +1573,7 @@ app.service("filtersFactory", function() {
                 },
                 {
                     name: "submitter",
-                    description: "Matches against the username of the user who submitted the report."
+                    description: "Matches against the report submitter's username."
                 }
             ]),
             factory.pageFilter,
@@ -1734,7 +1734,7 @@ app.service("filtersFactory", function() {
                 },
                 {
                     name: "submitter",
-                    description: "Matches against the username of the user who submitted the curator request."
+                    description: "Matches against the curator request submitter's username."
                 }
             ]),
             factory.pageFilter,
@@ -1808,7 +1808,7 @@ app.service("filtersFactory", function() {
                 },
                 {
                     name: "submitter",
-                    description: "Matches against the username of the user who submitted the tag"
+                    description: "Matches against the tag submitter's username."
                 }
             ]),
             factory.pageFilter,
