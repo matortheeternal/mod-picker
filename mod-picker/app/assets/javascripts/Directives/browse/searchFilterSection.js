@@ -8,7 +8,6 @@ app.directive('searchFilterSection', function() {
 });
 
 app.controller('searchFilterSectionController', function($scope) {
-    $scope.expanded = true;
     var searchTerms = $scope.filterPrototypes.find(function(filter) {
         return filter.data === 'search';
     }).terms;
