@@ -14,18 +14,16 @@
                     </h4>
                     <slider on-change="refreshFilters()" filter-data="filters" filter="filter"></slider>
                 </div>
-            </filter-section>>
+            </filter-section>
 
             <filter-section name="Statistic Filters" expanded="true" ng-if="statFilters.length">
-                <div class="filter-section">
-                    <div ng-repeat="filter in statFilters">
-                        <h4>{{filter.label}}
-                            <!--<span class="filter-controls" ng-if="filter.max > 500">
-                                <span class="fa fa-wrench" ng-click="" title="Custom Value"></span>
-                            </span>-->
-                        </h4>
-                        <slider on-change="refreshFilters()" filter-data="filters" filter="filter"></slider>
-                    </div>
+                <div ng-repeat="filter in statFilters">
+                    <h4>{{filter.label}}
+                        <!--<span class="filter-controls" ng-if="filter.max > 500">
+                            <span class="fa fa-wrench" ng-click="" title="Custom Value"></span>
+                        </span>-->
+                    </h4>
+                    <slider on-change="refreshFilters()" filter-data="filters" filter="filter"></slider>
                 </div>
             </filter-section>
         </div>
