@@ -24,7 +24,6 @@ module BetterJson
     conditional_key = :"conditional_#{key}"
     return unless options.has_key?(conditional_key)
     options[conditional_key].each do |conditional_option|
-      conditional_option = conditional_option.symbolize_keys
       add_option(options, key, conditional_option[key]) if instance_eval(conditional_option[:if])
     end
   end
@@ -48,7 +47,7 @@ module BetterJson
 
   def insert_includes(result, options)
     options[:include].each do |key, value|
-      result[key] = public_send(key).as_json(value.symbolize_keys)
+      result[key] = public_send(key).as_json(value)
     end
   end
 
@@ -85,7 +84,7 @@ module BetterJson
     end
 
     def parse_template(template, file_path)
-      template_hash = JSON.parse(File.read(file_path)).symbolize_keys
+      template_hash = JSON.parse(File.read(file_path), symbolize_names: true)
       _json_template_cache[template] = template_hash if cache_templates?
       template_hash
     end
