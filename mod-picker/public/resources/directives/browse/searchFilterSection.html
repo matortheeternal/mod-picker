@@ -1,0 +1,9 @@
+<div class="section-title">
+    <h3>Search</h3>
+    <span class="search-help help-tooltip" title="{{searchHint}}">
+        <i class="fa fa-question-circle"></i>
+    </span>
+</div>
+<div ng-show="expanded">
+    <input type="text" ng-model="filters.search" ng-change="refreshFilters()">
+</div>
