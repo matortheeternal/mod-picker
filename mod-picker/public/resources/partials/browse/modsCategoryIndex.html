@@ -3,51 +3,12 @@
 <two-columns>
     <div class="page-container browse-page">
         <div class="left-column" style="width:250px; padding: 40px 48px 40px 0;">
-            <h2>Subcategories</h2>
-
-            <div class="filter-section">
-                <div class="sidebar-box box-shadow">
-                    <ul class="checkbox-list">
-                        <li ng-repeat="category in subcategories">
-                            <label title="{{::category.description}}">
-                                <input type="checkbox" ng-model="category.enabled" ng-change="categoriesChanged()">
-                                {{::category.name}}
-                            </label>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-            <h2>Tags</h2>
-
-            <filter-section ng-repeat="group in tagGroups" name="{{group.name}}" expanded="true" ng-show="group.category.enabled">
-                <div class="sidebar-box box-shadow">
-                    <ul class="checkbox-list">
-                        <li ng-repeat="tag in group.tag_group_tags">
-                            <label>
-                                <input type="checkbox" ng-model="tag.enabled">
-                                {{::tag.tag_text}}
-                            </label>
-                        </li>
-                        <li ng-if="group.exclusion_label">
-                            <label>
-                                <input type="checkbox" ng-model="group.excluded">
-                                {{::group.exclusion_label}}
-                            </label>
-                        </li>
-                    </ul>
-                </div>
-            </filter-section>
-            <span class="content-message" ng-if="!tagGroups.length">
-                No tag groups available.
-            </span>
-            <span class="content-message" ng-if="tagGroups.length && !tagGroupsVisible">
-                Select a subcategory to display tag groups.
-            </span>
 
             <h2>Filters</h2>
 
-            <filter-section name="Content Filters" expanded="true" ng-if="permissions.canModerate || allowAdult">
+            <search-filter-section></search-filter-section>
+
+            <filter-section name="Content Filters" expanded="false" ng-if="permissions.canModerate || allowAdult">
                 <div class="sidebar-box box-shadow">
                     <ul class="checkbox-list" ng-if="allowAdult">
                         <li>
@@ -80,7 +41,7 @@
                 </div>
             </filter-section>
 
-            <filter-section name="Sources" expanded="true">
+            <filter-section name="Sources" expanded="false">
                 <div class="sidebar-box box-shadow">
                     <ul class="checkbox-list">
                         <li>
@@ -102,6 +63,48 @@
                     </ul>
                 </div>
             </filter-section>
+
+            <h3>Subcategories</h3>
+
+            <div class="filter-section">
+                <div class="sidebar-box box-shadow">
+                    <ul class="checkbox-list">
+                        <li ng-repeat="category in subcategories">
+                            <label title="{{::category.description}}">
+                                <input type="checkbox" ng-model="category.enabled" ng-change="categoriesChanged()">
+                                {{::category.name}}
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <h2>Tag Filters</h2>
+
+            <filter-section ng-repeat="group in tagGroups" name="{{group.name}}" expanded="true" ng-show="group.category.enabled">
+                <div class="sidebar-box box-shadow">
+                    <ul class="checkbox-list">
+                        <li ng-repeat="tag in group.tag_group_tags">
+                            <label>
+                                <input type="checkbox" ng-model="tag.enabled">
+                                {{::tag.tag_text}}
+                            </label>
+                        </li>
+                        <li ng-if="group.exclusion_label">
+                            <label>
+                                <input type="checkbox" ng-model="group.excluded">
+                                {{::group.exclusion_label}}
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+            </filter-section>
+            <span class="content-message" ng-if="!tagGroups.length">
+                No tag filters available.
+            </span>
+            <span class="content-message" ng-if="tagGroups.length && !tagGroupsVisible">
+                Select a subcategory to display tag filters.
+            </span>
         </div>
 
         <div class="right-column">
