@@ -5,8 +5,8 @@ class ModListsController < ApplicationController
 
   # GET /mod_lists
   def index
-    @mod_lists = ModList.includes(:submitter).references(:submitter).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(page: params[:page])
-    count =  ModList.accessible_by(current_ability).filter(filtering_params).count
+    @mod_lists = ModList.eager_load(:submitter).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(page: params[:page])
+    count =  ModList.eager_load(:submitter).accessible_by(current_ability).filter(filtering_params).count
 
     render json: {
         mod_lists: @mod_lists,

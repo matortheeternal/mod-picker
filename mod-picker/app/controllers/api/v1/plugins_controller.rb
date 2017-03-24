@@ -38,6 +38,9 @@ class Api::V1::PluginsController < Api::ApiController
 
     # Params we allow searching on
     def search_params
+      if params[:filters].has_key?(:search)
+        params[:filters][:search] = "filename:#{params[:filters][:search]}"
+      end
       params[:filters].slice(:search, :game, :mods)
     end
 end

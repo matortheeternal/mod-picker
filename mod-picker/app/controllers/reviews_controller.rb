@@ -4,8 +4,8 @@ class ReviewsController < ContributionsController
   # GET /reviews
   def index
     # prepare reviews
-    @reviews = Review.preload(:review_ratings).includes(:mod, {submitter: :reputation}, :editor).references({submitter: :reputation}, :editor).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(page: params[:page])
-    count = Review.accessible_by(current_ability).filter(filtering_params).count
+    @reviews = Review.preload(:review_ratings).includes(:mod).eager_load({submitter: :reputation}, :editor).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(page: params[:page])
+    count = Review.eager_load({submitter: :reputation}, :editor).accessible_by(current_ability).filter(filtering_params).count
 
     # prepare helpful marks
     helpful_marks = HelpfulMark.for_user_content(current_user, "Review", @reviews.ids)

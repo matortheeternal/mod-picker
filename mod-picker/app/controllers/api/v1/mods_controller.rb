@@ -142,6 +142,9 @@ class Api::V1::ModsController < Api::ApiController
       unless params[:filters].has_key?(:include_games)
         params[:filters][:include_games] = false;
       end
+      if params[:filters].has_key?(:search)
+        params[:filters][:search] = "name:#{params[:filters][:search]}"
+      end
       params[:filters].slice(:search, :game, :utility, :include_games)
     end
 

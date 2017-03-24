@@ -59,6 +59,9 @@ class Api::V1::UsersController < Api::ApiController
     end
 
     def search_params
+      if params[:filters].has_key?(:search)
+        params[:filters][:search] = "username:#{params[:filters][:search]}"
+      end
       params[:filters].slice(:search)
     end
 

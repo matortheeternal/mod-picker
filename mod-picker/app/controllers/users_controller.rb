@@ -3,8 +3,8 @@ class UsersController < ApplicationController
 
   # GET/POST /users/index
   def index
-    @users = User.include_blank(false).includes(:reputation).references(:reputation).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(page: params[:page])
-    count =  User.include_blank(false).includes(:reputation).references(:reputation).accessible_by(current_ability).filter(filtering_params).count
+    @users = User.include_blank(false).eager_load(:reputation, :bio).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(page: params[:page])
+    count =  User.include_blank(false).eager_load(:reputation, :bio).accessible_by(current_ability).filter(filtering_params).count
 
     render json: {
         users: json_format(@users),
@@ -150,6 +150,9 @@ class UsersController < ApplicationController
     end
 
     def search_params
+      if params[:filters].has_key?(:search)
+        params[:filters][:search] = "username:#{params[:filters][:search]}"
+      end
       params[:filters].slice(:search)
     end
 
