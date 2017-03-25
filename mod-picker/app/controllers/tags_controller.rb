@@ -1,5 +1,5 @@
 class TagsController < ApplicationController
-  before_action :set_tag, only: [:update, :hide]
+  before_action :set_tag, only: [:update, :hide, :replace]
 
   # GET /all_tags
   def all
@@ -34,6 +34,16 @@ class TagsController < ApplicationController
     authorize! :hide, @tag
     @tag.hidden = params[:hidden]
     if @tag.save
+      render json: {status: :ok}
+    else
+      render json: @tag.errors, status: :unprocessable_entity
+    end
+  end
+
+  # POST /tags/:id/replace
+  def replace
+    authorize! :update, @tag
+    if @tag.replace(params[:new_tag_id])
       render json: {status: :ok}
     else
       render json: @tag.errors, status: :unprocessable_entity
