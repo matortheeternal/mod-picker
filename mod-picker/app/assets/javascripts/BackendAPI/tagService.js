@@ -38,6 +38,10 @@ app.service('tagService', function(backend, $q, pageUtils) {
         return backend.update('/tags/' + tag.id, params);
     };
 
+    this.replaceTag = function(oldTagId, newTagId) {
+        return backend.post('/tags/' + oldTagId + '/replace', { new_tag_id: newTagId });
+    };
+
     this.updateModTags = function(mod, tags) {
         var putData = {
             game_id: mod.game_id,
