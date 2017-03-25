@@ -53,4 +53,26 @@ app.service('tagService', function(backend, $q, pageUtils) {
         };
         return backend.update('/mod_lists/' + mod_list.id + '/tags', putData);
     };
+
+    this.getTagMatches = function(tags, str) {
+        var matches = [];
+        for (var i = 0; i < tags.length; i++) {
+            var tag = tags[i];
+            var match = tag.text.toLowerCase().includes(str);
+
+            if (match) {
+                matches[matches.length] = tag;
+                if (matches.length == 10) break;
+            }
+        }
+        return matches;
+    };
+
+    this.sortTagMatches = function(str, matches) {
+        matches.sort(function(a, b) {
+            var ax = a.text.toLowerCase().indexOf(str);
+            var bx = b.text.toLowerCase().indexOf(str);
+            return ax - bx;
+        });
+    };
 });
