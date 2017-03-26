@@ -19,7 +19,7 @@ class PluginsController < ApplicationController
       @plugins = Plugin.find_batch(params[:batch], params[:game])
       respond_with_json(@plugins, :base)
     else
-      @plugins = Plugin.visible.filter(search_params).limit(10)
+      @plugins = Plugin.visible.filter(search_params).order("CHAR_LENGTH(filename)").limit(10)
       respond_with_json(@plugins, :base)
     end
   end

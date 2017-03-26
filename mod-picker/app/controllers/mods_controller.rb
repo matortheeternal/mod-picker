@@ -19,7 +19,7 @@ class ModsController < ApplicationController
       @mods = Mod.find_batch(params[:batch], params[:game])
       render json: @mods
     else
-      @mods = Mod.visible.filter(search_params).limit(10)
+      @mods = Mod.visible.filter(search_params).order("CHAR_LENGTH(name)").limit(10)
       render json: @mods
     end
   end

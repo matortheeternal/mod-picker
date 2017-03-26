@@ -20,7 +20,7 @@ class UsersController < ApplicationController
 
   # POST /users/search
   def search
-    @users = User.filter(search_params).sort({ column: "username", direction: "ASC" }).limit(10)
+    @users = User.filter(search_params).sort({ column: "username", direction: "ASC" }).order("CHAR_LENGTH(username)").limit(10)
     respond_with_json(@users)
   end
 

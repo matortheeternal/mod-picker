@@ -7,8 +7,7 @@ module Searchable
     class_attribute :_search_options
     scope :search, -> (search) {
       queries = build_search_queries(search)
-      where(queries.map{ |q| arel_search(q) }.inject(:or)).
-          order(arel_order(queries[0]))
+      where(queries.map{ |q| arel_search(q) }.inject(:or))
     }
   end
 
@@ -81,10 +80,6 @@ module Searchable
       return multi_arel_search(query) if query.has_key?(:subqueries)
       return association_arel_search(query) if query.has_key?(:model)
       basic_arel_search(query)
-    end
-
-    def arel_order(query)
-      "CHAR_LENGTH(#{query[:column]})"
     end
 
     def search_options_path

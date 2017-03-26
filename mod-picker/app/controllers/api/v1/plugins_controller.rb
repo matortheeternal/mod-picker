@@ -15,7 +15,7 @@ class Api::V1::PluginsController < Api::ApiController
 
   # POST /plugins/search
   def search
-    @plugins = Plugin.visible.filter(search_params).limit(10)
+    @plugins = Plugin.visible.filter(search_params).order("CHAR_LENGTH(filename)").limit(10)
     respond_with_json(@plugins, :base)
   end
 
