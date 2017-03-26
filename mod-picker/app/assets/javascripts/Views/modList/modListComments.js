@@ -14,7 +14,7 @@ app.controller('modListCommentsController', function($scope, $state, contributio
             page: page || 1
         };
         contributionService.retrieveComments('mod_lists', $scope.mod_list.id, options, $scope.pages.comments).then(function(data) {
-            $scope.mod_list.comments = data;
+            $scope.comments = data;
             $scope.commentsReady = true;
         }, function(response) {
             $scope.errors.comments = response;
