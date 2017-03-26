@@ -142,7 +142,7 @@ app.config(['$stateProvider', function($stateProvider) {
     })
 }]);
 
-app.controller('modListController', function($scope, $rootScope, $q, $state, $stateParams, $timeout, modListObject, modListService, objectUtils, helpFactory, tabsFactory, baseFactory, eventHandlerFactory, listUtils) {
+app.controller('modListController', function($scope, $rootScope, $q, $state, $stateParams, $timeout, modListObject, modListService, objectUtils, helpFactory, tabsFactory, baseFactory, eventHandlerFactory, listUtils, modOptionUtils) {
     // inherited variables
     $scope.currentUser = $rootScope.currentUser;
     $scope.activeModList = $rootScope.activeModList;
@@ -222,6 +222,7 @@ app.controller('modListController', function($scope, $rootScope, $q, $state, $st
     // shared function setup
     $scope.isEmpty = objectUtils.isEmptyArray;
     eventHandlerFactory.buildMessageHandlers($scope, true);
+    modOptionUtils.buildHelperFunctions($scope, $rootScope);
 
     // set up the canManage permission
     var isAuthor = $scope.mod_list.submitter.id == $scope.currentUser.id;

@@ -1,4 +1,4 @@
-app.controller('modListModsController', function($scope, $rootScope, $timeout, $q, categoryService, modListService, modService, columnsFactory, actionsFactory, listMetaFactory, listUtils, sortUtils) {
+app.controller('modListModsController', function($scope, $rootScope, $timeout, $q, categoryService, modListService, modService, columnsFactory, actionsFactory, listMetaFactory, listUtils) {
     // INITIALIZE VARIABLES
     $scope.columns = columnsFactory.modListModColumns();
     $scope.columnGroups = columnsFactory.modListModColumnGroups();
@@ -49,42 +49,6 @@ app.controller('modListModsController', function($scope, $rootScope, $timeout, $
 
     // retrieve mods when the state is first loaded
     $scope.retrieveMods();
-
-    // HELPER FUNCTIONS
-    $scope.recoverModOptions = function(modListMod) {
-        modListMod.mod && modListMod.mod.mod_options.forEach(function(option) {
-            var foundModOption = modListMod.mod_list_mod_options.find(function(ml_option) {
-                return option.id == ml_option.id;
-            });
-            if (foundModOption) $rootScope.$broadcast('modOptionAdded', option);
-        });
-    };
-
-    $scope.addDefaultModOptions = function(modListMod) {
-        modListMod.mod.mod_options.forEach(function(option) {
-            if (option.default) {
-                option.active = true;
-                var options = modListMod.mod_list_mod_options;
-                var existingModOption = options.find(function(mlOption) {
-                    return mlOption.mod_option_id == option.id;
-                });
-                if (!existingModOption) {
-                    options.push({ mod_option_id: option.id });
-                    $rootScope.$broadcast('modOptionAdded', option);
-                }
-            }
-        });
-    };
-
-    $scope.removeActiveModOptions = function(modListMod) {
-        modListMod.mod_list_mod_options.forEach(function(option) {
-            $rootScope.$broadcast('modOptionRemoved', option.mod_option_id);
-        });
-        modListMod.mod_list_mod_options = [];
-        modListMod.mod && modListMod.mod.mod_options.forEach(function(option) {
-            option.active = false;
-        });
-    };
 
     // CUSTOM CALLBACKS
     $scope.recoverModCallback = $scope.recoverModOptions;

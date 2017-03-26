@@ -70,12 +70,12 @@ app.controller('pluginCompatibilityIssuesController', function($scope, listUtils
         switch(options.action) {
             case "add plugin":
                 if (options.note.compatibility_mod_option) {
-                    $scope.addModOption(options.note.compatibility_mod_option_id);
+                    $scope.addCompatibilityModOption(options.note);
                 }
                 $scope.addPlugin(options.note.compatibility_plugin.id);
                 break;
             case "add mod option":
-                $scope.addModOption(options.note.compatibility_mod_option_id);
+                $scope.addCompatibilityModOption(options.note);
                 break;
             case "add custom plugin":
                 $scope.addCustomPlugin(options.note.id);
@@ -101,6 +101,14 @@ app.controller('pluginCompatibilityIssuesController', function($scope, listUtils
                     break;
             }
         });
+    };
+
+    /* HELPER FUNCTIONS */
+    $scope.addCompatibilityModOption = function(note) {
+        var modId = note.compatibility_mod_option.mod_id;
+        var mod = $scope.findMod(modId, true);
+        if (!mod) return;
+        $scope.addModOption(mod, note.compatibility_mod_option.id);
     };
 
     // event triggers
