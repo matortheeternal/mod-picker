@@ -8,7 +8,7 @@ class LoadOrderNotesController < ContributionsController
     count = LoadOrderNote.eager_load({submitter: :reputation}, :editors).accessible_by(current_ability).filter(filtering_params).count
 
     # prepare helpful marks
-    helpful_marks = HelpfulMark.for_user_content(current_user, "LoadOrderNote", @load_order_notes.ids)
+    helpful_marks = HelpfulMark.for_user_content(current_user, "LoadOrderNote", @load_order_notes.map(&:id).uniq)
 
     # render response
     render json: {
