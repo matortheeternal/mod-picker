@@ -55,8 +55,8 @@ app.controller('requiredPluginsController', function($scope, requirementUtils) {
         requirementUtils.removeDestroyedRequirements($scope.required.plugins, 'plugin');
         $scope.buildMissingPlugins();
     });
-    $scope.$on('pluginRemoved', function(event, pluginId) {
-        if (pluginId) requirementUtils.removeRequirements(pluginId, $scope.required.plugins, 'plugin');
+    $scope.$on('pluginRemoved', function(event, plugin) {
+        if (plugin) requirementUtils.removeRequirements(plugin.id, $scope.required.plugins, 'plugin');
         $scope.buildMissingPlugins();
     });
     $scope.$on('pluginRecovered', function(event, pluginId) {

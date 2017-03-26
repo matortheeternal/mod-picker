@@ -79,9 +79,9 @@ app.controller('modInstallOrderIssuesController', function($scope, $timeout, lis
         $scope.buildUnresolvedInstallOrder();
         $scope.resolveAllInstallOrder(true);
     });
-    $scope.$on('modRemoved', function(event, modId) {
-        if (modId) {
-            listUtils.removeModNotes($scope.notes.install_order, modId, function(note) {
+    $scope.$on('modRemoved', function(event, mod) {
+        if (mod) {
+            listUtils.removeModNotes($scope.notes.install_order, mod.id, function(note) {
                 $scope.destroyIgnoreNote('InstallOrderNote', note);
             });
         }

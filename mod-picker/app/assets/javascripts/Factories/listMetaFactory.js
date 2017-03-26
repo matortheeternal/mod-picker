@@ -210,8 +210,8 @@ app.service('listMetaFactory', function($q, $timeout, modListService, categorySe
             decrementAppropriateCounter(modListItem);
 
             // update modules
-            var itemId = modListItem[dataKey] && modListItem[dataKey].id;
-            $rootScope.$broadcast(itemRemovedMessage, itemId);
+            var item = modListItem[dataKey];
+            $rootScope.$broadcast(itemRemovedMessage, item);
             customCallback(removeLabel, modListItem);
             $scope.$broadcast('updateItems');
         };

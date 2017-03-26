@@ -98,8 +98,8 @@ app.controller('modListModsController', function($scope, $rootScope, $timeout, $
     $scope.$on('modAdded', function(event, data) {
         $scope.addDefaultModOptions(data.mod_list_mod);
     });
-    $scope.$on('modRemoved', function(event, modId) {
-        $scope.removedModIds.push(modId);
+    $scope.$on('modRemoved', function(event, mod) {
+        $scope.removedModIds.push(mod.id);
     });
     $scope.$on('modRecovered', function(event, modId) {
         var index = $scope.removedModIds.indexOf(modId);

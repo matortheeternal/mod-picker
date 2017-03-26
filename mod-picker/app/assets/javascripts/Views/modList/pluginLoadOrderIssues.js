@@ -135,9 +135,9 @@ app.controller('pluginLoadOrderIssuesController', function($scope, $timeout, lis
         $scope.buildOutOfOrderPlugins();
         $scope.resolveAllLoadOrder(true);
     });
-    $scope.$on('pluginRemoved', function(event, pluginId) {
-        if (pluginId) {
-            listUtils.removePluginNotes($scope.notes.load_order, pluginId, function(note) {
+    $scope.$on('pluginRemoved', function(event, plugin) {
+        if (plugin) {
+            listUtils.removePluginNotes($scope.notes.load_order, plugin.filename, function(note) {
                 $scope.destroyIgnoreNote('LoadOrderNote', note);
             });
         }

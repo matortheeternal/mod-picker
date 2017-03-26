@@ -303,18 +303,18 @@ app.service('listUtils', function() {
         });
     };
 
-    this.removePluginNotes = function(notes, pluginId, ignoredCallback) {
+    this.removePluginNotes = function(notes, pluginFileName, ignoredCallback) {
         notes.forEach(function(note) {
-            if (note.first_plugin.id == pluginId || note.second_plugin.id == pluginId) {
+            if (note.first_plugin_filename === pluginFileName || note.second_plugin_filename === pluginFileName) {
                 note._destroy = true;
                 if (note.ignored) ignoredCallback(note);
             }
         });
     };
 
-    this.recoverPluginNotes = function(notes, pluginId) {
+    this.recoverPluginNotes = function(notes, pluginFileName) {
         notes.forEach(function(note) {
-            if (note._destroy && note.first_plugin.id == pluginId || note.second_plugin.id == pluginId) {
+            if (note._destroy && note.first_plugin_filename == pluginFileName || note.second_plugin_filename == pluginFileName) {
                 delete note._destroy;
             }
         });
