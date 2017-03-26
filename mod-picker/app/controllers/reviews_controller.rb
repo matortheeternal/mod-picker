@@ -8,7 +8,7 @@ class ReviewsController < ContributionsController
     count = Review.eager_load({submitter: :reputation}).accessible_by(current_ability).filter(filtering_params).count
 
     # prepare helpful marks
-    helpful_marks = HelpfulMark.for_user_content(current_user, "Review", @reviews.ids)
+    helpful_marks = HelpfulMark.for_user_content(current_user, "Review", @reviews.map(&:id))
 
     # render response
     render json: {

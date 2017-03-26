@@ -247,96 +247,52 @@ class ModList < ActiveRecord::Base
   end
 
   def plugins_store
-    mod_option_ids = mod_list_mod_option_ids
-    return Plugin.none if mod_option_ids.empty?
-    
-    Plugin.mod_options(mod_option_ids).includes(:mod)
+    Plugin.mod_list(id)
   end
 
   def mod_compatibility_notes
-    mod_ids = mod_list_mod_ids
-    return CompatibilityNote.none if mod_ids.empty?
-
-    CompatibilityNote.visible.mods(mod_ids).status([0, 1, 2]).includes(:first_mod, :second_mod, :submitter => :reputation)
+    CompatibilityNote.visible.status([0, 1, 2]).mod_list(id)
   end
 
   def plugin_compatibility_notes
-    mod_ids = mod_list_mod_ids
-    return CompatibilityNote.none if mod_ids.empty?
-
-    CompatibilityNote.visible.mods(mod_ids).status([3, 4]).includes(:first_mod, :second_mod, :history_entries, :submitter => :reputation)
+    CompatibilityNote.visible.status([3, 4]).mod_list(id)
   end
 
   def install_order_notes
-    mod_ids = mod_list_mod_ids
-    return InstallOrderNote.none if mod_ids.empty?
-
-    InstallOrderNote.visible.mods(mod_ids).includes(:first_mod, :second_mod, :history_entries, :submitter => :reputation)
+    InstallOrderNote.visible.mod_list(id)
   end
 
     def load_order_notes
-    plugin_filenames = Plugin.mod_options(mod_list_mod_option_ids).pluck(:filename)
-    return LoadOrderNote.none if plugin_filenames.empty?
-
-    LoadOrderNote.visible.plugins(plugin_filenames).includes(:first_plugin, :second_plugin, :first_mod, :second_mod, :history_entries, :submitter => :reputation)
+    LoadOrderNote.visible.mod_list(id)
   end
 
   def required_tools
-    mod_ids = mod_list_mod_ids
-    return ModRequirement.none if mod_ids.empty?
-
-    ModRequirement.utility(true).mods(mod_ids).visible.order(:required_id)
+    ModRequirement.visible.utility(true).mod_list(id)
   end
 
   def required_mods
-    mod_ids = mod_list_mod_ids
-    return ModRequirement.none if mod_ids.empty?
-
-    ModRequirement.utility(false).mods(mod_ids).visible.order(:required_id)
+    ModRequirement.visible.utility(false).mod_list(id)
   end
 
   def required_plugins
-    plugin_filenames = mod_list_plugin_filenames
-    return Master.none if plugin_filenames.empty?
-    Master.eager_load(:plugin => :mod, :master_plugin => :mod).plugins(plugin_filenames).visible.order(:master_plugin_id)
+    Master.mod_list(id).visible
   end
 
   def incompatible_mod_ids
-    mod_ids = mod_list_mod_ids
-    return [] if mod_ids.empty?
-
-    # get incompatible mod ids
-    incompatible_ids = CompatibilityNote.visible.status([0, 1]).mod(mod_ids).pluck(:first_mod_id, :second_mod_id)
     # return array of unique mod ids from the notes, excluding mod list mod ids
-    incompatible_ids.flatten(1).uniq - mod_ids
-  end
-
-  def asset_files
-    mod_option_ids = mod_list_mod_option_ids
-    return ModAssetFile.none if mod_option_ids.empty?
-
-    ModAssetFile.mod_options(mod_option_ids).includes(:asset_file)
+    CompatibilityNote.visible.status([0, 1]).mod_list(id).pluck(:first_mod_id, :second_mod_id).flatten(1).uniq - mod_list_mod_ids
   end
 
   def override_records
-    plugin_ids = mod_list_plugin_ids
-    return OverrideRecord.none if plugin_ids.empty?
-
-    OverrideRecord.plugins(plugin_ids)
+    OverrideRecord.mod_list(id)
   end
 
   def record_groups
-    plugin_ids = mod_list_plugin_ids
-    return PluginRecordGroup.none if plugin_ids.empty?
-
-    PluginRecordGroup.plugins(plugin_ids)
+    PluginRecordGroup.mod_list(id)
   end
 
   def plugin_errors
-    plugin_ids = mod_list_plugin_ids
-    return PluginError.none if plugin_ids.empty?
-
-    PluginError.plugins(plugin_ids)
+    PluginError.mod_list(id)
   end
 
   def base_text

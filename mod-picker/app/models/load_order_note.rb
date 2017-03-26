@@ -28,6 +28,8 @@ class LoadOrderNote < ActiveRecord::Base
   # UNIQUE SCOPES
   scope :plugins, -> (filenames) { joins(:first_plugin, :second_plugin).where("plugins.filename in (:filenames) AND second_plugins_load_order_notes.filename in (:filenames)", filenames: filenames) }
   scope :plugin, -> (filenames) { joins(:first_plugin, :second_plugin).where("plugins.filename in (:filenames) OR second_plugins_load_order_notes.filename in (:filenames)", filenames: filenames) }
+  # TODO AREL
+  scope :mod_list, -> (mod_list_id) { joins("INNER JOIN mod_list_plugins").joins("INNER JOIN plugins ON mod_list_plugins.plugin_id = plugins.id").where("mod_list_plugins.mod_list_id = ?", mod_list_id).where("load_order_notes.first_plugin_filename = plugins.filename OR load_order_notes.second_plugin_filename = plugins.filename") }
 
   # ASSOCIATIONS
   belongs_to :game, :inverse_of => 'load_order_notes'
@@ -35,14 +37,6 @@ class LoadOrderNote < ActiveRecord::Base
   belongs_to :editor, :class_name => 'User', :foreign_key => 'edited_by'
 
   has_one :submitter_reputation, :class_name => 'UserReputation', :through => 'submitter', :source => 'reputation'
-
-  # plugins associatied with this load order note
-  belongs_to :first_plugin, :foreign_key => 'first_plugin_filename', :class_name => 'Plugin', :primary_key => 'filename'
-  belongs_to :second_plugin, :foreign_key => 'second_plugin_filename', :class_name => 'Plugin', :primary_key => 'filename'
-
-  # mods associated with this load order note
-  has_one :first_mod, :through => :first_plugin, :class_name => 'Mod', :source => 'mod', :foreign_key => 'mod_id'
-  has_one :second_mod, :through => :second_plugin, :class_name => 'Mod', :source => 'mod', :foreign_key => 'mod_id'
 
   # mod lists this load order note is ignored on
   has_many :mod_list_ignored_notes, :as => 'note'

@@ -26,6 +26,10 @@ class InstallOrderNote < ActiveRecord::Base
   ids_scope :mod_id, :columns => [:first_mod_id, :second_mod_id]
   date_scope :submitted, :edited
 
+  # UNIQUE SCOPES
+  # TODO: AREL
+  scope :mod_list, -> (mod_list_id) { joins("LEFT OUTER JOIN mod_list_mods ON mod_list_mods.id = install_order_notes.first_mod_id OR mod_list_mods.id = install_order_notes.second_mod_id").where("mod_list_mods.mod_list_id = ?", mod_list_id).distinct }
+
   # ASSOCIATIONS
   belongs_to :game, :inverse_of => 'install_order_notes'
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'install_order_notes'
