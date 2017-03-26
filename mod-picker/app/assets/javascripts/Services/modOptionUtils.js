@@ -51,32 +51,32 @@ app.service('modOptionUtils', function() {
     };
 
     this.buildHelperFunctions = function($scope, $rootScope) {
-        $scope.findExistingModOption = function(mod, optionId) {
-            var optionsArray = mod.mod_list_mod_options;
+        $scope.findExistingModOption = function(modListMod, optionId) {
+            var optionsArray = modListMod.mod_list_mod_options;
             return optionsArray.find(function(option) {
                 return option.mod_option_id == optionId;
             });
         };
 
-        $scope.addModOption = function(mod, optionId) {
-            var option = mod.mod_options.find(function(option) {
+        $scope.addModOption = function(modListMod, optionId) {
+            var option = modListMod.mod.mod_options.find(function(option) {
                 return option.id == optionId;
             });
-            var existingModOption = $scope.findExistingModOption(mod, optionId);
+            var existingModOption = $scope.findExistingModOption(modListMod, optionId);
             if (existingModOption) {
                 if (existingModOption._destroy) {
                     delete existingModOption._destroy;
                 }
             } else {
-                mod.mod_list_mod_options.push({
+                modListMod.mod_list_mod_options.push({
                     mod_option_id: optionId
                 });
             }
             $rootScope.$broadcast('modOptionAdded', option);
         };
 
-        $scope.removeModOption = function(mod, optionId) {
-            var optionsArray = mod.mod_list_mod_options;
+        $scope.removeModOption = function(modListMod, optionId) {
+            var optionsArray = modListMod.mod_list_mod_options;
             var index = optionsArray.findIndex(function(option) {
                 return option.mod_option_id == optionId;
             });
