@@ -15,7 +15,7 @@ app.controller('userSettingsModListsController', function($scope, $rootScope, $t
         var options = {
             filters: {
                 game: window._current_game_id,
-                submitter: $scope.user.username
+                search: "submitter:" + $scope.user.username
             }
         };
         var pages = {};

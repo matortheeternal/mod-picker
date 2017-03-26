@@ -9,7 +9,7 @@ app.controller('userSettingsModsController', function($scope, columnsFactory, ac
         var options = {
             filters: {
                 game: window._current_game_id,
-                mp_author: $scope.user.username,
+                search: "mp_author:" + $scope.user.username,
                 sources: {
                     nexus: true,
                     lab: true,
