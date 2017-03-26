@@ -30,6 +30,20 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
         return backend.post('/mods/search', postData);
     };
 
+    this.searchModsAndGames = function(name, utility) {
+        var postData = {
+            filters: {
+                search: name,
+                include_games: true,
+                game: window._current_game_id
+            }
+        };
+        if (angular.isDefined(utility)) {
+            postData.filters.utility = utility;
+        }
+        return backend.post('/mods/search', postData);
+    };
+
     this.searchModOptions = function(name, modIds) {
         var postData = {
             filters: {
