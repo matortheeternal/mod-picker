@@ -20,7 +20,7 @@ app.controller('requiredPluginsController', function($scope, requirementUtils) {
             if (!requirement.plugins.length) {
                 return;
             }
-            var requiredPluginPresent = $scope.findPlugin(requirement.master_plugin.id, true);
+            var requiredPluginPresent = $scope.findPlugin(requirement.master_plugin.filename, true, true);
             if (!requiredPluginPresent) {
                 if (requirementUtils.findOne($scope.findPlugin, requirement.plugins)) {
                     $scope.required.missing_plugins.push(requirement);
