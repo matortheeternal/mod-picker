@@ -21,6 +21,8 @@ class Plugin < ActiveRecord::Base
   scope :mods, -> (mod_ids) { eager_load(:mod_option).where(:mod_options => { :mod_id => mod_ids }) }
   scope :esm, -> { where("filename like '%.esm'") }
   scope :categories, -> (categories) { joins(:mod).where("mods.primary_category_id IN (:ids) OR mods.secondary_category_id IN (:ids)", ids: categories) }
+  # TODO: AREL
+  scope :mod_list, -> (mod_list_id) { joins("INNER JOIN mod_list_mods").joins("INNER JOIN mod_list_mod_options ON mod_list_mod_options.mod_list_mod_id = mod_list_mods.id").where("mod_list_mods.mod_list_id = ?", mod_list_id).where("plugins.mod_option_id = mod_list_mod_options.mod_option_id").distinct }
 
   # ASSOCIATIONS
   belongs_to :game, :inverse_of => 'plugins'

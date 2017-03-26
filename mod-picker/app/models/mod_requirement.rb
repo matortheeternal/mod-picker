@@ -7,6 +7,7 @@ class ModRequirement < ActiveRecord::Base
 
   # UNIQUE SCOPES
   scope :visible, -> { eager_load(:required_mod, :mod).where(:mods => {:hidden => false}).where(:mods_mod_requirements => {:hidden => false}) }
+  scope :mod_list, -> (mod_list_id) { joins("INNER JOIN mod_list_mods").where("mod_list_mods.mod_list_id = ?", mod_list_id).where("mod_requirements.mod_id = mod_list_mods.mod_id").distinct }
 
   # ASSOCIATIONS
   belongs_to :mod, :inverse_of => 'required_mods'

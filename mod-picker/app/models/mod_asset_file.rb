@@ -14,6 +14,7 @@ class ModAssetFile < ActiveRecord::Base
         where(mod_asset_files_right[:mod_option_id].in(mod_option_ids)).
         order(mod_asset_files[:asset_file_id])
   }
+  scope :mod_list, -> (mod_list_id) { joins("INNER JOIN mod_list_mods").joins("INNER JOIN mod_list_mod_options ON mod_list_mod_options.mod_list_mod_id = mod_list_mods.id").where("mod_list_mods.mod_list_id = ?", mod_list_id).where("mod_asset_files.mod_option_id = mod_list_mod_options.mod_option_id").distinct }
 
   # ASSOCIATIONS
   belongs_to :mod_option, :inverse_of => 'mod_asset_files'
