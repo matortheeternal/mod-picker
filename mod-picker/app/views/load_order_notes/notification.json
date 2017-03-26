@@ -1,9 +1,3 @@
 {
-  "only": ["submitted_by", "moderator_message"],
-  "include": {
-    "first_mod": {},
-    "second_mod": {},
-    "first_plugin": {},
-    "second_plugin": {}
-  }
+  "only": ["submitted_by", "moderator_message", "first_plugin_filename", "second_plugin_filename"]
 }

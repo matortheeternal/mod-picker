@@ -100,7 +100,7 @@ app.service('notificationsFactory', function() {
         Review: associatedModLink,
         CompatibilityNote: noteContentLink,
         InstallOrderNote: noteContentLink,
-        LoadOrderNote: noteContentLink,
+        LoadOrderNote: '<a href="plugins?q=filename:&quot;{{content.first_plugin_filename}}&quot;">{{content.first_plugin_filename}}</a> and <a href="plugins?q=filename:&quot;{{content.second_plugin_filename}}&quot;">{{content.second_plugin_filename}}</a>',
         ModTag: associatedModLink,
         ModListTag: associatedModListLink,
         ModAuthor: associatedModLink,

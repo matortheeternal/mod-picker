@@ -36,14 +36,6 @@ class LoadOrderNote < ActiveRecord::Base
 
   has_one :submitter_reputation, :class_name => 'UserReputation', :through => 'submitter', :source => 'reputation'
 
-  # plugins associatied with this load order note
-  belongs_to :first_plugin, :foreign_key => 'first_plugin_filename', :class_name => 'Plugin', :primary_key => 'filename'
-  belongs_to :second_plugin, :foreign_key => 'second_plugin_filename', :class_name => 'Plugin', :primary_key => 'filename'
-
-  # mods associated with this load order note
-  has_one :first_mod, :through => :first_plugin, :class_name => 'Mod', :source => 'mod', :foreign_key => 'mod_id'
-  has_one :second_mod, :through => :second_plugin, :class_name => 'Mod', :source => 'mod', :foreign_key => 'mod_id'
-
   # mod lists this load order note is ignored on
   has_many :mod_list_ignored_notes, :as => 'note'
 
