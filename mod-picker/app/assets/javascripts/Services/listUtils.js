@@ -39,7 +39,11 @@ app.service('listUtils', function() {
         return service.findItem(model, 'mod', 'id', modId, splice);
     };
 
-    this.findPlugin = function(model, pluginId, splice) {
+    this.findPluginByFileName = function(model, pluginFileName, splice) {
+        return service.findItem(model, 'plugin', 'filename', pluginFileName, splice);
+    };
+
+    this.findPluginById = function(model, pluginId, splice) {
         return service.findItem(model, 'plugin', 'id', pluginId, splice);
     };
 

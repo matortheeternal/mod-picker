@@ -392,8 +392,12 @@ app.controller('modListController', function($scope, $rootScope, $q, $state, $st
         return listUtils.genericFind($scope.model.mods, listUtils.findMod, modId, ignoreDestroyed);
     };
 
-    $scope.findPlugin = function(pluginId, ignoreDestroyed) {
-        return listUtils.genericFind($scope.model.plugins, listUtils.findPlugin, pluginId, ignoreDestroyed);
+    $scope.findPlugin = function(pluginAttr, ignoreDestroyed, byFileName) {
+        if (byFileName) {
+            return listUtils.genericFind($scope.model.plugins, listUtils.findPluginByFileName, pluginAttr, ignoreDestroyed);
+        } else {
+            return listUtils.genericFind($scope.model.plugins, listUtils.findPluginById, pluginAttr, ignoreDestroyed);
+        }
     };
 
     $scope.findCustomPlugin = function(noteId, ignoreDestroyed) {
