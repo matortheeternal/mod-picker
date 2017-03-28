@@ -122,7 +122,7 @@ app.service('modsIndexFactory', function(modService, categoryService, tagService
         $scope.allowAdult = $scope.currentUser.signed_in && $scope.currentUser.settings.allow_adult_content;
 
         // set page title
-        $scope.$emit('setPageTitle', 'Browse Item Mods');
+        $scope.$emit('setPageTitle', 'Browse ' + $scope.categoryName + ' Mods');
 
         // columns for view
         $scope.columns = columnsFactory.modColumns();
