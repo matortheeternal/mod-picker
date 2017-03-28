@@ -67,12 +67,14 @@ class Mod < ActiveRecord::Base
     where(tags_condition)
   }
   scope :tag_groups, -> (tag_groups) {
-    tags_condition = ModTag.arel_table.project(Arel.sql('*')).where(Mod.arel_table[:id].eq(ModTag.arel_table[:mod_id])).join(Tag.arel_table, Arel::Nodes::OuterJoin).on(ModTag.arel_table[:tag_id].eq(Tag.arel_table[:id]))
-    tag_groups.each do |tag_group|
-      tags_condition = tags_condition.where(Tag.arel_table[:text].in(tag_group[:include])).exists if tag_group.has_key?(:include)
-      tags_condition = tags_condition.where(Tag.arel_table[:text].in(tag_group[:exclude])).exists.not if tag_group.has_key?(:exclude)
+    conditions = tag_groups.map do |tag_group|
+      if tag_group.has_key?(:include)
+        tags_condition.where(Tag.arel_table[:text].in(tag_group[:include])).exists
+      elsif tag_group.has_key?(:exclude)
+        tags_condition.where(Tag.arel_table[:text].in(tag_group[:exclude])).exists.not
+      end
     end
-    where(tags_condition)
+    where(conditions.inject(:and))
   }
   scope :terms, -> (terms) {
     eager_load(:mod_licenses).where(terms.map {|key,value| ModLicense.arel_table[key].eq(value)}.inject(:and))
@@ -204,6 +206,10 @@ class Mod < ActiveRecord::Base
     pluck(:submitted).group_by { |d|
       d.in_time_zone(time_zone).to_date.to_s(:db)
     }.map { |k,v| [k, v.length] }.sort
+  end
+
+  def self.tags_condition
+    ModTag.arel_table.project(Arel.sql('*')).where(Mod.arel_table[:id].eq(ModTag.arel_table[:mod_id])).join(Tag.arel_table, Arel::Nodes::OuterJoin).on(ModTag.arel_table[:tag_id].eq(Tag.arel_table[:id])).where(ModTag.arel_table[:mod_id].eq(Mod.arel_table[:id]))
   end
 
   def visible
