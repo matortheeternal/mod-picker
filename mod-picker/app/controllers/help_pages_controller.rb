@@ -29,7 +29,7 @@ class HelpPagesController < ApplicationController
     @page_title = params[:search].humanize.titleize
 
     # search by title and text_body via help_page scope
-    @help_pages = HelpPage.search(params[:search]).accessible_by(current_ability)
+    @help_pages = HelpPage.eager_load(:submitter).search(params[:search]).accessible_by(current_ability)
 
     render "help_pages/search"
   end
