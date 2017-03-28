@@ -58,6 +58,7 @@ Rails.application.routes.draw do
 
     # tags
     match '/tags/:id/hide', to: 'tags#hide', via: [:post]
+    match '/tags/:id/replace', to: 'tags#replace', via: [:post]
     match '/tags/:id', to: 'tags#update', via: [:patch, :put]
     match '/mods/:id/tags', to: 'mods#update_tags', via: [:patch, :put]
     match '/mod_lists/:id/tags', to: 'mod_lists#update_tags', via: [:patch, :put]
@@ -143,10 +144,6 @@ Rails.application.routes.draw do
     # help pages
     match '/help/:id/destroy', to: 'help_pages#destroy', via: [:get]
     resources :help_pages, path: 'help', only: [:new, :create, :edit, :update]
-
-    # help videos
-    match '/videos/:id/destroy', to: 'help_videos#destroy', via: [:get]
-    resources :help_videos, path: 'videos', only: [:new, :create, :edit, :update]
 
     #articles
     match '/articles/:id/image', to: 'articles#image', via: [:post]
@@ -255,12 +252,14 @@ Rails.application.routes.draw do
   match '/users/:id/mod_lists', to: 'users#mod_lists', via: [:get]
 
   # tags
+  match '/tag_groups', to: 'tag_groups#index', via: [:get]
   match '/all_tags', to: 'tags#all', via: [:get]
   match '/tags', to: 'tags#index', via: [:post]
 
   # mods
   match '/mods/index', to: 'mods#index', via: [:get, :post]
   match '/mods/search', to: 'mods#search', via: [:post]
+  match '/mods/:id/mod_options', to: 'mods#mod_options', via: [:get]
   resources :mods, only: [:show]
 
   # mod options
@@ -330,13 +329,10 @@ Rails.application.routes.draw do
   match '/help/category/:category', to: 'help_pages#category', via: [:get]
   match '/help/game/:game', to: 'help_pages#game', via: [:get]
   match '/help/:id/comments', to: 'help_pages#comments', via: [:get, :post]
+  match '/help/:id/sections', to: 'help_pages#sections', via: [:get]
   match '/help/search', to:  'help_pages#search', via: [:get]
   resources :help_pages, path: 'help', only: [:show, :index]
   match '/help/*path', to: 'help_pages#record_not_found', via: :all
-
-  # help videos
-  match '/videos/:id', to: 'help_videos#show', via: [:get]
-  match '/videos/:id/sections', to: 'help_videos#sections', via: [:get]
 
   # static data
   resources :categories, only: [:index]

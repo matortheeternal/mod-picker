@@ -4,8 +4,8 @@ class Api::V1::CompatibilityNotesController < Api::V1::ContributionsController
   # GET /compatibility_notes
   def index
     # prepare compatibility notes
-    @compatibility_notes = CompatibilityNote.preload(:editor, :editors, :first_mod, :second_mod, :compatibility_mod, :compatibility_plugin, :compatibility_mod_option).eager_load(submitter: :reputation).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(page: params[:page])
-    count = CompatibilityNote.eager_load(submitter: :reputation).accessible_by(current_ability).filter(filtering_params).count
+    @compatibility_notes = CompatibilityNote.preload(:editor, :first_mod, :second_mod, :compatibility_mod, :compatibility_plugin, :compatibility_mod_option).eager_load({submitter: :reputation}, :editors).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(page: params[:page])
+    count = CompatibilityNote.eager_load({submitter: :reputation}, :editors).accessible_by(current_ability).filter(filtering_params).count
 
     # render response
     render json: {
@@ -23,6 +23,6 @@ class Api::V1::CompatibilityNotesController < Api::V1::ContributionsController
 
     # Params we allow filtering on
     def filtering_params
-      params[:filters].slice(:adult, :hidden, :approved, :game, :search, :status, :submitter, :editor, :helpfulness, :reputation, :helpful_count, :not_helpful_count, :standing, :corrections_count, :history_entries_count, :submitted, :edited);
+      params[:filters].slice(:adult, :hidden, :approved, :game, :search, :status, :helpfulness, :reputation, :helpful_count, :not_helpful_count, :standing, :corrections_count, :history_entries_count, :submitted, :edited);
     end
 end

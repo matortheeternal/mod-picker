@@ -11,7 +11,8 @@ app.directive('tableResults', function() {
             columnGroups: '=?',
             availableColumnData: '=?',
             sort: '=?',
-            actions: '=?'
+            actions: '=?',
+            changeCallback: '&onChange'
         }
     }
 });
@@ -101,6 +102,8 @@ app.controller('tableResultsController', function($scope, $rootScope, tableUtils
         $scope.setSortColumn(column);
         $scope.toggleSort(column);
         $scope.updateSortObject(column);
+
+        $scope.changeCallback();
     };
 
     // load sort into view

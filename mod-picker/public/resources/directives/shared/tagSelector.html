@@ -30,7 +30,7 @@
     </span>
     <span class="add-tag-box action-box" ng-show="showAdd && (activeTags.length + rawNewTags.length < maxTags)" ng-click="addTag()" tabindex="0" ng-keydown="$event.keyCode == 13 && addTag()">
         <span class="add-tag">
-            <i class="fa fa-plus"></i> Add a tag
+            <i class="fa fa-plus"></i> {{::addTagCaption}}
         </span>
     </span>
     </div>

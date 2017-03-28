@@ -6,11 +6,11 @@ class Category < ActiveRecord::Base
   has_many :sub_categories, :class_name => 'Category', :foreign_key => 'parent_id', :inverse_of => 'parent'
 
   # associations with category_priorities
-  has_many :dominant_categories, :class_name => 'Category', :through => 'category_priorities', :foreign_key => 'dominant_id'
-  has_many :recessive_categories, :class_name => 'Category', :through => 'category_priorities', :foreign_key => 'recessive_id'
+  has_many :dominant_category_priorities, :class_name => 'CategoryPriority',:foreign_key => 'dominant_id', :dependent => :destroy
+  has_many :recessive_category_priorities, :class_name => 'CategoryPriority',:foreign_key => 'recessive_id', :dependent => :destroy
 
   # review sections
-  has_many :review_sections, :inverse_of => 'category'
+  has_many :review_sections, :inverse_of => 'category', :dependent => :destroy
 
   # mods that are in this category
   has_many :primary_mods, :foreign_key => 'primary_category_id', :inverse_of => 'primary_category'

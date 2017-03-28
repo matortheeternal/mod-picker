@@ -27,6 +27,6 @@ class Api::V1::CommentsController < Api::ApiController
 
     # Params we allow filtering on
     def filtering_params
-      params[:filters].slice(:adult, :hidden, :search, :submitter, :include_replies, :commentable, :replies, :submitted, :edited)
+      params[:filters].slice(:adult, :hidden, :search, :include_replies, :commentable, :replies, :submitted, :edited)
     end
 end

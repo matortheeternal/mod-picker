@@ -1,11 +1,10 @@
-app.service('indexFactory', function(indexService, objectUtils) {
-    this.buildIndex = function($scope, $stateParams, $state) {
+app.service('indexFactory', function(indexService, objectUtils, $timeout) {
+    this.buildIndex = function($scope, $stateParams, $state, skipGetData) {
         // initialize local variables
         $scope.availableColumnData = [];
         $scope.actions = [];
         $scope.expanded = {};
         $scope.pages = {};
-        $scope.dataRetrieved = false;
 
         // load sort values from url parameters
         $scope.sort = {};
@@ -26,12 +25,10 @@ app.service('indexFactory', function(indexService, objectUtils) {
             objectUtils.deleteEmptyProperties(options.filters, 0, true);
             var dataCallback = function(data) {
                 $scope[$scope.route] = data[$scope.route];
-                $scope.dataRetrieved = true;
                 delete $scope.error;
                 if ($scope.dataCallback) $scope.dataCallback();
             };
             var errorCallback = function(response) {
-                $scope.dataRetrieved = true;
                 $scope.error = response;
             };
             if ($scope.contributions) {
@@ -41,17 +38,26 @@ app.service('indexFactory', function(indexService, objectUtils) {
             }
         };
 
-        $scope.$watch('[filters, sort]', function() {
-            // fetch data again when filters or sort changes
-            var dataWait = $scope.dataRetrieved ? 1000 : 0;
-            clearTimeout($scope.getDataTimeout);
-            $scope.pages.current = 1;
-            $scope.getDataTimeout = setTimeout($scope.getData, dataWait);
+        $scope.refreshFilters = function(page) {
+            //change pages instantly
+            //but only update params and retrieve new data 800ms after the last filter change
+            var timeoutLength = page ? 0 : 800;
+            $timeout.cancel($scope.refreshTimeout);
+            $scope.refreshTimeout = $timeout(function() {
+                $scope.filters.page = page || 1;
 
-            // set url parameters
-            var params = indexService.getParams($scope.filters, $scope.sort, $scope.filterPrototypes);
-            $state.transitionTo($state.current.name, params, { notify: false });
-        }, true);
+                // set url parameters
+                var params = indexService.getParams($scope.filters, $scope.sort, $scope.filterPrototypes);
+                $state.transitionTo($state.current.name, params, { notify: false });
+                //retreive new data
+                $scope.getData($scope.filters.page);
+            }, timeoutLength);
+        };
+
+        // initially get data unless skipping
+        if (!skipGetData) {
+            $scope.getData(1);
+        }
     };
 
     this.buildState = function(scol, sdir, label, filterPrototypes) {

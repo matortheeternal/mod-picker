@@ -10,6 +10,7 @@ class Master < ActiveRecord::Base
   scope :visible, -> {
     eager_load(:plugin => :mod, :master_plugin => :mod).where(:mods => {hidden: false}).where(:mods_plugins => {hidden: false})
   }
+  scope :mod_list, -> (mod_list_id) { joins("INNER JOIN mod_list_plugins").where("mod_list_plugins.mod_list_id = ?", mod_list_id).where("mod_list_plugins.plugin_id = masters.plugin_id").distinct }
 
   # ASSOCIATIONS
   belongs_to :plugin, :inverse_of => 'masters'

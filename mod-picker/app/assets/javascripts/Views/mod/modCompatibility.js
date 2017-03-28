@@ -7,7 +7,7 @@ app.controller('modCompatibilityController', function($scope, $stateParams, $sta
     $scope.pages.compatibility_notes.current = $stateParams.page || 1;
 
     // inherited functions
-    $scope.searchMods = modService.searchMods;
+    $scope.searchMods = modService.searchModsAndGames;
     $scope.searchModOptions = modService.searchModOptions;
     $scope.searchPlugins = pluginService.searchPlugins;
 

@@ -6,6 +6,7 @@ app.directive('sortControl', function() {
         scope: {
             sort: '=?',
             sortOptions: '=?',
+            changeCallback: '&onChange',
             dynamic: '@'
         }
     }

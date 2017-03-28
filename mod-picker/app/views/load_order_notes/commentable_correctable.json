@@ -1,6 +1,3 @@
 {
-  "only": [],
-  "include": {
-    "first_mod": {}
-  }
+  "only": ["first_plugin_filename", "second_plugin_filename"]
 }

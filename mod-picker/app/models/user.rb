@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, CounterCache, Imageable, Reportable, ScopeHelpers, Trackable, BetterJson
+  include Filterable, Sortable, RecordEnhancements, CounterCache, Imageable, Reportable, ScopeHelpers, Searchable, Trackable, BetterJson
 
   # Include devise modules
   devise :invitable, :database_authenticatable, :registerable, :confirmable,
@@ -16,7 +16,6 @@ class User < ActiveRecord::Base
   subscribe :user, to: [:message, :status]
 
   # SCOPES
-  search_scope :username, :alias => 'search'
   hash_scope :role
   counter_scope :authored_mods_count, :mod_lists_count, :submitted_comments_count, :comments_count, :reviews_count, :compatibility_notes_count, :install_order_notes_count, :load_order_notes_count, :corrections_count
   range_scope :overall, :association => 'reputation', :table => 'user_reputations', :alias => 'reputation'
@@ -29,7 +28,6 @@ class User < ActiveRecord::Base
     # TODO: Handle appeals too
     includes(:reviews => :mod, :compatibility_notes => [:first_mod, :second_mod], :install_order_notes => [:first_mod, :second_mod], :load_order_notes => [:first_mod, :second_mod]).where(:mods => {id: mod.id})
   }
-  scope :linked, -> (search) { joins(:bio).where("nexus_username like :search OR lover_username like :search OR workshop_username like :search", search: "#{search}%") }
 
   # ASSOCIATIONS
   has_one :settings, :class_name => 'UserSetting', :dependent => :destroy
@@ -38,7 +36,6 @@ class User < ActiveRecord::Base
 
   has_many :articles, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
   has_many :help_pages, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
-  has_many :help_videos, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
   has_many :comments, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
   has_many :install_order_notes, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
   has_many :load_order_notes, :foreign_key => 'submitted_by', :inverse_of => 'submitter'

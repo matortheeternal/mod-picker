@@ -15,7 +15,7 @@ class Api::V1::UsersController < Api::ApiController
 
   # POST /users/search
   def search
-    @users = User.filter(search_params).sort({ column: "username", direction: "ASC" }).limit(10)
+    @users = User.filter(search_params).sort({ column: "username", direction: "ASC" }).order("CHAR_LENGTH(username)").limit(10)
     respond_with_json(@users)
   end
 
@@ -59,11 +59,14 @@ class Api::V1::UsersController < Api::ApiController
     end
 
     def search_params
+      if params[:filters].has_key?(:search)
+        params[:filters][:search] = "username:#{params[:filters][:search]}"
+      end
       params[:filters].slice(:search)
     end
 
     # Params we allow filtering on
     def filtering_params
-      params[:filters].slice(:search, :linked, :roles, :reputation, :joined, :last_seen, :authored_mods, :mod_lists, :submitted_comments, :comments, :reviews, :compatibility_notes, :install_order_notes, :load_order_notes, :corrections)
+      params[:filters].slice(:search, :roles, :reputation, :joined, :last_seen, :authored_mods, :mod_lists, :submitted_comments, :comments, :reviews, :compatibility_notes, :install_order_notes, :load_order_notes, :corrections)
     end
 end

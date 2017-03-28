@@ -1,7 +1,7 @@
 <div class="modal-container" ng-if="showTagModal" ng-click="unfocusTagModal($event)">
     <messages event="modalMessage"></messages>
 
-    <div class="modal huge-modal">
+    <div class="modal huge-modal" ng-if="!replaceMode">
         <form>
             <div class="close-modal">
                 <span class="fa fa-times" ng-click="toggleTagModal(false)"></span>
@@ -16,6 +16,26 @@
 
             <div class="action-button-container">
                 <input class="btn" type="button" ng-click="saveTag()" ng-disabled="activeTag.text === originalTag.text" value="Save"/>
+                <input class="btn" type="button" ng-click="toggleTagModal(false)" value="Close"/>
+            </div>
+        </form>
+    </div>
+
+    <div class="modal huge-modal" ng-if="replaceMode">
+        <form>
+            <div class="close-modal">
+                <span class="fa fa-times" ng-click="toggleTagModal(false)"></span>
+            </div>
+
+            <h2>Replace Tag</h2>
+
+            <h3 class="section-title">New Tag</h3>
+            <section>
+                <search-input search-function="searchTags" result-id="activeTag.id" search-text="activeTag.text" label="tag" key="text"></search-input>
+            </section>
+
+            <div class="action-button-container">
+                <input class="btn" type="button" ng-click="replaceTag()" ng-disabled="originalTag.hidden || !activeTag.id || activeTag.text === originalTag.text" value="Replace"/>
                 <input class="btn" type="button" ng-click="toggleTagModal(false)" value="Close"/>
             </div>
         </form>

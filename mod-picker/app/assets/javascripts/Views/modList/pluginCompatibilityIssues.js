@@ -70,12 +70,12 @@ app.controller('pluginCompatibilityIssuesController', function($scope, listUtils
         switch(options.action) {
             case "add plugin":
                 if (options.note.compatibility_mod_option) {
-                    $scope.addModOption(options.note.compatibility_mod_option_id);
+                    $scope.addCompatibilityModOption(options.note);
                 }
                 $scope.addPlugin(options.note.compatibility_plugin.id);
                 break;
             case "add mod option":
-                $scope.addModOption(options.note.compatibility_mod_option_id);
+                $scope.addCompatibilityModOption(options.note);
                 break;
             case "add custom plugin":
                 $scope.addCustomPlugin(options.note.id);
@@ -103,6 +103,14 @@ app.controller('pluginCompatibilityIssuesController', function($scope, listUtils
         });
     };
 
+    /* HELPER FUNCTIONS */
+    $scope.addCompatibilityModOption = function(note) {
+        var modId = note.compatibility_mod_option.mod_id;
+        var mod = $scope.findMod(modId, true);
+        if (!mod) return;
+        $scope.addModOption(mod, note.compatibility_mod_option.id);
+    };
+
     // event triggers
     $scope.$on('initializeModules', $scope.buildUnresolvedPluginCompatibility);
     $scope.$on('reloadModules', function() {
@@ -117,9 +125,9 @@ app.controller('pluginCompatibilityIssuesController', function($scope, listUtils
     $scope.$on('pluginRecovered', $scope.buildUnresolvedPluginCompatibility);
     $scope.$on('pluginAdded', $scope.buildUnresolvedPluginCompatibility);
     $scope.$on('customPluginAdded', $scope.buildUnresolvedPluginCompatibility);
-    $scope.$on('modRemoved', function(event, modId) {
-        if (modId) {
-            listUtils.removeModNotes($scope.notes.plugin_compatibility, modId, function(note) {
+    $scope.$on('modRemoved', function(event, mod) {
+        if (mod) {
+            listUtils.removeModNotes($scope.notes.plugin_compatibility, mod.id, function(note) {
                 $scope.destroyIgnoreNote('CompatibilityNote', note);
             });
         }

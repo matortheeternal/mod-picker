@@ -37,16 +37,24 @@ app.config(['$urlMatcherFactoryProvider', '$urlRouterProvider', function($urlMat
 
     // redirect to /home if someone types in an incorrect url
     $urlRouterProvider.otherwise('/home');
+
     // force index pages to have higher priority than show pages
     var goToState = function(stateName) {
         return ['$state', '$location', function($state, $location) {
             $state.go(stateName, $location.search());
         }];
     };
+    var forceModsCategoryIndexRoute = function(categoryName) {
+        $urlRouterProvider.when('/mods/' + categoryName, goToState('base.mods-' + categoryName));
+    };
+    var categoryNames = ["audiovisual", "character-appearance", "fixes", "gameplay", "items", "locations", "new-characters", "resources", "utilities"];
+
+    // override routes
     $urlRouterProvider.when('/mods', goToState('base.mods'));
     $urlRouterProvider.when('/mod-lists', goToState('base.mod-lists'));
     $urlRouterProvider.when('/articles', goToState('base.articles'));
     $urlRouterProvider.when('/mods/submit', goToState('base.submit-mod'));
+    categoryNames.forEach(forceModsCategoryIndexRoute);
 }]);
 
 // sanitize html in markdown

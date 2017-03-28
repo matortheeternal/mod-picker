@@ -19,7 +19,7 @@ class PluginsController < ApplicationController
       @plugins = Plugin.find_batch(params[:batch], params[:game])
       respond_with_json(@plugins, :base)
     else
-      @plugins = Plugin.visible.filter(search_params).limit(10)
+      @plugins = Plugin.visible.filter(search_params).order("CHAR_LENGTH(filename)").limit(10)
       respond_with_json(@plugins, :base)
     end
   end
@@ -48,11 +48,14 @@ class PluginsController < ApplicationController
 
     # Params we allow filtering on
     def filtering_params
-      params[:filters].slice(:adult, :hidden, :approved, :game, :search, :author, :description, :categories, :file_size, :records, :overrides, :errors, :mod_lists, :load_order_notes)
+      params[:filters].slice(:adult, :hidden, :approved, :game, :search, :categories, :file_size, :records, :overrides, :errors, :mod_lists, :load_order_notes)
     end
 
     # Params we allow searching on
     def search_params
+      if params[:filters].has_key?(:search)
+        params[:filters][:search] = "filename:#{params[:filters][:search]}"
+      end
       params[:filters].slice(:search, :game, :mods)
     end
 

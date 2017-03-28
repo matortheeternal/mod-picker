@@ -28,6 +28,15 @@ app.controller('tagsIndexController', function($scope, $rootScope, $stateParams,
     $scope.$on('editTag', function(event, tag) {
         $scope.activeTag = angular.copy(tag);
         $scope.originalTag = tag;
+        $scope.replaceMode = false;
+        $scope.toggleTagModal(true);
+    });
+
+    // opens the replace tag modal for a given tag
+    $scope.$on('replaceTag', function(event, tag) {
+        $scope.activeTag = {};
+        $scope.originalTag = tag;
+        $scope.replaceMode = true;
         $scope.toggleTagModal(true);
     });
 

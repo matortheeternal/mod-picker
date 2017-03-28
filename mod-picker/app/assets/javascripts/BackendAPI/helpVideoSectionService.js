@@ -1,7 +1,5 @@
 app.service('helpVideoSectionService', function($q, backend) {
-    var service = this;
-
-    this.retrieveSections = function(helpVideoId) {
-        return backend.retrieve("/videos/" + helpVideoId + "/sections")
+    this.retrieveSections = function(helpPageId) {
+        return backend.retrieve("/help/" + helpPageId + "/sections");
     };
 });

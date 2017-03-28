@@ -40,6 +40,6 @@ class Api::V1::CorrectionsController < Api::ApiController
 
     # Params we allow filtering on
     def filtering_params
-      params[:filters].slice(:adult, :hidden, :approved, :game, :search, :submitter, :editor, :status, :mod_status, :correctable, :reputation, :agree_count, :disagree_count, :comments, :submitted, :edited);
+      params[:filters].slice(:adult, :hidden, :approved, :game, :search, :status, :mod_status, :correctable, :reputation, :agree_count, :disagree_count, :comments, :submitted, :edited);
     end
 end

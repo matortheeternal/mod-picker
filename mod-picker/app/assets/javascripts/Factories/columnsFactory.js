@@ -654,7 +654,7 @@ app.service('columnsFactory', function() {
                     a = [];
                     if (item.cleaned) a.push('cleaned');
                     if (!item.mod) a.push('custom plugin');
-                    return '(' + a.join(', ') + ')';
+                    if (a.length > 0) return '(' + a.join(', ') + ')';
                 },
                 class: "primary-column",
                 invertSort: true,
@@ -790,21 +790,27 @@ app.service('columnsFactory', function() {
                 group: "General",
                 visibility: !!onIndex,
                 label: "Tools",
-                data: "tools_count",
+                data: function(item) {
+                    return item.tools_count + item.custom_tools_count;
+                },
                 filter: "number"
             },
             {
                 group: "General",
                 visibility: true,
                 label: "Mods",
-                data: "mods_count",
+                data: function(item) {
+                    return item.mods_count + item.custom_mods_count;
+                },
                 filter: "number"
             },
             {
                 group: "General",
                 visibility: true,
                 label: "Plugins",
-                data: "plugins_count",
+                data: function(item) {
+                    return item.plugins_count + item.custom_plugins_count;
+                },
                 filter: "number"
             },
             {
@@ -1170,6 +1176,9 @@ app.service('columnsFactory', function() {
                 visibility: true,
                 label: "Mods Count",
                 data: "mods_count",
+                link: function(item) {
+                    return "mods?t=" + item.text;
+                },
                 filter: "number"
             },
             {
@@ -1177,6 +1186,9 @@ app.service('columnsFactory', function() {
                 visibility: true,
                 label: "Mod Lists Count",
                 data: "mod_lists_count",
+                link: function(item) {
+                    return "mod-lists?t=" + item.text;
+                },
                 filter: "number"
             }
         ]

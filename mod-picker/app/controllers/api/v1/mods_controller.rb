@@ -15,7 +15,7 @@ class Api::V1::ModsController < Api::ApiController
 
   # POST /mods/search
   def search
-    @mods = Mod.visible.filter(search_params).limit(10)
+    @mods = Mod.visible.filter(search_params).order("CHAR_LENGTH(name)").limit(10)
     render json: @mods
   end
 
@@ -141,6 +141,9 @@ class Api::V1::ModsController < Api::ApiController
     def search_params
       unless params[:filters].has_key?(:include_games)
         params[:filters][:include_games] = false;
+      end
+      if params[:filters].has_key?(:search)
+        params[:filters][:search] = "name:#{params[:filters][:search]}"
       end
       params[:filters].slice(:search, :game, :utility, :include_games)
     end

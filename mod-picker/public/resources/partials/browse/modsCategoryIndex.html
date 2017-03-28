@@ -1,0 +1,139 @@
+<messages></messages>
+
+<two-columns>
+    <div class="page-container browse-page">
+        <div class="left-column" style="width:250px; padding: 40px 48px 40px 0;">
+
+            <h2>Filters</h2>
+
+            <search-filter-section></search-filter-section>
+
+            <filter-section name="Content Filters" expanded="false" ng-if="permissions.canModerate || allowAdult">
+                <div class="sidebar-box box-shadow">
+                    <ul class="checkbox-list" ng-if="allowAdult">
+                        <li>
+                            <label><input type="checkbox" ng-model="filters.adult['1']" on-change="refreshFilters()">
+                                Show Adult Content</label>
+                        </li>
+                        <li>
+                            <label><input type="checkbox" ng-model="filters.adult['0']" on-change="refreshFilters()">
+                                Show Non-Adult Content</label>
+                        </li>
+                    </ul>
+                    <ul class="checkbox-list" ng-if="permissions.canModerate">
+                        <li>
+                            <label><input type="checkbox" ng-model="filters.hidden['1']" on-change="refreshFilters()">
+                                Hidden</label>
+                        </li>
+                        <li>
+                            <label><input type="checkbox" ng-model="filters.hidden['0']" on-change="refreshFilters()">
+                                Unhidden</label>
+                        </li>
+                        <li>
+                            <label><input type="checkbox" ng-model="filters.approved['1']" on-change="refreshFilters()">
+                                Approved</label>
+                        </li>
+                        <li>
+                            <label><input type="checkbox" ng-model="filters.approved['0']" on-change="refreshFilters()">
+                                Unapproved</label>
+                        </li>
+                    </ul>
+                </div>
+            </filter-section>
+
+            <filter-section name="Sources" expanded="false">
+                <div class="sidebar-box box-shadow">
+                    <ul class="checkbox-list">
+                        <li>
+                            <label><input type="checkbox" ng-model="filters.sources.nexus" on-change="refreshFilters()">
+                                Nexus Mods</label>
+                        </li>
+                        <li>
+                            <label><input type="checkbox" ng-model="filters.sources.workshop" on-change="refreshFilters()">
+                                Steam Workshop</label>
+                        </li>
+                        <li>
+                            <label><input type="checkbox" ng-model="filters.sources.lab" on-change="refreshFilters()">
+                                Lovers Lab</label>
+                        </li>
+                        <li>
+                            <label><input type="checkbox" ng-model="filters.sources.other" on-change="refreshFilters()">
+                                Other</label>
+                        </li>
+                    </ul>
+                </div>
+            </filter-section>
+
+            <h3>Subcategories</h3>
+
+            <div class="filter-section">
+                <div class="sidebar-box box-shadow">
+                    <ul class="checkbox-list">
+                        <li ng-repeat="category in subcategories">
+                            <label title="{{::category.description}}">
+                                <input type="checkbox" ng-model="category.enabled" ng-change="categoriesChanged()">
+                                {{::category.name}}
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <h2>Tag Filters</h2>
+
+            <filter-section ng-repeat="group in tagGroups" name="{{group.name}}" expanded="true" ng-show="group.category.enabled">
+                <div class="sidebar-box box-shadow">
+                    <ul class="checkbox-list">
+                        <li ng-repeat="tag in group.tag_group_tags">
+                            <label>
+                                <input type="checkbox" ng-model="tag.enabled">
+                                {{::tag.tag_text}}
+                            </label>
+                        </li>
+                        <li ng-if="group.exclusion_label">
+                            <label>
+                                <input type="checkbox" ng-model="group.excluded">
+                                {{::group.exclusion_label}}
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+            </filter-section>
+            <span class="content-message" ng-if="!tagGroups.length">
+                No tag filters available.
+            </span>
+            <span class="content-message" ng-if="tagGroups.length && !tagGroupsVisible">
+                Select a subcategory to display tag filters.
+            </span>
+        </div>
+
+        <div class="right-column">
+            <h2>
+                Mods - {{::categoryName}}
+                <span class="results-count" ng-show="pages.resultsCount">
+                    ({{pages.resultsCount}} results)
+                </span>
+                <span class="right-item view-mode-item">
+                    <span class="right-item" ng-if="!tableView">
+                        <sort-control></sort-control>
+                    </span>
+                    <span class="right-item action-box" ng-click="showDetailsModal()" ng-if="!tableView">
+                        <i class="fa fa-gear"></i> Configure Details
+                    </span>
+                    <span class="right-item action-box" ng-click="tableView = !tableView">
+                        <i class="fa {{ tableView ? 'fa-th-large' : 'fa-list-ul' }}"></i> {{ tableView ? 'Grid View' : 'List View' }}
+                    </span>
+                </span>
+            </h2>
+            <loader data="mods" content-class="table-container" spinner-class="big-spinner" ng-if="!error">
+                <table-results on-change="refreshFilters()" label="mods" data="mods" ng-if="tableView"></table-results>
+                <grid-results label="mods" data="mods" ng-if="!tableView"></grid-results>
+                <page-results pages="pages" data="mods" callback="refreshFilters"></page-results>
+            </loader>
+
+            <mod-options-modal></mod-options-modal>
+
+            <error-display content-class="content-message content-error" errors="error" label="Mods"></error-display>
+        </div>
+    </div>
+</two-columns>

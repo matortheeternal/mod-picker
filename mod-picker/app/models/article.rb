@@ -1,5 +1,5 @@
 class Article < ActiveRecord::Base
-  include Filterable, Sortable, Imageable, RecordEnhancements, CounterCache, ScopeHelpers, BetterJson, Dateable
+  include Filterable, Sortable, Imageable, RecordEnhancements, CounterCache, ScopeHelpers, Searchable, BetterJson, Dateable
 
   # ATTRIBUTES
   self.per_page = 15
@@ -8,9 +8,6 @@ class Article < ActiveRecord::Base
   date_column :submitted, :edited
 
   # SCOPES
-  search_scope :title, :alias => 'search'
-  search_scope :text_body, :alias => 'text'
-  user_scope :submitter
   date_scope :submitted
 
   # UNIQUE SCOPES

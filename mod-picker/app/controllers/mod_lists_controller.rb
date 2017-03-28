@@ -5,8 +5,8 @@ class ModListsController < ApplicationController
 
   # GET /mod_lists
   def index
-    @mod_lists = ModList.includes(:submitter).references(:submitter).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(page: params[:page])
-    count =  ModList.accessible_by(current_ability).filter(filtering_params).count
+    @mod_lists = ModList.eager_load(:submitter).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(page: params[:page])
+    count =  ModList.eager_load(:submitter).accessible_by(current_ability).filter(filtering_params).count
 
     render json: {
         mod_lists: @mod_lists,
@@ -44,7 +44,7 @@ class ModListsController < ApplicationController
     tools = @mod_list.mod_list_mods.utility(true).preload(:mod_list_mod_options, :mod => { :mod_options => { :plugins => :mod }}).order(:index)
     custom_tools = @mod_list.custom_mods.utility(true)
     groups = @mod_list.mod_list_groups.where(tab: 0).order(:index)
-    required_tools = @mod_list.required_tools
+    required_tools = @mod_list.required_tools.order(:required_id)
 
     # render response
     render json: {
@@ -63,15 +63,15 @@ class ModListsController < ApplicationController
     mods = @mod_list.mod_list_mods.utility(false).preload(:mod_list_mod_options, :mod => { :mod_options => { :plugins => :mod }}).order(:index)
     custom_mods = @mod_list.custom_mods.utility(false)
     groups = @mod_list.mod_list_groups.where(tab: 1).order(:index)
-    required_mods = @mod_list.required_mods
+    required_mods = @mod_list.required_mods.order(:required_id)
 
     # prepare notes
-    compatibility_notes = @mod_list.mod_compatibility_notes.preload(:submitter, :compatibility_mod, :editor, :editors, :first_mod, :second_mod)
-    install_order_notes = @mod_list.install_order_notes.preload(:submitter, :editor, :editors, :first_mod, :second_mod)
+    compatibility_notes = @mod_list.mod_compatibility_notes.preload(:compatibility_mod, :editor, :editors, :first_mod, :second_mod, :submitter => :reputation)
+    install_order_notes = @mod_list.install_order_notes.preload(:editor, :editors, :first_mod, :second_mod, :submitter => :reputation)
 
     # prepare helpful marks
-    c_helpful_marks = HelpfulMark.for_user_content(current_user, "CompatibilityNote", compatibility_notes.ids)
-    i_helpful_marks = HelpfulMark.for_user_content(current_user, "InstallOrderNote", install_order_notes.ids)
+    c_helpful_marks = HelpfulMark.for_user_content(current_user, "CompatibilityNote", compatibility_notes.map(&:id))
+    i_helpful_marks = HelpfulMark.for_user_content(current_user, "InstallOrderNote", install_order_notes.map(&:id))
 
     # render response
     render json: {
@@ -91,19 +91,20 @@ class ModListsController < ApplicationController
     authorize! :read, @mod_list
 
     # prepare primary data
-    plugins = @mod_list.mod_list_plugins.includes(:plugin, :mod)
-    plugins_store = @mod_list.plugins_store.order(:mod_option_id)
+    plugins = @mod_list.mod_list_plugins.preload(:plugin, :mod)
+    plugins_store = @mod_list.plugins_store.order(:mod_option_id).preload(:mod)
     install_order = @mod_list.mod_list_mods.utility(false)
     custom_plugins = @mod_list.custom_plugins
     groups = @mod_list.mod_list_groups.where(tab: 2).order(:index)
+    required_plugins = @mod_list.required_plugins.order(:master_plugin_id).preload(:plugin => :mod, :master_plugin => :mod)
 
     # prepare notes
-    compatibility_notes = @mod_list.plugin_compatibility_notes.preload(:submitter, :compatibility_mod, :compatibility_plugin, :compatibility_mod_option, :editor, :editors, :first_mod, :second_mod)
-    load_order_notes = @mod_list.load_order_notes.preload(:submitter, :editor, :editors, :first_mod, :second_mod, :first_plugin, :second_plugin)
+    compatibility_notes = @mod_list.plugin_compatibility_notes.preload(:compatibility_mod, :compatibility_plugin, :compatibility_mod_option, :editor, :editors, :first_mod, :second_mod, :submitter => :reputation)
+    load_order_notes = @mod_list.load_order_notes.preload(:editor, :editors, :submitter => :reputation)
 
     # prepare helpful marks
-    c_helpful_marks = HelpfulMark.for_user_content(current_user, "CompatibilityNote", compatibility_notes.ids)
-    l_helpful_marks = HelpfulMark.for_user_content(current_user, "LoadOrderNote", load_order_notes.ids)
+    c_helpful_marks = HelpfulMark.for_user_content(current_user, "CompatibilityNote", compatibility_notes.map(&:id))
+    l_helpful_marks = HelpfulMark.for_user_content(current_user, "LoadOrderNote", load_order_notes.map(&:id))
     
     # render response
     render json: {
@@ -112,7 +113,7 @@ class ModListsController < ApplicationController
         install_order: json_format(install_order, :simple),
         custom_plugins: custom_plugins,
         groups: groups,
-        required_plugins: @mod_list.required_plugins,
+        required_plugins: required_plugins,
         compatibility_notes: json_format(compatibility_notes, :mod_list),
         load_order_notes: load_order_notes,
         c_helpful_marks: c_helpful_marks,
@@ -144,7 +145,8 @@ class ModListsController < ApplicationController
   # POST /mod_lists/:id/setup
   def setup
     authorize! :read, @mod_list
-    render text: @mod_list.setup_string(current_user)
+    decorator = ModListSetupDecorator.new(@mod_list)
+    render text: SecureData.full(current_user, decorator.to_json)
   end
 
   # GET /mod_lists/:id/config
@@ -353,7 +355,7 @@ class ModListsController < ApplicationController
     end
 
     def filtering_params
-      params[:filters].slice(:game, :adult, :hidden, :search, :description, :submitter, :status, :kind, :submitted, :updated, :completed, :tools, :mods, :plugins, :config_files, :ignored_notes, :stars, :custom_tools, :custom_mods, :master_plugins, :available_plugins, :custom_plugins, :custom_config_files, :compatibility_notes, :install_order_notes, :load_order_notes, :bsa_files, :asset_files, :records, :override_records, :plugin_errors, :tags, :comments)
+      params[:filters].slice(:game, :adult, :hidden, :search, :description, :submitter, :status, :kind, :submitted, :updated, :completed, :tools, :mods, :plugins, :config_files, :ignored_notes, :stars, :custom_tools, :custom_mods, :master_plugins, :available_plugins, :custom_plugins, :custom_config_files, :compatibility_notes, :install_order_notes, :load_order_notes, :bsa_files, :asset_files, :records, :override_records, :plugin_errors, :tags, :excluded_tags, :comments)
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

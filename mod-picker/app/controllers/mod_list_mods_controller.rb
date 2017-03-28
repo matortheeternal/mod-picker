@@ -6,7 +6,11 @@ class ModListModsController < ApplicationController
     authorize! :update, @mod_list_mod.mod_list
 
     if @mod_list_mod.save
-      @mod_list_mod.add_default_mod_options
+      if params[:mod_option_ids]
+        @mod_list_mod.add_mod_options(params[:mod_option_ids])
+      else
+        @mod_list_mod.add_default_mod_options
+      end
       
       if params[:no_response]
         render json: {status: :ok}

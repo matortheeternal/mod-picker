@@ -30,5 +30,5 @@ app.controller('compatibilityNotesController', function($scope, $rootScope, $sta
     $scope.route = 'compatibility_notes';
     $scope.contributions = true;
     $scope.retrieve = contributionService.retrieveContributions;
-    indexFactory.buildIndex($scope, $stateParams, $state);
+    indexFactory.buildIndex($scope, $stateParams, $state, true);
 });

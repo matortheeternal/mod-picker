@@ -5,20 +5,17 @@
         <div class="left-column" style="width:250px; padding: 40px 48px 40px 0;">
             <h2>Filters</h2>
 
-            <filter-section name="Search" expanded="true">
-                <h4>Submitter</h4>
-                <input type="text" ng-model="filters.submitter">
-            </filter-section>
+            <search-filter-section></search-filter-section>
 
             <filter-section name="Content Filters" expanded="true">
                 <div class="sidebar-box box-shadow">
                     <ul class="checkbox-list">
                         <li>
-                            <label><input type="checkbox" ng-model="filters.resolved['1']">
+                            <label><input type="checkbox" ng-model="filters.resolved['1']" ng-change="refreshFilters()">
                                 Resolved</label>
                         </li>
                         <li>
-                            <label><input type="checkbox" ng-model="filters.resolved['0']">
+                            <label><input type="checkbox" ng-model="filters.resolved['0']" ng-change="refreshFilters()">
                                 Unresolved</label>
                         </li>
                     </ul>
@@ -29,43 +26,43 @@
                 <div class="sidebar-box box-shadow">
                     <ul class="checkbox-list">
                         <li>
-                            <label><input type="checkbox" ng-model="filters.reportable.Review">
+                            <label><input type="checkbox" ng-model="filters.reportable.Review" ng-change="refreshFilters()">
                                 Reviews</label>
                         </li>
                         <li>
-                            <label><input type="checkbox" ng-model="filters.reportable.CompatibilityNote">
+                            <label><input type="checkbox" ng-model="filters.reportable.CompatibilityNote" ng-change="refreshFilters()">
                                 Compatibility Notes</label>
                         </li>
                         <li>
-                            <label><input type="checkbox" ng-model="filters.reportable.InstallOrderNote">
+                            <label><input type="checkbox" ng-model="filters.reportable.InstallOrderNote" ng-change="refreshFilters()">
                                 Install Order Notes</label>
                         </li>
                         <li>
-                            <label><input type="checkbox" ng-model="filters.reportable.LoadOrderNote">
+                            <label><input type="checkbox" ng-model="filters.reportable.LoadOrderNote" ng-change="refreshFilters()">
                                 Load Order Notes</label>
                         </li>
                         <li>
-                            <label><input type="checkbox" ng-model="filters.reportable.Comment">
+                            <label><input type="checkbox" ng-model="filters.reportable.Comment" ng-change="refreshFilters()">
                                 Comments</label>
                         </li>
                         <li>
-                            <label><input type="checkbox" ng-model="filters.reportable.Correction">
+                            <label><input type="checkbox" ng-model="filters.reportable.Correction" ng-change="refreshFilters()">
                                 Corrections</label>
                         </li>
                         <li>
-                            <label><input type="checkbox" ng-model="filters.reportable.Mod">
+                            <label><input type="checkbox" ng-model="filters.reportable.Mod" ng-change="refreshFilters()">
                                 Mods</label>
                         </li>
                         <li>
-                            <label><input type="checkbox" ng-model="filters.reportable.ModList">
+                            <label><input type="checkbox" ng-model="filters.reportable.ModList" ng-change="refreshFilters()">
                                 Mod Lists</label>
                         </li>
                         <li>
-                            <label><input type="checkbox" ng-model="filters.reportable.Tag">
+                            <label><input type="checkbox" ng-model="filters.reportable.Tag" ng-change="refreshFilters()">
                                 Tags</label>
                         </li>
                         <li>
-                            <label><input type="checkbox" ng-model="filters.reportable.User">
+                            <label><input type="checkbox" ng-model="filters.reportable.User" ng-change="refreshFilters()">
                                 Users</label>
                         </li>
                     </ul>
@@ -76,31 +73,31 @@
                 <div class="sidebar-box box-shadow">
                     <ul class="checkbox-list">
                         <li>
-                            <label><input type="checkbox" ng-model="filters.reason.be_respectful">
+                            <label><input type="checkbox" ng-model="filters.reason.be_respectful" ng-change="refreshFilters()">
                                 Be Respectful</label>
                         </li>
                         <li>
-                            <label><input type="checkbox" ng-model="filters.reason.be_trustworthy">
+                            <label><input type="checkbox" ng-model="filters.reason.be_trustworthy" ng-change="refreshFilters()">
                                 Be Trustworthy</label>
                         </li>
                         <li>
-                            <label><input type="checkbox" ng-model="filters.reason.be_constructive">
+                            <label><input type="checkbox" ng-model="filters.reason.be_constructive" ng-change="refreshFilters()">
                                 Be Constructive</label>
                         </li>
                         <li>
-                            <label><input type="checkbox" ng-model="filters.reason.spam">
+                            <label><input type="checkbox" ng-model="filters.reason.spam" ng-change="refreshFilters()">
                                 Spam</label>
                         </li>
                         <li>
-                            <label><input type="checkbox" ng-model="filters.reason.piracy">
+                            <label><input type="checkbox" ng-model="filters.reason.piracy" ng-change="refreshFilters()">
                                 Piracy</label>
                         </li>
                         <li>
-                            <label><input type="checkbox" ng-model="filters.reason.adult_content">
+                            <label><input type="checkbox" ng-model="filters.reason.adult_content" ng-change="refreshFilters()">
                                 Unmarked Adult Content</label>
                         </li>
                         <li>
-                            <label><input type="checkbox" ng-model="filters.reason.other">
+                            <label><input type="checkbox" ng-model="filters.reason.other" ng-change="refreshFilters()">
                                 Other</label>
                         </li>
                     </ul>
@@ -114,9 +111,9 @@
                             <span class="fa fa-calendar" ng-click="" title="Custom Date"></span>
                         </span>-->
                     </h4>
-                    <slider filter-data="filters" filter="filter"></slider>
+                    <slider on-change="refreshFilters()" filter-data="filters" filter="filter"></slider>
                 </div>
-            </div>
+            </filter-section>
 
             <filter-section name="Statistic Filters" expanded="true">
                 <div class="filter-section">
@@ -126,16 +123,21 @@
                                 <span class="fa fa-wrench" ng-click="" title="Custom Value"></span>
                             </span>-->
                         </h4>
-                        <slider filter-data="filters" filter="filter"></slider>
+                        <slider on-change="refreshFilters()" filter-data="filters" filter="filter"></slider>
                     </div>
                 </div>
             </filter-section>
         </div>
 
         <div class="right-column">
-            <h2>Reports <span class="right-item">
-                <sort-control></sort-control>
-            </span></h2>
+            <h2>Reports
+                <span class="results-count" ng-show="pages.resultsCount">
+                    ({{pages.resultsCount}} results)
+                </span>
+                <span class="right-item">
+                    <sort-control on-change="refreshFilters()"></sort-control>
+                </span>
+            </h2>
             <loader data="reports" content-class="grid-results" spinner-class="big-spinner" ng-if="!error">
                 <report data="report" ng-repeat="report in reports"></report>
 
@@ -143,7 +145,7 @@
                     No reports were found matching your search criteria.
                 </div>
 
-                <page-results pages="pages" data="reports" callback="getData"></page-results>
+                <page-results pages="pages" data="reports" callback="refreshFilters"></page-results>
             </loader>
 
             <error-display content-class="content-message content-error" errors="error" label="Reports"></error-display>

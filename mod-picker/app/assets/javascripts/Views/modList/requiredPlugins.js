@@ -20,7 +20,7 @@ app.controller('requiredPluginsController', function($scope, requirementUtils) {
             if (!requirement.plugins.length) {
                 return;
             }
-            var requiredPluginPresent = $scope.findPlugin(requirement.master_plugin.id, true);
+            var requiredPluginPresent = $scope.findPlugin(requirement.master_plugin.filename, true, true);
             if (!requiredPluginPresent) {
                 if (requirementUtils.findOne($scope.findPlugin, requirement.plugins)) {
                     $scope.required.missing_plugins.push(requirement);
@@ -55,8 +55,8 @@ app.controller('requiredPluginsController', function($scope, requirementUtils) {
         requirementUtils.removeDestroyedRequirements($scope.required.plugins, 'plugin');
         $scope.buildMissingPlugins();
     });
-    $scope.$on('pluginRemoved', function(event, pluginId) {
-        if (pluginId) requirementUtils.removeRequirements(pluginId, $scope.required.plugins, 'plugin');
+    $scope.$on('pluginRemoved', function(event, plugin) {
+        if (plugin) requirementUtils.removeRequirements(plugin.id, $scope.required.plugins, 'plugin');
         $scope.buildMissingPlugins();
     });
     $scope.$on('pluginRecovered', function(event, pluginId) {

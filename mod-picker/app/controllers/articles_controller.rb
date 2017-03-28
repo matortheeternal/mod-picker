@@ -10,8 +10,8 @@ class ArticlesController < ApplicationController
 
   # GET /articles/index
   def index
-    @articles= Article.accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(page: params[:page])
-    count =  Article.accessible_by(current_ability).filter(filtering_params).count
+    @articles= Article.eager_load(:submitter).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(page: params[:page])
+    count =  Article.eager_load(:submitter).accessible_by(current_ability).filter(filtering_params).count
 
     render json: {
         articles: @articles,
@@ -96,7 +96,7 @@ class ArticlesController < ApplicationController
 
     # Params we allow filtering on
     def filtering_params
-      params[:filters].slice(:search, :text, :submitter, :submitted)
+      params[:filters].slice(:search, :submitted)
     end
 
     # Only allow a trusted parameter "white list" through.

@@ -1,0 +1,22 @@
+[
+  {
+    "column": "username"
+  },
+  {
+    "alias": "linked",
+    "subqueries": [
+      {
+        "model": "UserBio",
+        "column": "nexus_username"
+      },
+      {
+        "model": "UserBio",
+        "column": "lover_username"
+      },
+      {
+        "model": "UserBio",
+        "column": "workshop_username"
+      }
+    ]
+  }
+]

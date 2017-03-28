@@ -1,0 +1,15 @@
+{
+  "only": ["index"],
+  "include": {
+    "mod": {
+      "only": ["id", "name", "aliases", "authors"],
+      "methods": ["source_links"],
+      "include": {
+        "mod_options": {
+          "only": ["id", "name", "display_name", "size", "md5_hash", "is_installer_option"]
+        }
+      }
+    }
+  },
+  "methods": ["mod_option_ids"]
+}

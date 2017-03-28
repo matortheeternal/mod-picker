@@ -8,7 +8,7 @@ class RelatedModNotesController < ContributionsController
     count = RelatedModNote.eager_load(submitter: :reputation).accessible_by(current_ability).filter(filtering_params).count
 
     # prepare helpful marks
-    helpful_marks = HelpfulMark.for_user_content(current_user, "RelatedModNote", @related_mod_notes.ids)
+    helpful_marks = HelpfulMark.for_user_content(current_user, "RelatedModNote", @related_mod_notes.map(&:id))
 
     # render response
     render json: {
@@ -40,7 +40,7 @@ class RelatedModNotesController < ContributionsController
 
     # Params we allow filtering on
     def filtering_params
-      params[:filters].slice(:adult, :hidden, :approved, :game, :search, :status, :submitter, :editor, :helpfulness, :reputation, :helpful_count, :not_helpful_count, :submitted, :edited);
+      params[:filters].slice(:adult, :hidden, :approved, :game, :search, :status, :helpfulness, :reputation, :helpful_count, :not_helpful_count, :submitted, :edited);
     end
 
     # Params allowed during creation

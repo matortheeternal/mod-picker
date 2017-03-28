@@ -81,6 +81,8 @@
 
         <authors-modal></authors-modal>
 
+        <mod-options-modal></mod-options-modal>
+
         <appeals-modal></appeals-modal>
 
         <requirements-modal></requirements-modal>
@@ -165,7 +167,7 @@
                     <!--Tags-->
                     <h3 class="section-title">Tags</h3>
                     <section>
-                        <tag-selector active-tags="mod.tags" new-tags="newTags" max-tags="10" type="mod" show-count="true" show-add="!mod.lock_tags && permissions.canTag" can-create="permissions.canCreateTags" show-remove="!mod.lock_tags && permissions.canManage" save-callback="saveTags"></tag-selector>
+                        <tag-selector active-tags="mod.tags" new-tags="newTags" max-tags="30" type="mod" show-count="true" show-add="!mod.lock_tags && permissions.canTag" can-create="permissions.canCreateTags" show-remove="!mod.lock_tags && permissions.canManage" save-callback="saveTags"></tag-selector>
                         <span class="stat-title" ng-show="mod.lock_tags && !mod.tags.length">Tags locked</span>
                         <span class="stat-title" ng-show="!permissions.canTag && !mod.tags.length">You must log in to add tags</span>
                     </section>

@@ -56,8 +56,8 @@ app.controller('requiredModsController', function($scope, $rootScope, requiremen
         requirementUtils.removeDestroyedRequirements($scope.required.mods, 'mod');
         $scope.buildMissingMods();
     });
-    $scope.$on('modRemoved', function(event, modId) {
-        if (modId) requirementUtils.removeRequirements(modId, $scope.required.mods, 'mod');
+    $scope.$on('modRemoved', function(event, mod) {
+        if (mod) requirementUtils.removeRequirements(mod.id, $scope.required.mods, 'mod');
         $scope.buildMissingMods();
     });
     $scope.$on('modRecovered', function(event, modId) {

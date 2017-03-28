@@ -1,5 +1,5 @@
 class ModsController < ApplicationController
-  before_action :set_mod, only: [:edit, :update, :hide, :approve, :update_tags, :image, :corrections, :reviews, :compatibility_notes, :install_order_notes, :load_order_notes, :related_mod_notes, :analysis, :destroy]
+  before_action :set_mod, only: [:mod_options, :edit, :update, :hide, :approve, :update_tags, :image, :corrections, :reviews, :compatibility_notes, :install_order_notes, :load_order_notes, :related_mod_notes, :analysis, :destroy]
 
   # POST /mods/index
   def index
@@ -19,7 +19,7 @@ class ModsController < ApplicationController
       @mods = Mod.find_batch(params[:batch], params[:game])
       render json: @mods
     else
-      @mods = Mod.visible.filter(search_params).limit(10)
+      @mods = Mod.visible.filter(search_params).order("CHAR_LENGTH(name)").limit(10)
       render json: @mods
     end
   end
@@ -49,6 +49,11 @@ class ModsController < ApplicationController
         in_mod_list: in_mod_list,
         incompatible: incompatible
     }
+  end
+
+  # GET /mods/1/mod_options
+  def mod_options
+    respond_with_json(@mod.mod_options, :mod_list_mod)
   end
 
   # GET /mods/new
@@ -329,6 +334,9 @@ class ModsController < ApplicationController
       unless params[:filters].has_key?(:include_games)
         params[:filters][:include_games] = false;
       end
+      if params[:filters].has_key?(:search)
+        params[:filters][:search] = "name:#{params[:filters][:search]}"
+      end
       params[:filters].slice(:search, :game, :utility, :include_games)
     end
 
@@ -354,7 +362,7 @@ class ModsController < ApplicationController
     # Params we allow filtering on
     def filtering_params
       # construct valid filters array
-      valid_filters = [:adult, :hidden, :approved, :include_utilities, :compatibility, :sources, :terms, :search, :description, :author, :mp_author, :game, :released, :updated, :utility, :categories, :tags, :stars, :reviews, :rating, :reputation, :compatibility_notes, :install_order_notes, :load_order_notes,:related_mod_notes, :mod_options, :asset_files, :plugins, :required_mods, :required_by, :tags_count, :mod_lists, :submitted]
+      valid_filters = [:adult, :hidden, :approved, :include_utilities, :compatibility, :sources, :search, :terms, :game, :released, :updated, :utility, :categories, :tags, :excluded_tags, :tag_groups, :stars, :reviews, :rating, :reputation, :compatibility_notes, :install_order_notes, :load_order_notes,:related_mod_notes, :mod_options, :asset_files, :plugins, :required_mods, :required_by, :tags_count, :mod_lists, :submitted]
       source_filters = [:views, :author, :posts, :videos, :images, :discussions, :downloads, :favorites, :subscribers, :endorsements, :unique_downloads, :files, :bugs, :articles]
       sources = params[:filters][:sources]
 
@@ -388,7 +396,7 @@ class ModsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def mod_params
-      params.require(:mod).permit(:game_id, :name, :authors, :aliases, :is_utility, :has_adult_content, :primary_category_id, :secondary_category_id, :released, :updated, :nexus_info_id, :lover_info_id, :workshop_info_id, :curate,
+      params.require(:mod).permit(:game_id, :name, :authors, :aliases, :is_utility, :is_mod_manager, :is_extender, :has_adult_content, :primary_category_id, :secondary_category_id, :released, :updated, :nexus_info_id, :lover_info_id, :workshop_info_id, :curate,
          custom_sources_attributes: [:label, :url],
          required_mods_attributes: [:required_id],
          tag_names: [],
@@ -404,7 +412,7 @@ class ModsController < ApplicationController
     end
 
     def mod_update_params
-      p = params.require(:mod).permit(:name, :authors, :aliases, :is_utility, :has_adult_content, :status, :show_details_tab, :description, :notice, :notice_type, :support_link, :issues_link, :primary_category_id, :secondary_category_id, :released, :updated, :mark_updated, :nexus_info_id, :lover_info_id, :workshop_info_id, :disallow_contributors, :disable_reviews, :lock_tags, :hidden, :approved, :tag_names,
+      p = params.require(:mod).permit(:name, :authors, :aliases, :is_utility, :is_mod_manager, :is_extender, :has_adult_content, :status, :show_details_tab, :description, :notice, :notice_type, :support_link, :issues_link, :primary_category_id, :secondary_category_id, :released, :updated, :mark_updated, :nexus_info_id, :lover_info_id, :workshop_info_id, :disallow_contributors, :disable_reviews, :lock_tags, :hidden, :approved, :tag_names,
          required_mods_attributes: [:id, :required_id, :_destroy],
          mod_licenses_attributes: [:id, :license_id, :license_option_id, :target, :credit, :commercial, :redistribution, :modification, :private_use, :include, :text_body, :_destroy],
           mod_authors_attributes: [:id, :role, :user_id, :_destroy],
@@ -426,7 +434,7 @@ class ModsController < ApplicationController
     end
 
     def options_params
-      params[:mod].slice(:is_utility, :has_adult_content, :disallow_contributors, :disable_reviews, :lock_tags)
+      params[:mod].slice(:is_utility, :is_mod_manager, :is_extender, :has_adult_content, :disallow_contributors, :disable_reviews, :lock_tags)
     end
 
   def details_params

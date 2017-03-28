@@ -4,11 +4,11 @@ class InstallOrderNotesController < ContributionsController
   # GET /install_order_notes
   def index
     # prepare install order notes
-    @install_order_notes = InstallOrderNote.preload(:editor, :editors).includes(submitter: :reputation).references(submitter: :reputation).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(page: params[:page])
-    count = InstallOrderNote.accessible_by(current_ability).filter(filtering_params).count
+    @install_order_notes = InstallOrderNote.preload(:editor).eager_load({submitter: :reputation}, :editors).accessible_by(current_ability).filter(filtering_params).sort(params[:sort]).paginate(page: params[:page])
+    count = InstallOrderNote.eager_load({submitter: :reputation}, :editors).accessible_by(current_ability).filter(filtering_params).count
 
     # prepare helpful marks
-    helpful_marks = HelpfulMark.for_user_content(current_user, "InstallOrderNote", @install_order_notes.ids)
+    helpful_marks = HelpfulMark.for_user_content(current_user, "InstallOrderNote", @install_order_notes.map(&:id))
 
     # render response
     render json: {
@@ -40,7 +40,7 @@ class InstallOrderNotesController < ContributionsController
 
     # Params we allow filtering on
     def filtering_params
-      params[:filters].slice(:adult, :hidden, :approved, :game, :search, :submitter, :editor, :helpfulness, :reputation, :helpful_count, :not_helpful_count, :standing, :corrections_count, :history_entries_count, :submitted, :edited);
+      params[:filters].slice(:adult, :hidden, :approved, :game, :search, :helpfulness, :reputation, :helpful_count, :not_helpful_count, :standing, :corrections_count, :history_entries_count, :submitted, :edited);
     end
 
     # Params allowed during creation

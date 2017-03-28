@@ -1,0 +1,17 @@
+[
+  {
+    "column": "text_body",
+    "alias": "text"
+  },
+  {
+    "model": "User",
+    "column": "username",
+    "alias": "submitter"
+  },
+  {
+    "model": "User",
+    "table_alias": "editors_load_order_notes",
+    "column": "username",
+    "alias": "editor"
+  }
+]

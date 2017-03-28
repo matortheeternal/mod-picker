@@ -61,10 +61,10 @@ class ModListMod < ActiveRecord::Base
   end
 
   def load_order_notes
-    plugin_ids = mod_list.mod_list_plugin_ids
-    return [] if plugin_ids.empty?
+    plugin_filenames = mod_list.mod_list_plugin_ids
+    return [] if plugin_filenames.empty?
 
-    LoadOrderNote.visible.plugin(plugin_ids).plugin(mod.plugins.ids)
+    LoadOrderNote.visible.plugin(plugin_filenames).plugin(mod.plugins.pluck(:filename).uniq)
   end
 
   def required_tools
@@ -96,6 +96,15 @@ class ModListMod < ActiveRecord::Base
     mod_list_mod_options.each { |option| option.copy_to(other_mod_list_mod) }
   end
 
+  def add_mod_options(mod_option_ids)
+    mod.mod_options.where(id: mod_option_ids).each do |mod_option|
+      mod_list_mod_option = ModListModOption.create!({
+          mod_list_mod_id: id, mod_option_id: mod_option.id
+      })
+      mod_list_mod_option.add_plugins
+    end
+  end
+
   def add_default_mod_options
     mod.mod_options.default.each do |mod_option|
       mod_list_mod_option = ModListModOption.create!({
@@ -116,6 +125,10 @@ class ModListMod < ActiveRecord::Base
 
   def baseline_options
     mod_list_mod_options.map {|option| option.mod_option.display_name}
+  end
+
+  def mod_option_ids
+    mod_list_mod_options.map {|option| option.mod_option_id}
   end
 
   private

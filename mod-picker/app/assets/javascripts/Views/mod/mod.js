@@ -384,29 +384,69 @@ app.controller('modController', function($scope, $rootScope, $q, $stateParams, $
         });
     };
 
-    $scope.toggleInModList = function() {
-        if ($scope.mod.in_mod_list) {
-            // remove from mod list
-            modListService.removeModListMod($scope.activeModList, $scope.mod).then(function() {
-                $scope.$emit('successMessage', 'Mod removed from your mod list successfully.');
-            }, function(response) {
-                var params = {
-                    label: 'Error removing mod from your mod list',
-                    response: response
-                };
-                $scope.$emit('errorMessage', params);
+    $scope.toggleModOptionsModal = function(visible) {
+        $scope.$emit('toggleModal', visible);
+        $scope.showModOptionsModal = visible;
+    };
+
+    $scope.setupModOptionsModal = function() {
+        $scope.activeMod = $scope.mod;
+        $scope.activeModOptions = null;
+        modService.retrieveModOptions($scope.mod.id).then(function(modOptions) {
+            modOptions.forEach(function(modOption) {
+                modOption.enabled = modOption.default;
             });
+            $scope.activeModOptions = modOptions;
+        }, function(response) {
+            $scope.modOptionsError = response;
+        });
+    };
+
+    $scope.modOptionsModalAdd = function() {
+        var modOptionIds = $scope.activeModOptions.filter(function(modOption) {
+            return modOption.enabled;
+        }).map(function(modOption) {
+            return modOption.id;
+        });
+        $scope.addMod(modOptionIds);
+        $scope.toggleModOptionsModal(false);
+    };
+
+    $scope.removeFromModList = function() {
+        modListService.removeModListMod($scope.activeModList, $scope.mod).then(function() {
+            $scope.$emit('successMessage', 'Mod removed from your mod list successfully.');
+        }, function(response) {
+            var params = {
+                label: 'Error removing mod from your mod list',
+                response: response
+            };
+            $scope.$emit('errorMessage', params);
+        });
+    };
+
+    $scope.addToModList = function() {
+        if ($scope.mod.mod_options_count > 1) {
+            $scope.setupModOptionsModal();
+            $scope.toggleModOptionsModal(true);
         } else {
-            modListService.addModListMod($scope.activeModList, $scope.mod).then(function() {
-                $scope.$emit('successMessage', 'Mod added to your mod list successfully.');
-            }, function(response) {
-                var params = {
-                    label: 'Error adding mod to your mod list',
-                    response: response
-                };
-                $scope.$emit('errorMessage', params);
-            });
+            $scope.addMod();
         }
+    };
+
+    $scope.addMod = function(modOptionIds) {
+        modListService.addModListMod($scope.activeModList, $scope.mod, modOptionIds).then(function() {
+            $scope.$emit('successMessage', 'Mod added to your mod list successfully.');
+        }, function(response) {
+            var params = {
+                label: 'Error adding mod to your mod list',
+                response: response
+            };
+            $scope.$emit('errorMessage', params);
+        });
+    };
+
+    $scope.toggleInModList = function() {
+        $scope.mod.in_mod_list ? $scope.removeFromModList() : $scope.addToModList();
     };
 
     $scope.getAppealStatus = function() {

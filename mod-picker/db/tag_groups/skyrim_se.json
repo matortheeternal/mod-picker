@@ -1,0 +1,285 @@
+[{
+		"category_name" : "Audiovisual - Animations",
+		"name" : "Animation Type",
+		"tag_names" : ["Movement", "Combat", "Magic", "Idle", "Action"]
+	}, {
+		"category_name" : "Audiovisual - Animations",
+		"name" : "Animation Target",
+		"tag_names" : ["Characters", "Creatures", "Items", "Objects", "Player Character"]
+	}, {
+		"category_name" : "Audiovisual - Lighting & Weather",
+		"name" : "Content",
+		"tag_names" : ["New Weathers", "New Lights", "New Visual Effects"]
+	}, {
+		"category_name" : "Audiovisual - Lighting & Weather",
+		"name" : "Weather Type",
+		"exclusion_label" : "Other",
+		"tag_names" : ["Clouds", "Fog", "Rain", "Lightning", "Snow", "Wind"]
+	}, {
+		"category_name" : "Audiovisual - Lighting & Weather",
+		"name" : "Lighting Target",
+		"tag_names" : ["Interiors", "Items", "Magic", "Objects", "World"]
+	}, {
+		"category_name" : "Audiovisual - Models & Textures",
+		"name" : "Content",
+		"tag_names" : ["Meshes", "Textures", "Shaders"]
+	}, {
+		"category_name" : "Audiovisual - Models & Textures",
+		"name" : "Texture Resolution",
+		"tag_names" : ["256", "512", "1K", "2K", "4K", "8K"]
+	}, {
+		"category_name" : "Audiovisual - Models & Textures",
+		"name" : "Target",
+		"tag_names" : ["Architecture", "Armor", "Clothing", "Clutter", "Creatures", "Food", "Landscape", "Potions", "Poisons", "Magic", "Sky", "User Interface", "Weapons"]
+	}, {
+		"category_name" : "Audiovisual - Post-processing",
+		"name" : "Content",
+		"exclusion_label" : "Other",
+		"tag_names" : ["ENB Preset", "SweetFX Preset", "ReShade Preset", "FXAA Preset"]
+	}, {
+		"category_name" : "Audiovisual - Sounds & Music",
+		"name" : "Sound Content",
+		"tag_names" : ["Music", "Sounds", "Silence"]
+	}, {
+		"category_name" : "Audiovisual - Sounds & Music",
+		"name" : "Sound Type",
+		"tag_names" : ["Ambient", "Combat", "Dialogue", "Interaction", "User Interface"]
+	}, {
+		"category_name" : "Character Appearance",
+		"name" : "Character Gender",
+		"tag_names" : ["Male", "Female"]
+	}, {
+		"category_name" : "Character Appearance - Body Mods",
+		"name" : "Body Mod Content",
+		"tag_names" : ["Body Shape", "Ears", "Feet", "Nudity", "Skin", "Tails"]
+	}, {
+		"category_name" : "Character Appearance - Face Parts",
+		"name" : "Face Part Type",
+		"tag_names" : ["Hair", "Eyes", "Eyebrows", "Facial Hair", "Mouths", "Noses"]
+	}, {
+		"category_name" : "Character Appearance - NPC Overhauls",
+		"name" : "Overhaul Target",
+		"tag_names" : ["Bandits", "Children", "Elderly", "Followers", "Forsworn", "Guards", "Jarls", "Mages", "Townspeople", "Vampires"]
+	}, {
+		"category_name" : "Character Appearance - Overlays",
+		"name" : "Overlay Type",
+		"tag_names" : ["Dirt", "Freckles", "Makeup", "Scars", "Tattoos", "Warpaint"]
+	}, {
+		"category_name" : "Character Appearance",
+		"name" : "Character Race",
+		"tag_names" : ["Humans", "Elves", "Beastmen", "Altmer", "Argonian", "Bosmer", "Breton", "Dunmer", "Imperial", "Khajiit", "Nord", "Orsimer", "Redguard"]
+	}, {
+		"category_name" : "Fixes",
+		"name" : "Fix Type",
+		"tag_names" : ["Compatibility", "Exploit Removal", "Immersion", "Performance", "Stability", "Text", "Vanilla Game Bugfix"]
+	}, {
+		"category_name" : "Gameplay - AI & Combat",
+		"name" : "Content",
+		"tag_names" : ["Character Stats", "Combat Mechanics", "Killmoves", "NPC Behavior", "Stealth Mechanics"]
+	}, {
+		"category_name" : "Gameplay - Classes & Races",
+		"name" : "Content",
+		"tag_names" : ["New Classes", "New Races", "Abilities", "Powers", "Skill Bonuses"]
+	}, {
+		"category_name" : "Gameplay - Classes & Races",
+		"name" : "Race",
+		"tag_names" : ["Altmer", "Argonian", "Bosmer", "Breton", "Dunmer", "Imperial", "Khajiit", "Nord", "Orsimer", "Redguard", "Vampires", "Vampire Lords", "Werebears", "Werewolves"]
+	}, {
+		"category_name" : "Gameplay - Crafting",
+		"name" : "Crafting Type",
+		"tag_names" : ["Alchemy", "Breakdown", "Building", "Cooking", "Enchanting", "Gardening", "Smithing", "Spell Creation", "Staff Enchanting"]
+	}, {
+		"category_name" : "Gameplay - Economy & Item Balance",
+		"name" : "Affects",
+		"tag_names" : ["Loot", "Gold", "Merchants", "Quest Rewards", "Item Stats"]
+	}, {
+		"category_name" : "Gameplay - Magic & Abilities",
+		"name" : "Content",
+		"tag_names" : ["Active Effects", "Dragon Shouts", "Enchantments", "Powers", "Scrolls", "Spells"]
+	}, {
+		"category_name" : "Gameplay - Magic & Abilities",
+		"name" : "Magic Type",
+		"tag_names" : ["Alteration Magic", "Conjuration Magic", "Destruction Magic", "Illusion Magic", "Enchanting Magic", "Restoration Magic"]
+	}, {
+		"category_name" : "Gameplay - Quests & Stories",
+		"name" : "Quest Content",
+		"tag_names" : ["Faction Entry Requirements", "Game Start", "Main Questline", "New Factions", "New Role-playing Options", "New Storylines", "Quest Markers", "Radiant Quests", "Vanilla Quests"]
+	}, {
+		"category_name" : "Gameplay - Quests & Stories",
+		"name" : "Faction",
+		"tag_names" : ["The Aldmeri Dominion", "The Bards College", "The Black-Briars", "The Blades", "The College of Winterhold", "The Companions Guild", "The Coven of Namira", "The Dark Brotherhood", "The Dawnguard", "The East Empire Trading Company", "The Forsworn", "The Imperial Legion", "The Great House Telvanni", "The Greybeards", "The Morag Tong", "The Mythic Dawn", "The Nightingales", "The Penitus Oculatus", "The Psijic Order", "The Skaal", "The Stormcloaks", "The Thalmor", "The Thieves Guild", "The Vigilants of Stendarr", "The Volkihar Clan", "The Silver Hand", "The Silver-Bloods", "The Summerset Shadows", "Tribal Orcs"]
+	}, {
+		"category_name" : "Gameplay - Skills & Perks",
+		"name" : "Content",
+		"tag_names" : ["New Skills", "New Perks", "New Skill Mechanics", "Skill Limits", "Perk Points", "Training"]
+	}, {
+		"category_name" : "Gameplay - Skills & Perks",
+		"name" : "Skill",
+		"tag_names" : ["Illusion", "Conjuration", "Destruction", "Restoration", "Alteration", "Enchanting", "Smithing", "Heavy Armor", "Block", "Two-Handed", "One-Handed", "Archery", "Light Armor", "Sneak", "Lockpicking", "Pickpocket", "Speech", "Alchemy"]
+	}, {
+		"category_name" : "Gameplay - User Interface",
+		"name" : "Affects",
+		"tag_names" : ["Crafting Menu", "Cursor", "Dialogues", "Dialogue Menu", "Favorites Menu", "Font", "Item Names", "Loading Screens", "Lockpicking", "Looting", "Main Menu", "Magic Menu", "Map Markers", "Reading", "Resource Bars", "Skill Interface", "Sleeping", "Stealing", "Stealth", "Waiting", "World Map"]
+	}, {
+		"category_name" : "Gameplay - User Interface",
+		"name" : "New Interfaces",
+		"tag_names" : ["New Hotkeys", "New Menus", "New Meters", "New Widgets"]
+	}, {
+		"category_name" : "Items",
+		"name" : "Item Type",
+		"tag_names" : ["Unique Items", "Daedric Artifacts", "Craftable", "Lootable"]
+	}, {
+		"category_name" : "Items - Armor, Clothing, & Accessories",
+		"name" : "Apparel Type",
+		"tag_names" : ["Accessories", "Armor", "Clothing", "Heavy Armor", "Jewelry", "Light Armor"]
+	}, {
+		"category_name" : "Items - Armor, Clothing, & Accessories",
+		"name" : "Gender",
+		"tag_names" : ["Male", "Female"]
+	}, {
+		"category_name" : "Items - Armor, Clothing, & Accessories",
+		"name" : "Body Type",
+		"tag_names" : ["7Base", "ADEC", "BBP", "BodySlide", "CBBE", "CHSBHC", "TBBP", "UNP", "UNPB", "UNPC"]
+	}, {
+		"category_name" : "Items - Armor, Clothing, & Accessories",
+		"name" : "Apparel Style",
+		"exclusion_label" : "Standard",
+		"tag_names" : ["Sexy", "Skimpy"]
+	}, {
+		"category_name" : "Items - Armor, Clothing, & Accessories",
+		"name" : "Apparel Theme",
+		"tag_names" : ["Altmer", "Argonian", "Bosmer", "Breton", "Daedric", "Draugr", "Dunmer", "Dwemer", "Elven", "Falmer", "Forsworn", "Imperial", "Khajiit", "Nordic", "Orcish", "Redguard", "Skaal"]
+	}, {
+		"category_name" : "Items - Armor, Clothing, & Accessories",
+		"name" : "Apparel Material",
+		"tag_names" : ["Fabric", "Fur", "Hide", "Leather", "Wood", "Metal", "Iron", "Steel", "Silver", "Chitin", "Stahlrim", "Dragonscale", "Dragonbone", "Bonemold", "Ebony"]
+	}, {
+		"category_name" : "Items - Armor, Clothing, & Accessories",
+		"name" : "Clothing",
+		"tag_names" : ["Dresses", "Hats", "Hoods", "Gloves", "Masks", "Pants", "Robes", "Shirts", "Shoes", "Undergarments"]
+	}, {
+		"category_name" : "Items - Armor, Clothing, & Accessories",
+		"name" : "Armor",
+		"tag_names" : ["Boots", "Cuirass", "Gauntlets", "Helmet", "Horse Armor", "Shield"]
+	}, {
+		"category_name" : "Items - Armor, Clothing, & Accessories",
+		"name" : "Accessory",
+		"tag_names" : ["Backpacks", "Bags", "Belts", "Circlets", "Cloaks", "Eyewear", "Necklaces", "Rings", "Scarves"]
+	}, {
+		"category_name" : "Items - Ingestibles",
+		"name" : "Ingestible Type",
+		"tag_names" : ["Alchohol", "Food", "Drinks", "Drugs", "Ingredients", "Potions", "Poisons"]
+	}, {
+		"category_name" : "Items - Tools & Clutter",
+		"name" : "Tool Type",
+		"tag_names" : ["Books", "Lamps", "Torches"]
+	}, {
+		"category_name" : "Items - Weapons",
+		"name" : "Weapon Type",
+		"tag_names" : ["Battleaxe", "Bow", "Crossbow", "Fist Weapon", "Greatsword", "Gun", "Mace", "Spear", "Staff", "Sword", "Warhammer", "War Axe", "Wand"]
+	}, {
+		"category_name" : "Items - Weapons",
+		"name" : "Weapon Theme",
+		"tag_names" : ["Altmer", "Argonian", "Bosmer", "Breton", "Daedric", "Draugr", "Dunmer", "Dwemer", "Elven", "Falmer", "Forsworn", "Imperial", "Khajiit", "Nordic", "Orcish", "Redguard", "Skaal"]
+	}, {
+		"category_name" : "Items - Weapons",
+		"name" : "Weapon Material",
+		"tag_names" : ["Wood", "Metal", "Iron", "Steel", "Silver", "Chitin", "Stahlrim", "Dragonbone", "Ebony"]
+	}, {
+		"category_name" : "Items",
+		"name" : "Item Animation",
+		"tag_names" : ["Animated", "HDT"]
+	}, {
+		"category_name" : "Items - Armor, Clothing, & Accessories",
+		"name" : "Character Class",
+		"tag_names" : ["Assassin", "Bard", "Cleric", "Hunter", "Knight", "Noble", "Mage", "Monk", "Paladin", "Pirate", "Servant", "Thief"]
+	}, {
+		"category_name" : "Items - Armor, Clothing, & Accessories",
+		"name" : "Franchise",
+		"tag_names" : ["Assassin's Creed", "Berserk", "Black Desert", "Blade & Soul", "Bless Online", "Dark Souls", "Final Fantasy", "Guild Wars", "Oblivion", "Morrowind", "Star Wars", "Tera Online", "The Elder Scrolls Online", "The Witcher", "Vindictus"]
+	}, {
+		"category_name" : "Locations",
+		"name" : "Size",
+		"tag_names" : ["Tiny", "Small", "Medium", "Large", "Huge"]
+	}, {
+		"category_name" : "Locations - New Dungeons",
+		"name" : "Dungeon Type",
+		"tag_names" : ["Cave", "Mine", "Labyrinth", "Prison", "Realm", "Sewer", "Tomb", "Underground City", "Vault"]
+	}, {
+		"category_name" : "Locations - New Dungeons",
+		"name" : "Dungeon Theme",
+		"tag_names" : ["Daedric", "Dwemer", "Magical", "Nordic", "Redguard"]
+	}, {
+		"category_name" : "Locations - New Dungeons",
+		"name" : "Dungeon Location",
+		"tag_names" : ["Eastmarch (Hold)", "Falkreath (Hold)", "Haafingar (Hold)", "Hjaalmarch (Hold)", "The Pale (Hold)", "The Reach (Hold)", "The Rift (Hold)", "Winterhold (Hold)", "Whiterun (Hold)", "Solstheim"]
+	}, {
+		"category_name" : "Locations - New Lands",
+		"name" : "Land Type",
+		"tag_names" : ["Island", "Realm", "Region", "World"]
+	}, {
+		"category_name" : "Locations - New Lands",
+		"name" : "New Content",
+		"tag_names" : ["Accessories", "Architecture", "Armor", "Characters", "Creatures", "Clothing", "Clutter", "Food", "Music", "New Storylines", "Potions", "Poisons", "Sounds", "Radiant Quests", "Weapons"]
+	}, {
+		"category_name" : "Locations - New Player Homes",
+		"name" : "Player Home Type",
+		"tag_names" : ["Castle", "Cabin", "Estate", "Flying", "Hideout", "Palace", "Realm", "Ship", "Treehouse", "Underground", "Vault"]
+	}, {
+		"category_name" : "Locations - New Player Homes",
+		"name" : "Player Home Theme",
+		"tag_names" : ["Alchemist", "Assassin", "Argonian", "Ayleid", "Bard", "Daedric", "Druid", "Dwemer", "Evil", "Hunter", "Mage", "Necromancer", "Redguard", "Snow Elf", "Thief", "Vampire"]
+	}, {
+		"category_name" : "Locations - New Player Homes",
+		"name" : "Player Home Location",
+		"tag_names" : ["Portable", "Dawnstar", "Falkreath", "Markarth", "Morthal", "Riften", "Raven Rock", "Solitude", "Whiterun", "Windhelm", "Winterhold", "Eastmarch (Hold)", "Falkreath (Hold)", "Haafingar (Hold)", "Hjaalmarch (Hold)", "The Pale (Hold)", "The Reach (Hold)", "The Rift (Hold)", "Winterhold (Hold)", "Whiterun (Hold)", "Solstheim"]
+	}, {
+		"category_name" : "Locations - New Structures & Landmarks",
+		"name" : "Structures Include",
+		"tag_names" : ["Bridges", "Cities", "Castle", "Docks", "Forts", "Lighthouses", "Outposts", "Ruins", "Shrines", "Statues", "Stores", "Temples", "Towns"]
+	}, {
+		"category_name" : "Locations - New Structures & Landmarks",
+		"name" : "Structure Location",
+		"tag_names" : ["Dawnstar", "Falkreath", "Markarth", "Morthal", "Riften", "Raven Rock", "Solitude", "Whiterun", "Windhelm", "Winterhold", "Eastmarch (Hold)", "Falkreath (Hold)", "Haafingar (Hold)", "Hjaalmarch (Hold)", "The Pale (Hold)", "The Reach (Hold)", "The Rift (Hold)", "Winterhold (Hold)", "Whiterun (Hold)", "Solstheim"]
+	}, {
+		"category_name" : "Locations - Overhauls",
+		"name" : "Overhaul Target",
+		"tag_names" : ["Bridges", "Cities", "Castles", "Docks", "Forts", "Lighthouses", "Outposts", "Ruins", "Shrines", "Stores", "Temples", "Towns", "Dawnstar", "Falkreath", "Markarth", "Morthal", "Riften", "Raven Rock", "Solitude", "Whiterun", "Windhelm", "Winterhold"]
+	}, {
+		"category_name" : "New Characters",
+		"name" : "Character Distribution",
+		"tag_names" : ["Unique Characters", "Leveled Characters", "Random Encounters"]
+	}, {
+		"category_name" : "New Characters",
+		"name" : "Character Type",
+		"tag_names" : ["Animals", "Creatures", "Male", "Female"]
+	}, {
+		"category_name" : "New Characters - Allies",
+		"name" : "Ally Content",
+		"tag_names" : ["Custom Dialogue", "Fully Voiced", "Marriage Quest", "New Storylines", "NPC Interactions", "Skill Trainers", "Romance"]
+	}, {
+		"category_name" : "New Characters - Allies",
+		"name" : "Character Class",
+		"tag_names" : ["Bard", "Hunter", "Mage", "Mercenary", "Thief", "Rogue", "Warrior"]
+	}, {
+		"category_name" : "New Characters - Allies",
+		"name" : "Character Skills",
+		"tag_names" : ["Illusion", "Conjuration", "Destruction", "Restoration", "Alteration", "Enchanting", "Smithing", "Heavy Armor", "Block", "Two-Handed", "One-Handed", "Archery", "Light Armor", "Sneak", "Lockpicking", "Pickpocket", "Speech", "Alchemy"]
+	}, {
+		"category_name" : "New Characters - Enemies",
+		"name" : "Enemy Humanoid Types",
+		"tag_names" : ["Bandits", "Bounty Hunters", "Forsworn", "Thieves", "Vampires", "Werewolves"]
+	}, {
+		"category_name" : "New Characters - Enemies",
+		"name" : "Enemy Creature Types",
+		"tag_names" : ["Atronarchs", "Automatons", "Beasts", "Birds", "Bugs", "Fish", "Magical Creatures", "Monsters", "Undead"]
+	}, {
+		"category_name" : "New Characters - Neutral",
+		"name" : "Neutral Character Types",
+		"tag_names" : ["Acolytes", "Adventurers", "Citizens", "Children", "Elderly", "Farmers", "Guards", "Laborers", "Merchants", "Pilgrims", "Scoundrels", "Skill Trainers", "Travelers"]
+	}, {
+		"category_name" : "New Characters",
+		"name" : "Character Race",
+		"tag_names" : ["Humans", "Elves", "Beastmen", "Altmer", "Argonian", "Bosmer", "Breton", "Dunmer", "Imperial", "Khajiit", "Nord", "Orsimer", "Redguard", "Vampires", "Vampire Lords", "Werebears", "Werewolves"]
+	}
+]

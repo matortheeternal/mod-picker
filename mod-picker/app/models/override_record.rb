@@ -3,8 +3,11 @@ class OverrideRecord < ActiveRecord::Base
 
   self.primary_keys = :plugin_id, :fid
 
-  # Scopes
+  # SCOPES
   ids_scope :plugin_id
+
+  # UNIQUE SCOPES
+  scope :mod_list, -> (mod_list_id) { joins("INNER JOIN mod_list_plugins").where("mod_list_plugins.mod_list_id = ?", mod_list_id).where("mod_list_plugins.plugin_id = override_records.plugin_id").distinct }
 
   # ASSOCIATIONS
   belongs_to :plugin, :inverse_of => 'overrides'

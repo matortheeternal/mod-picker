@@ -26,6 +26,9 @@ app.config(['$stateProvider', function($stateProvider) {
             categoryPriorities: function(errorService, categoryService) {
                 return errorService.criticalRequest(categoryService.retrieveCategoryPriorities);
             },
+            tagGroups: function(errorService, tagService) {
+                return errorService.criticalRequest(tagService.retrieveTagGroups);
+            },
             licenses: function(errorService, licenseService) {
                 return errorService.criticalRequest(licenseService.retrieveLicenses);
             }
@@ -33,7 +36,7 @@ app.config(['$stateProvider', function($stateProvider) {
     })
 }]);
 
-app.controller('baseController', function($scope, $rootScope, $state, $window, $timeout, currentUser, activeModList, games, currentGame, categories, categoryPriorities, licenses, userService, themesService) {
+app.controller('baseController', function($scope, $rootScope, $state, $window, $timeout, currentUser, activeModList, games, currentGame, categories, categoryPriorities, tagGroups, licenses, userService, themesService) {
     // shared variables - used on multiple states.  These have to stored on the
     // $rootScope else we can't modify them for all states
     $rootScope.currentUser = currentUser;
@@ -43,6 +46,7 @@ app.controller('baseController', function($scope, $rootScope, $state, $window, $
     $rootScope.games = games;
     $rootScope.categories = categories;
     $rootScope.categoryPriorities = categoryPriorities;
+    $rootScope.tagGroups = tagGroups;
     $rootScope.licenses = licenses;
 
     // load current theme

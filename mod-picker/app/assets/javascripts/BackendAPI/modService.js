@@ -13,10 +13,28 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
         return action.promise;
     };
 
+    this.retrieveModOptions = function(modId) {
+        return backend.retrieve('/mods/' + modId + '/mod_options');
+    };
+
     this.searchMods = function(name, utility) {
         var postData = {
             filters: {
                 search: name,
+                game: window._current_game_id
+            }
+        };
+        if (angular.isDefined(utility)) {
+            postData.filters.utility = utility;
+        }
+        return backend.post('/mods/search', postData);
+    };
+
+    this.searchModsAndGames = function(name, utility) {
+        var postData = {
+            filters: {
+                search: name,
+                include_games: true,
                 game: window._current_game_id
             }
         };
@@ -397,6 +415,8 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
                 aliases: mod.aliases,
                 authors: mod.authors,
                 is_utility: mod.is_utility,
+                is_mod_manager: mod.is_mod_manager,
+                is_extender: mod.is_extender,
                 has_adult_content: mod.has_adult_content,
                 curate: mod.curate,
                 game_id: mod.game_id,
@@ -436,6 +456,8 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
                 authors: mod.authors,
                 status: mod.status,
                 is_utility: mod.is_utility,
+                is_mod_manager: mod.is_mod_manager,
+                is_extender: mod.is_extender,
                 show_details_tab: mod.show_details_tab,
                 description: mod.description,
                 notice: mod.notice,

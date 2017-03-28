@@ -29,6 +29,10 @@ class ModListPlugin < ActiveRecord::Base
     Master.plugins([self.plugin_id]).order(:master_plugin_id)
   end
 
+  def plugin_filename
+    plugin.filename
+  end
+
   def copy_attributes(mod_list_id, index, group_id)
     attributes.except("id").merge({ mod_list_id: mod_list_id, index: index, group_id: group_id })
   end

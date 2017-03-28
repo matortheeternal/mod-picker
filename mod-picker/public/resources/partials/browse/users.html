@@ -3,43 +3,37 @@
         <div class="left-column" style="width:250px; padding: 40px 48px 40px 0;">
             <h2>Filters</h2>
 
-            <filter-section name="Search" expanded="true">
-                <h4>Username</h4>
-                <input type="text" ng-model="filters.search">
-
-                <h4>Linked Account Username</h4>
-                <input type="text" ng-model="filters.linked">
-            </filter-section>
+            <search-filter-section></search-filter-section>
 
             <filter-section name="Roles" expanded="true">
                 <div class="sidebar-box box-shadow">
                     <ul class="checkbox-list">
                         <li>
-                            <label><input type="checkbox" ng-model="filters.roles.admin">
+                            <label><input type="checkbox" ng-model="filters.roles.admin" ng-change="refreshFilters()">
                                 Admin</label>
                         </li>
                         <li>
-                            <label><input type="checkbox" ng-model="filters.roles.moderator">
+                            <label><input type="checkbox" ng-model="filters.roles.moderator" ng-change="refreshFilters()">
                                 Moderator</label>
                         </li>
                         <li>
-                            <label><input type="checkbox" ng-model="filters.roles.helper">
+                            <label><input type="checkbox" ng-model="filters.roles.helper" ng-change="refreshFilters()">
                                 Helper</label>
                         </li>
                         <li>
-                            <label><input type="checkbox" ng-model="filters.roles.author">
+                            <label><input type="checkbox" ng-model="filters.roles.author" ng-change="refreshFilters()">
                                 Mod Author</label>
                         </li>
                         <li>
-                            <label><input type="checkbox" ng-model="filters.roles.user">
+                            <label><input type="checkbox" ng-model="filters.roles.user" ng-change="refreshFilters()">
                                 User</label>
                         </li>
                         <li ng-if="permissions.canModerate">
-                            <label><input type="checkbox" ng-model="filters.roles.restricted">
+                            <label><input type="checkbox" ng-model="filters.roles.restricted" ng-change="refreshFilters()">
                                 Restricted</label>
                         </li>
                         <li ng-if="permissions.canModerate">
-                            <label><input type="checkbox" ng-model="filters.roles.banned">
+                            <label><input type="checkbox" ng-model="filters.roles.banned" ng-change="refreshFilters()">
                                 Banned</label>
                         </li>
                     </ul>
@@ -53,7 +47,7 @@
                             <span class="fa fa-calendar" ng-click="" title="Custom Date"></span>
                         </span>-->
                     </h4>
-                    <slider filter-data="filters" filter="filter"></slider>
+                    <slider on-change="refreshFilters()" filter-data="filters" filter="filter"></slider>
                 </div>
             </filter-section>
 
@@ -65,7 +59,7 @@
                                 <span class="fa fa-wrench" ng-click="" title="Custom Value"></span>
                             </span>-->
                         </h4>
-                        <slider filter-data="filters" filter="filter"></slider>
+                        <slider on-change="refreshFilters()" filter-data="filters" filter="filter"></slider>
                     </div>
                 </div>
 
@@ -74,10 +68,14 @@
         </div>
 
         <div class="right-column">
-            <h2>Users</h2>
+            <h2>Users
+                <span class="results-count" ng-show="pages.resultsCount">
+                    ({{pages.resultsCount}} results)
+                </span>
+            </h2>
             <loader data="users" content-class="table-container" spinner-class="big-spinner" ng-if="!error">
-                <table-results label="users" data="users"></table-results>
-                <page-results pages="pages" data="users" callback="getData"></page-results>
+                <table-results on-change="refreshFilters()" label="users" data="users"></table-results>
+                <page-results pages="pages" data="users" callback="refreshFilters"></page-results>
             </loader>
 
             <error-display content-class="content-message content-error" errors="error" label="Users"></error-display>

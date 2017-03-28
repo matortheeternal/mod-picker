@@ -62,8 +62,8 @@ app.controller('requiredToolsController', function($scope, $rootScope, requireme
         requirementUtils.removeDestroyedRequirements($scope.required.tools, 'mod');
         $scope.buildMissingTools();
     });
-    $scope.$on('modRemoved', function(event, modId) {
-        if (modId) requirementUtils.removeRequirements(modId, $scope.required.tools, 'mod');
+    $scope.$on('modRemoved', function(event, mod) {
+        if (mod) requirementUtils.removeRequirements(mod.id, $scope.required.tools, 'mod');
         $scope.buildMissingTools();
     });
     $scope.$on('modRecovered', function(event, modId) {

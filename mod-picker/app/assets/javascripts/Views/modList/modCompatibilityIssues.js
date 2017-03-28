@@ -84,9 +84,9 @@ app.controller('modCompatibilityIssuesController', function($scope, listUtils) {
         listUtils.removeDestroyed($scope.notes.compatibility);
         $scope.buildUnresolvedCompatibility();
     });
-    $scope.$on('modRemoved', function(event, modId) {
-        if (modId) {
-            listUtils.removeModNotes($scope.notes.compatibility, modId, function(note) {
+    $scope.$on('modRemoved', function(event, mod) {
+        if (mod) {
+            listUtils.removeModNotes($scope.notes.compatibility, mod.id, function(note) {
                 $scope.destroyIgnoreNote('CompatibilityNote', note);
             });
         }

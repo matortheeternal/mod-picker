@@ -1,5 +1,5 @@
 class ModList < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, CounterCache, Reportable, ScopeHelpers, Trackable, BetterJson, Dateable
+  include Filterable, Sortable, RecordEnhancements, CounterCache, Reportable, ScopeHelpers, Searchable, Trackable, BetterJson, Dateable
 
   # ATTRIBUTES
   enum status: [ :under_construction, :testing, :complete ]
@@ -23,9 +23,6 @@ class ModList < ActiveRecord::Base
   hash_scope :hidden, alias: 'hidden'
   hash_scope :adult, alias: 'adult', column: 'has_adult_content'
   game_scope
-  search_scope :name, :alias => 'search'
-  search_scope :description
-  user_scope :submitter
   enum_scope :status
   counter_scope :tools_count, :mods_count, :custom_tools_count, :custom_mods_count, :plugins_count, :master_plugins_count, :available_plugins_count, :custom_plugins_count, :config_files_count, :custom_config_files_count, :compatibility_notes_count, :install_order_notes_count, :load_order_notes_count, :ignored_notes_count, :bsa_files_count, :asset_files_count, :records_count, :override_records_count, :plugin_errors_count, :tags_count, :stars_count, :comments_count
   date_scope :submitted, :completed, :updated
@@ -44,6 +41,10 @@ class ModList < ActiveRecord::Base
 
     # return query if length is 1
     where(is_collection: is_collection) if is_collection.length == 1
+  }
+  scope :excluded_tags, -> (tags) {
+    tags_condition = ModListTag.arel_table.project(Arel.sql('*')).where(Mod.arel_table[:id].eq(ModListTag.arel_table[:mod_id])).join(Tag.arel_table, Arel::Nodes::OuterJoin).on(ModListTag.arel_table[:tag_id].eq(Tag.arel_table[:id])).where(Tag.arel_table[:text].in(tags)).exists.not
+    where(tags_condition)
   }
 
   # ASSOCIATIONS
@@ -138,11 +139,12 @@ class ModList < ActiveRecord::Base
     mod_ids = mod_list_mod_ids
     mod_option_ids = mod_list_mod_option_ids
     plugin_ids = mod_list_plugin_ids
+    plugin_filenames = mod_list_plugin_filenames
     self.available_plugins_count = plugins_store.count
     self.master_plugins_count = Plugin.where(id: plugin_ids).esm.count
     self.compatibility_notes_count = CompatibilityNote.visible.mods(mod_ids).count
     self.install_order_notes_count = InstallOrderNote.visible.mods(mod_ids).count
-    self.load_order_notes_count = LoadOrderNote.visible.plugins(plugin_ids).count
+    self.load_order_notes_count = LoadOrderNote.visible.plugins(plugin_filenames).count
 
     plugin_ids = mod_list_plugins.official(false).pluck(:plugin_id)
     self.bsa_files_count = ModAssetFile.mod_options(mod_option_ids).bsa.count
@@ -229,108 +231,68 @@ class ModList < ActiveRecord::Base
   end
 
   def mod_list_plugin_ids
-    mod_list_plugins.all.pluck(:plugin_id)
+    mod_list_plugins.pluck(:plugin_id)
+  end
+
+  def mod_list_plugin_filenames
+    plugins.pluck(:filename)
   end
 
   def mod_list_mod_ids
-    mod_list_mods.all.pluck(:mod_id)
+    mod_list_mods.pluck(:mod_id)
   end
 
   def mod_list_mod_option_ids
-    mod_list_mod_options.all.pluck(:mod_option_id)
+    mod_list_mod_options.pluck(:mod_option_id)
   end
 
   def plugins_store
-    mod_option_ids = mod_list_mod_option_ids
-    return Plugin.none if mod_option_ids.empty?
-    
-    Plugin.mod_options(mod_option_ids).includes(:mod)
+    Plugin.mod_list(id)
   end
 
   def mod_compatibility_notes
-    mod_ids = mod_list_mod_ids
-    return CompatibilityNote.none if mod_ids.empty?
-
-    CompatibilityNote.visible.mods(mod_ids).status([0, 1, 2]).includes(:first_mod, :second_mod, :submitter => :reputation)
+    CompatibilityNote.visible.status([0, 1, 2]).mod_list(id)
   end
 
   def plugin_compatibility_notes
-    mod_ids = mod_list_mod_ids
-    return CompatibilityNote.none if mod_ids.empty?
-
-    CompatibilityNote.visible.mods(mod_ids).status([3, 4]).includes(:first_mod, :second_mod, :history_entries, :submitter => :reputation)
+    CompatibilityNote.visible.status([3, 4]).mod_list(id)
   end
 
   def install_order_notes
-    mod_ids = mod_list_mod_ids
-    return InstallOrderNote.none if mod_ids.empty?
-
-    InstallOrderNote.visible.mods(mod_ids).includes(:first_mod, :second_mod, :history_entries, :submitter => :reputation)
+    InstallOrderNote.visible.mod_list(id)
   end
 
     def load_order_notes
-    plugin_ids = Plugin.mod_options(mod_list_mod_option_ids).ids
-    return LoadOrderNote.none if plugin_ids.empty?
-
-    LoadOrderNote.visible.plugins(plugin_ids).includes(:first_plugin, :second_plugin, :first_mod, :second_mod, :history_entries, :submitter => :reputation)
+    LoadOrderNote.visible.mod_list(id)
   end
 
   def required_tools
-    mod_ids = mod_list_mod_ids
-    return ModRequirement.none if mod_ids.empty?
-
-    ModRequirement.utility(true).mods(mod_ids).visible.order(:required_id)
+    ModRequirement.visible.utility(true).mod_list(id)
   end
 
   def required_mods
-    mod_ids = mod_list_mod_ids
-    return ModRequirement.none if mod_ids.empty?
-
-    ModRequirement.utility(false).mods(mod_ids).visible.order(:required_id)
+    ModRequirement.visible.utility(false).mod_list(id)
   end
 
   def required_plugins
-    plugin_ids = mod_list_plugin_ids
-    return Master.none if plugin_ids.empty?
-    Master.eager_load(:plugin => :mod, :master_plugin => :mod).plugins(plugin_ids).visible.order(:master_plugin_id)
+    Master.mod_list(id).visible
   end
 
   def incompatible_mod_ids
-    mod_ids = mod_list_mod_ids
-    return [] if mod_ids.empty?
-
-    # get incompatible mod ids
-    incompatible_ids = CompatibilityNote.visible.status([0, 1]).mod(mod_ids).pluck(:first_mod_id, :second_mod_id)
     # return array of unique mod ids from the notes, excluding mod list mod ids
-    incompatible_ids.flatten(1).uniq - mod_ids
-  end
-
-  def asset_files
-    mod_option_ids = mod_list_mod_option_ids
-    return ModAssetFile.none if mod_option_ids.empty?
-
-    ModAssetFile.mod_options(mod_option_ids).includes(:asset_file)
+    CompatibilityNote.visible.status([0, 1]).mod_list(id).pluck(:first_mod_id, :second_mod_id).flatten(1).uniq - mod_list_mod_ids
   end
 
   def override_records
-    plugin_ids = mod_list_plugin_ids
-    return OverrideRecord.none if plugin_ids.empty?
-
-    OverrideRecord.plugins(plugin_ids)
+    OverrideRecord.mod_list(id)
   end
 
   def record_groups
-    plugin_ids = mod_list_plugin_ids
-    return PluginRecordGroup.none if plugin_ids.empty?
-
-    PluginRecordGroup.plugins(plugin_ids)
+    PluginRecordGroup.mod_list(id)
   end
 
   def plugin_errors
-    plugin_ids = mod_list_plugin_ids
-    return PluginError.none if plugin_ids.empty?
-
-    PluginError.plugins(plugin_ids)
+    PluginError.mod_list(id)
   end
 
   def base_text
@@ -355,10 +317,6 @@ class ModList < ActiveRecord::Base
     a.push("\r\nMods:")
     mods.each { |mod_list_mod| a.push(mod_list_mod.links_text) }
     a.join("\r\n")
-  end
-
-  def setup_string(user)
-    SecureData.full(user, to_json({format: "setup"}))
   end
 
   def set_completed?

@@ -5,7 +5,8 @@ app.directive('slider', function() {
         controller: 'sliderController',
         scope: {
             filterData: '=',
-            filter: '='
+            filter: '=',
+            changeCallback: '&onChange'
         }
     }
 });
@@ -37,9 +38,11 @@ app.controller('sliderController', function($scope, sliderFactory, $timeout) {
             min: min,
             max: max
         };
+
+        $scope.changeCallback();
     };
 
-    $scope.$watch('rawData', function(rawData) {
+    $scope.$watch('rawData', function(rawData, oldData) {
         var stepsArray = $scope.slider.options.stepsArray;
         var atMin = rawData.min == ($scope.filter.min || 0);
         var atMax = (rawData.max == $scope.filter.max) ||
@@ -47,6 +50,11 @@ app.controller('sliderController', function($scope, sliderFactory, $timeout) {
         // delete data and return if we're at default values
         if (atMin && atMax) {
             $scope.deleteData();
+            //if the default is set after being previously changed call changeCallback
+            //otherwise the callback will be called on initialization
+            if (oldData.min && oldData.max) {
+                $scope.changeCallback();
+            }
             return;
         }
 

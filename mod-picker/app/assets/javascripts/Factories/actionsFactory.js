@@ -263,6 +263,15 @@ app.service('actionsFactory', function() {
                 $scope.$emit('editTag', item);
             }
         }, {
+            caption: "Replace",
+            title: "Replace usages of this tag with another tag.",
+            hidden: function($scope, item) {
+                return item.hidden || !$scope.permissions.canModerate;
+            },
+            execute: function($scope, item) {
+                $scope.$emit('replaceTag', item);
+            }
+        }, {
             caption: "Recover",
             title: "This tag is hidden.  Click to recover it.",
             class: 'green-box',

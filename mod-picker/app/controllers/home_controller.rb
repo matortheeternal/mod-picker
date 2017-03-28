@@ -54,7 +54,7 @@ class HomeController < ApplicationController
     corrections = Correction.accessible_by(current_ability).visible.game(params[:game]).includes(submitter: :reputation).order(submitted: :DESC).limit(4)
     compatibility_notes = CompatibilityNote.accessible_by(current_ability).visible.game(params[:game]).includes(:first_mod, :second_mod, submitter: :reputation).order(submitted: :DESC).limit(4)
     install_order_notes = InstallOrderNote.accessible_by(current_ability).accessible_by(current_ability).visible.game(params[:game]).includes(:first_mod, :second_mod, submitter: :reputation).order(submitted: :DESC).limit(4)
-    load_order_notes = LoadOrderNote.accessible_by(current_ability).visible.game(params[:game]).includes(:first_plugin, :second_plugin, submitter: :reputation).order(submitted: :DESC).limit(4)
+    load_order_notes = LoadOrderNote.accessible_by(current_ability).visible.game(params[:game]).includes(submitter: :reputation).order(submitted: :DESC).limit(4)
 
     # get helpful/agreement marks
     if current_user.present?

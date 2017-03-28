@@ -1,5 +1,5 @@
 class TagsController < ApplicationController
-  before_action :set_tag, only: [:update, :hide]
+  before_action :set_tag, only: [:update, :hide, :replace]
 
   # GET /all_tags
   def all
@@ -40,6 +40,16 @@ class TagsController < ApplicationController
     end
   end
 
+  # POST /tags/:id/replace
+  def replace
+    authorize! :update, @tag
+    if @tag.replace(params[:new_tag_id])
+      render json: {status: :ok}
+    else
+      render json: @tag.errors, status: :unprocessable_entity
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_tag
@@ -52,6 +62,6 @@ class TagsController < ApplicationController
 
     # Params we allow filtering on
     def filtering_params
-      params[:filters].slice(:game, :hidden, :search, :submitter, :mods_count, :mod_lists_count)
+      params[:filters].slice(:game, :hidden, :search, :mods_count, :mod_lists_count)
     end
 end

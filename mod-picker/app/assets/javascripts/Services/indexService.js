@@ -49,6 +49,21 @@ app.service('indexService', function(objectUtils) {
         }
     };
 
+    this.setTagGroupFilterFromParam = function(filters, filter, paramValue) {
+        if (paramValue) {
+            var key = filter.data;
+            filters[key] = paramValue.split(';').map(function(tagGroup) {
+                var includedTags = [], excludedTags = [], obj = {};
+                tagGroup.slice(1, -1).split(',').forEach(function(tagText) {
+                    (tagText[0] == '-') ? excludedTags.push(tagText.slice(1)) : includedTags.push(tagText);
+                });
+                if (includedTags.length) obj.include = includedTags;
+                if (excludedTags.length) obj.exclude = excludedTags;
+                return obj;
+            });
+        }
+    };
+
     this.setSliderFilterFromParam = function(filters, filter, paramValue) {
         var filterVals = paramValue.split('-');
 
@@ -68,7 +83,7 @@ app.service('indexService', function(objectUtils) {
 
     this.setDefaultParamsFromFilters = function(params, filterPrototypes) {
         filterPrototypes.forEach(function(filter) {
-            if (filter.type === 'Boolean') {
+            if (filter.default) {
                 params[filter.param] = filter.default;
             } else {
                 params[filter.param] = '';
@@ -90,6 +105,10 @@ app.service('indexService', function(objectUtils) {
             // handle list filters
             else if (filter.type === 'List') {
                 service.setListFilterFromParam(filters, filter, stateParams[filter.param]);
+            }
+            // handle tag group filters
+            else if (filter.type === 'TagGroup') {
+                service.setTagGroupFilterFromParam(filters, filter, stateParams[filter.param]);
             }
             // handle normal filters
             else {
@@ -124,6 +143,18 @@ app.service('indexService', function(objectUtils) {
             // else if the filter is a list filter, generate param as comma separated list
             else if (filter.type === 'List') {
                 params[filter.param] = filterValue.join(',');
+            }
+            // else if the filter is a TagGroup filter, generate param as comma separated list
+            else if (filter.type === 'TagGroup') {
+                if (filterValue.reduce) {
+                    var tagGroups = filterValue.reduce(function(a, group) {
+                        var tags = angular.copy(group.exclude || []).map(function(tag) {
+                            return '-' + tag;
+                        }).concat(group.include || []);
+                        return a.concat(['(' + tags.join(',') + ')']);
+                    }, []);
+                    params[filter.param] = tagGroups.join(';');
+                }
             }
             // else if filter is a boolean filter, serialize to 1 or 0
             else if (filter.type === 'Boolean') {

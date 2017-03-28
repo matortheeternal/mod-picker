@@ -1,5 +1,5 @@
 class CompatibilityNote < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, CounterCache, Correctable, Helpfulable, Reportable, Approveable, ScopeHelpers, Trackable, BetterJson, Dateable
+  include Filterable, Sortable, RecordEnhancements, CounterCache, Correctable, Helpfulable, Reportable, Approveable, ScopeHelpers, Searchable, Trackable, BetterJson, Dateable
 
   # ATTRIBUTES
   enum status: [ :incompatible, :partially_incompatible, :compatibility_mod, :compatibility_option, :make_custom_patch ]
@@ -23,12 +23,14 @@ class CompatibilityNote < ActiveRecord::Base
   include_scope :hidden
   visible_scope :approvable => true
   game_scope
-  search_scope :text_body, :alias => 'search'
-  user_scope :submitter
   enum_scope :status
   range_scope :overall, :association => 'submitter_reputation', :table => 'user_reputations', :alias => 'reputation'
   ids_scope :mod_id, :columns => [:first_mod_id, :second_mod_id]
   date_scope :submitted, :edited
+
+  # UNIQUE SCOPES
+  # TODO: AREL
+  scope :mod_list, -> (mod_list_id) { joins("LEFT OUTER JOIN mod_list_mods ON mod_list_mods.id = compatibility_notes.first_mod_id OR mod_list_mods.id = compatibility_notes.second_mod_id").where("mod_list_mods.mod_list_id = ?", mod_list_id).distinct }
 
   # ASSOCIATIONS
   belongs_to :game, :inverse_of => 'compatibility_notes'

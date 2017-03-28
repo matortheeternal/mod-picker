@@ -5,23 +5,17 @@
         <div class="left-column" style="width:250px; padding: 40px 48px 40px 0;">
             <h2>Filters</h2>
 
-            <filter-section name="Search" expanded="true">
-                <h4>Text</h4>
-                <input type="text" ng-model="filters.search">
-
-                <h4>Submitter</h4>
-                <input type="text" ng-model="filters.submitter">
-            </filter-section>
+            <search-filter-section></search-filter-section>
 
             <filter-section name="Content Filters" expanded="true" ng-if="permissions.canModerate">
                 <div class="sidebar-box box-shadow">
                     <ul class="checkbox-list">
                         <li>
-                            <label><input type="checkbox" ng-model="filters.hidden['1']">
+                            <label><input type="checkbox" ng-model="filters.hidden['1']" ng-change="refreshFilters()">
                                 Hidden</label>
                         </li>
                         <li>
-                            <label><input type="checkbox" ng-model="filters.hidden['0']">
+                            <label><input type="checkbox" ng-model="filters.hidden['0']" ng-change="refreshFilters()">
                                 Unhidden</label>
                         </li>
                     </ul>
@@ -36,17 +30,21 @@
                                 <span class="fa fa-wrench" ng-click="" title="Custom Value"></span>
                             </span>-->
                         </h4>
-                        <slider filter-data="filters" filter="filter"></slider>
+                        <slider on-change="refreshFilters()" filter-data="filters" filter="filter"></slider>
                     </div>
                 </div>
             </filter-section>
         </div>
 
         <div class="right-column">
-            <h2>Tags</h2>
+            <h2>Tags
+                <span class="results-count" ng-show="pages.resultsCount">
+                    ({{pages.resultsCount}} results)
+                </span>
+            </h2>
             <loader data="tags" content-class="table-container" spinner-class="big-spinner" ng-if="!error">
-                <table-results label="tags" data="tags"></table-results>
-                <page-results pages="pages" data="tags" callback="getData"></page-results>
+                <table-results on-change="refreshFilters()" label="tags" data="tags"></table-results>
+                <page-results pages="pages" data="tags" callback="refreshFilters"></page-results>
             </loader>
 
             <error-display content-class="content-message content-error" errors="error" label="Tags"></error-display>

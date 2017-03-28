@@ -3,16 +3,7 @@
         <div class="left-column" style="width:250px; padding: 40px 48px 40px 0;">
             <h2>Filters</h2>
 
-            <filter-section name="Search" expanded="true">
-                <h4>Title</h4>
-                <input type="text" ng-model="filters.search">
-
-                <h4>Text</h4>
-                <input type="text" ng-model="filters.text">
-
-                <h4>Submitter</h4>
-                <input type="text" ng-model="filters.submitter">
-            </filter-section>
+            <search-filter-section></search-filter-section>
 
             <filter-section name="Date Filters" expanded="true">
                 <div ng-repeat="filter in dateFilters">
@@ -21,28 +12,31 @@
                             <span class="fa fa-calendar" ng-click="" title="Custom Date"></span>
                         </span>-->
                     </h4>
-                    <slider filter-data="filters" filter="filter"></slider>
+                    <slider on-change="refreshFilters()" filter-data="filters" filter="filter"></slider>
                 </div>
-            </filter-section>>
+            </filter-section>
 
             <filter-section name="Statistic Filters" expanded="true" ng-if="statFilters.length">
-                <div class="filter-section">
-                    <div ng-repeat="filter in statFilters">
-                        <h4>{{filter.label}}
-                            <!--<span class="filter-controls" ng-if="filter.max > 500">
-                                <span class="fa fa-wrench" ng-click="" title="Custom Value"></span>
-                            </span>-->
-                        </h4>
-                        <slider filter-data="filters" filter="filter"></slider>
-                    </div>
+                <div ng-repeat="filter in statFilters">
+                    <h4>{{filter.label}}
+                        <!--<span class="filter-controls" ng-if="filter.max > 500">
+                            <span class="fa fa-wrench" ng-click="" title="Custom Value"></span>
+                        </span>-->
+                    </h4>
+                    <slider on-change="refreshFilters()" filter-data="filters" filter="filter"></slider>
                 </div>
             </filter-section>
         </div>
 
         <div class="right-column">
-            <h2>Articles <span class="right-item">
-                <sort-control></sort-control>
-            </span></h2>
+            <h2>Articles
+                <span class="results-count" ng-show="pages.resultsCount">
+                    ({{pages.resultsCount}} results)
+                </span>
+                <span class="right-item">
+                    <sort-control on-change="refreshFilters()"></sort-control>
+                </span>
+            </h2>
             <loader data="articles" content-class="grid-results" spinner-class="big-spinner" ng-if="!error">
                 <article data="article" ng-repeat="article in articles"></article>
 
@@ -50,7 +44,7 @@
                     No articles were found matching your search criteria.
                 </div>
 
-                <page-results pages="pages" data="articles" callback="getData"></page-results>
+                <page-results pages="pages" data="articles" callback="refreshFilters"></page-results>
             </loader>
 
             <error-display content-class="content-message content-error" errors="error" label="Articles"></error-display>

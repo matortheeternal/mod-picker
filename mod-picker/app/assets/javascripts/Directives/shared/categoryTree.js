@@ -7,7 +7,8 @@ app.directive('categoryTree', function() {
         scope: {
             categories: '=',
             selection: '=',
-            toggleAll: '='
+            toggleAll: '=',
+            changeCallback: '&onChange'
         }
     }
 });
@@ -32,15 +33,13 @@ app.controller('categoryTreeController', function($scope, categoryService) {
     };
 
     // prepare nested categories
-    $scope.nestedCategories = categoryService.nestCategories($scope.categories);
+    $scope.nestedCategories = categoryService.getCategoryTree($scope.categories);
 
     // add checkbox values to data and fix subcategory names
     $scope.nestedCategories.forEach(function(superCategory) {
         superCategory.value = false;
+        categoryService.removeSuperCategoryNames(superCategory.childs);
         superCategory.childs.forEach(function(subCategory) {
-            if (subCategory.name.indexOf('- ') > -1) {
-                subCategory.name = subCategory.name.split('- ')[1];
-            }
             subCategory.value = false;
         });
     });
@@ -112,6 +111,8 @@ app.controller('categoryTreeController', function($scope, categoryService) {
         // parent is indeterminate if some childs are checked
         // and the parent is not checked
         parent.indeterminate = !(allUncheckedAfter || parent.value);
+
+        $scope.changeCallback();
     };
 
     $scope.clearSelection = function() {
@@ -123,6 +124,7 @@ app.controller('categoryTreeController', function($scope, categoryService) {
             });
         });
         $scope.selection = [];
+        $scope.changeCallback();
     };
 
     $scope.invertSelection = function() {
@@ -134,5 +136,6 @@ app.controller('categoryTreeController', function($scope, categoryService) {
                 $scope.handleSelection(child);
             });
         });
+        $scope.changeCallback();
     };
 });

@@ -2,17 +2,85 @@ app.service("filtersFactory", function() {
     var factory = this;
 
     /* shared filter prototypes */
-    this.searchFilter = {
-        data: "search",
-        param: "q"
+    this.searchFilter = function(terms) {
+        return {
+            data: "search",
+            param: "q",
+            terms: terms
+        };
     };
-    this.submitterFilter = {
-        data: "submitter",
-        param: "s"
+
+    this.searchTerm = function(name, matchTarget, noThe) {
+        return {
+            name: name,
+            description: "Matches against " + (noThe ? "" : "the ") + matchTarget + "."
+        }
     };
-    this.editorFilter = {
-        data: "editor",
-        param: "e"
+
+    this.userDateSlider = function(options) {
+        options.type = "Range";
+        options.subtype = "Date";
+        options.start = new Date(2016,0,1);
+        return options;
+    };
+
+    this.modDateSlider = function(options) {
+        options.type = "Range";
+        options.subtype = "Date";
+        options.start = new Date(2011,10,11);
+        return options;
+    };
+
+    this.enumFilters = function(enumName, values, numEnabled, type) {
+        var maxIndex = numEnabled || 100;
+        return Object.keys(values).map(function(key, index) {
+            var obj = {
+                data: enumName + "." + key,
+                param: values[key],
+                type: type || "Boolean"
+            };
+            if (!type) {
+                obj.default = index < maxIndex;
+            }
+            return obj;
+        });
+    };
+
+    this.modSearchFilter = factory.searchFilter([
+        factory.searchTerm("name", "name of the mod"),
+        factory.searchTerm("aliases", "mod's aliases"),
+        factory.searchTerm("description", "mod's description"),
+        factory.searchTerm("author", "mod's authors and uploaders"),
+        factory.searchTerm("mp_author", "mod's authors on Mod Picker")
+    ]);
+
+    this.modSourceFilters = factory.enumFilters("sources", {
+        nexus: "nm",
+        lab: "ll",
+        workshop: "sw",
+        other: "ot"
+    });
+
+    this.pageFilter = {
+        data: "page",
+        param: "page",
+        default: 1
+    };
+    this.tagsFilter = {
+        data: "tags",
+        param: "t",
+        type: "List"
+    };
+    this.excludedTagsFilter = {
+        data: "excluded_tags",
+        param: "x",
+        type: "List"
+    };
+    this.categoriesFilter = {
+        data: "categories",
+        param: "c",
+        type: "List",
+        subtype: "Integer"
     };
     this.showAdultFilter = {
         data: "adult.1",
@@ -101,104 +169,31 @@ app.service("filtersFactory", function() {
         param: "hec"
     };
 
-    this.userDateSlider = function(options) {
-        options.type = "Range";
-        options.subtype = "Date";
-        options.start = new Date(2016,0,1);
-        return options;
-    };
-
-    this.modDateSlider = function(options) {
-        options.type = "Range";
-        options.subtype = "Date";
-        options.start = new Date(2011,10,11);
-        return options;
-    };
-
     /* mods index filters */
     this.modGeneralFilters = function() {
         return [
-            factory.searchFilter,
-            {
-                data: "description",
-                param: "d"
-            },
-            {
-                data: "author",
-                param: "a"
-            },
-            {
-                data: "tags",
-                param: "t",
-                type: "List"
-            },
-            {
-                data: "categories",
-                param: "c",
-                type: "List",
-                subtype: "Integer"
-            },
-            {
-                data: "sources.nexus",
-                param: "nm",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "sources.lab",
-                param: "ll",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "sources.workshop",
-                param: "sw",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "sources.other",
-                param: "ot",
-                type: "Boolean",
-                default: true
-            },
+            factory.modSearchFilter,
+            factory.pageFilter,
+            factory.tagsFilter,
+            factory.excludedTagsFilter,
+            factory.categoriesFilter,
             factory.showAdultFilter,
             factory.showNonAdultFilter,
             factory.hiddenFilter,
             factory.unhiddenFilter,
             factory.approvedFilter,
-            factory.unapprovedFilter,
-            {
-                data: "terms.credit",
-                param: "tcr",
-                type: "Integer"
-            },
-            {
-                data: "terms.commercial",
-                param: "tco",
-                type: "Integer"
-            },
-            {
-                data: "terms.redistribution",
-                param: "tre",
-                type: "Integer"
-            },
-            {
-                data: "terms.modification",
-                param: "tmo",
-                type: "Integer"
-            },
-            {
-                data: "terms.private_use",
-                param: "tpu",
-                type: "Integer"
-            },
-            {
-                data: "terms.include",
-                param: "tin",
-                type: "Integer"
-            }
-        ]
+            factory.unapprovedFilter
+        ].concat(
+            factory.modSourceFilters,
+            factory.enumFilters("terms", {
+                credit: "tcr",
+                commercial: "tco",
+                redistribution: "tre",
+                modification: "tmo",
+                private_use: "tpu",
+                include: "tin"
+            }, 0, "Integer")
+        )
     };
 
     this.modStatisticFilters = function() {
@@ -477,57 +472,60 @@ app.service("filtersFactory", function() {
         );
     };
 
+    this.modTagGroupFilter = function() {
+        return [
+            {
+                label: "Tag Groups",
+                data: "tag_groups",
+                param: "tg",
+                type: "TagGroup"
+            }
+        ];
+    };
+
+    this.modCategoryGeneralFilters = function() {
+        return [
+            factory.pageFilter,
+            factory.modSearchFilter,
+            factory.categoriesFilter,
+            factory.showAdultFilter,
+            factory.showNonAdultFilter,
+            factory.hiddenFilter,
+            factory.unhiddenFilter,
+            factory.approvedFilter,
+            factory.unapprovedFilter
+        ].concat(
+            factory.modSourceFilters
+        );
+    };
+
+    this.modCategoryFilters = function() {
+        return Array.prototype.concat(
+            factory.modCategoryGeneralFilters(),
+            factory.modDateFilters(),
+            factory.modTagGroupFilter()
+        );
+    };
+
     /* users index filters */
     this.userGeneralFilters = function() {
         return [
-            factory.searchFilter,
-            {
-                data: "linked",
-                param: "l"
-            },
-            {
-                data: "roles.admin",
-                param: "adm",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "roles.moderator",
-                param: "mod",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "roles.helper",
-                param: "hlp",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "roles.author",
-                param: "ma",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "roles.user",
-                param: "usr",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "roles.restricted",
-                param: "rsr",
-                type: "Boolean",
-                default: false
-            },
-            {
-                data: "roles.banned",
-                param: "bnd",
-                type: "Boolean",
-                default: false
-            }
-        ]
+            factory.searchFilter([
+                factory.searchTerm("username", "user's username"),
+                factory.searchTerm("linked", "user's linked account usernames")
+            ]),
+            factory.pageFilter
+        ].concat(
+            factory.enumFilters("roles", {
+                admin: "adm",
+                moderator: "mod",
+                helper: "hlp",
+                author: "ma",
+                user: "usr",
+                restricted: "rsr",
+                banned: "bnd"
+            }, 5)
+        )
     };
 
     this.userStatisticFilters = function() {
@@ -638,12 +636,21 @@ app.service("filtersFactory", function() {
         );
     };
 
+    this.contributionSearchFilter = function(includeEditor) {
+        var terms = [
+            factory.searchTerm("text", "contribution text"),
+            factory.searchTerm("submitter", "contribution submitter's username")
+        ];
+        if (includeEditor) {
+            terms.push(factory.searchTerm("editor", "contribution editor usernames", true));
+        }
+        return [factory.searchFilter(terms)];
+    };
+
     /* contribution index filters */
     this.contributionGeneralFilters = function() {
         return [
-            factory.searchFilter,
-            factory.submitterFilter,
-            //factory.editorFilter,
+            factory.pageFilter,
             factory.showAdultFilter,
             factory.showNonAdultFilter,
             factory.hiddenFilter,
@@ -669,33 +676,21 @@ app.service("filtersFactory", function() {
     };
 
     this.contributionStandingFilters = function() {
-        return [
-            {
-                data: "standing.good",
-                type: "Boolean",
-                default: true,
-                param: "stg"
-            },
-            {
-                data: "standing.unknown",
-                type: "Boolean",
-                default: true,
-                param: "stu"
-            },
-            {
-                data: "standing.bad",
-                type: "Boolean",
-                default: true,
-                param: "stb"
-            }
-        ];
+        return factory.enumFilters("standing", {
+            good: "stg",
+            unknown: "stu",
+            bad: "stb"
+        });
     };
 
     /* comments index filters */
     this.commentGeneralFilters = function() {
         return [
-            factory.searchFilter,
-            factory.submitterFilter,
+            factory.searchFilter([
+                factory.searchTerm("text", "comment text"),
+                factory.searchTerm("text", "comment submitter's username")
+            ]),
+            factory.pageFilter,
             factory.showAdultFilter,
             factory.showNonAdultFilter,
             factory.hiddenFilter,
@@ -705,38 +700,16 @@ app.service("filtersFactory", function() {
                 param: "c",
                 type: "Boolean",
                 default: true
-            },
-            {
-                data: "commentable.ModList",
-                param: "ml",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "commentable.Correction",
-                param: "cor",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "commentable.User",
-                param: "usr",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "commentable.Article",
-                param: "art",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "commentable.HelpPage",
-                param: "hlp",
-                type: "Boolean",
-                default: true
             }
-        ]
+        ].concat(
+            factory.enumFilters("commentable", {
+                "ModList": "ml",
+                "Correction": "cor",
+                "User": "usr",
+                "Article": "art",
+                "HelpPage": "hlp"
+            })
+        )
     };
 
     this.commentStatisticFilters = function() {
@@ -788,6 +761,7 @@ app.service("filtersFactory", function() {
 
     this.reviewFilters = function() {
         return Array.prototype.concat(
+            factory.contributionSearchFilter(),
             factory.contributionGeneralFilters(),
             factory.contributionDateFilters(),
             factory.reviewStatisticFilters()
@@ -808,42 +782,18 @@ app.service("filtersFactory", function() {
 
     /* compatibility notes index filters */
     this.compatibilityNoteTypeFilters = function() {
-        return [
-            {
-                data: "status.incompatible",
-                param: "inc",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "status.partially_compatible",
-                param: "pc",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "status.compatibility_mod",
-                param: "cm",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "status.compatibility_option",
-                param: "co",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "status.make_custom_patch",
-                param: "mcp",
-                type: "Boolean",
-                default: true
-            }
-        ]
+        return factory.enumFilters("status", {
+            incompatible: "inc",
+            partially_incompatible: "pc",
+            compatibility_mod: "cm",
+            compatibility_option: "co",
+            make_custom_patch: "mcp"
+        });
     };
 
     this.compatibilityNoteFilters = function() {
         return Array.prototype.concat(
+            factory.contributionSearchFilter(true),
             factory.contributionGeneralFilters(),
             factory.compatibilityNoteTypeFilters(),
             factory.contributionStandingFilters(),
@@ -855,6 +805,7 @@ app.service("filtersFactory", function() {
     /* install order notes index filters */
     this.installOrderNoteFilters = function() {
         return Array.prototype.concat(
+            factory.contributionSearchFilter(true),
             factory.contributionGeneralFilters(),
             factory.contributionStandingFilters(),
             factory.contributionDateFilters(),
@@ -865,9 +816,7 @@ app.service("filtersFactory", function() {
     /* load order notes index filters */
     this.loadOrderNoteGeneralFilters = function() {
         return [
-            factory.searchFilter,
-            factory.submitterFilter,
-            //factory.editorFilter,
+            factory.pageFilter,
             {
                 data: "plugin_filename",
                 param: "p"
@@ -883,6 +832,7 @@ app.service("filtersFactory", function() {
 
     this.loadOrderNoteFilters = function() {
         return Array.prototype.concat(
+            factory.contributionSearchFilter(true),
             factory.loadOrderNoteGeneralFilters(),
             factory.contributionStandingFilters(),
             factory.contributionDateFilters(),
@@ -892,20 +842,10 @@ app.service("filtersFactory", function() {
 
     /* related mod note index filters */
     this.relatedModNoteTypeFilters = function() {
-        return [
-            {
-                data: "status.alternative_mod",
-                param: "alt",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "status.recommended_mod",
-                param: "rec",
-                type: "Boolean",
-                default: true
-            }
-        ];
+        return  factory.enumFilters("status", {
+            alternative_mod: "alt",
+            recommended_mod: "rec"
+        });
     };
 
     this.relatedModNoteStatisticFilters = function() {
@@ -919,6 +859,7 @@ app.service("filtersFactory", function() {
 
     this.relatedModNoteFilters = function() {
         return Array.prototype.concat(
+            factory.contributionSearchFilter(),
             factory.contributionGeneralFilters(),
             factory.relatedModNoteTypeFilters(),
             factory.contributionDateFilters(),
@@ -929,9 +870,11 @@ app.service("filtersFactory", function() {
     /* corrections index filters */
     this.correctionGeneralFilters = function() {
         return [
-            factory.searchFilter,
-            factory.submitterFilter,
-            //factory.editorFilter,
+            factory.searchFilter([
+                factory.searchTerm("text", "correction text"),
+                factory.searchTerm("text", "correction submitter's username")
+            ]),
+            factory.pageFilter,
             factory.showAdultFilter,
             factory.showNonAdultFilter,
             factory.hiddenFilter,
@@ -940,90 +883,30 @@ app.service("filtersFactory", function() {
     };
 
     this.correctionTypeFilters = function() {
-        return [
-            {
-                data: "correctable.Mod",
-                param: "tmo",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "correctable.CompatibilityNote",
-                param: "tcn",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "correctable.InstallOrderNote",
-                param: "tio",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "correctable.LoadOrderNote",
-                param: "tlo",
-                type: "Boolean",
-                default: true
-            }
-        ];
+        return factory.enumFilters("correctable", {
+            "Mod": "tmo",
+            "CompatibilityNote": "tcn",
+            "InstallOrderNote": "tio",
+            "LoadOrderNote": "tlo"
+        });
     };
 
     this.correctionStatusFilters = function() {
-        return [
-            {
-                data: "status.open",
-                param: "sto",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "status.passed",
-                param: "stp",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "status.failed",
-                param: "stf",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "status.closed",
-                param: "stc",
-                type: "Boolean",
-                default: true
-            }
-        ];
+        return factory.enumFilters("status", {
+            open: "sto",
+            passed: "stp",
+            failed: "stf",
+            closed: "stc"
+        });
     };
 
     this.correctionModStatusFilters = function() {
-        return [
-            {
-                data: "mod_status.nil",
-                param: "msn",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "mod_status.good",
-                param: "msg",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "mod_status.outdated",
-                param: "mso",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "mod_status.unstable",
-                param: "msu",
-                type: "Boolean",
-                default: true
-            }
-        ];
+        return factory.enumFilters("mod_status", {
+            nil: "msn",
+            good: "msg",
+            outdated: "mso",
+            unstable: "msu"
+        })
     };
 
     this.correctionStatisticFilters = function() {
@@ -1067,14 +950,14 @@ app.service("filtersFactory", function() {
         )
     };
 
-    this.articleSearchFilters = function() {
+    this.articleGeneralFilters = function() {
         return [
-            factory.searchFilter,
-            {
-                data: "text",
-                param: "t"
-            },
-            factory.submitterFilter
+            factory.searchFilter([
+                factory.searchTerm("title", "article title"),
+                factory.searchTerm("text", "article text"),
+                factory.searchTerm("submitter", "article submitter's username")
+            ]),
+            factory.pageFilter
         ];
     };
 
@@ -1091,59 +974,36 @@ app.service("filtersFactory", function() {
     // TODO: Article Game Filters
     this.articleFilters = function() {
         return Array.prototype.concat(
-            factory.articleSearchFilters(),
+            factory.articleGeneralFilters(),
             factory.articleDateFilters()
         );
     };
 
     this.modListGeneralFilters = function() {
         return [
-            factory.searchFilter,
-            {
-                data: "description",
-                param: "d"
-            },
-            factory.submitterFilter,
+            factory.searchFilter([
+                factory.searchTerm("name", "mod list name"),
+                factory.searchTerm("description", "mod list description"),
+                factory.searchTerm("submitter", "mod list submitter's username")
+            ]),
+            factory.pageFilter,
             factory.showAdultFilter,
             factory.showNonAdultFilter,
             factory.hiddenFilter,
             factory.unhiddenFilter,
-            {
-                data: "tags",
-                param: "t",
-                type: "List"
-            },
-            {
-                data: "status.complete",
-                param: "sco",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "status.testing",
-                param: "ste",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "status.under_construction",
-                param: "sun",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "kind.normal",
-                param: "cln",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "kind.collection",
-                param: "clc",
-                type: "Boolean",
-                default: true
-            }
-        ];
+            factory.tagsFilter,
+            factory.excludedTagsFilter,
+        ].concat(
+            factory.enumFilters("status", {
+                complete: "sco",
+                testing: "ste",
+                under_construction: "sun"
+            }),
+            factory.enumFilters("kind", {
+                normal: "kn",
+                collection: "kc"
+            })
+        );
     };
 
     this.modListDateFilters = function() {
@@ -1333,15 +1193,12 @@ app.service("filtersFactory", function() {
 
     this.pluginGeneralFilters = function() {
         return [
-            factory.searchFilter,
-            {
-                data: "author",
-                param: "a"
-            },
-            {
-                data: "description",
-                param: "d"
-            },
+            factory.searchFilter([
+                factory.searchTerm("filename", "plugin's filename"),
+                factory.searchTerm("author", "plugin's author field"),
+                factory.searchTerm("description", "plugin's description field")
+            ]),
+            factory.pageFilter,
             factory.showAdultFilter,
             factory.showNonAdultFilter,
             factory.hiddenFilter,
@@ -1412,129 +1269,39 @@ app.service("filtersFactory", function() {
         )
     };
 
-    this.reportSearchFilters = function() {
-        return [
-            factory.submitterFilter
-        ];
-    };
-
     this.reportGeneralFilters = function() {
         return [
-            {
-                data: "resolved.1",
-                param: "res",
-                type: "Boolean",
-                default: false
-            },
-            {
-                data: "resolved.0",
-                param: "unr",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "reportable.Review",
-                param: "rr",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "reportable.CompatibilityNote",
-                param: "rcn",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "reportable.InstallOrderNote",
-                param: "rin",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "reportable.LoadOrderNote",
-                param: "rln",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "reportable.Comment",
-                param: "rco",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "reportable.Correction",
-                param: "rcr",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "reportable.Mod",
-                param: "rm",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "reportable.ModList",
-                param: "rml",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "reportable.Tag",
-                param: "rt",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "reportable.User",
-                param: "ru",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "reason.be_respectful",
-                param: "sbr",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "reason.be_trustworthy",
-                param: "sbt",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "reason.be_constructive",
-                param: "sbc",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "reason.spam",
-                param: "sns",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "reason.piracy",
-                param: "snp",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "reason.adult_content",
-                param: "sac",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "reason.other",
-                param: "sot",
-                type: "Boolean",
-                default: true
-            }
-        ]
+            factory.searchFilter([
+                factory.searchTerm("text", "report note text", true),
+                factory.searchTerm("submitter", "report submitter's username")
+            ]),
+            factory.pageFilter
+        ].concat(
+            factory.enumFilters("resolved", {
+                "0": "unr",
+                "1": "res"
+            }, 1),
+            factory.enumFilters("reportable", {
+                "Review": "rr",
+                "CompatibilityNote": "rcn",
+                "InstallOrderNote": "rin",
+                "LoadOrderNote": "rln",
+                "Comment": "rco",
+                "Correction": "rcr",
+                "Mod": "rm",
+                "Tag": "rt",
+                "User": "ru"
+            }),
+            factory.enumFilters("reason", {
+                be_respectful: "sbr",
+                be_trustworthy: "sbt",
+                be_constructive: "sbc",
+                spam: "sns",
+                piracy: "snp",
+                adult_content: "sac",
+                other: "sot"
+            })
+        )
     };
 
     this.reportDateFilters = function() {
@@ -1562,45 +1329,31 @@ app.service("filtersFactory", function() {
 
     this.reportFilters = function() {
         return Array.prototype.concat(
-            factory.reportSearchFilters(),
             factory.reportGeneralFilters(),
             factory.reportDateFilters(),
             factory.reportStatisticFilters()
         );
     };
 
-    this.curatorRequestSearchFilters = function() {
+    this.curatorRequestGeneralFilters = function() {
         return [
-            factory.searchFilter,
-            factory.submitterFilter,
+            factory.searchFilter([
+                factory.searchTerm("text", "curator request's text body"),
+                factory.searchTerm("submitter", "curator request submitter's username"),
+                factory.searchTerm("mod_name", "curator request's mod name")
+            ]),
+            factory.pageFilter,
             {
                 label: "Mod Name",
                 data: "mod_name"
             }
-        ];
-    };
-
-    this.curatorRequestGeneralFilters = function() {
-        return [
-            {
-                data: "state.open",
-                param: "sop",
-                type: "Boolean",
-                default: true
-            },
-            {
-                data: "state.approved",
-                param: "sap",
-                type: "Boolean",
-                default: false
-            },
-            {
-                data: "state.denied",
-                param: "sde",
-                type: "Boolean",
-                default: false
-            }
-        ]
+        ].concat(
+            factory.enumFilters("state", {
+                open: "sop",
+                approved: "sap",
+                denied: "sde"
+            }, 1)
+        )
     };
 
     this.curatorRequestDateFilters = function() {
@@ -1633,7 +1386,6 @@ app.service("filtersFactory", function() {
 
     this.curatorRequestFilters = function() {
         return Array.prototype.concat(
-            factory.curatorRequestSearchFilters(),
             factory.curatorRequestGeneralFilters(),
             factory.curatorRequestDateFilters(),
             factory.curatorRequestStatisticFilters()
@@ -1642,8 +1394,11 @@ app.service("filtersFactory", function() {
 
     this.tagGeneralFilters = function() {
         return [
-            factory.searchFilter,
-            factory.submitterFilter,
+            factory.searchFilter([
+                factory.searchTerm("text", "tag_text", true),
+                factory.searchTerm("submitter", "tag submitter's username")
+            ]),
+            factory.pageFilter,
             factory.hiddenFilter,
             factory.unhiddenFilter
         ]

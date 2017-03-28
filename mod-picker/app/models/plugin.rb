@@ -1,5 +1,5 @@
 class Plugin < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, CounterCache, ScopeHelpers, BetterJson
+  include Filterable, Sortable, RecordEnhancements, CounterCache, ScopeHelpers, Searchable, BetterJson
 
   # ATTRIBUTES
   attr_accessor :master_plugins
@@ -11,8 +11,6 @@ class Plugin < ActiveRecord::Base
   hash_scope :hidden, alias: 'hidden', table: 'mods'
   hash_scope :adult, alias: 'adult', column: 'has_adult_content'
   ids_scope :mod_option_id
-  search_scope :filename, :alias => :search
-  search_scope :author, :description
   range_scope :record_count, :alias => 'records'
   range_scope :override_count, :alias => 'overrides'
   counter_scope :errors_count, :mod_lists_count, :load_order_notes_count
@@ -23,6 +21,8 @@ class Plugin < ActiveRecord::Base
   scope :mods, -> (mod_ids) { eager_load(:mod_option).where(:mod_options => { :mod_id => mod_ids }) }
   scope :esm, -> { where("filename like '%.esm'") }
   scope :categories, -> (categories) { joins(:mod).where("mods.primary_category_id IN (:ids) OR mods.secondary_category_id IN (:ids)", ids: categories) }
+  # TODO: AREL
+  scope :mod_list, -> (mod_list_id) { joins("INNER JOIN mod_list_mods").joins("INNER JOIN mod_list_mod_options ON mod_list_mod_options.mod_list_mod_id = mod_list_mods.id").where("mod_list_mods.mod_list_id = ?", mod_list_id).where("plugins.mod_option_id = mod_list_mod_options.mod_option_id").distinct }
 
   # ASSOCIATIONS
   belongs_to :game, :inverse_of => 'plugins'
@@ -45,8 +45,8 @@ class Plugin < ActiveRecord::Base
 
   # notes
   has_many :compatibility_notes, :foreign_key => 'compatibility_plugin_id', :inverse_of => 'compatibility_plugin', :dependent => :destroy
-  has_many :first_load_order_notes, :class_name => 'LoadOrderNote', :foreign_key => 'first_plugin_id', :inverse_of => 'first_plugin', :dependent => :destroy
-  has_many :second_load_order_notes, :class_name => 'LoadOrderNote', :foreign_key => 'second_plugin_id', :inverse_of => 'second_plugin', :dependent => :destroy
+  has_many :first_load_order_notes, :class_name => 'LoadOrderNote', :foreign_key => 'first_plugin_filename', :inverse_of => 'first_plugin', :primary_key => 'filename', :dependent => :destroy
+  has_many :second_load_order_notes, :class_name => 'LoadOrderNote', :foreign_key => 'second_plugin_filename', :inverse_of => 'second_plugin', :primary_key => 'filename',  :dependent => :destroy
 
   accepts_nested_attributes_for :plugin_record_groups, :overrides, :plugin_errors
 
@@ -107,7 +107,7 @@ class Plugin < ActiveRecord::Base
   end
 
   def load_order_notes
-    LoadOrderNote.where("first_plugin_id = :id OR second_plugin_id = :id", id: id)
+    LoadOrderNote.where("first_plugin_filename = :filename OR second_plugin_filename = :filename", filename: filename)
   end
 
   def convert_dummy_masters

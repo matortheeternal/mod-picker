@@ -43,15 +43,15 @@ def get_unique_mod_pair(model)
 end
 
 def get_unique_plugin_pair(model)
-  plugin_ids = [0, 0]
+  plugin_filenames = ["", ""]
   while 1
-    plugin_ids[0] = random_plugin.id
-    plugin_ids[1] = random_plugin.id
-    if plugin_ids[0] != plugin_ids[1] && model.where(first_plugin_id: plugin_ids, second_plugin_id: plugin_ids).empty?
+    plugin_filenames[0] = random_plugin.filename
+    plugin_filenames[1] = random_plugin.filename
+    if plugin_filenames[0] != plugin_filenames[1] && model.where(first_plugin_filename: plugin_filenames, second_plugin_filename: plugin_filenames).empty?
       break
     end
   end
-  plugin_ids
+  plugin_filenames
 end
 
 def get_unique_username
@@ -887,12 +887,12 @@ def seed_fake_load_order_notes
   nNotes = Plugin.count
   nNotes.times do
     submitter = random_user
-    (first_plugin_id, second_plugin_id) = get_unique_plugin_pair(LoadOrderNote)
+    (first_plugin_filename, second_plugin_filename) = get_unique_plugin_pair(LoadOrderNote)
     lnote = LoadOrderNote.new(
         game_id: gameSkyrim.id,
         submitted_by: submitter.id,
-        first_plugin_id: first_plugin_id,
-        second_plugin_id: second_plugin_id,
+        first_plugin_filename: first_plugin_filename,
+        second_plugin_filename: second_plugin_filename,
         submitted: Faker::Date.backward(14),
         text_body: Faker::Lorem.paragraph(10)
     )

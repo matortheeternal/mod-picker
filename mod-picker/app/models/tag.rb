@@ -1,5 +1,5 @@
 class Tag < ActiveRecord::Base
-  include Filterable, Sortable, RecordEnhancements, CounterCache, Reportable, ScopeHelpers, BetterJson
+  include Filterable, Sortable, RecordEnhancements, CounterCache, Reportable, ScopeHelpers, Searchable, BetterJson
 
   # ATTRIBUTES
   self.per_page = 100
@@ -7,8 +7,6 @@ class Tag < ActiveRecord::Base
   # SCOPES
   hash_scope :hidden, alias: 'hidden'
   game_scope
-  search_scope :text, alias: 'search'
-  user_scope :submitter
   range_scope :mods_count, :mod_lists_count
 
   # ASSOCIATIONS
@@ -32,6 +30,22 @@ class Tag < ActiveRecord::Base
 
   # CALLBACKS
   before_save :destroy_mod_and_mod_list_tags
+
+  def replace(new_tag_id)
+    ActiveRecord::Base.transaction do
+      new_tag = Tag.find(new_tag_id)
+      mod_tags.update_all("tag_id = #{new_tag_id}")
+      mod_list_tags.update_all("tag_id = #{new_tag_id}")
+      reset_counters!(:mod_tags, :mod_list_tags)
+      new_tag.reset_counters!(:mod_tags, :mod_list_tags)
+      self.hidden = true
+      save!
+      true
+    end
+  rescue Exception => x
+    errors.add(:replace, x.message)
+    false
+  end
 
   private
     def destroy_mod_and_mod_list_tags

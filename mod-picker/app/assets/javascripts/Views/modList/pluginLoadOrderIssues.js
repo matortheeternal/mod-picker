@@ -24,8 +24,8 @@ app.controller('pluginLoadOrderIssuesController', function($scope, $timeout, lis
                 $scope.notes.ignored_load_order.push(note);
                 return;
             }
-            var first_plugin = $scope.findPlugin(note.first_plugin.id, true);
-            var second_plugin = $scope.findPlugin(note.second_plugin.id, true);
+            var first_plugin = $scope.findPlugin(note.first_plugin_filename, true, true);
+            var second_plugin = $scope.findPlugin(note.second_plugin_filename, true, true);
             // unresolved if the both mods are present and the first mod comes after the second mod
             if (first_plugin && second_plugin && first_plugin.index > second_plugin.index) {
                 note.resolved = false;
@@ -69,9 +69,12 @@ app.controller('pluginLoadOrderIssuesController', function($scope, $timeout, lis
     $scope.$on('resolveLoadOrderNote', function(event, options) {
         switch(options.action) {
             case "move":
+                var note = options.note;
+                var firstPluginId = $scope.findPlugin(note.first_plugin_filename, false, true).plugin.id;
+                var secondPluginId = $scope.findPlugin(note.second_plugin_filename, false, true).plugin.id;
                 var moveOptions = {
-                    moveId: options.note.plugins[options.index].id,
-                    destId: options.note.plugins[+!options.index].id,
+                    moveId: options.index == 0 ? firstPluginId : secondPluginId,
+                    destId: options.index == 0 ? secondPluginId : firstPluginId,
                     after: !!options.index
                 };
                 $scope.$broadcast('moveItem', moveOptions);
@@ -108,9 +111,11 @@ app.controller('pluginLoadOrderIssuesController', function($scope, $timeout, lis
 
     $scope.resolveAllLoadOrder = function(moveDown) {
         $scope.notes.unresolved_load_order.forEach(function(note) {
+            var firstPluginId = $scope.findPlugin(note.first_plugin_filename, true, true).plugin.id;
+            var secondPluginId = $scope.findPlugin(note.second_plugin_filename, true, true).plugin.id;
             var moveOptions = {
-                moveId: moveDown ? note.second_plugin.id : note.first_plugin.id,
-                destId: moveDown ? note.first_plugin.id : note.second_plugin.id,
+                moveId: moveDown ? secondPluginId : firstPluginId,
+                destId: moveDown ? firstPluginId : secondPluginId,
                 after: moveDown
             };
             $scope.$broadcast('moveItem', moveOptions);
@@ -135,9 +140,9 @@ app.controller('pluginLoadOrderIssuesController', function($scope, $timeout, lis
         $scope.buildOutOfOrderPlugins();
         $scope.resolveAllLoadOrder(true);
     });
-    $scope.$on('pluginRemoved', function(event, pluginId) {
-        if (pluginId) {
-            listUtils.removePluginNotes($scope.notes.load_order, pluginId, function(note) {
+    $scope.$on('pluginRemoved', function(event, plugin) {
+        if (plugin) {
+            listUtils.removePluginNotes($scope.notes.load_order, plugin.filename, function(note) {
                 $scope.destroyIgnoreNote('LoadOrderNote', note);
             });
         }

@@ -142,7 +142,7 @@ app.config(['$stateProvider', function($stateProvider) {
     })
 }]);
 
-app.controller('modListController', function($scope, $rootScope, $q, $state, $stateParams, $timeout, modListObject, modListService, objectUtils, helpFactory, tabsFactory, baseFactory, eventHandlerFactory, listUtils) {
+app.controller('modListController', function($scope, $rootScope, $q, $state, $stateParams, $timeout, modListObject, modListService, objectUtils, helpFactory, tabsFactory, baseFactory, eventHandlerFactory, listUtils, modOptionUtils) {
     // inherited variables
     $scope.currentUser = $rootScope.currentUser;
     $scope.activeModList = $rootScope.activeModList;
@@ -222,6 +222,7 @@ app.controller('modListController', function($scope, $rootScope, $q, $state, $st
     // shared function setup
     $scope.isEmpty = objectUtils.isEmptyArray;
     eventHandlerFactory.buildMessageHandlers($scope, true);
+    modOptionUtils.buildHelperFunctions($scope, $rootScope);
 
     // set up the canManage permission
     var isAuthor = $scope.mod_list.submitter.id == $scope.currentUser.id;
@@ -392,8 +393,12 @@ app.controller('modListController', function($scope, $rootScope, $q, $state, $st
         return listUtils.genericFind($scope.model.mods, listUtils.findMod, modId, ignoreDestroyed);
     };
 
-    $scope.findPlugin = function(pluginId, ignoreDestroyed) {
-        return listUtils.genericFind($scope.model.plugins, listUtils.findPlugin, pluginId, ignoreDestroyed);
+    $scope.findPlugin = function(pluginAttr, ignoreDestroyed, byFileName) {
+        if (byFileName) {
+            return listUtils.genericFind($scope.model.plugins, listUtils.findPluginByFileName, pluginAttr, ignoreDestroyed);
+        } else {
+            return listUtils.genericFind($scope.model.plugins, listUtils.findPluginById, pluginAttr, ignoreDestroyed);
+        }
     };
 
     $scope.findCustomPlugin = function(noteId, ignoreDestroyed) {
