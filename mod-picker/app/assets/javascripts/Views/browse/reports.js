@@ -27,6 +27,6 @@ app.controller('reportsIndexController', function($scope, $rootScope, $statePara
     // build generic controller stuff
     $scope.route = 'reports';
     $scope.retrieve = reportService.retrieveReports;
-    indexFactory.buildIndex($scope, $stateParams, $state, indexService);
+    indexFactory.buildIndex($scope, $stateParams, $state);
     eventHandlerFactory.buildMessageHandlers($scope);
 });
