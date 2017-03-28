@@ -45,8 +45,6 @@ class Plugin < ActiveRecord::Base
 
   # notes
   has_many :compatibility_notes, :foreign_key => 'compatibility_plugin_id', :inverse_of => 'compatibility_plugin', :dependent => :destroy
-  has_many :first_load_order_notes, :class_name => 'LoadOrderNote', :foreign_key => 'first_plugin_filename', :inverse_of => 'first_plugin', :primary_key => 'filename', :dependent => :destroy
-  has_many :second_load_order_notes, :class_name => 'LoadOrderNote', :foreign_key => 'second_plugin_filename', :inverse_of => 'second_plugin', :primary_key => 'filename',  :dependent => :destroy
 
   accepts_nested_attributes_for :plugin_record_groups, :overrides, :plugin_errors
 
