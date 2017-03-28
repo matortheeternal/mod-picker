@@ -30,7 +30,7 @@ def create_config_file(mod, config_filename, config_install_path)
 end
 
 def create_tag_groups(game_name)
-  filename = game_name.downcase.underscore + ".json"
+  filename = game_name.downcase.gsub(" ", "_") + ".json"
   file = File.read(Rails.root.join("db", "tag_groups", filename))
   game = Game.find_by(display_name: game_name)
   JSON.parse(file).each do |tag_group|
