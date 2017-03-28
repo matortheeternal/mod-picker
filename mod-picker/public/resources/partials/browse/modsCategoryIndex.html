@@ -12,29 +12,29 @@
                 <div class="sidebar-box box-shadow">
                     <ul class="checkbox-list" ng-if="allowAdult">
                         <li>
-                            <label><input type="checkbox" ng-model="filters.adult['1']" on-change="refreshFilters()">
+                            <label><input type="checkbox" ng-model="filters.adult['1']" ng-change="refreshFilters()">
                                 Show Adult Content</label>
                         </li>
                         <li>
-                            <label><input type="checkbox" ng-model="filters.adult['0']" on-change="refreshFilters()">
+                            <label><input type="checkbox" ng-model="filters.adult['0']" ng-change="refreshFilters()">
                                 Show Non-Adult Content</label>
                         </li>
                     </ul>
                     <ul class="checkbox-list" ng-if="permissions.canModerate">
                         <li>
-                            <label><input type="checkbox" ng-model="filters.hidden['1']" on-change="refreshFilters()">
+                            <label><input type="checkbox" ng-model="filters.hidden['1']" ng-change="refreshFilters()">
                                 Hidden</label>
                         </li>
                         <li>
-                            <label><input type="checkbox" ng-model="filters.hidden['0']" on-change="refreshFilters()">
+                            <label><input type="checkbox" ng-model="filters.hidden['0']" ng-change="refreshFilters()">
                                 Unhidden</label>
                         </li>
                         <li>
-                            <label><input type="checkbox" ng-model="filters.approved['1']" on-change="refreshFilters()">
+                            <label><input type="checkbox" ng-model="filters.approved['1']" ng-change="refreshFilters()">
                                 Approved</label>
                         </li>
                         <li>
-                            <label><input type="checkbox" ng-model="filters.approved['0']" on-change="refreshFilters()">
+                            <label><input type="checkbox" ng-model="filters.approved['0']" ng-change="refreshFilters()">
                                 Unapproved</label>
                         </li>
                     </ul>
@@ -45,19 +45,19 @@
                 <div class="sidebar-box box-shadow">
                     <ul class="checkbox-list">
                         <li>
-                            <label><input type="checkbox" ng-model="filters.sources.nexus" on-change="refreshFilters()">
+                            <label><input type="checkbox" ng-model="filters.sources.nexus" ng-change="refreshFilters()">
                                 Nexus Mods</label>
                         </li>
                         <li>
-                            <label><input type="checkbox" ng-model="filters.sources.workshop" on-change="refreshFilters()">
+                            <label><input type="checkbox" ng-model="filters.sources.workshop" ng-change="refreshFilters()">
                                 Steam Workshop</label>
                         </li>
                         <li>
-                            <label><input type="checkbox" ng-model="filters.sources.lab" on-change="refreshFilters()">
+                            <label><input type="checkbox" ng-model="filters.sources.lab" ng-change="refreshFilters()">
                                 Lovers Lab</label>
                         </li>
                         <li>
-                            <label><input type="checkbox" ng-model="filters.sources.other" on-change="refreshFilters()">
+                            <label><input type="checkbox" ng-model="filters.sources.other" ng-change="refreshFilters()">
                                 Other</label>
                         </li>
                     </ul>
