@@ -26,20 +26,20 @@
 }
 
 .help-video-container {
-  padding: 50px 0 110px;
+  padding: 50px 0 10px;
 
-  .page-container {
+  .help-page-content {
     padding: 0;
+  }
+
+  .help-video-content {
+    padding: 10px 0 150px;
   }
 
   .help-video-player {
     padding: 20px 0;
     text-align: center;
   }
-}
-
-.help-video-content {
-  padding: 10px 0 150px;
 }
 
 // help page header
