@@ -227,7 +227,7 @@ app.service('modsIndexFactory', function(modService, categoryService, tagService
         // build generic controller stuff
         $scope.route = 'mods';
         $scope.retrieve = modService.retrieveMods;
-        indexFactory.buildIndex($scope, $stateParams, $state);
+        indexFactory.buildIndex($scope, $stateParams, $state, true);
         eventHandlerFactory.buildMessageHandlers($scope);
 
         // load filters into view model
