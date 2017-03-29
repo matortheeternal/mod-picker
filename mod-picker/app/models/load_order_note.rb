@@ -46,7 +46,8 @@ class LoadOrderNote < ActiveRecord::Base
   has_many :editors, -> { uniq }, :class_name => 'User', :through => 'history_entries'
 
   # COUNTER CACHE
-  counter_cache_on :first_plugin, :second_plugin, :first_mod, :second_mod, :submitter, conditional: { hidden: false, approved: true }
+  counter_cache_on :submitter, conditional: { hidden: false, approved: true }
+  # :first_plugin, :second_plugin, :first_mod, :second_mod,
 
   # VALIDATIONS
   validates :game_id, :submitted_by, :first_plugin_filename, :second_plugin_filename, :text_body, presence: true
@@ -60,7 +61,7 @@ class LoadOrderNote < ActiveRecord::Base
 
   def get_existing_note(plugin_filenames)
     table = LoadOrderNote.arel_table
-    LoadOrderNote.plugins(plugin_filenames).where(table[:hidden].eq(0).and(table[:id].not_eq(id))).first
+    LoadOrderNote.plugin(plugin_filenames).where(table[:hidden].eq(0).and(table[:id].not_eq(id))).first
   end
 
   def note_exists_error(existing_note)
@@ -83,16 +84,21 @@ class LoadOrderNote < ActiveRecord::Base
   end
 
   def plugin_is_master
-    second_plugin.masters.pluck(:master_plugin_id).include?(first_plugin.id) ||
-        first_plugin.masters.pluck(:master_plugin_id).include?(second_plugin.id)
+    false
+    #second_plugin.masters.pluck(:master_plugin_id).include?(first_plugin.id) ||
+    #   first_plugin.masters.pluck(:master_plugin_id).include?(second_plugin.id)
   end
 
   def validate_no_master_dependency
     errors.add(:plugins, "Load Order Notes for plugins with master dependencies are redundant.") if plugin_is_master
   end
 
+  def mod_ids
+    Mod.joins(:plugins).where("plugins.filename in (?)", [first_plugin_filename, second_plugin_filename]).ids
+  end
+
   def mod_author_users
-    User.includes(:mod_authors).where(:mod_authors => {mod_id: [first_mod.id, second_mod.id]})
+    User.joins(:mod_authors).where(:mod_authors => {mod_id: [mod_ids]})
   end
 
   def create_history_entry
@@ -106,7 +112,9 @@ class LoadOrderNote < ActiveRecord::Base
   end
 
   def self.update_adult(ids)
-    LoadOrderNote.where(id: ids).joins(:first_mod, :second_mod).update_all("load_order_notes.has_adult_content = mods.has_adult_content OR second_mods_load_order_notes.has_adult_content")
+    # TODO: Restore SQL here
+    #LoadOrderNote.where(id: ids).joins("INNER JOIN plugins ON plugins.filename = load_order_note.first_plugin_filename OR plugins.filename = load_order_note.second_plugin_filename").joins("INNER JOIN mod_options ON mod_options.id = plugins.mod_option_id").joins("INNER JOIN mods ON mods.id = mod_options.mod_id").update_all("load_order_notes.has_adult_content = mods.has_adult_content")
+    LoadOrderNote.where(id: ids).each{ |note| note.set_adult }
     Correction.update_adult(LoadOrderNote, ids)
   end
 
@@ -134,9 +142,8 @@ class LoadOrderNote < ActiveRecord::Base
         project(Arel.sql('*').count)
   end
 
-  private
-    def set_adult
-      self.has_adult_content = first_mod.has_adult_content || second_mod.has_adult_content
-      true
-    end
+  def set_adult
+    self.has_adult_content = Mod.joins(:plugins).where("plugins.filename in (?)", [first_plugin_filename, second_plugin_filename]).pluck(:has_adult_content).reduce(:|)
+    true
+  end
 end
