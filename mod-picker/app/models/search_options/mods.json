@@ -6,23 +6,23 @@
     "column": "aliases"
   },
   {
-    "column": "description"
+    "alias": "author",
+    "column": "authors"
+  },
+  {
+    "column": "description",
+    "skip": true
   },
   {
     "model": "User",
     "column": "username",
-    "alias": "mp_author"
+    "alias": "mp_author",
+    "skip": true
   },
   {
-    "alias": "author",
+    "alias": "uploader",
+    "skip": true,
     "subqueries": [
-      {
-        "column": "authors"
-      },
-      {
-        "model": "NexusInfo",
-        "column": "authors"
-      },
       {
         "model": "NexusInfo",
         "column": "uploaded_by"
