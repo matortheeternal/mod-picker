@@ -41,7 +41,7 @@ module Searchable
     end
 
     def matching_terms(option, search_terms)
-      nil_if_blank(option_terms("#{option[:alias] || option[:column]}:", search_terms)) || general_terms(search_terms)
+      nil_if_blank(option_terms("#{option[:alias] || option[:column]}:", search_terms)) || (!option.has_key?(:skip) && general_terms(search_terms))
     end
 
     def build_search_queries(search)
