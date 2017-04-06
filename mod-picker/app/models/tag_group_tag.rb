@@ -3,7 +3,7 @@ class TagGroupTag < ActiveRecord::Base
 
   # ASSOCIATIONS
   belongs_to :tag_group
-  belongs_to :tag
+  belongs_to :tag, :inverse_of => 'tag_group_tags'
   has_many :mod_tags, -> (object) { joins(:mod).where("mods.primary_category_id in (:ids) OR mods.secondary_category_id in (:ids)", ids: object.tag_group.category_ids) }, through: "tag"
 
   # COUNTER CACHE

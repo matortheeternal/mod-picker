@@ -18,6 +18,8 @@ class Tag < ActiveRecord::Base
   has_many :mod_list_tags, :inverse_of => 'tag'
   has_many :mod_lists, :through => 'mod_list_tags', :inverse_of => 'tags'
 
+  has_many :tag_group_tags, :inverse_of => 'tag'
+
   # COUNTER CACHE
   counter_cache :mod_tags, column: 'mods_count'
   counter_cache :mod_list_tags, column: 'mod_lists_count'
@@ -36,6 +38,7 @@ class Tag < ActiveRecord::Base
       new_tag = Tag.find(new_tag_id)
       mod_tags.update_all("tag_id = #{new_tag_id}")
       mod_list_tags.update_all("tag_id = #{new_tag_id}")
+      tag_group_tags.update_all("tag_id = #{new_tag_id}")
       reset_counters!(:mod_tags, :mod_list_tags)
       new_tag.reset_counters!(:mod_tags, :mod_list_tags)
       self.hidden = true
