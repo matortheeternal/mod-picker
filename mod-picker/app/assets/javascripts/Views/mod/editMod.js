@@ -70,7 +70,7 @@ app.config(['$stateProvider', function($stateProvider) {
     });
 }]);
 
-app.controller('editModController', function($scope, $rootScope, $state, modObject, modService, modLoaderService, modValidationService, userService, tagService, categoryService, helpFactory, sitesFactory, tabsFactory, eventHandlerFactory, objectUtils, tabUtils, viewUtils) {
+app.controller('editModController', function($scope, $rootScope, $state, modObject, modService, modLoaderService, modValidationService, userService, helpFactory, sitesFactory, tabsFactory, eventHandlerFactory, objectUtils, tabUtils) {
     // get parent variables
     $scope.currentUser = $rootScope.currentUser;
     $scope.categories = $rootScope.categories;

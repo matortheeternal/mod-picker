@@ -53,7 +53,7 @@ app.config(['$stateProvider', function($stateProvider) {
     });
 }]);
 
-app.controller('submitModController', function($scope, $rootScope, $state, modService, modValidationService, scrapeService, pluginService, categoryService, tagService, helpFactory, sitesFactory, tabsFactory, eventHandlerFactory, tabUtils, viewUtils) {
+app.controller('submitModController', function($scope, $rootScope, $state, modService, modValidationService, helpFactory, sitesFactory, tabsFactory, eventHandlerFactory, tabUtils) {
     // access parent variables
     $scope.currentUser = $rootScope.currentUser;
     $scope.categories = $rootScope.categories;
