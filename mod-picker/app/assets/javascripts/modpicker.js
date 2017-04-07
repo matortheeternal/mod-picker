@@ -54,6 +54,9 @@ app.config(['$urlMatcherFactoryProvider', '$urlRouterProvider', function($urlMat
     $urlRouterProvider.when('/mod-lists', goToState('base.mod-lists'));
     $urlRouterProvider.when('/articles', goToState('base.articles'));
     $urlRouterProvider.when('/mods/submit', goToState('base.submit-mod'));
+    $urlRouterProvider.when('/mods/submit/general', goToState('base.submit-mod.General'));
+    $urlRouterProvider.when('/mods/submit/analysis', goToState('base.submit-mod.Analysis'));
+    $urlRouterProvider.when('/mods/submit/classification', goToState('base.submit-mod.Classification'));
     categoryNames.forEach(forceModsCategoryIndexRoute);
 }]);
 
