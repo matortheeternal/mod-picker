@@ -16,7 +16,7 @@
     </span>
     <span ng-repeat="tag in rawNewTags" ng-class="tag.tagBoxClass" class="edit-tag-box">
         <span class="tag-text">
-            <tag-input tags="tags" tag="tag" can-create="canCreate" apply-tag="applyTag" remove-tag="removeTag" add-tag="focusAddTag" last="$last" index="$index"></tag-input>
+            <tag-input tags="tags" tag="tag" can-create="canCreate" apply-tag="applyTag" remove-tag="removeNewTag" add-tag="focusAddTag" last="$last" index="$index"></tag-input>
         </span>
         <a ng-href="mods?t={{tag.text}}" ng-if="showModsCount" class="tag-count" title="The number of mods with this tag.  &#13;Click to browse for mods with this tag.">
             {{tag.mods_count | number}}
@@ -24,11 +24,11 @@
         <a ng-href="mod-lists?t={{tag.text}}" ng-if="showModListsCount" class="tag-count" title="The number of mod lists with this tag.  &#13;Click to browse for mod lists with this tag.">
             {{tag.mod_lists_count | number}}
         </a>
-        <span class="remove-tag" ng-click="removeTag($index)" ng-mouseenter="enterRemove(tag)" ng-mouseleave="exitRemove(tag)" title="Click to remove this tag">
+        <span class="remove-tag" ng-click="removeNewTag($index)" ng-mouseenter="enterRemove(tag)" ng-mouseleave="exitRemove(tag)" title="Click to remove this tag">
             <i class="fa fa-times"></i>
         </span>
     </span>
-    <span class="add-tag-box action-box" ng-show="showAdd && (activeTags.length + rawNewTags.length < maxTags)" ng-click="addTag()" tabindex="0" ng-keydown="$event.keyCode == 13 && addTag()">
+    <span class="add-tag-box action-box" ng-show="showAdd && (activeTags.length + rawNewTags.length < maxTags)" ng-click="addBlankTag()" tabindex="0" ng-keydown="$event.keyCode == 13 && addBlankTag()">
         <span class="add-tag">
             <i class="fa fa-plus"></i> {{::addTagCaption}}
         </span>

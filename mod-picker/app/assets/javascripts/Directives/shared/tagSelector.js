@@ -32,13 +32,42 @@ app.controller('tagSelectorController', function($scope, $element, $timeout, tag
         $scope.loadTags();
     });
 
-    $scope.addTag = function() {
-        if ($scope.rawNewTags.length + $scope.activeTags.length < $scope.maxTags) {
-            $scope.rawNewTags.push({
-                text: "",
-                mods_count: 0,
-                mod_lists_count: 0
-            });
+    $scope.atMaxTags = function() {
+        return $scope.rawNewTags.length + $scope.activeTags.length >= $scope.maxTags;
+    };
+
+    $scope.addBlankTag = function() {
+        if ($scope.atMaxTags()) return;
+        $scope.rawNewTags.push({
+            text: "",
+            mods_count: 0,
+            mod_lists_count: 0
+        });
+    };
+
+    $scope.restoreTag = function($index) {
+        var restoredTag = $scope.removedTags.splice($index, 1);
+        $scope.activeTags.push(restoredTag[0]);
+    };
+
+    $scope.addNewTag = function(tagText) {
+        var newTag = $scope.tags.find(function(tag) {
+            return tag.text === tagText;
+        });
+        $scope.rawNewTags.push({
+            text: newTag.text,
+            mods_count: newTag.mods_count,
+            mod_lists_count: newTag.mod_lists_count
+        });
+    };
+
+    $scope.addTag = function(tagText) {
+        if ($scope.atMaxTags()) return;
+        var removedTagIndex = $scope.findTagIndex($scope.removedTags, tagText);
+        if (removedTagIndex > -1) {
+            $scope.restoreTag(removedTagIndex)
+        } else {
+            $scope.addNewTag(tagText);
         }
     };
 
@@ -58,7 +87,13 @@ app.controller('tagSelectorController', function($scope, $element, $timeout, tag
         tag.tagBoxClass = '';
     };
 
-    $scope.removeTag = function($index) {
+    $scope.findTagIndex = function(tags, tagText) {
+        return tags.findIndex(function(tag) {
+            return tag.text === tagText;
+        });
+    };
+
+    $scope.removeNewTag = function($index) {
         $scope.rawNewTags.splice($index, 1);
         $scope.storeTags();
     };
@@ -66,6 +101,18 @@ app.controller('tagSelectorController', function($scope, $element, $timeout, tag
     $scope.removeActiveTag = function($index) {
         var removedTag = $scope.activeTags.splice($index, 1);
         $scope.removedTags.push(removedTag[0]);
+    };
+
+    $scope.removeTag = function(tagText) {
+        var activeTagIndex = $scope.findTagIndex($scope.activeTags, tagText);
+        if (activeTagIndex > -1) {
+            $scope.removeActiveTag(activeTagIndex);
+        } else {
+            var newTagIndex = $scope.findTagIndex($scope.rawNewTags, tagText);
+            if (newTagIndex > -1) {
+                $scope.removeNewTag(newTagIndex);
+            }
+        }
     };
 
     $scope.resetTags = function() {
@@ -131,4 +178,10 @@ app.controller('tagSelectorController', function($scope, $element, $timeout, tag
     };
 
     $scope.$on('reloadTags', $scope.loadTags);
+    $scope.$on('addTag', function($event, tagText) {
+        $scope.addTag(tagText);
+    });
+    $scope.$on('removeTag', function($event, tagText) {
+        $scope.removeTag(tagText);
+    });
 });
