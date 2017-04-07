@@ -54,7 +54,7 @@ app.controller('modSourcesController', function($scope, $rootScope, sitesFactory
         }
 
         var gameId = window._current_game_id;
-        var modId = match[2];
+        var modId = match[1];
 
         var key = site.dataLabel;
         var baseUrl = location.href.replace(location.href, "");
