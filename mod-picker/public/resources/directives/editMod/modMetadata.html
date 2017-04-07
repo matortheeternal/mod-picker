@@ -1,10 +1,6 @@
-<h3 class="section-title">General Info
-    <span class="help-tooltip" ng-hide="hideTooltips" title="Information that cannot be fetched from scraping &#13;the mod pages.">
-        <i class="fa fa-question-circle"></i>
-    </span>
-</h3>
+<h3 class="section-title">Metadata</h3>
 <section>
-    <label class="subsection" ng-show="!sources.length || permissions.canSetGeneralModInfo">
+    <label class="subsection" ng-show="!sources.length || permissions.canSetModMetadata">
         <span class="input-label">Mod Name</span>
         <input type="text" class="medium-text" ng-model="mod.name">
     </label>
@@ -16,15 +12,15 @@
         </span>
         <input type="text" class="medium-text" ng-model="mod.aliases" maxlength="128">
     </label>
-    <label class="subsection" ng-show="!sources.length || permissions.canSetGeneralModInfo">
+    <label class="subsection" ng-show="!sources.length || permissions.canSetModMetadata">
         <span class="input-label">Authors</span>
         <input type="text" class="medium-text" ng-model="mod.authors">
     </label>
-    <label class="subsection" ng-show="!sources.length || permissions.canSetGeneralModInfo">
+    <label class="subsection" ng-show="!sources.length || permissions.canSetModMetadata">
         <span class="input-label">Date Released</span>
         <input type="date" ng-model="mod.released">
     </label>
-    <label class="subsection" ng-show="!sources.length || permissions.canSetGeneralModInfo">
+    <label class="subsection" ng-show="!sources.length || permissions.canSetModMetadata">
         <span class="input-label">Date Updated</span>
         <input type="date" ng-model="mod.updated">
     </label>
