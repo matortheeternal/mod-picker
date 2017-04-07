@@ -1,4 +1,4 @@
-app.controller('modClassificationController', function($scope, $rootScope, categoryService, tagService, viewUtils) {
+app.controller('modClassificationController', function($scope, $rootScope, $timeout, categoryService, tagService, viewUtils) {
     var sortTagGroupColumns = function(tagGroupColumns) {
         tagGroupColumns.forEach(function(column) {
             column.items.sortAlphabetically('name');
@@ -22,8 +22,42 @@ app.controller('modClassificationController', function($scope, $rootScope, categ
         $scope.tagGroupColumns = sortTagGroupColumns(tagGroupColumns);
     };
 
-    // apply tag groups
-    $scope.applyTagGroups();
+    $scope.findTagGroupTag = function(tagText) {
+        for (var i = 0; i < $scope.tagGroupColumns.length; i++) {
+            var column = $scope.tagGroupColumns[i];
+            for (var j = 0;  j < column.items.length; j++) {
+                var group = column.items[j];
+                for (var k = 0; k < group.tag_group_tags.length; k++) {
+                    var tagGroupTag = group.tag_group_tags[k];
+                    if (tagGroupTag.tag_text === tagText) {
+                        return tagGroupTag;
+                    }
+                }
+            }
+        }
+    };
+
+    $scope.toggleTagGroupTag = function(tagText, enabled) {
+        var tagGroupTag = $scope.findTagGroupTag(tagText);
+        if (tagGroupTag) {
+            tagGroupTag.enabled = enabled;
+            return true;
+        }
+    };
+
+    $scope.toggleTag = function(tag) {
+        if (tag.enabled) {
+            $scope.$broadcast('addTag', tag.tag_text);
+        } else {
+            $scope.$broadcast('removeTag', tag.tag_text);
+        }
+    };
+
+    $scope.loadTagGroupTags = function() {
+        $scope.mod.tags.forEach(function(tag) {
+            $scope.toggleTagGroupTag(tag.text, true)
+        });
+    };
 
     // category management
     $scope.$watch('mod.categories', function() {
@@ -41,5 +75,15 @@ app.controller('modClassificationController', function($scope, $rootScope, categ
 
         // apply tag groups
         $scope.applyTagGroups();
+        $scope.loadTagGroupTags();
     }, true);
+
+    // tag group management
+    $scope.$on('tagAdded', function(tagText) {
+        $scope.toggleTagGroupTag(tagText, true);
+    });
+
+    $scope.$on('tagRemoved', function(tagText) {
+        $scope.toggleTagGroupTag(tagText, false);
+    });
 });
