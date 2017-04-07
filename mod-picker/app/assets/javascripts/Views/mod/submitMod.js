@@ -1,8 +1,9 @@
 app.config(['$stateProvider', function($stateProvider) {
     $stateProvider.state('base.submit-mod', {
-            templateUrl: '/resources/partials/mod/submitMod.html',
+            templateUrl: '/resources/partials/editMod/submit.html',
             controller: 'submitModController',
             url: '/mods/submit',
+            redirectTo: 'base.submit-mod.General',
             resolve: {
                 mod: function($q, modService) {
                     var mod = $q.defer();
@@ -21,10 +22,37 @@ app.config(['$stateProvider', function($stateProvider) {
                 }
             }
         }
-    );
+    ).state('base.submit-mod.General', {
+        sticky: true,
+        deepStateRedirect: true,
+        views: {
+            'General': {
+                templateUrl: '/resources/partials/editMod/modGeneral.html'
+            }
+        },
+        url: '/general'
+    }).state('base.submit-mod.Analysis', {
+        sticky: true,
+        deepStateRedirect: true,
+        views: {
+            'Analysis': {
+                templateUrl: '/resources/partials/editMod/modAnalysis.html'
+            }
+        },
+        url: '/analysis'
+    }).state('base.submit-mod.Classification', {
+        sticky: true,
+        deepStateRedirect: true,
+        views: {
+            'Classification': {
+                templateUrl: '/resources/partials/editMod/modClassification.html'
+            }
+        },
+        url: '/classification'
+    });
 }]);
 
-app.controller('submitModController', function($scope, $rootScope, backend, modService, modValidationService, scrapeService, pluginService, categoryService, helpFactory, sitesFactory, eventHandlerFactory) {
+app.controller('submitModController', function($scope, $rootScope, backend, modService, modValidationService, scrapeService, pluginService, categoryService, helpFactory, sitesFactory, tabsFactory, eventHandlerFactory) {
     // access parent variables
     $scope.currentUser = $rootScope.currentUser;
     $scope.categories = $rootScope.categories;
@@ -33,6 +61,7 @@ app.controller('submitModController', function($scope, $rootScope, backend, modS
 
     // initialize variables
     $scope.sites = sitesFactory.sites();
+    $scope.tabs = tabsFactory.buildEditModTabs(false);
     $scope.mod = {
         game_id: window._current_game_id,
         sources: [{
@@ -53,6 +82,7 @@ app.controller('submitModController', function($scope, $rootScope, backend, modS
             { label: "big", src: '/mods/Default-big.png' }
         ]
     };
+    $scope.canManageOptions = true;
 
     // set page title
     $scope.$emit('setPageTitle', 'Submit Mod');
