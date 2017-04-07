@@ -8,9 +8,10 @@ app.config(['$stateProvider', function($stateProvider) {
 
 app.config(['$stateProvider', function($stateProvider) {
     $stateProvider.state('base.edit-mod', {
-        templateUrl: '/resources/partials/mod/editMod.html',
+        templateUrl: '/resources/partials/editMod/edit.html',
         controller: 'editModController',
         url: '/mods/:modId/edit',
+        redirectTo: 'base.edit-mod.General',
         resolve: {
             modObject: function(modService, $stateParams, $q, licenses, licenseService) {
                 var mod = $q.defer();
@@ -29,10 +30,46 @@ app.config(['$stateProvider', function($stateProvider) {
                 return mod.promise;
             }
         }
+    }).state('base.edit-mod.General', {
+        sticky: true,
+        deepStateRedirect: true,
+        views: {
+            'General': {
+                templateUrl: '/resources/partials/editMod/modGeneral.html'
+            }
+        },
+        url: '/general'
+    }).state('base.edit-mod.Authoring', {
+        sticky: true,
+        deepStateRedirect: true,
+        views: {
+            'Authoring': {
+                templateUrl: '/resources/partials/editMod/modAuthoring.html'
+            }
+        },
+        url: '/authoring'
+    }).state('base.edit-mod.Analysis', {
+        sticky: true,
+        deepStateRedirect: true,
+        views: {
+            'Analysis': {
+                templateUrl: '/resources/partials/editMod/modAnalysis.html'
+            }
+        },
+        url: '/analysis'
+    }).state('base.edit-mod.Classification', {
+        sticky: true,
+        deepStateRedirect: true,
+        views: {
+            'Classification': {
+                templateUrl: '/resources/partials/editMod/modClassification.html'
+            }
+        },
+        url: '/classification'
     });
 }]);
 
-app.controller('editModController', function($scope, $rootScope, $state, modObject, modService, modLoaderService, modValidationService, userService, tagService, categoryService, helpFactory, sitesFactory, eventHandlerFactory, objectUtils) {
+app.controller('editModController', function($scope, $rootScope, $state, modObject, modService, modLoaderService, modValidationService, userService, tagService, categoryService, helpFactory, sitesFactory, tabsFactory, eventHandlerFactory, objectUtils) {
     // get parent variables
     $scope.currentUser = $rootScope.currentUser;
     $scope.categories = $rootScope.categories;
@@ -60,6 +97,7 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
         { label: 'small',   size: 100 }
     ];
     $scope.analysisValid = true;
+    $scope.editing = true;
 
     // set page title
     $scope.$emit('setPageTitle', 'Edit Mod');
@@ -77,7 +115,9 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
     var isAuthor = author && author.role == 'author';
     $scope.canManageOptions = $scope.permissions.canModerate || isAuthor;
     $scope.canChangeStatus = (isAuthor && $scope.mod.status == "good") || $scope.permissions.isAdmin;
-    $scope.canSetDetails  = $scope.permissions.canModerate || isAuthor;
+
+    // set up tabs
+    $scope.tabs = tabsFactory.buildEditModTabs($scope.canManageOptions);
 
     $scope.$watch('mod.categories', function() {
         // clear messages when user changes the category
