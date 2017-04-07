@@ -25,6 +25,17 @@ app.service('categoryService', function($q, backend) {
         });
     };
 
+    this.includeSuperCategories = function(categories, ids) {
+        var a = angular.copy(ids);
+        ids.forEach(function(id) {
+            var category = service.getCategoryById(categories, id);
+            if (category.parent_id) {
+                a.push(category.parent_id);
+            }
+        });
+        return a;
+    };
+
     this.getCategoryByName = function(categories, categoryName) {
         return categories.find(function(category) {
             return category.name === categoryName;
