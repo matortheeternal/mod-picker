@@ -162,7 +162,7 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
     // save changes
     $scope.saveChanges = function() {
         // return if mod is invalid
-        if (!$scope.modValid()) return;
+        if (!$scope.valid) return;
 
         // get changed mod fields
         modValidationService.sanitizeSet($scope.mod.requirements);

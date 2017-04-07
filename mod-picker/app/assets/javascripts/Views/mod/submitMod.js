@@ -141,9 +141,7 @@ app.controller('submitModController', function($scope, $rootScope, $state, modSe
 
     $scope.submit = function() {
         // return if mod is invalid
-        if (!$scope.modValid()) {
-            return;
-        }
+        if (!$scope.valid) return;
 
         $scope.startSubmission("Submitting Mod...");
         modService.submitMod($scope.mod).then(function(data) {
