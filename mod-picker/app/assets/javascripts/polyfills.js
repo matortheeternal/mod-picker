@@ -107,6 +107,18 @@ Array.prototype.contains = function(needle) {
     return (this.indexOf(needle) > -1);
 };
 
+Array.prototype.sortAlphabetically = function(key) {
+    return this.sort(function(a, b) {
+        if (a[key] < b[key]) {
+            return -1;
+        }
+        if (a[key] > b[key]) {
+            return 1;
+        }
+        return 0;
+    })
+};
+
 Array.prototype.groupBy = function(propertyName) {
     var obj = {};
     this.forEach(function(item) {
