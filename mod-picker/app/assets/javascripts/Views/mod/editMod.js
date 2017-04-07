@@ -142,7 +142,7 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
         $scope.categoriesValid = modValidationService.categoriesValid($scope.mod);
 
         // return result of all validations
-        return $scope.sourcesValid && $scope.authorsValid && $scope.requirementsValid && $scope.configsValid && $scope.categoriesValid;
+        $scope.valid = $scope.sourcesValid && $scope.authorsValid && $scope.requirementsValid && $scope.configsValid && $scope.categoriesValid;
     };
 
     $scope.buildSource = function(scrapeLabel, infoLabel) {
@@ -225,4 +225,6 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
             ]);
         }
     };
+
+    $scope.$watch('mod', $scope.modValid);
 });

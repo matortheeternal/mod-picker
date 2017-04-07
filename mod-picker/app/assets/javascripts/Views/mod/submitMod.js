@@ -106,12 +106,12 @@ app.controller('submitModController', function($scope, $rootScope, backend, modS
 
     // submission isn't allowed until the user has provided at least one valid source,
     // a mod analysis, and at least one category
-    $scope.modValid = function() {
+    $scope.checkIfValid = function() {
         $scope.sourcesValid = modValidationService.sourcesValid($scope.mod);
         $scope.categoriesValid = modValidationService.categoriesValid($scope.mod);
         $scope.requirementsValid = modValidationService.requirementsValid($scope.mod.requirements);
         $scope.analysisValid = !!$scope.mod.analysis;
-        return $scope.sourcesValid && $scope.categoriesValid && $scope.analysisValid;
+        $scope.valid = $scope.sourcesValid && $scope.categoriesValid && $scope.analysisValid;
     };
 
     $scope.submitImage = function(modId) {
@@ -152,4 +152,6 @@ app.controller('submitModController', function($scope, $rootScope, backend, modS
             $scope.submissionError("There were errors submitting your mod.", response);
         });
     };
+
+    $scope.$watch('mod', $scope.checkIfValid);
 });
