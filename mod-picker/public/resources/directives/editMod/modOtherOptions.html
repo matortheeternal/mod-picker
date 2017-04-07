@@ -1,22 +1,5 @@
-<h3 class="section-title">Image
-    <span class="help-tooltip" ng-hide="hideTooltips" title="The image that will be shown on the mod page.">
-        <i class="fa fa-question-circle"></i>
-    </span>
-</h3>
+<h3 class="section-title">Other Options</h3>
 <section>
-    <image-upload image="image" can-change="true" default-src="mod.images.big" default-size="big" label="mod image" image-class="mod-image" sizes="imageSizes"></image-upload>
-</section>
-
-<mod-sources></mod-sources>
-
-<mod-metadata></mod-metadata>
-
-<mod-requirements></mod-requirements>
-
-<mod-config-files ng-if="editing"></mod-config-files>
-
-<h3 ng-if="canManageOptions" class="section-title">Other Options</h3>
-<section ng-if="canManageOptions">
     <ul class="checkbox-list">
         <li>
             <label class="checkbox-option">

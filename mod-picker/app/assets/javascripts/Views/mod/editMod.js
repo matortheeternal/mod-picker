@@ -35,7 +35,7 @@ app.config(['$stateProvider', function($stateProvider) {
         deepStateRedirect: true,
         views: {
             'General': {
-                templateUrl: '/resources/partials/editMod/modGeneral.html'
+                templateUrl: '/resources/partials/editMod/general.html'
             }
         },
         url: '/general'
@@ -44,7 +44,7 @@ app.config(['$stateProvider', function($stateProvider) {
         deepStateRedirect: true,
         views: {
             'Authoring': {
-                templateUrl: '/resources/partials/editMod/modAuthoring.html'
+                templateUrl: '/resources/partials/editMod/authoring.html'
             }
         },
         url: '/authoring'
@@ -53,7 +53,7 @@ app.config(['$stateProvider', function($stateProvider) {
         deepStateRedirect: true,
         views: {
             'Analysis': {
-                templateUrl: '/resources/partials/editMod/modAnalysis.html'
+                templateUrl: '/resources/partials/editMod/analysis.html'
             }
         },
         url: '/analysis'
@@ -62,14 +62,14 @@ app.config(['$stateProvider', function($stateProvider) {
         deepStateRedirect: true,
         views: {
             'Classification': {
-                templateUrl: '/resources/partials/editMod/modClassification.html'
+                templateUrl: '/resources/partials/editMod/classification.html'
             }
         },
         url: '/classification'
     });
 }]);
 
-app.controller('editModController', function($scope, $rootScope, $state, modObject, modService, modLoaderService, modValidationService, userService, tagService, categoryService, helpFactory, sitesFactory, tabsFactory, eventHandlerFactory, objectUtils) {
+app.controller('editModController', function($scope, $rootScope, $state, modObject, modService, modLoaderService, modValidationService, userService, tagService, categoryService, helpFactory, sitesFactory, tabsFactory, eventHandlerFactory, objectUtils, tabUtils) {
     // get parent variables
     $scope.currentUser = $rootScope.currentUser;
     $scope.categories = $rootScope.categories;
@@ -104,6 +104,7 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
 
     // shared function setup
     eventHandlerFactory.buildMessageHandlers($scope, true);
+    tabUtils.buildTabHelpers($scope, $state, 'edit-mod', true);
 
     // set help context
     helpFactory.setHelpContexts($scope, [helpFactory.editMod]);

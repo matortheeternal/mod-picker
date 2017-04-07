@@ -1,0 +1,21 @@
+<h3 class="section-title">Image
+    <span class="help-tooltip" ng-hide="hideTooltips" title="The image that will be shown on the mod page.">
+        <i class="fa fa-question-circle"></i>
+    </span>
+</h3>
+<section>
+    <image-upload image="image" can-change="true" default-src="mod.images.big" default-size="big" label="mod image" image-class="mod-image" sizes="imageSizes"></image-upload>
+</section>
+
+<mod-sources></mod-sources>
+
+<mod-metadata></mod-metadata>
+
+<mod-requirements></mod-requirements>
+
+<mod-other-options></mod-other-options>
+
+<div class="action-button-container">
+    <input ng-hide="valid" class="btn action-btn" type="submit" ng-click="nextTab()" value="Next"/>
+    <input ng-show="valid" class="btn action-btn" type="submit" ng-disabled='submitting' ng-click="submit()" value="Submit"/>
+</div>

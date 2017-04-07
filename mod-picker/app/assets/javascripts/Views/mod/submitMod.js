@@ -1,6 +1,6 @@
 app.config(['$stateProvider', function($stateProvider) {
     $stateProvider.state('base.submit-mod', {
-            templateUrl: '/resources/partials/editMod/submit.html',
+            templateUrl: '/resources/partials/submitMod/submit.html',
             controller: 'submitModController',
             url: '/mods/submit',
             redirectTo: 'base.submit-mod.General',
@@ -27,7 +27,7 @@ app.config(['$stateProvider', function($stateProvider) {
         deepStateRedirect: true,
         views: {
             'General': {
-                templateUrl: '/resources/partials/editMod/modGeneral.html'
+                templateUrl: '/resources/partials/submitMod/general.html'
             }
         },
         url: '/general'
@@ -36,7 +36,7 @@ app.config(['$stateProvider', function($stateProvider) {
         deepStateRedirect: true,
         views: {
             'Analysis': {
-                templateUrl: '/resources/partials/editMod/modAnalysis.html'
+                templateUrl: '/resources/partials/submitMod/analysis.html'
             }
         },
         url: '/analysis'
@@ -45,14 +45,14 @@ app.config(['$stateProvider', function($stateProvider) {
         deepStateRedirect: true,
         views: {
             'Classification': {
-                templateUrl: '/resources/partials/editMod/modClassification.html'
+                templateUrl: '/resources/partials/submitMod/classification.html'
             }
         },
         url: '/classification'
     });
 }]);
 
-app.controller('submitModController', function($scope, $rootScope, backend, modService, modValidationService, scrapeService, pluginService, categoryService, helpFactory, sitesFactory, tabsFactory, eventHandlerFactory) {
+app.controller('submitModController', function($scope, $rootScope, $state, modService, modValidationService, scrapeService, pluginService, categoryService, helpFactory, sitesFactory, tabsFactory, eventHandlerFactory, tabUtils) {
     // access parent variables
     $scope.currentUser = $rootScope.currentUser;
     $scope.categories = $rootScope.categories;
@@ -82,13 +82,13 @@ app.controller('submitModController', function($scope, $rootScope, backend, modS
             { label: "big", src: '/mods/Default-big.png' }
         ]
     };
-    $scope.canManageOptions = true;
 
     // set page title
     $scope.$emit('setPageTitle', 'Submit Mod');
 
     // shared function setup
     eventHandlerFactory.buildMessageHandlers($scope, true);
+    tabUtils.buildTabHelpers($scope, $state, 'submit-mod');
     $scope.searchMods = modService.searchMods;
 
     // set help context
