@@ -226,5 +226,5 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
         }
     };
 
-    $scope.$watch('mod', $scope.modValid);
+    $scope.$watch('mod', $scope.modValid, true);
 });
