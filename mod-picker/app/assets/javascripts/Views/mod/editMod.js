@@ -62,7 +62,8 @@ app.config(['$stateProvider', function($stateProvider) {
         deepStateRedirect: true,
         views: {
             'Classification': {
-                templateUrl: '/resources/partials/editMod/classification.html'
+                templateUrl: '/resources/partials/editMod/classification.html',
+                controller: 'modClassificationController'
             }
         },
         url: '/classification'
@@ -83,7 +84,6 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
 
     // initialize local variables
     $scope.mod = angular.copy(modObject);
-    $scope.tagGroups = [];
     modLoaderService.loadMod($scope.mod);
     $scope.originalMod = angular.copy($scope.mod);
     $scope.sites = sitesFactory.sites();
@@ -120,18 +120,6 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
 
     // set up tabs
     $scope.tabs = tabsFactory.buildEditModTabs($scope.canManageOptions);
-
-    // apply tag groups
-    $scope.applyTagGroups = function() {
-        var categoryIds = categoryService.includeSuperCategories($scope.categories, $scope.mod.categories);
-        var tagGroups = angular.copy(tagService.categoryTagGroups($rootScope.tagGroups, categoryIds));
-        var tagGroupColumns = viewUtils.splitIntoColumns(tagGroups, 3, 'tag_group_tags', 46, 20);
-        tagGroupColumns.forEach(function(column) {
-            column.items.sortAlphabetically('name');
-        });
-        $scope.tagGroupColumns = tagGroupColumns;
-    };
-    $scope.applyTagGroups();
 
     $scope.backToModPage = function() {
         $state.go('base.mod', {modId: $scope.mod.id});
@@ -230,24 +218,6 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
             ]);
         }
     };
-
-    // category management
-    $scope.$watch('mod.categories', function() {
-        // clear messages when user changes the category
-        if ($scope.categoryMessages && $scope.categoryMessages.length) {
-            if ($scope.categoryMessages[0].klass == "cat-error-message" ||
-                $scope.categoryMessages[0].klass == "cat-success-message") {
-                $scope.categoryMessages = [];
-            }
-        }
-
-        // set primary_category_id and secondary_category_id
-        $scope.mod.primary_category_id = $scope.mod.categories[0];
-        $scope.mod.secondary_category_id = $scope.mod.categories[1];
-
-        // apply tag groups
-        $scope.applyTagGroups();
-    }, true);
 
     $scope.$watch('mod', $scope.checkIfValid, true);
 });

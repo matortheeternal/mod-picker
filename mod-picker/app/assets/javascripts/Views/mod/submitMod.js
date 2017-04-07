@@ -45,14 +45,15 @@ app.config(['$stateProvider', function($stateProvider) {
         deepStateRedirect: true,
         views: {
             'Classification': {
-                templateUrl: '/resources/partials/submitMod/classification.html'
+                templateUrl: '/resources/partials/submitMod/classification.html',
+                controller: 'modClassificationController'
             }
         },
         url: '/classification'
     });
 }]);
 
-app.controller('submitModController', function($scope, $rootScope, $state, modService, modValidationService, scrapeService, pluginService, categoryService, helpFactory, sitesFactory, tabsFactory, eventHandlerFactory, tabUtils) {
+app.controller('submitModController', function($scope, $rootScope, $state, modService, modValidationService, scrapeService, pluginService, categoryService, tagService, helpFactory, sitesFactory, tabsFactory, eventHandlerFactory, tabUtils, viewUtils) {
     // access parent variables
     $scope.currentUser = $rootScope.currentUser;
     $scope.categories = $rootScope.categories;
@@ -69,7 +70,8 @@ app.controller('submitModController', function($scope, $rootScope, $state, modSe
             url: ""
         }],
         custom_sources: [],
-        requirements: []
+        requirements: [],
+        categories: []
     };
     $scope.defaultSrc = '/mods/Default-big.png';
     $scope.imageSizes = [
@@ -94,15 +96,9 @@ app.controller('submitModController', function($scope, $rootScope, $state, modSe
     // set help context
     helpFactory.setHelpContexts($scope, [helpFactory.submitMod]);
 
-    // clear messages when user changes the category
-    $scope.$watch('mod.categories', function() {
-        if ($scope.categoryMessages && $scope.categoryMessages.length) {
-            if ($scope.categoryMessages[0].klass == "cat-error-message" ||
-                $scope.categoryMessages[0].klass == "cat-success-message") {
-                $scope.categoryMessages = [];
-            }
-        }
-    }, true);
+    $scope.backToModPage = function() {
+        $state.go('base.mod', {modId: $scope.mod.id});
+    };
 
     // submission isn't allowed until the user has provided at least one valid source,
     // a mod analysis, and at least one category
