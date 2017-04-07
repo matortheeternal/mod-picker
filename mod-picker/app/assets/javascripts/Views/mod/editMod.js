@@ -133,8 +133,12 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
         $scope.mod.secondary_category_id = $scope.mod.categories[1];
     }, true);
 
+    $scope.backToModPage = function() {
+        $state.go('base.mod', {modId: $scope.mod.id});
+    };
+
     // validate the mod
-    $scope.modValid = function() {
+    $scope.checkIfValid = function() {
         $scope.sourcesValid = modValidationService.sourcesValid($scope.mod);
         $scope.licensesValid = modValidationService.licensesValid($scope.mod);
         $scope.authorsValid = modValidationService.authorsValid($scope.mod.mod_authors);
@@ -227,5 +231,5 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
         }
     };
 
-    $scope.$watch('mod', $scope.modValid, true);
+    $scope.$watch('mod', $scope.checkIfValid, true);
 });
