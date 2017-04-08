@@ -15,32 +15,26 @@ app.controller('modClassificationController', function($scope, $rootScope, $time
         return tagGroupColumns;
     };
 
+    $scope.buildTagsMap = function(tagGroups) {
+        $scope.tagsMap = {};
+        tagGroups.forEach(function(group) {
+            group.tag_group_tags.forEach(function(tag) {
+                $scope.tagsMap[tag.tag_text] = tag;
+            });
+        });
+    };
+
     $scope.applyTagGroups = function() {
         var categoryIds = categoryService.includeSuperCategories($scope.categories, $scope.mod.categories);
         var tagGroups = angular.copy(tagService.categoryTagGroups($rootScope.tagGroups, categoryIds));
         var tagGroupColumns = viewUtils.splitIntoColumns(tagGroups, 3, 'tag_group_tags', 46, 20);
+        $scope.buildTagsMap(tagGroups);
         $scope.tagGroupColumns = sortTagGroupColumns(tagGroupColumns);
     };
 
-    $scope.findTagGroupTag = function(tagText) {
-        for (var i = 0; i < $scope.tagGroupColumns.length; i++) {
-            var column = $scope.tagGroupColumns[i];
-            for (var j = 0;  j < column.items.length; j++) {
-                var group = column.items[j];
-                for (var k = 0; k < group.tag_group_tags.length; k++) {
-                    var tagGroupTag = group.tag_group_tags[k];
-                    if (tagGroupTag.tag_text === tagText) {
-                        return tagGroupTag;
-                    }
-                }
-            }
-        }
-    };
-
     $scope.toggleTagGroupTag = function(tagText, enabled) {
-        var tagGroupTag = $scope.findTagGroupTag(tagText);
-        if (tagGroupTag) {
-            tagGroupTag.enabled = enabled;
+        if ($scope.tagsMap.hasOwnProperty(tagText)) {
+            $scope.tagsMap[tagText].enabled = enabled;
             return true;
         }
     };
