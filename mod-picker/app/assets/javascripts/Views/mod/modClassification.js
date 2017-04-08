@@ -73,11 +73,11 @@ app.controller('modClassificationController', function($scope, $rootScope, $time
     }, true);
 
     // tag group management
-    $scope.$on('tagAdded', function(tagText) {
+    $scope.$on('tagAdded', function(event, tagText) {
         $scope.toggleTagGroupTag(tagText, true);
     });
 
-    $scope.$on('tagRemoved', function(tagText) {
+    $scope.$on('tagRemoved', function(event, tagText) {
         $scope.toggleTagGroupTag(tagText, false);
     });
 });
