@@ -42,9 +42,6 @@ module ModPicker
     # custom middleware for catching errors when parsing JSON requests
     config.middleware.insert_before ActionDispatch::ParamsParser, "CatchJsonParseErrors"
 
-    # rack attack config
-    config.middleware.use Rack::Attack
-
     # test generators
     config.generators do |g|
       g.test_framework :rspec,

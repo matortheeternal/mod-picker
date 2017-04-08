@@ -39,6 +39,9 @@ Rails.application.configure do
   )
   config.middleware.use Rack::Prerender, prerender_token: ENV['prerender_token'], whitelist: prerender_whitelist
 
+  # rack attack config
+  config.middleware.use Rack::Attack
+
 
   # Disable serving static files from the `/public` folder by default since
   # Apache or NGINX already handles this.
