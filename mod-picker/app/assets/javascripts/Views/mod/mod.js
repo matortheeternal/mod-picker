@@ -31,7 +31,7 @@ app.config(['$stateProvider', function($stateProvider) {
     $stateProvider.state('base.mod', {
         templateUrl: '/resources/partials/mod/mod.html',
         controller: 'modController',
-        url: '/mods/:modId',
+        url: '/mods/{modId:int}',
         resolve: {
             modObject: function($stateParams, $q, categories, licenses, modService, categoryService, licenseService) {
                 var mod = $q.defer();
@@ -362,7 +362,7 @@ app.controller('modController', function($scope, $rootScope, $q, $stateParams, $
     };
 
     $scope.editMod = function() {
-        $state.go('base.edit-mod', {modId: $scope.mod.id});
+        $state.go('base.edit-mod', { modId: $scope.mod.id });
     };
 
     $scope.starMod = function() {

@@ -31,7 +31,7 @@ app.config(['$stateProvider', function($stateProvider) {
     $stateProvider.state('base.mod-list', {
         templateUrl: '/resources/partials/modList/modList.html',
         controller: 'modListController',
-        url: '/mod-lists/:modListId',
+        url: '/mod-lists/{modListId:int}',
         redirectTo: 'base.mod-list.Details',
         resolve: {
             modListObject: function(modListService, $stateParams, $q) {
