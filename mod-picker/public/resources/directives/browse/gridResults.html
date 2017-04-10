@@ -4,7 +4,7 @@
         <img ng-src="{{item.images.medium}}"/>
     </a>
     <div class="details">
-        <span class="detail" ng-repeat="detail in details" ng-if="detail.visibility && item.detailData[$index].data" title="{{detail.label}}">
+        <span class="detail" ng-repeat="detail in details" ng-if="detail.visibility && item.detailData[$index].hasData" title="{{detail.label}}">
             <i class="fa {{::detail.icon}}"></i> {{::item.detailData[$index].data}}
         </span>
         <actions></actions>

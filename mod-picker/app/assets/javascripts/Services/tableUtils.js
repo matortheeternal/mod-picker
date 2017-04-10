@@ -64,7 +64,7 @@ app.service('tableUtils', function($filter, objectUtils, sortUtils) {
             for (var property in data) {
                 if (data.hasOwnProperty(property)) {
                     value = objectUtils.deepValue(item, data[property]);
-                    if (value) {
+                    if (value !== null) {
                         return value;
                     }
                 }
@@ -81,7 +81,10 @@ app.service('tableUtils', function($filter, objectUtils, sortUtils) {
         columns.forEach(function(column) {
             var columnValue = service.columnValue(item, column.data);
             if (column.filter) columnValue = pickerFilter(columnValue, column.filter);
-            var columnData = { data: columnValue };
+            var columnData = {
+                data: columnValue,
+                hasData: columnValue !== null
+            };
             if (column.note) columnData.note = resolve(column.note, item);
             if (column.link) columnData.link = column.link(item);
             if (column.image) columnData.image = column.image(item);
