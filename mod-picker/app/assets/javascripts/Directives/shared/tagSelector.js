@@ -32,13 +32,61 @@ app.controller('tagSelectorController', function($scope, $element, $timeout, tag
         $scope.loadTags();
     });
 
-    $scope.addTag = function() {
-        if ($scope.rawNewTags.length + $scope.activeTags.length < $scope.maxTags) {
+    $scope.atMaxTags = function() {
+        return $scope.rawNewTags.length + $scope.activeTags.length >= $scope.maxTags;
+    };
+
+    $scope.focusLastTagInput = function() {
+        $timeout(function() {
+            var loader = $element[0].firstChild;
+            var tagsContainer = loader.lastChild.firstElementChild;
+            var lastTagBox = tagsContainer.lastElementChild.previousElementSibling;
+            var tagInput = lastTagBox.firstElementChild.firstElementChild.firstElementChild;
+            console.log('Focus tag input');
+            tagInput.focus();
+        }, 100);
+    };
+
+    $scope.addBlankTag = function() {
+        if ($scope.atMaxTags()) return;
+        console.log('addBlankTag');
+        $scope.$applyAsync(function() {
             $scope.rawNewTags.push({
                 text: "",
                 mods_count: 0,
                 mod_lists_count: 0
             });
+            $scope.focusLastTagInput();
+        });
+    };
+
+    $scope.restoreTag = function($index, skipEmit) {
+        var restoredTag = $scope.removedTags.splice($index, 1)[0];
+        $scope.activeTags.push(restoredTag);
+        if (!skipEmit) {
+            $scope.$emit('tagAdded', restoredTag.text);
+        }
+    };
+
+    $scope.addNewTag = function(tagText) {
+        var newTag = $scope.tags.find(function(tag) {
+            return tag.text === tagText;
+        });
+        $scope.rawNewTags.push({
+            text: newTag.text,
+            mods_count: newTag.mods_count,
+            mod_lists_count: newTag.mod_lists_count
+        });
+    };
+
+    $scope.addTag = function(tagText) {
+        if ($scope.atMaxTags()) return;
+        var removedTagIndex = $scope.findTagIndex($scope.removedTags, tagText);
+        if (removedTagIndex > -1) {
+            $scope.restoreTag(removedTagIndex, true)
+        } else {
+            $scope.addNewTag(tagText);
+            $scope.storeTags();
         }
     };
 
@@ -58,14 +106,39 @@ app.controller('tagSelectorController', function($scope, $element, $timeout, tag
         tag.tagBoxClass = '';
     };
 
-    $scope.removeTag = function($index) {
-        $scope.rawNewTags.splice($index, 1);
-        $scope.storeTags();
+    $scope.findTagIndex = function(tags, tagText) {
+        return tags.findIndex(function(tag) {
+            return tag.text === tagText;
+        });
     };
 
-    $scope.removeActiveTag = function($index) {
-        var removedTag = $scope.activeTags.splice($index, 1);
-        $scope.removedTags.push(removedTag[0]);
+    $scope.removeNewTag = function($index, skipEmit) {
+        var removedTag = $scope.rawNewTags.splice($index, 1)[0];
+        $scope.storeTags();
+        if (!skipEmit) {
+            $scope.$emit('tagRemoved', removedTag.text);
+        }
+    };
+
+    $scope.removeActiveTag = function($index, skipEmit) {
+        var removedTag = $scope.activeTags.splice($index, 1)[0];
+        $scope.exitRemove(removedTag);
+        $scope.removedTags.push(removedTag);
+        if (!skipEmit) {
+            $scope.$emit('tagRemoved', removedTag.text);
+        }
+    };
+
+    $scope.removeTag = function(tagText) {
+        var activeTagIndex = $scope.findTagIndex($scope.activeTags, tagText);
+        if (activeTagIndex > -1) {
+            $scope.removeActiveTag(activeTagIndex, true);
+        } else {
+            var newTagIndex = $scope.findTagIndex($scope.rawNewTags, tagText);
+            if (newTagIndex > -1) {
+                $scope.removeNewTag(newTagIndex, true);
+            }
+        }
     };
 
     $scope.resetTags = function() {
@@ -99,9 +172,11 @@ app.controller('tagSelectorController', function($scope, $element, $timeout, tag
     };
 
     $scope.applyTag = function(index, tag) {
+        console.log('ApplyTag: ' + tag.text);
         $scope.$applyAsync(function() {
-            if (!tag) return;
+            if (!tag || index >= $scope.rawNewTags.length) return;
             angular.copyProperties(tag, $scope.rawNewTags[index]);
+            $scope.$emit('tagAdded', tag.text);
             $scope.storeTags();
             $scope.focusAddTag();
         });
@@ -131,4 +206,10 @@ app.controller('tagSelectorController', function($scope, $element, $timeout, tag
     };
 
     $scope.$on('reloadTags', $scope.loadTags);
+    $scope.$on('addTag', function($event, tagText) {
+        $scope.addTag(tagText);
+    });
+    $scope.$on('removeTag', function($event, tagText) {
+        $scope.removeTag(tagText);
+    });
 });

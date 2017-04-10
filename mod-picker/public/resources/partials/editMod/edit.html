@@ -1,0 +1,36 @@
+<messages></messages>
+
+<div class="header-tabs">
+    <div class="page-container">
+        <h1>Edit {{mod.name}}
+            <span class="right-item">
+                <div class="action-box" ng-click="hideTooltips = !hideTooltips">
+                    <i class="fa fa-eye{{ hideTooltips ? '' : '-slash'}}"></i>
+                    {{ hideTooltips ? 'Show' : 'Hide'}} Help Tooltips
+                </div>
+                <div class="action-box" ng-click="backToModPage()">
+                    <i class="fa fa-arrow-left"></i>
+                    Back to Mod Page
+                </div>
+            </span>
+
+        </h1>
+        <div class="settings-tabs">
+            <tabs tabs="tabs"></tabs>
+        </div>
+    </div>
+</div>
+
+<div class="page-container">
+    <div class="single-column">
+        <form spellcheck="false">
+            <tab-views></tab-views>
+        </form>
+
+        <div class="action-button-container">
+            <input class="btn action-btn" type="submit" ng-disabled='submitting || !valid' ng-click="saveChanges()" value="Save Changes"/>
+        </div>
+    </div>
+</div>
+
+<submission-modal></submission-modal>

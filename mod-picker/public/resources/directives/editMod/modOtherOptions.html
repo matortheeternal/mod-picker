@@ -1,142 +1,100 @@
-<messages></messages>
-
-<div class="single-column">
-    <h2>Edit {{mod.name}}
-    <span class="action-box right-item" ng-click="hideTooltips = !hideTooltips">
-        <i class="fa fa-eye{{ hideTooltips ? '' : '-slash'}}"></i>
-        {{ hideTooltips ? 'Show' : 'Hide'}} Help Tooltips
-    </span>
-    </h2>
-
-    <loader data="mod" spinner-class="big-spinner">
-    </loader>
-
-    <form id="editModForm" name="editModForm" spellcheck="false" ng-show="mod">
-        <h3 class="section-title">Image
-        <span class="help-tooltip" ng-hide="hideTooltips" title="The image that will be shown on the mod page.">
-            <i class="fa fa-question-circle"></i>
-        </span>
-        </h3>
-        <section>
-            <image-upload image="image" can-change="true" default-src="mod.images.big" default-size="big" label="mod image" image-class="mod-image" sizes="imageSizes"></image-upload>
-        </section>
-
-        <mod-sources></mod-sources>
-
-        <mod-general-info></mod-general-info>
-
-        <mod-details ng-if="canSetDetails"></mod-details>
-
-        <mod-licenses ng-if="canSetDetails"></mod-licenses>
-
-        <mod-authors></mod-authors>
-
-        <mod-analysis-manager></mod-analysis-manager>
-
-        <mod-requirements></mod-requirements>
-
-        <mod-config-files></mod-config-files>
-
-        <mod-categories></mod-categories>
-
-        <h3 class="section-title">Tags
-        <span class="help-tooltip" ng-hide="hideTooltips" title="Keywords that describe the mod to help users find it easier.">
-            <i class="fa fa-question-circle"></i>
-        </span>
-        </h3>
-        <section>
-            <tag-selector active-tags="mod.tags" new-tags="mod.newTags" type="mod" show-count="true" show-add="true" show-remove="true" max-tags="30" can-create="true"></tag-selector>
-        </section>
-
-        <h3 ng-if="canChangeStatus" class="section-title">Change Status</h3>
-        <section ng-if="canChangeStatus">
-            <label class="subsection">
-            <span class="input-label">Status
-                <span class="help-tooltip small" ng-hide="hideTooltips" title="You can change the status of the mod from good to outdated &#13;or dangerous without submitting an appeal if you are an &#13;Author for the mod.">
-                    <i class="fa fa-question-circle"></i>
-                </span>
-            </span>
-                <select ng-model="mod.status">
-                    <option value="good">Good</option>
-                    <option value="outdated">Outdated</option>
-                    <option value="dangerous">Dangerous</option>
-                </select>
-            </label>
-        </section>
-
-        <h3 ng-if="canManageOptions" class="section-title">Other Options</h3>
-        <section ng-if="canManageOptions">
+<h3 class="section-title">Other Options</h3>
+<section>
+    <ul class="checkbox-list">
+        <li>
             <label class="checkbox-option">
                 <input type="checkbox" ng-model="mod.is_utility">
                 External Utility
             </label>
             <span class="help-tooltip small" ng-hide="hideTooltips" title="A mod is classified as an external utility if it installs files &#13;outside of the user's data directory.  This includes &#13;mod managers, patchers, and script extenders.">
                 <i class="fa fa-question-circle"></i>
-            </span><br/>
+            </span>
+        </li>
 
+        <li>
             <label class="checkbox-option">
                 <input type="checkbox" ng-model="mod.is_extender">
                 Extender
             </label>
             <span class="help-tooltip small" ng-hide="hideTooltips" title="Check this if the mod is an extender which should be installed &#13;directly in the game folder.  (e.g. SKSE and ENB)">
                 <i class="fa fa-question-circle"></i>
-            </span><br/>
+            </span>
+        </li>
 
+        <li>
             <label class="checkbox-option">
                 <input type="checkbox" ng-model="mod.is_mod_manager">
                 Mod Manager
             </label>
             <span class="help-tooltip small" ng-hide="hideTooltips" title="Check this if the mod is a mod manager.  (e.g. Nexus Mod Manager, &#13;Mod Organizer, and Wrye Bash)">
                 <i class="fa fa-question-circle"></i>
-            </span><br/>
+            </span>
+        </li>
 
+        <li>
             <label class="checkbox-option">
                 <input type="checkbox" ng-model="mod.has_adult_content">
                 Has Adult Content
             </label>
             <span class="help-tooltip small" ng-hide="hideTooltips" title="If the mod has nudity, sexual references, or gore in excess &#13;of an unmodified game it should be marked as having adult content.">
                 <i class="fa fa-question-circle"></i>
-            </span><br/>
+            </span>
+        </li>
 
+        <li ng-if="!editing">
+            <label class="checkbox-option">
+                <input type="checkbox" ng-model="mod.curate">
+                Curate This Mod
+            </label>
+            <a href="/help/mod_authors" target="_blank">
+                <span class="help-tooltip small" ng-hide="hideTooltips" title="Check this box if you'd like to be a curator for this mod. &#13;Click here for more information.">
+                    <i class="fa fa-question-circle"></i>
+                </span>
+            </a>
+        </li>
+
+        <li ng-if="editing">
             <label class="checkbox-option">
                 <input type="checkbox" ng-model="mod.disallow_contributors">
                 Don't allow contributors to edit the mod page
             </label>
             <span class="help-tooltip small" ng-hide="hideTooltips" title="Makes it so Mod Authors who are contributors cannot &#13;access the edit mod page.">
                 <i class="fa fa-question-circle"></i>
-            </span><br/>
+            </span>
+        </li>
 
+        <li ng-if="editing">
             <label class="checkbox-option">
                 <input type="checkbox" ng-model="mod.disable_reviews">
                 Disable Reviews
             </label>
             <span class="help-tooltip small" ng-hide="hideTooltips" title="If enabled the Reviews tab for this mod will be hidden &#13;and any existing reviews on this mod will be hidden from &#13;public viewing.  NOTE: Unsetting this will not restore the hidden &#13;reviews, only a moderator or site administrator can restore them.">
                 <i class="fa fa-question-circle"></i>
-            </span><br/>
+            </span>
+        </li>
 
+        <li ng-if="editing">
             <label class="checkbox-option">
                 <input type="checkbox" ng-model="mod.lock_tags">
                 Lock Tags
             </label>
             <span class="help-tooltip small" ng-hide="hideTooltips" title="If enabled only mod authors, moderators and administrators &#13;will be able to add tags to this mod.">
                 <i class="fa fa-question-circle"></i>
-            </span><br/>
+            </span>
+        </li>
 
+        <li ng-if="editing">
             <label class="checkbox-option" ng-if="permissions.canModerate">
                 <input type="checkbox" ng-model="mod.hidden">
                 Hidden
-            </label><br/>
+            </label>
+        </li>
 
+        <li ng-if="editing">
             <label class="checkbox-option" ng-if="permissions.canModerate">
                 <input type="checkbox" ng-model="mod.approved">
                 Approved
             </label>
-        </section>
-
-        <div class="action-button-container">
-            <input class="btn action-btn" type="submit" ng-disabled='submitting || !modValid()' ng-click="saveChanges()" value="Save Changes"/>
-        </div>
-    </form>
-</div>
-
-<submission-modal></submission-modal>
+        </li>
+    </ul>
+</section>

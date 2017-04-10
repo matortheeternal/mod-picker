@@ -8,6 +8,12 @@
     font-size: 36px;
     padding-top: 18px;//half of font size
     padding-bottom: 18px;
+
+    div.action-box {
+      display: block;
+      margin-bottom: 4px;
+      width: 140px;
+    }
   }
 
   a.selected-tab {

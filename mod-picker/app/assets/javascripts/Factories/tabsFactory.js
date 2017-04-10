@@ -19,6 +19,18 @@ app.service("tabsFactory", function() {
         ]
     };
 
+    this.buildEditModTabs = function(showAuthoringTab) {
+        var tabs = [
+            { name: 'General' },
+            { name: 'Analysis' },
+            { name: 'Classification' }
+        ];
+        if (showAuthoringTab) {
+            tabs.splice(1, 0, { name: "Authoring" });
+        }
+        return tabs;
+    };
+
     this.buildUserSettingsTabs = function() {
         return [
             { name: 'Profile' },
