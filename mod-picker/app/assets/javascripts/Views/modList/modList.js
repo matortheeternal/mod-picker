@@ -572,14 +572,23 @@ app.controller('modListController', function($scope, $rootScope, $q, $state, $st
         $scope.originalModList = angular.copy($scope.mod_list);
     });
 
-    // help the user to not leave the page with unsaved changes
-    $scope.$on("$locationChangeStart", function(event, newUrl, oldUrl) {
+    $scope.confirmStateChange = function(event) {
         // don't prompt if user can't edit the mod list or no changes have been made
         if (!$scope.permissions.canManage || $scope.modListUnchanged()) return;
-        if ($scope.isLocalUrl(newUrl, oldUrl)) return;
-
-        if (!confirm('Your mod list has unsaved changes, continue?')) {
+        $scope.canChangeState = confirm('Your mod list has unsaved changes, continue?');
+        if (!$scope.canChangeState) {
             event.preventDefault();
         }
+    };
+
+    // help the user to not leave the page with unsaved changes
+    $scope.$on("$locationChangeStart", function(event, newUrl, oldUrl) {
+        if ($scope.isLocalUrl(newUrl, oldUrl)) return;
+        $scope.confirmStateChange(event);
+    });
+    $scope.$on("$stateChangeStart", function(event, toState) {
+        if ($scope.canChangeState) return;
+        if (toState.name.startsWith("base.mod-list")) return;
+        $scope.confirmStateChange(event);
     });
 });
