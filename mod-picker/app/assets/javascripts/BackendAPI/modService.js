@@ -173,6 +173,10 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
         return action.promise;
     };
 
+    this.editAnalysis = function(modId) {
+        return backend.retrieve('/mods/' + modId + '/edit_analysis');
+    };
+
     this.starMod = function(modId, starred) {
         if (starred) {
             return backend.delete('/mods/' + modId + '/star');

@@ -67,6 +67,7 @@ Rails.application.routes.draw do
     match '/mods/:id/hide', to: 'mods#hide', via: [:post]
     match '/mods/:id/approve', to: 'mods#approve', via: [:post]
     match '/mods/:id/image', to: 'mods#image', via: [:post]
+    match '/mods/:id/edit_analysis', to: 'mods#edit_analysis', via: [:get]
     resources :mods, only: [:new, :create, :edit, :update]
 
     # curator requests

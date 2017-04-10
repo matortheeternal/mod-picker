@@ -53,7 +53,8 @@ app.config(['$stateProvider', function($stateProvider) {
         deepStateRedirect: true,
         views: {
             'Analysis': {
-                templateUrl: '/resources/partials/editMod/analysis.html'
+                templateUrl: '/resources/partials/editMod/analysis.html',
+                controller: 'editModAnalysisController'
             }
         },
         url: '/analysis'
@@ -87,6 +88,7 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
     modLoaderService.loadMod($scope.mod);
     $scope.originalMod = angular.copy($scope.mod);
     $scope.sites = sitesFactory.sites();
+    $scope.errors = {};
     $scope.image = {
         sizes: [
             { label: "big", src: $scope.mod.images.big }

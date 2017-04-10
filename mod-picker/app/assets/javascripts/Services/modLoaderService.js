@@ -58,8 +58,8 @@ app.service('modLoaderService', function(gameService, sitesFactory, assetUtils) 
         }
     };
 
-    this.loadAssets = function(mod) {
-        mod.mod_options.forEach(function(option) {
+    this.loadAssets = function(modOptions) {
+        modOptions.forEach(function(option) {
             if (!option.asset_file_paths || !option.asset_file_paths.length) return;
             option.nestedAssets = assetUtils.getNestedAssets(option.asset_file_paths);
         });
@@ -71,7 +71,6 @@ app.service('modLoaderService', function(gameService, sitesFactory, assetUtils) 
         service.loadDates(mod);
         service.loadRequirements(mod);
         service.loadCategories(mod);
-        service.loadAssets(mod);
         mod.newTags = [];
     }
 });

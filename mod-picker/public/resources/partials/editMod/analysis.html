@@ -1,3 +1,6 @@
-<mod-analysis-manager></mod-analysis-manager>
+<loader data="mod.mod_options" spinner-class="big-spinner" ng-if="!errors.analysis">
+    <mod-analysis-manager></mod-analysis-manager>
+</loader>
+<error-display content-class="content-message" errors="errors.analysis" label="the analysis for this mod"></error-display>
 
 <mod-requirements></mod-requirements>
