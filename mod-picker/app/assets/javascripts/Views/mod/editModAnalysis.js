@@ -4,6 +4,7 @@ app.controller('editModAnalysisController', function($scope, modService, modLoad
         modService.editAnalysis($scope.mod.id).then(function(modOptions) {
             modLoaderService.loadAssets(modOptions);
             $scope.mod.mod_options = modOptions;
+            $scope.oldMod.mod_options = angular.copy(modOptions);
         }, function(response) {
             $scope.errors.analysis = response;
         });
