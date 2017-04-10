@@ -36,20 +36,35 @@ app.controller('tagSelectorController', function($scope, $element, $timeout, tag
         return $scope.rawNewTags.length + $scope.activeTags.length >= $scope.maxTags;
     };
 
+    $scope.focusLastTagInput = function() {
+        $timeout(function() {
+            var loader = $element[0].firstChild;
+            var tagsContainer = loader.lastChild.firstElementChild;
+            var lastTagBox = tagsContainer.lastElementChild.previousElementSibling;
+            var tagInput = lastTagBox.firstElementChild.firstElementChild.firstElementChild;
+            console.log('Focus tag input');
+            tagInput.focus();
+        }, 100);
+    };
+
     $scope.addBlankTag = function() {
         if ($scope.atMaxTags()) return;
-        $scope.rawNewTags.push({
-            text: "",
-            mods_count: 0,
-            mod_lists_count: 0
+        console.log('addBlankTag');
+        $scope.$applyAsync(function() {
+            $scope.rawNewTags.push({
+                text: "",
+                mods_count: 0,
+                mod_lists_count: 0
+            });
+            $scope.focusLastTagInput();
         });
     };
 
     $scope.restoreTag = function($index, skipEmit) {
-        var restoredTag = $scope.removedTags.splice($index, 1);
-        $scope.activeTags.push(restoredTag[0]);
+        var restoredTag = $scope.removedTags.splice($index, 1)[0];
+        $scope.activeTags.push(restoredTag);
         if (!skipEmit) {
-            $scope.$emit('tagAdded', restoredTag[0].text);
+            $scope.$emit('tagAdded', restoredTag.text);
         }
     };
 
@@ -98,18 +113,19 @@ app.controller('tagSelectorController', function($scope, $element, $timeout, tag
     };
 
     $scope.removeNewTag = function($index, skipEmit) {
-        var removedTag = $scope.rawNewTags.splice($index, 1);
+        var removedTag = $scope.rawNewTags.splice($index, 1)[0];
         $scope.storeTags();
         if (!skipEmit) {
-            $scope.$emit('tagRemoved', removedTag[0].text);
+            $scope.$emit('tagRemoved', removedTag.text);
         }
     };
 
     $scope.removeActiveTag = function($index, skipEmit) {
-        var removedTag = $scope.activeTags.splice($index, 1);
-        $scope.removedTags.push(removedTag[0]);
+        var removedTag = $scope.activeTags.splice($index, 1)[0];
+        $scope.exitRemove(removedTag);
+        $scope.removedTags.push(removedTag);
         if (!skipEmit) {
-            $scope.$emit('tagRemoved', removedTag[0].text);
+            $scope.$emit('tagRemoved', removedTag.text);
         }
     };
 
@@ -156,6 +172,7 @@ app.controller('tagSelectorController', function($scope, $element, $timeout, tag
     };
 
     $scope.applyTag = function(index, tag) {
+        console.log('ApplyTag: ' + tag.text);
         $scope.$applyAsync(function() {
             if (!tag || index >= $scope.rawNewTags.length) return;
             angular.copyProperties(tag, $scope.rawNewTags[index]);
