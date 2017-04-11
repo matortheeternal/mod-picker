@@ -21,10 +21,11 @@ app.controller('modAnalysisManagerController', function($scope, $rootScope, $tim
         var input = event.target;
         if (input.files && input.files[0]) {
             $scope.loadingAnalysis = true;
+            $scope.$digest();
             $timeout(function() {
                 $scope.loadAnalysisFile(input.files[0]);
                 input.value = "";
-            });
+            }, 10);
         }
     };
 
