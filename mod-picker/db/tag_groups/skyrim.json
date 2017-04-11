@@ -7,6 +7,10 @@
 		"name" : "Animation Target",
 		"tag_names" : ["Characters", "Creatures", "Items", "Objects", "Player Character"]
 	}, {
+		"category_name" : "Audiovisual - Animations",
+		"name" : "Animation Style",
+		"tag_names" : ["Extravagant", "Feminine", "Realistic"]
+	}, {
 		"category_name" : "Audiovisual - Lighting & Weather",
 		"name" : "Content",
 		"tag_names" : ["New Weathers", "New Lights", "New Visual Effects"]
