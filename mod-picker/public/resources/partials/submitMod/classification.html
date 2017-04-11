@@ -1,7 +1,7 @@
 <mod-categories></mod-categories>
 
-<h3 class="section-title" ng-show="tagGroupColumns.length">Tags
-    <span class="help-tooltip" ng-hide="hideTooltips" title="Keywords that describe the mod to help users find it easier.">
+<h3 class="section-title" ng-show="tagGroupColumns.length">Tag Groups
+    <span class="help-tooltip" ng-hide="hideTooltips" title="Tags commonly used on mods in the categories you have selected.">
         <i class="fa fa-question-circle"></i>
     </span>
 </h3>
@@ -13,7 +13,7 @@
             <ul class="checkbox-list">
                 <li ng-repeat="tag in group.tag_group_tags">
                     <label>
-                        <input type="checkbox" ng-model="tag.enabled">
+                        <input type="checkbox" ng-model="tag.enabled" ng-change="toggleTag(tag)">
                         {{::tag.tag_text}}
                     </label>
                 </li>
@@ -22,8 +22,8 @@
     </div>
 </section>
 
-<h3 class="section-title">Custom Tags
-    <span class="help-tooltip" ng-hide="hideTooltips" title="You can apply other tags to the mod here.">
+<h3 class="section-title">Tags
+    <span class="help-tooltip" ng-hide="hideTooltips" title="Keywords that describe the mod to help users find it easier.  You can apply custom tags here.">
         <i class="fa fa-question-circle"></i>
     </span>
 </h3>

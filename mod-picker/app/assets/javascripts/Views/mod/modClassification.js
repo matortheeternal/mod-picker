@@ -48,6 +48,7 @@ app.controller('modClassificationController', function($scope, $rootScope, $time
     };
 
     $scope.loadTagGroupTags = function() {
+        if (!$scope.mod.tags) return;
         $scope.mod.tags.forEach(function(tag) {
             $scope.toggleTagGroupTag(tag.text, true)
         });
