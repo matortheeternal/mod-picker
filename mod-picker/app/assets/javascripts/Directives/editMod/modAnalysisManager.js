@@ -12,9 +12,9 @@ app.controller('modAnalysisManagerController', function($scope, $rootScope, $tim
     $scope.currentGame = $rootScope.currentGame;
 
     // set up old nested mod options
-    if ($scope.mod.mod_options) {
+    $scope.$watch('mod.mod_options', function() {
         $scope.oldNestedOptions = modOptionUtils.getNestedModOptions($scope.mod.mod_options);
-    }
+    });
 
     $scope.changeAnalysisFile = function(event) {
         var input = event.target;
