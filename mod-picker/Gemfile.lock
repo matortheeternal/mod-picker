@@ -101,6 +101,10 @@ GEM
     launchy (2.4.3)
       addressable (~> 2.3)
     libv8 (3.16.14.15)
+    lol_dba (2.1.2)
+      actionpack (>= 3.0)
+      activerecord (>= 3.0)
+      railties (>= 3.0)
     loofah (2.0.3)
       nokogiri (>= 1.5.9)
     mail (2.6.4)
@@ -167,7 +171,7 @@ GEM
       activesupport (= 4.2.5)
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
-    rake (11.3.0)
+    rake (12.0.0)
     rdoc (4.3.0)
     redcarpet (3.3.4)
     redis (3.3.1)
@@ -298,6 +302,7 @@ DEPENDENCIES
   factory_girl_rails (~> 4.0)
   faker
   launchy
+  lol_dba
   mail_form
   mailcatcher
   mysql2 (~> 0.3.20)
