@@ -18,14 +18,14 @@ app.service('modValidationService', function() {
             // if we are only submitting custom sources, we need to verify
             // we have all general info
             if (!mod.sources.length) {
-                sourcesValid = sourcesValid && mod.name && mod.authors &&
-                    mod.released;
+                sourcesValid = sourcesValid && !!mod.name && !!mod.authors &&
+                    !!mod.released;
             }
         }
         else {
             // if we don't have any custom sources we should verify we have
             // the scraped data for at least one official source
-            sourcesValid = sourcesValid && (mod.nexus || mod.workshop || mod.lab || oldSources);
+            sourcesValid = sourcesValid && (!!mod.nexus || !!mod.workshop || !!mod.lab || oldSources);
         }
 
         return sourcesValid;
@@ -66,7 +66,7 @@ app.service('modValidationService', function() {
         var setIds = [];
         set.forEach(function(item) {
             var itemId = item[key];
-            setValid = setValid && itemId;
+            setValid = setValid && !!itemId;
             if (!itemId || item._destroy) return;
             var idPresent = setIds.indexOf(itemId) > -1;
             if (idPresent) {
@@ -92,13 +92,13 @@ app.service('modValidationService', function() {
     this.configsValid = function(config_files) {
         var configsValid = true;
         config_files.forEach(function(configFile) {
-            configsValid = configsValid && configFile.filename.length &&
-                configFile.install_path.length && configFile.text_body.length;
+            configsValid = configsValid && !!configFile.filename.length &&
+                !!configFile.install_path.length && !!configFile.text_body.length;
         });
         return configsValid;
     };
 
     this.categoriesValid = function(mod) {
-        return mod.categories && mod.categories.length <= 2 && (mod.is_official || mod.categories.length);
+        return !!mod.categories && mod.categories.length <= 2 && (mod.is_official || !!mod.categories.length);
     };
 });
