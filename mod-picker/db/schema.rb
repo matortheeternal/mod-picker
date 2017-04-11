@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170408184604) do
+ActiveRecord::Schema.define(version: 20170411014320) do
 
   create_table "active_mod_lists", force: :cascade do |t|
     t.integer "game_id",     limit: 4, null: false
@@ -73,6 +73,8 @@ ActiveRecord::Schema.define(version: 20170408184604) do
     t.datetime "submitted",                                   null: false
     t.datetime "edited"
   end
+
+  add_index "base_reports", ["reportable_id", "reportable_type"], name: "index_base_reports_on_reportable_id_and_reportable_type", using: :btree
 
   create_table "blacklisted_authors", force: :cascade do |t|
     t.string "source", limit: 32, null: false
@@ -160,6 +162,8 @@ ActiveRecord::Schema.define(version: 20170408184604) do
     t.datetime "submitted",                                                 null: false
   end
 
+  add_index "compatibility_notes", ["compatibility_mod_id"], name: "index_compatibility_notes_on_compatibility_mod_id", using: :btree
+  add_index "compatibility_notes", ["compatibility_mod_option_id"], name: "index_compatibility_notes_on_compatibility_mod_option_id", using: :btree
   add_index "compatibility_notes", ["compatibility_plugin_id"], name: "compatibility_patch", using: :btree
   add_index "compatibility_notes", ["corrector_id"], name: "fk_rails_4dc9fad712", using: :btree
   add_index "compatibility_notes", ["edited_by"], name: "fk_rails_921b844a68", using: :btree
@@ -241,6 +245,7 @@ ActiveRecord::Schema.define(version: 20170408184604) do
     t.datetime "created",                 null: false
   end
 
+  add_index "events", ["content_id", "content_type"], name: "index_events_on_content_id_and_content_type", using: :btree
   add_index "events", ["user_id"], name: "fk_rails_0cb5590091", using: :btree
 
   create_table "games", force: :cascade do |t|
@@ -556,6 +561,7 @@ ActiveRecord::Schema.define(version: 20170408184604) do
   end
 
   add_index "mod_list_ignored_notes", ["mod_list_id"], name: "fk_rails_89a67a287a", using: :btree
+  add_index "mod_list_ignored_notes", ["note_id", "note_type"], name: "index_mod_list_ignored_notes_on_note_id_and_note_type", using: :btree
 
   create_table "mod_list_mod_options", force: :cascade do |t|
     t.integer "mod_list_mod_id", limit: 4, null: false
@@ -781,6 +787,7 @@ ActiveRecord::Schema.define(version: 20170408184604) do
   end
 
   add_index "nexus_infos", ["game_id"], name: "fk_rails_46e3032463", using: :btree
+  add_index "nexus_infos", ["mod_id"], name: "index_nexus_infos_on_mod_id", using: :btree
   add_index "nexus_infos", ["nexus_id", "game_id"], name: "index_nexus_infos_on_nexus_id_and_game_id", unique: true, using: :btree
 
   create_table "notifications", id: false, force: :cascade do |t|
@@ -1124,6 +1131,7 @@ ActiveRecord::Schema.define(version: 20170408184604) do
     t.integer  "videos_count",      limit: 4,   default: 0,     null: false
   end
 
+  add_index "workshop_infos", ["game_id"], name: "index_workshop_infos_on_game_id", using: :btree
   add_index "workshop_infos", ["mod_id"], name: "fk_rails_8707144ad7", using: :btree
 
   add_foreign_key "active_mod_lists", "games"
