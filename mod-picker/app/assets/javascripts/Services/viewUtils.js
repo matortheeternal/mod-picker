@@ -27,4 +27,33 @@ app.service('viewUtils', function() {
             elements[i].style.fontSize = fontSize + "px";
         }
     };
+
+    this.sortItemsByPropertyLength = function(items, key) {
+        return items.sort(function(a, b) {
+            return b[key].length - a[key].length;
+        });
+    };
+
+    this.createColumns = function(n) {
+        var columns = [];
+        for (var i = 0; i < n; i++) {
+            columns.push({ height: 0, items: [] });
+        }
+        return columns;
+    };
+
+    this.splitIntoColumns = function(items, maxColumns, key, baseHeight, itemHeight) {
+        var columns = service.createColumns(Math.min(items.length, maxColumns));
+
+        // distribute items between columns
+        service.sortItemsByPropertyLength(items, key).forEach(function(item) {
+            var targetColumn = columns.reduce(function(min, current) {
+                return (min.height > current.height) ? current : min;
+            }, columns[0]);
+            targetColumn.items.push(item);
+            targetColumn.height += baseHeight + item[key].length * itemHeight;
+        });
+
+        return columns;
+    };
 });

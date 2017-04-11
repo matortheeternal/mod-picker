@@ -1,5 +1,5 @@
 class ModsController < ApplicationController
-  before_action :set_mod, only: [:mod_options, :edit, :update, :hide, :approve, :update_tags, :image, :corrections, :reviews, :compatibility_notes, :install_order_notes, :load_order_notes, :related_mod_notes, :analysis, :destroy]
+  before_action :set_mod, only: [:mod_options, :edit, :edit_analysis, :update, :hide, :approve, :update_tags, :image, :corrections, :reviews, :compatibility_notes, :install_order_notes, :load_order_notes, :related_mod_notes, :analysis, :destroy]
 
   # POST /mods/index
   def index
@@ -304,13 +304,19 @@ class ModsController < ApplicationController
     }
   end
 
-  # POST/GET /mods/1/analysis
+  # GET /mods/1/analysis
   def analysis
     authorize! :read, @mod
     render json: {
         mod_options: json_format(@mod.mod_options, :show),
         plugins: json_format(@mod.plugins, :show)
     }
+  end
+
+  # GET /mods/1/edit_analysis
+  def edit_analysis
+    authorize! :update, @mod
+    respond_with_json(@mod.mod_options, :edit)
   end
 
   # DELETE /mods/1

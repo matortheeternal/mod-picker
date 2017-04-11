@@ -50,8 +50,9 @@ app.service("filtersFactory", function() {
         factory.searchTerm("name", "name of the mod"),
         factory.searchTerm("aliases", "mod's aliases"),
         factory.searchTerm("description", "mod's description"),
-        factory.searchTerm("author", "mod's authors and uploaders"),
-        factory.searchTerm("mp_author", "mod's authors on Mod Picker")
+        factory.searchTerm("author", "mod's authors"),
+        factory.searchTerm("mp_author", "mod's authors on Mod Picker"),
+        factory.searchTerm("uploader", "mod's uploaders")
     ]);
 
     this.modSourceFilters = factory.enumFilters("sources", {

@@ -31,7 +31,7 @@ app.config(['$stateProvider', function($stateProvider) {
     $stateProvider.state('base.mod', {
         templateUrl: '/resources/partials/mod/mod.html',
         controller: 'modController',
-        url: '/mods/:modId',
+        url: '/mods/{modId:int}',
         resolve: {
             modObject: function($stateParams, $q, categories, licenses, modService, categoryService, licenseService) {
                 var mod = $q.defer();
@@ -164,7 +164,7 @@ app.config(['$stateProvider', function($stateProvider) {
     });
 }]);
 
-app.controller('modController', function($scope, $rootScope, $q, $stateParams, $state, $timeout, $window, modObject, modService, modListService, contributionService, categoryService, tagService, smoothScroll, helpFactory, tabsFactory, sortFactory, eventHandlerFactory) {
+app.controller('modController', function($scope, $rootScope, $q, $stateParams, $state, $timeout, $window, modObject, modService, modListService, contributionService, categoryService, tagService, smoothScroll, helpFactory, tabsFactory, sortFactory, eventHandlerFactory, tabUtils) {
     // get parent variables
     $scope.mod = modObject.mod;
     $scope.mod.star = modObject.star;
@@ -236,6 +236,7 @@ app.controller('modController', function($scope, $rootScope, $q, $stateParams, $
 
     // shared function setup
     eventHandlerFactory.buildMessageHandlers($scope);
+    tabUtils.buildTabHelpers($scope, $state, 'mod', true);
 
     // set help context
     helpFactory.setHelpContexts($scope, [helpFactory.mod]);
@@ -271,36 +272,6 @@ app.controller('modController', function($scope, $rootScope, $q, $stateParams, $
     $scope.permissions.isAuthor = isAuthor;
     $scope.permissions.canManage = $scope.permissions.canManageMods || isAuthor;
     $scope.permissions.canReview = $scope.permissions.canContribute && (isCurator || !isAuthor);
-
-    var redirectToFirstTab = function() {
-        var tab = $scope.tabs[0];
-        $state.go('base.mod.' + tab.name, tab.params, { location: 'replace' });
-    };
-
-    var tabIsPresent = function(tabName) {
-        var tabIndex = $scope.tabs.findIndex(function(tab) {
-            return tabName === tab.name;
-        });
-        return (tabIndex !== -1);
-    };
-
-    var currentTab = function() {
-        var currentState = $state.current.name;
-        var currentStateArray = currentState.split(".");
-        return currentStateArray[currentStateArray.length - 1];
-    };
-
-    //redirect to the first tab if changing to a non-present tab
-    $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
-        //if changing to the mod state
-        var toStateNameArray = toState.name.split(".");
-        if (toStateNameArray[1] === "mod") {
-            //if changing to a tab that isn't in tabs[]
-            if (!tabIsPresent(currentTab())) {
-                redirectToFirstTab();
-            }
-        }
-    });
 
     // update the markdown editor
     $scope.updateEditor = function(noScroll) {
@@ -362,7 +333,7 @@ app.controller('modController', function($scope, $rootScope, $q, $stateParams, $
     };
 
     $scope.editMod = function() {
-        $state.go('base.edit-mod', {modId: $scope.mod.id});
+        $state.go('base.edit-mod', { modId: $scope.mod.id });
     };
 
     $scope.starMod = function() {

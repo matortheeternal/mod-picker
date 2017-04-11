@@ -1,9 +1,7 @@
-//= require angular.min.1.5.1.js
 //= require marked.min.js
 //= require angular-marked.min.js
 //= require angular-relative-date.min.js
 //= require angular-animate.min.js
-//= require simplemde.min.js
 //= require spin.min.js
 //= require_self
 //= require ./polyfills.js

@@ -1,67 +1,161 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>The page you were looking for doesn't exist (404)</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <style>
-  body {
-    background-color: #EFEFEF;
-    color: #2E2F30;
-    text-align: center;
-    font-family: arial, sans-serif;
-    margin: 0;
-  }
+    <title>Error 404 | Mod Picker</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            color: #404040;
+            margin: 0;
+            background-color: #ffffff;
+            min-width: 1260px;
+        }
 
-  div.dialog {
-    width: 95%;
-    max-width: 33em;
-    margin: 4em auto 0;
-  }
+        .page-container {
+            width: 1220px;
+            margin: auto;
+            padding-top: 10vh
+        }
 
-  div.dialog > div {
-    border: 1px solid #CCC;
-    border-right-color: #999;
-    border-left-color: #999;
-    border-bottom-color: #BBB;
-    border-top: #B00100 solid 4px;
-    border-top-left-radius: 9px;
-    border-top-right-radius: 9px;
-    background-color: white;
-    padding: 7px 12% 0;
-    box-shadow: 0 3px 8px rgba(50, 50, 50, 0.17);
-  }
+        .error-page {
+            padding: 20vh 330px 24vh 50px;
+            min-height: 46vh;
+            background: url('images/penitus.png') no-repeat top right;
+            background-size: 32.5vh;
+        }
 
-  h1 {
-    font-size: 100%;
-    color: #730E15;
-    line-height: 1.5em;
-  }
+        #quote {
+            margin: 0;
+            font-style: italic;
+            font-size: 2em;
+            font-weight: normal;
+            font-family: Georgia, serif;
+        }
 
-  div.dialog > p {
-    margin: 0 0 1em;
-    padding: 1em;
-    background-color: #F7F7F7;
-    border: 1px solid #CCC;
-    border-right-color: #999;
-    border-left-color: #999;
-    border-bottom-color: #999;
-    border-bottom-left-radius: 4px;
-    border-bottom-right-radius: 4px;
-    border-top-color: #DADADA;
-    color: #666;
-    box-shadow: 0 3px 8px rgba(50, 50, 50, 0.17);
-  }
-  </style>
+        .explanation {
+            color: #606060;
+            font-size: 1.2em;
+            margin: 10px 0 4px;
+            display: block;
+        }
+
+        h2 {
+            margin: 60px 0 4px;
+        }
+
+        .center {
+            text-align: center;
+        }
+
+        .explanation a {
+            text-decoration: none;
+            color: #53b6bf;
+            -webkit-transition: color 0.2s ease-in-out;
+            -moz-transition: color 0.2s ease-in-out;
+            -o-transition: color 0.2s ease-in-out;
+            transition: color 0.2s ease-in-out;
+        }
+
+        .explanation a:hover {
+            color: #404040;
+        }
+
+        .actions a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .fa {
+            font-size: 2.5em;
+            min-width: 1em;
+            margin: 2px;
+            cursor: pointer;
+            -webkit-transition: color 0.2s ease-in-out;
+            -moz-transition: color 0.2s ease-in-out;
+            -o-transition: color 0.2s ease-in-out;
+            transition: color 0.2s ease-in-out;
+        }
+
+        .fa-home:hover {
+            color: orangered;
+        }
+
+        .fa-question-circle:hover {
+            color: goldenrod;
+        }
+
+        .fa-bug:hover {
+            color: green;
+        }
+
+        .fa-comments:hover {
+            color: #7289DA;
+        }
+
+        .fa-facebook:hover {
+            color: #4267b2;
+        }
+
+        .fa-youtube:hover {
+            color: rgb(204, 24, 30);
+        }
+
+        .fa-twitter:hover {
+            color: rgb(29, 161, 242);
+        }
+
+        .fa-steam:hover {
+            color: #000;
+        }
+    </style>
 </head>
 
 <body>
-  <!-- This file lives in public/404.html -->
-  <div class="dialog">
-    <div>
-      <h1>The page you were looking for doesn't exist.</h1>
-      <p>You may have mistyped the address or the page may have moved.</p>
+<div class="page-container">
+    <div class="error-page ">
+        <h1 id="quote"></h1>
+        <div class="explanation">
+            We were unable to display the page you were looking for.
+        </div>
+        <div class="center">
+            <h2>Actions</h2>
+            <div class="actions">
+                <a href="/" title="Return Home">
+                    <i class="fa fa-home"></i>
+                </a>
+                <a href="/help" title="Go to the Help Center">
+                    <i class="fa fa-question-circle"></i>
+                </a>
+                <a href="https://github.com/matortheeternal/mod-picker-issues" title="Report a bug">
+                    <i class="fa fa-bug"></i>
+                </a>
+                <a href="https://discord.gg/GCKrwTU" title="Contact us on Discord">
+                    <i class="fa fa-comments"></i>
+                </a>
+                <a href="https://www.facebook.com/modpicker" title="Contact us on Facebook">
+                    <i class="fa fa-facebook"></i>
+                </a>
+                <a href="https://twitter.com/Mod_Picker" title="Contact us on Twitter">
+                    <i class="fa fa-twitter"></i>
+                </a>
+                <a href="https://steamcommunity.com/groups/mod-picker" title="Contact us on Steam">
+                    <i class="fa fa-steam"></i>
+                </a>
+            </div>
+        </div>
     </div>
-    <p>If you are the application owner check the logs for more information.</p>
-  </div>
+</div>
 </body>
+
+<script>
+    var quotes = [
+        "\"I'm fairly certain you've wandered into the wrong building, friend.\"",
+        "\"Move along citizen!\"",
+        "\"Citizen, you must be lost, the tavern is down the road a piece.\""
+    ];
+    var index = Math.floor(Math.random() * quotes.length);
+    document.getElementById("quote").innerText = quotes[index];
+</script>
 </html>

@@ -10,8 +10,7 @@ app.directive('tagInput', function() {
             applyTag: '=',
             removeTag: '=',
             addTag: '=',
-            index: '=',
-            last: '='
+            index: '='
         }
     }
 });
@@ -151,15 +150,4 @@ app.controller('tagInputController', function($scope, $timeout, tagService, form
             }, pause);
         }
     }
-});
-
-app.directive('autoSelect', function($timeout) {
-    return function(scope, element, attrs) {
-        scope.$watch(attrs.autoSelect, function(newval) {
-            if (!newval) return;
-            $timeout(function() {
-                element[0].select();
-            }, 0, false);
-        });
-    };
 });

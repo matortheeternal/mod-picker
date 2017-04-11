@@ -19,6 +19,9 @@ gem 'therubyracer', platforms: :ruby
 # Rack-attack middleware for throttles and restrictions
 gem 'rack-attack'
 
+# optimize our database
+gem "lol_dba"
+
 # Prerender for serving pages to crawlers
 gem 'prerender_rails'
 

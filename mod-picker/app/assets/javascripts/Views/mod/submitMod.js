@@ -1,8 +1,9 @@
 app.config(['$stateProvider', function($stateProvider) {
     $stateProvider.state('base.submit-mod', {
-            templateUrl: '/resources/partials/mod/submitMod.html',
+            templateUrl: '/resources/partials/submitMod/submit.html',
             controller: 'submitModController',
             url: '/mods/submit',
+            redirectTo: 'base.submit-mod.General',
             resolve: {
                 mod: function($q, modService) {
                     var mod = $q.defer();
@@ -21,10 +22,38 @@ app.config(['$stateProvider', function($stateProvider) {
                 }
             }
         }
-    );
+    ).state('base.submit-mod.General', {
+        sticky: true,
+        deepStateRedirect: true,
+        views: {
+            'General': {
+                templateUrl: '/resources/partials/submitMod/general.html'
+            }
+        },
+        url: '/general'
+    }).state('base.submit-mod.Analysis', {
+        sticky: true,
+        deepStateRedirect: true,
+        views: {
+            'Analysis': {
+                templateUrl: '/resources/partials/submitMod/analysis.html'
+            }
+        },
+        url: '/analysis'
+    }).state('base.submit-mod.Classification', {
+        sticky: true,
+        deepStateRedirect: true,
+        views: {
+            'Classification': {
+                templateUrl: '/resources/partials/submitMod/classification.html',
+                controller: 'modClassificationController'
+            }
+        },
+        url: '/classification'
+    });
 }]);
 
-app.controller('submitModController', function($scope, $rootScope, backend, modService, modValidationService, scrapeService, pluginService, categoryService, helpFactory, sitesFactory, eventHandlerFactory) {
+app.controller('submitModController', function($scope, $rootScope, $state, modService, modValidationService, helpFactory, sitesFactory, tabsFactory, eventHandlerFactory, tabUtils) {
     // access parent variables
     $scope.currentUser = $rootScope.currentUser;
     $scope.categories = $rootScope.categories;
@@ -33,6 +62,7 @@ app.controller('submitModController', function($scope, $rootScope, backend, modS
 
     // initialize variables
     $scope.sites = sitesFactory.sites();
+    $scope.tabs = tabsFactory.buildEditModTabs(false);
     $scope.mod = {
         game_id: window._current_game_id,
         sources: [{
@@ -40,7 +70,8 @@ app.controller('submitModController', function($scope, $rootScope, backend, modS
             url: ""
         }],
         custom_sources: [],
-        requirements: []
+        requirements: [],
+        categories: []
     };
     $scope.defaultSrc = '/mods/Default-big.png';
     $scope.imageSizes = [
@@ -59,29 +90,24 @@ app.controller('submitModController', function($scope, $rootScope, backend, modS
 
     // shared function setup
     eventHandlerFactory.buildMessageHandlers($scope, true);
+    tabUtils.buildTabHelpers($scope, $state, 'submit-mod');
     $scope.searchMods = modService.searchMods;
 
     // set help context
     helpFactory.setHelpContexts($scope, [helpFactory.submitMod]);
 
-    // clear messages when user changes the category
-    $scope.$watch('mod.categories', function() {
-        if ($scope.categoryMessages && $scope.categoryMessages.length) {
-            if ($scope.categoryMessages[0].klass == "cat-error-message" ||
-                $scope.categoryMessages[0].klass == "cat-success-message") {
-                $scope.categoryMessages = [];
-            }
-        }
-    }, true);
+    $scope.backToModPage = function() {
+        $state.go('base.mod', {modId: $scope.mod.id});
+    };
 
     // submission isn't allowed until the user has provided at least one valid source,
     // a mod analysis, and at least one category
-    $scope.modValid = function() {
+    $scope.checkIfValid = function() {
         $scope.sourcesValid = modValidationService.sourcesValid($scope.mod);
         $scope.categoriesValid = modValidationService.categoriesValid($scope.mod);
         $scope.requirementsValid = modValidationService.requirementsValid($scope.mod.requirements);
         $scope.analysisValid = !!$scope.mod.analysis;
-        return $scope.sourcesValid && $scope.categoriesValid && $scope.analysisValid;
+        $scope.valid = $scope.sourcesValid && $scope.categoriesValid && $scope.analysisValid;
     };
 
     $scope.submitImage = function(modId) {
@@ -111,9 +137,7 @@ app.controller('submitModController', function($scope, $rootScope, backend, modS
 
     $scope.submit = function() {
         // return if mod is invalid
-        if (!$scope.modValid()) {
-            return;
-        }
+        if (!$scope.valid) return;
 
         $scope.startSubmission("Submitting Mod...");
         modService.submitMod($scope.mod).then(function(data) {
@@ -122,4 +146,6 @@ app.controller('submitModController', function($scope, $rootScope, backend, modS
             $scope.submissionError("There were errors submitting your mod.", response);
         });
     };
+
+    $scope.$watch('mod', $scope.checkIfValid, true);
 });

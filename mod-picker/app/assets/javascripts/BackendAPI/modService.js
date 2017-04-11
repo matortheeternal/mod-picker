@@ -173,6 +173,10 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
         return action.promise;
     };
 
+    this.editAnalysis = function(modId) {
+        return backend.retrieve('/mods/' + modId + '/edit_analysis');
+    };
+
     this.starMod = function(modId, starred) {
         if (starred) {
             return backend.delete('/mods/' + modId + '/star');
@@ -422,8 +426,8 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
                 game_id: mod.game_id,
                 released: released || DateTime.now(),
                 updated: updated,
-                primary_category_id: mod.categories[0],
-                secondary_category_id: mod.categories[1],
+                primary_category_id: mod.primary_category_id,
+                secondary_category_id: mod.secondary_category_id,
                 nexus_info_id: mod.nexus && mod.nexus.nexus_id,
                 workshop_info_id: mod.workshop && mod.workshop.id,
                 lover_info_id: mod.lab && mod.lab.id,

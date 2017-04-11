@@ -3,6 +3,8 @@
   margin-right: -10px;
   cursor: default;
   display: inline-flex;
+  z-index: 1;
+  position: relative;
 
   &.small {
     font-size: 18px;

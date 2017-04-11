@@ -8,9 +8,10 @@ app.config(['$stateProvider', function($stateProvider) {
 
 app.config(['$stateProvider', function($stateProvider) {
     $stateProvider.state('base.edit-mod', {
-        templateUrl: '/resources/partials/mod/editMod.html',
+        templateUrl: '/resources/partials/editMod/edit.html',
         controller: 'editModController',
         url: '/mods/:modId/edit',
+        redirectTo: 'base.edit-mod.General',
         resolve: {
             modObject: function(modService, $stateParams, $q, licenses, licenseService) {
                 var mod = $q.defer();
@@ -29,10 +30,48 @@ app.config(['$stateProvider', function($stateProvider) {
                 return mod.promise;
             }
         }
+    }).state('base.edit-mod.General', {
+        sticky: true,
+        deepStateRedirect: true,
+        views: {
+            'General': {
+                templateUrl: '/resources/partials/editMod/general.html'
+            }
+        },
+        url: '/general'
+    }).state('base.edit-mod.Authoring', {
+        sticky: true,
+        deepStateRedirect: true,
+        views: {
+            'Authoring': {
+                templateUrl: '/resources/partials/editMod/authoring.html'
+            }
+        },
+        url: '/authoring'
+    }).state('base.edit-mod.Analysis', {
+        sticky: true,
+        deepStateRedirect: true,
+        views: {
+            'Analysis': {
+                templateUrl: '/resources/partials/editMod/analysis.html',
+                controller: 'editModAnalysisController'
+            }
+        },
+        url: '/analysis'
+    }).state('base.edit-mod.Classification', {
+        sticky: true,
+        deepStateRedirect: true,
+        views: {
+            'Classification': {
+                templateUrl: '/resources/partials/editMod/classification.html',
+                controller: 'modClassificationController'
+            }
+        },
+        url: '/classification'
     });
 }]);
 
-app.controller('editModController', function($scope, $rootScope, $state, modObject, modService, modLoaderService, modValidationService, userService, tagService, categoryService, helpFactory, sitesFactory, eventHandlerFactory, objectUtils) {
+app.controller('editModController', function($scope, $rootScope, $state, modObject, modService, modLoaderService, modValidationService, userService, helpFactory, sitesFactory, tabsFactory, eventHandlerFactory, objectUtils, tabUtils) {
     // get parent variables
     $scope.currentUser = $rootScope.currentUser;
     $scope.categories = $rootScope.categories;
@@ -49,6 +88,7 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
     modLoaderService.loadMod($scope.mod);
     $scope.originalMod = angular.copy($scope.mod);
     $scope.sites = sitesFactory.sites();
+    $scope.errors = {};
     $scope.image = {
         sizes: [
             { label: "big", src: $scope.mod.images.big }
@@ -60,12 +100,14 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
         { label: 'small',   size: 100 }
     ];
     $scope.analysisValid = true;
+    $scope.editing = true;
 
     // set page title
     $scope.$emit('setPageTitle', 'Edit Mod');
 
     // shared function setup
     eventHandlerFactory.buildMessageHandlers($scope, true);
+    tabUtils.buildTabHelpers($scope, $state, 'edit-mod', true);
 
     // set help context
     helpFactory.setHelpContexts($scope, [helpFactory.editMod]);
@@ -77,23 +119,16 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
     var isAuthor = author && author.role == 'author';
     $scope.canManageOptions = $scope.permissions.canModerate || isAuthor;
     $scope.canChangeStatus = (isAuthor && $scope.mod.status == "good") || $scope.permissions.isAdmin;
-    $scope.canSetDetails  = $scope.permissions.canModerate || isAuthor;
 
-    $scope.$watch('mod.categories', function() {
-        // clear messages when user changes the category
-        if ($scope.categoryMessages && $scope.categoryMessages.length) {
-            if ($scope.categoryMessages[0].klass == "cat-error-message" ||
-                $scope.categoryMessages[0].klass == "cat-success-message") {
-                $scope.categoryMessages = [];
-            }
-        }
-        // set primary_category_id and secondary_category_id
-        $scope.mod.primary_category_id = $scope.mod.categories[0];
-        $scope.mod.secondary_category_id = $scope.mod.categories[1];
-    }, true);
+    // set up tabs
+    $scope.tabs = tabsFactory.buildEditModTabs($scope.canManageOptions);
+
+    $scope.backToModPage = function() {
+        $state.go('base.mod', {modId: $scope.mod.id});
+    };
 
     // validate the mod
-    $scope.modValid = function() {
+    $scope.checkIfValid = function() {
         $scope.sourcesValid = modValidationService.sourcesValid($scope.mod);
         $scope.licensesValid = modValidationService.licensesValid($scope.mod);
         $scope.authorsValid = modValidationService.authorsValid($scope.mod.mod_authors);
@@ -102,7 +137,7 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
         $scope.categoriesValid = modValidationService.categoriesValid($scope.mod);
 
         // return result of all validations
-        return $scope.sourcesValid && $scope.authorsValid && $scope.requirementsValid && $scope.configsValid && $scope.categoriesValid;
+        $scope.valid = $scope.sourcesValid && $scope.authorsValid && $scope.requirementsValid && $scope.configsValid && $scope.categoriesValid;
     };
 
     $scope.buildSource = function(scrapeLabel, infoLabel) {
@@ -121,7 +156,7 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
     // save changes
     $scope.saveChanges = function() {
         // return if mod is invalid
-        if (!$scope.modValid()) return;
+        if (!$scope.valid) return;
 
         // get changed mod fields
         modValidationService.sanitizeSet($scope.mod.requirements);
@@ -185,4 +220,6 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
             ]);
         }
     };
+
+    $scope.$watch('mod', $scope.checkIfValid, true);
 });

@@ -10,7 +10,7 @@ app.config(['$stateProvider', function($stateProvider) {
     $stateProvider.state('base.edit-article', {
         templateUrl: '/resources/partials/articles/editArticle.html',
         controller: 'editArticleController',
-        url: '/articles/:articleId/edit',
+        url: '/articles/{articleId:int}/edit',
         resolve: {
             article: function(articleService, $stateParams, $q) {
                 var article = $q.defer();

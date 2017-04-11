@@ -40,7 +40,7 @@ class Correction < ActiveRecord::Base
 
   has_many :agreement_marks, :inverse_of => 'correction'
   has_many :comments, -> { where(parent_id: nil) }, :as => 'commentable'
-  has_many :commenters, :class_name => 'User', :through => :comments, :source => 'submitter'
+  has_many :commenters, :class_name => 'User', :through => :comments, :source => 'submitter', :foreign_key => 'submitted_by'
 
   belongs_to :correctable, :polymorphic => true
 

@@ -118,4 +118,23 @@ form {
     margin-top: 10px;
     margin-bottom: 20px;
   }
+
+  .tag-group-column {
+    display: inline-block;
+    width: 250px;
+    vertical-align: top;
+
+    .tag-group-box {
+      display: inline-block;
+      border: 1px solid $hard_border_color;
+      background-color: $secondary_background;
+      padding: 8px;
+      margin: 12px;
+      width: 220px;
+
+      h4 {
+        margin: 6px 0;
+      }
+    }
+  }
 }

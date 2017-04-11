@@ -9,6 +9,7 @@
                         <li ng-repeat="detail in groupDetails(availableDetailData, details, group) as groupedDetails">
                             <label>
                                 <input type="checkbox" ng-model="detail.visibility">
+                                <i class="fa {{::detail.icon}}"></i>
                                 {{detail.label}}
                             </label>
                         </li>

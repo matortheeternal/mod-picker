@@ -6,6 +6,14 @@ app.controller('modListToolsController', function($scope, $rootScope, $state, $s
 
     // SHARED FUNCTIONS
     $scope.searchTools = modService.searchModListTools;
+
+    // This generates the following functions:
+    // - $scope.addTool
+    // - $scope.recoverTool
+    // - $scope.addNewToolItem
+    // - $scope.addNewTool
+    // - $scope.addCustomTool
+    // - $scope.removeTool
     listMetaFactory.buildModelFunctions($scope, 'tool', 'mod', 'name', 'Custom Tool');
 
     // MODAL HANDLING

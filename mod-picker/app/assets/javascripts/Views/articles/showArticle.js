@@ -10,7 +10,7 @@ app.config(['$stateProvider', function($stateProvider) {
     $stateProvider.state('base.article', {
         templateUrl: '/resources/partials/articles/showArticle.html',
         controller: 'showArticleController',
-        url: '/articles/:articleId',
+        url: '/articles/{articleId:int}',
         resolve: {
             article: function(articleService, $stateParams, $q) {
                 var article = $q.defer();

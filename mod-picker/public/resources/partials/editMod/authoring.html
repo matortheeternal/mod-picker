@@ -1,0 +1,21 @@
+<mod-details></mod-details>
+
+<h3 ng-if="canChangeStatus" class="section-title">Change Status</h3>
+<section ng-if="canChangeStatus">
+    <label class="subsection">
+            <span class="input-label">Status
+                <span class="help-tooltip small" ng-hide="hideTooltips" title="You can change the status of the mod from good to outdated &#13;or dangerous without submitting an appeal if you are an &#13;Author for the mod.">
+                    <i class="fa fa-question-circle"></i>
+                </span>
+            </span>
+        <select ng-model="mod.status">
+            <option value="good">Good</option>
+            <option value="outdated">Outdated</option>
+            <option value="dangerous">Dangerous</option>
+        </select>
+    </label>
+</section>
+
+<mod-licenses></mod-licenses>
+
+<mod-authors></mod-authors>

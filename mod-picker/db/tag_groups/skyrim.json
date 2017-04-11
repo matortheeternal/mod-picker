@@ -93,6 +93,10 @@
 		"name" : "Affects",
 		"tag_names" : ["Loot", "Gold", "Merchants", "Quest Rewards", "Item Stats"]
 	}, {
+		"category_name" : "Gameplay - Immersion & Role-playing",
+		"name" : "Affects",
+		"tag_names" : ["Character Interaction", "Death", "Dialogue Options", "Diversity", "Events", "Lore", "Realism", "Survival", "Travel", "World Interaction"]
+	}, {
 		"category_name" : "Gameplay - Magic & Abilities",
 		"name" : "Content",
 		"tag_names" : ["Active Effects", "Dragon Shouts", "Enchantments", "Powers", "Scrolls", "Spells"]
