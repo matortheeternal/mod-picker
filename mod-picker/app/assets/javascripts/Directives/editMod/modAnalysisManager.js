@@ -13,6 +13,7 @@ app.controller('modAnalysisManagerController', function($scope, $rootScope, $tim
 
     // set up old nested mod options
     $scope.$watch('mod.mod_options', function() {
+        if (!$scope.mod.mod_options) return;
         $scope.oldNestedOptions = modOptionUtils.getNestedModOptions($scope.mod.mod_options);
     });
 
