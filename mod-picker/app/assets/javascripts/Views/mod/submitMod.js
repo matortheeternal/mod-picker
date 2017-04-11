@@ -148,5 +148,5 @@ app.controller('submitModController', function($scope, $rootScope, $state, modSe
         });
     };
 
-    $scope.$watch('mod', $scope.checkIfValid, true);
+    $scope.$watchCollection('mod', $scope.checkIfValid);
 });
