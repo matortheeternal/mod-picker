@@ -4,8 +4,7 @@ app.directive('editModOptionTree', function() {
         templateUrl: '/resources/directives/editMod/editModOptionTree.html',
         scope: {
             modOptions: '=',
-            oldOptions: '=?',
-            nested: '@?'
+            oldOptions: '=?'
         },
         controller: 'editModOptionTreeController'
     }

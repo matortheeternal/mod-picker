@@ -12,7 +12,7 @@
 <section>
     <loader spinner-class="big-spinner" data="!loadingAnalysis">
         <div class="analysis-container" ng-if="nestedOptions">
-            <edit-mod-option-tree mod-options="nestedOptions" old-options="oldNestedOptions"></edit-mod-option-tree>
+            <edit-mod-option-tree mod-options="nestedOptions" old-options="mod.mod_options"></edit-mod-option-tree>
         </div>
         <div class="analysis-container" ng-if="oldNestedOptions">
             <edit-mod-option-tree mod-options="oldNestedOptions"></edit-mod-option-tree>

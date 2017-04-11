@@ -34,7 +34,7 @@
                 {{::option.children.length | number}} installer options
             </span>
             <div ng-if="option.expanded">
-                <edit-mod-option-tree mod-options="option.children" old-options="option.old_options" nested="true"></edit-mod-option-tree>
+                <edit-mod-option-tree mod-options="option.children" old-options="oldOptions"></edit-mod-option-tree>
             </div>
         </div>
     </li>
