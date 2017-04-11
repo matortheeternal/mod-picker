@@ -1,4 +1,4 @@
-mod-option-tree {
+mod-option-tree, edit-mod-option-tree {
   ul {
     list-style: none;
     padding-left: 10px;
@@ -27,6 +27,10 @@ mod-option-tree {
           margin: 6px 2px 0 0;
           min-width: 16px;
         }
+
+        input.fuzzy-input {
+          margin: 0;
+        }
       }
 
       .mod-option-stats {
@@ -47,7 +51,7 @@ mod-option-tree {
     }
   }
 
-  mod-option-tree {
+  mod-option-tree, edit-mod-option-tree {
     ul {
       padding-right: 5px;
 
@@ -66,6 +70,26 @@ mod-option-tree {
       .mod-option-stats {
         font-size: 14px;
       }
+    }
+  }
+
+  edit-mod-option-tree {
+    ul li {
+      margin-right: 18px;
+    }
+
+    .mod-option .mod-option-details {
+      padding-right: 5px;
+    }
+
+    .mod-option-title textarea {
+      font-family: 'Roboto', sans-serif;
+      border: none;
+      width: 285px;
+      max-width: 285px;
+      font-size: 18px;
+      resize: none;
+      overflow: hidden;
     }
   }
 }
