@@ -7,9 +7,14 @@ app.directive('modAnalysisManager', function() {
     }
 });
 
-app.controller('modAnalysisManagerController', function($scope, $rootScope, $timeout, pluginService, assetUtils, objectUtils) {
+app.controller('modAnalysisManagerController', function($scope, $rootScope, $timeout, pluginService, assetUtils, objectUtils, modOptionUtils) {
     // inherited variables
     $scope.currentGame = $rootScope.currentGame;
+
+    // set up old nested mod options
+    if ($scope.mod.mod_options) {
+        $scope.oldNestedOptions = modOptionUtils.getNestedModOptions($scope.mod.mod_options);
+    }
 
     $scope.changeAnalysisFile = function(event) {
         var input = event.target;
@@ -164,6 +169,7 @@ app.controller('modAnalysisManagerController', function($scope, $rootScope, $tim
         analysis.mod_options.forEach($scope.prepareModOption);
         $scope.$applyAsync(function() {
             $scope.mod.analysis = analysis;
+            $scope.nestedOptions = modOptionUtils.getNestedModOptions(analysis.mod_options);
             $scope.loadingAnalysis = false;
             $scope.getRequirementsFromAnalysis();
         });
