@@ -5,15 +5,15 @@
                 <i class="fa {{::option.iconClass}}"></i>
             </span>
             <span class="mod-option-details">
-                <label class="mod-option-title">
+                <span class="mod-option-title">
                     <input type="checkbox" ng-model="option.default" title="Default"/>
                     <input type="text" title="{{::option.name}}" class="fuzzy-input" ng-model="option.display_name" ng-click="focusText($event)" pu-elastic-input>
-                </label>
+                </span>
                 <span class="mod-option-stats">
                     {{::option.size | bytes}}
                 </span>
                 <label class="old-option" ng-if="oldOptions">
-                    <span>Old Option:</span>
+                    <span>Old Option:</span>`
                     <select ng-options="opt.id as opt.display_name for opt in ::oldOptions" ng-model="option.id" ng-change="oldOptionChanged()">
                         <option value="">None</option>
                     </select>
