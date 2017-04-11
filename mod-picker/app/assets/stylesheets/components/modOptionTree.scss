@@ -74,7 +74,7 @@ mod-option-tree, edit-mod-option-tree {
   }
 
   .plugin-analysis-item {
-    padding: 22px 12px 0;
+    padding: 6px 28px;
   }
 
   edit-mod-option-tree {
@@ -83,11 +83,18 @@ mod-option-tree, edit-mod-option-tree {
       min-width: 700px;
       max-width: 700px;
     }
+  }
 
-    ul.asset-tree-list {
-      li {
-        margin: 0;
-      }
+  asset-tree {
+    display: block;
+    margin: 6px 0 6px -8px;
+
+    ul.asset-tree-list li {
+      margin: 0;
+    }
+
+    asset-tree {
+      margin: 0;
     }
   }
 
