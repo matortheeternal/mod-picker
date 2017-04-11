@@ -268,7 +268,7 @@ app.service('sortUtils', function($q, categoryService, colorsFactory, modListSer
         model[key].sort(function(a, b) {
             return a.index - b.index;
         });
-    }
+    };
 
     // load sort into view
     this.loadSort = function(columns, sortedColumn, sort) {
