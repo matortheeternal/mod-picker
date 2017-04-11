@@ -12,10 +12,6 @@
                 </label>
                 <span class="mod-option-stats">
                     {{::option.size | bytes}}
-                    <span ng-show="option.plugins.length || option.asset_files.length">-
-                        {{::option.plugins.length || 0}} plugin{{:: option.plugins.length != 1 ? 's' : ''}},
-                        {{::option.asset_files.length || 0}} asset file{{:: option.asset_files.length != 1 ? 's' : ''}}
-                    </span>
                 </span>
                 <label class="old-option" ng-if="oldOptions">
                     <span>Old Option:</span>
@@ -27,6 +23,32 @@
             <span class="remove-item" ng-click="removeModOption()" title="Remove mod option">
                 <i class="fa fa-times"></i>
             </span>
+        </div>
+        <div class="children-container" ng-if="option.plugins.length">
+            <span class="children-note" ng-click="togglePluginsExpansion(option)">
+                <i class="fa fa-chevron-{{option.pluginsExpanded ? 'down' : 'right'}}"></i>
+                {{::option.plugins.length | number}} plugin{{:: option.plugins.length != 1 ? 's' : ''}}
+            </span>
+            <div ng-if="option.pluginsExpanded">
+                <div class="plugin-analysis-item" ng-repeat="plugin in option.plugins">
+                    <label class="old-plugin" ng-if="option.oldOption">
+                        <span>Old Plugin:</span>
+                        <select ng-options="op.id as op.filename for op in option.oldOption.plugins" ng-model="plugin.id" ng-change="oldPluginChanged(plugin)">
+                            <option value="">None</option>
+                        </select>
+                    </label>
+                    <plugin-metadata plugin="plugin" show-record-groups="true"></plugin-metadata>
+                </div>
+            </div>
+        </div>
+        <div class="children-container" ng-if="option.assets.length">
+            <span class="children-note" ng-click="toggleAssetsExpansion(option)">
+                <i class="fa fa-chevron-{{option.assetsExpanded ? 'down' : 'right'}}"></i>
+                {{::option.assets.length | number}} asset{{:: option.assets.length != 1 ? 's' : ''}}
+            </span>
+            <div ng-if="option.assetsExpanded">
+                <asset-tree assets="option.nestedAssets"></asset-tree>
+            </div>
         </div>
         <div class="children-container" ng-if="option.children">
             <span class="children-note" ng-click="toggleExpansion(option)">

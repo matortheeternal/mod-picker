@@ -13,5 +13,13 @@ app.directive('editModOptionTree', function() {
 app.controller('editModOptionTreeController', function($scope) {
     $scope.toggleExpansion = function(option) {
         option.expanded = !option.expanded;
-    }
+    };
+
+    $scope.togglePluginsExpansion = function(option) {
+        option.pluginsExpanded = !option.pluginsExpanded;
+    };
+
+    $scope.toggleAssetsExpansion = function(option) {
+        option.assetsExpanded = !option.assetsExpanded;
+    };
 });
