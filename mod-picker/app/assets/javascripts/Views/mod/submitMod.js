@@ -71,7 +71,8 @@ app.controller('submitModController', function($scope, $rootScope, $state, modSe
         }],
         custom_sources: [],
         requirements: [],
-        categories: []
+        categories: [],
+        tags: []
     };
     $scope.defaultSrc = '/mods/Default-big.png';
     $scope.imageSizes = [
