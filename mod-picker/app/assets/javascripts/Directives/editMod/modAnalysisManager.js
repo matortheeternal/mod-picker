@@ -7,15 +7,18 @@ app.directive('modAnalysisManager', function() {
     }
 });
 
-app.controller('modAnalysisManagerController', function($scope, $rootScope, pluginService, objectUtils, assetUtils) {
+app.controller('modAnalysisManagerController', function($scope, $rootScope, $timeout, pluginService, assetUtils, objectUtils) {
     // inherited variables
     $scope.currentGame = $rootScope.currentGame;
 
     $scope.changeAnalysisFile = function(event) {
         var input = event.target;
         if (input.files && input.files[0]) {
-            $scope.loadAnalysisFile(input.files[0]);
-            input.value = "";
+            $scope.loadingAnalysis = true;
+            $timeout(function() {
+                $scope.loadAnalysisFile(input.files[0]);
+                input.value = "";
+            });
         }
     };
 
@@ -161,6 +164,7 @@ app.controller('modAnalysisManagerController', function($scope, $rootScope, plug
         analysis.mod_options.forEach($scope.prepareModOption);
         $scope.$applyAsync(function() {
             $scope.mod.analysis = analysis;
+            $scope.loadingAnalysis = false;
             $scope.getRequirementsFromAnalysis();
         });
     };

@@ -10,17 +10,19 @@
     </span>
 </h3>
 <section>
-    <div class="analysis-container" ng-if="mod.mod_options && !mod.analysis">
-        <mod-option ng-repeat="option in mod.mod_options" option="option" ng-hide="option._destroy"></mod-option>
-    </div>
+    <loader spinner-class="big-spinner" data="!loadingAnalysis">
+        <div class="analysis-container" ng-if="mod.mod_options && !mod.analysis">
+            <mod-option ng-repeat="option in mod.mod_options" option="option" ng-hide="option._destroy"></mod-option>
+        </div>
 
-    <div class="analysis-container" ng-if="mod.analysis">
-        <mod-option ng-repeat="option in mod.analysis.mod_options" option="option" old-options="mod.mod_options" ng-hide="option._destroy"></mod-option>
-    </div>
+        <div class="analysis-container" ng-if="mod.analysis">
+            <mod-option ng-repeat="option in mod.analysis.mod_options" option="option" old-options="mod.mod_options" ng-hide="option._destroy"></mod-option>
+        </div>
 
-    <label>
-        <input id="analysis-input" type="file" file-change="changeAnalysisFile" accept=".json">
-        <input type="button" class="btn" ng-click="browseAnalysisFile()" value="Browse">
-        <input type="button" class="btn" ng-click="clearAnalysis()" value="Clear">
-    </label>
+        <label>
+            <input id="analysis-input" type="file" file-change="changeAnalysisFile" accept=".json">
+            <input type="button" class="btn" ng-click="browseAnalysisFile()" value="Browse">
+            <input type="button" class="btn" ng-click="clearAnalysis()" value="Clear">
+        </label>
+    </loader>
 </section>
