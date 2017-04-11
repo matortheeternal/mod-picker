@@ -13,7 +13,7 @@
                     {{::option.size | bytes}}
                 </span>
                 <label class="old-option" ng-if="oldOptions">
-                    <span>Old Option:</span>`
+                    <span>Old Option:</span>
                     <select ng-options="opt.id as opt.display_name for opt in ::oldOptions" ng-model="option.id" ng-change="oldOptionChanged()">
                         <option value="">None</option>
                     </select>
