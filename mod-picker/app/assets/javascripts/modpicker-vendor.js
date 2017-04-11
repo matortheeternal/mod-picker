@@ -9,4 +9,5 @@
 //= require rzslider.min.js
 //= require angular-animate.min.js
 //= require angular-elastic-input.min.js
+//= require angular-elastic.min.js
 //= require spin.min.js

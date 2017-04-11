@@ -20,7 +20,7 @@ if (["/skyrim", "/skyrimse"].indexOf(window.location.pathname) > -1) {
 }
 
 var app = angular.module('modPicker', [
-    'ui.router', 'rzModule', 'ngAnimate', 'puElasticInput', 'hc.marked', 'smoothScroll', 'relativeDate', 'ct.ui.router.extras', 'dndLists', 'pasvaz.bindonce'
+    'ui.router', 'rzModule', 'ngAnimate', 'puElasticInput', 'monospaced.elastic', 'hc.marked', 'smoothScroll', 'relativeDate', 'ct.ui.router.extras', 'dndLists', 'pasvaz.bindonce'
 ]);
 
 app.config(['$httpProvider', '$compileProvider', '$locationProvider', function($httpProvider, $compileProvider, $locationProvider) {
