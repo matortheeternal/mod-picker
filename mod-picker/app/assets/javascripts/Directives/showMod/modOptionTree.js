@@ -1,7 +1,7 @@
 app.directive('modOptionTree', function() {
     return {
         restrict: 'E',
-        templateUrl: '/resources/directives/shared/modOptionTree.html',
+        templateUrl: '/resources/directives/showMod/modOptionTree.html',
         scope: {
             modOptions: '='
         },
