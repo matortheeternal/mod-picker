@@ -34,6 +34,7 @@ app.controller('modAnalysisManagerController', function($scope, $rootScope, $tim
     $scope.clearAnalysis = function() {
         if ($scope.mod.analysis) {
             delete $scope.mod.analysis;
+            delete $scope.nestedOptions;
         } else {
             $scope.mod.mod_options.forEach(function(modOption) {
                 modOption._destroy = true;
