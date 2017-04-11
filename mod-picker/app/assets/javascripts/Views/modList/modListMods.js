@@ -6,7 +6,19 @@ app.controller('modListModsController', function($scope, $rootScope, $timeout, $
 
     // SHARED FUNCTIONS
     $scope.searchMods = modService.searchModListMods;
+
+    // This generates the following functions:
+    // - $scope.addMod
+    // - $scope.recoverMod
+    // - $scope.addNewModItem
+    // - $scope.addNewMod
+    // - $scope.addCustomMod
+    // - $scope.removeMod
     listMetaFactory.buildModelFunctions($scope, 'mod', 'mod', 'name', 'Custom Mod');
+
+    // This generates the following functions:
+    // - $scope.startSortInstallOrder
+    // - $scope.sortInstallOrder
     listMetaFactory.buildSortFunctions($scope, 'install', 'mod', 'asset_files_count');
 
     // MODAL HANDLING
