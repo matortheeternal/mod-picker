@@ -76,20 +76,23 @@ mod-option-tree, edit-mod-option-tree {
   edit-mod-option-tree {
     ul li {
       margin-right: 18px;
+      min-width: 700px;
+      max-width: 700px;
     }
 
-    .mod-option .mod-option-details {
-      padding-right: 5px;
+    .plugin-analysis-item {
+      padding-left: 22px;
+      padding-top: 12px;
     }
 
-    .mod-option-title textarea {
-      font-family: 'Roboto', sans-serif;
-      border: none;
-      width: 285px;
-      max-width: 285px;
-      font-size: 18px;
-      resize: none;
-      overflow: hidden;
+    ul.asset-tree-list {
+      li {
+        margin: 0;
+      }
     }
+  }
+
+  .remove-item {
+    cursor: pointer !important;
   }
 }

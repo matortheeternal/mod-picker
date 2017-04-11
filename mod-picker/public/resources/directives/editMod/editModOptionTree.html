@@ -7,8 +7,7 @@
             <span class="mod-option-details">
                 <label class="mod-option-title">
                     <input type="checkbox" ng-model="option.default" title="Default"/>
-                    <input type="text" title="{{::option.name}}" class="fuzzy-input" ng-model="option.display_name" ng-click="focusText($event)" pu-elastic-input ng-if="!nested">
-                    <textarea class="fuzzy-input" rows="1" title="{{::option.name}}" ng-model="option.display_name" ng-click="focusText($event)" msd-elastic ng-if="nested"></textarea>
+                    <input type="text" title="{{::option.name}}" class="fuzzy-input" ng-model="option.display_name" ng-click="focusText($event)" pu-elastic-input>
                 </label>
                 <span class="mod-option-stats">
                     {{::option.size | bytes}}
