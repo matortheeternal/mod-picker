@@ -1,7 +1,7 @@
 class Api::V1::TagsController < Api::ApiController
   # GET /all_tags
   def all
-    @tags = Tag.game(params[:game])
+    @tags = Tag.game(params[:game]).where(hidden: false)
     render json: @tags
   end
 
