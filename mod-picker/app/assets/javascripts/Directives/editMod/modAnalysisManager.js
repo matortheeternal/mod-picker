@@ -152,7 +152,9 @@ app.controller('modAnalysisManagerController', function($scope, $rootScope, $tim
     $scope.prepareModOption = function(option) {
         $scope.getBaseName(option);
         option.display_name = angular.copy(option.base_name);
+        option.plugins_count = option.plugins.length;
         if (option.assets && option.assets.length) {
+            option.asset_files_count = option.assets.length;
             option.nestedAssets = assetUtils.getNestedAssets(option.assets);
         }
         $scope.loadExistingOption(option);
