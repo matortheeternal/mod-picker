@@ -11,11 +11,11 @@
 </h3>
 <section>
     <loader spinner-class="big-spinner" data="!loadingAnalysis">
-        <div class="analysis-container" ng-if="nestedOptions">
-            <edit-mod-option-tree mod-options="nestedOptions" old-options="mod.mod_options"></edit-mod-option-tree>
+        <div class="mod-option-tree" ng-if="nestedOptions">
+            <mod-option ng-repeat="option in nestedOptions" option="option" old-options="mod.mod_options"></mod-option>
         </div>
-        <div class="analysis-container" ng-if="oldNestedOptions">
-            <edit-mod-option-tree mod-options="oldNestedOptions"></edit-mod-option-tree>
+        <div class="mod-option-tree" ng-if="oldNestedOptions && !nestedOptions">
+            <mod-option ng-repeat="option in oldNestedOptions" option="option"></mod-option>
         </div>
 
         <label>
