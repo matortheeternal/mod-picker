@@ -3,7 +3,7 @@ class TagsController < ApplicationController
 
   # GET /all_tags
   def all
-    @tags = Tag.game(params[:game])
+    @tags = Tag.game(params[:game]).where(hidden: false)
     render json: @tags
   end
 
