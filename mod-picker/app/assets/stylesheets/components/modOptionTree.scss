@@ -1,4 +1,4 @@
-mod-option-tree, edit-mod-option-tree {
+mod-option-tree {
   ul {
     list-style: none;
     padding-left: 10px;
@@ -8,6 +8,20 @@ mod-option-tree, edit-mod-option-tree {
     }
   }
 
+  mod-option-tree {
+    ul {
+      padding-right: 5px;
+
+      li {
+        display: inline-block;
+        min-width: 350px;
+        max-width: 350px;
+      }
+    }
+  }
+}
+
+mod-option-tree, .mod-option-tree {
   .mod-option {
     display: flex;
 
@@ -56,17 +70,7 @@ mod-option-tree, edit-mod-option-tree {
     }
   }
 
-  mod-option-tree, edit-mod-option-tree {
-    ul {
-      padding-right: 5px;
-
-      li {
-        display: inline-block;
-        min-width: 350px;
-        max-width: 350px;
-      }
-    }
-
+  mod-option-tree, .mod-option-tree {
     .mod-option .mod-option-details {
       .mod-option-title {
         font-size: 18px;
@@ -77,26 +81,33 @@ mod-option-tree, edit-mod-option-tree {
       }
     }
   }
+}
 
-  .plugin-analysis-item {
-    padding: 6px 28px;
+.mod-option-tree {
+  padding-left: 10px;
+  margin: 16px 0;
+
+  mod-option {
+    margin: 8px 0;
+    display: block;
   }
 
-  edit-mod-option-tree {
-    ul li {
+  .mod-option-tree {
+    mod-option {
+      display: inline-block;
       margin-right: 18px;
       min-width: 700px;
       max-width: 700px;
     }
   }
 
+  .plugin-analysis-item {
+    padding: 6px 28px;
+  }
+
   asset-tree {
     display: block;
     margin: 6px 0 6px -8px;
-
-    ul.asset-tree-list li {
-      margin: 0;
-    }
 
     asset-tree {
       margin: 0;
@@ -104,6 +115,8 @@ mod-option-tree, edit-mod-option-tree {
   }
 
   .remove-item {
-    cursor: pointer !important;
+    color: $text_color;
+    margin-left: 6px;
+    cursor: pointer;
   }
 }

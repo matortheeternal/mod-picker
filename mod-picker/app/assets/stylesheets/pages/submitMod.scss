@@ -55,65 +55,6 @@ form {
     display: none;
   }
 
-  mod-option {
-    .subtitle {
-      margin-bottom: 15px;
-      text-transform: none;
-
-      .remove-item {
-        color: $text_color;
-        margin-left: 16px;
-        cursor: pointer;
-      }
-    }
-
-    label {
-      display: block;
-      margin-left: 10px;
-      text-transform: none;
-      margin-bottom: 10px;
-
-      span {
-        color: $text_color;
-        font-weight: bold;
-        margin-right: 16px;
-      }
-    }
-
-    strong {
-      margin-left: 10px;
-    }
-
-    .analysis-container {
-      max-height: 400px;
-      max-width: 750px;
-      overflow-y: auto;
-
-      .plugin-analysis-item {
-        margin-bottom: 8px;
-
-        label {
-          margin-left: 30px;
-          font-size: 14px;
-
-          span {
-            display: inline-block;
-            width: 120px;
-            margin-right: 40px;
-            color: $h4_color;
-            font-weight: 500;
-          }
-        }
-
-        .stat-item {
-          padding-left: 30px;
-          margin-bottom: 4px;
-          max-width: 730px;
-        }
-      }
-    }
-  }
-
   .subsection {
     margin-top: 10px;
     margin-bottom: 20px;
