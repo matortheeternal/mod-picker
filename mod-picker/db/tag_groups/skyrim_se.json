@@ -248,7 +248,7 @@
 	}, {
 		"category_name" : "Locations - Overhauls",
 		"name" : "Overhaul Target",
-		"tag_names" : ["Bridges", "Cities", "Castles", "Docks", "Forts", "Lighthouses", "Outposts", "Ruins", "Shrines", "Stores", "Temples", "Towns", "Dawnstar", "Falkreath", "Markarth", "Morthal", "Riften", "Raven Rock", "Solitude", "Whiterun", "Windhelm", "Winterhold"]
+		"tag_names" : ["Bridges", "Cities", "Castles", "Docks", "Forts", "Landscape", "Lighthouses", "Outposts", "Ruins", "Shrines", "Stores", "Temples", "Towns", "Dawnstar", "Falkreath", "Markarth", "Morthal", "Riften", "Raven Rock", "Solitude", "Whiterun", "Windhelm", "Winterhold"]
 	}, {
 		"category_name" : "New Characters",
 		"name" : "Character Distribution",
