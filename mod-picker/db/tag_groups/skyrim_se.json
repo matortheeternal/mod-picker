@@ -30,7 +30,7 @@
 	}, {
 		"category_name" : "Audiovisual - Models & Textures",
 		"name" : "Target",
-		"tag_names" : ["Accessories", "Architecture", "Armor", "Clothing", "Clutter", "Creatures", "Food", "Items", "Jewelry", "Landscape", "Plants", "Potions", "Poisons", "Magic", "Sky", "User Interface", "Weapons"]
+		"tag_names" : ["Accessories", "Animals", "Architecture", "Armor", "Clothing", "Clutter", "Creatures", "Food", "Ingredients", "Items", "Jewelry", "Landscape", "Plants", "Potions", "Poisons", "Magic", "Sky", "User Interface", "Weapons"]
 	}, {
 		"category_name" : "Audiovisual - Post-processing",
 		"name" : "Content",
@@ -48,6 +48,10 @@
 		"category_name" : "Character Appearance",
 		"name" : "Character Gender",
 		"tag_names" : ["Male", "Female"]
+	}, {
+		"category_name" : "Character Appearance",
+		"name" : "Texture Resolution",
+		"tag_names" : ["256", "512", "1K", "2K", "4K", "8K"]
 	}, {
 		"category_name" : "Character Appearance - Body Mods",
 		"name" : "Body Mod Content",
@@ -67,7 +71,7 @@
 	}, {
 		"category_name" : "Character Appearance",
 		"name" : "Character Race",
-		"tag_names" : ["Humans", "Elves", "Beastmen", "Altmer", "Argonian", "Bosmer", "Breton", "Dunmer", "Imperial", "Khajiit", "Nord", "Orsimer", "Redguard"]
+		"tag_names" : ["Humans", "Elves", "Beastmen", "Altmer", "Argonian", "Bosmer", "Breton", "Dunmer", "Imperial", "Khajiit", "Nord", "Orsimer", "Redguard", "Vampires", "Vampire Lords", "Werewolves"]
 	}, {
 		"category_name" : "Fixes",
 		"name" : "Fix Type",
