@@ -10,7 +10,7 @@ class TagGroup < ActiveRecord::Base
   # ASSOCIATIONS
   belongs_to :game
   belongs_to :category
-  has_many :tag_group_tags, :dependent => :destroy
+  has_many :tag_group_tags, -> { order(:index) }, :dependent => :destroy
 
   # COUNTER CACHE
   counter_cache :tag_group_tags, column: 'tags_count'
