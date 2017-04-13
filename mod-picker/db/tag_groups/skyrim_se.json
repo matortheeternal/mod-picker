@@ -1,9 +1,9 @@
 [{
-		"category_name" : "Audiovisual - Animations",
+		"category_name" : "Audiovisual - Animations & Physics",
 		"name" : "Animation Type",
 		"tag_names" : ["Movement", "Combat", "Magic", "Idle", "Action"]
 	}, {
-		"category_name" : "Audiovisual - Animations",
+		"category_name" : "Audiovisual - Animations & Physics",
 		"name" : "Animation Target",
 		"tag_names" : ["Characters", "Creatures", "Items", "Objects", "Player Character"]
 	}, {
