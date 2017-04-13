@@ -23,7 +23,7 @@ class TagGroup < ActiveRecord::Base
   after_create :link_tags
 
   def alphabetize
-    tag_group_tags.joins(:tag).order(tag: "text").each_with_index do |t,i|
+    tag_group_tags.joins(:tag).order("tags.text").each_with_index do |t,i|
       t.update(index: i)
     end
   end
