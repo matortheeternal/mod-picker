@@ -113,20 +113,24 @@ app.controller('tagSelectorController', function($scope, $element, $timeout, tag
     };
 
     $scope.removeNewTag = function($index, skipEmit) {
-        var removedTag = $scope.rawNewTags.splice($index, 1)[0];
-        $scope.storeTags();
-        if (!skipEmit) {
-            $scope.$emit('tagRemoved', removedTag.text);
-        }
+        $scope.$applyAsync(function() {
+            var removedTag = $scope.rawNewTags.splice($index, 1)[0];
+            $scope.storeTags();
+            if (!skipEmit) {
+                $scope.$emit('tagRemoved', removedTag.text);
+            }
+        });
     };
 
     $scope.removeActiveTag = function($index, skipEmit) {
-        var removedTag = $scope.activeTags.splice($index, 1)[0];
-        $scope.exitRemove(removedTag);
-        $scope.removedTags.push(removedTag);
-        if (!skipEmit) {
-            $scope.$emit('tagRemoved', removedTag.text);
-        }
+        $scope.$applyAsync(function() {
+            var removedTag = $scope.activeTags.splice($index, 1)[0];
+            $scope.exitRemove(removedTag);
+            $scope.removedTags.push(removedTag);
+            if (!skipEmit) {
+                $scope.$emit('tagRemoved', removedTag.text);
+            }
+        });
     };
 
     $scope.removeTag = function(tagText) {
