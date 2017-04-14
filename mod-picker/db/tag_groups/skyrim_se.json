@@ -22,7 +22,7 @@
 	}, {
 		"category_name" : "Audiovisual - Models & Textures",
 		"name" : "Content",
-		"tag_names" : ["Meshes", "Textures", "Shaders"]
+		"tag_names" : ["Meshes", "Textures", "Shaders", "Parallax", "LODs"]
 	}, {
 		"category_name" : "Audiovisual - Models & Textures",
 		"name" : "Texture Resolution",
@@ -36,6 +36,10 @@
 		"name" : "Content",
 		"exclusion_label" : "Other",
 		"tag_names" : ["ENB Preset", "SweetFX Preset", "ReShade Preset", "FXAA Preset"]
+	}, {
+		"category_name" : "Audiovisual - Post-processing",
+		"name" : "Performance Impact",
+		"tag_names" : ["Low Performance Impact", "Medium Performance Impact", "High Performance Impact"]
 	}, {
 		"category_name" : "Audiovisual - Sounds & Music",
 		"name" : "Sound Content",
