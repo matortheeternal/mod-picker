@@ -126,7 +126,7 @@ class Ability
 
   def can_manage_mods
     # can update or hide any mod
-    can [:update, :hide, :approve, :assign_custom_sources, :update_authors, :update_options, :update_details], Mod
+    can [:update, :hide, :approve, :update_authors, :update_options, :update_details], Mod
     can :destroy, ModRequirement
     # can approve curator requests
     can :update, CuratorRequest
@@ -200,6 +200,7 @@ class Ability
 
   def can_submit_mods
     can :create, Mod
+    can :assign_custom_sources, Mod
   end
 
   def can_update_their_contributions(user)

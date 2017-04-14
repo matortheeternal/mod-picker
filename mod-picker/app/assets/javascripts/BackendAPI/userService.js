@@ -65,7 +65,7 @@ app.service('userService', function(backend, $q, userSettingsService, userTitleS
         permissions.canSubmitMods = !permissions.isRestricted;
         permissions.canContribute = !permissions.isRestricted;
         permissions.canManageMods = permissions.canModerate || permissions.isHelper;
-        permissions.canUseCustomSources = permissions.canModerate;
+        permissions.canUseCustomSources = true;
         permissions.canSetModMetadata = permissions.canModerate;
         permissions.canChangeAvatar = (rep >= 10) || permissions.canModerate;
         permissions.canChangeTitle = (rep >= 1280) || permissions.canModerate;
