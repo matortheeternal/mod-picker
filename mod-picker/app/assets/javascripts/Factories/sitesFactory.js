@@ -53,6 +53,24 @@ app.service('sitesFactory', function() {
                 label: "GitHub",
                 shortLabel: "GitHub",
                 logoPath: "/images/github_logo.png"
+            },
+            {
+                hidden: true,
+                label: "Tumblr",
+                shortLabel: "Tumblr",
+                logoPath: "/images/tumblr_logo.png"
+            },
+            {
+                hidden: true,
+                label: "Imgur",
+                shortLabel: "Imgur",
+                logoPath: "/images/imgur_logo.png"
+            },
+            {
+                hidden: true,
+                label: "Google Site",
+                shortLabel: "Google Site",
+                logoPath: "/images/google_logo.png"
             }
         ];
     };
