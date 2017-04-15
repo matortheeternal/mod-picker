@@ -4,6 +4,8 @@
 
 // userIndex is the regex group to capture to get the user's username/id
 app.service('sitesFactory', function() {
+    var factory = this;
+
     this.sites = function() {
         return [
             {
@@ -117,14 +119,19 @@ app.service('sitesFactory', function() {
     };
 
     this.getSite = function(label) {
-        var sites = this.sites();
-        return sites.find(function(site) {
+        return factory.sites().find(function(site) {
             return site.label === label;
         }) || this.customSite();
     };
 
+    this.getSiteFromUrl = function(url, gameName) {
+        return factory.sites().find(function(site) {
+            return factory.getModUrlFormat(site, gameName).match(url);
+        });
+    };
+
     this.getModUrl = function(label, id, gameName) {
-        var site = this.getSite(label);
+        var site = factory.getSite(label);
         return site.modUrlBase.replace("{id}", id).replace("{game}", gameName);
     };
 

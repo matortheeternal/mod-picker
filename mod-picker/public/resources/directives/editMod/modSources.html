@@ -19,7 +19,7 @@
     </div>
     <div class="dynamic-item" ng-repeat="source in mod.custom_sources" ng-hide="source._destroy">
         <input type="text" class="source-label" ng-model="source.label" ng-change="validateCustomSource(source)">
-        <input type="text" class="long-input" ng-model="source.url" placeholder="Enter Source URL here" ng-change="validateCustomSource(source)">
+        <input type="text" class="long-input" ng-model="source.url" placeholder="Enter Source URL here" ng-change="validateCustomSource(source)" ng-blur="setCustomSourceLabel(source)">
         <span class="remove-item" ng-click="removeCustomSource(source)" title="Remove custom source">
             <i class="fa fa-times"></i>
         </span>

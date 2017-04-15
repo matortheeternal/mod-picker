@@ -108,6 +108,14 @@ app.controller('modSourcesController', function($scope, $rootScope, sitesFactory
         }
     };
 
+    $scope.setCustomSourceLabel = function(source) {
+        var currentGameName = $rootScope.currentGame;
+        var matchingSite = sitesFactory.getSiteFromUrl(source.url, currentGameName);
+        if (matchingSite) {
+            source.label = matchingSite.label;
+        }
+    };
+
     $scope.validateCustomSource = function(source) {
         source.valid = (source.label.length > 3) && (source.url.length > 12);
     };
