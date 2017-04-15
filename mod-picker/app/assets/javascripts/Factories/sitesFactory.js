@@ -46,31 +46,64 @@ app.service('sitesFactory', function() {
                 hidden: true,
                 label: "Steam Store",
                 shortLabel: "Steam",
+                modUrlFormat: /store\.steampowered\.com\/app\/([0-9]+)//i,
                 logoPath: "/images/workshop_logo.png"
             },
             {
                 hidden: true,
                 label: "GitHub",
                 shortLabel: "GitHub",
+                modUrlFormat: /github.com\/([a-zA-Z0-9]+)\/([a-zA-Z0-9]+)/i,
                 logoPath: "/images/github_logo.png"
             },
             {
                 hidden: true,
                 label: "Tumblr",
                 shortLabel: "Tumblr",
+                modUrlFormat: /([a-zA-Z0-9\-\_]+)\.tumblr\.com\/post\/([0-9]+)/i,
                 logoPath: "/images/tumblr_logo.png"
+            },
+            {
+                hidden: true,
+                label: "Blogspot",
+                shortLabel: "Blogspot",
+                modUrlFormat: /([a-zA-Z0-9\-\_]+)\.blogspot\.(com|ca)\/([0-9]+)\/([0-9]+)\/([a-zA-Z\-]+)/i,
+                logoPath: "/images/blogger_logo.png"
             },
             {
                 hidden: true,
                 label: "Imgur",
                 shortLabel: "Imgur",
+                modUrlFormat: /imgur\.com\/([0-9a-zA-Z]+)/i,
                 logoPath: "/images/imgur_logo.png"
             },
             {
                 hidden: true,
                 label: "Google Site",
                 shortLabel: "Google Site",
+                modUrlFormat: /sites\.google\.com\/site\/([0-9a-zA-Z\-]+)/i,
                 logoPath: "/images/google_logo.png"
+            },
+            {
+                hidden: true,
+                label: "Skyrim Modtype",
+                shortLabel: "Skyrim Modtype",
+                modUrlFormat: /modtype\.doorblog\.jp\/archives\/([0-9]+)\.html/i,
+                logoPath: "/images/skyrim_modtype_logo.png"
+            },
+            {
+                hidden: true,
+                label: "ModDB",
+                shortLabel: "ModDB",
+                modUrlFormat: /moddb\.com\/mods\/([a-zA-Z\-]+)/i,
+                logoPath: "/images/moddb_logo.png"
+            },
+            {
+                hidden: true,
+                label: "Curse",
+                shortLabel: "Curse",
+                modUrlFormat: /mods\.curse\.com\/mods\/([a-zA-Z0-9\-]+)\/([a-zA-Z0-9\-]+)/i,
+                logoPath: "/images/curse_logo.png"
             }
         ];
     };
