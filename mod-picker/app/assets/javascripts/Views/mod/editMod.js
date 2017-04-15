@@ -87,7 +87,7 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
     $scope.mod = angular.copy(modObject);
     modLoaderService.loadMod($scope.mod);
     $scope.originalMod = angular.copy($scope.mod);
-    $scope.sites = sitesFactory.sites();
+    $scope.sites = sitesFactory.sites;
     $scope.errors = {};
     $scope.image = {
         sizes: [

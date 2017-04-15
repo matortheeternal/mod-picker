@@ -48,7 +48,8 @@ app.controller('modSourcesController', function($scope, $rootScope, sitesFactory
     $scope.scrapeSource = function(source) {
         // exit if the source is invalid
         var site = sitesFactory.getSite(source.label);
-        var urlFormat = sitesFactory.getModUrlFormat(site, $rootScope.currentGame);
+        var currentGameName = $rootScope.currentGame.nexus_name;
+        var urlFormat = sitesFactory.getModUrlFormat(site, currentGameName);
         var match = source.url.match(urlFormat);
         if (!match) {
             return;

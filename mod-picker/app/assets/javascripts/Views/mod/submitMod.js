@@ -61,7 +61,7 @@ app.controller('submitModController', function($scope, $rootScope, $state, modSe
     $scope.permissions = angular.copy($rootScope.permissions);
 
     // initialize variables
-    $scope.sites = sitesFactory.sites();
+    $scope.sites = sitesFactory.sites;
     $scope.tabs = tabsFactory.buildEditModTabs(false);
     $scope.mod = {
         game_id: window._current_game_id,

@@ -235,6 +235,14 @@ form {
       font-size: 20px;
       height: 32px;
       padding: 4px;
+
+      &.invalid {
+        box-shadow: $error_secondary 0 0 1px 1px;
+
+        &:focus {
+          outline: none;
+        }
+      }
     }
 
     input[type="text"].fuzzy-input {
