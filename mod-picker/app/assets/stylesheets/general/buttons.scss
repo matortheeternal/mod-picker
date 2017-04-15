@@ -180,6 +180,15 @@ div.action-box {
   }
 }
 
+.special-box {
+  i.fa {
+    font-size: 16px;
+    display: inline-block;
+    margin: -2px 1px -1px -1px;
+    vertical-align: middle;
+  }
+}
+
 .yellow-box {
   background-color: $warning_secondary;
 
