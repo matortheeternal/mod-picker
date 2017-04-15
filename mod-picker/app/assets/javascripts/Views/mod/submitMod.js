@@ -105,10 +105,11 @@ app.controller('submitModController', function($scope, $rootScope, $state, modSe
     // a mod analysis, and at least one category
     $scope.checkIfValid = function() {
         $scope.sourcesValid = modValidationService.sourcesValid($scope.mod);
+        $scope.metadataValid = modValidationService.metadataValid($scope.mod);
         $scope.categoriesValid = modValidationService.categoriesValid($scope.mod);
         $scope.requirementsValid = modValidationService.requirementsValid($scope.mod.requirements);
         $scope.analysisValid = !!$scope.mod.analysis;
-        $scope.valid = $scope.sourcesValid && $scope.categoriesValid && $scope.analysisValid;
+        $scope.valid = $scope.sourcesValid && $scope.metadataValid && $scope.categoriesValid && $scope.analysisValid;
     };
 
     $scope.submitImage = function(modId) {

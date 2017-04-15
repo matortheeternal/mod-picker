@@ -15,12 +15,6 @@ app.service('modValidationService', function() {
             customSources.forEach(function(source) {
                 sourcesValid = sourcesValid && source.valid;
             });
-            // if we are only submitting custom sources, we need to verify
-            // we have all general info
-            if (!mod.sources.length) {
-                sourcesValid = sourcesValid && !!mod.name && !!mod.authors &&
-                    !!mod.released;
-            }
         }
         else {
             // if we don't have any custom sources we should verify we have
@@ -29,6 +23,10 @@ app.service('modValidationService', function() {
         }
 
         return sourcesValid;
+    };
+
+    this.metadataValid = function(mod) {
+        return !!mod.name && !!mod.authors && !!mod.released;
     };
 
     this.licenseValid = function(mod_license) {

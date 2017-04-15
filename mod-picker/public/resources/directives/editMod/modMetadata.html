@@ -1,4 +1,8 @@
-<h3 class="section-title">Metadata</h3>
+<h3 class="section-title">Metadata
+    <span ng-hide="metadataValid || (mod.sources.length && !permissions.canSetModMetadata)" class="error-tooltip" title="Mod name, authors, and date released are required.">
+        <i class="fa fa-exclamation-circle"></i>
+    </span>
+</h3>
 <section>
     <label class="subsection" ng-show="permissions.canSetModMetadata || !mod.sources.length">
         <span class="input-label">Mod Name</span>
