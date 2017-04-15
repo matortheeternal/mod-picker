@@ -150,4 +150,6 @@ app.controller('submitModController', function($scope, $rootScope, $state, modSe
     };
 
     $scope.$watchCollection('mod', $scope.checkIfValid);
+    $scope.$watch('mod.sources', $scope.checkIfValid, true);
+    $scope.$watch('mod.custom_sources', $scope.checkIfValid, true);
 });
