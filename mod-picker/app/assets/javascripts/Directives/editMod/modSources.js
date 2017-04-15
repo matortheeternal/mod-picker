@@ -119,6 +119,8 @@ app.controller('modSourcesController', function($scope, $rootScope, sitesFactory
     };
 
     $scope.validateCustomSource = function(source) {
-        source.valid = (source.label.length > 3) && (source.url.length > 12);
+        source.labelToShort = source.label.length < 4;
+        source.isDirectLink = source.url.match(/\.(7z|rar|zip)$/i);
+        source.valid = !source.labelToShort && !source.isDirectLink;
     };
 });

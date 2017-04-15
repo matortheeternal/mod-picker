@@ -2,7 +2,7 @@
 <section>
     <label class="subsection" ng-show="permissions.canSetModMetadata || !mod.sources.length">
         <span class="input-label">Mod Name</span>
-        <input type="text" class="medium-text" ng-model="mod.name">
+        <input type="text" class="medium-text" ng-model="mod.name" ng-model="mod.authors" ng-class="{ 'invalid' : !mod.name }">
     </label>
     <label class="subsection">
         <span class="input-label">Aliases
@@ -14,11 +14,11 @@
     </label>
     <label class="subsection" ng-show="!mod.sources.length || permissions.canSetModMetadata">
         <span class="input-label">Authors</span>
-        <input type="text" class="medium-text" ng-model="mod.authors">
+        <input type="text" class="medium-text" ng-model="mod.authors" ng-class="{ 'invalid' : !mod.authors }">
     </label>
     <label class="subsection" ng-show="!mod.sources.length || permissions.canSetModMetadata">
         <span class="input-label">Date Released</span>
-        <input type="date" ng-model="mod.released">
+        <input type="date" ng-model="mod.released" ng-class="{ 'invalid' : !mod.released }">
     </label>
     <label class="subsection" ng-show="!mod.sources.length || permissions.canSetModMetadata">
         <span class="input-label">Date Updated</span>
