@@ -27,7 +27,8 @@ app.controller('modSourcesController', function($scope, $rootScope, sitesFactory
         var sourceUsed = $scope.mod.sources.find(function(item, index) {
             return index != sourceIndex && item.label === source.label
         });
-        var urlFormat = sitesFactory.getModUrlFormat(site, $rootScope.currentGame);
+        var currentGameName = $rootScope.currentGame.nexus_name;
+        var urlFormat = sitesFactory.getModUrlFormat(site, currentGameName);
         var match = source.url.match(urlFormat);
         source.valid = !sourceUsed && match != null;
     };
@@ -109,7 +110,7 @@ app.controller('modSourcesController', function($scope, $rootScope, sitesFactory
     };
 
     $scope.setCustomSourceLabel = function(source) {
-        var currentGameName = $rootScope.currentGame;
+        var currentGameName = $rootScope.currentGame.nexus_name;
         var matchingSite = sitesFactory.getSiteFromUrl(source.url, currentGameName);
         if (matchingSite) {
             source.label = matchingSite.label;

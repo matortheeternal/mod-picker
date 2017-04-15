@@ -48,7 +48,7 @@ app.service('sitesFactory', function() {
                 hidden: true,
                 label: "Steam Store",
                 shortLabel: "Steam",
-                modUrlFormat: /store\.steampowered\.com\/app\/([0-9]+)//i,
+                modUrlFormat: /store\.steampowered\.com\/app\/([0-9]+)/i,
                 logoPath: "/images/workshop_logo.png"
             },
             {
@@ -126,7 +126,8 @@ app.service('sitesFactory', function() {
 
     this.getSiteFromUrl = function(url, gameName) {
         return factory.sites().find(function(site) {
-            return factory.getModUrlFormat(site, gameName).match(url);
+            var urlFormat = factory.getModUrlFormat(site, gameName);
+            return url.match(urlFormat);
         });
     };
 
