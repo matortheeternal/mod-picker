@@ -163,6 +163,10 @@ class Ability
     can :resolve, BaseReport
   end
 
+  def can_setup_mod_lists
+    can :setup, ModList
+  end
+
   def moderation_abilities(user)
     can_manage_users(user)
     can_monitor_site_activity
@@ -171,6 +175,7 @@ class Ability
     can_manage_mods
     can_manage_contributions
     can_manage_reports
+    can_setup_mod_lists
   end
 
   def can_manage_articles
@@ -180,6 +185,11 @@ class Ability
   def helper_abilities
     can_manage_help_pages
     can_manage_mods
+    can_setup_mod_lists
+  end
+
+  def beta_tester_abilities
+    can :setup, ModList
   end
 
   def can_create_new_contributions
@@ -317,6 +327,7 @@ class Ability
     user_restrictions(user) unless user.can_moderate?
     can_manage_articles if user.news_writer? || user.admin?
     helper_abilities if user.helper?
+    beta_tester_abilities if user.beta_tester?
 
     # general permissions
     contributor_abilities(user) if can_contribute
