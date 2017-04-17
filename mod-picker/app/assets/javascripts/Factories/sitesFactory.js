@@ -17,7 +17,7 @@ app.service('sitesFactory', function() {
             userUrlFormat: /forums\.nexusmods\.com\/index\.php\?showuser=([0-9]+)(\/)?/i,
             badUserUrlFormat: /forums\.nexusmods\.com\/index\.php\?\/user\/([A-Za-z0-9\-]+)(\/)?/i,
             modUrlBase: "https://www.nexusmods.com/{game}/mods/{id}",
-            userIndex: 2,
+            userIndex: 1,
             loginUrl: "https://forums.nexusmods.com/",
             logoPath: "/images/nexus_logo.png"
         },
@@ -28,7 +28,7 @@ app.service('sitesFactory', function() {
             modUrlFormat: /steamcommunity\.com\/sharedfiles\/filedetails\/\?id=([0-9]+)(\&)?.*/i,
             userUrlFormat: /steamcommunity\.com\/(id|profiles)\/([A-Za-z0-9\_]+)(\/)?/i,
             modUrlBase: "https://steamcommunity.com/sharedfiles/filedetails/?id={id}",
-            userIndex: 3,
+            userIndex: 2,
             loginUrl: "https://steamcommunity.com/login/",
             logoPath: "/images/workshop_logo.png"
         },
@@ -39,7 +39,7 @@ app.service('sitesFactory', function() {
             modUrlFormat: /www\.loverslab\.com\/files\/file\/([0-9]+)\-([0-9a-z\-]+)(\/)?/i,
             userUrlFormat: /www\.loverslab\.com\/user\/([a-zA-Z0-9\-]+)(\/)?/i,
             modUrlBase: "https://www.loverslab.com/files/file/{id}",
-            userIndex: 2,
+            userIndex: 1,
             loginUrl: "https://www.loverslab.com/",
             logoPath: "/images/lab_logo.png"
         },
