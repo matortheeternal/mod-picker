@@ -113,8 +113,8 @@ class User < ActiveRecord::Base
     a && a.mod_list
   end
 
-  def is_premium?
-    admin? || moderator? || helper? || beta_tester?
+  def has_premium?
+    false
   end
 
   def admin?
