@@ -84,7 +84,6 @@ module Trackable
   end
 
   def track_milestone_change(column, milestones)
-    byebug
     return unless attribute_changed?(column)
     old_milestone = get_milestone(milestones, attribute_was(column))
     new_milestone = get_milestone(milestones, public_send(column))
