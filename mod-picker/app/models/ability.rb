@@ -92,6 +92,9 @@ class Ability
   end
 
   def rep_640_abilities(user, can_contribute)
+  end
+
+  def rep_1280_abilities(user, can_contribute)
     can :set_custom_title, User, id: user.id
   end
 
