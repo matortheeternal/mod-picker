@@ -47,8 +47,25 @@ mod-option-tree, .mod-option-tree {
         }
       }
 
-      .mod-option-stats {
+      .mod-option-stats, .mod-option-link {
         padding-left: 18px;
+      }
+
+      .mod-option-link {
+        display: block;
+        margin-top: 6px;
+        margin-bottom: 2px;
+
+        input[type="text"] {
+          height: 24px;
+          font-size: 13px;
+          vertical-align: middle;
+          padding: 0 2px;
+        }
+
+        span.help-tooltip {
+          vertical-align: middle;
+        }
       }
 
       .old-option {
