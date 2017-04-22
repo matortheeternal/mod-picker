@@ -93,6 +93,7 @@ class ModsController < ApplicationController
     authorize! :update_options, @mod, :message => "You are not allowed to update this mod's advanced options." if options_params.any?
     authorize! :assign_custom_sources, @mod, :message => "You are not allowed to assign custom sources." if params[:mod].has_key?(:custom_sources_attributes)
     authorize! :update_details, @mod, :message => "You are not allowed to update this mod's details." if details_params.any?
+    authorize! :update_download_links, @mod, :message => "You are not allowed to update this mod's download links." if download_links.any?
 
     builder = ModBuilder.new(current_user, mod_update_params)
     if builder.update
@@ -425,7 +426,7 @@ class ModsController < ApplicationController
           custom_sources_attributes: [:id, :label, :url, :_destroy],
          config_files_attributes: [:id, :filename, :install_path, :text_body, :_destroy],
          tag_names: [],
-         mod_options_attributes: [:id, :name, :display_name, :size, :md5_hash, :default, :is_installer_option, :_destroy,
+         mod_options_attributes: [:id, :name, :display_name, :download_link, :size, :md5_hash, :default, :is_installer_option, :_destroy,
             asset_paths: [],
             plugin_dumps: [:id, :filename, :is_esm, :used_dummy_plugins, :author, :description, :crc_hash, :record_count, :override_count, :file_size, :_destroy,
                 master_plugins: [:filename, :crc_hash],
@@ -443,9 +444,13 @@ class ModsController < ApplicationController
       params[:mod].slice(:is_utility, :is_mod_manager, :is_extender, :has_adult_content, :disallow_contributors, :disable_reviews, :lock_tags)
     end
 
-  def details_params
-    params[:mod].slice(:show_details_tab, :description, :notice, :notice_type, :support_link, :issues_link, :mod_licenses_attributes)
-  end
+    def details_params
+      params[:mod].slice(:show_details_tab, :description, :notice, :notice_type, :support_link, :issues_link, :mod_licenses_attributes)
+    end
+
+    def download_links
+      params[:mod][:mod_options_attributes].map {|m| m[:download_link]}.compact
+    end
 
     def image_params
       {
