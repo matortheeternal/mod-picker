@@ -250,7 +250,7 @@ class Ability
     can :destroy, ModTag, { mod: { mod_authors: { user_id: user.id } } }
     cannot :create, Review, { mod: { mod_authors: { user_id: user.id, role: [0, 1] } } }
     # authors
-    can [:update_authors, :update_options, :update_details], Mod, { mod_authors: { user_id: user.id, role: 0 } }
+    can [:update_authors, :update_options, :update_details, :update_download_links], Mod, { mod_authors: { user_id: user.id, role: 0 } }
     can :change_status, Mod, { status: 0, mod_authors: { user_id: user.id, role: 0 } }
     can [:read, :update], CuratorRequest, { mod: { mod_authors: { user_id: user.id, role: 0 } } }
     # contributors
