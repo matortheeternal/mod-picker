@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170411014320) do
+ActiveRecord::Schema.define(version: 20170422200231) do
 
   create_table "active_mod_lists", force: :cascade do |t|
     t.integer "game_id",     limit: 4, null: false
@@ -664,6 +664,7 @@ ActiveRecord::Schema.define(version: 20170411014320) do
     t.integer "mod_id",              limit: 4,                   null: false
     t.string  "name",                limit: 255,                 null: false
     t.string  "display_name",        limit: 255,                 null: false
+    t.string  "download_link",       limit: 255
     t.integer "size",                limit: 8,   default: 0,     null: false
     t.string  "md5_hash",            limit: 32
     t.boolean "default",                         default: false, null: false
