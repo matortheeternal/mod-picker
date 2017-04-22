@@ -302,12 +302,11 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
 
     this.sanitizeModOption = function(option) {
         var sanitizedPlugins = service.sanitizePlugins(option.plugins);
-        return {
+        var sanitizedOption = {
             id: option.id,
             _destroy: option._destroy,
             name: option.name,
             display_name: option.display_name,
-            download_link: option.download_link,
             size: option.size,
             md5_hash: option.md5_hash,
             default: option.default,
@@ -315,6 +314,10 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
             plugin_dumps: sanitizedPlugins,
             asset_paths: option.assets
         };
+        if (option.download_link) {
+            sanitizedOption.download_link = option.download_link;
+        }
+        return sanitizedOption;
     };
 
     this.buildDestroyedOldPlugins = function(newOption, mod) {
