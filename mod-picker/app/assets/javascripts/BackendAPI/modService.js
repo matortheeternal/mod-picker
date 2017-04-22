@@ -307,6 +307,7 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
             _destroy: option._destroy,
             name: option.name,
             display_name: option.display_name,
+            download_link: option.download_link,
             size: option.size,
             md5_hash: option.md5_hash,
             default: option.default,
