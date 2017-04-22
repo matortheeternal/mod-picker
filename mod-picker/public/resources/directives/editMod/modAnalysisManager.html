@@ -12,10 +12,10 @@
 <section>
     <loader spinner-class="big-spinner" data="!loadingAnalysis">
         <div class="mod-option-tree" ng-if="nestedOptions">
-            <mod-option ng-repeat="option in nestedOptions" option="option" old-options="mod.mod_options"></mod-option>
+            <mod-option ng-repeat="option in nestedOptions" option="option" old-options="mod.mod_options" can-set-download-links="canSetDownloadLinks"></mod-option>
         </div>
         <div class="mod-option-tree" ng-if="oldNestedOptions && !nestedOptions">
-            <mod-option ng-repeat="option in oldNestedOptions" option="option"></mod-option>
+            <mod-option ng-repeat="option in oldNestedOptions" option="option" can-set-download-links="canSetDownloadLinks"></mod-option>
         </div>
 
         <label>

@@ -7,6 +7,12 @@
             <input type="checkbox" ng-model="option.default" title="Default"/>
             <input type="text" title="{{::option.name}}" class="fuzzy-input" ng-model="option.display_name" ng-click="focusText($event)" pu-elastic-input>
         </span>
+        <span class="mod-option-link" ng-if="canSetDownloadLinks">
+            <input type="text" class="fuzzy-input" ng-model="option.download_link" maxlength="255" placeholder="Direct download link" pu-elastic-input>
+            <span class="help-tooltip small" ng-hide="hideTooltips" title="You may provide a direct download link here to have the Mod Picker &#13;Mod List Setup Utility download this mod automatically.">
+                <i class="fa fa-question-circle"></i>
+            </span>
+        </span>
         <span class="mod-option-stats">
             {{::option.size | bytes}}
         </span>

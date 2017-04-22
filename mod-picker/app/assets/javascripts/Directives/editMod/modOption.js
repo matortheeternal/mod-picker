@@ -4,7 +4,8 @@ app.directive('modOption', function() {
         templateUrl: '/resources/directives/editMod/modOption.html',
         scope: {
             option: '=',
-            oldOptions: '='
+            oldOptions: '=',
+            canSetDownloadLinks: '=?'
         },
         controller: 'modOptionController'
     }

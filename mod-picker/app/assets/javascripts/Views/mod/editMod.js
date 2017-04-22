@@ -119,6 +119,7 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
     var isAuthor = author && author.role == 'author';
     $scope.canManageOptions = $scope.permissions.canModerate || isAuthor;
     $scope.canChangeStatus = (isAuthor && $scope.mod.status == "good") || $scope.permissions.isAdmin;
+    $scope.canSetDownloadLinks = $scope.permissions.canModerate || isAuthor;
 
     // set up tabs
     $scope.tabs = tabsFactory.buildEditModTabs($scope.canManageOptions);
