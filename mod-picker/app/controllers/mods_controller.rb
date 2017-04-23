@@ -449,7 +449,11 @@ class ModsController < ApplicationController
     end
 
     def download_links
-      params[:mod][:mod_options_attributes].map {|m| m[:download_link]}.compact
+      if params[:mod].has_key?(:mod_options_attributes)
+        params[:mod][:mod_options_attributes].map {|m| m[:download_link]}.compact
+      else
+        []
+      end
     end
 
     def image_params
