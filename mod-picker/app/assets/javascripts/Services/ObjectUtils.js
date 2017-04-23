@@ -76,6 +76,16 @@ app.service('objectUtils', function() {
                         return newValue;
                     }
                 }
+                // handle dates
+                else if (oldValue.constructor === Date || newValue.constructor === Date) {
+                    if (oldValue.constructor === newValue.constructor) {
+                        if (oldValue.getTime() !== newValue.getTime()) {
+                            return newValue;
+                        }
+                    } else {
+                        return newValue;
+                    }
+                }
                 // else handle objects
                 else {
                     return service.getDifferentObjectValues(oldValue, newValue);
@@ -134,7 +144,7 @@ app.service('objectUtils', function() {
                 diff = service.getDifferentValues(oldObj[property], newObj[property]);
                 // if there are differences, we save them
                 if (typeof diff !== 'undefined' && (typeof diff !== 'object' ||
-                    diff == null || !service.isEmptyObject(diff))) {
+                    diff == null || diff.constructor === Date || !service.isEmptyObject(diff))) {
                     foundDifferences = true;
                     result[property] = diff;
                 }
