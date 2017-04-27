@@ -1,6 +1,6 @@
 <div class="content-block">
     <div class="content-title">Description
-        <span class="right-item action-box green-box special-box" ng-click="downloadModList()" tabindex="0">
+        <span class="right-item action-box green-box special-box" ng-click="downloadModList()" tabindex="0" ng-if="permissions.canDownloadModList">
             <i class="fa fa-cloud-download"></i> Download Mod List
         </span>
         <span class="right-item action-box" ng-click="toggleExportDropdown($event)" ng-blur="blurExportDropdown()" tabindex="0">

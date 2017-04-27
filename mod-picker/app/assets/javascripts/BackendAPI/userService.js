@@ -57,6 +57,7 @@ app.service('userService', function(backend, $q, userSettingsService, userTitleS
         permissions.isModerator = user.role === 'moderator';
         permissions.isNewsWriter = user.role === 'writer';
         permissions.isHelper = user.role === 'helper';
+        permissions.isBetaTester = user.role === 'beta_tester';
         permissions.isRestricted = user.role === 'restricted';
         permissions.isBanned = user.role === 'banned';
         permissions.isSignedIn = true;
@@ -65,6 +66,7 @@ app.service('userService', function(backend, $q, userSettingsService, userTitleS
         permissions.canSubmitMods = !permissions.isRestricted;
         permissions.canContribute = !permissions.isRestricted;
         permissions.canManageMods = permissions.canModerate || permissions.isHelper;
+        permissions.canDownloadModList = permissions.canModerate || permissions.isHelper || permissions.isBetaTester;
         permissions.canUseCustomSources = true;
         permissions.canSetModMetadata = permissions.canModerate;
         permissions.canChangeAvatar = (rep >= 10) || permissions.canModerate;
