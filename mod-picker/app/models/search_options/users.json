@@ -4,6 +4,7 @@
   },
   {
     "alias": "linked",
+    "skip": true,
     "subqueries": [
       {
         "model": "UserBio",
