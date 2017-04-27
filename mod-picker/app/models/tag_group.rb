@@ -10,7 +10,7 @@ class TagGroup < ActiveRecord::Base
   # ASSOCIATIONS
   belongs_to :game
   belongs_to :category
-  has_many :tag_group_tags, :dependent => :destroy
+  has_many :tag_group_tags, -> { order(:index) }, :dependent => :destroy
 
   # COUNTER CACHE
   counter_cache :tag_group_tags, column: 'tags_count'
@@ -22,9 +22,20 @@ class TagGroup < ActiveRecord::Base
   # CALLBACKS
   after_create :link_tags
 
+  def alphabetize
+    tag_group_tags.joins(:tag).reorder("tags.text").each_with_index do |t,i|
+      t.update(index: i)
+    end
+  end
+
+  def set_indexes
+    tag_group_tags.each_with_index do |t,i|
+      t.update(index: i)
+    end
+  end
+
   def next_index
-    tags = tag_group_tags.select { |tag| tag.id.present? }
-    tags.empty? ? 0 : tags.max_by(&:index)
+    tag_group_tags.empty? ? 0 : tag_group_tags.max_by(&:index)
   end
 
   def category_ids

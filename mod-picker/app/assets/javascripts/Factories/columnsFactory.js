@@ -793,6 +793,7 @@ app.service('columnsFactory', function() {
                 data: function(item) {
                     return item.tools_count + item.custom_tools_count;
                 },
+                sortData: "tools_count",
                 filter: "number"
             },
             {
@@ -802,6 +803,7 @@ app.service('columnsFactory', function() {
                 data: function(item) {
                     return item.mods_count + item.custom_mods_count;
                 },
+                sortData: "mods_count",
                 filter: "number"
             },
             {
@@ -811,6 +813,7 @@ app.service('columnsFactory', function() {
                 data: function(item) {
                     return item.plugins_count + item.custom_plugins_count;
                 },
+                sortData: "plugins_count",
                 filter: "number"
             },
             {

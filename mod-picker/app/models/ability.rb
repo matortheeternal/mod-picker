@@ -92,6 +92,9 @@ class Ability
   end
 
   def rep_640_abilities(user, can_contribute)
+  end
+
+  def rep_1280_abilities(user, can_contribute)
     can :set_custom_title, User, id: user.id
   end
 
@@ -126,7 +129,7 @@ class Ability
 
   def can_manage_mods
     # can update or hide any mod
-    can [:update, :hide, :approve, :assign_custom_sources, :update_authors, :update_options, :update_details], Mod
+    can [:update, :hide, :approve, :update_authors, :update_options, :update_details], Mod
     can :destroy, ModRequirement
     # can approve curator requests
     can :update, CuratorRequest
@@ -163,6 +166,10 @@ class Ability
     can :resolve, BaseReport
   end
 
+  def can_setup_mod_lists
+    can :setup, ModList
+  end
+
   def moderation_abilities(user)
     can_manage_users(user)
     can_monitor_site_activity
@@ -171,6 +178,7 @@ class Ability
     can_manage_mods
     can_manage_contributions
     can_manage_reports
+    can_setup_mod_lists
   end
 
   def can_manage_articles
@@ -180,6 +188,11 @@ class Ability
   def helper_abilities
     can_manage_help_pages
     can_manage_mods
+    can_setup_mod_lists
+  end
+
+  def beta_tester_abilities
+    can :setup, ModList
   end
 
   def can_create_new_contributions
@@ -200,6 +213,7 @@ class Ability
 
   def can_submit_mods
     can :create, Mod
+    can :assign_custom_sources, Mod
   end
 
   def can_update_their_contributions(user)
@@ -236,7 +250,7 @@ class Ability
     can :destroy, ModTag, { mod: { mod_authors: { user_id: user.id } } }
     cannot :create, Review, { mod: { mod_authors: { user_id: user.id, role: [0, 1] } } }
     # authors
-    can [:update_authors, :update_options, :update_details], Mod, { mod_authors: { user_id: user.id, role: 0 } }
+    can [:update_authors, :update_options, :update_details, :update_download_links], Mod, { mod_authors: { user_id: user.id, role: 0 } }
     can :change_status, Mod, { status: 0, mod_authors: { user_id: user.id, role: 0 } }
     can [:read, :update], CuratorRequest, { mod: { mod_authors: { user_id: user.id, role: 0 } } }
     # contributors
@@ -316,6 +330,7 @@ class Ability
     user_restrictions(user) unless user.can_moderate?
     can_manage_articles if user.news_writer? || user.admin?
     helper_abilities if user.helper?
+    beta_tester_abilities if user.beta_tester?
 
     # general permissions
     contributor_abilities(user) if can_contribute

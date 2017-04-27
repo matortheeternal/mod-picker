@@ -4,7 +4,8 @@ app.directive('modOption', function() {
         templateUrl: '/resources/directives/editMod/modOption.html',
         scope: {
             option: '=',
-            oldOptions: '='
+            oldOptions: '=',
+            canSetDownloadLinks: '=?'
         },
         controller: 'modOptionController'
     }
@@ -12,6 +13,18 @@ app.directive('modOption', function() {
 
 app.controller('modOptionController', function($scope, formUtils) {
     $scope.focusText = formUtils.focusText;
+
+    $scope.toggleExpansion = function() {
+        $scope.option.expanded = !$scope.option.expanded;
+    };
+
+    $scope.togglePluginsExpansion = function() {
+        $scope.option.pluginsExpanded = !$scope.option.pluginsExpanded;
+    };
+
+    $scope.toggleAssetsExpansion = function() {
+        $scope.option.assetsExpanded = !$scope.option.assetsExpanded;
+    };
 
     $scope.removeModOption = function() {
         if ($scope.option.id) {

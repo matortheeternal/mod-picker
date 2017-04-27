@@ -87,7 +87,7 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
     $scope.mod = angular.copy(modObject);
     modLoaderService.loadMod($scope.mod);
     $scope.originalMod = angular.copy($scope.mod);
-    $scope.sites = sitesFactory.sites();
+    $scope.sites = sitesFactory.sites;
     $scope.errors = {};
     $scope.image = {
         sizes: [
@@ -119,6 +119,7 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
     var isAuthor = author && author.role == 'author';
     $scope.canManageOptions = $scope.permissions.canModerate || isAuthor;
     $scope.canChangeStatus = (isAuthor && $scope.mod.status == "good") || $scope.permissions.isAdmin;
+    $scope.canSetDownloadLinks = $scope.permissions.canModerate || isAuthor;
 
     // set up tabs
     $scope.tabs = tabsFactory.buildEditModTabs($scope.canManageOptions);
@@ -130,6 +131,7 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
     // validate the mod
     $scope.checkIfValid = function() {
         $scope.sourcesValid = modValidationService.sourcesValid($scope.mod);
+        $scope.metadataValid = modValidationService.metadataValid($scope.mod);
         $scope.licensesValid = modValidationService.licensesValid($scope.mod);
         $scope.authorsValid = modValidationService.authorsValid($scope.mod.mod_authors);
         $scope.requirementsValid = modValidationService.requirementsValid($scope.mod.requirements);
@@ -137,7 +139,7 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
         $scope.categoriesValid = modValidationService.categoriesValid($scope.mod);
 
         // return result of all validations
-        $scope.valid = $scope.sourcesValid && $scope.authorsValid && $scope.requirementsValid && $scope.configsValid && $scope.categoriesValid;
+        $scope.valid = $scope.sourcesValid && $scope.metadataValid && $scope.authorsValid && $scope.requirementsValid && $scope.configsValid && $scope.categoriesValid;
     };
 
     $scope.buildSource = function(scrapeLabel, infoLabel) {
@@ -221,5 +223,5 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
         }
     };
 
-    $scope.$watch('mod', $scope.checkIfValid, true);
+    $scope.$watchCollection('mod', $scope.checkIfValid, true);
 });

@@ -1,7 +1,9 @@
 <h3 class="section-title">Sources
-    <span class="help-tooltip" ng-hide="hideTooltips" title="Locations where an author has officially uploaded a Mod. &#13;You can only enter one valid location for each supported site.">
-        <i class="fa fa-question-circle"></i>
-    </span>
+    <a href="/help/mod_submission#source-selection" target="_blank">
+        <span class="help-tooltip" ng-hide="hideTooltips" title="Locations where an author has officially uploaded a Mod. &#13;You can only enter one valid location for each supported site. &#13;Click for more information.">
+            <i class="fa fa-question-circle"></i>
+        </span>
+    </a>
     <span ng-hide="sourcesValid" class="error-tooltip" title="At least one valid source is required.">
         <i class="fa fa-exclamation-circle"></i>
     </span>
@@ -11,15 +13,15 @@
         <select ng-model="source.label" ng-change="validateSource(source)" ng-disabled="source.scraped">
             <option ng-repeat="site in sites" ng-if="!site.hidden">{{site.label}}</option>
         </select>
-        <input type="text" class="long-input" ng-model="source.url" placeholder="Enter Source URL here" ng-change="validateSource(source)" ng-disabled="source.scraped">
+        <input type="text" class="long-input" ng-model="source.url" placeholder="Enter Source URL here" ng-change="validateSource(source)" ng-disabled="source.scraped" ng-class="{'invalid' : !source.valid}" title="{{source.labelToShort ? 'URL invalid.' : ''}}">
         <input type="button" class="btn scrape-button" value="Scrape" ng-click="scrapeSource(source)" ng-disabled="!source.valid || source.scraped">
         <span class="remove-item" ng-click="removeSource(source)" ng-if="($index > 0 || permissions.canUseCustomSources) && !source.scraped" title="Remove source">
             <i class="fa fa-times"></i>
         </span>
     </div>
     <div class="dynamic-item" ng-repeat="source in mod.custom_sources" ng-hide="source._destroy">
-        <input type="text" class="source-label" ng-model="source.label" ng-change="validateCustomSource(source)">
-        <input type="text" class="long-input" ng-model="source.url" placeholder="Enter Source URL here" ng-change="validateCustomSource(source)">
+        <input type="text" class="source-label" ng-model="source.label" ng-change="validateCustomSource(source)" ng-class="{'invalid' : source.labelToShort}" title="{{source.labelToShort ? 'Too short.' : ''}}">
+        <input type="text" class="long-input" ng-model="source.url" placeholder="Enter Source URL here" ng-change="validateCustomSource(source)" ng-blur="setCustomSourceLabel(source)" ng-class="{'invalid' : source.isDirectLink}" title="{{source.isDirectLink ? 'Direct download links are not allowed.' : ''}}">
         <span class="remove-item" ng-click="removeCustomSource(source)" title="Remove custom source">
             <i class="fa fa-times"></i>
         </span>

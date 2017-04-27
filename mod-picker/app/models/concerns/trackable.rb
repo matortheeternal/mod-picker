@@ -77,15 +77,17 @@ module Trackable
   end
 
   def get_milestone(milestones, value)
-    for index in 0 ... milestones.size
+    for index in 0 .. milestones.size - 1
       return index if value < milestones[index]
     end
+    milestones.size
   end
 
   def track_milestone_change(column, milestones)
     return unless attribute_changed?(column)
     old_milestone = get_milestone(milestones, attribute_was(column))
     new_milestone = get_milestone(milestones, public_send(column))
+    return if old_milestone == new_milestone
     ((old_milestone + 1)..new_milestone).each { |n| create_event(:"milestone#{n}") }
   end
 

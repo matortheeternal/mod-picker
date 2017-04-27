@@ -113,6 +113,10 @@ class User < ActiveRecord::Base
     a && a.mod_list
   end
 
+  def has_premium?
+    false
+  end
+
   def admin?
     role.to_sym == :admin
   end
@@ -131,6 +135,10 @@ class User < ActiveRecord::Base
 
   def helper?
     role.to_sym == :helper
+  end
+
+  def beta_tester?
+    role.to_sym == :beta_tester
   end
 
   def restricted?

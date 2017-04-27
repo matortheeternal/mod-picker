@@ -655,9 +655,9 @@ def seed_categories
 
   # Audiovisual sub-categories
   Category.create(
-      name: "Audiovisual - Animations",
+      name: "Audiovisual - Animations & Physics",
       parent_id: catAudiovisual.id,
-      description: "Any mod which adds or alters animations.",
+      description: "Any mod which adds or alters animations or physics.",
       priority: 193
   )
   Category.create(

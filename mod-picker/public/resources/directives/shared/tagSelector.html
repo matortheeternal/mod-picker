@@ -1,6 +1,6 @@
 <loader data="!savingTags" spinner-class="small-spinner">
     <div class="tags-container">
-        <span ng-repeat="tag in activeTags track by $index" ng-class="tag.tagBoxClass" class="tag-box" title="Submitted by {{tag.submitter.username}}">
+        <span ng-repeat="tag in activeTags track by tag.id" ng-class="tag.tagBoxClass" class="tag-box" title="Submitted by {{tag.submitter.username}}">
             <span class="tag-text">
                 {{::tag.text}}
             </span>

@@ -2,6 +2,7 @@ class ModListsController < ApplicationController
   before_action :check_sign_in, only: [:create, :set_active, :update, :import, :update_tags, :create_star, :destroy_star]
   before_action :set_mod_list, only: [:hide, :clone, :add, :update, :import, :update_tags, :tools, :mods, :plugins, :export_modlist, :export_plugins, :export_links, :setup, :config_files, :analysis, :comments]
   before_action :soft_set_mod_list, only: [:set_active]
+  before_action :require_mpu_user_agent, only: [:setup]
 
   # GET /mod_lists
   def index
@@ -145,6 +146,7 @@ class ModListsController < ApplicationController
   # POST /mod_lists/:id/setup
   def setup
     authorize! :read, @mod_list
+    authorize! :setup, @mod_list
     decorator = ModListSetupDecorator.new(@mod_list)
     render text: SecureData.full(current_user, decorator.to_json)
   end
@@ -342,6 +344,12 @@ class ModListsController < ApplicationController
 
     def force_download(filename)
       response.headers["Content-Disposition"] = "attachment; filename=#{filename}"
+    end
+
+    def require_mpu_user_agent
+      unless /ModPickerUtility\/([0-9\.]+)/.match(request.user_agent)
+        raise CanCan::AccessDenied.new("Not authorized!", :setup, ModList)
+      end
     end
 
     def new_mod_list_response(mod_list)

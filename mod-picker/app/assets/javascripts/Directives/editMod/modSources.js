@@ -27,7 +27,8 @@ app.controller('modSourcesController', function($scope, $rootScope, sitesFactory
         var sourceUsed = $scope.mod.sources.find(function(item, index) {
             return index != sourceIndex && item.label === source.label
         });
-        var urlFormat = sitesFactory.getModUrlFormat(site, $rootScope.currentGame);
+        var currentGameName = $rootScope.currentGame.nexus_name;
+        var urlFormat = sitesFactory.getModUrlFormat(site, currentGameName);
         var match = source.url.match(urlFormat);
         source.valid = !sourceUsed && match != null;
     };
@@ -47,7 +48,8 @@ app.controller('modSourcesController', function($scope, $rootScope, sitesFactory
     $scope.scrapeSource = function(source) {
         // exit if the source is invalid
         var site = sitesFactory.getSite(source.label);
-        var urlFormat = sitesFactory.getModUrlFormat(site, $rootScope.currentGame);
+        var currentGameName = $rootScope.currentGame.nexus_name;
+        var urlFormat = sitesFactory.getModUrlFormat(site, currentGameName);
         var match = source.url.match(urlFormat);
         if (!match) {
             return;
@@ -108,7 +110,17 @@ app.controller('modSourcesController', function($scope, $rootScope, sitesFactory
         }
     };
 
+    $scope.setCustomSourceLabel = function(source) {
+        var currentGameName = $rootScope.currentGame.nexus_name;
+        var matchingSite = sitesFactory.getSiteFromUrl(source.url, currentGameName);
+        if (matchingSite) {
+            source.label = matchingSite.label;
+        }
+    };
+
     $scope.validateCustomSource = function(source) {
-        source.valid = (source.label.length > 3) && (source.url.length > 12);
+        source.labelToShort = source.label.length < 4;
+        source.isDirectLink = source.url.match(/\.(7z|rar|zip)$/i);
+        source.valid = !source.labelToShort && !source.isDirectLink;
     };
 });

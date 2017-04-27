@@ -1,4 +1,4 @@
-app.controller('modListDetailsController', function($scope, $q, $timeout, tagService) {
+app.controller('modListDetailsController', function($scope, $rootScope, $q, $timeout, tagService) {
     $scope.toggleExportDropdown = function($event) {
         $scope.showExportDropdown = !$scope.showExportDropdown;
         if (!$scope.showExportDropdown) {
@@ -15,6 +15,12 @@ app.controller('modListDetailsController', function($scope, $q, $timeout, tagSer
     $scope.toggleImportModal = function(visible) {
         $scope.$emit('toggleModal', visible);
         $scope.showImportModal = visible;
+    };
+
+    $scope.downloadModList = function() {
+        var gameName = $rootScope.currentGame.nexus_name;
+        var modListId = $scope.mod_list.id;
+        window.location = 'modpicker://' + gameName + '/mod-list/' + modListId;
     };
 
     $scope.saveTags = function(updatedTags) {

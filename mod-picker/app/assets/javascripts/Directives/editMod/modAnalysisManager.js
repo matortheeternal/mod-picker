@@ -7,15 +7,25 @@ app.directive('modAnalysisManager', function() {
     }
 });
 
-app.controller('modAnalysisManagerController', function($scope, $rootScope, pluginService, objectUtils, assetUtils) {
+app.controller('modAnalysisManagerController', function($scope, $rootScope, $timeout, pluginService, assetUtils, objectUtils, modOptionUtils) {
     // inherited variables
     $scope.currentGame = $rootScope.currentGame;
+
+    // set up old nested mod options
+    $scope.$watch('mod.mod_options', function() {
+        if (!$scope.mod.mod_options) return;
+        $scope.oldNestedOptions = modOptionUtils.getNestedModOptions($scope.mod.mod_options);
+    });
 
     $scope.changeAnalysisFile = function(event) {
         var input = event.target;
         if (input.files && input.files[0]) {
-            $scope.loadAnalysisFile(input.files[0]);
-            input.value = "";
+            $scope.loadingAnalysis = true;
+            $scope.$digest();
+            $timeout(function() {
+                $scope.loadAnalysisFile(input.files[0]);
+                input.value = "";
+            }, 10);
         }
     };
 
@@ -26,6 +36,7 @@ app.controller('modAnalysisManagerController', function($scope, $rootScope, plug
     $scope.clearAnalysis = function() {
         if ($scope.mod.analysis) {
             delete $scope.mod.analysis;
+            delete $scope.nestedOptions;
         } else {
             $scope.mod.mod_options.forEach(function(modOption) {
                 modOption._destroy = true;
@@ -141,7 +152,9 @@ app.controller('modAnalysisManagerController', function($scope, $rootScope, plug
     $scope.prepareModOption = function(option) {
         $scope.getBaseName(option);
         option.display_name = angular.copy(option.base_name);
+        option.plugins_count = option.plugins.length;
         if (option.assets && option.assets.length) {
+            option.asset_files_count = option.assets.length;
             option.nestedAssets = assetUtils.getNestedAssets(option.assets);
         }
         $scope.loadExistingOption(option);
@@ -161,6 +174,8 @@ app.controller('modAnalysisManagerController', function($scope, $rootScope, plug
         analysis.mod_options.forEach($scope.prepareModOption);
         $scope.$applyAsync(function() {
             $scope.mod.analysis = analysis;
+            $scope.nestedOptions = modOptionUtils.getNestedModOptions(analysis.mod_options);
+            $scope.loadingAnalysis = false;
             $scope.getRequirementsFromAnalysis();
         });
     };

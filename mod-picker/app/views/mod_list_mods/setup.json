@@ -6,7 +6,7 @@
       "methods": ["source_links"],
       "include": {
         "mod_options": {
-          "only": ["id", "name", "display_name", "size", "md5_hash", "is_installer_option"]
+          "only": ["id", "name", "display_name", "size", "md5_hash", "is_installer_option", "download_link"]
         }
       }
     }

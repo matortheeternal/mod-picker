@@ -11,5 +11,5 @@
       "only": ["game_id", "mod_list_id"]
     }
   },
-  "methods": ["image_type", "recent_notifications"]
+  "methods": ["image_type", "recent_notifications", "has_premium?"]
 }

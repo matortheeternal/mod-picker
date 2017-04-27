@@ -63,7 +63,7 @@ app.controller('userController', function($scope, $rootScope, $stateParams, user
     $scope.user = userObject.user;
     $scope.user.endorsed = userObject.endorsed;
     $scope.isCurrentUser = $scope.currentUser && $scope.currentUser.id == $scope.user.id;
-    $scope.roleClass = "user-role-" + $scope.user.role;
+    $scope.roleClass = "user-role-" + $scope.user.role.replace("_", "-");
     $scope.pages = {
         profile_comments: {}
     };
@@ -72,6 +72,7 @@ app.controller('userController', function($scope, $rootScope, $stateParams, user
         moderator: "Moderator",
         writer: "News Writer",
         author: "Mod Author",
+        "beta_tester": "Beta Tester",
         restricted: "Restricted",
         banned: "Banned",
         "": ""

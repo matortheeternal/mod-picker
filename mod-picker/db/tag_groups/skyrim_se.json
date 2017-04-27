@@ -1,9 +1,9 @@
 [{
-		"category_name" : "Audiovisual - Animations",
+		"category_name" : "Audiovisual - Animations & Physics",
 		"name" : "Animation Type",
 		"tag_names" : ["Movement", "Combat", "Magic", "Idle", "Action"]
 	}, {
-		"category_name" : "Audiovisual - Animations",
+		"category_name" : "Audiovisual - Animations & Physics",
 		"name" : "Animation Target",
 		"tag_names" : ["Characters", "Creatures", "Items", "Objects", "Player Character"]
 	}, {
@@ -26,7 +26,7 @@
 	}, {
 		"category_name" : "Audiovisual - Models & Textures",
 		"name" : "Content",
-		"tag_names" : ["Meshes", "Textures", "Shaders"]
+		"tag_names" : ["Meshes", "Textures", "Shaders", "Parallax", "LODs"]
 	}, {
 		"category_name" : "Audiovisual - Models & Textures",
 		"name" : "Texture Resolution",
@@ -34,12 +34,16 @@
 	}, {
 		"category_name" : "Audiovisual - Models & Textures",
 		"name" : "Target",
-		"tag_names" : ["Architecture", "Armor", "Clothing", "Clutter", "Creatures", "Food", "Landscape", "Potions", "Poisons", "Magic", "Sky", "User Interface", "Weapons"]
+		"tag_names" : ["Accessories", "Animals", "Architecture", "Armor", "Clothing", "Clutter", "Creatures", "Food", "Ingredients", "Items", "Jewelry", "Landscape", "Plants", "Potions", "Poisons", "Magic", "Sky", "User Interface", "Weapons"]
 	}, {
 		"category_name" : "Audiovisual - Post-processing",
 		"name" : "Content",
 		"exclusion_label" : "Other",
 		"tag_names" : ["ENB Preset", "SweetFX Preset", "ReShade Preset", "FXAA Preset"]
+	}, {
+		"category_name" : "Audiovisual - Post-processing",
+		"name" : "Performance Impact",
+		"tag_names" : ["Low Performance Impact", "Medium Performance Impact", "High Performance Impact"]
 	}, {
 		"category_name" : "Audiovisual - Sounds & Music",
 		"name" : "Sound Content",
@@ -52,6 +56,10 @@
 		"category_name" : "Character Appearance",
 		"name" : "Character Gender",
 		"tag_names" : ["Male", "Female"]
+	}, {
+		"category_name" : "Character Appearance",
+		"name" : "Texture Resolution",
+		"tag_names" : ["256", "512", "1K", "2K", "4K", "8K"]
 	}, {
 		"category_name" : "Character Appearance - Body Mods",
 		"name" : "Body Mod Content",
@@ -71,7 +79,7 @@
 	}, {
 		"category_name" : "Character Appearance",
 		"name" : "Character Race",
-		"tag_names" : ["Humans", "Elves", "Beastmen", "Altmer", "Argonian", "Bosmer", "Breton", "Dunmer", "Imperial", "Khajiit", "Nord", "Orsimer", "Redguard"]
+		"tag_names" : ["Humans", "Elves", "Beastmen", "Altmer", "Argonian", "Bosmer", "Breton", "Dunmer", "Imperial", "Khajiit", "Nord", "Orsimer", "Redguard", "Vampires", "Vampire Lords", "Werewolves"]
 	}, {
 		"category_name" : "Fixes",
 		"name" : "Fix Type",
@@ -252,7 +260,7 @@
 	}, {
 		"category_name" : "Locations - Overhauls",
 		"name" : "Overhaul Target",
-		"tag_names" : ["Bridges", "Cities", "Castles", "Docks", "Forts", "Lighthouses", "Outposts", "Ruins", "Shrines", "Stores", "Temples", "Towns", "Dawnstar", "Falkreath", "Markarth", "Morthal", "Riften", "Raven Rock", "Solitude", "Whiterun", "Windhelm", "Winterhold"]
+		"tag_names" : ["Bridges", "Cities", "Castles", "Docks", "Forts", "Landscape", "Lighthouses", "Outposts", "Ruins", "Shrines", "Stores", "Temples", "Towns", "Dawnstar", "Falkreath", "Markarth", "Morthal", "Riften", "Raven Rock", "Solitude", "Whiterun", "Windhelm", "Winterhold"]
 	}, {
 		"category_name" : "New Characters",
 		"name" : "Character Distribution",

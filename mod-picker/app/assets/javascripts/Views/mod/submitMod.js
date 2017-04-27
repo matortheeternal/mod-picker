@@ -61,7 +61,7 @@ app.controller('submitModController', function($scope, $rootScope, $state, modSe
     $scope.permissions = angular.copy($rootScope.permissions);
 
     // initialize variables
-    $scope.sites = sitesFactory.sites();
+    $scope.sites = sitesFactory.sites;
     $scope.tabs = tabsFactory.buildEditModTabs(false);
     $scope.mod = {
         game_id: window._current_game_id,
@@ -105,10 +105,11 @@ app.controller('submitModController', function($scope, $rootScope, $state, modSe
     // a mod analysis, and at least one category
     $scope.checkIfValid = function() {
         $scope.sourcesValid = modValidationService.sourcesValid($scope.mod);
+        $scope.metadataValid = modValidationService.metadataValid($scope.mod);
         $scope.categoriesValid = modValidationService.categoriesValid($scope.mod);
         $scope.requirementsValid = modValidationService.requirementsValid($scope.mod.requirements);
         $scope.analysisValid = !!$scope.mod.analysis;
-        $scope.valid = $scope.sourcesValid && $scope.categoriesValid && $scope.analysisValid;
+        $scope.valid = $scope.sourcesValid && $scope.metadataValid && $scope.categoriesValid && $scope.analysisValid;
     };
 
     $scope.submitImage = function(modId) {
@@ -148,5 +149,7 @@ app.controller('submitModController', function($scope, $rootScope, $state, modSe
         });
     };
 
-    $scope.$watch('mod', $scope.checkIfValid, true);
+    $scope.$watchCollection('mod', $scope.checkIfValid);
+    $scope.$watch('mod.sources', $scope.checkIfValid, true);
+    $scope.$watch('mod.custom_sources', $scope.checkIfValid, true);
 });

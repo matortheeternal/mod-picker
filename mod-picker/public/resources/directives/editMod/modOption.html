@@ -1,40 +1,64 @@
-<h4 class="subtitle">
-    <input class="fuzzy-input" type="text" ng-model="option.display_name" ng-click="focusText($event)" pu-elastic-input/>
-    ({{option.size | bytes}})
-    <span class="remove-item" ng-click="removeModOption()" title="Remove mod option">
-        <i class="fa fa-times"></i>
+<div class="mod-option">
+    <span class="mod-option-icon" title="{{::option.tooltip}}">
+        <i class="fa {{::option.iconClass}}"></i>
     </span>
-</h4>
-
-<label class="default-option">
-    <input type="checkbox" ng-model="option.default"> Default
-</label>
-
-<label>
-    <span>Raw Name:</span> {{option.name}}
-</label>
-
-<label class="old-option" ng-if="oldOptions">
-    <span>Old Option:</span>
-    <select ng-options="opt.id as opt.display_name for opt in oldOptions" ng-model="option.id" ng-change="oldOptionChanged()">
-        <option value="">None</option>
-    </select>
-</label>
-
-<strong ng-if="option.nestedAssets">Asset File Tree</strong>
-<div class="subsection analysis-container" ng-if="option.nestedAssets">
-    <asset-tree assets="option.nestedAssets"></asset-tree>
-</div>
-
-<strong ng-if="option.plugins.length">Plugins</strong>
-<div class="subsection analysis-container" ng-if="option.plugins.length">
-    <div class="plugin-analysis-item" ng-repeat="plugin in option.plugins">
-        <label class="old-plugin" ng-if="oldOption">
-            <span>Old Plugin:</span>
-            <select ng-options="op.id as op.filename for op in oldOption.plugins" ng-model="plugin.id" ng-change="oldPluginChanged(plugin)">
+    <span class="mod-option-details">
+        <span class="mod-option-title">
+            <input type="checkbox" ng-model="option.default" title="Default"/>
+            <input type="text" title="{{::option.name}}" class="fuzzy-input" ng-model="option.display_name" ng-click="focusText($event)" pu-elastic-input>
+        </span>
+        <span class="mod-option-link" ng-if="canSetDownloadLinks">
+            <input type="text" class="fuzzy-input" ng-model="option.download_link" maxlength="255" placeholder="Direct download link" pu-elastic-input>
+            <span class="help-tooltip small" ng-hide="hideTooltips" title="You may provide a direct download link here to have the Mod Picker &#13;Mod List Setup Utility download this mod automatically.">
+                <i class="fa fa-question-circle"></i>
+            </span>
+        </span>
+        <span class="mod-option-stats">
+            {{::option.size | bytes}}
+        </span>
+        <label class="old-option" ng-if="oldOptions">
+            <span>Old Option:</span>
+            <select ng-options="opt.id as opt.display_name for opt in oldOptions" ng-model="option.id" ng-change="oldOptionChanged()">
                 <option value="">None</option>
             </select>
         </label>
-        <plugin-metadata plugin="plugin" show-record-groups="true"></plugin-metadata>
+    </span>
+    <span class="remove-item" ng-click="removeModOption()" title="Remove mod option">
+        <i class="fa fa-times"></i>
+    </span>
+</div>
+<div class="children-container" ng-if="option.plugins_count">
+    <span class="children-note" ng-click="togglePluginsExpansion(option)">
+        <i class="fa fa-chevron-{{option.pluginsExpanded ? 'down' : 'right'}}"></i>
+        {{::option.plugins_count | number}} plugin{{:: option.plugins_count != 1 ? 's' : ''}}
+    </span>
+    <div ng-if="option.pluginsExpanded">
+        <div class="plugin-analysis-item" ng-repeat="plugin in option.plugins">
+            <label class="old-plugin" ng-if="oldOption">
+                <span>Old Plugin:</span>
+                <select ng-options="op.id as op.filename for op in oldOption.plugins" ng-model="plugin.id" ng-change="oldPluginChanged(plugin)">
+                    <option value="">None</option>
+                </select>
+            </label>
+            <plugin-metadata plugin="plugin"></plugin-metadata>
+        </div>
+    </div>
+</div>
+<div class="children-container" ng-if="option.asset_files_count">
+    <span class="children-note" ng-click="toggleAssetsExpansion(option)">
+        <i class="fa fa-chevron-{{option.assetsExpanded ? 'down' : 'right'}}"></i>
+        {{:: option.asset_files_count | number}} asset{{:: option.asset_files_count != 1 ? 's' : ''}}
+    </span>
+    <div ng-if="option.assetsExpanded">
+        <asset-tree assets="option.nestedAssets"></asset-tree>
+    </div>
+</div>
+<div class="children-container" ng-if="option.children">
+    <span class="children-note" ng-click="toggleExpansion(option)">
+        <i class="fa fa-chevron-{{option.expanded ? 'down' : 'right'}}"></i>
+        {{::option.children.length | number}} installer options
+    </span>
+    <div ng-if="option.expanded">
+        <mod-option ng-repeat="option in option.children" option="option" old-options="oldOptions"></mod-option>
     </div>
 </div>
