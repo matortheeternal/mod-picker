@@ -13,7 +13,8 @@ class SecureData
   end
 
   def self.offset(i, d)
-    (((i + MIN_OFFSET)**MAGIC_1 - d) / MAGIC_2).to_i
+    i + d
+    #(((i + MIN_OFFSET)**MAGIC_1 - d) / MAGIC_2).to_i
   end
 
   def self.crypt_string(str, key, dec)
@@ -28,7 +29,7 @@ class SecureData
 
   def self.pad_string(str, user)
     amt = MIN_PAD + (MAGIC_3 * user.id**MAGIC_4) % (MAX_PAD - MIN_PAD)
-    SecureRandom.hex(amt).upcase + str
+    SecureRandom.hex(amt.to_i).upcase + str
   end
 
   def self.full(user, str)
