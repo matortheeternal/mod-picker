@@ -165,7 +165,7 @@
           "name": "Audiovisual - Animations & Physics"
         },
         {
-          "prompt": "If the mod performs post-processing, or provide a post-processing preset:",
+          "prompt": "If the mod performs post-processing, or provides a post-processing preset:",
           "name": "Audiovisual - Post-processing"
         },
         {
