@@ -18,4 +18,14 @@ class Category < ActiveRecord::Base
 
   # VALIDATIONS
   validates :name, :description, presence: true
+
+  # METHODS
+  def self.read_chart
+    file = File.read(Rails.root.join("db", "categories", "chart.json"))
+    JSON.parse(file)
+  end
+
+  def self.chart
+    @_chart ||= self.read_chart
+  end
 end
