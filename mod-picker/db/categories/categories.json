@@ -1,0 +1,568 @@
+{
+  "categories": [
+    {
+      "name": "Audiovisual",
+      "description": "Mods which strictly affect audio or visuals.  This category is often superseded by other categories.",
+      "priority": 190,
+      "subcategories": [
+        {
+          "name": "Audiovisual - Animations & Physics",
+          "description": "Mods which add or modify animations or physics.",
+          "priority": 193
+        },
+        {
+          "name": "Audiovisual - Lighting & Weather",
+          "description": "Mods which add or modify lighting or weather.",
+          "priority": 194
+        },
+        {
+          "name": "Audiovisual - Models & Textures",
+          "description": "Mods which provide models, textures, or shaders.",
+          "priority": 191
+        },
+        {
+          "name": "Audiovisual - Post-processing",
+          "description": "Mods which perform post processing or include a post-processing preset.",
+          "priority": 192
+        },
+        {
+          "name": "Audiovisual - Sounds & Music",
+          "description": "Mods which add or modify sounds or music.",
+          "priority": 195
+        }
+      ]
+    },
+    {
+      "name": "Character Appearance",
+      "description": "Mods that modify the appearance of characters or add new options for character creation.",
+      "priority": 200,
+      "subcategories": [
+        {
+          "name": "Character Appearance - Body Mods",
+          "description": "Mods that adjust body shapes or textures.",
+          "priority": 201
+        },
+        {
+          "name": "Character Appearance - Face Parts",
+          "description": "Mods that add new face parts such as hairs, beards, brows, or eyes.",
+          "priority": 202
+        },
+        {
+          "name": "Character Appearance - NPC Overhauls",
+          "description": "Mods that overhaul NPC appearance.",
+          "priority": 204
+        },
+        {
+          "name": "Character Appearance - Overlays",
+          "description": "Mods that add new overlays such as warpaints, tattoos, or freckles.",
+          "priority": 203
+        }
+      ]
+    },
+    {
+      "name": "Fixes",
+      "description": "Mods which fix issues or bugs without adding new content.",
+      "priority": 20,
+      "subcategories": [
+        {
+          "name": "Fixes - Stability & Performance",
+          "description": "Fixes which specifically address game stability or performance.",
+          "priority": 21
+        },
+        {
+          "name": "Fixes - Patches",
+          "description": "Fixes which make mods compatible with each other.",
+          "priority": 22
+        }
+      ]
+    },
+    {
+      "name": "Gameplay",
+      "description": "Mods which modify game mechanics, pardigms, balance, user interfaces, or events.",
+      "priority": 110,
+      "subcategories": [
+        {
+          "name": "Gameplay - AI & Combat",
+          "description": "Mods which modify character behavior, combat mechanics, or enemy strength in general.",
+          "priority": 113
+        },
+        {
+          "name": "Gameplay - Classes & Races",
+          "description": "Mods which add or modify character classes or races.",
+          "priority": 114
+        },
+        {
+          "name": "Gameplay - Crafting",
+          "description": "Mods which modify existing crafting systems or add new ones.",
+          "priority": 115
+        },
+        {
+          "name": "Gameplay - Economy & Item Balance",
+          "description": "Mods which modify the acquisition or stats of items.",
+          "priority": 118
+        },
+        {
+          "name": "Gameplay - Immersion & Role-playing",
+          "description": "Mods which specifically aid player immersion or role-playing.",
+          "priority": 117
+        },
+        {
+          "name": "Gameplay - Magic & Abilities",
+          "description": "Mods which add new abilities or spells.",
+          "priority": 112
+        },
+        {
+          "name": "Gameplay - Quests & Stories",
+          "description": "Mods which add or modify quests or stories.",
+          "priority": 116
+        },
+        {
+          "name": "Gameplay - Skills & Perks",
+          "description": "Mods which add or modify skills or perks.",
+          "priority": 111
+        },
+        {
+          "name": "Gameplay - User Interface",
+          "description": "Mods which add or modify user interface components.",
+          "priority": 40
+        }
+      ]
+    },
+    {
+      "name": "Items",
+      "description": "Mods which add new inventory items to the game.",
+      "priority": 140,
+      "subcategories": [
+        {
+          "name": "Items - Armor, Clothing, & Accessories",
+          "description": "Mods that add items that can be worn such as armor, clothing, jewelry, cloaks, and bags.",
+          "priority": 141
+        },
+        {
+          "name": "Items - Ingestibles",
+          "description": "Mods that add items you can eat or drink.",
+          "priority": 143
+        },
+        {
+          "name": "Items - Tools & Clutter",
+          "description": "Mods that add items that cannot be worn, ingested, or used as a weapon.",
+          "priority": 144
+        },
+        {
+          "name": "Items - Weapons",
+          "description": "Mods that that add sticks you can stab, squish, or shoot people with.",
+          "priority": 142
+        }
+      ]
+    },
+    {
+      "name": "Locations",
+      "description": "Mods which add or modify locations ingame.",
+      "priority": 100,
+      "subcategories": [
+        {
+          "name": "Locations - New Dungeons",
+          "description": "Mods which add new areas where you can encounter and fight enemies.",
+          "priority": 104
+        },
+        {
+          "name": "Locations - New Lands",
+          "description": "Mods which add completely new lands to explore.",
+          "priority": 101
+        },
+        {
+          "name": "Locations - New Player Homes",
+          "description": "Mods which add new player homes.",
+          "priority": 103
+        },
+        {
+          "name": "Locations - New Structures & Landmarks",
+          "description": "Mods which add new structures or landmarks.",
+          "priority": 102
+        },
+        {
+          "name": "Locations - Overhauls",
+          "description": "Mods which overhaul existing locations.",
+          "priority": 105
+        }
+      ]
+    },
+    {
+      "name": "New Characters",
+      "description": "Mods which add new animals, characters, or creatures to the game.",
+      "priority": 130,
+      "subcategories": [
+        {
+          "name": "New Characters - Allies",
+          "description": "Mods which add characters that can be allied with the player.",
+          "priority": 131
+        },
+        {
+          "name": "New Characters - Enemies",
+          "description": "Mods which add characters that are hostile to the player.",
+          "priority": 133
+        },
+        {
+          "name": "New Characters - Neutral",
+          "description": "Mods which add characters that don't have a disposition to hurt or help the player.",
+          "priority": 132
+        }
+      ]
+    },
+    {
+      "name": "Resources",
+      "description": "Resources to be used by other modders.",
+      "priority": 30,
+      "subcategories": [
+        {
+          "name": "Resources - Audiovisual",
+          "description": "Resources which offer audiovisual content for other modders to use.",
+          "priority": 190
+        },
+        {
+          "name": "Resources - Frameworks",
+          "description": "Resources which offer a framework or API for other mods to use.",
+          "priority": 30
+        },
+        {
+          "name": "Resources - Guides & Tutorials",
+          "description": "Resources that provide a guide, tutorial, or general information about modding.",
+          "priority": 0
+        }
+      ]
+    },
+    {
+      "name": "Utilities",
+      "description": "Tools which aid in the creation or management of game content or mods.",
+      "priority": 240,
+      "subcategories": [
+        {
+          "name": "Utilities - Ingame",
+          "description": "Utilities which have an ingame interface.",
+          "priority": 40
+        },
+        {
+          "name": "Utilities - Patchers",
+          "description": "Utilites which generate patches.",
+          "priority": 242
+        },
+        {
+          "name": "Utilities - Tools",
+          "description": "Utilities which allow you to create, edit, or manage mod-related files.",
+          "priority": 241
+        }
+      ]
+    }
+  ],
+  "category_priorities": [
+    {
+      "dominant_name": "Items",
+      "recessive_name": "Audiovisual - Models & Textures",
+      "description": "New items often include new models & textures."
+    },
+    {
+      "dominant_name": "Character Appearance",
+      "recessive_name": "Audiovisual - Models & Textures",
+      "description": "Character appearance mods often include new models & textures."
+    },
+    {
+      "dominant_name": "Gameplay - Classes & Races",
+      "recessive_name": "Character Appearance",
+      "description": "New races often include new character appearance options."
+    },
+    {
+      "dominant_name": "Gameplay",
+      "recessive_name": "Fixes",
+      "description": "Changing gameplay often involves fixing issues with the game."
+    },
+    {
+      "dominant_name": "Gameplay - Magic & Abilities",
+      "recessive_name": "Audiovisual",
+      "description": "New spells or abilities often include new visual effects."
+    },
+    {
+      "dominant_name": "Gameplay - Quests & Stories",
+      "recessive_name": "Gameplay - Immersion & Role-playing",
+      "description": "New or modified quests and stories often improve immersion or include new role-playing opportunities."
+    },
+    {
+      "dominant_name": "Locations - New Lands",
+      "recessive_name": "Gameplay",
+      "description": "New lands often include new gameplay experiences."
+    },
+    {
+      "dominant_name": "Locations - New Lands",
+      "recessive_name": "New Characters",
+      "description": "New lands often include new characters."
+    },
+    {
+      "dominant_name": "Locations - New Lands",
+      "recessive_name": "Items",
+      "description": "New lands often include new items."
+    },
+    {
+      "dominant_name": "Locations - New Lands",
+      "recessive_name": "Audiovisual",
+      "description": "New lands often offer new audiovisual experiences."
+    },
+    {
+      "dominant_name": "Locations - New Dungeons",
+      "recessive_name": "New Characters",
+      "description": "New dungeons often include new characters."
+    },
+    {
+      "dominant_name": "Locations - New Structures & Landmarks",
+      "recessive_name": "New Characters",
+      "description": "New structures and landmarks often include new characters."
+    },
+    {
+      "dominant_name": "Locations - Overhauls",
+      "recessive_name": "Audiovisual",
+      "description": "Location overhauls often include new audiovisual content."
+    }
+  ],
+  "review_sections": [
+    {
+      "category_name": "Audiovisual",
+      "name": "Aesthetics",
+      "prompt": "Does the mod look/sound good?  Are the assets high quality?",
+      "default": true
+    },
+    {
+      "category_name": "Audiovisual",
+      "name": "Consistency",
+      "prompt": "Does the mod fit in your game?  Does it improve your gameplay experience?",
+      "default": true
+    },
+    {
+      "category_name": "Audiovisual",
+      "name": "Performance",
+      "prompt": "Does the mod cause stuttering or a large reduction in average FPS?  Keep the performance of other mods which do similar things in mind.",
+      "default": true
+    },
+    {
+      "category_name": "Audiovisual",
+      "name": "Enjoyment",
+      "prompt": "Do you enjoy using the mod?  What do you enjoy about it?",
+      "default": true
+    },
+    {
+      "category_name": "Character Appearance",
+      "name": "Aesthetics",
+      "prompt": "Does the mod look good?  Are the textures and models high quality?",
+      "default": true
+    },
+    {
+      "category_name": "Character Appearance",
+      "name": "Consistency",
+      "prompt": "Does the mod fit in your game?  Does it improve your gameplay experience?",
+      "default": true
+    },
+    {
+      "category_name": "Character Appearance",
+      "name": "Performance",
+      "prompt": "Does the mod cause stuttering or a large reduction in average FPS?  Keep the performance of other mods which do similar things in mind."
+    },
+    {
+      "category_name": "Character Appearance",
+      "name": "Enjoyment",
+      "prompt": "Do you enjoy using the mod?  What do you enjoy about it?",
+      "default": true
+    },
+    {
+      "category_name": "Fixes",
+      "name": "Consistency",
+      "prompt": "Does the fix retain the spirit and features of the content it targets?",
+      "default": true
+    },
+    {
+      "category_name": "Fixes",
+      "name": "Functionality",
+      "prompt": "Does the fix resolve all of the issues with the content it targets, and does it work?",
+      "default": true
+    },
+    {
+      "category_name": "Gameplay",
+      "name": "Aesthetics",
+      "prompt": "Does the mod look/sound good?  Are the assets high quality?"
+    },
+    {
+      "category_name": "Gameplay",
+      "name": "Consistency",
+      "prompt": "Does the mod fit in your game?  Does the mod improve your gameplay experience?  Is the mod balanced?",
+      "default": true
+    },
+    {
+      "category_name": "Gameplay",
+      "name": "Concept",
+      "prompt": "Do you like the idea behind the mod?  Is the idea original or unique?"
+    },
+    {
+      "category_name": "Gameplay",
+      "name": "Functionality",
+      "prompt": "Does the mod provide valuable or unique functionality?  Does it do what it's supposed to do, and does it do it well?",
+      "default": true
+    },
+    {
+      "category_name": "Gameplay",
+      "name": "Enjoyment",
+      "prompt": "Do you enjoy using the mod?  What do you enjoy about it?",
+      "default": true
+    },
+    {
+      "category_name": "Gameplay - Quests & Stories",
+      "name": "Writing",
+      "prompt": "Is the story interesting and engaging? Does the dialogue fit the characters? Are the characters interesting?",
+      "default": true
+    },
+    {
+      "category_name": "Items",
+      "name": "Aesthetics",
+      "prompt": "Does the mod look/sound good?  Are the assets high quality?",
+      "default": true
+    },
+    {
+      "category_name": "Items",
+      "name": "Consistency",
+      "prompt": "Do the items fit in your game?  Are they balanced?  Is acquiring the items too easy or too difficult?",
+      "default": true
+    },
+    {
+      "category_name": "Items",
+      "name": "Concept",
+      "prompt": "Do you like the idea behind the mod?  Is the idea original or unique?"
+    },
+    {
+      "category_name": "Items",
+      "name": "Enjoyment",
+      "prompt": "Do you enjoy using the mod?  What do you enjoy about it?",
+      "default": true
+    },
+    {
+      "category_name": "Locations",
+      "name": "Aesthetics",
+      "prompt": "Does the Location look good?  Is it designed well and are the textures/models high quality?  Does the interior design look good?  Are there unique/custom visuals which make it stand out?",
+      "default": true
+    },
+    {
+      "category_name": "Locations",
+      "name": "Performance",
+      "prompt": "Does the mod cause stuttering or a large reduction in average FPS?  Keep the performance of other mods which do similar things in mind."
+    },
+    {
+      "category_name": "Locations",
+      "name": "Consistency",
+      "prompt": "Does the location fit in your game?  Does it improve your gameplay experience?",
+      "default": true
+    },
+    {
+      "category_name": "Locations",
+      "name": "Concept",
+      "prompt": "Do you like the idea behind the mod?  Is the idea original or unique?"
+    },
+    {
+      "category_name": "Locations",
+      "name": "Writing",
+      "prompt": "Is the story interesting and engaging? Does the dialogue fit the characters? Are the characters interesting?",
+      "default": true
+    },
+    {
+      "category_name": "Locations",
+      "name": "Voice Acting",
+      "prompt": "Is the recording decent quality? Do the voice actors do a good job of embodying their characters?"
+    },
+    {
+      "category_name": "Locations",
+      "name": "Character Behavior",
+      "prompt": "Do the characters interact with their environment?  Is their behavior realistic?"
+    },
+    {
+      "category_name": "Locations",
+      "name": "Enjoyment",
+      "prompt": "Do you enjoy using the mod?  What do you enjoy about it?",
+      "default": true
+    },
+    {
+      "category_name": "Locations - New Lands",
+      "name": "New Content",
+      "prompt": "What is the quality of new content added by the mod, such as new items, spells or skills?",
+      "default": true
+    },
+    {
+      "category_name": "Locations - New Player Homes",
+      "name": "Features",
+      "prompt": "Does the player home fit your character's needs?  Are you happy with what it offers?",
+      "default": true
+    },
+    {
+      "category_name": "New Characters",
+      "name": "Aesthetics",
+      "prompt": "Do the characters look good?  Do they offer unique aesthetics which help them stand out?",
+      "default": true
+    },
+    {
+      "category_name": "New Characters",
+      "name": "Character Behavior",
+      "prompt": "Do the characters interact with their environment?  Is their behavior realistic?",
+      "default": true
+    },
+    {
+      "category_name": "New Characters",
+      "name": "Consistency",
+      "prompt": "Do the characters fit in your game?  Do they improve your gameplay experience?",
+      "default": true
+    },
+    {
+      "category_name": "New Characters",
+      "name": "Concept",
+      "prompt": "Do you like the idea behind the mod?  Is the idea original or unique?"
+    },
+    {
+      "category_name": "New Characters",
+      "name": "Enjoyment",
+      "prompt": "Do you enjoy using the mod?  What do you enjoy about it?",
+      "default": true
+    },
+    {
+      "category_name": "New Characters",
+      "name": "Voice Acting",
+      "prompt": "Is the recording decent quality? Do the voice actors do a good job of embodying their characters?"
+    },
+    {
+      "category_name": "New Characters",
+      "name": "Writing",
+      "prompt": "Does the dialogue fit the characters? Are the characters interesting?  Do the characters have a good backstory?",
+      "default": true
+    },
+    {
+      "category_name": "Resources",
+      "name": "Aesthetics",
+      "prompt": "Are any provided textures/audio files/models high quality and appealing?  If a GUI is provided, is it intuitive and clean?",
+      "default": true
+    },
+    {
+      "category_name": "Resources",
+      "name": "Functionality",
+      "prompt": "Does the resource provide valuable functionality, or save you time?",
+      "default": true
+    },
+    {
+      "category_name": "Resources",
+      "name": "Usability",
+      "prompt": "Is it easy to use the resource?  Is the provided documentation sufficient?",
+      "default": true
+    },
+    {
+      "category_name": "Utilities",
+      "name": "Functionality",
+      "prompt": "Does the utility provide valuable or unique functionality?  Does it do what it's supposed to do, and does it do it well?",
+      "default": true
+    },
+    {
+      "category_name": "Utilities",
+      "name": "Usability",
+      "prompt": "Is the utility intuitive and easy to use?  Are the learning resources sufficient?  Does using the utility get easier once you've learned the basics?",
+      "default": true
+    }
+  ]
+}
