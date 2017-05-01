@@ -17,7 +17,7 @@
           "name": "Locations - New Player Homes"
         },
         {
-          "prompt": "If the mod overhauls an existing city, dungeon, player home, or environment:",
+          "prompt": "If the mod overhauls an existing location:",
           "name": "Locations - Overhauls"
         },
         {
@@ -35,11 +35,11 @@
       "name": "Gameplay",
       "subcategories": [
         {
-          "prompt": "If the mod adds or alters quests/stories:",
+          "prompt": "If the mod adds or modifies quests or stories:",
           "name": "Gameplay - Quests & Stories"
         },
         {
-          "prompt": "If the mod alters character behavior, combat mechanics, or enemy strength in general:",
+          "prompt": "If the mod affects character behavior, combat mechanics, or enemy strength in general:",
           "name": "Gameplay - AI & Combat"
         },
         {
@@ -47,11 +47,11 @@
           "name": "Gameplay - Classes & Races"
         },
         {
-          "prompt": "If the mod modifies or adds crafting systems to the game:",
+          "prompt": "If the mod adds or modifies crafting systems:",
           "name": "Gameplay - Crafting"
         },
         {
-          "prompt": "If the mod alters the acquisition of items in the game, or their stats:",
+          "prompt": "If the mod affects the acquisition or stats of items:",
           "name": "Gameplay - Economy & Item Balance"
         },
         {
@@ -63,7 +63,7 @@
           "name": "Gameplay - Magic & Abilities"
         },
         {
-          "prompt": "If the mod alters or adds user interface components:",
+          "prompt": "If the mod adds or modifies user interface components:",
           "name": "Gameplay - User Interface"
         },
         {
@@ -99,15 +99,15 @@
       "name": "Items",
       "subcategories": [
         {
-          "prompt": "If it adds new weapons:",
+          "prompt": "If the mod adds new weapons:",
           "name": "Items - Weapons"
         },
         {
-          "prompt": "If it adds new armor, clothing, or accessories:",
+          "prompt": "If the mod adds new armor, clothing, or accessories:",
           "name": "Items - Armor, Clothing, & Accessories"
         },
         {
-          "prompt": "If it adds new items you can eat or drink:",
+          "prompt": "If the mod adds new items you can eat or drink:",
           "name": "Items - Ingestibles"
         },
         {
@@ -161,7 +161,7 @@
       "name": "Audiovisual",
       "subcategories": [
         {
-          "prompt": "If the mod adds or alters animations or physics:",
+          "prompt": "If the mod affects animations or physics:",
           "name": "Audiovisual - Animations & Physics"
         },
         {
@@ -169,15 +169,15 @@
           "name": "Audiovisual - Post-processing"
         },
         {
-          "prompt": "If the mod alters lighting or weather:",
+          "prompt": "If the mod affects lighting or weather:",
           "name": "Audiovisual - Lighting & Weather"
         },
         {
-          "prompt": "If the mod alters models, textures, or shaders:",
+          "prompt": "If the mod includes models, textures, or shaders:",
           "name": "Audiovisual - Models & Textures"
         },
         {
-          "prompt": "If the mod adds or alters sounds or music:",
+          "prompt": "If the mod includes sounds or music:",
           "name": "Audiovisual - Sounds & Music"
         },
         {
