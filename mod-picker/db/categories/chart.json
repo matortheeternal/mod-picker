@@ -6,23 +6,23 @@
       "else": true,
       "subcategories": [
         {
-          "ask": "Does the mod add new worlds to explore?",
+          "ask": "If the mod adds new worlds to explore:",
           "name": "Locations - New Lands"
         },
         {
-          "ask": "Does the mod add new dungeons - areas to encounter and fight enemies?",
+          "ask": "If the mod adds new areas to encounter and fight enemies:",
           "name": "Locations - New Dungeons"
         },
         {
-          "ask": "Does the mod add new player homes?",
+          "ask": "If the mod adds new player homes:",
           "name": "Locations - New Player Homes"
         },
         {
-          "ask": "Does the mod overhaul an existing city, dungeon, player home, or environment?",
+          "ask": "If the mod overhauls an existing city, dungeon, player home, or environment:",
           "name": "Locations - Overhauls"
         },
         {
-          "ask": "Does the mod add new structures or landmarks to the world?",
+          "ask": "If the mod adds new structures or landmarks to the world:",
           "name": "Locations - New Structures & Landmarks"
         }
       ]
@@ -33,39 +33,39 @@
       "name": "Gameplay",
       "subcategories": [
         {
-          "ask": "Does the mod add or alter quests/stories?",
+          "ask": "If the mod adds or alters quests/stories:",
           "name": "Gameplay - Quests & Stories"
         },
         {
-          "ask": "Does the mod alter character behavior, combat mechanics, or enemy strength in general?",
+          "ask": "If the mod alters character behavior, combat mechanics, or enemy strength in general:",
           "name": "Gameplay - AI & Combat"
         },
         {
-          "ask": "Does the mod add new character classes or races?",
+          "ask": "If the mod adds new character classes or races:",
           "name": "Gameplay - Classes & Races"
         },
         {
-          "ask": "Does the mod modify or add crafting systems to the game?",
+          "ask": "If the mod modifies or adds crafting systems to the game:",
           "name": "Gameplay - Crafting"
         },
         {
-          "ask": "Does the mod alter the acquisition of items in the game, or their stats?",
+          "ask": "If the mod alters the acquisition of items in the game, or their stats:",
           "name": "Gameplay - Economy & Item Balance"
         },
         {
-          "ask": "Does the mod add or modify skills or perks?",
+          "ask": "If the mod adds or modifies skills or perks:",
           "name": "Gameplay - Skills & Perks"
         },
         {
-          "ask": "Does the mod add or modify abilities or spells in the game?",
+          "ask": "If the mod adds or modifies abilities or spells in the game:",
           "name": "Gameplay - Magic & Abilities"
         },
         {
-          "ask": "Does the mod alter or add user interface components?",
+          "ask": "If the mod alters or adds user interface components:",
           "name": "Gameplay - User Interface"
         },
         {
-          "ask": "Does the mod specifically aid player immersion or role-playing?",
+          "ask": "If the mod specifically aids player immersion or role-playing:",
           "name": "Gameplay - Immersion & Role-playing"
         }
       ]
@@ -75,21 +75,21 @@
       "name": "New Characters",
       "subcategories": [
         {
-          "ask": "Does the mod add characters that can be allied to the player?",
+          "ask": "If the mod adds characters that can be allied to the player:",
           "name": "New Characters - Allies"
         },
         {
-          "ask": "Does the mod add characters that are neutral to the player?",
+          "ask": "If the mod adds characters that are neutral to the player:",
           "name": "New Characters - Neutral"
         },
         {
-          "ask": "Does the mod add characters that are enemies to the player?",
+          "ask": "If the mod adds characters that are enemies to the player:",
           "name": "New Characters - Enemies"
         }
       ]
     },
     {
-      "ask": "Does it add new items to the game?",
+      "ask": "If the mod adds new items to the game:",
       "name": "Items",
       "subcategories": [
         {
@@ -116,19 +116,19 @@
       "else": true,
       "subcategories": [
         {
-          "ask": "Does the mod adjust body shapes or textures?",
+          "ask": "If the mod adjusts body shapes or textures:",
           "name": "Character Appearance - Body Mods"
         },
         {
-          "ask": "Does the mod provide new face parts for use during character creation?",
+          "ask": "If the mod provides new face parts for use during character creation:",
           "name": "Character Appearance - Face Parts"
         },
         {
-          "ask": "Does the mod add new overlays for use during character creation?",
+          "ask": "If the mod adds new overlays for use during character creation:",
           "name": "Character Appearance - Overlays"
         },
         {
-          "ask": "Does the mod change the appearance of non-player characters?",
+          "ask": "If the mod changes the appearance of non-player characters:",
           "name": "Character Appearance - NPC Overhauls"
         }
       ]
@@ -139,11 +139,11 @@
       "else": true,
       "subcategories": [
         {
-          "ask": "Does the mod change something to improve stability or performance?",
+          "ask": "If the mod changes something to improve stability or performance:",
           "name": "Fixes - Stability & Performance"
         },
         {
-          "ask": "Does the mod make mods compatible with each other, or carry the changes from one mod into another?",
+          "ask": "If the mod makes mods compatible with each other:",
           "name": "Fixes - Patches"
         }
       ]
@@ -154,23 +154,23 @@
       "else": true,
       "subcategories": [
         {
-          "ask": "Does the mod add or alter animations or physics?",
+          "ask": "If the mod adds or alters animations or physics:",
           "name": "Audiovisual - Animations & Physics"
         },
         {
-          "ask": "Does the mod perform audiovisual post-processing, or provide a preset for post-processing?",
+          "ask": "If the mod performs post-processing, or provide a post-processing preset:",
           "name": "Audiovisual - Post-processing"
         },
         {
-          "ask": "Does the mod alter lighting or weather?",
+          "ask": "If the mod alters lighting or weather:",
           "name": "Audiovisual - Lighting & Weather"
         },
         {
-          "ask": "Does the mod alter models, textures, or shaders?",
+          "ask": "If the mod alters models, textures, or shaders:",
           "name": "Audiovisual - Models & Textures"
         },
         {
-          "ask": "Does the mod add or alter sounds or music?",
+          "ask": "If the mod adds or alters sounds or music:",
           "name": "Audiovisual - Sounds & Music"
         }
       ]
@@ -180,11 +180,11 @@
       "name": "Utilities",
       "subcategories": [
         {
-          "ask": "Does the utility have an ingame interface?",
+          "ask": "If the utility has an ingame interface:",
           "name": "Utilities - Ingame"
         },
         {
-          "ask": "Does the utility generate some kind of patch?",
+          "ask": "If the utility generates some kind of patch:",
           "name": "Utilities - Patchers"
         },
         {
@@ -198,15 +198,15 @@
       "name": "Resources",
       "subcategories": [
         {
-          "ask": "Does the resource offer a framework or API for other mods to use?",
+          "ask": "If the resource offers a framework or API for other mods to use:",
           "name": "Resources - Frameworks"
         },
         {
-          "ask": "Does the resource offer audiovisual resources such as models, textures, or sound files for other modders to build off of?",
+          "ask": "If the resource offers audiovisual resources such as models, textures, or sound files for other modders to build off of:",
           "name": "Resources - Audiovisual"
         },
         {
-          "ask": "Does the resource provide a guide, tutorial, or general information about modding?",
+          "ask": "If the resource provides a guide, tutorial, or general information about modding:",
           "name": "Resources - Guides & Tutorials"
         }
       ]
