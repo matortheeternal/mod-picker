@@ -1,0 +1,215 @@
+{
+  "categories": [
+    {
+      "ask": "Does it add or modify locations in the game?",
+      "name": "Locations",
+      "else": true,
+      "subcategories": [
+        {
+          "ask": "Does the mod add new worlds to explore?",
+          "name": "Locations - New Lands"
+        },
+        {
+          "ask": "Does the mod add new dungeons - areas to encounter and fight enemies?",
+          "name": "Locations - New Dungeons"
+        },
+        {
+          "ask": "Does the mod add new player homes?",
+          "name": "Locations - New Player Homes"
+        },
+        {
+          "ask": "Does the mod overhaul an existing city, dungeon, player home, or environment?",
+          "name": "Locations - Overhauls"
+        },
+        {
+          "ask": "Does the mod add new structures or landmarks to the world?",
+          "name": "Locations - New Structures & Landmarks"
+        }
+      ]
+    },
+    {
+      "ask": "Does it add or alter game mechanics, balance, user interfaces, or events?",
+      "else": true,
+      "name": "Gameplay",
+      "subcategories": [
+        {
+          "ask": "Does the mod add or alter quests/stories?",
+          "name": "Gameplay - Quests & Stories"
+        },
+        {
+          "ask": "Does the mod alter character behavior, combat mechanics, or enemy strength in general?",
+          "name": "Gameplay - AI & Combat"
+        },
+        {
+          "ask": "Does the mod add new character classes or races?",
+          "name": "Gameplay - Classes & Races"
+        },
+        {
+          "ask": "Does the mod modify or add crafting systems to the game?",
+          "name": "Gameplay - Crafting"
+        },
+        {
+          "ask": "Does the mod alter the acquisition of items in the game, or their stats?",
+          "name": "Gameplay - Economy & Item Balance"
+        },
+        {
+          "ask": "Does the mod add or modify skills or perks?",
+          "name": "Gameplay - Skills & Perks"
+        },
+        {
+          "ask": "Does the mod add or modify abilities or spells in the game?",
+          "name": "Gameplay - Magic & Abilities"
+        },
+        {
+          "ask": "Does the mod alter or add user interface components?",
+          "name": "Gameplay - User Interface"
+        },
+        {
+          "ask": "Does the mod specifically aid player immersion or role-playing?",
+          "name": "Gameplay - Immersion & Role-playing"
+        }
+      ]
+    },
+    {
+      "ask": "Does it add new characters or creatures to the game?",
+      "name": "New Characters",
+      "subcategories": [
+        {
+          "ask": "Does the mod add characters that can be allied to the player?",
+          "name": "New Characters - Allies"
+        },
+        {
+          "ask": "Does the mod add characters that are neutral to the player?",
+          "name": "New Characters - Neutral"
+        },
+        {
+          "ask": "Does the mod add characters that are enemies to the player?",
+          "name": "New Characters - Enemies"
+        }
+      ]
+    },
+    {
+      "ask": "Does it add new items to the game?",
+      "name": "Items",
+      "subcategories": [
+        {
+          "ask": "Does the mod add new weapons?",
+          "name": "Items - Weapons"
+        },
+        {
+          "ask": "Does the mod add new armor, clothing or accessories?",
+          "name": "Items - Armor, Clothing, & Accessories"
+        },
+        {
+          "ask": "Does the mod add new items you can eat or drink?",
+          "name": "Items - Ingestibles"
+        },
+        {
+          "else": true,
+          "name": "Items - Tools & Clutter"
+        }
+      ]
+    },
+    {
+      "ask": "Does it alter the appearance of characters in the game?",
+      "name": "Character Appearance",
+      "else": true,
+      "subcategories": [
+        {
+          "ask": "Does the mod adjust body shapes or textures?",
+          "name": "Character Appearance - Body Mods"
+        },
+        {
+          "ask": "Does the mod provide new face parts for use during character creation?",
+          "name": "Character Appearance - Face Parts"
+        },
+        {
+          "ask": "Does the mod add new overlays for use during character creation?",
+          "name": "Character Appearance - Overlays"
+        },
+        {
+          "ask": "Does the mod change the appearance of non-player characters?",
+          "name": "Character Appearance - NPC Overhauls"
+        }
+      ]
+    },
+    {
+      "ask": "Does it fix an issue with the game or other mods?",
+      "name": "Fixes",
+      "else": true,
+      "subcategories": [
+        {
+          "ask": "Does the mod change something to improve stability or performance?",
+          "name": "Fixes - Stability & Performance"
+        },
+        {
+          "ask": "Does the mod make mods compatible with each other, or carry the changes from one mod into another?",
+          "name": "Fixes - Patches"
+        }
+      ]
+    },
+    {
+      "ask": "Does it change the way things appear or sound in the game?",
+      "name": "Audiovisual",
+      "else": true,
+      "subcategories": [
+        {
+          "ask": "Does the mod add or alter animations or physics?",
+          "name": "Audiovisual - Animations & Physics"
+        },
+        {
+          "ask": "Does the mod perform audiovisual post-processing, or provide a preset for post-processing?",
+          "name": "Audiovisual - Post-processing"
+        },
+        {
+          "ask": "Does the mod alter lighting or weather?",
+          "name": "Audiovisual - Lighting & Weather"
+        },
+        {
+          "ask": "Does the mod alter models, textures, or shaders?",
+          "name": "Audiovisual - Models & Textures"
+        },
+        {
+          "ask": "Does the mod add or alter sounds or music?",
+          "name": "Audiovisual - Sounds & Music"
+        }
+      ]
+    },
+    {
+      "ask": "Does it aid in the creation and management of mods or mod-related assets?",
+      "name": "Utilities",
+      "subcategories": [
+        {
+          "ask": "Does the utility have an ingame interface?",
+          "name": "Utilities - Ingame"
+        },
+        {
+          "ask": "Does the utility generate some kind of patch?",
+          "name": "Utilities - Patchers"
+        },
+        {
+          "else": true,
+          "name": "Utilities - Tools"
+        }
+      ]
+    },
+    {
+      "ask": "Is it a resource to be used by other modders?",
+      "name": "Resources",
+      "subcategories": [
+        {
+          "ask": "Does the resource offer a framework or API for other mods to use?",
+          "name": "Resources - Frameworks"
+        },
+        {
+          "ask": "Does the resource offer audiovisual resources such as models, textures, or sound files for other modders to build off of?",
+          "name": "Resources - Audiovisual"
+        },
+        {
+          "ask": "Does the resource provide a guide, tutorial, or general information about modding?",
+          "name": "Resources - Guides & Tutorials"
+        }
+      ]
+    }
+  ]
+}
