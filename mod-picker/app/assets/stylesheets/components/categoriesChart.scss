@@ -1,0 +1,118 @@
+.categories-chart {
+  section {
+    position: relative;
+    margin-bottom: 70px;
+  }
+
+  .connector {
+    border-top: 1px solid;
+    border-left: 1px solid;
+    display: block;
+    float: right;
+    height: 60px;
+    width: 50%;
+  }
+
+  .section-header {
+    text-align: center;
+
+    h3 {
+      font-size: 22px;
+      color: $text_color;
+      display: block;
+    }
+
+    p {
+      margin: 0;
+      display: inline-block;
+      padding: 0 12px;
+      background: $primary_background;
+      z-index: 2;
+      position: relative;
+    }
+  }
+
+  .section-content {
+    border: 1px solid;
+    border-bottom: none;
+    padding: 30px;
+    margin-top: -10px;
+
+    span.yes, span.no {
+      position: absolute;
+      top: 32px;
+      background: $primary_background;
+      padding: 0 10px;
+    }
+
+    span.yes {
+      left: 60px;
+    }
+
+    span.no {
+      right: 60px;
+    }
+
+    .subcategory {
+      max-width: 450px;
+      margin-left: 24px;
+      position: relative;
+
+      p {
+        margin-bottom: 5px;
+        margin-top: 32px;
+      }
+
+      b {
+        margin-left: 40px;
+      }
+
+      .subcategory-connector {
+        border-top: 1px solid;
+        display: inline-block;
+        position: absolute;
+        top: 10px;
+        left: -55px;
+        width: 40px;
+
+        &.last {
+          height: 82px;
+          background: $primary_background;
+        }
+      }
+    }
+  }
+
+  .final-section {
+    .section-content {
+      width: 70%;
+      margin: auto;
+      margin-top: -10px;
+      height: 95px;
+    }
+
+    span.yes {
+      top: -65px;
+      left: 15px;
+    }
+
+    span.no {
+      top: -65px;
+      right: 75px;
+    }
+
+    .left, .right {
+      position: absolute;
+      top: 110px;
+      max-width: 200px;
+    }
+
+    .right {
+      right: 30px;
+    }
+
+    .left {
+      left: 90px;
+    }
+  }
+}
