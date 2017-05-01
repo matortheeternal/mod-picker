@@ -7,14 +7,14 @@
                 <section ng-repeat="category in chart">
                     <div class="section-header">
                         <h3>{{::category.name}}</h3>
-                        <p class="question">{{::category.ask}}</p>
+                        <p>{{::category.prompt}}</p>
                     </div>
                     <div class="section-content">
                         <span class="yes">Yes</span>
                         <span class="no">No</span>
                         <div class="subcategory" ng-repeat="subcategory in category.subcategories">
                             <div class="subcategory-connector" ng-class="{'last' : $last && !category.else}"></div>
-                            <p class="question">{{::subcategory.ask}}</p>
+                            <p>{{::subcategory.prompt}}</p>
                             <p class="else" ng-if="subcategory.else">ELSE</p>
                             <b>{{::subcategory.name}}</b>
                         </div>
@@ -28,7 +28,7 @@
                 </section>
                 <section class="final-section">
                     <div class="section-header">
-                        <p class="question">Does it alter the game in any way?</p>
+                        <p>Does it alter the game in any way?</p>
                     </div>
                     <div class="section-content">
                         <div class="left">

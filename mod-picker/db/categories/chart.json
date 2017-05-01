@@ -1,107 +1,107 @@
 {
   "categories": [
     {
-      "ask": "Does it add or modify locations in the game?",
+      "prompt": "Does it add or modify locations in the game?",
       "name": "Locations",
       "else": true,
       "subcategories": [
         {
-          "ask": "If the mod adds new worlds to explore:",
+          "prompt": "If the mod adds new worlds to explore:",
           "name": "Locations - New Lands"
         },
         {
-          "ask": "If the mod adds new areas to encounter and fight enemies:",
+          "prompt": "If the mod adds new areas to encounter and fight enemies:",
           "name": "Locations - New Dungeons"
         },
         {
-          "ask": "If the mod adds new player homes:",
+          "prompt": "If the mod adds new player homes:",
           "name": "Locations - New Player Homes"
         },
         {
-          "ask": "If the mod overhauls an existing city, dungeon, player home, or environment:",
+          "prompt": "If the mod overhauls an existing city, dungeon, player home, or environment:",
           "name": "Locations - Overhauls"
         },
         {
-          "ask": "If the mod adds new structures or landmarks to the world:",
+          "prompt": "If the mod adds new structures or landmarks to the world:",
           "name": "Locations - New Structures & Landmarks"
         }
       ]
     },
     {
-      "ask": "Does it add or alter game mechanics, balance, user interfaces, or events?",
+      "prompt": "Does it add or alter game mechanics, balance, user interfaces, or events?",
       "else": true,
       "name": "Gameplay",
       "subcategories": [
         {
-          "ask": "If the mod adds or alters quests/stories:",
+          "prompt": "If the mod adds or alters quests/stories:",
           "name": "Gameplay - Quests & Stories"
         },
         {
-          "ask": "If the mod alters character behavior, combat mechanics, or enemy strength in general:",
+          "prompt": "If the mod alters character behavior, combat mechanics, or enemy strength in general:",
           "name": "Gameplay - AI & Combat"
         },
         {
-          "ask": "If the mod adds new character classes or races:",
+          "prompt": "If the mod adds new character classes or races:",
           "name": "Gameplay - Classes & Races"
         },
         {
-          "ask": "If the mod modifies or adds crafting systems to the game:",
+          "prompt": "If the mod modifies or adds crafting systems to the game:",
           "name": "Gameplay - Crafting"
         },
         {
-          "ask": "If the mod alters the acquisition of items in the game, or their stats:",
+          "prompt": "If the mod alters the acquisition of items in the game, or their stats:",
           "name": "Gameplay - Economy & Item Balance"
         },
         {
-          "ask": "If the mod adds or modifies skills or perks:",
+          "prompt": "If the mod adds or modifies skills or perks:",
           "name": "Gameplay - Skills & Perks"
         },
         {
-          "ask": "If the mod adds or modifies abilities or spells in the game:",
+          "prompt": "If the mod adds or modifies abilities or spells in the game:",
           "name": "Gameplay - Magic & Abilities"
         },
         {
-          "ask": "If the mod alters or adds user interface components:",
+          "prompt": "If the mod alters or adds user interface components:",
           "name": "Gameplay - User Interface"
         },
         {
-          "ask": "If the mod specifically aids player immersion or role-playing:",
+          "prompt": "If the mod specifically aids player immersion or role-playing:",
           "name": "Gameplay - Immersion & Role-playing"
         }
       ]
     },
     {
-      "ask": "Does it add new characters or creatures to the game?",
+      "prompt": "Does it add new characters or creatures to the game?",
       "name": "New Characters",
       "subcategories": [
         {
-          "ask": "If the mod adds characters that can be allied to the player:",
+          "prompt": "If the mod adds characters that can be allied to the player:",
           "name": "New Characters - Allies"
         },
         {
-          "ask": "If the mod adds characters that are neutral to the player:",
+          "prompt": "If the mod adds characters that are neutral to the player:",
           "name": "New Characters - Neutral"
         },
         {
-          "ask": "If the mod adds characters that are enemies to the player:",
+          "prompt": "If the mod adds characters that are enemies to the player:",
           "name": "New Characters - Enemies"
         }
       ]
     },
     {
-      "ask": "Does the mod add new items to the game?",
+      "prompt": "Does the mod add new items to the game?",
       "name": "Items",
       "subcategories": [
         {
-          "ask": "If it adds new weapons:",
+          "prompt": "If it adds new weapons:",
           "name": "Items - Weapons"
         },
         {
-          "ask": "If it adds new armor, clothing, or accessories:",
+          "prompt": "If it adds new armor, clothing, or accessories:",
           "name": "Items - Armor, Clothing, & Accessories"
         },
         {
-          "ask": "If it adds new items you can eat or drink:",
+          "prompt": "If it adds new items you can eat or drink:",
           "name": "Items - Ingestibles"
         },
         {
@@ -111,80 +111,80 @@
       ]
     },
     {
-      "ask": "Does it alter the appearance of characters in the game?",
+      "prompt": "Does it alter the appearance of characters in the game?",
       "name": "Character Appearance",
       "else": true,
       "subcategories": [
         {
-          "ask": "If the mod adjusts body shapes or textures:",
+          "prompt": "If the mod adjusts body shapes or textures:",
           "name": "Character Appearance - Body Mods"
         },
         {
-          "ask": "If the mod provides new face parts for use during character creation:",
+          "prompt": "If the mod provides new face parts for use during character creation:",
           "name": "Character Appearance - Face Parts"
         },
         {
-          "ask": "If the mod adds new overlays for use during character creation:",
+          "prompt": "If the mod adds new overlays for use during character creation:",
           "name": "Character Appearance - Overlays"
         },
         {
-          "ask": "If the mod changes the appearance of non-player characters:",
+          "prompt": "If the mod changes the appearance of non-player characters:",
           "name": "Character Appearance - NPC Overhauls"
         }
       ]
     },
     {
-      "ask": "Does it fix an issue with the game or other mods?",
+      "prompt": "Does it fix an issue with the game or other mods?",
       "name": "Fixes",
       "else": true,
       "subcategories": [
         {
-          "ask": "If the mod changes something to improve stability or performance:",
+          "prompt": "If the mod changes something to improve stability or performance:",
           "name": "Fixes - Stability & Performance"
         },
         {
-          "ask": "If the mod makes mods compatible with each other:",
+          "prompt": "If the mod makes mods compatible with each other:",
           "name": "Fixes - Patches"
         }
       ]
     },
     {
-      "ask": "Does it change the way things appear or sound in the game?",
+      "prompt": "Does it change the way things appear or sound in the game?",
       "name": "Audiovisual",
       "else": true,
       "subcategories": [
         {
-          "ask": "If the mod adds or alters animations or physics:",
+          "prompt": "If the mod adds or alters animations or physics:",
           "name": "Audiovisual - Animations & Physics"
         },
         {
-          "ask": "If the mod performs post-processing, or provide a post-processing preset:",
+          "prompt": "If the mod performs post-processing, or provide a post-processing preset:",
           "name": "Audiovisual - Post-processing"
         },
         {
-          "ask": "If the mod alters lighting or weather:",
+          "prompt": "If the mod alters lighting or weather:",
           "name": "Audiovisual - Lighting & Weather"
         },
         {
-          "ask": "If the mod alters models, textures, or shaders:",
+          "prompt": "If the mod alters models, textures, or shaders:",
           "name": "Audiovisual - Models & Textures"
         },
         {
-          "ask": "If the mod adds or alters sounds or music:",
+          "prompt": "If the mod adds or alters sounds or music:",
           "name": "Audiovisual - Sounds & Music"
         }
       ]
     },
     {
-      "ask": "Does it aid in the creation and management of mods or mod-related assets?",
+      "prompt": "Does it aid in the creation and management of mods or mod-related assets?",
       "name": "Utilities",
       "subcategories": [
         {
-          "ask": "If the utility has an ingame interface:",
+          "prompt": "If the utility has an ingame interface:",
           "name": "Utilities - Ingame"
         },
         {
-          "ask": "If the utility generates some kind of patch:",
+          "prompt": "If the utility generates some kind of patch:",
           "name": "Utilities - Patchers"
         },
         {
@@ -194,19 +194,19 @@
       ]
     },
     {
-      "ask": "Is it a resource to be used by other modders?",
+      "prompt": "Is it a resource to be used by other modders?",
       "name": "Resources",
       "subcategories": [
         {
-          "ask": "If the resource offers a framework or API for other mods to use:",
+          "prompt": "If the resource offers a framework or API for other mods to use:",
           "name": "Resources - Frameworks"
         },
         {
-          "ask": "If the resource offers audiovisual resources such as models, textures, or sound files for other modders to build off of:",
+          "prompt": "If the resource offers audiovisual resources such as models, textures, or sound files for other modders to build off of:",
           "name": "Resources - Audiovisual"
         },
         {
-          "ask": "If the resource provides a guide, tutorial, or general information about modding:",
+          "prompt": "If the resource provides a guide, tutorial, or general information about modding:",
           "name": "Resources - Guides & Tutorials"
         }
       ]
