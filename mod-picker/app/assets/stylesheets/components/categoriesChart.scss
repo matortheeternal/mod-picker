@@ -5,12 +5,22 @@
   }
 
   .connector {
-    border-top: 1px solid;
-    border-left: 1px solid;
+    border-top: 2px solid;
+    border-left: 2px solid;
     display: block;
     float: right;
     height: 60px;
     width: 50%;
+    position: relative;
+
+    .arrow {
+      border-top: 10px solid;
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      position: absolute;
+      bottom: -4px;
+      left: -7px;
+    }
   }
 
   .section-header {
@@ -33,7 +43,7 @@
   }
 
   .section-content {
-    border: 1px solid;
+    border: 2px solid;
     border-bottom: none;
     padding: 30px;
     margin-top: -10px;
@@ -68,15 +78,24 @@
       }
 
       .subcategory-connector {
-        border-top: 1px solid;
+        border-top: 2px solid;
         display: inline-block;
         position: absolute;
-        top: 10px;
-        left: -55px;
+        top: 9px;
+        left: -56px;
         width: 40px;
 
+        .arrow {
+          border-left: 10px solid;
+          border-top: 6px solid transparent;
+          border-bottom: 6px solid transparent;
+          position: absolute;
+          top: -7px;
+          right: -6px;
+        }
+
         &.last {
-          height: 82px;
+          height: 83px;
           background: $primary_background;
         }
       }
@@ -92,27 +111,43 @@
     }
 
     span.yes {
-      top: -65px;
+      top: -70px;
       left: 15px;
     }
 
     span.no {
-      top: -65px;
-      right: 75px;
+      top: -70px;
+      right: 79px;
     }
 
     .left, .right {
       position: absolute;
-      top: 110px;
+      top: 115px;
       max-width: 200px;
+
+      .arrow {
+        border-top: 10px solid;
+        border-left: 6px solid transparent;
+        border-right: 6px solid transparent;
+        position: absolute;
+        top: -14px;
+      }
     }
 
     .right {
       right: 30px;
+
+      .arrow {
+        right: 93px;
+      }
     }
 
     .left {
       left: 90px;
+
+      .arrow {
+        left: 32px;
+      }
     }
   }
 }
