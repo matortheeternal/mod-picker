@@ -5,6 +5,10 @@ app.service('categoryService', function($q, backend) {
         return backend.retrieve('/categories', {cache: true});
     };
 
+    this.retrieveCategoryChart = function() {
+        return backend.retrieve('/categories/chart', {cache: true});
+    };
+
     this.filterCategories = function(categories, key) {
         var filteredCategories = categories.filter(function(category) {
             return category.parent_id == key;
