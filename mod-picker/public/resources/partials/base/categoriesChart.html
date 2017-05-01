@@ -1,0 +1,49 @@
+<div class="page-container">
+    <div class="single-column">
+        <h2>Categories Chart</h2>
+
+        <loader data="chart" spinner-class="big-spinner" ng-if="!error">
+            <div class="categories-chart">
+                <section ng-repeat="category in chart">
+                    <div class="section-header">
+                        <h3>{{::category.name}}</h3>
+                        <p class="question">{{::category.ask}}</p>
+                    </div>
+                    <div class="section-content">
+                        <span class="yes">Yes</span>
+                        <span class="no">No</span>
+                        <div class="subcategory" ng-repeat="subcategory in category.subcategories">
+                            <div class="subcategory-connector" ng-class="{'last' : $last && !category.else}"></div>
+                            <p class="question">{{::subcategory.ask}}</p>
+                            <p class="else" ng-if="subcategory.else">ELSE</p>
+                            <b>{{::subcategory.name}}</b>
+                        </div>
+                        <div class="subcategory" ng-if="category.else">
+                            <div class="subcategory-connector last"></div>
+                            <p class="else">ELSE</p>
+                            <b>{{::category.name}}</b>
+                        </div>
+                    </div>
+                    <div class="connector"></div>
+                </section>
+                <section class="final-section">
+                    <div class="section-header">
+                        <p class="question">Does it alter the game in any way?</p>
+                    </div>
+                    <div class="section-content">
+                        <div class="left">
+                            <span class="yes">Yes</span>
+                            <b>Gameplay</b>
+                        </div>
+                        <div class="right">
+                            <span class="no">No</span>
+                            <b>There's no category for this content, it probably does not belong on Mod Picker.</b>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </loader>
+
+        <error-display content-class="content-message content-error" errors="error" label="categories"></error-display>
+    </div>
+</div>
