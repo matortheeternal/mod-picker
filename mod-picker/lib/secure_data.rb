@@ -13,7 +13,8 @@ class SecureData
   end
 
   def self.offset(i, d)
-    (((i + MIN_OFFSET) * MAGIC_1 + d) / MAGIC_2).to_i
+    i + d
+    #(((i + MIN_OFFSET) * MAGIC_1 + d) / MAGIC_2).to_i
   end
 
   def self.crypt_string(str, key, dec)
