@@ -89,19 +89,19 @@
       ]
     },
     {
-      "ask": "If the mod adds new items to the game:",
+      "ask": "Does the mod add new items to the game?",
       "name": "Items",
       "subcategories": [
         {
-          "ask": "Does the mod add new weapons?",
+          "ask": "If it adds new weapons:",
           "name": "Items - Weapons"
         },
         {
-          "ask": "Does the mod add new armor, clothing or accessories?",
+          "ask": "If it adds new armor, clothing, or accessories:",
           "name": "Items - Armor, Clothing, & Accessories"
         },
         {
-          "ask": "Does the mod add new items you can eat or drink?",
+          "ask": "If it adds new items you can eat or drink:",
           "name": "Items - Ingestibles"
         },
         {
