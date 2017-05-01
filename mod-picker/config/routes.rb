@@ -335,6 +335,9 @@ Rails.application.routes.draw do
   resources :help_pages, path: 'help', only: [:show, :index]
   match '/help/*path', to: 'help_pages#record_not_found', via: :all
 
+  # categories
+  match '/categories/chart', to: 'categories#chart', via: [:get]
+
   # static data
   resources :categories, only: [:index]
   resources :category_priorities, only: [:index]
