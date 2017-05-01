@@ -3,7 +3,6 @@
     {
       "prompt": "Does it add or modify locations in the game?",
       "name": "Locations",
-      "else": true,
       "subcategories": [
         {
           "prompt": "If the mod adds new worlds to explore:",
@@ -24,12 +23,15 @@
         {
           "prompt": "If the mod adds new structures or landmarks to the world:",
           "name": "Locations - New Structures & Landmarks"
+        },
+        {
+          "prompt": "ELSE:",
+          "name": "Locations"
         }
       ]
     },
     {
       "prompt": "Does it add or alter game mechanics, balance, user interfaces, or events?",
-      "else": true,
       "name": "Gameplay",
       "subcategories": [
         {
@@ -67,6 +69,10 @@
         {
           "prompt": "If the mod specifically aids player immersion or role-playing:",
           "name": "Gameplay - Immersion & Role-playing"
+        },
+        {
+          "prompt": "ELSE:",
+          "name": "Gameplay"
         }
       ]
     },
@@ -105,7 +111,7 @@
           "name": "Items - Ingestibles"
         },
         {
-          "else": true,
+          "prompt": "ELSE:",
           "name": "Items - Tools & Clutter"
         }
       ]
@@ -113,7 +119,6 @@
     {
       "prompt": "Does it alter the appearance of characters in the game?",
       "name": "Character Appearance",
-      "else": true,
       "subcategories": [
         {
           "prompt": "If the mod adjusts body shapes or textures:",
@@ -136,7 +141,6 @@
     {
       "prompt": "Does it fix an issue with the game or other mods?",
       "name": "Fixes",
-      "else": true,
       "subcategories": [
         {
           "prompt": "If the mod changes something to improve stability or performance:",
@@ -145,13 +149,16 @@
         {
           "prompt": "If the mod makes mods compatible with each other:",
           "name": "Fixes - Patches"
+        },
+        {
+          "prompt": "ELSE:",
+          "name": "Fixes"
         }
       ]
     },
     {
       "prompt": "Does it change the way things appear or sound in the game?",
       "name": "Audiovisual",
-      "else": true,
       "subcategories": [
         {
           "prompt": "If the mod adds or alters animations or physics:",
@@ -172,6 +179,10 @@
         {
           "prompt": "If the mod adds or alters sounds or music:",
           "name": "Audiovisual - Sounds & Music"
+        },
+        {
+          "prompt": "ELSE:",
+          "name": "Audiovisual"
         }
       ]
     },
@@ -188,7 +199,7 @@
           "name": "Utilities - Patchers"
         },
         {
-          "else": true,
+          "prompt": "ELSE:",
           "name": "Utilities - Tools"
         }
       ]
