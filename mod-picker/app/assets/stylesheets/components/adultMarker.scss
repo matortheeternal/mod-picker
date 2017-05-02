@@ -4,6 +4,18 @@ adult-marker {
     font-weight: 500;
     text-shadow: 0 0 6px red, 0 -1px 16px $error_secondary, 0 0 24px $error_secondary;
     display: inline-block;
+    vertical-align: top;
+    margin-top: 5px;
     margin-left: 10px;
   }
+}
+
+span.active-marker {
+  font-size: 1.2em;
+  font-weight: 500;
+  text-shadow: 0 0 6px green, 0 -1px 16px $success_secondary, 0 0 24px $success_secondary;
+  display: inline-block;
+  vertical-align: top;
+  margin-top: 5px;
+  margin-left: 10px;
 }

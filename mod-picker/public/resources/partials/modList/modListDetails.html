@@ -1,24 +1,16 @@
 <div class="content-block">
     <div class="content-title">Description
-        <span class="right-item action-box green-box special-box" ng-click="downloadModList()" tabindex="0" ng-if="permissions.canDownloadModList">
-            <i class="fa fa-cloud-download"></i> Download Mod List
+        <span ng-if="isActive" class="right-item action-box green-box no-action" title="This is your active mod list - added mods will end up here.">
+            <i class="fa fa-chevron-circle-down"></i>
+            Active
         </span>
-        <span class="right-item action-box" ng-click="toggleExportDropdown($event)" ng-blur="blurExportDropdown()" tabindex="0">
-            <i class="fa fa-download"></i> Export
+        <span class="right-item action-box no-action {{visibilityClasses[mod_list.visibility]}} capitalize" title="{{visibilityHints[mod_list.visibility]}}">
+            <i class="fa {{visibilityIcons[mod_list.visibility]}}" aria-hidden="true"></i>
+            {{mod_list.visibility.replace("visibility_", "")}}
         </span>
-        <div class="dropdown export-dropdown" ng-if="showExportDropdown">
-            <a ng-href="/mod_lists/{{mod_list.id}}/export_modlist.txt" target="_blank">
-                modlist.txt
-            </a>
-            <a ng-href="/mod_lists/{{mod_list.id}}/export_plugins.txt" target="_blank">
-                plugins.txt
-            </a>
-            <a ng-href="/mod_lists/{{mod_list.id}}/export_links.txt" target="_blank">
-                links.txt
-            </a>
-        </div>
-        <span class="right-item action-box" ng-click="toggleImportModal(true)" tabindex="0" ng-if="editing">
-            <i class="fa fa-upload"></i> Import
+        <span class="right-item action-box no-action {{statusClasses[mod_list.status]}} capitalize" title="{{statusHints[mod_list.status]}}">
+            <i class="fa {{statusIcons[mod_list.status]}}" aria-hidden="true"></i>
+            {{mod_list.status.replace("_", " ")}}
         </span>
     </div>
     <div class="content-container" ng-if="!editing">

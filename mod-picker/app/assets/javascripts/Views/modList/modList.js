@@ -309,6 +309,30 @@ app.controller('modListController', function($scope, $rootScope, $q, $state, $st
         $scope.showReportModal = visible;
     };
 
+    $scope.toggleExportDropdown = function($event) {
+        $scope.showExportDropdown = !$scope.showExportDropdown;
+        if (!$scope.showExportDropdown) {
+            $event.currentTarget.blur();
+        }
+    };
+
+    $scope.blurExportDropdown = function() {
+        $timeout(function() {
+            $scope.showExportDropdown = false;
+        }, 250);
+    };
+
+    $scope.toggleImportModal = function(visible) {
+        $scope.$emit('toggleModal', visible);
+        $scope.showImportModal = visible;
+    };
+
+    $scope.downloadModList = function() {
+        var gameName = $rootScope.currentGame.nexus_name;
+        var modListId = $scope.mod_list.id;
+        window.location = 'modpicker://' + gameName + '/mod-list/' + modListId;
+    };
+
     // ACTIVITY MODAL
     $scope.startActivity = function(title) {
         $scope.activityTitle = title;

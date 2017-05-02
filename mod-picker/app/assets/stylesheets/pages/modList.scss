@@ -1,7 +1,5 @@
 .export-dropdown {
-  right: 10px;
-  top: 33px;
-  left: initial;
+  top: 25px;
   cursor: default;
   width: auto;
 
@@ -13,6 +11,11 @@
       color: $link_hover_color_primary !important;
     }
   }
+}
+
+.dropdown-container {
+  position: relative;
+  margin: 0 !important;
 }
 
 ul.required-list {
