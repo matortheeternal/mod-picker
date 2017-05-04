@@ -16,7 +16,7 @@ app.service('sitesFactory', function() {
             baseUserUrlFormat: "https://forums.nexusmods.com/index.php?showuser=",
             userUrlFormat: /forums\.nexusmods\.com\/index\.php\?showuser=([0-9]+)(\/)?/i,
             badUserUrlFormat: /forums\.nexusmods\.com\/index\.php\?\/user\/([A-Za-z0-9\-]+)(\/)?/i,
-            modUrlBase: "https://www.nexusmods.com/{game}/mods/{id}",
+            modUrlBase: "http://www.nexusmods.com/{game}/mods/{id}",
             userIndex: 1,
             loginUrl: "https://forums.nexusmods.com/",
             logoPath: "/images/nexus_logo.png"
