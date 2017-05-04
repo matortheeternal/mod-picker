@@ -521,11 +521,12 @@ app.service("filtersFactory", function() {
                 admin: "adm",
                 moderator: "mod",
                 helper: "hlp",
+                beta_tester: "bt",
                 author: "ma",
                 user: "usr",
                 restricted: "rsr",
                 banned: "bnd"
-            }, 5)
+            }, 6)
         )
     };
 
