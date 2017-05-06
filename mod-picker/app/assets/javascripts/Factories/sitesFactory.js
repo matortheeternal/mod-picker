@@ -110,7 +110,7 @@ app.service('sitesFactory', function() {
             hidden: true,
             label: "TES Alliance",
             shortLabel: "TES Alliance",
-            modUrlFormat: /tesalliance\.org\/forums\/index\.php\?\/files\/files\/([a-zA-Z0-9\-]+)/i,
+            modUrlFormat: /tesalliance\.org\/forums\/index\.php\?\/files\/file\/([a-zA-Z0-9\-]+)/i,
             logoPath: "/images/tes_alliance_logo.png"
         }
     ];
