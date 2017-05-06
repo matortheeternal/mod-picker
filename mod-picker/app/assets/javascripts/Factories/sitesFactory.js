@@ -105,6 +105,13 @@ app.service('sitesFactory', function() {
             shortLabel: "Curse",
             modUrlFormat: /mods\.curse\.com\/mods\/([a-zA-Z0-9\-]+)\/([a-zA-Z0-9\-]+)/i,
             logoPath: "/images/curse_logo.png"
+        },
+        {
+            hidden: true,
+            label: "TES Alliance",
+            shortLabel: "TES Alliance",
+            modUrlFormat: /tesalliance\.org\/forums\/index\.php\?\/files\/files\/([a-zA-Z0-9\-]+)/i,
+            logoPath: "/images/tes_alliance_logo.png"
         }
     ];
 
