@@ -164,6 +164,14 @@ app.controller('modsController', function($scope, $rootScope, $q, $stateParams, 
         $scope.$broadcast('reloadTags');
     }, true);
 
+    $scope.$on('tagAdded', function() {
+        $scope.refreshFilters();
+    });
+
+    $scope.$on('tagRemoved', function() {
+        $scope.refreshFilters();
+    });
+
     $scope.$watch('filters.sources', function() {
         $scope.buildAvailableColumnData();
         $scope.hideUnavailableColumns();

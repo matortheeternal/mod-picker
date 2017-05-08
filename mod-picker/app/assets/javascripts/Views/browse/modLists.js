@@ -31,4 +31,12 @@ app.controller('modListsController', function($scope, $rootScope, $stateParams, 
     $scope.route = 'mod_lists';
     $scope.retrieve = modListService.retrieveModLists;
     indexFactory.buildIndex($scope, $stateParams, $state);
+
+    $scope.$on('tagAdded', function() {
+        $scope.refreshFilters();
+    });
+
+    $scope.$on('tagRemoved', function() {
+        $scope.refreshFilters();
+    });
 });
