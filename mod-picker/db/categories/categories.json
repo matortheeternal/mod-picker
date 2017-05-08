@@ -78,7 +78,7 @@
     },
     {
       "name": "Gameplay",
-      "description": "Mods which modify game mechanics, pardigms, balance, user interfaces, or events.",
+      "description": "Mods which modify game mechanics, paradigms, balance, user interfaces, or events.",
       "priority": 110,
       "subcategories": [
         {
@@ -150,7 +150,7 @@
         },
         {
           "name": "Items - Weapons",
-          "description": "Mods that that add sticks you can stab, squish, or shoot people with.",
+          "description": "Mods that add sticks you can stab, squish, or shoot people with.",
           "priority": 142
         }
       ]
