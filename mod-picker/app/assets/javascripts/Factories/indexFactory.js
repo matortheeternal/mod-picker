@@ -56,7 +56,7 @@ app.service('indexFactory', function(indexService, objectUtils, $timeout) {
 
         // initially get data unless skipping
         if (!skipGetData) {
-            $scope.getData(1);
+            $scope.getData($scope.filters.page || 1);
         }
     };
 
