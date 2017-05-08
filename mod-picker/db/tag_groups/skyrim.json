@@ -34,7 +34,7 @@
 	}, {
 		"category_name" : "Audiovisual - Models & Textures",
 		"name" : "Target",
-		"tag_names" : ["Accessories", "Animals", "Architecture", "Armor", "Clothing", "Clutter", "Creatures", "Food", "Ingredients", "Items", "Jewelry", "Landscape", "Plants", "Potions", "Poisons", "Magic", "Sky", "User Interface", "Weapons"]
+		"tag_names" : ["Accessories", "Animals", "Architecture", "Armor", "Clothing", "Clutter", "Creatures", "Dungeons", "Effects", "Food", "Ingredients", "Items", "Jewelry", "Landscape", "Plants", "Potions", "Poisons", "Magic", "Sky", "User Interface", "Weapons"]
 	}, {
 		"category_name" : "Audiovisual - Post-processing",
 		"name" : "Content",
