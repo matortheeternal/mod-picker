@@ -7,12 +7,13 @@ class SecureData
     if key.empty?
       str
     else
-      if key.length < str.length
-        div, mod = str.length.divmod(key.length)
+      a1 = NArray.to_na(str, "byte")
+
+      if key.length < a1.length
+        div, mod = a1.length.divmod(key.length)
         key = key * div + key[0, mod]
       end
 
-      a1 = NArray.to_na(str, "byte")
       a2 = NArray.to_na(key, "byte")
 
       (a1 ^ a2).to_s
