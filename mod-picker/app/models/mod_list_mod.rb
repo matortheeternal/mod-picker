@@ -39,6 +39,13 @@ class ModListMod < ActiveRecord::Base
     })
   end
 
+  def self.replace_with_custom(mod)
+    mod.mod_list_mods.find_each do |mod_list_mod|
+      ModListCustomMod.create_from_mod_list_mod(mod_list_mod)
+      mod_list_mod.destroy
+    end
+  end
+
   def mod_compatibility_notes
     mod_ids = mod_list.mod_list_mod_ids
     return [] if mod_ids.empty?

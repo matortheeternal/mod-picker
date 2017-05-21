@@ -12,6 +12,8 @@ class BlacklistedAuthor < ActiveRecord::Base
   def hide_matching_mods
     mod_ids = source_model.where("mod_id IS NOT NULL").where(uploaded_by: author).pluck(:mod_id)
     Mod.where(id: mod_ids).each do |mod|
+      ModListPlugin.replace_with_custom(mod)
+      ModListMod.replace_with_custom(mod)
       mod.update(hidden: true)
     end
   end

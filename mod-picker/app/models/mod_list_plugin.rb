@@ -36,6 +36,13 @@ class ModListPlugin < ActiveRecord::Base
     })
   end
 
+  def self.replace_with_custom(mod)
+    ModListPlugin.where(plugin_id: mod.plugin_ids).find_each do |mod_list_plugin|
+      ModListCustomPlugin.create_from_mod_list_plugin(mod_list_plugin)
+      mod_list_plugin.destroy
+    end
+  end
+
   def required_plugins
     Master.plugins([self.plugin_id]).order(:master_plugin_id)
   end

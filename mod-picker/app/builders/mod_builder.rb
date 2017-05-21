@@ -151,18 +151,11 @@ class ModBuilder < Builder
   end
 
   def make_custom_mods
-    ModListPlugin.where(plugin_id: resource.plugin_ids).find_each do |mod_list_plugin|
-      ModListCustomPlugin.create_from_mod_list_plugin(mod_list_plugin)
-      mod_list_plugin.destroy
-    end
-    resource.mod_list_mods.find_each do |mod_list_mod|
-      ModListCustomMod.create_from_mod_list_mod(mod_list_mod)
-      mod_list_mod.destroy
-    end
+    ModListPlugin.replace_with_custom(mod)
+    ModListMod.replace_with_custom(mod)
   end
 
   def manage_custom_mods
-    byebug
     if resource.was_visible != resource.visible
       resource.visible ? substitute_custom_mods : make_custom_mods
     end
