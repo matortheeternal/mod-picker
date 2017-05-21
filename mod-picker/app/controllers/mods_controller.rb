@@ -53,7 +53,7 @@ class ModsController < ApplicationController
 
   # GET /mods/1/mod_options
   def mod_options
-    respond_with_json(@mod.mod_options, :mod_list_mod)
+    respond_with_json(@mod.mod_options, :preview)
   end
 
   # GET /mods/new

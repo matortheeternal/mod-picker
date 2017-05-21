@@ -1,4 +1,4 @@
-app.service('modsIndexFactory', function(modService, categoryService, tagService, modListService, indexService, helpFactory, sliderFactory, columnsFactory, detailsFactory, sortFactory, filtersFactory, actionsFactory, indexFactory, eventHandlerFactory) {
+app.service('modsIndexFactory', function(modService, categoryService, tagService, modListService, indexService, helpFactory, sliderFactory, columnsFactory, detailsFactory, sortFactory, filtersFactory, actionsFactory, indexFactory, eventHandlerFactory, modOptionUtils) {
     var factory = this;
 
     this.buildModAddRemoveHandlers = function($scope) {
@@ -9,13 +9,13 @@ app.service('modsIndexFactory', function(modService, categoryService, tagService
         };
 
         $scope.setModOptionsModalMod = function(mod) {
+            if ($scope.activeMod && $scope.activeMod.id == mod.id) return;
             $scope.activeMod = mod;
             $scope.activeModOptions = null;
             modService.retrieveModOptions(mod.id).then(function(modOptions) {
-               modOptions.forEach(function(modOption) {
-                    modOption.enabled = modOption.default;
-                });
+                modOptionUtils.activateDefaultModOptions(modOptions);
                 $scope.activeModOptions = modOptions;
+                $scope.nestedModOptions = modOptionUtils.getNestedModOptions(modOptions);
             }, function(response) {
                 $scope.modOptionsError = response;
             });

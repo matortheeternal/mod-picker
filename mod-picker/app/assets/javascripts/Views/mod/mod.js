@@ -164,7 +164,7 @@ app.config(['$stateProvider', function($stateProvider) {
     });
 }]);
 
-app.controller('modController', function($scope, $rootScope, $q, $stateParams, $state, $timeout, $window, modObject, modService, modListService, contributionService, categoryService, tagService, smoothScroll, helpFactory, tabsFactory, sortFactory, eventHandlerFactory, tabUtils) {
+app.controller('modController', function($scope, $rootScope, $q, $stateParams, $state, $timeout, $window, modObject, modService, modListService, contributionService, categoryService, tagService, smoothScroll, helpFactory, tabsFactory, sortFactory, eventHandlerFactory, tabUtils, modOptionUtils) {
     // get parent variables
     $scope.mod = modObject.mod;
     $scope.mod.star = modObject.star;
@@ -360,17 +360,27 @@ app.controller('modController', function($scope, $rootScope, $q, $stateParams, $
         $scope.showModOptionsModal = visible;
     };
 
-    $scope.setupModOptionsModal = function() {
-        $scope.activeMod = $scope.mod;
+    $scope.previewModOptions = function() {
         $scope.activeModOptions = null;
         modService.retrieveModOptions($scope.mod.id).then(function(modOptions) {
-            modOptions.forEach(function(modOption) {
-                modOption.enabled = modOption.default;
-            });
+            modOptionUtils.activateDefaultModOptions(modOptions);
             $scope.activeModOptions = modOptions;
+            $scope.nestedModOptions = modOptionUtils.getNestedModOptions(modOptions);
         }, function(response) {
             $scope.modOptionsError = response;
         });
+    };
+
+    $scope.setupModOptionsModal = function() {
+        if ($scope.activeModOptions) return;
+        $scope.activeMod = $scope.mod;
+        if ($scope.mod.options) {
+            $scope.activeModOptions = $scope.mod.options;
+            $scope.nestedModOptions = $scope.mod.nestedOptions;
+        } else {
+            $scope.previewModOptions();
+        }
+
     };
 
     $scope.modOptionsModalAdd = function() {
