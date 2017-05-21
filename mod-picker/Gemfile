@@ -71,6 +71,9 @@ gem 'composite_primary_keys', '~> 8.1'
 # make arel easier with arel helpers
 gem 'arel-helpers'
 
+# fast array computations
+gem 'narray'
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 

@@ -148,7 +148,7 @@ class ModListsController < ApplicationController
     authorize! :read, @mod_list
     authorize! :setup, @mod_list
     decorator = ModListSetupDecorator.new(@mod_list)
-    render text: SecureData.full(current_user, decorator.to_json)
+    send_data SecureData.full(current_user, decorator.to_json)
   end
 
   # GET /mod_lists/:id/config

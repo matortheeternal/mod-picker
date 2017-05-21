@@ -127,6 +127,7 @@ GEM
     minitest (5.9.1)
     mysql2 (0.3.21)
     mysql2 (0.3.21-x64-mingw32)
+    narray (0.6.1.2)
     netrc (0.11.0)
     ngannotate-rails (1.2.2)
       execjs
@@ -306,6 +307,7 @@ DEPENDENCIES
   mail_form
   mailcatcher
   mysql2 (~> 0.3.20)
+  narray
   ngannotate-rails
   nokogiri
   prerender_rails
