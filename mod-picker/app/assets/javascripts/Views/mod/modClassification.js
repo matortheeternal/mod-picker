@@ -19,7 +19,11 @@ app.controller('modClassificationController', function($scope, $rootScope, $time
         $scope.tagsMap = {};
         tagGroups.forEach(function(group) {
             group.tag_group_tags.forEach(function(tag) {
-                $scope.tagsMap[tag.tag_text] = tag;
+                if ($scope.tagsMap[tag.tag_text]) {
+                    $scope.tagsMap[tag.tag_text].push(tag);
+                } else {
+                    $scope.tagsMap[tag.tag_text] = [tag];
+                }
             });
         });
     };
@@ -34,17 +38,14 @@ app.controller('modClassificationController', function($scope, $rootScope, $time
 
     $scope.toggleTagGroupTag = function(tagText, enabled) {
         if ($scope.tagsMap.hasOwnProperty(tagText)) {
-            $scope.tagsMap[tagText].enabled = enabled;
+            $scope.tagsMap[tagText].forEach(function(tag) { tag.enabled = enabled });
             return true;
         }
     };
 
     $scope.toggleTag = function(tag) {
-        if (tag.enabled) {
-            $scope.$broadcast('addTag', tag.tag_text);
-        } else {
-            $scope.$broadcast('removeTag', tag.tag_text);
-        }
+        $scope.toggleTagGroupTag(tag.tag_text, tag.enabled);
+        $scope.$broadcast(tag.enabled ? 'addTag' : 'removeTag', tag.tag_text);
     };
 
     $scope.loadTagGroupTags = function() {
