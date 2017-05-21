@@ -16,6 +16,18 @@ class ModListCustomPlugin < ActiveRecord::Base
   validates :filename, length: {maximum: 255}
   validates :description, length: {maximum: 4096}
 
+  def self.create_from_mod_list_plugin(mod_list_plugin)
+    create({
+        mod_list_id: mod_list_plugin.mod_list_id,
+        group_id: mod_list_plugin.group_id,
+        index: mod_list_plugin.index,
+        cleaned: mod_list_plugin.cleaned,
+        merged: mod_list_plugin.merged,
+        filename: mod_list_plugin.plugin.filename,
+        description: "Automatically created #{DateTime.now.to_s}"
+    })
+  end
+
   def copy_attributes(mod_list_id, index, group_id)
     attributes.except("id").merge({ mod_list_id: mod_list_id, index: index, group_id: group_id })
   end

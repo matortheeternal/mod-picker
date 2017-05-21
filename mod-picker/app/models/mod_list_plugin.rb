@@ -25,6 +25,17 @@ class ModListPlugin < ActiveRecord::Base
   # can only have a mod on a given mod list once
   validates :plugin_id, uniqueness: { scope: :mod_list_id, :message => "The plugin is already present on the mod list." }
 
+  def self.create_from_custom_plugin(custom_plugin, plugins)
+    plugin_to_add = plugins.detect {|p| p.filename == custom_plugin.filename}
+    return unless plugin_to_add.present?
+    create({
+        mod_list_id: custom_plugin.mod_list_id,
+        group_id: custom_plugin.group_id,
+        plugin_id: plugin_to_add.id,
+        index: custom_plugin.index
+    })
+  end
+
   def required_plugins
     Master.plugins([self.plugin_id]).order(:master_plugin_id)
   end

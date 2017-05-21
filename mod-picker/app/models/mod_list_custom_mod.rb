@@ -19,9 +19,17 @@ class ModListCustomMod < ActiveRecord::Base
   def self.substitute_for_url(url, mod)
     uri = URI.parse(url)
     url = uri.host.gsub('\Awww\.', '') + uri.path
+    mod_list_ids = []
+    mod_plugins = mod.plugins
+    plugin_filenames = mod_plugins.map {|p| p.filename}
     ModListCustomMod.where("url LIKE ?", "%#{url}%").find_each do |custom_mod|
       ModListMod.create_from_custom_mod(custom_mod, mod)
+      mod_list_ids.push(custom_mod.mod_list_id)
       custom_mod.destroy
+    end
+    ModListCustomPlugin.where(filename: plugin_filenames, mod_list_id: mod_list_ids).find_each do |custom_plugin|
+      ModListPlugin.create_from_custom_plugin(custom_plugin, mod)
+      custom_plugin.destroy
     end
   end
 
