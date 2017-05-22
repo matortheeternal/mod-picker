@@ -47,6 +47,7 @@ app.controller('modListModsController', function($scope, $rootScope, $timeout, $
         $scope.buildModsModel();
         $timeout(function() {
             $scope.$broadcast('initializeModules');
+            $scope.resetSticky();
         }, 100);
     };
 

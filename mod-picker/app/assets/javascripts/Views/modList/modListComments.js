@@ -16,6 +16,7 @@ app.controller('modListCommentsController', function($scope, $state, contributio
         contributionService.retrieveComments('mod_lists', $scope.mod_list.id, options, $scope.pages.comments).then(function(data) {
             $scope.comments = data;
             $scope.commentsReady = true;
+            $scope.resetSticky();
         }, function(response) {
             $scope.errors.comments = response;
         });

@@ -75,6 +75,7 @@ app.directive('sticky', function($timeout) {
             });
 
             scope.$on('resetSticky', function() {
+                if (fixed) unstick();
                 $timeout(function() {
                     phBottom = $elem.offsetTop + $elem.offsetHeight;
                     toggleSticky(window.scrollY);

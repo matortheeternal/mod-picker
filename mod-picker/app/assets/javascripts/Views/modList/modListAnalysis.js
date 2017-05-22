@@ -35,6 +35,7 @@ app.controller('modListAnalysisController', function($scope, modListService, plu
             $scope.buildConflictingOverrides();
             $scope.buildTotalPluginErrors();
             $scope.analysisReady = true;
+            $scope.resetSticky();
         }, function(response) {
             $scope.errors.analysis = response;
         });

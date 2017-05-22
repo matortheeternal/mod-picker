@@ -234,7 +234,7 @@ app.controller('modListController', function($scope, $rootScope, $q, $state, $st
         var tabName = toState.name.split(".").slice(-1)[0];
         var uneditableTabs = ["Comments", "Analysis"];
         $scope.tabEditable = uneditableTabs.indexOf(tabName) == -1;
-        $scope.$broadcast('resetSticky');
+        $scope.resetSticky();
     });
 
     // set help context
@@ -577,6 +577,12 @@ app.controller('modListController', function($scope, $rootScope, $q, $state, $st
         var newUrlParts = newUrl.split('/').slice(0, -1);
         var oldUrlParts = oldUrl.split('/').slice(0, -1);
         return newUrlParts.join('/') === oldUrlParts.join('/');
+    };
+
+    $scope.resetSticky = function() {
+        $timeout(function() {
+            $scope.$broadcast('resetSticky');
+        }, 100);
     };
 
     // event triggers

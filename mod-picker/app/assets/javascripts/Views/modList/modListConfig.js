@@ -28,6 +28,7 @@ app.controller('modListConfigController', function($scope, $q, $timeout, modList
             $scope.originalModList.custom_config_files = angular.copy($scope.mod_list.custom_config_files);
             $scope.buildConfigModel();
             $scope.configReady = true;
+            $scope.resetSticky();
         }, function(response) {
             $scope.errors.config = response;
         });

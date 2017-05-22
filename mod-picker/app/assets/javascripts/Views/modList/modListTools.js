@@ -40,6 +40,7 @@ app.controller('modListToolsController', function($scope, $rootScope, $state, $s
         $scope.buildToolsModel();
         $timeout(function() {
             $scope.$broadcast('initializeModules');
+            $scope.resetSticky();
         }, 100);
     };
 
