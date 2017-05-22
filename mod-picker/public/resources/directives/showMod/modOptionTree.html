@@ -6,7 +6,7 @@
             </span>
             <span class="mod-option-details">
                 <label class="mod-option-title" title="{{::option.name}}">
-                    <input type="checkbox" ng-model="option.active" ng-change="toggleModOption(option)"/>
+                    <input type="checkbox" ng-model="option.active" ng-change="toggleModOption(option)" ng-disabled="disable"/>
                     <span>{{::option.display_name}}</span>
                 </label>
                 <span class="mod-option-stats">
@@ -24,7 +24,7 @@
                 {{::option.children.length | number}} installer options
             </span>
             <div ng-if="option.expanded">
-                <mod-option-tree mod-options="option.children"></mod-option-tree>
+                <mod-option-tree mod-options="option.children" disable="disable"></mod-option-tree>
             </div>
         </div>
     </li>

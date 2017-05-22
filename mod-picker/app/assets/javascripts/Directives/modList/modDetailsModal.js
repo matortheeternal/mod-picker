@@ -7,23 +7,15 @@ app.directive('modDetailsModal', function() {
     };
 });
 
-app.controller('modDetailsModalController', function($scope, $rootScope, eventHandlerFactory, columnsFactory, sortUtils, tableUtils, formUtils) {
+app.controller('modDetailsModalController', function($scope, $rootScope, eventHandlerFactory, formUtils, modOptionUtils) {
+    // helper variables
+    var mod = $scope.detailsItem.mod;
+
     // inherited functions
     $scope.unfocusModDetailsModal = formUtils.unfocusModal($scope.toggleDetailsModal);
 
     // shared function setup
     eventHandlerFactory.buildModalMessageHandlers($scope);
-
-    // initialize variables
-    $scope.columns = columnsFactory.modListModDetailsColumns();
-
-    $scope.sort = {
-        column: '',
-        direction: 'ASC'
-    };
-
-    // expose service function to be usable in html 
-    $scope.sortColumn = tableUtils.sortColumn;
 
     $scope.toggleOption = function(option) {
         $rootScope.$broadcast(option.active ? 'modOptionAdded' : 'modOptionRemoved', option);
@@ -34,17 +26,15 @@ app.controller('modDetailsModalController', function($scope, $rootScope, eventHa
         }
     };
 
-    // load sort into view
-    if ($scope.columns && $scope.sort && $scope.sort.column) {
-        sortUtils.loadSort($scope.columns, $scope.sortedColumn, $scope.sort);
-    }
-
     // load option active states
-    if ($scope.detailsItem.mod) {
-        var modOptions = $scope.detailsItem.mod.mod_options;
+    if (mod) {
+        var modOptions = mod.mod_options;
         modOptions.forEach(function(option) {
             var existingModOption = $scope.findExistingModOption($scope.detailsItem, option.id);
             option.active = !!existingModOption;
         });
+        if (!mod.nestedOptions) {
+            mod.nestedOptions = modOptionUtils.getNestedModOptions(modOptions);
+        }
     }
 });

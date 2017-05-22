@@ -3,14 +3,18 @@ app.directive('modOptionTree', function() {
         restrict: 'E',
         templateUrl: '/resources/directives/showMod/modOptionTree.html',
         scope: {
-            modOptions: '='
+            modOptions: '=',
+            disable: '=?'
         },
         controller: 'modOptionTreeController'
     }
 });
 
 app.controller('modOptionTreeController', function($scope) {
+    angular.default($scope, 'disable', false);
+
     $scope.toggleModOption = function(option) {
+        if ($scope.disable) return;
         // recurse into children
         option.children && option.children.forEach(function(child) {
             if (child.active && !option.active) {
