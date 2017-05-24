@@ -142,6 +142,21 @@ Array.prototype.equals = function(otherArray) {
     }, true);
 };
 
+Array.prototype.forEachDesc = function(callback) {
+    for (var i = this.length; i > -1; i--) {
+        callback(this[i], i, this);
+    }
+};
+
+Array.prototype.forEachNested = function(callback, nestingKey) {
+    var nestedCallback = function(element, index, array) {
+        if (callback(element, index, array) && element.hasOwnProperty(nestingKey)) {
+            element[nestingKey].forEachDesc(nestedCallback);
+        }
+    };
+    this.forEachDesc(nestedCallback);
+};
+
 if (!Object.prototype.keys) {
     Object.prototype.keys = function() {
         var a = [];
