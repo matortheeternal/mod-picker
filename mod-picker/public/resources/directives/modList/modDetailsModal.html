@@ -56,10 +56,8 @@
             </section>
         </div>
 
-        <div ng-show="detailsItem.mod.mod_options.length > 1">
-            <h3 class="section-title">{{ detailsItem.is_utility ? 'Tool Options' : 'Mod Options' }}</h3>
-            <mod-option-tree mod-options="detailsItem.mod.nestedOptions" disable="!editing"></mod-option-tree>
-        </div>
+        <h3 class="section-title">{{ detailsItem.is_utility ? 'Tool Options' : 'Mod Options' }}</h3>
+        <mod-option-tree mod-options="detailsItem.mod.nestedOptions" disable="!editing"></mod-option-tree>
 
         <div class="action-button-container">
             <input type="submit" class="btn action-btn" value="Close" ng-click="toggleDetailsModal()">
