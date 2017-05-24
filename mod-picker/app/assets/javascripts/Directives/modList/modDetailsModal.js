@@ -17,14 +17,14 @@ app.controller('modDetailsModalController', function($scope, $rootScope, eventHa
     // shared function setup
     eventHandlerFactory.buildModalMessageHandlers($scope);
 
-    $scope.toggleOption = function(option) {
+    $scope.$on('toggleOption', function(event, option) {
         $rootScope.$broadcast(option.active ? 'modOptionAdded' : 'modOptionRemoved', option);
         if (option.active) {
             $scope.addModOption($scope.detailsItem, option.id);
         } else {
             $scope.removeModOption($scope.detailsItem, option.id);
         }
-    };
+    });
 
     // load option active states
     if (mod) {
