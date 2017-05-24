@@ -217,6 +217,7 @@ class Mod < ActiveRecord::Base
   end
 
   def was_visible
+    return false if new_record?
     attribute_was(:approved) && !attribute_was(:hidden)
   end
 
