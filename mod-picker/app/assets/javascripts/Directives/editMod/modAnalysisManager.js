@@ -48,8 +48,13 @@ app.controller('modAnalysisManagerController', function($scope, $rootScope, $tim
         var modOptions = $scope.mod.analysis.mod_options;
         var index = modOptions.indexOf(option);
         modOptions.splice(index, 1);
+        $scope.nestedOptions.forEachNested(function(item, index, array) {
+            if (item === option) array.splice(index, 1);
+            return false;
+        }, 'children');
         if (modOptions.length == 0) {
             delete $scope.mod.analysis;
+            delete $scope.nestedOptions;
         }
     };
 
