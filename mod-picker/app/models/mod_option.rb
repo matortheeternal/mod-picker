@@ -38,11 +38,7 @@ class ModOption < ActiveRecord::Base
 
   # INSTANCE METHODS
   def get_base_paths
-    if !is_installer_option
-      basepaths = DataPathUtils.get_base_paths(@asset_paths)
-    else
-      basepaths = [""]
-    end
+    is_installer_option ? [""] : DataPathUtils.get_base_paths(@asset_paths)
   end
 
   def create_asset_file(basepaths, path)
@@ -60,11 +56,12 @@ class ModOption < ActiveRecord::Base
       clear_assets
       basepaths = get_base_paths
       @asset_paths.each { |path| create_asset_file(basepaths, path) }
+      AssetFile.reset_counter!(:mod_asset_files)
     end
   end
 
   def clear_assets
-    mod_asset_files.destroy_all
+    mod_asset_files.delete_all
   end
 
   def asset_file_paths

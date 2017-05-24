@@ -21,9 +21,6 @@ class ModAssetFile < ActiveRecord::Base
   has_one :mod, :through => 'mod_option', :inverse_of => 'mod_asset_files'
   belongs_to :asset_file, :inverse_of => 'mod_asset_files'
 
-  # COUNTER CACHE
-  counter_cache_on :asset_file
-
   def self.mod_asset_files
     @mod_asset_files ||= arel_table
   end
