@@ -17,7 +17,7 @@ app.controller('modDetailsModalController', function($scope, $rootScope, eventHa
     // shared function setup
     eventHandlerFactory.buildModalMessageHandlers($scope);
 
-    $scope.$on('toggleOption', function(event, option) {
+    $scope.$on('toggleModOption', function(event, option) {
         $rootScope.$broadcast(option.active ? 'modOptionAdded' : 'modOptionRemoved', option);
         if (option.active) {
             $scope.addModOption($scope.detailsItem, option.id);
