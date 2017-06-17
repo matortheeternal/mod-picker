@@ -26,7 +26,7 @@ app.directive('pluginError', function() {
                 // UES
                 case 4:
                     scope.template = scope.error.name +
-                        '\n\r - Error: Record (' + scope.error.data.split(",")[0] + ') contains unexpected (or out of order) subrecord '+ scope.error.data.split(",")[1];
+                        '\n\r - Error: Record contains unexpected (or out of order) subrecord '+ scope.error.data;
                     break;
                 // URR
                 case 5:
