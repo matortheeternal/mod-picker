@@ -103,7 +103,6 @@ ActiveRecord::Schema.define(version: 20170624000611) do
   add_index "category_priorities", ["recessive_id"], name: "fk_rails_d624be02b9", using: :btree
 
   create_table "cells", force: :cascade do |t|
-    t.integer "game_id",       limit: 4
     t.integer "worldspace_id", limit: 4
     t.integer "x",             limit: 1, default: 0
     t.integer "y",             limit: 1, default: 0
@@ -111,7 +110,6 @@ ActiveRecord::Schema.define(version: 20170624000611) do
   end
 
   add_index "cells", ["fid"], name: "index_cells_on_fid", using: :btree
-  add_index "cells", ["game_id"], name: "fk_rails_3dd158b52d", using: :btree
   add_index "cells", ["worldspace_id"], name: "fk_rails_d27b73f615", using: :btree
 
   create_table "comments", force: :cascade do |t|
@@ -1168,7 +1166,6 @@ ActiveRecord::Schema.define(version: 20170624000611) do
   add_foreign_key "categories", "categories", column: "parent_id"
   add_foreign_key "category_priorities", "categories", column: "dominant_id"
   add_foreign_key "category_priorities", "categories", column: "recessive_id"
-  add_foreign_key "cells", "games"
   add_foreign_key "cells", "worldspaces"
   add_foreign_key "comments", "comments", column: "parent_id", name: "comments_ibfk_1"
   add_foreign_key "comments", "users", column: "submitted_by", name: "comments_ibfk_2"
