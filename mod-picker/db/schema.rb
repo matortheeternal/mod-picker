@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170422200231) do
+ActiveRecord::Schema.define(version: 20170624000611) do
 
   create_table "active_mod_lists", force: :cascade do |t|
     t.integer "game_id",     limit: 4, null: false
@@ -101,6 +101,19 @@ ActiveRecord::Schema.define(version: 20170422200231) do
 
   add_index "category_priorities", ["dominant_id"], name: "fk_rails_10799f2958", using: :btree
   add_index "category_priorities", ["recessive_id"], name: "fk_rails_d624be02b9", using: :btree
+
+  create_table "cells", force: :cascade do |t|
+    t.integer "game_id",       limit: 4
+    t.integer "worldspace_id", limit: 4
+    t.integer "x",             limit: 4,   default: 0
+    t.integer "y",             limit: 4,   default: 0
+    t.integer "fid",           limit: 4
+    t.string  "name",          limit: 255
+  end
+
+  add_index "cells", ["fid"], name: "index_cells_on_fid", using: :btree
+  add_index "cells", ["game_id"], name: "fk_rails_3dd158b52d", using: :btree
+  add_index "cells", ["worldspace_id"], name: "fk_rails_d27b73f615", using: :btree
 
   create_table "comments", force: :cascade do |t|
     t.integer  "parent_id",         limit: 4
@@ -1135,6 +1148,14 @@ ActiveRecord::Schema.define(version: 20170422200231) do
   add_index "workshop_infos", ["game_id"], name: "index_workshop_infos_on_game_id", using: :btree
   add_index "workshop_infos", ["mod_id"], name: "fk_rails_8707144ad7", using: :btree
 
+  create_table "worldspaces", force: :cascade do |t|
+    t.integer "game_id", limit: 4
+    t.integer "fid",     limit: 4
+    t.string  "name",    limit: 255
+  end
+
+  add_index "worldspaces", ["game_id"], name: "fk_rails_e48bbb645e", using: :btree
+
   add_foreign_key "active_mod_lists", "games"
   add_foreign_key "active_mod_lists", "mod_lists"
   add_foreign_key "active_mod_lists", "users"
@@ -1146,6 +1167,8 @@ ActiveRecord::Schema.define(version: 20170422200231) do
   add_foreign_key "categories", "categories", column: "parent_id"
   add_foreign_key "category_priorities", "categories", column: "dominant_id"
   add_foreign_key "category_priorities", "categories", column: "recessive_id"
+  add_foreign_key "cells", "games"
+  add_foreign_key "cells", "worldspaces"
   add_foreign_key "comments", "comments", column: "parent_id", name: "comments_ibfk_1"
   add_foreign_key "comments", "users", column: "submitted_by", name: "comments_ibfk_2"
   add_foreign_key "compatibility_note_history_entries", "compatibility_notes"
@@ -1278,4 +1301,5 @@ ActiveRecord::Schema.define(version: 20170422200231) do
   add_foreign_key "user_settings", "users", name: "user_settings_ibfk_1"
   add_foreign_key "user_titles", "games"
   add_foreign_key "workshop_infos", "mods"
+  add_foreign_key "worldspaces", "games"
 end
