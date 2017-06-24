@@ -1,240 +1,192 @@
 [{
-		"game_id" : 3,
 		"plugin_filename" : "Skyrim.esm",
 		"fid" : 60,
 		"name" : "Skyrim"
 	}, {
-		"game_id" : 3,
 		"plugin_filename" : "Skyrim.esm",
 		"fid" : 92445,
 		"name" : "Windhelm"
 	}, {
-		"game_id" : 3,
 		"plugin_filename" : "Skyrim.esm",
 		"fid" : 93108,
 		"name" : "Riften"
 	}, {
-		"game_id" : 3,
 		"plugin_filename" : "Skyrim.esm",
 		"fid" : 93553,
 		"name" : "Markarth"
 	}, {
-		"game_id" : 3,
 		"plugin_filename" : "Skyrim.esm",
 		"fid" : 107119,
 		"name" : "Whiterun"
 	}, {
-		"game_id" : 3,
 		"plugin_filename" : "Skyrim.esm",
 		"fid" : 111690,
 		"name" : "Avoidance Exterior"
 	}, {
-		"game_id" : 3,
 		"plugin_filename" : "Skyrim.esm",
 		"fid" : 118227,
 		"name" : "Lost Valkygg"
 	}, {
-		"game_id" : 3,
 		"plugin_filename" : "Skyrim.esm",
 		"fid" : 118233,
 		"name" : "Labyrinthian Chasm"
 	}, {
-		"game_id" : 3,
 		"plugin_filename" : "Skyrim.esm",
 		"fid" : 124061,
 		"name" : "Moss Mother Cavern"
 	}, {
-		"game_id" : 3,
 		"plugin_filename" : "Skyrim.esm",
 		"fid" : 126562,
 		"name" : "Blackreach"
 	}, {
-		"game_id" : 3,
 		"plugin_filename" : "Skyrim.esm",
 		"fid" : 129762,
 		"name" : "Bloated Man's Grotto"
 	}, {
-		"game_id" : 3,
 		"plugin_filename" : "Skyrim.esm",
 		"fid" : 132295,
 		"name" : "Giant's Grove"
 	}, {
-		"game_id" : 3,
 		"plugin_filename" : "Skyrim.esm",
 		"fid" : 134142,
 		"name" : "Southfringe Sanctum"
 	}, {
-		"game_id" : 3,
 		"plugin_filename" : "Skyrim.esm",
 		"fid" : 134603,
 		"name" : "Blind Cliff Cave"
 	}, {
-		"game_id" : 3,
 		"plugin_filename" : "Skyrim.esm",
 		"fid" : 138971,
 		"name" : "Labyrinthian, Tribune"
 	}, {
-		"game_id" : 3,
 		"plugin_filename" : "Skyrim.esm",
 		"fid" : 148446,
 		"name" : "Fallowstone Cave"
 	}, {
-		"game_id" : 3,
 		"plugin_filename" : "Skyrim.esm",
 		"fid" : 162013,
 		"name" : "Skuldafn"
 	}, {
-		"game_id" : 3,
 		"plugin_filename" : "Skyrim.esm",
 		"fid" : 170679,
 		"name" : "Deepwood Vale"
 	}, {
-		"game_id" : 3,
 		"plugin_filename" : "Skyrim.esm",
 		"fid" : 174552,
 		"name" : "Shadowgreen Cavern"
 	}, {
-		"game_id" : 3,
 		"plugin_filename" : "Skyrim.esm",
 		"fid" : 176385,
 		"name" : "Red Eagle Ascent"
 	}, {
-		"game_id" : 3,
 		"plugin_filename" : "Skyrim.esm",
 		"fid" : 182629,
 		"name" : "Darkwater Pass"
 	}, {
-		"game_id" : 3,
 		"plugin_filename" : "Skyrim.esm",
 		"fid" : 192065,
 		"name" : "Sovngarde"
 	}, {
-		"game_id" : 3,
 		"plugin_filename" : "Skyrim.esm",
 		"fid" : 213568,
 		"name" : "The Mind Of A Madman"
 	}, {
-		"game_id" : 3,
 		"plugin_filename" : "Skyrim.esm",
 		"fid" : 218777,
 		"name" : "The Karthspire"
 	}, {
-		"game_id" : 3,
 		"plugin_filename" : "Skyrim.esm",
 		"fid" : 229087,
 		"name" : "Solitude"
 	}, {
-		"game_id" : 3,
 		"plugin_filename" : "Skyrim.esm",
 		"fid" : 240086,
 		"name" : "Eldergleam Sanctuary"
 	}, {
-		"game_id" : 3,
 		"plugin_filename" : "Skyrim.esm",
 		"fid" : 268769,
 		"name" : "CWSiegeTestWorld"
 	}, {
-		"game_id" : 3,
 		"plugin_filename" : "Skyrim.esm",
 		"fid" : 286771,
 		"name" : "Dragonsreach, Great Porch"
 	}, {
-		"game_id" : 3,
 		"plugin_filename" : "Skyrim.esm",
 		"fid" : 325688,
 		"name" : "East Empire Company Warehouse"
 	}, {
-		"game_id" : 3,
 		"plugin_filename" : "Skyrim.esm",
 		"fid" : 327701,
 		"name" : "Brinewater Grotto"
 	}, {
-		"game_id" : 3,
 		"plugin_filename" : "Skyrim.esm",
 		"fid" : 432215,
 		"name" : "Alftand Cathedral"
 	}, {
-		"game_id" : 3,
 		"plugin_filename" : "Skyrim.esm",
 		"fid" : 453944,
 		"name" : "World of FX Light Regions"
 	}, {
-		"game_id" : 3,
 		"plugin_filename" : "Skyrim.esm",
 		"fid" : 609077,
 		"name" : "Japhet's Folly"
 	}, {
-		"game_id" : 3,
 		"plugin_filename" : "Skyrim.esm",
 		"fid" : 800013,
 		"name" : "Emperor's Quarters"
 	}, {
-		"game_id" : 3,
 		"plugin_filename" : "Skyrim.esm",
 		"fid" : 825323,
 		"name" : "Frostmere Depths"
 	}, {
-		"game_id" : 3,
 		"plugin_filename" : "Skyrim.esm",
 		"fid" : 869872,
 		"name" : "The Pit"
 	}, {
-		"game_id" : 3,
 		"plugin_filename" : "Skyrim.esm",
 		"fid" : 1065495,
 		"name" : "Shalidor's Maze"
 	}, {
-		"game_id" : 3,
 		"plugin_filename" : "Dawnguard.esm",
 		"fid" : 33557429,
 		"name" : "Forgotten Vale"
 	}, {
-		"game_id" : 3,
 		"plugin_filename" : "Dawnguard.esm",
 		"fid" : 33559560,
 		"name" : "Soul Cairn"
 	}, {
-		"game_id" : 3,
 		"plugin_filename" : "Dawnguard.esm",
 		"fid" : 33562040,
 		"name" : "Dayspring Canyon"
 	}, {
-		"game_id" : 3,
 		"plugin_filename" : "Dawnguard.esm",
 		"fid" : 33566564,
 		"name" : "Forebears' Holdout"
 	}, {
-		"game_id" : 3,
 		"plugin_filename" : "Dawnguard.esm",
 		"fid" : 33571522,
 		"name" : "TestDLC1PlantWorld"
 	}, {
-		"game_id" : 3,
 		"plugin_filename" : "Dawnguard.esm",
 		"fid" : 33573063,
 		"name" : "Ancestor Glade"
 	}, {
-		"game_id" : 3,
 		"plugin_filename" : "Dawnguard.esm",
 		"fid" : 33573866,
 		"name" : "Darkfall Passage"
 	}, {
-		"game_id" : 3,
 		"plugin_filename" : "Dawnguard.esm",
 		"fid" : 33575565,
 		"name" : "Boneyard"
 	}, {
-		"game_id" : 3,
 		"plugin_filename" : "Dawnguard.esm",
 		"fid" : 33583618,
 		"name" : "Volkihar Courtyard"
 	}, {
-		"game_id" : 3,
 		"plugin_filename" : "Dragonborn.esm",
 		"fid" : 33556480,
 		"name" : "Solstheim"
 	}, {
-		"game_id" : 3,
 		"plugin_filename" : "Dragonborn.esm",
 		"fid" : 33669298,
 		"name" : "Apocrypha"
