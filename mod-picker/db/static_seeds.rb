@@ -384,13 +384,36 @@ def seed_record_groups
   puts "\nSeeding record groups"
 
   # get helper variables
-  gameSkyrim = Game.find_by(display_name: "Skyrim")
-  gameSkyrimSE = Game.find_by(display_name: "Skyrim SE")
+  game_skyrim = Game.find_by(display_name: "Skyrim")
+  game_skyrimse = Game.find_by(display_name: "Skyrim SE")
 
-  load_record_groups(gameSkyrim, "skyrim.json")
-  load_record_groups(gameSkyrimSE, "skyrimse.json")
+  load_record_groups(game_skyrim, "skyrim.json")
+  load_record_groups(game_skyrimse, "skyrimse.json")
 
   puts "    #{RecordGroup.count} record groups seeded"
+end
+
+def load_worldspaces(game, filename)
+  file = File.read(Rails.root.join("db", "worldspaces", filename))
+  json = JSON.parse(file)
+  json.each do |item|
+    worldspace = item.with_indifferent_access
+    worldspace[:game_id] = game.id
+    worldspace[:plugin_id] = Plugin.find_by(filename: worldspace.delete(:plugin_filename)).id
+    Worldspace.create(worldspace)
+  end
+end
+
+def seed_worldspaces
+  puts "\nSeeding worldspaces"
+
+  # get helper variables
+  game_skyrim = Game.find_by(display_name: "Skyrim")
+  #game_skyrimse = Game.find_by(display_name: "Skyrim SE")
+
+  load_worldspaces(game_skyrim, "skyrim.json")
+
+  puts "    #{Worldspace.count} worldspaces seeded"
 end
 
 def seed_skyrim_official_content(submitter)

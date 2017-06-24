@@ -2,7 +2,7 @@
 # CREATE STATIC RECORDS
 #==================================================
 
-require_relative  'static_seeds'
+require_relative 'static_seeds'
 
 static_config = {
     staff: true,
@@ -12,7 +12,8 @@ static_config = {
     quotes: true,
     user_titles: true,
     record_groups: true,
-    official_content: true
+    official_content: true,
+    worldspaces: true
 }
 
 seed_staff_users if static_config[:staff]
@@ -22,6 +23,7 @@ seed_categories if static_config[:categories]
 seed_quotes if static_config[:quotes]
 seed_user_titles if static_config[:user_titles]
 seed_record_groups if static_config[:record_groups]
+seed_worldspaces if static_config[:worldspaces]
 seed_official_content if static_config[:official_content]
 
 #==================================================
