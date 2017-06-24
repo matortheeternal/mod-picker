@@ -347,6 +347,7 @@ Rails.application.routes.draw do
   resources :review_sections, only: [:index]
   resources :user_titles, only: [:index]
   resources :licenses, only: [:index]
+  resources :worldspaces, only: [:index]
 
   # home page
   match '/skyrim', to: 'home#skyrim', via: [:get]
