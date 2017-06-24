@@ -397,10 +397,9 @@ def load_worldspaces(game, filename)
   file = File.read(Rails.root.join("db", "worldspaces", filename))
   json = JSON.parse(file)
   json.each do |item|
-    worldspace = item.with_indifferent_access
-    worldspace[:game_id] = game.id
-    worldspace[:plugin_id] = Plugin.find_by(filename: worldspace.delete(:plugin_filename)).id
-    Worldspace.create(worldspace)
+    item["game_id"] = game.id
+    item["plugin_id"] = Plugin.find_by(filename: item.delete("plugin_filename")).id
+    Worldspace.create(item.with_indifferent_access)
   end
 end
 
@@ -414,6 +413,32 @@ def seed_worldspaces
   load_worldspaces(game_skyrim, "skyrim.json")
 
   puts "    #{Worldspace.count} worldspaces seeded"
+end
+
+def load_cells(game, filename)
+  file = File.read(Rails.root.join("db", "cells", filename))
+  json = JSON.parse(file)
+  worldspace_map = {}
+  json.collect {|item| item["worldspace_fid"]}.uniq.each do |wfid|
+    worldspace_map[wfid] = Worldspace.find_by(fid: wfid).id
+  end
+  json.each do |item|
+    item["game_id"] = game.id
+    item["worldspace_id"] = worldspace_map[item.delete("worldspace_fid")]
+    Cell.create(item.with_indifferent_access)
+  end
+end
+
+def seed_cells
+  puts "\nSeeding cells"
+
+  # get helper variables
+  game_skyrim = Game.find_by(display_name: "Skyrim")
+  #game_skyrimse = Game.find_by(display_name: "Skyrim SE")
+
+  load_cells(game_skyrim, "skyrim.json")
+
+  puts "    #{Cell.count} cells seeded"
 end
 
 def seed_skyrim_official_content(submitter)
