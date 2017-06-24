@@ -1,0 +1,9 @@
+{
+  "except": ["id", "game_id", "plugin_id"],
+  "include": {
+    "cells": {},
+    "plugin": {
+      "only": ["id", "filename"]
+    }
+  }
+}
