@@ -1,3 +1,3 @@
 {
-  "except": ["id", "worldspace_id"]
+  "except": ["id", "game_id", "worldspace_id"]
 }

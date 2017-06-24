@@ -3,7 +3,7 @@
   "include": {
     "cells": {},
     "plugin": {
-      "only": ["id", "filename"]
+      "format": "simple"
     }
   }
 }
