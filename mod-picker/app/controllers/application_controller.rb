@@ -62,7 +62,7 @@ class ApplicationController < ActionController::Base
   def dynamic_cache(key, updated, min_cache_time)
     last_updated = Rails.cache.read("#{key}")
     if last_updated.nil? || DateTime.now - updated > min_cache_time
-      # refresh cache if mod list has updated since last cached
+      Rails.cache.delete("#{key}/#{last_updated}")
       Rails.cache.write("#{key}", updated)
       Rails.cache.fetch("#{key}/#{updated}") { yield }
     else
