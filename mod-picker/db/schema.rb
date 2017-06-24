@@ -105,10 +105,9 @@ ActiveRecord::Schema.define(version: 20170624000611) do
   create_table "cells", force: :cascade do |t|
     t.integer "game_id",       limit: 4
     t.integer "worldspace_id", limit: 4
-    t.integer "x",             limit: 4,   default: 0
-    t.integer "y",             limit: 4,   default: 0
+    t.integer "x",             limit: 1, default: 0
+    t.integer "y",             limit: 1, default: 0
     t.integer "fid",           limit: 4
-    t.string  "name",          limit: 255
   end
 
   add_index "cells", ["fid"], name: "index_cells_on_fid", using: :btree
@@ -1149,12 +1148,14 @@ ActiveRecord::Schema.define(version: 20170624000611) do
   add_index "workshop_infos", ["mod_id"], name: "fk_rails_8707144ad7", using: :btree
 
   create_table "worldspaces", force: :cascade do |t|
-    t.integer "game_id", limit: 4
-    t.integer "fid",     limit: 4
-    t.string  "name",    limit: 255
+    t.integer "game_id",   limit: 4
+    t.integer "plugin_id", limit: 4
+    t.integer "fid",       limit: 4
+    t.string  "name",      limit: 255
   end
 
   add_index "worldspaces", ["game_id"], name: "fk_rails_e48bbb645e", using: :btree
+  add_index "worldspaces", ["plugin_id"], name: "fk_rails_fd2e1a2033", using: :btree
 
   add_foreign_key "active_mod_lists", "games"
   add_foreign_key "active_mod_lists", "mod_lists"
@@ -1302,4 +1303,5 @@ ActiveRecord::Schema.define(version: 20170624000611) do
   add_foreign_key "user_titles", "games"
   add_foreign_key "workshop_infos", "mods"
   add_foreign_key "worldspaces", "games"
+  add_foreign_key "worldspaces", "plugins"
 end
