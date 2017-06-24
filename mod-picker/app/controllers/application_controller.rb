@@ -55,6 +55,10 @@ class ApplicationController < ActionController::Base
     render json: root ? { root => resource_json } : resource_json
   end
 
+  def static_cache(key)
+    Rails.cache.fetch(key, expires_in: 1.year) { yield }
+  end
+
   protected
     def configure_permitted_parameters
       devise_parameter_sanitizer.for(:sign_up) { |u| u.permit(:invitation_token, :username, :email, :password, :password_confirmation, :remember_me) }
