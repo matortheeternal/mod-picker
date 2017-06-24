@@ -8,5 +8,5 @@ class Worldspace < ActiveRecord::Base
   belongs_to :game
   belongs_to :plugin
 
-  has_many :cells, -> { order(:x, :y) }
+  has_many :cells
 end
