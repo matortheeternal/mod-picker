@@ -1,0 +1,24 @@
+.map-page {
+  margin: 30px 15px;
+}
+
+.cell {
+  display: inline-block;
+  min-width: 70px;
+  padding: 27px 0;
+  border: 1px solid $border_color;
+  text-align: center;
+  font-size: 12px;
+}
+
+.map-container {
+  margin: 10px 0;
+  max-width: calc(100vw - 20px);
+  max-height: 80vh;
+  overflow-x: auto;
+  overflow-y: auto;
+
+  .map {
+    width: 6600px;
+  }
+}
