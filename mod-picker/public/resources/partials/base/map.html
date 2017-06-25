@@ -1,0 +1,30 @@
+<div class="map-page">
+    <div class="page-container">
+        <h2>Conflict Map</h2>
+    </div>
+
+    <loader data="worldspaces" spinner-class="big-spinner" ng-if="!errors">
+        <div class="page-container">
+            <div class="map-controls">
+                <label>
+                    Plugin
+                    <select ng-model="currentPlugin" ng-change="selectPlugin()" ng-options="plugin.filename for plugin in plugins"></select>
+                </label>
+                <label>
+                    Worldspace
+                    <select ng-model="currentWorldspace" ng-change="selectWorldspace()" ng-options="worldspace.name for worldspace in pluginWorldspaces"></select>
+                </label>
+            </div>
+        </div>
+        <loader data="currentCells">
+            <div class="map-container">
+                <div class="map" ng-style="mapStyle">
+                    <div class="cell" ng-repeat="cell in currentCells" tabindex="0">
+                        <span>{{::cell.x}},{{::cell.y}}</span>
+                    </div>
+                </div>
+            </div>
+        </loader>
+    </loader>
+    <error-display content-class="content-message content-error" errors="errors" label="worldspace information"></error-display>
+</div>
