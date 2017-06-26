@@ -25,4 +25,10 @@ app.service('formUtils', function($document) {
             }
         }
     };
+
+    this.supportsDateInput = function() {
+        var input = document.createElement('input');
+        input.setAttribute('type', 'date');
+        return input.type == 'date';
+    };
 });
