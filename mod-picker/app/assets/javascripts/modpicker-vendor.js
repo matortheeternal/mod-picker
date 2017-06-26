@@ -10,3 +10,4 @@
 //= require angular-animate.min.js
 //= require angular-elastic-input.min.js
 //= require spin.min.js
+//= require rome.min.js
