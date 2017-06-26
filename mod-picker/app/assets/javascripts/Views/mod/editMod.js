@@ -71,7 +71,7 @@ app.config(['$stateProvider', function($stateProvider) {
     });
 }]);
 
-app.controller('editModController', function($scope, $rootScope, $state, modObject, modService, modLoaderService, modValidationService, userService, helpFactory, sitesFactory, tabsFactory, eventHandlerFactory, objectUtils, tabUtils) {
+app.controller('editModController', function($scope, $rootScope, $state, modObject, modService, modLoaderService, modValidationService, userService, helpFactory, sitesFactory, tabsFactory, eventHandlerFactory, objectUtils, tabUtils, formUtils) {
     // get parent variables
     $scope.currentUser = $rootScope.currentUser;
     $scope.categories = $rootScope.categories;
@@ -101,6 +101,7 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
     ];
     $scope.analysisValid = true;
     $scope.editing = true;
+    $scope.supportsDateInput = formUtils.supportsDateInput();
 
     // set page title
     $scope.$emit('setPageTitle', 'Edit Mod');
