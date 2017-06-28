@@ -59,9 +59,10 @@ class ApplicationController < ActionController::Base
     Rails.cache.fetch(key) { yield }
   end
 
-  def dynamic_cache(key, updated, min_cache_time)
+  def dynamic_cache(key, updated, min_cache_time = 0.seconds)
     last_updated = Rails.cache.read("#{key}")
-    if last_updated != updated && DateTime.now - updated > min_cache_time
+    duration = (DateTime.now.to_i - updated.to_i).seconds
+    if last_updated != updated && duration > min_cache_time
       Rails.cache.delete("#{key}/#{last_updated}")
       Rails.cache.write("#{key}", updated)
       Rails.cache.fetch("#{key}/#{updated}") { yield }

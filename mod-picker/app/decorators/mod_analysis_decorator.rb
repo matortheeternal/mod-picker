@@ -1,4 +1,4 @@
-class ModAnalyisDecorator < Decorator
+class ModAnalysisDecorator < Decorator
   attr_accessor :mod
 
   def initialize(mod)
