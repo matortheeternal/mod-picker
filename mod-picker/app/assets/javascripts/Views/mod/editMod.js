@@ -101,7 +101,6 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
     ];
     $scope.analysisValid = true;
     $scope.editing = true;
-    $scope.supportsDateInput = formUtils.supportsDateInput();
 
     // set page title
     $scope.$emit('setPageTitle', 'Edit Mod');
