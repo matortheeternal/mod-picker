@@ -308,9 +308,8 @@ class ModsController < ApplicationController
   # GET /mods/1/analysis
   def analysis
     authorize! :read, @mod
-    render json: {
-        mod_options: json_format(@mod.mod_options, :show),
-        plugins: json_format(@mod.plugins, :show)
+    render json: dynamic_cache("mods/#{params[:id]}/analysis", @mod.updated) {
+      ModAnalysisDecorator.new(@mod).to_json
     }
   end
 
