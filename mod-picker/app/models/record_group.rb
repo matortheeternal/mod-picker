@@ -1,6 +1,10 @@
 class RecordGroup < ActiveRecord::Base
-  include BetterJson
+  include BetterJson, ScopeHelpers
 
+  # SCOPES
+  game_scope
+
+  # ASSOCIATIONS
   belongs_to :game, :inverse_of => 'record_groups'
 
   # VALIDATIONS
