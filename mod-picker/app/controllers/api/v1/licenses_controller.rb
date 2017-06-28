@@ -1,6 +1,7 @@
 class Api::V1::LicensesController < Api::ApiController
   def index
-    @licenses = License.includes(:license_options)
-    respond_with_json(@licenses)
+    render json: static_cache("licenses") {
+      License.includes(:license_options).to_json({format: "index"})
+    }
   end
 end
