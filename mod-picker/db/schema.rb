@@ -851,10 +851,11 @@ ActiveRecord::Schema.define(version: 20170706160750) do
   add_index "plugins", ["mod_option_id"], name: "mv_id", using: :btree
 
   create_table "premium_subscriptions", force: :cascade do |t|
-    t.integer  "user_id",   limit: 4
-    t.datetime "purchased",           null: false
-    t.datetime "start",               null: false
-    t.datetime "end",                 null: false
+    t.integer  "user_id",           limit: 4
+    t.integer  "subscription_type", limit: 1, null: false
+    t.datetime "purchased",                   null: false
+    t.datetime "start",                       null: false
+    t.datetime "end",                         null: false
   end
 
   add_index "premium_subscriptions", ["user_id"], name: "fk_rails_8d844017ee", using: :btree
