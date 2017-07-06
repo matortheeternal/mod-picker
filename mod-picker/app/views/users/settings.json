@@ -12,6 +12,9 @@
     },
     "active_mod_lists": {
       "only": ["game_id", "mod_list_id"]
+    },
+    "premium_subscriptions": {
+      "except": ["id", "user_id"]
     }
   },
   "methods": "image_type"
