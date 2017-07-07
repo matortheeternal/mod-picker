@@ -12,6 +12,9 @@
                     <div class="user-role {{roleClass}} no-text-dec">
                         {{roleTexts[user.role]}}
                     </div>
+                    <div class="user-premium" ng-if="user['has_premium?']">
+                        Premium
+                    </div>
                 </section>
 
                 <h3 ng-if="!isCurrentUser && permissions.canReport || permissions.canModerate" class="section-title">Actions</h3>
