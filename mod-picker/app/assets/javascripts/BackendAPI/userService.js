@@ -50,6 +50,10 @@ app.service('userService', function(backend, $q, userSettingsService, userTitleS
         return output.promise;
     };
 
+    this.retrieveReputation = function() {
+        return backend.retrieve('/current_reputation');
+    };
+
     this.getPermissions = function(user) {
         var permissions = {};
         var rep = user.reputation.overall;
