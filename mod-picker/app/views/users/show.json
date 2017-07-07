@@ -6,7 +6,7 @@
     },
     "reputation": {}
   },
-  "methods": ["image_type", "last_sign_in_at", "current_sign_in_at", "comments_disabled?"],
+  "methods": ["image_type", "last_sign_in_at", "current_sign_in_at", "comments_disabled?", "has_premium?"],
   "conditional_methods": [{
     "methods": "email",
     "if": "email_public?"
