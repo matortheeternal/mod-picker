@@ -1,0 +1,64 @@
+.premium-options {
+  text-align: center;
+
+  .premium-option {
+    display: inline-block;
+    width: 250px;
+    vertical-align: top;
+    height: 150px;
+    padding: 6px;
+    border: 2px solid $border_color;
+    border-radius: 3px;
+    background: $secondary_background;
+    margin: 10px;
+    cursor: pointer;
+    @include transition(border 0.2s ease-in-out);
+
+    &:hover {
+      border-color: $action-color;
+    }
+
+    .option-title {
+      font-size: 24px;
+      font-weight: bold;
+      display: block;
+      margin: 6px 0;
+    }
+
+    .option-price {
+      color: $action_color;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .option-discount {
+      color: $admin_color;
+      font-size: 14px;
+    }
+
+    .option-description {
+      margin-top: 4px;
+    }
+  }
+}
+
+.reputation-items {
+  text-align: center;
+  vertical-align: middle;
+  padding: 5px 16px;
+  margin: 12px;
+  border: 1px solid $border_color;
+  display: inline-block;
+  font-size: 18px;
+
+  .rep-item {
+    display: inline-block;
+    margin: 0 18px;
+    cursor: default;
+  }
+
+  strong {
+    display: block;
+    margin-right: 6px;
+  }
+}
