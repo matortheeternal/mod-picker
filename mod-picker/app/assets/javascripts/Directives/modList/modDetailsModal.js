@@ -44,7 +44,7 @@ app.controller('modDetailsModalController', function($scope, $rootScope, eventHa
         var modOptions = $scope.detailsItem.mod.mod_options;
         modOptions.forEach(function(option) {
             var existingModOption = $scope.findExistingModOption($scope.detailsItem, option.id);
-            option.active = !!existingModOption;
+            option.active = !!existingModOption && !existingModOption._destroy;
         });
     }
 });
