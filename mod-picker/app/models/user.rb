@@ -78,7 +78,7 @@ class User < ActiveRecord::Base
 
   has_many :api_tokens, inverse_of: 'user'
 
-  has_many :premium_subscriptions
+  has_many :premium_subscriptions, -> { order(:end) }
 
   accepts_nested_attributes_for :settings, reject_if: :new_record?
 
