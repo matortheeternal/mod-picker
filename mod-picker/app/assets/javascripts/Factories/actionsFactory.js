@@ -316,4 +316,8 @@ app.service('actionsFactory', function() {
             }
         }]
     };
+
+    this.premiumActions = function() {
+        return [];
+    }
 });

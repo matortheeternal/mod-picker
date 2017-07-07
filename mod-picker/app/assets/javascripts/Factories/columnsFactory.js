@@ -1247,4 +1247,57 @@ app.service('columnsFactory', function() {
     this.apiTokenColumnGroups = function() {
         return ["General"];
     };
+
+    this.premiumColumns = function() {
+        return [
+            {
+                group: "General",
+                visibility: true,
+                required: true,
+                label: "Type",
+                data: function(item) {
+                    var subscriptionTypes = {
+                        free: "Free",
+                        one_month: "1 Month",
+                        three_months: "3 Months",
+                        six_months: "6 Months",
+                        one_year: "1 Year"
+                    };
+                    return subscriptionTypes[item.subscription_type];
+                },
+                unsortable: true
+            },
+            {
+                group: "General",
+                visibility: true,
+                required: true,
+                label: "Date Purchased",
+                data: "purchased",
+                filter: "date:medium",
+                unsortable: true
+            },
+            {
+                group: "General",
+                visibility: true,
+                required: true,
+                label: "Start Date",
+                data: "start",
+                filter: "date:medium",
+                unsortable: true
+            },
+            {
+                group: "General",
+                visibility: true,
+                required: true,
+                label: "End Date",
+                data: "end",
+                filter: "date:medium",
+                unsortable: true
+            }
+        ]
+    };
+
+    this.premiumColumnGroups = function() {
+        return ["General"];
+    };
 });
