@@ -18,6 +18,11 @@ class UsersController < ApplicationController
     respond_with_json(current_user)
   end
 
+  # GET /current_reputation
+  def reputation
+    respond_with_json(current_user.reputation, :full)
+  end
+
   # POST /users/search
   def search
     @users = User.filter(search_params).sort({ column: "username", direction: "ASC" }).order("CHAR_LENGTH(username)").limit(10)

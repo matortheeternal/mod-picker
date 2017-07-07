@@ -243,6 +243,7 @@ Rails.application.routes.draw do
 
   # users
   match '/current_user', to: 'users#current', via: [:get]
+  match '/current_reputation', to: 'users#reputation', via: [:get]
   match '/users/index', to: 'users#index', via: [:get, :post]
   match '/users/search', to: 'users#search', via: [:post]
   match '/users/:id', to: 'users#show', via: [:get]
