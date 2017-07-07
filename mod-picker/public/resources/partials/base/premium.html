@@ -1,0 +1,58 @@
+<div class="page-container">
+    <div class="narrow-page">
+        <h2>Get Premium</h2>
+
+        <div ng-if="showOptions">
+            <p>A Mod Picker premium subscription allows you to download and set up mod lists with the Mod Picker desktop application.  Premium subscriptions can be purchased or earned by making contributions to the site.</p>
+
+            <div class="premium-options">
+                <div class="premium-option" ng-repeat="option in premiumOptions" ng-click="selectOption(option)">
+                    <div class="option-title">{{::option.title}}</div>
+                    <div class="option-price" ng-if="option.price">{{::option.price}}</div>
+                    <div class="option-discount" ng-if="option.discount">{{::option.discount}} off</div>
+                    <div class="option-description">{{::option.description}}</div>
+                </div>
+            </div>
+        </div>
+
+        <div ng-if="showFree">
+            <p>You can earn a month of free premium access for every 30 reputation earned by making contributions to the site.  This free access will only start when you choose to activate it from this page.  Below is an outline of how much reputation different contributions earn:</p>
+
+            <ul>
+                <li><b>Submitting a mod:</b> 1 reputation</li>
+                <li><b>Submitting a review or note:</b> 2 reputation</li>
+                <li><b>Submitting a correction:</b> 1 reputation</li>
+                <li><b>Creating a new tag:</b> 0.2 reputation</li>
+                <li><b>Adding a tag to a mod or mod list:</b> 0.1 reputation</li>
+            </ul>
+
+            <p>You can read more about how reputation works on the <a href="/help/reputation">reputation help page</a>.</p>
+
+            <div class="center">
+                <div class="reputation-items">
+                    <span class="rep-item" title="Unspent contribution reputation going towards &#13;future free months of premium access.">
+                        <strong>{{::availableRep}}</strong>
+                        Available Reputation
+                    </span>
+                    <span class="rep-item" title="The number of unused free months of premium&#13;access you have earned.">
+                        <strong>{{::availableMonths}}</strong>
+                        Free Months
+                    </span>
+                    <span class="rep-item" title="The number of free months of premium access&#13;you have redeemed and used.">
+                        <strong>{{::usedMonths}}</strong>
+                        Used Months
+                    </span>
+                </div>
+            </div>
+
+            <div class="action-button-container">
+                <input type="submit" class="btn action-btn" value="Activate 1 Free Month" ng-click="activateFree()" ng-if="availableMonths > 0">
+                <input type="submit" class="btn action-btn" value="Back" ng-click="back()">
+            </div>
+        </div>
+
+        <div ng-if="showPurchase">
+
+        </div>
+    </div>
+</div>
