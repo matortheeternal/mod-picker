@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170706160750) do
+ActiveRecord::Schema.define(version: 20170707023849) do
 
   create_table "active_mod_lists", force: :cascade do |t|
     t.integer "game_id",     limit: 4, null: false
@@ -1029,6 +1029,7 @@ ActiveRecord::Schema.define(version: 20170706160750) do
     t.float    "contribution_rep", limit: 24, default: 0.0,   null: false
     t.float    "author_rep",       limit: 24, default: 0.0,   null: false
     t.float    "given_rep",        limit: 24, default: 0.0,   null: false
+    t.float    "spent_rep",        limit: 24, default: 0.0,   null: false
     t.integer  "rep_from_count",   limit: 4,  default: 0,     null: false
     t.integer  "rep_to_count",     limit: 4,  default: 0,     null: false
     t.datetime "last_computed"
