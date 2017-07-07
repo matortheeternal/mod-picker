@@ -75,3 +75,26 @@
 input[type="text"].verification-key-input {
   width: 215px;
 }
+
+.premium-active, .premium-expired {
+  display: block;
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.premium-active {
+  color: $mod_author_color;
+}
+
+.premium-expired {
+  color: $admin_color;
+}
+
+.premium-table {
+  table.browse-table {
+    .main-cell {
+      min-width: initial !important;
+      max-width: initial !important;
+    }
+  }
+}
