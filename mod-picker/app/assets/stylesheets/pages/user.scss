@@ -16,6 +16,15 @@
       font-weight: 500;
     }
 
+    .user-premium {
+      border: 1px solid;
+      padding: 2px 6px;
+      display: inline-block;
+      margin: 4px 0;
+      color: $mod_author_color;
+      cursor: default;
+    }
+
     .section-title {
       font-size: 16px;
       font-weight: 500;
