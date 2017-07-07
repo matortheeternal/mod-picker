@@ -39,6 +39,16 @@ app.config(['$stateProvider', function($stateProvider) {
             }
         },
         url: '/account'
+    }).state('base.settings.Premium', {
+        sticky: true,
+        deepStateRedirect: true,
+        views: {
+            'Premium': {
+                templateUrl: '/resources/partials/userSettings/premium.html',
+                controller: 'userSettingsPremiumController'
+            }
+        },
+        url: '/premium'
     }).state('base.settings.Mod Lists', {
         sticky: true,
         deepStateRedirect: true,

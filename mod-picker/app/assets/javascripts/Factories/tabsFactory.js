@@ -35,6 +35,7 @@ app.service("tabsFactory", function() {
         return [
             { name: 'Profile' },
             { name: 'Account' },
+            { name: 'Premium' },
             { name: 'Mod Lists' },
             { name: 'Authored Mods' },
             { name: 'API Access' }
