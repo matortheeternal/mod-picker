@@ -14,8 +14,8 @@
                     </div>
                 </div>
             </th>
-            <th class="actions-header">
-                <a ng-click="toggleModal(true)">
+            <th class="actions-header" ng-if="::showActionsColumn">
+                <a ng-click="toggleModal(true)" ng-if="::hasOptionalColumns">
                     <i class="fa fa-columns" title="Edit Columns"></i>
                 </a>
             </th>
@@ -39,7 +39,7 @@
                     <span bindonce bo-if="!column.link && column.data" bo-text="item.columnData[$index].data"></span>
                 </span>
             </td>
-            <td class="actions-cell">
+            <td class="actions-cell" ng-if="::showActionsColumn">
                 <actions></actions>
             </td>
         </tr>

@@ -37,6 +37,10 @@ app.controller('tableResultsController', function($scope, $rootScope, tableUtils
     // initialize variables
     tableUtils.buildColumnClasses($scope.columns, 'main-cell');
     $scope.showModal = false;
+    $scope.hasOptionalColumns = !!$scope.columns.find(function(column) {
+        return !column.required;
+    });
+    $scope.showActionsColumn = $scope.hasOptionalColumns || ($scope.actions.length > 0);
     var sortedColumn;
 
     // inherited functions
