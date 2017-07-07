@@ -1,0 +1,27 @@
+<h3 class="section-title">Status</h3>
+<section ng-if="!hasSubscriptions">
+    <div class="content-message">
+        <span class="premium-expired">No Subscription</span>
+    </div>
+</section>
+<section ng-if="activeSubscription">
+    <div class="content-message">
+        <span class="premium-active">Active</span>
+        Your premium access will end {{activeSubscription.end | date:'longDate'}}.
+    </div>
+</section>
+<section ng-if="previousSubscription">
+    <div class="content-message">
+        <span class="premium-expired">Expired</span>
+        Premium access ended {{previousSubscription.end | date:'longDate'}}.
+    </div>
+</section>
+
+<h3 class="section-title" ng-if="hasSubscriptions">History</h3>
+<section ng-if="hasSubscriptions">
+    <table-results data="user.premium_subscriptions" message="No premium subscriptions found." class="premium-table"></table-results>
+</section>
+
+<div class="action-button-container">
+    <input class="btn action-btn" type="submit" value="Get Premium" ng-click="getPremium()"/>
+</div>
