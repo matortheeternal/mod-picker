@@ -54,6 +54,30 @@ input[type="button"], input[type="submit"] {
 
   .action-btn {
     margin: 4px 1px;
+    vertical-align: middle;
+  }
+}
+
+.paypal-button {
+  margin: 4px 3px !important;
+  font-size: 15px;
+  text-align: center;
+  display: inline !important;
+  color: $action_text_color;
+  @include transition(all 0.2s ease-in-out);
+
+  &:hover {
+    color: $bar_text_color !important;
+  }
+
+  .paypal {
+    color: $action_color;
+    font-size: 20px;
+    font-style: italic;
+    font-weight: 600;
+    margin-bottom: 3px;
+    display: inline-block;
+    vertical-align: middle;
   }
 }
 
