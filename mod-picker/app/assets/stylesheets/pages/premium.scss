@@ -62,3 +62,47 @@
     margin-right: 6px;
   }
 }
+
+table.transaction-table {
+  border-collapse: collapse;
+  width: 100%;
+  font-family: 'Arial', sans-serif;
+  border: 1px solid $border_color;
+  margin: 24px 0;
+
+  th {
+    margin: 0;
+    padding: 5px 10px;
+    text-align: left;
+    white-space: nowrap;
+    vertical-align: bottom;
+    cursor: pointer;
+    border-right: 1px solid $border_color;
+    @include user-select(none);
+  }
+
+  td {
+    padding: 6px 0 6px 10px;
+  }
+
+  thead {
+    border: 1px solid $border_color;
+
+    tr {
+      background-color: $primary_background;
+      border-bottom: 1px solid $border_color;
+      border-top: 1px solid $border_color;
+    }
+  }
+
+  tbody tr {
+    border-bottom: 1px solid $border_color;
+
+    &:nth-child(odd) {
+      background-color: $secondary_background;
+    }
+    &:nth-child(even) {
+      background-color: $primary_background;
+    }
+  }
+}
