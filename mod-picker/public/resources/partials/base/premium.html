@@ -52,7 +52,29 @@
         </div>
 
         <div ng-if="showPurchase">
+            <p>You've selected to purchase <strong>{{::selectedOption.title}}</strong> of premium access.  You can check out through PayPal.</p>
 
+            <table class="transaction-table">
+                <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Price</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>{{::selectedOption.title}} Subscription to Mod Picker Premium</td>
+                    <td>{{::selectedOption.price}}</td>
+                </tr>
+                </tbody>
+            </table>
+
+            <div class="action-button-container">
+                <a href="" class="action-btn paypal-button">
+                    Check out with <span class="paypal">PayPal</span>
+                </a>
+                <input type="submit" class="btn action-btn" value="Back" ng-click="back()">
+            </div>
         </div>
     </div>
 </div>
