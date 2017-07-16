@@ -142,7 +142,7 @@ app.config(['$stateProvider', function($stateProvider) {
     })
 }]);
 
-app.controller('modListController', function($scope, $rootScope, $q, $state, $stateParams, $timeout, modListObject, modListService, objectUtils, helpFactory, tabsFactory, baseFactory, eventHandlerFactory, listUtils, modOptionUtils) {
+app.controller('modListController', function($scope, $rootScope, $q, $state, $stateParams, $timeout, modListObject, modListService, objectUtils, helpFactory, tabsFactory, baseFactory, eventHandlerFactory, listUtils, modOptionUtils, modValidationService) {
     // inherited variables
     $scope.currentUser = $rootScope.currentUser;
     $scope.activeModList = $rootScope.activeModList;
@@ -531,6 +531,23 @@ app.controller('modListController', function($scope, $rootScope, $q, $state, $st
         $scope.updateTabs();
     };
 
+    $scope.checkIfValid = function() {
+        $scope.$applyAsync(function() {
+            $scope.nameValid = $scope.mod_list.name.length > 0;
+            $scope.authorsValid = $scope.mod_list.authors.length > 0;
+            $scope.descriptionValid = $scope.descriptionCharCount > 15 && $scope.descriptionCharCount < 65536;
+            $scope.modListAuthorsValid = modValidationService.authorsValid($scope.mod_list.mod_list_authors);
+            $scope.descriptionCharCount = $scope.mod_list.description.length;
+            $scope.valid = $scope.nameValid && $scope.authorsValid && $scope.descriptionValid && $scope.modListAuthorsValid;
+        });
+    };
+
+    var validationTimeout;
+    $scope.descriptionChanged = function() {
+        clearTimeout(validationTimeout);
+        validationTimeout = setTimeout($scope.checkIfValid, 100);
+    };
+
     $scope.saveChanges = function(skipFlatten) {
         var action = $q.defer();
         // get changed mod fields
@@ -626,4 +643,8 @@ app.controller('modListController', function($scope, $rootScope, $q, $state, $st
         if (toState.name.startsWith("base.mod-list")) return;
         $scope.confirmStateChange(event);
     });
+
+    // watch for changes and validate
+    $scope.$watchGroup(['mod_list.name', 'mod_list.authors'], $scope.checkIfValid);
+    $scope.$watch('mod_list.mod_list_authors', $scope.checkIfValid, true);
 });
