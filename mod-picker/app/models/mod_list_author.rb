@@ -2,7 +2,7 @@ class ModListAuthor < ActiveRecord::Base
   include Trackable, BetterJson, CounterCache
 
   # ATTRIBUTES
-  enum role: [:author, :contributor, :curator]
+  enum role: [:author, :contributor]
 
   # EVENT TRACKING
   track :added
