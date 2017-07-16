@@ -757,6 +757,13 @@ app.service('columnsFactory', function() {
             {
                 group: "General",
                 visibility: false,
+                label: "Authors",
+                data: "authors",
+                invertSort: true
+            },
+            {
+                group: "General",
+                visibility: false,
                 label: "Submitter",
                 data: "submitter.username",
                 link: function(item) {
