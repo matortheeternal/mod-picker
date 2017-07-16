@@ -245,16 +245,23 @@ class Ability
   end
 
   def mod_author_abilities(user)
-    can [:update, :hide], Mod, { mod_authors: { user_id: user.id } }
+    can [:update], Mod, { mod_authors: { user_id: user.id } }
     can :destroy, ModRequirement, {mod_version: {mod: {mod_authors: {user_id: user.id } } } }
     can :destroy, ModTag, { mod: { mod_authors: { user_id: user.id } } }
     cannot :create, Review, { mod: { mod_authors: { user_id: user.id, role: [0, 1] } } }
     # authors
-    can [:update_authors, :update_options, :update_details, :update_download_links], Mod, { mod_authors: { user_id: user.id, role: 0 } }
+    can [:hide, :update_authors, :update_options, :update_details, :update_download_links], Mod, { mod_authors: { user_id: user.id, role: 0 } }
     can :change_status, Mod, { status: 0, mod_authors: { user_id: user.id, role: 0 } }
     can [:read, :update], CuratorRequest, { mod: { mod_authors: { user_id: user.id, role: 0 } } }
     # contributors
-    cannot [:update, :hide], Mod, { disallow_contributors: true, mod_authors: { user_id: user.id, role: 1 } }
+    cannot [:update], Mod, { disallow_contributors: true, mod_authors: { user_id: user.id, role: 1 } }
+  end
+
+  def mod_list_author_abilities(user)
+    can [:update], ModList, { mod_list_authors: {user_id: user.id} }
+    can :destroy, ModListTag, { mod_list: { mod_list_authors: { user_id: user.id } } }
+    #authors
+    can [:hide, :update_authors, :update_options, :change_status], ModList, { mod_list_authors: { user_id: user.id, role: 0 } }
   end
 
   def contributor_abilities(user)
@@ -264,6 +271,7 @@ class Ability
     can_update_their_contributions(user)
     can_manage_their_marks(user)
     mod_author_abilities(user)
+    mod_list_author_abilities(user)
     reputation_abilities(user, true)
   end
 
