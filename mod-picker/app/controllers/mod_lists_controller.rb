@@ -269,7 +269,7 @@ class ModListsController < ApplicationController
   def update
     authorize! :update, @mod_list
     authorize! :hide, @mod_list, :message => "You are not allowed to hide/unhide this mod list." if params[:mod_list].has_key?(:hidden)
-    authorize! :update_authors, @mod_list, :message => "You are not allowed to update this mod list's authors." if params[:mod].has_key?(:mod_list_authors_attributes)
+    authorize! :update_authors, @mod_list, :message => "You are not allowed to update this mod list's authors." if params[:mod_list].has_key?(:mod_list_authors_attributes)
     authorize! :change_status, @mod_list, :message => "You are not allowed to change this mod list's status." if params[:mod_list].has_key?(:status)
     authorize! :change_visibility, @mod_list, :message => "You are not allowed to change this mod list's visibility." if params[:mod_list].has_key?(:visibility)
     authorize! :update_options, @mod_list, :message => "You are not allowed to update this mod list's advanced options." if options_params.any?
