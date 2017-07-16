@@ -191,7 +191,7 @@ class User < ActiveRecord::Base
   end
 
   def mod_lists
-    ModList.eager_load(:mod_list_authors).where("submitted_by = :id OR mod_list_authors.user_id = :id", id: id)
+    ModList.eager_load(:mod_list_authors).preload(:submitter).where("submitted_by = :id OR mod_list_authors.user_id = :id", id: id)
   end
 
   def mod_submission_history(time_zone)
