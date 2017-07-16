@@ -106,6 +106,7 @@ app.service('notificationsFactory', function() {
         ModTag: associatedModLink,
         ModListTag: associatedModListLink,
         ModAuthor: associatedModLink,
+        ModListAuthor: associatedModListLink,
         Mod: '<a href="mods/{{event.content_id}}">{{content.name}}</a>',
         ModList: '<a href="mod-lists/{{event.content_id}}">{{content.name}}</a>',
         UserReputation: '<a href="user/{{event.content.user.id}}">{{content.user.username}}</a> has',
