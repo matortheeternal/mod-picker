@@ -268,7 +268,11 @@ class ModListsController < ApplicationController
   # PATCH/PUT /mod_lists/1
   def update
     authorize! :update, @mod_list
-    authorize! :hide, @mod_list if params[:mod_list].has_key?(:hidden)
+    authorize! :hide, @mod_list, :message => "You are not allowed to hide/unhide this mod list." if params[:mod_list].has_key?(:hidden)
+    authorize! :update_authors, @mod_list, :message => "You are not allowed to update this mod list's authors." if params[:mod].has_key?(:mod_list_authors_attributes)
+    authorize! :change_status, @mod_list, :message => "You are not allowed to change this mod list's status." if params[:mod_list].has_key?(:status)
+    authorize! :change_visibility, @mod_list, :message => "You are not allowed to change this mod list's visibility." if params[:mod_list].has_key?(:visibility)
+    authorize! :update_options, @mod_list, :message => "You are not allowed to update this mod list's advanced options." if options_params.any?
 
     @mod_list.updated_by = current_user.id
     if @mod_list.update(mod_list_params) && @mod_list.update_lazy_counters!
@@ -381,6 +385,10 @@ class ModListsController < ApplicationController
           custom_config_files_attributes: [:id, :filename, :install_path, :text_body, :_destroy],
           ignored_notes_attributes: [:id, :note_id, :note_type, :_destroy]
       )
+    end
+
+    def options_params
+      params[:mod_list].slice(:is_collection, :disable_comments, :lock_tags)
     end
 
     def mod_list_import_params
