@@ -258,10 +258,10 @@ class Ability
   end
 
   def mod_list_author_abilities(user)
-    can [:update], ModList, { mod_list_authors: {user_id: user.id} }
+    can [:read, :update], ModList, { mod_list_authors: {user_id: user.id} }
     can :destroy, ModListTag, { mod_list: { mod_list_authors: { user_id: user.id } } }
     #authors
-    can [:hide, :update_authors, :update_options, :change_status], ModList, { mod_list_authors: { user_id: user.id, role: 0 } }
+    can [:hide, :update_authors, :update_options, :change_status, :change_visibility], ModList, { mod_list_authors: { user_id: user.id, role: 0 } }
   end
 
   def contributor_abilities(user)
@@ -289,7 +289,7 @@ class Ability
 
   def can_manage_their_mod_lists(user)
     can :create, ModList
-    can [:update, :hide], ModList, submitted_by: user.id, hidden: false
+    can [:update, :hide, :update_authors, :change_status, :change_visibility, :update_options], ModList, submitted_by: user.id, hidden: false
   end
 
   def can_update_their_settings(user)
