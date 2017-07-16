@@ -45,14 +45,14 @@
 
             <h3 class="section-title">Status</h3>
             <section>
-                <select ng-model="mod_list.status">
+                <select ng-model="mod_list.status" ng-disabled="!permissions.isAuthor">
                     <option value="under_construction">Under Construction</option>
                     <option value="testing">Testing</option>
                     <option value="complete">Complete</option>
                 </select>
             </section>
 
-            <h3 class="section-title">Visibility</h3>
+            <h3 class="section-title" ng-disabled="!permissions.isAuthor">Visibility</h3>
             <section>
                 <select ng-model="mod_list.visibility">
                     <option value="visibility_public">Public</option>
@@ -61,10 +61,10 @@
                 </select>
             </section>
 
-            <mod-list-authors></mod-list-authors>
+            <mod-list-authors ng-if="permissions.isAuthor"></mod-list-authors>
 
-            <h3 class="section-title">Other Options</h3>
-            <section>
+            <h3 class="section-title" ng-if="permissions.isAuthor">Other Options</h3>
+            <section ng-if="permissions.isAuthor">
                 <label class="checkbox-option">
                     <input type="checkbox" ng-model="mod_list.is_collection"> Collection
                 </label>
