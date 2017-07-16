@@ -128,8 +128,13 @@ class ModList < ActiveRecord::Base
   validates :name, length: { maximum: 255 }
 
   # CALLBACKS
+  before_create :set_author
   before_update :hide_comments, :unset_active_if_hidden
   before_destroy :unset_active
+
+  def set_author
+    self.authors = submitter.username
+  end
 
   def update_all_counters!
     reset_counters(:tools, :mods, :custom_tools, :custom_mods, :mod_list_plugins, :custom_plugins, :mod_list_config_files, :custom_config_files, :ignored_notes, :tags, :stars, :comments)
