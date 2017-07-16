@@ -304,6 +304,11 @@ app.controller('modListController', function($scope, $rootScope, $q, $state, $st
         }
     };
 
+    $scope.toggleAuthorsModal = function(visible) {
+        $scope.$emit('toggleModal', visible);
+        $scope.showAuthorsModal = visible;
+    };
+
     $scope.toggleReportModal = function(visible) {
         $scope.$emit('toggleModal', visible);
         $scope.showReportModal = visible;
