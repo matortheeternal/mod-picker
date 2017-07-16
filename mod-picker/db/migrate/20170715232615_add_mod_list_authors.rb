@@ -8,5 +8,8 @@ class AddModListAuthors < ActiveRecord::Migration
 
     add_foreign_key :mod_list_authors, :mod_lists
     add_foreign_key :mod_list_authors, :users
+
+    add_column :mod_lists, :authors, :string, limit: 128, :after => :name
+    ModList.joins(:submitter).update_all("authors = users.username")
   end
 end

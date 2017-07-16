@@ -633,6 +633,7 @@ ActiveRecord::Schema.define(version: 20170715232615) do
     t.integer  "visibility",                limit: 1,     default: 0,     null: false
     t.boolean  "is_collection",                           default: false, null: false
     t.string   "name",                      limit: 255,                   null: false
+    t.string   "authors",                   limit: 128
     t.text     "description",               limit: 65535
     t.integer  "tools_count",               limit: 4,     default: 0,     null: false
     t.integer  "mods_count",                limit: 4,     default: 0,     null: false
