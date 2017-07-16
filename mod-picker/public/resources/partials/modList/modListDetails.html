@@ -30,6 +30,11 @@
                 <input type="text" ng-model="mod_list.name">
             </section>
 
+            <h3 class="section-title">Authors</h3>
+            <section>
+                <input type="text" ng-model="mod_list.authors">
+            </section>
+
             <h3 class="section-title">Status</h3>
             <section>
                 <select ng-model="mod_list.status">
@@ -47,6 +52,8 @@
                     <option value="visibility_private">Private</option>
                 </select>
             </section>
+
+            <mod-list-authors></mod-list-authors>
 
             <h3 class="section-title">Other Options</h3>
             <section>
