@@ -144,7 +144,7 @@ app.service('objectUtils', function() {
                 diff = service.getDifferentValues(oldObj[property], newObj[property]);
                 // if there are differences, we save them
                 if (typeof diff !== 'undefined' && (typeof diff !== 'object' ||
-                    diff == null || diff.constructor === Date || !service.isEmptyObject(diff))) {
+                    diff == null || diff.constructor === Date || diff.constructor === Array || !service.isEmptyObject(diff))) {
                     foundDifferences = true;
                     result[property] = diff;
                 }

@@ -109,8 +109,7 @@ app.service('modListService', function(backend, $q, userTitleService, contributi
         return action.promise;
     };
 
-    this.updateModList = function(modList) {
-        // Mod List Groups
+    this.prepareModListGroups = function(modList) {
         var mod_list_groups = angular.copy(modList.groups || []);
         mod_list_groups.forEach(function(group) {
             if (group.id && group.children) {
@@ -123,8 +122,10 @@ app.service('modListService', function(backend, $q, userTitleService, contributi
                 group.children = newChildren;
             }
         });
+        return mod_list_groups;
+    };
 
-        // Mod List Mods
+    this.prepareModListMods = function(modList) {
         var mod_list_mods = angular.copy(Array.prototype.concat(modList.tools || [], modList.mods || []));
         mod_list_mods.forEach(function(item) {
             if (item.mod) {
@@ -135,9 +136,14 @@ app.service('modListService', function(backend, $q, userTitleService, contributi
                 delete item.mod_list_mod_options;
             }
         });
-        var custom_mods = angular.copy(Array.prototype.concat(modList.custom_tools || [], modList.custom_mods || []));
+        return mod_list_mods;
+    };
 
-        // Mod List Plugins
+    this.prepareModListCustomMods = function(modList) {
+        return angular.copy(Array.prototype.concat(modList.custom_tools || [], modList.custom_mods || []));
+    };
+
+    this.prepareModListPlugins = function(modList) {
         var mod_list_plugins = angular.copy(modList.plugins || []);
         mod_list_plugins.forEach(function(item) {
             if (item.mod) {
@@ -147,12 +153,39 @@ app.service('modListService', function(backend, $q, userTitleService, contributi
                 delete item.plugin;
             }
         });
+        return mod_list_plugins;
+    };
+
+    this.prepareModListCustomPlugins = function(modList) {
         var custom_plugins = angular.copy(modList.custom_plugins || []);
         custom_plugins.forEach(function(item) {
             if (item.compatibility_note) {
                 delete item.compatibility_note;
             }
         });
+        return custom_plugins;
+    };
+
+    this.prepareModListAuthors = function(modList) {
+        var mod_list_authors = angular.copy(modList.mod_list_authors || []);
+        mod_list_authors.forEach(function(item) {
+            if (item.hasOwnProperty('error')) {
+                delete item.error;
+            }
+            if (item.user) {
+                delete item.user;
+            }
+        });
+        return mod_list_authors;
+    };
+
+    this.updateModList = function(modList) {
+        var mod_list_groups = service.prepareModListGroups(modList);
+        var mod_list_mods = service.prepareModListMods(modList);
+        var custom_mods = service.prepareModListCustomMods(modList);
+        var mod_list_plugins = service.prepareModListPlugins(modList);
+        var custom_plugins = service.prepareModListCustomPlugins(modList);
+        var mod_list_authors = service.prepareModListAuthors(modList);
 
         var modListData = {
             mod_list: {
@@ -165,6 +198,7 @@ app.service('modListService', function(backend, $q, userTitleService, contributi
                 disable_comments: modList.disable_comments,
                 lock_tags: modList.lock_tags,
                 hidden: modList.hidden,
+                mod_list_authors_attributes: mod_list_authors,
                 mod_list_groups_attributes: mod_list_groups,
                 mod_list_mods_attributes: mod_list_mods,
                 custom_mods_attributes: custom_mods,

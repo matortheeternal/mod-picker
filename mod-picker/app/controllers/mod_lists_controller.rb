@@ -368,8 +368,9 @@ class ModListsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def mod_list_params
-      params.require(:mod_list).permit(:game_id, :name, :description, :status, :visibility, :is_collection, :disable_comments, :lock_tags, :hidden,
+      params.require(:mod_list).permit(:game_id, :name, :authors, :description, :status, :visibility, :is_collection, :disable_comments, :lock_tags, :hidden,
           mod_list_mods_attributes: [:id, :group_id, :mod_id, :index, :description, :_destroy, mod_list_mod_options_attributes: [:id, :mod_option_id, :_destroy]],
+          mod_list_authors_attributes: [:id, :user_id, :role, :_destroy],
           custom_mods_attributes: [:id, :group_id, :is_utility, :index, :name, :url, :description, :_destroy],
           mod_list_plugins_attributes: [:id, :group_id, :plugin_id, :index, :cleaned, :merged, :description, :_destroy],
           custom_plugins_attributes: [:id, :group_id, :index, :cleaned, :merged, :compatibility_note_id, :filename, :description, :_destroy],
