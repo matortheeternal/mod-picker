@@ -17,7 +17,7 @@
         <div marked="mod_list.description" class="text-container"></div>
     </div>
     <div class="content-container" ng-if="editing">
-        <text-area data="mod_list.description" ng-refresh="updateMDE"></text-area>
+        <text-area data="mod_list.description" ng-refresh="updateMDE" min-char-count="16" max-char-count="65535" on-change="descriptionChanged" char-count="descriptionCharCount"></text-area>
     </div>
 </div>
 
@@ -25,14 +25,22 @@
     <div class="content-title">Options</div>
     <div class="content-container" ng-if="editing">
         <form>
-            <h3 class="section-title">Name</h3>
+            <h3 class="section-title">Name
+                <span ng-hide="nameValid" class="error-tooltip" title="Mod List name cannot be blank.">
+                    <i class="fa fa-exclamation-circle"></i>
+                </span>
+            </h3>
             <section>
-                <input type="text" ng-model="mod_list.name">
+                <input type="text" ng-model="mod_list.name" maxlength="128">
             </section>
 
-            <h3 class="section-title">Authors</h3>
+            <h3 class="section-title">Authors
+                <span ng-hide="authorsValid" class="error-tooltip" title="Mod List authors cannot be blank.">
+                    <i class="fa fa-exclamation-circle"></i>
+                </span>
+            </h3>
             <section>
-                <input type="text" ng-model="mod_list.authors">
+                <input type="text" ng-model="mod_list.authors" maxlength="128">
             </section>
 
             <h3 class="section-title">Status</h3>
