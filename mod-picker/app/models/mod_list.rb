@@ -17,6 +17,7 @@ class ModList < ActiveRecord::Base
 
   # NOTIFICATION SUBSCRIPTIONS
   subscribe :submitter, to: [:updated, :hidden, :unhidden, *Event.milestones]
+  subscribe :author_users, to: [:updated, :hidden, :unhidden, *Event.milestones]
   subscribe :user_stars, to: [:status]
 
   # SCOPES
@@ -51,6 +52,7 @@ class ModList < ActiveRecord::Base
   belongs_to :game, :inverse_of => 'mod_lists'
   belongs_to :submitter, :class_name => 'User', :foreign_key => 'submitted_by', :inverse_of => 'mod_lists'
   has_many :mod_list_authors, :inverse_of => 'mod_list'
+  has_many :author_users, :class_name => 'User', :through => 'mod_list_authors', :source => 'user'
 
   # LOAD ORDER
   has_many :mod_list_plugins, :inverse_of => 'mod_list', :dependent => :destroy
@@ -98,6 +100,10 @@ class ModList < ActiveRecord::Base
   accepts_nested_attributes_for :mod_list_config_files, allow_destroy: true
   accepts_nested_attributes_for :custom_config_files, allow_destroy: true
   accepts_nested_attributes_for :ignored_notes, allow_destroy: true
+  # can only update author role for an existing mod_author record
+  accepts_nested_attributes_for :mod_list_authors, reject_if: proc {
+      |attributes| attributes[:id] && attributes[:user_id] && !attributes[:_destroy]
+  }, allow_destroy: true
 
   # COUNTER CACHE
   counter_cache_on :submitter
