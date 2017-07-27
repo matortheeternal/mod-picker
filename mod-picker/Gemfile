@@ -22,8 +22,8 @@ gem 'rack-attack'
 # optimize our database
 gem "lol_dba"
 
-# paypal rest api for payments
-gem 'paypal-sdk-rest'
+# paypal express checkout for payments
+gem 'paypal-express'
 
 # Prerender for serving pages to crawlers
 gem 'prerender_rails'
