@@ -339,6 +339,11 @@ Rails.application.routes.draw do
   # categories
   match '/categories/chart', to: 'categories#chart', via: [:get]
 
+  # payments
+  resources :payments, only: [:create]
+  match '/payments/success', to: 'payments#success', via: [:get]
+  match '/payments/cancel', to: 'payments#cancel', via: [:get]
+
   # static data
   resources :categories, only: [:index]
   resources :category_priorities, only: [:index]
