@@ -6,6 +6,10 @@ Rails.application.configure do
   # since you don't have to restart the web server when you make code changes.
   config.cache_classes = false
 
+  # paypal payment success and cancel URLs
+  config.paypal_success_url = 'http://localhost:3000/payments/success'
+  config.paypal_cancel_url = 'http://localhost:3000/payments/cancel'
+
   # Enable prerender middleware for SEO
   config.middleware.use Rack::Prerender, prerender_token: ENV['prerender_token'], prerender_service_url: 'http://localhost:1340/'
 

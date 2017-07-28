@@ -4,6 +4,10 @@ Rails.application.configure do
   # Code is not reloaded between requests.
   config.cache_classes = true
 
+  # paypal payment success and cancel URLs
+  config.paypal_success_url = 'https://modpicker.com/payments/success'
+  config.paypal_cancel_url = 'https://modpicker.com/payments/cancel'
+
   # BetterJSON templates are cached in memory
   config.cache_json_templates = true
 
