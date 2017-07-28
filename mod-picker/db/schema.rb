@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170707023849) do
+ActiveRecord::Schema.define(version: 20170728041546) do
 
   create_table "active_mod_lists", force: :cascade do |t|
     t.integer "game_id",     limit: 4, null: false
@@ -497,6 +497,15 @@ ActiveRecord::Schema.define(version: 20170707023849) do
   add_index "mod_licenses", ["license_option_id"], name: "fk_rails_608f4a2096", using: :btree
   add_index "mod_licenses", ["mod_id"], name: "fk_rails_3c8eedb43d", using: :btree
 
+  create_table "mod_list_authors", force: :cascade do |t|
+    t.integer "mod_list_id", limit: 4,             null: false
+    t.integer "user_id",     limit: 4,             null: false
+    t.integer "role",        limit: 1, default: 0, null: false
+  end
+
+  add_index "mod_list_authors", ["mod_list_id"], name: "fk_rails_4554079f14", using: :btree
+  add_index "mod_list_authors", ["user_id"], name: "fk_rails_ce11dfd432", using: :btree
+
   create_table "mod_list_config_files", force: :cascade do |t|
     t.integer "mod_list_id",    limit: 4,     null: false
     t.integer "config_file_id", limit: 4,     null: false
@@ -624,6 +633,7 @@ ActiveRecord::Schema.define(version: 20170707023849) do
     t.integer  "visibility",                limit: 1,     default: 0,     null: false
     t.boolean  "is_collection",                           default: false, null: false
     t.string   "name",                      limit: 255,                   null: false
+    t.string   "authors",                   limit: 128
     t.text     "description",               limit: 65535
     t.integer  "tools_count",               limit: 4,     default: 0,     null: false
     t.integer  "mods_count",                limit: 4,     default: 0,     null: false
@@ -807,6 +817,23 @@ ActiveRecord::Schema.define(version: 20170707023849) do
   end
 
   add_index "override_records", ["plugin_id"], name: "pl_id", using: :btree
+
+  create_table "payments", force: :cascade do |t|
+    t.integer  "user_id",    limit: 4,                   null: false
+    t.integer  "amount",     limit: 4,   default: 1
+    t.string   "token",      limit: 255
+    t.string   "identifier", limit: 255
+    t.string   "payer_id",   limit: 255
+    t.boolean  "recurring",              default: false
+    t.boolean  "digital",                default: false
+    t.boolean  "popup",                  default: false
+    t.boolean  "completed",              default: false
+    t.boolean  "canceled",               default: false
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+  end
+
+  add_index "payments", ["user_id"], name: "fk_rails_081dc04a02", using: :btree
 
   create_table "plugin_errors", force: :cascade do |t|
     t.integer "plugin_id", limit: 4,   null: false
@@ -1214,6 +1241,8 @@ ActiveRecord::Schema.define(version: 20170707023849) do
   add_foreign_key "mod_licenses", "license_options"
   add_foreign_key "mod_licenses", "licenses"
   add_foreign_key "mod_licenses", "mods"
+  add_foreign_key "mod_list_authors", "mod_lists"
+  add_foreign_key "mod_list_authors", "users"
   add_foreign_key "mod_list_config_files", "config_files"
   add_foreign_key "mod_list_config_files", "mod_lists"
   add_foreign_key "mod_list_custom_config_files", "mod_lists"
@@ -1256,6 +1285,7 @@ ActiveRecord::Schema.define(version: 20170707023849) do
   add_foreign_key "notifications", "events"
   add_foreign_key "notifications", "users"
   add_foreign_key "override_records", "plugins", name: "override_records_ibfk_1"
+  add_foreign_key "payments", "users"
   add_foreign_key "plugin_errors", "plugins"
   add_foreign_key "plugin_record_groups", "plugins", name: "plugin_record_groups_ibfk_1"
   add_foreign_key "plugins", "games"
