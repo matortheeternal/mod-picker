@@ -98,6 +98,10 @@ GEM
     http-cookie (1.0.3)
       domain_name (~> 0.5)
     i18n (0.7.0)
+    ianfleeton-paypal-express (0.8.3)
+      activesupport (>= 2.3, < 6)
+      attr_required (~> 1.0)
+      rest-client (~> 2.0)
     json (1.8.3)
     launchy (2.4.3)
       addressable (~> 2.3)
@@ -138,10 +142,6 @@ GEM
     nokogiri (1.6.8.1-x64-mingw32)
       mini_portile2 (~> 2.1.0)
     orm_adapter (0.5.0)
-    paypal-express (0.8.1)
-      activesupport (>= 2.3)
-      attr_required (>= 0.0.5)
-      rest-client
     prerender_rails (1.3.0)
       activesupport
       rack
@@ -307,6 +307,7 @@ DEPENDENCIES
   devise_invitable
   factory_girl_rails (~> 4.0)
   faker
+  ianfleeton-paypal-express
   launchy
   lol_dba
   mail_form
@@ -315,7 +316,6 @@ DEPENDENCIES
   narray
   ngannotate-rails
   nokogiri
-  paypal-express
   prerender_rails
   rack-attack
   rails (= 4.2.5)

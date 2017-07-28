@@ -23,7 +23,7 @@ gem 'rack-attack'
 gem "lol_dba"
 
 # paypal express checkout for payments
-gem 'paypal-express'
+gem 'ianfleeton-paypal-express', require: 'paypal/express'
 
 # Prerender for serving pages to crawlers
 gem 'prerender_rails'
