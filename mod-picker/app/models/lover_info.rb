@@ -27,7 +27,7 @@ class LoverInfo < ActiveRecord::Base
   end
 
   def url
-    "http://www.loverslab.com/files/file/#{id}"
+    "http://www.loverslab.com/files/file/#{url_id}"
   end
 
   def link_uploader
