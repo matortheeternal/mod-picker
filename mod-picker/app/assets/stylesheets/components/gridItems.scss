@@ -11,7 +11,7 @@ table-items, grid-items {
     position: absolute;
     z-index: 2;
     top: 2px;
-    right: 0;
+    right: 4px;
 
     span {
       font-size: 20px;
@@ -32,10 +32,6 @@ table-items, grid-items {
       &:hover {
         color: $text_color;
       }
-    }
-
-    span:last-child {
-      padding-right: 3px;
     }
   }
 
