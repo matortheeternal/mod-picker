@@ -4,6 +4,7 @@
         <!-- display options for groups -->
         <div ng-if="item.children">
             <div class="action-items" ng-if="editing">
+                <span class="fa fa-window-{{item.minimized ? 'restore' : 'minimize'}}" ng-click="item.minimized = !item.minimized"></span>
                 <span class="fa fa-times" ng-click="removeGroup(model, item, $index)"></span>
             </div>
             <div class="group-name">
@@ -17,7 +18,7 @@
             </div>
 
             <!-- display children of groups -->
-            <ul dnd-list="item.children" dnd-horizontal-list="true" dnd-allowed-types="['item']">
+            <ul dnd-list="item.children" dnd-horizontal-list="true" dnd-allowed-types="['item']" ng-hide="item.minimized">
                 <li class="box-shadow" ng-repeat="item in item.children" ng-hide="item._destroy" dnd-draggable="item" dnd-moved="itemMoved($parent.item.children, $index)" dnd-effect-allowed="move" dnd-disable-if="!editing" dnd-type="'item'">
                     <grid-item></grid-item>
                 </li>
