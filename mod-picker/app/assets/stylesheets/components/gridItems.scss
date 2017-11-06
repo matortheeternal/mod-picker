@@ -115,6 +115,7 @@ grid-items {
 
     li.group {
       width: 1090px;
+      min-height: 60px;
       padding: 10px;
 
       ul[dnd-list] {
