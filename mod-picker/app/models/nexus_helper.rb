@@ -45,8 +45,8 @@ class NexusHelper
     # grab the cookies from the 302 response directly
     @last_request = DateTime.now
     @last_login = DateTime.now
-    RestClient.post(login_url, multipart_data, headers) do |response|
-      @cookies = response.cookies
+    RestClient.post(login_url, multipart_data, headers) do |r|
+      @cookies = r.cookies
     end
   end
 
@@ -77,12 +77,12 @@ class NexusHelper
     # parse needed data from user page
     doc = Nokogiri::HTML(response.body)
     user_data = {}
-    userInfoCell = doc.at_css("#user_info_cell")
-    user_data[:username] = userInfoCell.css("h1 span").text.strip
-    date_joined_str = userInfoCell.children[2].text.strip
+    user_info = doc.at_css("#user_info_cell")
+    user_data[:username] = user_info.css("h1 span").text.strip
+    date_joined_str = user_info.children[2].text.strip
     user_data[:date_joined] = DateTime.parse(date_joined_str, date_joined_format)
-    communityStats = doc.at_css(".general_box ul")
-    user_data[:posts_count] = communityStats.css("li")[1].css(".row_data").text.gsub(',', '').to_i
+    community_stats = doc.at_css(".general_box ul")
+    user_data[:posts_count] = community_stats.css("li")[1].css(".row_data").text.gsub(',', '').to_i
     latest_status = doc.at_css("#user_latest_status")
     if latest_status.present?
       user_data[:last_status] = latest_status.css("div")[0].children[0].text.strip
@@ -98,6 +98,10 @@ class NexusHelper
     '%d/%m/%Y - %I:%M%p'
   end
 
+  def self.rd_date_format
+    '%Y-%m-%d %H:%M'
+  end
+
   # use this method if the data is sometimes not present on the page
   def self.try_parse(doc, selector, default)
     begin
@@ -111,18 +115,88 @@ class NexusHelper
     "http://www.nexusmods.com/#{game_name}/mods/#{id}"
   end
 
+  def self.get_rd_stat(doc, classname)
+    doc.at_css(".stat-#{classname}").css('.stat')[0].text.gsub(',', '')
+  end
+
+  def self.get_rd_info(doc, index)
+    doc.at_css('#fileinfo').css('.sideitem')[index]
+  end
+
+  def self.get_rd_tab_stat(doc, selector)
+    begin
+      doc.at_css(selector).text.to_i
+    rescue
+      0
+    end
+  end
+
+  def self.scrape_rd_mod(doc)
+    # raise an exception if we got a 404 page
+    mod_section = doc.at_css('.modpage')
+    raise 'Mod not found' if mod_section.nil?
+
+    # scrape basic data
+    byebug
+    mod_data = {}
+    mod_data[:last_scraped] = DateTime.now
+    mod_data[:mod_name] = doc.at_css('#pagetitle').css('h1')[0].text
+    mod_data[:current_version] = get_rd_stat(doc, 'version')
+    mod_data[:uploaded_by] = get_rd_info(doc, 3).children[3].text
+    mod_data[:authors] = get_rd_info(doc, 2).children[2].text.strip
+
+    # raise exception if uploader is blacklisted
+    if BlacklistedAuthor.exists_for?('NexusInfo', mod_data[:uploaded_by])
+      raise 'the author of this mod has opted out of having their mods on Mod Picker'
+    end
+
+    # scrape dates
+    date_added_str = get_rd_info(doc, 1).children[3].attr('datetime')
+    mod_data[:released] = DateTime.parse(date_added_str, rd_date_format)
+    date_updated_str = get_rd_info(doc, 0).children[3].attr('datetime')
+    mod_data[:updated] = DateTime.parse(date_updated_str, rd_date_format)
+
+    # scrape statistics
+    mod_data[:has_stats] = Rails.application.config.scrape_nexus_statistics
+    if Rails.application.config.scrape_nexus_statistics
+      puts '  Parsing statistics'
+      mod_data[:endorsements] = get_rd_stat(doc, 'endorsements')
+      mod_data[:unique_downloads] = get_rd_stat(doc, 'uniquedls')
+      mod_data[:downloads] = get_rd_stat(doc, 'totaldls')
+      mod_data[:views] = get_rd_stat(doc, 'totalviews')
+
+      # scrape nexus category
+      breadcrumbs = doc.at_css('#breadcrumb').css('li')
+      catlink = breadcrumbs[breadcrumbs.length - 2].children[1].attr('href')
+      mod_data[:nexus_category] = /categories\/([0-9]*)/.match(catlink).captures[0].to_i
+
+      # scrape counts
+      mod_data[:files_count] = get_rd_tab_stat(doc, '#mod-page-tab-files .alert')
+      mod_data[:images_count] = get_rd_tab_stat(doc, '#mod-page-tab-images .alert')
+      mod_data[:bugs_count] = get_rd_tab_stat(doc, '#mod-page-tab-bugs .alert')
+      mod_data[:discussions_count] = get_rd_tab_stat(doc, '#mod-page-tab-forums .alert')
+      mod_data[:articles_count] = get_rd_tab_stat(doc, '#mod-page-tab-articles .alert')
+      mod_data[:posts_count] = get_rd_tab_stat(doc, '#mod-page-tab-posts .alert')
+      mod_data[:videos_count] = get_rd_tab_stat(doc, '#mod-page-tab-videos .alert')
+    end
+
+    # return the mod data
+    puts '  Done.'
+    mod_data
+  end
+
   # TODO: Scraping logic for has_adult_content
   def self.scrape_mod(game_name, id)
     login_if_necessary
 
     # construct mod url
     url = mod_url(game_name, id)
-    puts "NexusHelper: Scraping "+url
+    puts 'NexusHelper: Scraping '+url
 
     # prepare headers
     headers = {
         :cookies =>  @cookies,
-        :"user-agent" => Rails.application.config.user_agent
+        :'user-agent' => Rails.application.config.user_agent
     }
 
     # get the mod page
@@ -131,28 +205,31 @@ class NexusHelper
     @last_request = DateTime.now
 
     # parse needed data from the mod page
-    puts "  Parsing response"
+    puts '  Parsing response'
     doc = Nokogiri::HTML(response.body)
-    mod_data = {}
+
+    # handle redesign
+    return scrape_rd_mod(doc) if doc.at_css('.site-nexusmods-b').present?
 
     # raise an exception if we got a 404 page
-    header_node = doc.at_css("#Header")
+    header_node = doc.at_css('#Header')
     raise header_node.text if header_node.present?
 
     # scrape basic data
+    mod_data = {}
     mod_data[:last_scraped] = DateTime.now
-    mod_data[:mod_name] = doc.at_css(".header-name").text
-    mod_data[:current_version] = doc.at_css(".file-version strong").text
-    mod_data[:uploaded_by] = doc.at_css(".uploader a").text
-    mod_data[:authors] = doc.at_css(".header-author strong").text
+    mod_data[:mod_name] = doc.at_css('.header-name').text
+    mod_data[:current_version] = doc.at_css('.file-version strong').text
+    mod_data[:uploaded_by] = doc.at_css('.uploader a').text
+    mod_data[:authors] = doc.at_css('.header-author strong').text
 
     # raise exception if uploader is blacklisted
-    if BlacklistedAuthor.exists_for?("NexusInfo", mod_data[:uploaded_by])
-      raise "the author of this mod has opted out of having their mods on Mod Picker"
+    if BlacklistedAuthor.exists_for?('NexusInfo', mod_data[:uploaded_by])
+      raise 'the author of this mod has opted out of having their mods on Mod Picker'
     end
 
       # scrape dates
-    dates = doc.at_css(".header-dates").css('div')
+    dates = doc.at_css('.header-dates').css('div')
     date_added_str = dates[0].children[1].text.strip
     mod_data[:released] = DateTime.parse(date_added_str, date_format)
     date_updated_str = dates[1].children[1].text.strip
@@ -161,28 +238,28 @@ class NexusHelper
     # scrape statistics
     mod_data[:has_stats] = Rails.application.config.scrape_nexus_statistics
     if Rails.application.config.scrape_nexus_statistics
-      puts "  Parsing statistics"
-      mod_data[:endorsements] = doc.at_css("#span_endors_number").text.gsub(',', '')
-      mod_data[:unique_downloads] = doc.at_css(".file-unique-dls strong").text.gsub(',', '')
-      mod_data[:downloads] = doc.at_css(".file-total-dls strong").text.gsub(',', '')
-      mod_data[:views] = doc.at_css(".file-total-views strong").text.gsub(',', '')
+      puts '  Parsing statistics'
+      mod_data[:endorsements] = doc.at_css('#span_endors_number').text.gsub(',', '')
+      mod_data[:unique_downloads] = doc.at_css('.file-unique-dls strong').text.gsub(',', '')
+      mod_data[:downloads] = doc.at_css('.file-total-dls strong').text.gsub(',', '')
+      mod_data[:views] = doc.at_css('.file-total-views strong').text.gsub(',', '')
 
       # scrape nexus category
-      catlink = doc.at_css(".header-cat").css('a/@href')[1].text
+      catlink = doc.at_css('.header-cat').css('a/@href')[1].text
       mod_data[:nexus_category] = /src_cat=([0-9]*)/.match(catlink).captures[0].to_i
 
       # scrape counts
-      mod_data[:files_count] = try_parse(doc, ".tab-files strong", "0").to_i
-      mod_data[:images_count] = try_parse(doc, ".tab-images strong", "0").to_i
-      mod_date[:bugs_count] = try_parse(doc, ".tab-bugs strong", "0").to_i
-      mod_data[:discussions_count] = try_parse(doc, ".tab-discussion strong", "0").to_i
-      mod_data[:articles_count] = try_parse(doc, ".tab-articles strong", "0").to_i
-      mod_data[:posts_count] = try_parse(doc, ".tab-comments strong", "0").to_i
-      mod_data[:videos_count] = try_parse(doc, ".tab-videos", "0").to_i
+      mod_data[:files_count] = try_parse(doc, '.tab-files strong', '0').to_i
+      mod_data[:images_count] = try_parse(doc, '.tab-images strong', '0').to_i
+      mod_date[:bugs_count] = try_parse(doc, '.tab-bugs strong', '0').to_i
+      mod_data[:discussions_count] = try_parse(doc, '.tab-discussion strong', '0').to_i
+      mod_data[:articles_count] = try_parse(doc, '.tab-articles strong', '0').to_i
+      mod_data[:posts_count] = try_parse(doc, '.tab-comments strong', '0').to_i
+      mod_data[:videos_count] = try_parse(doc, '.tab-videos', '0').to_i
     end
 
     # return the mod data
-    puts "  Done."
+    puts '  Done.'
     mod_data
   end
 end
