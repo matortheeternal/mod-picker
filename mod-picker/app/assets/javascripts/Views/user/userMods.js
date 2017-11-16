@@ -1,21 +1,35 @@
-app.controller('userModsController', function($scope, errorService, modService, userService, columnsFactory, actionsFactory, modListService) {
+app.controller('userModsController', function($scope, errorService, modService, userService, columnsFactory, actionsFactory, modListService, indexFactory) {
     // initialize variables
     $scope.actions = actionsFactory.modIndexActions();
     $scope.columns = columnsFactory.modColumns();
     $scope.columnGroups = columnsFactory.modColumnGroups();
 
-    // BASE RETRIEVAL LOGIC
-    $scope.retrieveMods = function() {
-        userService.retrieveUserMods($scope.user.id).then(function(data) {
-            $scope.authored_mods = data.authored;
-            $scope.favorite_mods = data.favorites;
-        }, function(response) {
-            $scope.errors.mods = response;
-        });
-    };
+    // INHERITED FUNCTIONS
+    indexFactory.miniIndex($scope, function(page, pageInfo) {
+        return userService.retrieveAuthoredMods($scope.user.id, {
+            page: page || 1,
+            game: window._current_game_id
+        }, pageInfo);
+    }, 'mods', 'authoredMods');
 
-    //retrieve the mods when the state is first loaded
-    $scope.retrieveMods();
+    indexFactory.miniIndex($scope, function(page, pageInfo) {
+        return userService.retrieveSubmittedMods($scope.user.id, {
+            page: page || 1,
+            game: window._current_game_id
+        }, pageInfo);
+    }, 'mods', 'submittedMods');
+
+    indexFactory.miniIndex($scope, function(page, pageInfo) {
+        return userService.retrieveFavoriteMods($scope.user.id, {
+            page: page || 1,
+            game: window._current_game_id
+        }, pageInfo);
+    }, 'mods', 'favoriteMods');
+
+    // DATA RETRIEVAL
+    $scope.retrieveAuthoredMods();
+    $scope.retrieveSubmittedMods();
+    $scope.retrieveFavoriteMods();
 
     // adds a mod to the user's mod list
     $scope.$on('addMod', function(event, mod) {
