@@ -249,7 +249,9 @@ Rails.application.routes.draw do
 
   # user associations
   match '/users/:id/comments', to: 'users#comments', via: [:get, :post]
-  match '/users/:id/mods', to: 'users#mods', via: [:get]
+  match '/users/:id/favorite_mods', to: 'users#favorite_mods', via: [:get, :post]
+  match '/users/:id/authored_mods', to: 'users#authored_mods', via: [:get, :post]
+  match '/users/:id/submitted_mods', to: 'users#submitted_mods', via: [:get, :post]
   match '/users/:id/mod_lists', to: 'users#mod_lists', via: [:get]
 
   # tags

@@ -119,9 +119,36 @@ app.service('userService', function(backend, $q, userSettingsService, userTitleS
         });
     };
 
-    this.retrieveUserMods = function(userId) {
-        return backend.retrieve('/users/' + userId + '/mods', {
-            game: window._current_game_id
+    this.retrieveFavoriteMods = function(userId, options, pageInformation) {
+        var action = $q.defer();
+        backend.post('/users/' + userId + '/favorite_mods', options).then(function(data) {
+            pageUtils.getPageInformation(data, pageInformation, options.page);
+            action.resolve(data);
+        }, function(response) {
+            action.reject(response);
         });
+        return action.promise;
+    };
+
+    this.retrieveAuthoredMods = function(userId, options, pageInformation) {
+        var action = $q.defer();
+        backend.post('/users/' + userId + '/authored_mods', options).then(function(data) {
+            pageUtils.getPageInformation(data, pageInformation, options.page);
+            action.resolve(data);
+        }, function(response) {
+            action.reject(response);
+        });
+        return action.promise;
+    };
+
+    this.retrieveSubmittedMods = function(userId, options, pageInformation) {
+        var action = $q.defer();
+        backend.post('/users/' + userId + '/submitted_mods', options).then(function(data) {
+            pageUtils.getPageInformation(data, pageInformation, options.page);
+            action.resolve(data);
+        }, function(response) {
+            action.reject(response);
+        });
+        return action.promise;
     };
 });

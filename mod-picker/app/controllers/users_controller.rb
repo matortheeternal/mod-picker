@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :comments, :endorse, :unendorse, :add_rep, :subtract_rep, :change_role, :mod_lists, :mods, :api_tokens]
+  before_action :set_user, only: [:show, :comments, :endorse, :unendorse, :add_rep, :subtract_rep, :change_role, :mod_lists, :favorite_mods, :authored_mods, :submitted_mods, :api_tokens]
 
   # GET/POST /users/index
   def index
@@ -130,16 +130,45 @@ class UsersController < ApplicationController
     respond_with_json(@user.api_tokens, :base, :api_tokens)
   end
 
-  # GET /users/1/mods
-  def mods
+  # GET /users/1/favorite_mods
+  def favorite_mods
     authorize! :read, @user
 
-    favorite_mods = @user.starred_mods.game(params[:game]).includes(:author_users).accessible_by(current_ability)
-    authored_mods = @user.mods.game(params[:game]).includes(:author_users).accessible_by(current_ability)
+    @mods = @user.starred_mods.game(params[:game]).includes(:author_users).accessible_by(current_ability).paginate(page: params[:page])
+    count = @user.starred_mods.game(params[:game]).includes(:author_users).accessible_by(current_ability).count
 
     render json: {
-        favorites: json_format(favorite_mods, :index),
-        authored: json_format(authored_mods, :index)
+        mods: json_format(@mods, :index),
+        max_entries: count,
+        entries_per_page: Mod.per_page
+    }
+  end
+
+  # GET /users/1/authored_mods
+  def authored_mods
+    authorize! :read, @user
+
+    @mods = @user.mods.game(params[:game]).includes(:author_users).accessible_by(current_ability).paginate(page: params[:page])
+    count = @user.mods.game(params[:game]).includes(:author_users).accessible_by(current_ability).count
+
+    render json: {
+        mods: json_format(@mods, :index),
+        max_entries: count,
+        entries_per_page: Mod.per_page
+    }
+  end
+
+  # GET /users/1/submitted_mods
+  def submitted_mods
+    authorize! :read, @user
+
+    @mods = @user.submitted_mods.game(params[:game]).includes(:author_users).accessible_by(current_ability).paginate(page: params[:page])
+    count = @user.submitted_mods.game(params[:game]).includes(:author_users).accessible_by(current_ability).count
+
+    render json: {
+        mods: json_format(@mods, :index),
+        max_entries: count,
+        entries_per_page: Mod.per_page
     }
   end
 

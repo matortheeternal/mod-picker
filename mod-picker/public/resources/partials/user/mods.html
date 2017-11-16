@@ -1,21 +1,38 @@
-<loader data="authored_mods" spinner-class="big-spinner" ng-if="!errors.mods">
-    <div class="content-block">
-        <div class="content-title">
-            Authored Mods
-        </div>
-        <div class="content-container table-container">
-            <table-results data="authored_mods" message="No authored mods found."></table-results>
-        </div>
+<div class="content-block">
+    <div class="content-title">
+        Authored Mods
     </div>
-
-    <div class="content-block">
-        <div class="content-title">
-            Favorite Mods
-        </div>
-        <div class="content-container table-container">
-            <table-results data="favorite_mods" message="No favorite mods found."></table-results>
-        </div>
+    <div class="content-container table-container">
+        <loader ng-if="!errors.authoredMods" data="authoredMods" spinner-class="big-spinner">
+            <table-results data="authoredMods" message="No authored mods found."></table-results>
+            <page-results pages="authoredModsPages" data="authoredMods"
+                          callback="refreshAuthoredMods" offset="70"></page-results>
+        </loader>
     </div>
-</loader>
+</div>
 
-<error-display content-class="content-message content-error" errors="errors.mods" label="this user's mods"></error-display>
+<div class="content-block">
+    <div class="content-title">
+        Favorite Mods
+    </div>
+    <div class="content-container table-container">
+        <loader ng-if="!errors.favoriteMods" data="favoriteMods" spinner-class="big-spinner">
+            <table-results data="favoriteMods" message="No favorite mods found."></table-results>
+            <page-results pages="favoriteModsPages" data="favoriteMods"
+                          callback="refreshAuthoredMods" offset="70"></page-results>
+        </loader>
+    </div>
+</div>
+
+<div class="content-block">
+    <div class="content-title">
+        Submitted Mods
+    </div>
+    <div class="content-container table-container">
+        <loader ng-if="!errors.submittedMods" data="submittedMods" spinner-class="big-spinner">
+            <table-results data="submittedMods" message="No submitted mods found."></table-results>
+            <page-results pages="submittedModsPages" data="submittedMods"
+                          callback="refreshSubmittedMods" offset="70"></page-results>
+        </loader>
+    </div>
+</div>
