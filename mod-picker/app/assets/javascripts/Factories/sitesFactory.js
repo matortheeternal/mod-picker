@@ -37,7 +37,7 @@ app.service('sitesFactory', function() {
             shortLabel: "Lab",
             dataLabel: "lab",
             modUrlFormat: /www\.loverslab\.com\/files\/file\/([0-9\-a-z]+)(\/)?/i,
-            userUrlFormat: /www\.loverslab\.com\/user\/([a-zA-Z0-9\-]+)(\/)?/i,
+            userUrlFormat: /www\.loverslab\.com\/profile\/([a-zA-Z0-9\-]+)(\/)?/i,
             modUrlBase: "https://www.loverslab.com/files/file/{id}",
             userIndex: 1,
             loginUrl: "https://www.loverslab.com/",
