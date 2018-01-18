@@ -30,13 +30,19 @@ class ModListMod < ActiveRecord::Base
   before_destroy :destroy_mod_list_plugins
 
   def self.create_from_custom_mod(custom_mod, mod)
-    create({
+    mod_list_mod = create({
         mod_list_id: custom_mod.mod_list_id,
         group_id: custom_mod.group_id,
         mod_id: mod.id,
         index: custom_mod.index,
         is_utility: custom_mod.is_utility
     })
+    mod.mod_options.default.each do |option|
+      ModListModOption.create({
+          mod_list_mod_id: mod_list_mod.id,
+          mod_option_id: option.id
+      })
+    end
   end
 
   def mod_compatibility_notes
