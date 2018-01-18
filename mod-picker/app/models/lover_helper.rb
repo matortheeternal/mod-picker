@@ -19,7 +19,7 @@ class LoverHelper
     # get the index to get auth key for login
     response = RestClient.get(index_url)
     doc = Nokogiri::HTML(response.body)
-    auth_key = doc.xpath('//form[@id="login"]/input/@value').first.value
+    auth_key = doc.xpath('//div[@id="elUserSignIn_internal"]/form/input/@value')[1].value
 
     # prepare login url
     login_params = '?app=core&module=global&section=login&do=process'
