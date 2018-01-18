@@ -128,7 +128,9 @@ class LoverHelper
       "version" => "current_version",
       "is_adult" => "has_adult_content",
       "screenshot" => nil,
-      "author_id" => nil
+      "author_id" => nil,
+      "category" => nil,
+      "tags" => nil
     }
     mod_data.keys.each do |k|
       if mappings.has_key?(k)
@@ -146,7 +148,11 @@ class LoverHelper
     end
 
     # make a game_id field from the game field
-    mod_data["game_id"] = Game.find_by(nexus_name: mod_data.delete("game")).id
+    game_name = mod_data.delete('game')
+    if game_name == 'other'
+      game_name = 'skyrimspecialedition'
+    end
+    mod_data["game_id"] = Game.find_by(nexus_name: game_name).id
 
     # return mod data
     puts "  Done."
