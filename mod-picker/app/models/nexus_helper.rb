@@ -133,14 +133,13 @@ class NexusHelper
 
   def self.scrape_rd_mod(doc)
     # raise an exception if we got a 404 page
-    mod_section = doc.at_css('.modpage')
-    raise 'Mod not found' if mod_section.nil?
+    page_title = doc.at_css('#pagetitle')
+    raise "Mod not found" if page_title.nil?
 
     # scrape basic data
-    byebug
     mod_data = {}
     mod_data[:last_scraped] = DateTime.now
-    mod_data[:mod_name] = doc.at_css('#pagetitle').css('h1')[0].text
+    mod_data[:mod_name] = page_title.css('h1')[0].text
     mod_data[:current_version] = get_rd_stat(doc, 'version')
     mod_data[:uploaded_by] = get_rd_info(doc, 3).children[3].text
     mod_data[:authors] = get_rd_info(doc, 2).children[2].text.strip
@@ -228,7 +227,7 @@ class NexusHelper
       raise 'the author of this mod has opted out of having their mods on Mod Picker'
     end
 
-      # scrape dates
+    # scrape dates
     dates = doc.at_css('.header-dates').css('div')
     date_added_str = dates[0].children[1].text.strip
     mod_data[:released] = DateTime.parse(date_added_str, date_format)
