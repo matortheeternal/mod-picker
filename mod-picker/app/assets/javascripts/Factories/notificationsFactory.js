@@ -12,6 +12,7 @@ app.service('notificationsFactory', function() {
         CompatibilityNote: contributionAddedTemplate("compatibility note"),
         InstallOrderNote: contributionAddedTemplate("install order note"),
         LoadOrderNote: contributionAddedTemplate("load order note"),
+        RelatedModNote: contributionAddedTemplate("related mod note"),
         Correction: "A new ((correctionType)) has been posted on ((contentLink))",
         Comment: "A ((commentContext)) comment has been posted on ((contentLink))",
         ModTag: contributionAddedTemplate("tag"),
@@ -41,6 +42,7 @@ app.service('notificationsFactory', function() {
         CompatibilityNote: contributionChangedTemplate("compatibility note"),
         InstallOrderNote: contributionChangedTemplate("install order note"),
         LoadOrderNote: contributionChangedTemplate("load order note"),
+        RelatedModNote: contributionChangedTemplate("related mod note"),
         Correction: contributionChangedTemplate("((correctionType))"),
         Comment: "((ownershipClause)) comment on ((contentLink)) has been ((changeVerb))",
         Mod: "((contentLink)) has been ((changeVerb))",
@@ -61,7 +63,8 @@ app.service('notificationsFactory', function() {
         Review: contributionMessageTemplate("review"),
         CompatibilityNote: contributionMessageTemplate("compatibility note"),
         InstallOrderNote: contributionMessageTemplate("install order note"),
-        LoadOrderNote: contributionMessageTemplate("load order note")
+        LoadOrderNote: contributionMessageTemplate("load order note"),
+        RelatedModNote: contributionMessageTemplate("related mod note")
     };
 
     this.milestones = {
@@ -101,6 +104,7 @@ app.service('notificationsFactory', function() {
         CompatibilityNote: noteContentLink,
         InstallOrderNote: noteContentLink,
         LoadOrderNote: '<a href="plugins?q=filename:&quot;{{content.first_plugin_filename}}&quot;">{{content.first_plugin_filename}}</a> and <a href="plugins?q=filename:&quot;{{content.second_plugin_filename}}&quot;">{{content.second_plugin_filename}}</a>',
+        RelatedModNote: noteContentLink,
         ModTag: associatedModLink,
         ModListTag: associatedModListLink,
         ModAuthor: associatedModLink,
