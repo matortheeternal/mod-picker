@@ -26,8 +26,8 @@ class LoadOrderNote < ActiveRecord::Base
   date_scope :submitted, :edited
 
   # UNIQUE SCOPES
-  scope :plugins, -> (filenames) { joins("INNER JOIN plugins first_plugins ON first_plugins.filename = load_order_notes.first_plugin_filename").joins("INNER JOIN plugins second_plugins ON second_plugins.filename = load_order_notes.second_plugin_filename").where("first_plugins.filename in (:filenames) OR second_plugins.filename in (:filenames)", filenames: filenames) }
-  scope :plugin, -> (filenames) { joins("INNER JOIN plugins first_plugins ON first_plugins.filename = load_order_notes.first_plugin_filename").joins("INNER JOIN plugins second_plugins ON second_plugins.filename = load_order_notes.second_plugin_filename").where("first_plugins.filename in (:filenames) AND second_plugins.filename in (:filenames)", filenames: filenames)}
+  scope :plugins, -> (filenames) { joins("INNER JOIN plugins first_plugins ON first_plugins.filename = load_order_notes.first_plugin_filename").joins("INNER JOIN plugins second_plugins ON second_plugins.filename = load_order_notes.second_plugin_filename").where("first_plugins.filename in (:filenames) AND second_plugins.filename in (:filenames)", filenames: filenames) }
+  scope :plugin, -> (filenames) { joins("INNER JOIN plugins first_plugins ON first_plugins.filename = load_order_notes.first_plugin_filename").joins("INNER JOIN plugins second_plugins ON second_plugins.filename = load_order_notes.second_plugin_filename").where("first_plugins.filename in (:filenames) OR second_plugins.filename in (:filenames)", filenames: filenames)}
   # TODO AREL
   scope :mod_list, -> (mod_list_id) { joins("INNER JOIN mod_list_plugins").joins("INNER JOIN plugins ON mod_list_plugins.plugin_id = plugins.id").where("mod_list_plugins.mod_list_id = ?", mod_list_id).where("load_order_notes.first_plugin_filename = plugins.filename OR load_order_notes.second_plugin_filename = plugins.filename").distinct }
 
@@ -61,7 +61,7 @@ class LoadOrderNote < ActiveRecord::Base
 
   def get_existing_note(plugin_filenames)
     table = LoadOrderNote.arel_table
-    LoadOrderNote.plugin(plugin_filenames).where(table[:hidden].eq(0).and(table[:id].not_eq(id))).first
+    LoadOrderNote.plugins(plugin_filenames).where(table[:hidden].eq(0).and(table[:id].not_eq(id))).first
   end
 
   def note_exists_error(existing_note)
