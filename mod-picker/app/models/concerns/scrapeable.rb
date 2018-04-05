@@ -27,6 +27,8 @@ module Scrapeable
   def rescrape
     if last_scraped.nil? || last_scraped < 1.week.ago
       scrape
+    rescue Exception => e
+      puts e
     end
   end
 end

@@ -105,6 +105,13 @@ app.service('sitesFactory', function() {
             shortLabel: "Curse",
             modUrlFormat: /mods\.curse\.com\/mods\/([a-zA-Z0-9\-]+)\/([a-zA-Z0-9\-]+)/i,
             logoPath: "/images/curse_logo.png"
+        },
+        {
+            hidden: true,
+            label: "GameFront",
+            shortLabel: "GameFront",
+            modUrlFormat: /www\.gamefront\.com\/games\/([a-zA-Z0-9\-]+)\/file\/([a-zA-Z0-9\-]+)/i,
+            logoPath: "/images/gamefront_logo.png"
         }
     ];
 
