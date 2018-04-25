@@ -24,11 +24,11 @@ class ModListGroup < ActiveRecord::Base
   end
 
   def child_model
-    tab == "plugins" ? ModListPlugin : ModListMod.utility(tab == :tools)
+    tab == "plugins" ? ModListPlugin : ModListMod.utility(tab.to_sym == :tools)
   end
 
   def custom_child_model
-    tab == "plugins" ? ModListCustomPlugin : ModListCustomMod.utility(tab == :tools)
+    tab == "plugins" ? ModListCustomPlugin : ModListCustomMod.utility(tab.to_sym == :tools)
   end
 
   def children
