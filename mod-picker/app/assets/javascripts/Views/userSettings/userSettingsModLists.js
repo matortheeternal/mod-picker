@@ -107,7 +107,19 @@ app.controller('userSettingsModListsController', function($scope, $rootScope, $t
 
     // ACTION HANDLERS
     $scope.$on('cloneModList', function(event, modList) {
-        // TODO
+        modListService.cloneModList(modList.id).then(function(data) {
+            $rootScope.activeModList = data.mod_list;
+            $scope.$emit('customMessage', {
+                type: "success",
+                text: "Cloned mod list successfully.  Click here to view it.",
+                url: "mod-lists/" + data.mod_list.id
+            });
+        }, function(response) {
+            $scope.$emit('errorMessage', {
+                label: 'Error cloning mod list',
+                response: response
+            });
+        });
     });
 
     $scope.$on('deleteModList', function(event, modList) {
