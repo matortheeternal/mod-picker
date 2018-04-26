@@ -39,9 +39,8 @@ class ModListGroup < ActiveRecord::Base
   end
 
   def copy_children_to(other_mod_list, index, new_group)
-    children.each_with_index do |child|
-      index += 1 if child.copy_to(other_mod_list, index, new_group.id)
-    end
+    children.each { |child| index = child.copy_to(other_mod_list, index, new_group.id) }
+    index
   end
 
   def copy_attributes(mod_list_id, index)
