@@ -51,5 +51,6 @@ class ModListCustomMod < ActiveRecord::Base
 
   def copy_to(other_mod_list, index, new_group_id=nil)
     ModListCustomMod.create(copy_attributes(other_mod_list.id, index, new_group_id))
+    index + 1
   end
 end

@@ -107,6 +107,7 @@ class ModListMod < ActiveRecord::Base
       other_mod_list_mod.save!
     end
     mod_list_mod_options.each { |option| option.copy_to(other_mod_list_mod) }
+    index + 1
   end
 
   def add_mod_options(mod_option_ids)

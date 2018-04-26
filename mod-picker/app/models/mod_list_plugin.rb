@@ -56,8 +56,8 @@ class ModListPlugin < ActiveRecord::Base
   end
 
   def copy_to(other_mod_list, index, new_group_id=nil)
-    unless other_mod_list.mod_list_plugins.plugins(plugin_id).exists?
-      ModListPlugin.create(copy_attributes(other_mod_list.id, index, new_group_id))
-    end
+    return index if other_mod_list.mod_list_plugins.plugins(plugin_id).exists?
+    ModListPlugin.create(copy_attributes(other_mod_list.id, index, new_group_id))
+    index + 1
   end
 end
