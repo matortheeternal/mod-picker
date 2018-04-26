@@ -35,7 +35,7 @@ class ModListGroup < ActiveRecord::Base
     [
         child_model.where(group_id: id).to_a,
         custom_child_model.where(group_id: id).to_a
-    ].flatten
+    ].flatten.sort! { |x, y| x.index <=> y.index }
   end
 
   def copy_children_to(other_mod_list, index, new_group)
