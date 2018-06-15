@@ -267,8 +267,10 @@ class ModListsController < ApplicationController
 
   # PATCH/PUT /mod_lists/1
   def update
-    authorize! :update, @mod_list
-    authorize! :hide, @mod_list if params[:mod_list].has_key?(:hidden)
+    authorize! :update, @mod_list, message: "You are not allowed to update this mod list"
+    authorize! :hide, @mod_list, message: "You are not allowed to hide this mod list" if params[:mod_list].has_key?(:hidden)
+    authorize! :update_authors, @mod_list, message: "You are not allowed to update this mod list's authors." if params[:mod_list].has_key?(:mod_list_authors_attributes)
+    authorize! :update_options, @mod_list, message: "You are not allowed to update this mod list's advanced options" if options_params.any?
 
     @mod_list.updated_by = current_user.id
     if @mod_list.update(mod_list_params) && @mod_list.update_lazy_counters!
@@ -378,12 +380,17 @@ class ModListsController < ApplicationController
           ],
           mod_list_config_files_attributes: [:id, :config_file_id, :text_body, :_destroy],
           custom_config_files_attributes: [:id, :filename, :install_path, :text_body, :_destroy],
-          ignored_notes_attributes: [:id, :note_id, :note_type, :_destroy]
+          ignored_notes_attributes: [:id, :note_id, :note_type, :_destroy],
+          mod_list_authors_attributes: [:id, :role, :user_id, :_destroy]
       )
     end
 
     def mod_list_import_params
       params.permit(mods: [:id, :name, :nexus_info_id], plugins: [:id, :filename])
+    end
+
+    def options_params
+      params[:mod_list].slice(:status, :visibility, :is_collection, :disable_comments, :lock_tags)
     end
 
     def active_mod_list_params
