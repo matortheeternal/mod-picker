@@ -1,0 +1,8 @@
+{
+  "only": ["id", "role", "user_id"],
+  "include": {
+    "user": {
+      "only": ["username"]
+    }
+  }
+}
