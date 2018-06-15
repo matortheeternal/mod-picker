@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170808190023) do
+ActiveRecord::Schema.define(version: 20180615153651) do
 
   create_table "active_mod_lists", force: :cascade do |t|
     t.integer "game_id",     limit: 4, null: false
@@ -634,7 +634,6 @@ ActiveRecord::Schema.define(version: 20170808190023) do
     t.integer  "visibility",                limit: 1,     default: 0,     null: false
     t.boolean  "is_collection",                           default: false, null: false
     t.string   "name",                      limit: 255,                   null: false
-    t.string   "authors",                   limit: 128
     t.text     "description",               limit: 65535
     t.integer  "tools_count",               limit: 4,     default: 0,     null: false
     t.integer  "mods_count",                limit: 4,     default: 0,     null: false
@@ -819,23 +818,6 @@ ActiveRecord::Schema.define(version: 20170808190023) do
 
   add_index "override_records", ["plugin_id"], name: "pl_id", using: :btree
 
-  create_table "payments", force: :cascade do |t|
-    t.integer  "user_id",    limit: 4,                   null: false
-    t.integer  "amount",     limit: 4,   default: 1
-    t.string   "token",      limit: 255
-    t.string   "identifier", limit: 255
-    t.string   "payer_id",   limit: 255
-    t.boolean  "recurring",              default: false
-    t.boolean  "digital",                default: false
-    t.boolean  "popup",                  default: false
-    t.boolean  "completed",              default: false
-    t.boolean  "canceled",               default: false
-    t.datetime "created_at",                             null: false
-    t.datetime "updated_at",                             null: false
-  end
-
-  add_index "payments", ["user_id"], name: "fk_rails_081dc04a02", using: :btree
-
   create_table "plugin_errors", force: :cascade do |t|
     t.integer "plugin_id", limit: 4,   null: false
     t.string  "signature", limit: 4,   null: false
@@ -877,16 +859,6 @@ ActiveRecord::Schema.define(version: 20170808190023) do
 
   add_index "plugins", ["game_id"], name: "fk_rails_5a7ba47709", using: :btree
   add_index "plugins", ["mod_option_id"], name: "mv_id", using: :btree
-
-  create_table "premium_subscriptions", force: :cascade do |t|
-    t.integer  "user_id",           limit: 4
-    t.integer  "subscription_type", limit: 1, null: false
-    t.datetime "purchased",                   null: false
-    t.datetime "start",                       null: false
-    t.datetime "end",                         null: false
-  end
-
-  add_index "premium_subscriptions", ["user_id"], name: "fk_rails_8d844017ee", using: :btree
 
   create_table "quotes", force: :cascade do |t|
     t.integer "game_id", limit: 4,   null: false
@@ -1057,7 +1029,6 @@ ActiveRecord::Schema.define(version: 20170808190023) do
     t.float    "contribution_rep", limit: 24, default: 0.0,   null: false
     t.float    "author_rep",       limit: 24, default: 0.0,   null: false
     t.float    "given_rep",        limit: 24, default: 0.0,   null: false
-    t.float    "spent_rep",        limit: 24, default: 0.0,   null: false
     t.integer  "rep_from_count",   limit: 4,  default: 0,     null: false
     t.integer  "rep_to_count",     limit: 4,  default: 0,     null: false
     t.datetime "last_computed"
@@ -1286,12 +1257,10 @@ ActiveRecord::Schema.define(version: 20170808190023) do
   add_foreign_key "notifications", "events"
   add_foreign_key "notifications", "users"
   add_foreign_key "override_records", "plugins", name: "override_records_ibfk_1"
-  add_foreign_key "payments", "users"
   add_foreign_key "plugin_errors", "plugins"
   add_foreign_key "plugin_record_groups", "plugins", name: "plugin_record_groups_ibfk_1"
   add_foreign_key "plugins", "games"
   add_foreign_key "plugins", "mod_options"
-  add_foreign_key "premium_subscriptions", "users"
   add_foreign_key "quotes", "games"
   add_foreign_key "record_groups", "games"
   add_foreign_key "related_mod_notes", "games"
