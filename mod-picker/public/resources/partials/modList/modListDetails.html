@@ -21,9 +21,9 @@
     </div>
 </div>
 
-<div class="content-block" ng-if="editing">
+<div class="content-block" ng-if="editing && permissions.canManageOptions">
     <div class="content-title">Options</div>
-    <div class="content-container" ng-if="editing">
+    <div class="content-container">
         <form>
             <h3 class="section-title">Name</h3>
             <section>
@@ -47,6 +47,8 @@
                     <option value="visibility_private">Private</option>
                 </select>
             </section>
+
+            <mod-list-authors></mod-list-authors>
 
             <h3 class="section-title">Other Options</h3>
             <section>
