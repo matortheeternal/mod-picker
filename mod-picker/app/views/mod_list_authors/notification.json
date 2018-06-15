@@ -1,0 +1,9 @@
+{
+  "only": ["role"],
+  "include": {
+    "user": {},
+    "mod_list": {
+      "only": ["id", "name"]
+    }
+  }
+}

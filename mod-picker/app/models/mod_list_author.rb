@@ -4,6 +4,9 @@ class ModListAuthor < ActiveRecord::Base
   # ATTRIBUTES
   enum role: [:author, :contributor, :curator]
 
+  # EVENT TRACKING
+  track :added
+
   # NOTIFICATION SUBSCRIPTIONS
   subscribe :user, to: [:added]
   subscribe :mod_list_author_users, to: [:added]
@@ -23,6 +26,6 @@ class ModListAuthor < ActiveRecord::Base
   end
 
   def mod_list_author_users
-    User.joins(:mod_list_authors).where(:mod_list_authors => {role: 0, mod_list_id: mod_list_id})
+    User.joins(:mod_list_authors).where(mod_list_authors: {role: 0, mod_list_id: mod_list_id})
   end
 end
