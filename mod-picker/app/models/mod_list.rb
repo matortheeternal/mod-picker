@@ -81,6 +81,10 @@ class ModList < ActiveRecord::Base
   has_many :mod_list_tags, :inverse_of => 'mod_list', :dependent => :destroy
   has_many :tags, :through => 'mod_list_tags', :inverse_of => 'mod_lists'
 
+  # users who can edit the mod
+  has_many :mod_list_authors, :inverse_of => 'mod_list', :dependent => :destroy
+  has_many :author_users, :class_name => 'User', :through => 'mod_list_authors', :source => 'user', :inverse_of => 'authored_mod_lists'
+
   # STARS
   has_many :stars, :class_name => 'ModListStar', :inverse_of => 'mod_list', :dependent => :destroy
   has_many :user_stars, :through => 'stars', :source => 'user', :class_name => 'User', :inverse_of => 'starred_mod_lists'
@@ -97,6 +101,10 @@ class ModList < ActiveRecord::Base
   accepts_nested_attributes_for :mod_list_config_files, allow_destroy: true
   accepts_nested_attributes_for :custom_config_files, allow_destroy: true
   accepts_nested_attributes_for :ignored_notes, allow_destroy: true
+  # can only update author role for an existing mod_list_author record
+  accepts_nested_attributes_for :mod_list_authors, reject_if: proc {
+      |attributes| attributes[:id] && attributes[:user_id] && !attributes[:_destroy]
+  }, allow_destroy: true
 
   # COUNTER CACHE
   counter_cache_on :submitter
