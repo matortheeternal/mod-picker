@@ -17,6 +17,7 @@ app.service('notificationsFactory', function() {
         ModTag: contributionAddedTemplate("tag"),
         ModListTag: contributionAddedTemplate("tag"),
         ModAuthor: "((authorUserClause)) been added as ((authorRole)) for ((contentLink))",
+        ModListAuthor: "((authorUserClause)) been added as ((authorRole)) for ((contentLink))",
         ReputationLink: "((endorser)) has endorsed ((endorsee))"
     };
 
@@ -29,6 +30,7 @@ app.service('notificationsFactory', function() {
         ModTag: "((ownershipClause)) tag ((tagText)) was removed from ((contentLink))",
         ModListTag: "((ownershipClause)) tag ((tagText)) was removed from ((contentLink))",
         ModAuthor: "((authorUserClause)) been removed as ((authorRole)) for ((contentLink))",
+        ModListAuthor: "((authorUserClause)) been removed as ((authorRole)) for ((contentLink))",
         ReputationLink: "((endorser)) has unendorsed ((endorsee))"
     };
 
@@ -104,6 +106,7 @@ app.service('notificationsFactory', function() {
         ModTag: associatedModLink,
         ModListTag: associatedModListLink,
         ModAuthor: associatedModLink,
+        ModListAuthor: associatedModListLink,
         Mod: '<a href="mods/{{event.content_id}}">{{content.name}}</a>',
         ModList: '<a href="mod-lists/{{event.content_id}}">{{content.name}}</a>',
         UserReputation: '<a href="user/{{event.content.user.id}}">{{content.user.username}}</a> has',
