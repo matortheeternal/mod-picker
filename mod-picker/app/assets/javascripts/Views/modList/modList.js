@@ -231,10 +231,10 @@ app.controller('modListController', function($scope, $rootScope, $q, $state, $st
     });
     var isAuthor = $scope.mod_list.submitter.id === $scope.currentUser.id ||
         angular.isDefined(author);
-    var isCurator = author && author.role === 'curator';
+    var hasAuthorRole = isAuthor && !author || author && author.role === 'author';
     $scope.permissions.isAuthor = isAuthor;
     $scope.permissions.canManage = $scope.permissions.canModerate || isAuthor;
-    $scope.permissions.canManageOptions = $scope.permissions.canModerate || isAuthor && !isCurator;
+    $scope.permissions.canManageOptions = $scope.permissions.canModerate || hasAuthorRole;
 
     // DISABLE SAVE/RESET BUTTONS ON TABS THAT ARE NOT EDITABLE
     $scope.$on('$stateChangeSuccess', function(event, toState) {
