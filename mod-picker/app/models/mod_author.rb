@@ -53,7 +53,7 @@ class ModAuthor < ActiveRecord::Base
     end
 
     def hide_reviews
-      hide = role.to_sym == :curator
+      hide = role.to_sym != :curator
       user.reviews.where(mod_id: mod_id).update_all(hidden: hide)
     end
 
