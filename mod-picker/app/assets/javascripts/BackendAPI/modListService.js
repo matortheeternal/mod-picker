@@ -24,9 +24,7 @@ app.service('modListService', function(backend, $q, userTitleService, contributi
         backend.retrieve('/mod_lists/active', {
             game: window._current_game_id
         }).then(function(data) {
-            if (data.error) {
-                action.resolve(null);
-            }
+            if (data.error) action.resolve(null);
             action.resolve(data);
         }, function(response) {
             action.reject(response);
