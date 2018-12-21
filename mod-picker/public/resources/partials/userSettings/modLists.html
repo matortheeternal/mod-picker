@@ -1,11 +1,8 @@
 <loader data="all_mod_lists" spinner-class="big-spinner" ng-if="!errors.mod_lists">
     <h3 class="section-title">Active Mod List</h3>
     <section>
-        <select ng-model="model.activeModListId">
+        <select ng-model="model.activeModListId" ng-options="modList.name as modList.id group by modList.game for modList in available_lists">
             <option value="">None</option>
-            <option ng-repeat="modList in available_lists" value="{{modList.id}}">
-                {{modList.name}}
-            </option>
         </select>
         <input type="button" class="btn" value="Save" ng-click="saveActiveModList()"/>
     </section>
