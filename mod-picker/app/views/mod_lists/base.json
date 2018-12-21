@@ -1,5 +1,5 @@
 {
-  "except": ["game_id", "submitted_by"],
+  "except": ["submitted_by"],
   "include": {
     "submitter": {}
   }
