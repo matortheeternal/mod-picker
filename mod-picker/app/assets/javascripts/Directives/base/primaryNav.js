@@ -10,9 +10,11 @@ app.directive('primaryNav', function() {
 
 app.controller('primaryNavController', function($scope, $rootScope, $timeout, $state, modListService) {
     // init active mod list game
-    $rootScope.activeModList.game = $rootScope.games.find(function(game) {
-        return game.id === $rootScope.activeModList.game_id;
-    });
+    if ($rootScope.activeModList) {
+        $rootScope.activeModList.game = $rootScope.games.find(function(game) {
+            return game.id === $rootScope.activeModList.game_id;
+        });
+    }
 
     // toggle navbar dropdowns
     $scope.toggleDropdown = function($event, key) {
