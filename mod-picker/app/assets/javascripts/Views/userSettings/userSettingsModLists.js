@@ -1,4 +1,4 @@
-app.controller('userSettingsModListsController', function($scope, $rootScope, $timeout, columnsFactory, actionsFactory, modListService) {
+app.controller('userSettingsModListsController', function($scope, $rootScope, $timeout, columnsFactory, actionsFactory, modListService, games) {
     // initialize variables
     $scope.actions = actionsFactory.userModListActions();
     $scope.columns = columnsFactory.modListColumns();
@@ -10,11 +10,20 @@ app.controller('userSettingsModListsController', function($scope, $rootScope, $t
         $scope.activeModListId = newValue;
     };
 
+    var currentGame = games.find(function(game) {
+        return game.id === window._current_game_id;
+    });
+    var isSkyrimClassic = currentGame.display_name === 'Skyrim';
+    var skyrimSE = games.find(function(game) {
+        return game.display_name === 'Skyrim SE';
+    });
+
     // BASE RETRIEVAL LOGIC
     $scope.retrieveModLists = function() {
         var options = {
             filters: {
-                game: window._current_game_id,
+                game: isSkyrimClassic ? [window._current_game_id, skyrimSE.id] :
+                    window._current_game_id,
                 search: "submitter:" + $scope.user.username
             }
         };
@@ -25,6 +34,10 @@ app.controller('userSettingsModListsController', function($scope, $rootScope, $t
             $scope.collections = [];
             data.mod_lists.forEach(function(item) {
                 var model = item.is_collection ? $scope.collections : $scope.mod_lists;
+                var game = games.find(function(game) {
+                    return game.id === item.game_id;
+                });
+                item.game = game && game.display_name;
                 model.push(item);
             });
 
