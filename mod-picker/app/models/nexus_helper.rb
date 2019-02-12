@@ -115,6 +115,10 @@ class NexusHelper
     "http://www.nexusmods.com/#{game_name}/mods/#{id}"
   end
 
+  def self.mod_api_url(game_name, id)
+    "http://api.nexusmods.com/v1/games/#{game_name}/mods/#{id}.json"
+  end
+
   def self.get_rd_stat(doc, classname)
     doc.at_css(".stat-#{classname}").css('.stat')[0].text.gsub(',', '')
   end
@@ -182,6 +186,40 @@ class NexusHelper
     # return the mod data
     puts '  Done.'
     mod_data
+  end
+
+  def self.retrieve_mod(game_name, id)
+    url = mod_api_url(game_name, id)
+    puts 'NexusHelper: Scraping ' + url
+
+    # prepare headers
+    headers = {
+        :accept => 'application/json',
+        :apikey => ENV['nexus_mods_api_key'],
+        :'user-agent' => Rails.application.config.user_agent
+    }
+
+    # get the mod page
+    response = RestClient.get(url, headers)
+    puts "  Recieved response #{response.size}"
+
+    # parse JSON
+    puts '  Parsing response'
+    api_data = JSON.parse(response.body)
+
+    # return mod data object
+    {
+        last_scraped: DateTime.now,
+        mod_name: api_data["name"],
+        released: DateTime.strptime(api_data["created_timestamp"].to_s, '%s'),
+        updated: DateTime.strptime(api_data["updated_timestamp"].to_s, '%s'),
+        current_version: api_data["version"],
+        authors: api_data["author"],
+        uploaded_by: api_data["uploaded_by"],
+        has_adult_content: api_data["contains_adult_content"],
+        has_stats: false,
+        nexus_category: api_data["category_id"]
+    }
   end
 
   # TODO: Scraping logic for has_adult_content
