@@ -29,7 +29,7 @@ class PremiumSubscription < ActiveRecord::Base
       three_months: 3.months.from_now,
       six_months: 6.months.from_now,
       one_year: 1.year.from_now
-    }[self.subscription_type]
+    }[self.subscription_type.to_sym]
   end
 
   def set_dates
