@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170715232615) do
+ActiveRecord::Schema.define(version: 20180615153651) do
 
   create_table "active_mod_lists", force: :cascade do |t|
     t.integer "game_id",     limit: 4, null: false
@@ -422,6 +422,7 @@ ActiveRecord::Schema.define(version: 20170715232615) do
   add_index "load_order_notes", ["submitted_by"], name: "fk_rails_9992d700a9", using: :btree
 
   create_table "lover_infos", force: :cascade do |t|
+    t.string   "url_id",            limit: 255,                 null: false
     t.integer  "game_id",           limit: 4,                   null: false
     t.boolean  "has_stats",                     default: false, null: false
     t.datetime "last_scraped"
@@ -860,16 +861,6 @@ ActiveRecord::Schema.define(version: 20170715232615) do
   add_index "plugins", ["game_id"], name: "fk_rails_5a7ba47709", using: :btree
   add_index "plugins", ["mod_option_id"], name: "mv_id", using: :btree
 
-  create_table "premium_subscriptions", force: :cascade do |t|
-    t.integer  "user_id",           limit: 4
-    t.integer  "subscription_type", limit: 1, null: false
-    t.datetime "purchased",                   null: false
-    t.datetime "start",                       null: false
-    t.datetime "end",                         null: false
-  end
-
-  add_index "premium_subscriptions", ["user_id"], name: "fk_rails_8d844017ee", using: :btree
-
   create_table "quotes", force: :cascade do |t|
     t.integer "game_id", limit: 4,   null: false
     t.string  "text",    limit: 255, null: false
@@ -1039,7 +1030,6 @@ ActiveRecord::Schema.define(version: 20170715232615) do
     t.float    "contribution_rep", limit: 24, default: 0.0,   null: false
     t.float    "author_rep",       limit: 24, default: 0.0,   null: false
     t.float    "given_rep",        limit: 24, default: 0.0,   null: false
-    t.float    "spent_rep",        limit: 24, default: 0.0,   null: false
     t.integer  "rep_from_count",   limit: 4,  default: 0,     null: false
     t.integer  "rep_to_count",     limit: 4,  default: 0,     null: false
     t.datetime "last_computed"
@@ -1272,7 +1262,6 @@ ActiveRecord::Schema.define(version: 20170715232615) do
   add_foreign_key "plugin_record_groups", "plugins", name: "plugin_record_groups_ibfk_1"
   add_foreign_key "plugins", "games"
   add_foreign_key "plugins", "mod_options"
-  add_foreign_key "premium_subscriptions", "users"
   add_foreign_key "quotes", "games"
   add_foreign_key "record_groups", "games"
   add_foreign_key "related_mod_notes", "games"
