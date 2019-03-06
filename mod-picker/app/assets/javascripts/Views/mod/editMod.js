@@ -114,11 +114,12 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
 
     // set up the canManageOptions permission
     var author = $scope.mod.mod_authors.find(function(author) {
-        return author.user_id == $scope.currentUser.id;
+        return author.user_id === $scope.currentUser.id;
     });
-    var isAuthor = author && author.role == 'author';
+    var isAuthor = author && author.role === 'author';
     $scope.canManageOptions = $scope.permissions.canModerate || isAuthor;
-    $scope.canChangeStatus = (isAuthor && $scope.mod.status == "good") || $scope.permissions.isAdmin;
+    $scope.canChangeStatus = (isAuthor && $scope.mod.status === "good") ||
+        $scope.permissions.isAdmin;
     $scope.canSetDownloadLinks = $scope.permissions.canModerate || isAuthor;
 
     // set up tabs
@@ -139,7 +140,8 @@ app.controller('editModController', function($scope, $rootScope, $state, modObje
         $scope.categoriesValid = modValidationService.categoriesValid($scope.mod);
 
         // return result of all validations
-        $scope.valid = $scope.sourcesValid && $scope.metadataValid && $scope.authorsValid && $scope.requirementsValid && $scope.configsValid && $scope.categoriesValid;
+        $scope.valid = $scope.sourcesValid && $scope.metadataValid && $scope.authorsValid &&
+            $scope.requirementsValid && $scope.configsValid && $scope.categoriesValid;
     };
 
     $scope.buildSource = function(scrapeLabel, infoLabel) {
