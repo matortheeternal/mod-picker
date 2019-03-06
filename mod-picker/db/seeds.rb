@@ -12,7 +12,8 @@ static_config = {
     quotes: true,
     user_titles: true,
     record_groups: true,
-    official_content: true
+    official_content: true,
+    premium_options: true
 }
 
 seed_staff_users if static_config[:staff]
@@ -23,6 +24,7 @@ seed_quotes if static_config[:quotes]
 seed_user_titles if static_config[:user_titles]
 seed_record_groups if static_config[:record_groups]
 seed_official_content if static_config[:official_content]
+seed_premium_options if static_config[:premium_options]
 
 #==================================================
 # CREATE FAKE RECORDS

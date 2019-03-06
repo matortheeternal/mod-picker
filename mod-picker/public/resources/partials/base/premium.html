@@ -7,9 +7,13 @@
 
             <div class="premium-options">
                 <div class="premium-option" ng-repeat="option in premiumOptions" ng-click="selectOption(option)">
-                    <div class="option-title">{{::option.title}}</div>
-                    <div class="option-price" ng-if="option.price">{{::option.price}}</div>
-                    <div class="option-discount" ng-if="option.discount">{{::option.discount}} off</div>
+                    <div class="option-title">{{::option.name}}</div>
+                    <div class="option-price" ng-if="option.price">
+                        {{::option.price/100 | currency}}
+                    </div>
+                    <div class="option-discount" ng-if="option.discount">
+                        {{::option.discount}} off
+                    </div>
                     <div class="option-description">{{::option.description}}</div>
                 </div>
             </div>

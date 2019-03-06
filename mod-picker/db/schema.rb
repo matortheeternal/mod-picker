@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170728041546) do
+ActiveRecord::Schema.define(version: 20190305221332) do
 
   create_table "active_mod_lists", force: :cascade do |t|
     t.integer "game_id",     limit: 4, null: false
@@ -633,7 +633,6 @@ ActiveRecord::Schema.define(version: 20170728041546) do
     t.integer  "visibility",                limit: 1,     default: 0,     null: false
     t.boolean  "is_collection",                           default: false, null: false
     t.string   "name",                      limit: 255,                   null: false
-    t.string   "authors",                   limit: 128
     t.text     "description",               limit: 65535
     t.integer  "tools_count",               limit: 4,     default: 0,     null: false
     t.integer  "mods_count",                limit: 4,     default: 0,     null: false
@@ -876,6 +875,13 @@ ActiveRecord::Schema.define(version: 20170728041546) do
 
   add_index "plugins", ["game_id"], name: "fk_rails_5a7ba47709", using: :btree
   add_index "plugins", ["mod_option_id"], name: "mv_id", using: :btree
+
+  create_table "premium_options", force: :cascade do |t|
+    t.string  "name",        limit: 255
+    t.integer "price",       limit: 4
+    t.string  "description", limit: 255
+    t.string  "discount",    limit: 255
+  end
 
   create_table "premium_subscriptions", force: :cascade do |t|
     t.integer  "user_id",           limit: 4
@@ -1184,6 +1190,7 @@ ActiveRecord::Schema.define(version: 20170728041546) do
   add_foreign_key "categories", "categories", column: "parent_id"
   add_foreign_key "category_priorities", "categories", column: "dominant_id"
   add_foreign_key "category_priorities", "categories", column: "recessive_id"
+  add_foreign_key "cells", "worldspaces"
   add_foreign_key "comments", "comments", column: "parent_id", name: "comments_ibfk_1"
   add_foreign_key "comments", "users", column: "submitted_by", name: "comments_ibfk_2"
   add_foreign_key "compatibility_note_history_entries", "compatibility_notes"

@@ -16,29 +16,16 @@ app.controller('premiumController', function($scope, $rootScope, userService, he
     $scope.showPurchase = false;
 
     // premium options
-    $scope.premiumOptions = [{
-        title: "Free",
-        description: "Can be earned by making contributions to the site.  Click for more information."
-    }, {
-        title: "1 Month",
-        price: "$5.00",
-        description: "One month of premium access."
-    }, {
-        title: "3 Months",
-        price: "$14.00",
-        description: "Three months of premium access.",
-        discount: "6%"
-    }, {
-        title: "6 Months",
-        price: "$25.00",
-        description: "Six months of premium access.",
-        discount: "16%"
-    }, {
-        title: "1 Year",
-        price: "$45.00",
-        description: "One year of premium access.",
-        discount: "25%"
-    }];
+    $scope.premiumOptions = $rootScope.premiumOptions;
+
+    // helper functions
+    var startPurchase = function(option) {
+        paymentService.createPayment(option).then(function(data) {
+            $scope.showPurchase = true;
+            $scope.paymentUrl = data.url;
+            $scope.selectedOption = option;
+        });
+    };
 
     // reputation retrieval
     $scope.retrieveReputation = function() {

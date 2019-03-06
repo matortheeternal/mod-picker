@@ -105,7 +105,7 @@ def seed_staff_users
       confirmed_at: Time.now.to_date
   )
   User.create!(
-      username: "Taffy",
+      username: "awrfyu",
       role: "moderator",
       joined: Time.now.to_date,
       email: "r@r79.io",
@@ -540,4 +540,34 @@ def seed_official_content
 
   puts "    #{Mod.count} official mods seeded"
   puts "    #{Plugin.count} official plugins seeded"
+end
+
+def seed_premium_options
+  PremiumOption.create!(
+      name: "Free",
+      description: "Can be earned by making contributions to the site.  Click for more information.",
+  )
+  PremiumOption.create!(
+      name: "1 Month",
+      price: 500,
+      description: "One month of premium access"
+  )
+  PremiumOption.create!(
+      name: "3 Months",
+      price: 1400,
+      description: "Three months of premium access",
+      discount: "6%"
+  )
+  PremiumOption.create!(
+      name: "6 Months",
+      price: 2500,
+      description: "Six months of premium access",
+      discount: "16%"
+  )
+  PremiumOption.create!(
+      name: "1 Month",
+      price: 4500,
+      description: "One year of premium access",
+      discount: "25%"
+  )
 end
