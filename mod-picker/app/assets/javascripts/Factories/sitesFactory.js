@@ -112,6 +112,13 @@ app.service('sitesFactory', function() {
             shortLabel: "TES Alliance",
             modUrlFormat: /tesalliance\.org\/forums\/index\.php\?\/files\/file\/([a-zA-Z0-9\-]+)/i,
             logoPath: "/images/tes_alliance_logo.png"
+        },
+        {
+            hidden: true,
+            label: "GameFront",
+            shortLabel: "GameFront",
+            modUrlFormat: /www\.gamefront\.com\/games\/([a-zA-Z0-9\-]+)\/file\/([a-zA-Z0-9\-]+)/i,
+            logoPath: "/images/gamefront_logo.png"
         }
     ];
 
