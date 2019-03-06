@@ -2,6 +2,8 @@
   "only": ["role"],
   "include": {
     "user": {},
-    "mod_list": {}
+    "mod_list": {
+      "only": ["id", "name"]
+    }
   }
 }

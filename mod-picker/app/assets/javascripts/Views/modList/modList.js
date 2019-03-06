@@ -142,7 +142,7 @@ app.config(['$stateProvider', function($stateProvider) {
     })
 }]);
 
-app.controller('modListController', function($scope, $rootScope, $q, $state, $stateParams, $timeout, modListObject, modListService, objectUtils, helpFactory, tabsFactory, baseFactory, eventHandlerFactory, listUtils, modOptionUtils, modValidationService) {
+app.controller('modListController', function($scope, $rootScope, $q, $state, $stateParams, $timeout, modListObject, modListService, userService, objectUtils, helpFactory, tabsFactory, baseFactory, eventHandlerFactory, listUtils, modOptionUtils) {
     // inherited variables
     $scope.currentUser = $rootScope.currentUser;
     $scope.activeModList = $rootScope.activeModList;
@@ -220,19 +220,20 @@ app.controller('modListController', function($scope, $rootScope, $q, $state, $st
     $scope.$emit('setPageTitle', 'View Mod List');
 
     // shared function setup
+    $scope.searchUsers = userService.searchUsers;
     $scope.isEmpty = objectUtils.isEmptyArray;
     eventHandlerFactory.buildMessageHandlers($scope, true);
     modOptionUtils.buildHelperFunctions($scope, $rootScope);
 
     // set up the canManage permission
-
-    // permissions
     var author = $scope.mod_list.mod_list_authors.find(function(author) {
-        return author.user_id == $scope.currentUser.id;
+        return author.user_id === $scope.currentUser.id;
     });
     var isAuthor = (author && author.role == 'author') || $scope.mod_list.submitter.id == $scope.currentUser.id;
+    var hasAuthorRole = isAuthor && !author || author && author.role === 'author';
     $scope.permissions.isAuthor = isAuthor;
-    $scope.permissions.canManage = $scope.permissions.canModerate || author;
+    $scope.permissions.canManage = $scope.permissions.canModerate || isAuthor;
+    $scope.permissions.canManageOptions = $scope.permissions.canModerate || hasAuthorRole;
 
     // DISABLE SAVE/RESET BUTTONS ON TABS THAT ARE NOT EDITABLE
     $scope.$on('$stateChangeSuccess', function(event, toState) {

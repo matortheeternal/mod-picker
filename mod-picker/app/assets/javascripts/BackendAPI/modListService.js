@@ -204,6 +204,7 @@ app.service('modListService', function(backend, $q, userTitleService, contributi
                 custom_plugins_attributes: custom_plugins,
                 ignored_notes_attributes: modList.ignored_notes,
                 mod_list_config_files_attributes: modList.config_files,
+                mod_list_authors_attributes: modList.mod_list_authors,
                 custom_config_files_attributes: modList.custom_config_files
             }
         };

@@ -21,9 +21,9 @@
     </div>
 </div>
 
-<div class="content-block" ng-if="editing">
+<div class="content-block" ng-if="editing && permissions.canManageOptions">
     <div class="content-title">Options</div>
-    <div class="content-container" ng-if="editing">
+    <div class="content-container">
         <form>
             <h3 class="section-title">Name
                 <span ng-hide="nameValid" class="error-tooltip" title="Mod List name cannot be blank.">

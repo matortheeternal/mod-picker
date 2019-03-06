@@ -37,10 +37,11 @@ class Ability
   end
 
   def cannot_read_private_mod_lists(user)
-    # users that are not admins or moderators
-    # cannot read private mod lists unless they submitted them
+    # users that are not admins or moderators cannot read private
+    # mod lists unless they submitted them or are an author
     cannot :read, ModList, visibility: "visibility_private"
     can :read, ModList, submitted_by: user.id
+    can :read, ModList, { mod_list_authors: { user_id: user.id } }
   end
 
   def cannot_read_curator_requests(user)
@@ -258,10 +259,8 @@ class Ability
   end
 
   def mod_list_author_abilities(user)
-    can [:read, :update], ModList, { mod_list_authors: {user_id: user.id} }
-    can :destroy, ModListTag, { mod_list: { mod_list_authors: { user_id: user.id } } }
-    #authors
-    can [:hide, :update_authors, :update_options, :change_status, :change_visibility], ModList, { mod_list_authors: { user_id: user.id, role: 0 } }
+    can :update, ModList, { mod_list_authors: { user_id: user.id } }
+    can [:hide, :update_authors, :update_options], ModList, { mod_list_authors: { user_id: user.id, role: 0} }
   end
 
   def contributor_abilities(user)
@@ -289,7 +288,7 @@ class Ability
 
   def can_manage_their_mod_lists(user)
     can :create, ModList
-    can [:update, :hide, :update_authors, :change_status, :change_visibility, :update_options], ModList, submitted_by: user.id, hidden: false
+    can [:update, :hide, :update_authors, :update_options], ModList, submitted_by: user.id, hidden: false
   end
 
   def can_update_their_settings(user)
