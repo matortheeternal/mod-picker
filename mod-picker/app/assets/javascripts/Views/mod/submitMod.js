@@ -53,7 +53,7 @@ app.config(['$stateProvider', function($stateProvider) {
     });
 }]);
 
-app.controller('submitModController', function($scope, $rootScope, $state, modService, modValidationService, helpFactory, sitesFactory, tabsFactory, eventHandlerFactory, tabUtils) {
+app.controller('submitModController', function($scope, $rootScope, $state, modService, modValidationService, helpFactory, sitesFactory, tabsFactory, eventHandlerFactory, tabUtils, formUtils) {
     // access parent variables
     $scope.currentUser = $rootScope.currentUser;
     $scope.categories = $rootScope.categories;
@@ -63,6 +63,7 @@ app.controller('submitModController', function($scope, $rootScope, $state, modSe
     // initialize variables
     $scope.sites = sitesFactory.sites;
     $scope.tabs = tabsFactory.buildEditModTabs(false);
+    $scope.supportsDateInput = formUtils.supportsDateInput();
     $scope.mod = {
         game_id: window._current_game_id,
         sources: [{
