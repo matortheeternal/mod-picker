@@ -1,10 +1,15 @@
 app.service('modLoaderService', function(gameService, sitesFactory, assetUtils) {
     var service = this;
+
+    var primaryKeys = {
+        nexus_infos: "nexus_id",
+        lover_infos: "url_id"
+    };
     
     this.loadSource = function(mod, infoLabel, sourceLabel, gameName) {
         infoLabel = infoLabel + '_infos';
         if (mod[infoLabel]) {
-            var pk = infoLabel === "nexus_infos" ? "nexus_id" : "id";
+            var pk = primaryKeys[infoLabel] || "id";
             mod.sources.push({
                 label: sourceLabel,
                 url: sitesFactory.getModUrl(sourceLabel, mod[infoLabel][pk], gameName),
