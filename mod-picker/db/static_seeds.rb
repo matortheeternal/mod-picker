@@ -299,65 +299,65 @@ def seed_user_titles
   puts "\nSeeding user titles"
 
   # get helper variables
-  gameSkyrim = Game.find_by(display_name: "Skyrim")
+  game_skyrim = Game.find_by(display_name: "Skyrim")
 
   UserTitle.create(
-      game_id: gameSkyrim.id,
+      game_id: game_skyrim.id,
       title: "Slaughterfish",
       rep_required: -9999999
   )
   UserTitle.create(
-      game_id: gameSkyrim.id,
+      game_id: game_skyrim.id,
       title: "Skeever",
       rep_required: -40
   )
   UserTitle.create(
-      game_id: gameSkyrim.id,
+      game_id: game_skyrim.id,
       title: "Mudcrab",
       rep_required: -20
   )
   UserTitle.create(
-      game_id: gameSkyrim.id,
+      game_id: game_skyrim.id,
       title: "Draugr",
       rep_required: -10
   )
   UserTitle.create(
-      game_id: gameSkyrim.id,
+      game_id: game_skyrim.id,
       title: "Prisoner",
       rep_required: 0
   )
   UserTitle.create(
-      game_id: gameSkyrim.id,
+      game_id: game_skyrim.id,
       title: "Beggar",
       rep_required: 10
   )
   UserTitle.create(
-      game_id: gameSkyrim.id,
+      game_id: game_skyrim.id,
       title: "Milk Drinker",
       rep_required: 20
   )
   UserTitle.create(
-      game_id: gameSkyrim.id,
+      game_id: game_skyrim.id,
       title: "Rogue",
       rep_required: 40
   )
   UserTitle.create(
-      game_id: gameSkyrim.id,
+      game_id: game_skyrim.id,
       title: "Bard",
       rep_required: 80
   )
   UserTitle.create(
-      game_id: gameSkyrim.id,
+      game_id: game_skyrim.id,
       title: "Adventurer",
       rep_required: 160
   )
   UserTitle.create(
-      game_id: gameSkyrim.id,
+      game_id: game_skyrim.id,
       title: "Thane",
       rep_required: 320
   )
   UserTitle.create(
-      game_id: gameSkyrim.id,
+      game_id: game_skyrim.id,
       title: "Dragonborn",
       rep_required: 640
   )
