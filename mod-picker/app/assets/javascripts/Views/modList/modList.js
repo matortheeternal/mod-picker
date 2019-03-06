@@ -28,7 +28,7 @@ app.config(['$stateProvider', function($stateProvider) {
 }]);
 
 app.config(['$stateProvider', function($stateProvider) {
-    $stateProvider.state('base.mod-list', {
+    var modListState = $stateProvider.state('base.mod-list', {
         templateUrl: '/resources/partials/modList/modList.html',
         controller: 'modListController',
         url: '/mod-lists/{modListId:int}',
@@ -50,96 +50,42 @@ app.config(['$stateProvider', function($stateProvider) {
                 return modList.promise;
             }
         }
-    }).state('base.mod-list.Details', {
-        sticky: true,
-        deepStateRedirect: true,
-        reloadOnSearch: false,
-        views: {
-            'Details': {
-                templateUrl: '/resources/partials/modList/modListDetails.html',
-                controller: 'modListDetailsController'
-            }
-        },
-        url: '/details'
-    }).state('base.mod-list.Tools', {
-        sticky: true,
-        deepStateRedirect: true,
-        reloadOnSearch: false,
-        views: {
-            'Tools': {
-                templateUrl: '/resources/partials/modList/modListTools.html',
-                controller: 'modListToolsController'
-            }
-        },
-        url: '/tools?scol&sdir',
-        params: {
-            scol: 'index',
-            sdir: 'ASC'
-        }
-    }).state('base.mod-list.Mods', {
-        sticky: true,
-        deepStateRedirect: true,
-        reloadOnSearch: false,
-        views: {
-            'Mods': {
-                templateUrl: '/resources/partials/modList/modListMods.html',
-                controller: 'modListModsController'
-            }
-        },
-        url: '/mods?scol&sdir',
-        params: {
-            scol: 'index',
-            sdir: 'ASC'
-        }
-    }).state('base.mod-list.Plugins', {
-        sticky: true,
-        deepStateRedirect: true,
-        reloadOnSearch: false,
-        views: {
-            'Plugins': {
-                templateUrl: '/resources/partials/modList/modListPlugins.html',
-                controller: 'modListPluginsController'
-            }
-        },
-        url: '/plugins?scol&sdir',
-        params: {
-            scol: 'index',
-            sdir: 'ASC'
-        }
-    }).state('base.mod-list.Config', {
-        sticky: true,
-        deepStateRedirect: true,
-        reloadOnSearch: false,
-        views: {
-            'Config': {
-                templateUrl: '/resources/partials/modList/modListConfig.html',
-                controller: 'modListConfigController'
-            }
-        },
-        url: '/config'
-    }).state('base.mod-list.Analysis', {
-        sticky: true,
-        deepStateRedirect: true,
-        reloadOnSearch: false,
-        views: {
-            'Analysis': {
-                templateUrl: '/resources/partials/modList/modListAnalysis.html',
-                controller: 'modListAnalysisController'
-            }
-        },
-        url: '/analysis'
-    }).state('base.mod-list.Comments', {
-        sticky: true,
-        deepStateRedirect: true,
-        reloadOnSearch: false,
-        views: {
-            'Comments': {
-                templateUrl: '/resources/partials/modList/modListComments.html',
-                controller: 'modListCommentsController'
-            }
-        },
-        url: '/comments'
-    })
+    });
+
+    var baseTemplateUrl = '/resources/partials/modList/modList';
+    var modListTabViews = function(name) {
+        var views = {};
+        views[name] = {
+            templateUrl: baseTemplateUrl + name + '.html',
+            controller: 'modList' + name + 'Controller'
+        };
+        return views;
+    };
+
+    var modListTab = function(name, opts) {
+        modListState.state('base.mod-list.' + name, Object.assign({
+            sticky: true,
+            deepStateRedirect: true,
+            reloadOnSearch: false,
+            views: modListTabViews(name),
+            url: '/' + name.toLowerCase()
+        }, opts || {}));
+    };
+
+    var modListParamsTab = function(name) {
+        modListTab(name, {
+            params: { scol: 'index', sdir: 'ASC' },
+            url: '/' + name.toLowerCase() + '?scol&sdir'
+        });
+    };
+
+    modListTab('Details');
+    modListParamsTab('Tools');
+    modListParamsTab('Mods');
+    modListParamsTab('Plugins');
+    modListTab('Config');
+    modListTab('Analysis');
+    modListTab('Comments');
 }]);
 
 app.controller('modListController', function($scope, $rootScope, $q, $state, $stateParams, $timeout, modListObject, modListService, userService, objectUtils, helpFactory, tabsFactory, baseFactory, eventHandlerFactory, listUtils, modOptionUtils) {
