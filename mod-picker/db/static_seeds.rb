@@ -147,13 +147,13 @@ end
 def seed_games
   puts "\nSeeding games"
 
-  gameBethesda = Game.create(
+  game_bethesda = Game.create(
       display_name: "Bethesda Games",
       long_name: "Bethesda Games",
       abbr_name: "bg"
   )
-  gameSkyrim = Game.create(
-      parent_game_id: gameBethesda.id,
+  Game.create(
+      parent_game_id: game_bethesda.id,
       display_name: "Skyrim",
       long_name: "The Elder Scrolls V: Skyrim",
       abbr_name: "sk",
@@ -162,8 +162,8 @@ def seed_games
       nexus_name: "skyrim",
       steam_app_ids: "72850"
   )
-  gameOblivion = Game.create(
-      parent_game_id: gameBethesda.id,
+  Game.create(
+      parent_game_id: game_bethesda.id,
       display_name: "Oblivion",
       long_name: "The Elder Scrolls IV: Oblivion",
       abbr_name: "ob",
@@ -172,8 +172,8 @@ def seed_games
       nexus_name: "oblivion",
       steam_app_ids: "22330,900883"
   )
-  gameFallout4 = Game.create(
-      parent_game_id: gameBethesda.id,
+  Game.create(
+      parent_game_id: game_bethesda.id,
       display_name: "Fallout 4",
       long_name: "Fallout 4",
       abbr_name: "fo4",
@@ -182,8 +182,8 @@ def seed_games
       nexus_name: "fallout4",
       steam_app_ids: "377160"
   )
-  gameFalloutNV = Game.create(
-      parent_game_id: gameBethesda.id,
+  Game.create(
+      parent_game_id: game_bethesda.id,
       display_name: "Fallout NV",
       long_name: "Fallout: New Vegas",
       abbr_name: "fnv",
@@ -192,8 +192,8 @@ def seed_games
       nexus_name: "newvegas",
       steam_app_ids: "22380,2028016"
   )
-  gameFallout3 = Game.create(
-      parent_game_id: gameBethesda.id,
+  Game.create(
+      parent_game_id: game_bethesda.id,
       display_name: "Fallout 3",
       long_name: "Fallout 3",
       abbr_name: "fo3",
@@ -202,8 +202,8 @@ def seed_games
       nexus_name: "fallout3",
       steam_app_ids: "22300,22370"
   )
-  gameSkyrimSE = Game.create(
-      parent_game_id: gameBethesda.id,
+  Game.create(
+      parent_game_id: game_bethesda.id,
       display_name: "Skyrim SE",
       long_name: "Skyrim: Special Edition",
       abbr_name: "sse",
@@ -384,24 +384,24 @@ def seed_record_groups
   puts "\nSeeding record groups"
 
   # get helper variables
-  gameSkyrim = Game.find_by(display_name: "Skyrim")
-  gameSkyrimSE = Game.find_by(display_name: "Skyrim SE")
+  game_skyrim = Game.find_by(display_name: "Skyrim")
+  game_skyrimse = Game.find_by(display_name: "Skyrim SE")
 
-  load_record_groups(gameSkyrim, "skyrim.json")
-  load_record_groups(gameSkyrimSE, "skyrimse.json")
+  load_record_groups(game_skyrim, "skyrim.json")
+  load_record_groups(game_skyrimse, "skyrimse.json")
 
   puts "    #{RecordGroup.count} record groups seeded"
 end
 
 def seed_skyrim_official_content(submitter)
-  gameSkyrim = Game.find_by(display_name: "Skyrim")
+  game_skyrim = Game.find_by(display_name: "Skyrim")
 
-  modSkyrim = Mod.create!(
+  mod_skyrim = Mod.create!(
       name: "Skyrim",
       authors: "Bethesda",
       submitted_by: submitter.id,
       is_official: true,
-      game_id: gameSkyrim.id,
+      game_id: game_skyrim.id,
       released: DateTime.new(2011, 11, 11),
       updated: DateTime.new(2013, 3, 20),
       custom_sources_attributes: [{
@@ -410,20 +410,20 @@ def seed_skyrim_official_content(submitter)
       }]
   )
   # Create config files
-  create_config_file(modSkyrim, "Skyrim.ini", "{{MyGamesFolder}}")
-  create_config_file(modSkyrim, "SkyrimPrefs.ini", "{{MyGamesFolder}}")
+  create_config_file(mod_skyrim, "Skyrim.ini", "{{MyGamesFolder}}")
+  create_config_file(mod_skyrim, "SkyrimPrefs.ini", "{{MyGamesFolder}}")
   # Create plugins
-  skyrimOption = create_option(modSkyrim)
-  create_plugin(skyrimOption, "Skyrim/Skyrim.esm.json")
-  create_plugin(skyrimOption, "Skyrim/Update.esm.json")
-  modSkyrim.update_lazy_counters
+  skyrim_option = create_option(mod_skyrim)
+  create_plugin(skyrim_option, "Skyrim/Skyrim.esm.json")
+  create_plugin(skyrim_option, "Skyrim/Update.esm.json")
+  mod_skyrim.update_lazy_counters
 
-  modDawnguard = Mod.create!(
+  mod_dawnguard = Mod.create!(
       name: "Dawnguard",
       authors: "Bethesda",
       submitted_by: submitter.id,
       is_official: true,
-      game_id: gameSkyrim.id,
+      game_id: game_skyrim.id,
       primary_category_id: Category.find_by(name: "Locations").id,
       secondary_category_id: Category.find_by(name: "Gameplay - Factions").id,
       released: DateTime.new(2012, 8, 2),
@@ -432,18 +432,18 @@ def seed_skyrim_official_content(submitter)
           url: "http://store.steampowered.com/app/211720/"
       }]
   )
-  create_tags(submitter, modDawnguard, ["Vampires", "Dawnguard", "Werewolves", "Soul Cairn", "Dragonbone"])
+  create_tags(submitter, mod_dawnguard, ["Vampires", "Dawnguard", "Werewolves", "Soul Cairn", "Dragonbone"])
   # Create plugins
-  dawnguardOption = create_option(modDawnguard)
-  create_plugin(dawnguardOption, "Skyrim/Dawnguard.esm.json")
-  modDawnguard.update_lazy_counters
+  dawnguard_option = create_option(mod_dawnguard)
+  create_plugin(dawnguard_option, "Skyrim/Dawnguard.esm.json")
+  mod_dawnguard.update_lazy_counters
 
-  modHearthfire = Mod.create!(
+  mod_heathfire = Mod.create!(
       name: "Hearthfire",
       authors: "Bethesda",
       submitted_by: submitter.id,
       is_official: true,
-      game_id: gameSkyrim.id,
+      game_id: game_skyrim.id,
       primary_category_id: Category.find_by(name: "Locations - New Player Homes").id,
       secondary_category_id: Category.find_by(name: "Gameplay - Immersion & Role-playing").id,
       released: DateTime.new(2012, 10, 4),
@@ -452,18 +452,18 @@ def seed_skyrim_official_content(submitter)
           url: "http://store.steampowered.com/app/220760/"
       }]
   )
-  create_tags(submitter, modHearthfire, ["Building", "Family", "Marriage", "Adoption"])
+  create_tags(submitter, mod_heathfire, ["Building", "Family", "Marriage", "Adoption"])
   # Create plugins
-  hearthfireOption = create_option(modHearthfire)
-  create_plugin(hearthfireOption, "Skyrim/HearthFires.esm.json")
-  modHearthfire.update_lazy_counters
+  hearthfire_option = create_option(mod_heathfire)
+  create_plugin(hearthfire_option, "Skyrim/HearthFires.esm.json")
+  mod_heathfire.update_lazy_counters
 
-  modDragonborn = Mod.create!(
+  mod_dragonborn = Mod.create!(
       name: "Dragonborn",
       authors: "Bethesda",
       submitted_by: submitter.id,
       is_official: true,
-      game_id: gameSkyrim.id,
+      game_id: game_skyrim.id,
       primary_category_id: Category.find_by(name: "Locations - New Lands").id,
       released: DateTime.new(2013, 2, 5),
       custom_sources_attributes: [{
@@ -471,18 +471,18 @@ def seed_skyrim_official_content(submitter)
           url: "http://store.steampowered.com/app/211720/"
       }]
   )
-  create_tags(submitter, modDragonborn, ["Solstheim", "Apocrypha", "Hermaeus Mora", "Shouts", "Stahlrim", "Nordic", "Bonemold", "Chitin"])
+  create_tags(submitter, mod_dragonborn, ["Solstheim", "Apocrypha", "Hermaeus Mora", "Shouts", "Stahlrim", "Nordic", "Bonemold", "Chitin"])
   # Create plugins
-  dragonbornOption = create_option(modDragonborn)
-  create_plugin(dragonbornOption, "Skyrim/Dragonborn.esm.json")
-  modDragonborn.update_lazy_counters
+  dragonborn_option = create_option(mod_dragonborn)
+  create_plugin(dragonborn_option, "Skyrim/Dragonborn.esm.json")
+  mod_dragonborn.update_lazy_counters
 
-  modHighRes = Mod.create!(
+  mod_highres = Mod.create!(
       name: "High Resolution Texture Pack",
       authors: "Bethesda",
       submitted_by: submitter.id,
       is_official: true,
-      game_id: gameSkyrim.id,
+      game_id: game_skyrim.id,
       primary_category_id: Category.find_by(name: "Audiovisual - Models & Textures").id,
       released: DateTime.new(2012, 2, 7),
       custom_sources_attributes: [{
@@ -490,24 +490,24 @@ def seed_skyrim_official_content(submitter)
           url: "http://store.steampowered.com/app/202485/"
       }]
   )
-  create_tags(submitter, modHighRes, ["1K", "Armor", "Weapons", "Architecture", "Actors", "Dungeons", "Terrain", "Clutter"])
+  create_tags(submitter, mod_highres, ["1K", "Armor", "Weapons", "Architecture", "Actors", "Dungeons", "Terrain", "Clutter"])
   # Create plugins
-  highResOption = create_option(modHighRes)
-  create_plugin(highResOption, "Skyrim/HighResTexturePack01.esp.json")
-  create_plugin(highResOption, "Skyrim/HighResTexturePack02.esp.json")
-  create_plugin(highResOption, "Skyrim/HighResTexturePack03.esp.json")
-  modHighRes.update_lazy_counters
+  highres_option = create_option(mod_highres)
+  create_plugin(highres_option, "Skyrim/HighResTexturePack01.esp.json")
+  create_plugin(highres_option, "Skyrim/HighResTexturePack02.esp.json")
+  create_plugin(highres_option, "Skyrim/HighResTexturePack03.esp.json")
+  mod_highres.update_lazy_counters
 end
 
 def seed_skyrimse_official_content(submitter)
-  gameSkyrimSE = Game.find_by(display_name: "Skyrim SE")
+  game_skyrimse = Game.find_by(display_name: "Skyrim SE")
 
-  modSkyrimSE = Mod.create!(
+  mod_skyrimse = Mod.create!(
       name: "Skyrim: Special Edition",
       authors: "Bethesda",
       submitted_by: submitter.id,
       is_official: true,
-      game_id: gameSkyrimSE.id,
+      game_id: game_skyrimse.id,
       released: DateTime.new(2016, 10, 28),
       updated: DateTime.new(2017, 1, 9),
       custom_sources_attributes: [{
@@ -516,15 +516,15 @@ def seed_skyrimse_official_content(submitter)
       }]
   )
   # Create config files
-  create_config_file(modSkyrimSE, "Skyrim.ini", "{{MyGamesFolder}}")
-  create_config_file(modSkyrimSE, "SkyrimPrefs.ini", "{{MyGamesFolder}}")
+  create_config_file(mod_skyrimse, "Skyrim.ini", "{{MyGamesFolder}}")
+  create_config_file(mod_skyrimse, "SkyrimPrefs.ini", "{{MyGamesFolder}}")
   # Create plugins
-  skyrimSEOption = create_option(modSkyrimSE)
-  create_plugin(skyrimSEOption, "SkyrimSE/Skyrim.esm.json")
-  create_plugin(skyrimSEOption, "SkyrimSE/Update.esm.json")
-  create_plugin(skyrimSEOption, "SkyrimSE/Dawnguard.esm.json")
-  create_plugin(skyrimSEOption, "SkyrimSE/Hearthfires.esm.json")
-  create_plugin(skyrimSEOption, "SkyrimSE/Dragonborn.esm.json")
+  skyrimse_option = create_option(mod_skyrimse)
+  create_plugin(skyrimse_option, "SkyrimSE/Skyrim.esm.json")
+  create_plugin(skyrimse_option, "SkyrimSE/Update.esm.json")
+  create_plugin(skyrimse_option, "SkyrimSE/Dawnguard.esm.json")
+  create_plugin(skyrimse_option, "SkyrimSE/Hearthfires.esm.json")
+  create_plugin(skyrimse_option, "SkyrimSE/Dragonborn.esm.json")
   modSkyrimSE.update_lazy_counters
 end
 
