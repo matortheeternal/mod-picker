@@ -36,8 +36,8 @@ app.service('sitesFactory', function() {
             label: "Lover's Lab",
             shortLabel: "Lab",
             dataLabel: "lab",
-            modUrlFormat: /www\.loverslab\.com\/files\/file\/([0-9]+)\-([0-9a-z\-]+)(\/)?/i,
-            userUrlFormat: /www\.loverslab\.com\/user\/([a-zA-Z0-9\-]+)(\/)?/i,
+            modUrlFormat: /www\.loverslab\.com\/files\/file\/([0-9\-a-z]+)(\/)?/i,
+            userUrlFormat: /www\.loverslab\.com\/profile\/([a-zA-Z0-9\-]+)(\/)?/i,
             modUrlBase: "https://www.loverslab.com/files/file/{id}",
             userIndex: 1,
             loginUrl: "https://www.loverslab.com/",
@@ -112,6 +112,13 @@ app.service('sitesFactory', function() {
             shortLabel: "TES Alliance",
             modUrlFormat: /tesalliance\.org\/forums\/index\.php\?\/files\/file\/([a-zA-Z0-9\-]+)/i,
             logoPath: "/images/tes_alliance_logo.png"
+        },
+        {
+            hidden: true,
+            label: "GameFront",
+            shortLabel: "GameFront",
+            modUrlFormat: /www\.gamefront\.com\/games\/([a-zA-Z0-9\-]+)\/file\/([a-zA-Z0-9\-]+)/i,
+            logoPath: "/images/gamefront_logo.png"
         }
     ];
 

@@ -25,8 +25,7 @@ module Scrapeable
   end
 
   def rescrape
-    if last_scraped.nil? || last_scraped < 1.week.ago
-      scrape
-    end
+    return unless last_scraped.nil? || last_scraped < 1.week.ago
+    scrape
   end
 end

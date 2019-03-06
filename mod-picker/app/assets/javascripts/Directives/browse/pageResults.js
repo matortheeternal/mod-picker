@@ -6,26 +6,32 @@ app.directive('pageResults', function() {
         scope: {
             pages: '=',
             data: '=',
-            callback: '='
+            callback: '=',
+            offset: '=?'
         }
     }
 });
 
-app.controller('pageResultsController', function($scope, smoothScroll) {
+app.controller('pageResultsController', function($scope, $element, smoothScroll) {
     var pageDistance = 3;
+    var scrollTarget = $scope.offset ? $element[0].parentElement : document.body;
+
     $scope.range = [];
 
     $scope.pageRange = function() {
         $scope.range = [];
         for (var i = 1; i <= $scope.pages.max; i++) {
-            if ((i === 1) || (i == $scope.pages.max) ||
+            if ((i === 1) || (i === $scope.pages.max) ||
                 (Math.abs($scope.pages.current - i) < pageDistance))
                 $scope.range.push(i);
         }
     };
 
     $scope.scrollToTop = function() {
-        smoothScroll({duration: 300});
+        smoothScroll(scrollTarget, {
+            duration: 300,
+            offset: $scope.offset
+        });
     };
 
     $scope.$watch('pages.max', $scope.pageRange, true);

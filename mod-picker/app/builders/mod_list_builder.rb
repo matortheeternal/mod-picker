@@ -29,7 +29,7 @@ class ModListBuilder
   def copy_model(model, label)
     index = @target_mod_list.public_send("#{label}_count")
     index += 1 unless (label == :plugins) && (index == 0)
-    model.each { |item|  index += 1 if item.copy_to(@target_mod_list, index) }
+    model.each { |item|  index = item.copy_to(@target_mod_list, index) }
   end
 
   def groups_by_tab(label)

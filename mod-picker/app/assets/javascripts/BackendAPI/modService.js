@@ -1,4 +1,4 @@
-app.service('modService', function(backend, $q, pageUtils, objectUtils, contributionService, userTitleService, reviewSectionService, recordGroupService, pluginService, assetUtils, modOptionUtils) {
+app.service('modService', function(backend, $q, pageUtils, objectUtils, contributionService, userTitleService, reviewSectionService, recordGroupService, pluginService, assetUtils, modOptionUtils, gameService) {
     var service = this;
 
     this.retrieveMods = function(options, pageInformation) {
@@ -85,6 +85,14 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
             game: window._current_game_id
         });
     };
+
+    this.associateNexusGame = function(mod) {
+        if (!mod.nexus_infos) return;
+        var gameId = mod.nexus_infos.game_id;
+        gameService.getGameById(gameId).then(function(game) {
+            mod.nexus_infos.game = game && game.nexus_name;
+        });
+    };
     
     this.retrieveMod = function(modId) {
         var action = $q.defer();
@@ -92,6 +100,7 @@ app.service('modService', function(backend, $q, pageUtils, objectUtils, contribu
             game: window._current_game_id
         }).then(function(data) {
             service.associateModImage(data.mod);
+            service.associateNexusGame(data.mod);
             action.resolve(data);
         }, function(response) {
             action.reject(response);

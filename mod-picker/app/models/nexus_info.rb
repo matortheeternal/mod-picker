@@ -19,7 +19,7 @@ class NexusInfo < ActiveRecord::Base
 
   def scrape
     # scrape using the Nexus Helper
-    mod_data = NexusHelper.scrape_mod(game.nexus_name, nexus_id)
+    mod_data = NexusHelper.retrieve_mod(game.nexus_name, nexus_id)
 
     # write the scraping results to the nexus info record
     self.assign_attributes(mod_data)

@@ -59,6 +59,6 @@
         {{::option.children.length | number}} installer options
     </span>
     <div ng-if="option.expanded">
-        <mod-option ng-repeat="option in option.children" option="option" old-options="oldOptions"></mod-option>
+        <mod-option ng-repeat="option in option.children" option="option" old-options="oldOptions" ng-hide="option._destroy"></mod-option>
     </div>
 </div>

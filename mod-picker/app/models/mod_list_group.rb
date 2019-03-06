@@ -24,24 +24,23 @@ class ModListGroup < ActiveRecord::Base
   end
 
   def child_model
-    tab == "plugins" ? ModListPlugin : ModListMod.utility(tab == :tools)
+    tab == "plugins" ? ModListPlugin : ModListMod.utility(tab.to_sym == :tools)
   end
 
   def custom_child_model
-    tab == "plugins" ? ModListCustomPlugin : ModListCustomMod.utility(tab == :tools)
+    tab == "plugins" ? ModListCustomPlugin : ModListCustomMod.utility(tab.to_sym == :tools)
   end
 
   def children
     [
         child_model.where(group_id: id).to_a,
         custom_child_model.where(group_id: id).to_a
-    ].flatten
+    ].flatten.sort! { |x, y| x.index <=> y.index }
   end
 
   def copy_children_to(other_mod_list, index, new_group)
-    children.each_with_index do |child|
-      index += 1 if child.copy_to(other_mod_list, index, new_group.id)
-    end
+    children.each { |child| index = child.copy_to(other_mod_list, index, new_group.id) }
+    index
   end
 
   def copy_attributes(mod_list_id, index)

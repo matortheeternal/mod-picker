@@ -83,4 +83,28 @@ app.service('indexFactory', function(indexService, objectUtils, $timeout) {
             type: 'lazy'
         };
     };
+
+    this.miniIndex = function(scope, method, dataKey, localKey) {
+        scope[localKey + 'Pages'] = {};
+
+        var retrieveKey = 'retrieve' + localKey.capitalize();
+        var timeoutKey = localKey + 'Timeout';
+        var refreshKey = 'refresh' + localKey.capitalize();
+
+        scope[retrieveKey] = function(page) {
+            delete scope[localKey];
+            method(page, scope[localKey + 'Pages']).then(function(data) {
+                scope[localKey] = data[dataKey];
+            }, function(response) {
+                scope.errors[localKey] = response;
+            });
+        };
+
+        scope[refreshKey] = function(page) {
+            $timeout.cancel(scope[timeoutKey]);
+            scope[timeoutKey] = $timeout(function() {
+                scope[retrieveKey](page);
+            }, 400);
+        };
+    };
 });
