@@ -1,0 +1,11 @@
+{
+  "only": [],
+  "include": {
+    "mod_options": {
+      "format": "show"
+    },
+    "plugins": {
+      "format": "show"
+    }
+  }
+}

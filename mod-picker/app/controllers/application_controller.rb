@@ -55,6 +55,22 @@ class ApplicationController < ActionController::Base
     render json: root ? { root => resource_json } : resource_json
   end
 
+  def static_cache(key)
+    Rails.cache.fetch(key) { yield }
+  end
+
+  def dynamic_cache(key, updated, min_cache_time = 0.seconds)
+    last_updated = Rails.cache.read("#{key}")
+    duration = (DateTime.now.to_i - updated.to_i).seconds
+    if last_updated != updated && duration > min_cache_time
+      Rails.cache.delete("#{key}/#{last_updated}")
+      Rails.cache.write("#{key}", updated)
+      Rails.cache.fetch("#{key}/#{updated}") { yield }
+    else
+      Rails.cache.read("#{key}/#{last_updated}")
+    end
+  end
+
   protected
     def configure_permitted_parameters
       devise_parameter_sanitizer.for(:sign_up) { |u| u.permit(:invitation_token, :username, :email, :password, :password_confirmation, :remember_me) }

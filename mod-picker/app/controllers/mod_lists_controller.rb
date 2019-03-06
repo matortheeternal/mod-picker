@@ -171,19 +171,8 @@ class ModListsController < ApplicationController
   # GET /mod_lists/1/analysis
   def analysis
     authorize! :read, @mod_list
-
-    # prepare primary data
-    plugin_ids = @mod_list.mod_list_plugins.official(false).pluck(:plugin_id)
-    install_order = @mod_list.mod_list_mods.utility(false).includes(:mod, :mod_list_mod_options)
-    load_order = @mod_list.mod_list_plugins.includes(:plugin)
-    plugins = Plugin.where(id: plugin_ids).includes(:mod, :dummy_masters, :overrides, :masters => :master_plugin)
-
-    # render response
-    render json: {
-        load_order: json_format(load_order, :load_order),
-        install_order: json_format(install_order, :install_order),
-        plugins: json_format(plugins),
-        conflicting_assets: @mod_list.conflicting_assets
+    render json: dynamic_cache("mod_lists/#{params[:id]}/analysis", @mod_list.updated, 2.hours) {
+      ModListAnalysisDecorator.new(@mod_list).to_json
     }
   end
 

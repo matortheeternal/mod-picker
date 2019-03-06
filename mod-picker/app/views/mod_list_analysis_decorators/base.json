@@ -1,0 +1,13 @@
+{
+  "only": [],
+  "include": {
+    "load_order": {
+      "format": "load_order"
+    },
+    "install_order": {
+      "format": "install_order"
+    },
+    "plugins": {}
+  },
+  "methods": ["conflicting_assets"]
+}
