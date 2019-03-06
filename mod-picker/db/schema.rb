@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170422200231) do
+ActiveRecord::Schema.define(version: 20170706160750) do
 
   create_table "active_mod_lists", force: :cascade do |t|
     t.integer "game_id",     limit: 4, null: false
@@ -850,6 +850,15 @@ ActiveRecord::Schema.define(version: 20170422200231) do
   add_index "plugins", ["game_id"], name: "fk_rails_5a7ba47709", using: :btree
   add_index "plugins", ["mod_option_id"], name: "mv_id", using: :btree
 
+  create_table "premium_subscriptions", force: :cascade do |t|
+    t.integer  "user_id",   limit: 4
+    t.datetime "purchased",           null: false
+    t.datetime "start",               null: false
+    t.datetime "end",                 null: false
+  end
+
+  add_index "premium_subscriptions", ["user_id"], name: "fk_rails_8d844017ee", using: :btree
+
   create_table "quotes", force: :cascade do |t|
     t.integer "game_id", limit: 4,   null: false
     t.string  "text",    limit: 255, null: false
@@ -1249,6 +1258,7 @@ ActiveRecord::Schema.define(version: 20170422200231) do
   add_foreign_key "plugin_record_groups", "plugins", name: "plugin_record_groups_ibfk_1"
   add_foreign_key "plugins", "games"
   add_foreign_key "plugins", "mod_options"
+  add_foreign_key "premium_subscriptions", "users"
   add_foreign_key "quotes", "games"
   add_foreign_key "record_groups", "games"
   add_foreign_key "related_mod_notes", "games"
