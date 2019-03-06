@@ -10,11 +10,11 @@ app.directive('primaryNav', function() {
 
 app.controller('primaryNavController', function($scope, $rootScope, $timeout, $state, modListService) {
     // init active mod list game
-    if ($rootScope.activeModList) {
+    var setActiveModListGame = function() {
         $rootScope.activeModList.game = $rootScope.games.find(function(game) {
             return game.id === $rootScope.activeModList.game_id;
         });
-    }
+    };
 
     // toggle navbar dropdowns
     $scope.toggleDropdown = function($event, key) {
@@ -53,4 +53,8 @@ app.controller('primaryNavController', function($scope, $rootScope, $timeout, $s
             $state.go('base.error');
         });
     };
+
+    // initialization
+    $rootScope.$watch('activeModList', setActiveModListGame);
+    setActiveModListGame();
 });
