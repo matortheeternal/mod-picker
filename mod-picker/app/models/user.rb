@@ -59,8 +59,8 @@ class User < ActiveRecord::Base
   has_many :curator_requests, :inverse_of => 'submitter'
 
   has_many :mod_authors, :inverse_of => 'user'
+  has_many :mod_list_authors, :inverse_of => 'user'
   has_many :mods, :through => 'mod_authors', :inverse_of => 'author_users'
-  has_many :mod_lists, :foreign_key => 'submitted_by', :inverse_of => 'submitter'
   has_many :active_mod_lists, :inverse_of => 'user'
 
   has_many :mod_stars, :inverse_of => 'user'
@@ -188,6 +188,10 @@ class User < ActiveRecord::Base
       new_role = is_author ? "author" : "user"
       update_column(:role, new_role) if role != new_role
     end
+  end
+
+  def mod_lists
+    ModList.eager_load(:mod_list_authors).preload(:submitter).where("submitted_by = :id OR mod_list_authors.user_id = :id", id: id)
   end
 
   def mod_submission_history(time_zone)

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170422200231) do
+ActiveRecord::Schema.define(version: 20170715232615) do
 
   create_table "active_mod_lists", force: :cascade do |t|
     t.integer "game_id",     limit: 4, null: false
@@ -497,6 +497,15 @@ ActiveRecord::Schema.define(version: 20170422200231) do
   add_index "mod_licenses", ["license_option_id"], name: "fk_rails_608f4a2096", using: :btree
   add_index "mod_licenses", ["mod_id"], name: "fk_rails_3c8eedb43d", using: :btree
 
+  create_table "mod_list_authors", force: :cascade do |t|
+    t.integer "mod_list_id", limit: 4,             null: false
+    t.integer "user_id",     limit: 4,             null: false
+    t.integer "role",        limit: 1, default: 0, null: false
+  end
+
+  add_index "mod_list_authors", ["mod_list_id"], name: "fk_rails_4554079f14", using: :btree
+  add_index "mod_list_authors", ["user_id"], name: "fk_rails_ce11dfd432", using: :btree
+
   create_table "mod_list_config_files", force: :cascade do |t|
     t.integer "mod_list_id",    limit: 4,     null: false
     t.integer "config_file_id", limit: 4,     null: false
@@ -624,6 +633,7 @@ ActiveRecord::Schema.define(version: 20170422200231) do
     t.integer  "visibility",                limit: 1,     default: 0,     null: false
     t.boolean  "is_collection",                           default: false, null: false
     t.string   "name",                      limit: 255,                   null: false
+    t.string   "authors",                   limit: 128
     t.text     "description",               limit: 65535
     t.integer  "tools_count",               limit: 4,     default: 0,     null: false
     t.integer  "mods_count",                limit: 4,     default: 0,     null: false
@@ -850,6 +860,16 @@ ActiveRecord::Schema.define(version: 20170422200231) do
   add_index "plugins", ["game_id"], name: "fk_rails_5a7ba47709", using: :btree
   add_index "plugins", ["mod_option_id"], name: "mv_id", using: :btree
 
+  create_table "premium_subscriptions", force: :cascade do |t|
+    t.integer  "user_id",           limit: 4
+    t.integer  "subscription_type", limit: 1, null: false
+    t.datetime "purchased",                   null: false
+    t.datetime "start",                       null: false
+    t.datetime "end",                         null: false
+  end
+
+  add_index "premium_subscriptions", ["user_id"], name: "fk_rails_8d844017ee", using: :btree
+
   create_table "quotes", force: :cascade do |t|
     t.integer "game_id", limit: 4,   null: false
     t.string  "text",    limit: 255, null: false
@@ -1019,6 +1039,7 @@ ActiveRecord::Schema.define(version: 20170422200231) do
     t.float    "contribution_rep", limit: 24, default: 0.0,   null: false
     t.float    "author_rep",       limit: 24, default: 0.0,   null: false
     t.float    "given_rep",        limit: 24, default: 0.0,   null: false
+    t.float    "spent_rep",        limit: 24, default: 0.0,   null: false
     t.integer  "rep_from_count",   limit: 4,  default: 0,     null: false
     t.integer  "rep_to_count",     limit: 4,  default: 0,     null: false
     t.datetime "last_computed"
@@ -1203,6 +1224,8 @@ ActiveRecord::Schema.define(version: 20170422200231) do
   add_foreign_key "mod_licenses", "license_options"
   add_foreign_key "mod_licenses", "licenses"
   add_foreign_key "mod_licenses", "mods"
+  add_foreign_key "mod_list_authors", "mod_lists"
+  add_foreign_key "mod_list_authors", "users"
   add_foreign_key "mod_list_config_files", "config_files"
   add_foreign_key "mod_list_config_files", "mod_lists"
   add_foreign_key "mod_list_custom_config_files", "mod_lists"
@@ -1249,6 +1272,7 @@ ActiveRecord::Schema.define(version: 20170422200231) do
   add_foreign_key "plugin_record_groups", "plugins", name: "plugin_record_groups_ibfk_1"
   add_foreign_key "plugins", "games"
   add_foreign_key "plugins", "mod_options"
+  add_foreign_key "premium_subscriptions", "users"
   add_foreign_key "quotes", "games"
   add_foreign_key "record_groups", "games"
   add_foreign_key "related_mod_notes", "games"

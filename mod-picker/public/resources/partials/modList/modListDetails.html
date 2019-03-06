@@ -17,7 +17,7 @@
         <div marked="mod_list.description" class="text-container"></div>
     </div>
     <div class="content-container" ng-if="editing">
-        <text-area data="mod_list.description" ng-refresh="updateMDE"></text-area>
+        <text-area data="mod_list.description" ng-refresh="updateMDE" min-char-count="16" max-char-count="65535" on-change="descriptionChanged" char-count="descriptionCharCount"></text-area>
     </div>
 </div>
 
@@ -25,21 +25,34 @@
     <div class="content-title">Options</div>
     <div class="content-container" ng-if="editing">
         <form>
-            <h3 class="section-title">Name</h3>
+            <h3 class="section-title">Name
+                <span ng-hide="nameValid" class="error-tooltip" title="Mod List name cannot be blank.">
+                    <i class="fa fa-exclamation-circle"></i>
+                </span>
+            </h3>
             <section>
-                <input type="text" ng-model="mod_list.name">
+                <input type="text" ng-model="mod_list.name" maxlength="128">
+            </section>
+
+            <h3 class="section-title">Authors
+                <span ng-hide="authorsValid" class="error-tooltip" title="Mod List authors cannot be blank.">
+                    <i class="fa fa-exclamation-circle"></i>
+                </span>
+            </h3>
+            <section>
+                <input type="text" ng-model="mod_list.authors" maxlength="128">
             </section>
 
             <h3 class="section-title">Status</h3>
             <section>
-                <select ng-model="mod_list.status">
+                <select ng-model="mod_list.status" ng-disabled="!permissions.isAuthor">
                     <option value="under_construction">Under Construction</option>
                     <option value="testing">Testing</option>
                     <option value="complete">Complete</option>
                 </select>
             </section>
 
-            <h3 class="section-title">Visibility</h3>
+            <h3 class="section-title" ng-disabled="!permissions.isAuthor">Visibility</h3>
             <section>
                 <select ng-model="mod_list.visibility">
                     <option value="visibility_public">Public</option>
@@ -48,8 +61,10 @@
                 </select>
             </section>
 
-            <h3 class="section-title">Other Options</h3>
-            <section>
+            <mod-list-authors ng-if="permissions.isAuthor"></mod-list-authors>
+
+            <h3 class="section-title" ng-if="permissions.isAuthor">Other Options</h3>
+            <section ng-if="permissions.isAuthor">
                 <label class="checkbox-option">
                     <input type="checkbox" ng-model="mod_list.is_collection"> Collection
                 </label>

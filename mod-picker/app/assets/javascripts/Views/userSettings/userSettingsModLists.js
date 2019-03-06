@@ -1,4 +1,4 @@
-app.controller('userSettingsModListsController', function($scope, $rootScope, $timeout, columnsFactory, actionsFactory, modListService) {
+app.controller('userSettingsModListsController', function($scope, $rootScope, $timeout, columnsFactory, actionsFactory, modListService, userService) {
     // initialize variables
     $scope.actions = actionsFactory.userModListActions();
     $scope.columns = columnsFactory.modListColumns();
@@ -20,19 +20,11 @@ app.controller('userSettingsModListsController', function($scope, $rootScope, $t
 
     // BASE RETRIEVAL LOGIC
     $scope.retrieveModLists = function() {
-        var options = {
-            filters: {
-                game: isSkyrimClassic ? [window._current_game_id, skyrimSE.id] :
-                    window._current_game_id,
-                search: "submitter:" + $scope.user.username
-            }
-        };
-        var pages = {};
-        modListService.retrieveModLists(options, pages).then(function(data) {
-            $scope.all_mod_lists = data.mod_lists;
+        userService.retrieveUserModLists($scope.user.id).then(function(data) {
+            $scope.all_mod_lists = data.authored;
             $scope.mod_lists = [];
             $scope.collections = [];
-            data.mod_lists.forEach(function(item) {
+            data.authored.forEach(function(item) {
                 var model = item.is_collection ? $scope.collections : $scope.mod_lists;
                 model.push(item);
             });

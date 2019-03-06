@@ -1,4 +1,8 @@
-app.controller('modListDetailsController', function($scope, $rootScope, $q, $timeout, tagService) {
+app.controller('modListDetailsController', function($scope, $rootScope, $q, $timeout, tagService, userService) {
+    // inherited functions
+    $scope.searchUsers = userService.searchUsers;
+
+    // scope functions
     $scope.saveTags = function(updatedTags) {
         var action = $q.defer();
         tagService.updateModListTags($scope.mod_list, updatedTags).then(function(data) {
