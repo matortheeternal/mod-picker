@@ -8,8 +8,9 @@ class LoverInfo < ActiveRecord::Base
   # VALIDATIONS
   validates :game_id, :mod_name, :uploaded_by, :released, presence: true
 
-  def self.prepare_for_mod(id)
-    info = LoverInfo.find_or_initialize_by(id: id)
+  def self.prepare_for_mod(id_string)
+    matches = /([0-9]+)\-([0-9a-z]+)/.match(id_string)
+    info = LoverInfo.find_or_initialize_by(id: matches[1], url_id: matches[0])
     raise Exceptions::ModExistsError.new(info.mod_id) if info.mod_id
     info
   end
@@ -26,7 +27,7 @@ class LoverInfo < ActiveRecord::Base
   end
 
   def url
-    "http://www.loverslab.com/files/file/#{id}"
+    "http://www.loverslab.com/files/file/#{url_id}"
   end
 
   def link_uploader
