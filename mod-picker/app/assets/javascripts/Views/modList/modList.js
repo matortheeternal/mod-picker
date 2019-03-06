@@ -229,8 +229,9 @@ app.controller('modListController', function($scope, $rootScope, $q, $state, $st
     var author = $scope.mod_list.mod_list_authors.find(function(author) {
         return author.user_id === $scope.currentUser.id;
     });
-    var isAuthor = (author && author.role == 'author') || $scope.mod_list.submitter.id == $scope.currentUser.id;
-    var hasAuthorRole = isAuthor && !author || author && author.role === 'author';
+    var isSubmitter = $scope.mod_list.submitter.id === $scope.currentUser.id;
+    var isAuthor = isSubmitter || angular.isDefined(author);
+    var hasAuthorRole = isSubmitter || author && author.role === 'author';
     $scope.permissions.isAuthor = isAuthor;
     $scope.permissions.canManage = $scope.permissions.canModerate || isAuthor;
     $scope.permissions.canManageOptions = $scope.permissions.canModerate || hasAuthorRole;
