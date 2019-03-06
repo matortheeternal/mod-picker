@@ -10,8 +10,8 @@ table-items, grid-items {
   .action-items {
     position: absolute;
     z-index: 2;
-    top: 0;
-    right: 0;
+    top: 2px;
+    right: 4px;
 
     span {
       font-size: 20px;
@@ -25,13 +25,13 @@ table-items, grid-items {
         vertical-align: top;
       }
 
+      &.fa-window-restore, &.fa-window-minimize {
+        font-size: 16px;
+      }
+
       &:hover {
         color: $text_color;
       }
-    }
-
-    span:last-child {
-      padding-right: 3px;
     }
   }
 
@@ -51,7 +51,7 @@ table-items, grid-items {
       .group-color {
         position: absolute;
         top: 10px;
-        right: 40px;
+        right: 60px;
         z-index: 2;
 
         strong {
@@ -111,6 +111,7 @@ grid-items {
 
     li.group {
       width: 1090px;
+      min-height: 60px;
       padding: 10px;
 
       ul[dnd-list] {
@@ -239,6 +240,7 @@ table-items {
     td.group-cell {
       position: relative;
       padding: 10px 0;
+      height: 40px;
 
       table {
         border-left: 0;

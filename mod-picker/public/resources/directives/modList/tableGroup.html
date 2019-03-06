@@ -1,12 +1,13 @@
 <!-- display group -->
 <td colspan="{{activeColumnsCount}}" class="group-cell">
-    <div class="action-items" ng-show="editing">
-        <span class="fa fa-times" ng-click="removeGroup(model, item, $index)"></span>
+    <div class="action-items">
+        <span class="fa fa-window-{{item.minimized ? 'restore' : 'minimize'}}" title="{{item.minimized ? 'Expand' : 'Collapse'}} group" ng-click="item.minimized = !item.minimized"></span>
+        <span class="fa fa-times" ng-if="editing" ng-click="removeGroup(model, item, $index)"></span>
     </div>
     <div class="group-name" ng-if="item.name">
         <input class="fuzzy-input" type="text" ng-model="item.name" ng-click="focusText($event)" ng-disabled="!editing" pu-elastic-input/>
     </div>
-    <div class="group-color" ng-show="editing">
+    <div class="group-color" ng-if="editing">
         <strong>Color:</strong>
         <select ng-model="item.color">
             <option ng-repeat="option in colorOptions" value="{{option}}">{{option | humanize:1}}</option>
@@ -14,7 +15,7 @@
     </div>
 
     <!-- display children of groups -->
-    <table class="browse-table" ng-class="{ 'no-border' : item.childrenEmpty }">
+    <table class="browse-table" ng-class="{ 'no-border' : item.childrenEmpty }" ng-show="!item.minimized">
         <tbody dnd-list="item.children" dnd-allowed-types="['item']">
             <tr ng-repeat="item in item.children as children" ng-hide="item._destroy" dnd-draggable="item" dnd-moved="itemMoved(children, $index)" dnd-effect-allowed="move" dnd-disable-if="!editing" dnd-type="'item'" ng-class="{ 'merged' : item.merged }">
                 <td bindonce ng-repeat="column in columns" ng-if="column.visibility" bo-class="column.fullClass">
