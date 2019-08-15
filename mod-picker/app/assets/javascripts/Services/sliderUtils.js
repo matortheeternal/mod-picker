@@ -50,36 +50,36 @@ app.service('sliderUtils', function($filter) {
 
         // days
         for (i = 0; (c.getTime() > minValue) && (i < 24); i++) {
-            array.unshift(c.toLocaleDateString());
+            array.unshift(c.toLocaleDateString('en-US'));
             c.setDate(c.getDate() - 1);
         }
 
         // weeks
         for (i = 0; (c.getTime() > minValue) && (i < 36); i++) {
-            array.unshift(c.toLocaleDateString());
+            array.unshift(c.toLocaleDateString('en-US'));
             c.setDate(c.getDate() - 7);
         }
 
         // months
         for (i = 0; (c.getTime() > minValue) && (i < 48); i++) {
-            array.unshift(c.toLocaleDateString());
+            array.unshift(c.toLocaleDateString('en-US'));
             c.setMonth(c.getMonth() - 1);
         }
 
         // quarters
         for (i = 0; (c.getTime() > minValue) && (i < 24); i++) {
-            array.unshift(c.toLocaleDateString());
+            array.unshift(c.toLocaleDateString('en-US'));
             c.setMonth(c.getMonth() - 3);
         }
 
         // half years
         for (i = 0; (c.getTime() > minValue) && (i < 24); i++) {
-            array.unshift(c.toLocaleDateString());
+            array.unshift(c.toLocaleDateString('en-US'));
             c.setMonth(c.getMonth() - 6);
         }
 
         // set first date to min date
-        array[0] = minDate.toLocaleDateString();
+        array[0] = minDate.toLocaleDateString('en-US');
         return array;
     };
 });
