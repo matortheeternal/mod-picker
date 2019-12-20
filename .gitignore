@@ -98,3 +98,5 @@ mod-picker/public/mods/
 mod-picker/public/users/
 mod-picker/public/articles/
 loc/
+spikes/mailgunTest/
+spikes/PyMailgun/
