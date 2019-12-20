@@ -1,0 +1,15 @@
+Mod Picker - Account confirmation
+===============================================
+
+Hello <%= @resource.username %>,
+
+Welcome to Mod Picker!  You can confirm your account through the link below:
+
+<%= confirmation_url(@resource, confirmation_token: @token) %>
+
+If you recieved this email in error, please ignore it or contact us at admin@modpicker.com.
+
+
+Sincerely,
+The Mod Picker Team
+www.modpicker.com

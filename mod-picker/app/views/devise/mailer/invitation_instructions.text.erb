@@ -1,0 +1,19 @@
+Mod Picker - Invitation
+===============================================
+
+<%= t("devise.mailer.invitation_instructions.hello", email: @resource.email) %>
+
+<%= t("devise.mailer.invitation_instructions.someone_invited_you") %>
+
+<%= accept_invitation_url(@resource, :invitation_token => @token) %>
+
+<% if @resource.invitation_due_at %>
+  <%= t("devise.mailer.invitation_instructions.accept_until") %>
+<% end %>
+
+<%= t("devise.mailer.invitation_instructions.ignore") %>
+
+
+Sincerely,
+The Mod Picker Team
+www.modpicker.com

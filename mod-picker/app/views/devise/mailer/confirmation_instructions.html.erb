@@ -2,7 +2,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,width=device-width,height=device-height,target-densitydpi=device-dpi,user-scalable=no">
-    <title>Mod Picker - Confirm your account</title>
+    <title>Mod Picker - Account confirmation</title>
     <style>
         * {
             font-family: Optima,Segoe,Segoe UI,Candara,Calibri,sans-serif;
@@ -75,7 +75,6 @@
             -moz-box-shadow: rgba(0,0,0,1) 0px 1px 3px;
             box-shadow: rgba(0,0,0,1) 0px 1px 3px;
             text-shadow: rgba(0,0,0,.4) 1px 1px 0;
-            color: white;
             font-family: Georgia, serif;
             vertical-align: middle;
             -webkit-transition: all 0.4s ease-in-out;
@@ -84,8 +83,11 @@
             transition: all 0.4s ease-in-out;
         }
 
-        .button:hover {
+        .button a {
             color: white;
+        }
+
+        .button:hover {
             opacity: 1.0;
         }
     </style>
@@ -100,7 +102,7 @@
             <%= link_to 'Confirm my account', confirmation_url(@resource, confirmation_token: @token), :class => "button" %>
         </div>
 
-        <p>If you recieved this email in error, please ignore it or contact us at <a href="mailto:modpicker@gmail.com">modpicker@gmail.com</a>.</p>
+        <p>If you recieved this email in error, please ignore it or contact us at <a href="mailto:admin@modpicker.com">admin@modpicker.com</a>.</p>
 
         <br>
         <p>Sincerely,<br>
